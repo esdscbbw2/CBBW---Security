@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/bootstrap-5/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <link href="~/Content/style.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-5/css/LoginPage.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-5/css/bootstrap-icons.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-5/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-5/css/dataTables.bootstrap5.css" rel="stylesheet" />
+    <link href="~/CustomContent/CustomLayout.css" rel="stylesheet" />
+    <script src="~/Content/bootstrap-5/js/LoginJavaScript.js"></script>
+    <script src="~/Scripts/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="~/Scripts/jquery-3.5.1.min.js"></script>
+    <script src="~/Content/bootstrap-5/js/bootstrap.min.js"></script>
+    <script src="~/CustomContent/CustomLayout.js"></script>
+    <script type="text/javascript">
+        function disableBackButtonAllBrowsers() {
+            window.history.forward()
+        };
+        window.onload = disableBackButtonAllBrowsers();
+        window.onpageshow = function (evts) {
+            if (evts.persisted) {
+                disableBackButtonAllBrowsers();
+            }
+        };
+        window.onunload = function () {
+            void (0)
+        };
+    </script>
+    <script type="text/javascript">
+        window.onload = window.history.forward(0);
+    </script>
+</head>
+<body style="margin-top:0px;padding-top:5px" oncontextmenu="return false" ondragstart="return false;" ondrop="return false;">
+    <div class="container-sm">
+        <div class="" style="background-image: url('../../Images/main-banner.png'); ">
+            <div class="row">
+                <div class="float-sm-start">
+                    <img src="~/Images/charbhai-logo.png" alt="CHARBHAI" loading="eager" />
+                    <div class="float-end text-white ps-5">
+                        <br />
+                        <u>Page loaded</u>:@DateTime.Now.ToString()
+                        <br />
+                        <text>
+                            Welcome,<span><i><b>Administrator</b></i>.</span>
+                        </text>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dropdown-divider  mt-0  bg-primary" style="height:2px;margin-bottom:0.1%"><hr></div>
+    @{Html.RenderPartial("_PartialHeaderMenu");}
+    <div class="dropdown-divider bg-primary" style="height:2px;margin-top:0.1%;margin-bottom:0px"></div>
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+    @{Html.RenderPartial("_PartialSideNavigation");}
+    <script src="~/Scripts/cute-alert.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/dataTables.bootstrap5.min.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/InputPaging.js"></script>    
+    <script>
+    $(function () {
+        var UsedMessage = '@TempData["UsedMessage"]';
+        if (UsedMessage.length > 0) {
+            cuteAlert({
+                type: "info",
+                title: "Information Message",
+                message: UsedMessage,
+                buttonText: "Okay"
+            })
+        }
+    });
+    $(function () {
+        var DateMessage = '@TempData["DateMessage"]';
+        if (DateMessage.length > 0)
+            cuteAlert({
+                type: "info",
+                title: "Information Message",
+                message: DateMessage,
+                buttonText: "Okay"
+            })
+    });
+    $(function () {
+        var SuccessMessage = '@TempData["SuccessMessage"]';
+        if (SuccessMessage.length > 0)
+            cuteAlert({
+                type: "success",
+                title: "success Message",
+                message: SuccessMessage,
+                buttonText: "Okay"
+            })
+    });
+    $(function () {
+        var FailedMessage = '@TempData["FailedMessage"]';
+        if (FailedMessage.length > 0)
+            cuteAlert({
+                type: "error",
+                title: "Failed Message",
+                message: FailedMessage,
+                buttonText: "Okay"
+            })
+    });
+    $(function () {
+        var EffectiveMessage = '@TempData["EffectiveMessage"]';
+        if (EffectiveMessage.length > 0)
+            cuteAlert({
+                type: "info",
+                title: "Information Message",
+                message: EffectiveMessage,
+                buttonText: "Okay"
+            })
+    });
+    </script>
+</body>
+</html>

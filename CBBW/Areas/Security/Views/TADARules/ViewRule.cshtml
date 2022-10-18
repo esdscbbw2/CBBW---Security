@@ -1,0 +1,249 @@
+﻿@using CBBW.BOL.TADA;
+@model TADARuleDetails
+@{
+    ViewBag.Title = "View TA & DA Rule";
+}
+<div class="row newTable">
+    @using (Html.BeginForm())
+    {
+        @ViewBag.Msg
+        @Html.HiddenFor(m => m.ID)
+        @Html.HiddenFor(m => m.EntryDate)
+        @Html.HiddenFor(m => m.EntryTime)
+        @Html.HiddenFor(m => m.NewConnectingID)
+        @Html.HiddenFor(m => m.mDelete)
+        <div class="fixedElement">
+            <div class="col-md-12" style="position: relative;">
+                <div class="heading_text_btn mb-4 mt-4">
+                    <div class="leftButton">
+                        <button type="button" class="btn btn-primary me-2"
+                                onclick="window.location.href='@Url.Action("Index", "TADARules", new { Area = "Security" })';">
+                            <i data-feather="arrow-left-circle"></i>
+                            Back
+                        </button>
+                        <button id="btnDelete" type="button" name="Submit" value="Delete"
+                                class="btn btn-primary me-2">
+                            <i data-feather="trash-2"></i>
+                            Delete
+                        </button>
+                    </div>
+                    <h2>TA & DA - RULES</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row d-flex align-items-center mb-3 ">
+                        <label class="col-form-label col-md-2">
+                            Effective From Date :
+                        </label>
+                        <div class="col-md-4">
+                            @Html.EditorFor(m => m.EffectiveDate, new
+                               {
+                                   htmlAttributes = new
+                                   {
+                                       @readonly = "readonly",
+                                       onchange = "validatecontrol()",
+                                       @class = "form-control pointer datepicker1 isvalidate EffDt"
+                                   }
+                               })
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center">
+                        <label class="col-form-label col-md-2">
+                            Entry Date  :
+                        </label>
+                        <div class="col-md-4">
+                            @Html.TextBoxFor(m => m.EntryDate, "{0:dd-MMM-yyyy}", htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                        </div>
+                        <label class="col-form-label col-md-2">
+                            Time  :
+                        </label>
+                        <div class="col-md-4">
+                            @Html.TextBoxFor(m => m.EntryTime, htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="bgColor wid-100 mb-4">
+                <ul>
+                    <li>
+                        Minimum Hours Of Tour Required To Get Half DA:
+                        <div class="form-group">
+                            @Html.TextBoxFor(m => m.MinHoursForHalfDA,
+                           htmlAttributes: new
+                                {
+                                    @class = "form-control isvalidate",
+                               @placeholder = "Hours",
+                               onkeyup = "validatecontrol()"
+                           })
+                        </div>
+                    </li>
+                    <li>
+                        Pay DA When Destination is More Than (KMS):
+                        <div class="form-group">
+                            @Html.TextBoxFor(m => m.MinKmsForDA,
+                           htmlAttributes: new
+                                {
+                               @class = "form-control isvalidate",
+                               @placeholder = "KMS",
+                               onkeyup = "validatecontrol()"
+                           })
+                            @*<input type="text" class="form-control" placeholder="KMS">*@
+                        </div>
+                    </li>
+                    <li>
+                        When Company Accommodation Available Lodging Expenses Allowed?
+                        @Html.DropDownListFor(m => m.LodgingExpOnCompAcco,
+                       new[] {
+                           new SelectListItem { Text = "Yes", Value = "true" },
+                           new SelectListItem { Text = "No", Value = "false" } }, "-",
+                       htmlAttributes: new
+                            {
+                           @class = "form-select isvalidate ",
+                           @onchange = "validatecontrol()"
+                            })
+                    </li>
+                    <li>
+                        Local Conveyance Eligible:
+                        @Html.DropDownListFor(m => m.LocalConvEligibility,
+                       new[] {
+                           new SelectListItem { Text = "Yes", Value = "true" },
+                           new SelectListItem { Text = "No", Value = "false" } }, "-",
+                       htmlAttributes: new { @class = "form-select isvalidate", @onchange = "validatecontrol()" })
+
+                    </li>
+                    <li>
+                        On Deputation Staff Allowed To Go On Tour But Not Eligible For DA Where As Rest Of All
+                        Conditions Applicable:
+                        @Html.DropDownListFor(m => m.DepuStaffDAEligibility,
+                       new[] {
+                           new SelectListItem { Text = "Yes", Value = "true" },
+                           new SelectListItem { Text = "No", Value = "false" } }, "-",
+                       htmlAttributes: new { @class = "form-select isvalidate", @onchange = "validatecontrol()" })
+
+                    </li>
+                    <li>
+                        DA & Extra DA Applicable To Designation “Driver” Or “Senior Driver” When On Tour As Saved In
+                        “Material Gate Pass (For
+                        Company Transport)” Shall Be Eligible When Return Trip Loaded With Goods More Than 85% Of
+                        The Total Vehicle Capacity.
+                        Otherwise Only Half Eligible DA For The Tour Is Payable:
+                        @Html.DropDownListFor(m => m.ExtraDAApplicability,
+                       new[] {
+                           new SelectListItem { Text = "Yes", Value = "true" },
+                           new SelectListItem { Text = "No", Value = "false" } }, "-",
+                       htmlAttributes: new
+                            {
+                                @class = "form-select isvalidate",
+                                @onchange = "validatecontrol()"
+                            })
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="bgColor mb-4">
+                <div class="col-md-12 form-sample">
+                    <div class="form-group">
+                        <label class="d-flex">Category Code & Name :<span></span></label>
+                        @Html.ListBoxFor(m => m.SelectedCategoryIds, new MultiSelectList(Model.Categories, "ID", "DisplayText", Model.SelectedCategoryIds),
+                       htmlAttributes: new
+                       {
+                           @multiple = "multiple",
+                           @class = "form-select example-getting-started disablecolor",
+                           @disabled = "disabled"
+                       })
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mb-4">
+                <div class="d-flex justify-content-center mt-3">
+
+                    <button id="btnTransDetail"
+                            type="submit" name="Submit" value="TMDtl"
+                            class="btn btn-primary me-2"
+                            @*onclick="window.location.href='@Url.Action("CreateTransModeDtls", "TADARules", new { Area = "Security" })';"*@>
+                        Transport Mode - Details
+                    </button>
+
+                    <button id="btntadaParam"
+                            type="submit" name="Submit" value="TAParam"
+                            class="btn btn-primary"
+                            @*onclick="window.location.href='@Url.Action("CreateParam", "TADARules", new { Area = "Security" })';"*@>
+                        TA &amp; DA Parameters
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@section headers{
+    <style>
+        .inVisible {
+            display: none;
+        }
+        .btn-primary:disabled {
+            background-color: #e9ecef;
+            border-color: lightgray;
+            color: black;
+        }
+    </style>
+}
+@section scripts{
+    @*<script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>*@
+    <script>
+        $(document).ready(function () {
+            $('.isvalidate').each(function () {
+                $(this).attr("disabled", "disabled");
+            });
+
+            var btndel = $('#btnDelete');
+            if ('@ViewBag.IsDelete' == 'True') {
+                btndel.removeClass("inVisible");
+            } else {
+                btndel.addClass("inVisible");
+            }
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('.example-getting-started').multiselect();
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#btnDelete').click(function () {                
+                Swal.fire({
+                    title: 'Delete Confirmation',
+                    text: "Are You Sure Want to Delete This?",
+                    icon: 'question',
+                    customClass: 'swal-wide',
+                    //buttons: {
+                    //    cancel: "No",
+                    //    confirm: "Yes"
+                    //},
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                    cancelButtonClass: 'btn-cancel',
+                    confirmButtonColor: '#2527a2',                    
+                    showCancelButton: true,
+                }).then(callback);
+                function callback(result) {
+                    if (result.value) {
+                        var mid = $('#ID').val();
+                        var url = "/Security/TADARules/RemoveRule/" + mid;
+                        window.location.href = url;
+                    } else {
+                        // second variant
+                    }
+                }
+            });
+        });
+    </script>
+}

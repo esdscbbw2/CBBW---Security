@@ -1,0 +1,935 @@
+﻿
+@model CBBW.BOL.Tour.TourRuleDetails
+
+@{
+    ViewBag.Title = "CreateRule";
+}
+<div class="row newTable">
+    @using (Html.BeginForm("CreateRule", "TourRule", FormMethod.Post))
+    {
+        @Html.HiddenFor(m => m.isBtn)
+        <div class="fixedElement">
+            @*@if (ViewBag.Message != null)
+                {
+                    <script type="text/javascript">
+
+                window.onload = function () {
+                    alert("@ViewBag.Message");
+
+                };
+                    </script>
+
+                }*@
+            <div class="col-md-12" style="position: relative;">
+
+                <div class="heading_text_btn mb-4 mt-4">
+                    <div class="leftButton">
+                        <button id="btnBack" type="button" class="btn btn-primary me-2">
+                            @*onclick="window.location.href='@Url.Action("Index", "TourRule", new { Area = "Security" })';">*@
+                            <i data-feather="arrow-left-circle"></i>
+                            Back
+                        </button>
+                        <button type="submit" name="Submit" value="create" class="btn btn-secondary me-2" id="btnSubmit">
+
+                            <i data-feather="upload"></i>
+                            Submit
+                        </button>
+                        <button type="button" id="btnClear" class="btn btn-success">
+                            <i data-feather="x-circle"></i>
+                            Clear
+                        </button>
+                    </div>
+                    <h2>Tour - RULES</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="form-sample form-inline row ms-auto ">
+                        <div class="row d-flex align-items-center mb-3">
+                            <div class="col-form-label col-md-2">
+                                <label>Effective From Date :</label>
+                            </div>
+                            <div class="col-md-4">
+                                @Html.EditorFor(m => m.EffectiveDate, new
+                                   {
+                                       htmlAttributes = new
+                                       {
+                                           @readonly = "readonly",
+                                           onchange = "validatecontrol()",
+                                           @class = "form-control pointer datepicker1 isvalidate EffDt"
+                                       }
+                                   })
+                            </div>
+
+                        </div>
+                        @Html.HiddenFor(m => m.EntryDate)
+                        <div class="row d-flex align-items-center mb-3">
+                            <div class="col-form-label col-md-2">
+                                <label>Entry Date :</label>
+                            </div>
+                            <div class="col-md-4">
+                                @Html.TextBox("EntryDate2",DateTime.Today.ToString("dd-MMM-yyyy"),
+                               htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                                @*@Html.TextBoxFor(m => m.EntryDate, "{0:dd-MMM-yyyy}",
+                                htmlAttributes: new { @class = "form-control", disabled = "disabled" })*@
+                            </div>
+                            <div class="col-form-label col-md-2">
+                                <label>Time : </label>
+                            </div>
+
+                            <div class="col-md-4">
+
+                                @Html.HiddenFor(m => m.EntryTime)
+                                @Html.TextBoxFor(m => m.EntryTime, "{0:hh-mm-ss}", htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                            </div>
+
+                        </div>
+                        <div class="row d-flex align-items-center">
+                            <div class="col-form-label col-md-2">
+                                <label>Service Type :</label>
+                            </div>
+                            <div class="col-md-6">
+
+
+                                @Html.ListBoxFor(m => m.SelectedServiceTypeIds, new MultiSelectList(Model.ServiceTypes, "ID", "DisplayText", Model.SelectedServiceTypeIds),
+
+                               htmlAttributes: new
+                               {
+                                   @multiple = "multiple",
+                                 @class = "form-select pointer example-getting-started isvalidate2 is-valid"
+                               })
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-12">
+            <div class="bgColor mb-4 wid-100">
+                <ul>
+                    <li>
+                        An Employee Scheduled For Tour And He Attended Late Or Returned Late From Tour. The
+                        Following Are The Rules.
+                        <ol style="list-style-type: lower-latin;">
+                            <li>
+                                Mark Half Day Absent & Deduct Half Day DA If Employee Was Late By Public Transport
+                                For More Than
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.PublicTranDelay_HalfDA,
+                            htmlAttributes: new
+                            {
+                                @class = "form-control isvalidate only-numeric is-valid",
+                                @placeholder = "Minutes",
+                                onkeyup = "validatecontrol()"
+                            })
+                                </div>Minutes
+                                And By Vehicle Both (4 & 2 Wheeler)
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.OtherTranDelay_HalfDA,
+                           htmlAttributes: new
+                                {
+                                    @class = "form-control isvalidate only-numeric is-valid",
+                               @placeholder = "Minutes",
+                               onkeyup = "validatecontrol()"
+                           })
+                                </div> Minutes
+                            </li>
+
+                            <li>
+                                Mark Full Day Absent & Deduct Full Day DA If Employee Was Late By Public Transport
+                                For More Than <div class="form-group">
+                                    @Html.TextBoxFor(m => m.PublicTranDelay_FullDA,
+                           htmlAttributes: new
+                                {
+                                    @class = "form-control only-numeric isvalidate is-valid",
+                               @placeholder = "Minutes",
+                               onkeyup = "validatecontrol()"
+                           })
+                                </div> Minutes
+                                And By Vehicle Both (4 & 2 Wheeler)
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.OtherTranDelay_FullDA,
+                           htmlAttributes: new
+                                {
+                                    @class = "form-control only-numeric isvalidate is-valid",
+                               @placeholder = "Minutes",
+                               onkeyup = "validatecontrol()"
+                           })
+                                </div> Minutes
+                            </li>
+                        </ol>
+                    </li>
+
+                    <li>
+                        Night Stay Punches Required During Continues Tour At Same Location. This Condition Is Only
+                        For “Driver” As Mentioned
+                        In “ENTRY – I”. And The Following Are The Rules.
+                        <ol style="list-style-type: lower-latin;">
+                            <li>
+                                Mark Half Day Absent & Deduct Half Day DA If ‘Night Stay Late Night Punch’ Required
+                                But Not Done Between The Time:
+                                <div class="form-group">
+                                    @*@Html.TextBoxFor(m => m.NightPunch_From,
+                           htmlAttributes: new
+               {
+
+
+                @class = "form-control timepicker isvalidate is-valid",
+
+                @placeholder = "",
+                onkeyup = "validatecontrol()"
+            })
+                                    *@
+                                    <div class="date position-relative">
+                                        @Html.TextBoxFor(m => m.NightPunch_From,
+                                       new
+                                       {
+                                           @type = "text",
+                                           @value = "12:00 AM",
+                                           @class = "form-control timePicker isvalidate is-valid ",
+                                           required = "",
+                                           @placeholder = "12:00 AM",
+                                           onkeyup = "validatecontrol()"
+                                       })
+                                        <span class=" date-ico "><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+                                        @*<input type="time" class="form-control">*@
+                                    </div>
+                                </div> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To: &nbsp;&nbsp;&nbsp;
+                                <div class="form-group">
+                                    @*@Html.TextBoxFor(m => m.NightPunch_To,
+            htmlAttributes: new
+                 {
+                     @class = "form-control isvalidate is-valid",
+                @placeholder = "",
+                onkeyup = "validatecontrol()"
+            })*@
+                                    <div class="date position-relative">
+                                        @Html.TextBoxFor(m => m.NightPunch_To, new
+                                        {
+                                            @type = "text",
+                                            @class = "form-control timePicker isvalidate is-valid",
+                                            required = "",
+                                            @placeholder = "12:00 AM",
+                                       onkeyup = "validatecontrol()"
+                                        })
+                                        <span class=" date-ico "><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                Mark Half Day Absent & Deduct Half Day DA If ‘Night Stay Early Morning Punch’
+                                Required But Not Done Between The Time:
+                                <div class="form-group" id="timepic">
+                                    @*@Html.TextBoxFor(m => m.EarlyMorningPunch_From,
+                                        htmlAttributes: new
+                                             {
+                                                 @class = "form-control isvalidate is-valid",
+                                            @placeholder = "",
+                                            onkeyup = "validatecontrol()"
+                                        })*@
+                                    <div class="date position-relative">
+                                        @Html.TextBoxFor(m => m.EarlyMorningPunch_From, new { @type = "text", @class = "form-control timePicker isvalidate is-valid", required = "", @placeholder = "12:00 AM", onkeyup = "validatecontrol()" })
+                                        <span class=" date-ico "><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+                                    </div>
+                                </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To: &nbsp;&nbsp;&nbsp;
+                                <div class="form-group">
+                                    @*@Html.TextBoxFor(m => m.EarlyMorningPunch_To,
+                                        htmlAttributes: new
+                                             {
+                                                 @class = "form-control isvalidate is-valid",
+                                            @placeholder = "",
+                                            onkeyup = "validatecontrol()"
+                                        })*@
+                                    <div class="date position-relative">
+                                        @Html.TextBoxFor(m => m.EarlyMorningPunch_To, new { @type = "text", @class = "form-control timePicker isvalidate is-valid", required = "", @placeholder = "12:00 AM", onkeyup = "validatecontrol()" })
+                                        <span class=" date-ico "><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ol>
+                    </li>
+
+                    <li>
+                        When An Employee Tour Scheduled For A Location & Continuing At The Same Location Then That
+                        Day “Actual Tour IN Time”
+                        Should Be As Follows:
+                        @Html.DropDownListFor(m => m.ReadRule1,
+                     new[] {
+                         new SelectListItem { Text = "Yes", Value = "true" },
+                         new SelectListItem { Text = "No", Value = "false" } }, "-",
+                     htmlAttributes: new
+                     {
+                         @class = "form-select isvalidate is-valid",
+                         @onchange = "validatecontrol()",
+                         title = "Accept only yes"
+                     })
+                        @*<select id="readrule" class="form-select" aria-label="Default select example">
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+
+                            </select>*@
+                        <ol style="list-style-type: lower-latin;">
+                            <li>
+                                Mark Half Day Absent & Deduct Half Day DA If “Actual Tour IN Time” Is Not Equal /
+                                Earlier / Not Found To ‘Required Time
+                                IN’
+                                But Within 1st Session Time Of The Tour Location (For Center Visit, Branch & Center
+                                Visit).
+                            </li>
+                            <li>
+                                Mark Full Day Absent & Deduct Full Day DA If “Actual Tour IN Time” Is Not Equal /
+                                Earlier / Not Found To ‘Required Time
+                                IN’
+                                But Within 2nd Session Time Of The Tour Location (For Center Visit, Branch & Center
+                                Visit)
+                            </li>
+                            <li>
+                                Mark Half Day Absent & Deduct Half Day DA If “Actual Tour IN Time” Is Not Equal /
+                                Earlier / Not Found To ‘Required Time
+                                IN’
+                                But Within 1st Session Time Of The “Main Location” (For Other Place).
+                            </li>
+                            <li>
+                                Mark Full Day Absent & Deduct Full Day DA If “Actual Tour IN Time” Is Not Equal /
+                                Earlier / Not Found To ‘Required Time
+                                IN’
+                                But Within 2nd Session Time Of The “Main Location” (For Other Place).
+                            </li>
+
+                        </ol>
+                    </li>
+
+
+                    <li>
+                        When An Employee Tour Scheduled For A Location & Continuing At The Same Location Then That
+                        Day “Actual Tour OUT Time”
+                        Should Be As Follows:
+                        @Html.DropDownListFor(m => m.ReadRule2,
+                   new[] {
+                       new SelectListItem { Text = "Yes", Value = "true" },
+                       new SelectListItem { Text = "No", Value = "false" } }, "-",
+                   htmlAttributes: new
+                        {
+                       @class = "form-select isvalidate is-valid",
+                       @onchange = "validatecontrol()"
+                        })
+                        @*<select id="b" class="form-select" aria-label="Default select example">
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+
+                            </select>*@
+                        <ol style="list-style-type: lower-latin;">
+                            <li>
+                                Mark Half Day Absent & Deduct Half Day DA If “Actual Tour OUT Time” Is Within 2nd
+                                Session Time Of The Tour Location (For
+                                Center Visit, Branch & Center Visit).
+                            </li>
+                            <li>
+                                Mark Full Day Absent & Deduct Full Day DA If “Actual Tour OUT Time” Is Within 1st
+                                Session Time Of The Tour Location (For
+                                Center Visit, Branch & Center Visit).
+                            </li>
+                            <li>
+                                Mark Half Day Absent & Deduct Half Day DA If “Actual Tour OUT Time” Is Within 2nd
+                                Session Time Of The “Main Location”
+                                (For Other Place).
+                            </li>
+                            <li>
+                                Mark Full Day Absent & Deduct Full Day DA If “Actual Tour OUT Time” Is Within 1st
+                                Session Time Of The “Main Location”
+                                (For Other Place).
+                            </li>
+                            <li>Mark Full Day Absent & Deduct Full Day DA If “Actual Tour OUT Time” Not Found.</li>
+                        </ol>
+                    </li>
+
+
+                    <li>
+                        When “Main Location” Time IN is with in office hours then the person should be present till
+                        completion of Second
+                        Session. Other Wise Rule Is As Follows:
+                        @Html.DropDownListFor(m => m.ReadRule3,
+                   new[] {
+                       new SelectListItem { Text = "No", Value = "false" },
+                       new SelectListItem { Text = "Yes", Value = "true" }
+                        }, "-",
+                   htmlAttributes: new
+                        {
+                       @class = "form-select isvalidate is-valid",
+                       @onchange = "validatecontrol()"
+                        })
+                        @*<select id="MainLocation" class="form-select"
+                            aria-label="Default select example">
+                                     <option value="0">No</option>
+                                     <option value="1">Yes</option>
+
+                            </select>*@
+                        <ol style="list-style-type: lower-latin;">
+                            <li>Mark Half Day Absent If Last Punch Found Within 2nd Session Time.</li>
+                            <li>Mark Full Day Absent If Last Punch Found Within 1st Session Time.</li>
+                        </ol>
+                    </li>
+
+
+                    <li>
+                        An Employee Is Allowed To Go On Tour, For A Maximum Number Of Days:
+                        <div class="form-group">
+                            @Html.TextBoxFor(m => m.MaxDayAllowed,
+                           htmlAttributes: new
+                                {
+                                    @class = "form-control only-numeric isvalidate is-valid",
+                               @placeholder = "Days",
+                               onkeyup = "validatecontrol()"
+                           })
+                        </div>
+                    </li>
+
+                    <li>
+                        Company Or Other Vehicles (4 & 2 Wheel), Maximum Travel Time Is
+                        <div class="form-group">
+                            @Html.TextBoxFor(m => m.MaxTraveltime_ComVeh_50km,
+                          htmlAttributes: new
+                               {
+                                   @class = "form-control only-numeric isvalidate is-valid",
+                              @placeholder = "Minutes",
+                              onkeyup = "validatecontrol()"
+                          })
+                        </div> Minutes For Covering A
+                        Distance Of 50 KM.
+                    </li>
+
+                    <li>
+                        Public Transport, Maximum Travel Time Is
+                        <div class="form-group">
+                            @Html.TextBoxFor(m => m.MaxTraveltime_PubTran_50km,
+                          htmlAttributes: new
+                               {
+                                   @class = "form-control only-numeric isvalidate is-valid",
+                              @placeholder = "Minutes",
+                              onkeyup = "validatecontrol()"
+                          })
+                        </div>Minutes For Covering A Distance Of 50 KM.
+                    </li>
+
+                    <li>
+                        For Visiting Place More Then 200 km
+                        <div class="form-group">
+                            @Html.TextBoxFor(m => m.GracePeriod_200km,
+                         htmlAttributes: new
+                              {
+                                  @class = "form-control only-numeric isvalidate is-valid",
+                             @placeholder = "Minutes",
+                             onkeyup = "validatecontrol()"
+                         })
+                        </div> Minutes Grace Period Allowed:
+                        @Html.DropDownListFor(m => m.ReadRule5,
+                    new[] {
+                        new SelectListItem { Text = "Yes", Value = "true" },
+                        new SelectListItem { Text = "No", Value = "false" } }, "-",
+                    htmlAttributes: new
+                         {
+                        @class = "form-select isvalidate is-valid",
+                        @onchange = "validatecontrol()"
+                         })
+                        @*<select class="form-select"
+                               aria-label="Default select example">
+                                <option selected="">-</option>
+                                <option value="1">Yes</option>
+                                <option value="2">No</option>
+                            </select>*@
+                    </li>
+                    <li>
+                        Leave In Charge Employee Not Allowed To Go On Tour:
+                        @Html.DropDownListFor(m => m.ReadRule4,
+                      new[] {
+                          new SelectListItem { Text = "No", Value = "false" },
+                          new SelectListItem { Text = "Yes", Value = "true" }
+                           }, "-",
+                      htmlAttributes: new
+                           {
+                          @class = "form-select isvalidate is-valid",
+                          @onchange = "validatecontrol()"
+                           })
+                        @*<select class="form-select"
+                               aria-label="Default select example">
+                                <option selected="">-</option>
+                                <option value="1">Yes</option>
+                                <option value="2">No</option>
+                            </select>*@
+                    </li>
+                </ul>
+
+
+            </div>
+
+        </div>
+
+
+    }
+
+</div>
+<script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
+@section scripts{
+    <script type="text/javascript">
+
+    $(document).ready(function () {
+        //
+
+        $("#btnClear").click(function () {
+
+            $('#EffectiveDate').removeClass('is-valid').addClass('is-invalid').val('');
+            $('#PublicTranDelay_HalfDA').removeClass('is-valid').addClass('is-invalid').val('');
+            $('#OtherTranDelay_HalfDA').removeClass('is-valid').addClass('is-invalid').val('');
+            $('#PublicTranDelay_FullDA').removeClass('is-valid').addClass('is-invalid').val('');
+            $('#OtherTranDelay_FullDA').removeClass('is-valid').addClass('is-invalid').val('');
+            $('#NightPunch_From').removeClass('is-valid').addClass('is-invalid').val('');
+            $('#NightPunch_To').removeClass('is-valid').addClass('is-invalid').val('');
+            $('#EarlyMorningPunch_From').removeClass('is-valid').addClass('is-invalid').val('');
+            $('#EarlyMorningPunch_To').removeClass('is-valid').addClass('is-invalid').val('');
+            $('#MaxDayAllowed').removeClass('is-valid').addClass('is-invalid').val('');
+            $('#MaxTraveltime_ComVeh_50km').removeClass('is-valid').addClass('is-invalid').val('');
+            $('#MaxTraveltime_PubTran_50km').removeClass('is-valid').addClass('is-invalid').val('');
+            $('#GracePeriod_200km').removeClass('is-valid').addClass('is-invalid').val('');
+            $('#ReadRule1').removeClass('is-valid').addClass('is-invalid').val('');
+            $('#ReadRule2').removeClass('is-valid').addClass('is-invalid').val('');
+            $('#ReadRule3').removeClass('is-valid').addClass('is-invalid').val('');
+            $('#ReadRule4').removeClass('is-valid').addClass('is-invalid').val('');
+            $('#ReadRule5').removeClass('is-valid').addClass('is-invalid').val('');
+            /*$(this).closest('form').find("input[type=text], textarea").val("");*/
+
+            @* $('#EntryDate').closest('#EntryDate').find("input[type=text], textarea").val( @DateTime.Now.ToShortDateString());
+           $("#EntryDate").add(" @DateTime.Now.ToShortDateString()");
+            $("#EntryDate").add('refresh');*@
+            $('#SelectedServiceTypeIds').multiselect('clearSelection').addClass('is-invalid');
+            $('#SelectedServiceTypeIds').multiselect('refresh').addClass('is-invalid');
+           /* $('#btnSubmit').attr("disabled", "disabled");*/
+
+        });
+
+        validatecontrol();
+    });
+
+    </script>
+    <script>
+
+        function validatecontrol() {
+            var target = validatecontrol.caller.arguments[0].target;
+            var targetid = $(target).attr('ID');
+            var isvalid = validatectrl(targetid, $(target).val());
+            //if (targetid == 'EffectiveDate') { alert($(target).val());alert(isvalid); }
+            if (isvalid) {
+                $(target).removeClass('is-invalid').addClass('is-valid');
+                $('#isBtn').val("1");
+            } else {
+                $(target).removeClass('is-valid').addClass('is-invalid');
+
+                $('#btnSubmit').attr("disabled", "disabled");
+            }
+            validateallcontrol();
+        };
+        function validatectrl(targetid, value) {
+            var isvalid = false;
+            switch (targetid) {
+                case "PublicTranDelay_HalfDA":
+                    isvalid = validatePublicTranDelay_HalfDA(value);
+                    break;
+                case "OtherTranDelay_HalfDA":
+
+                    isvalid = validateOtherTranDelay_HalfDA(value);
+
+                    break;
+                case "PublicTranDelay_FullDA":
+                    isvalid = validatePublicTranDelay_FullDA(value);
+                    break;
+                case "OtherTranDelay_FullDA":
+                    isvalid = validateOtherTranDelay_FullDA(value);
+                    break;
+                case "NightPunch_From":
+                    isvalid = validateNightPunch_From(value);
+                    break;
+                case "NightPunch_To":
+                    //alert(value);
+                    isvalid = validateNightPunch_To(value);
+                    break;
+                case "EarlyMorningPunch_From":
+                    isvalid = validateEarlyMorningPunch_From(value);
+                    break;
+                case "EarlyMorningPunch_To":
+                    isvalid = validateEarlyMorningPunch_To(value);
+                    break;
+                case "ReadRule1":
+                    isvalid = OnlyYesValidator(value);
+                    break;
+                case "ReadRule2":
+                    isvalid = OnlyYesValidator(value);
+                    break;
+                case "ReadRule3":
+                    isvalid = OnlyYesValidator(value);
+                    break;
+                case "MaxDayAllowed":
+                    isvalid = validateMaxDayAllowed(value);
+                    break;
+                case "MaxTraveltime_ComVeh_50km":
+                    isvalid = validateMaxTraveltime_ComVeh_50km(value);
+                    break;
+                case "MaxTraveltime_PubTran_50km":
+                    isvalid = validateMaxTraveltime_PubTran_50km(value);
+                    break;
+                case "GracePeriod_200km":
+                    isvalid = validateGracePeriod_200km(value);
+                    break;
+                case "ReadRule4":
+                    isvalid = OnlyYesValidator(value);
+                    break;
+                case "ReadRule5":
+                    isvalid = YesNoValidator(value);
+                    break;
+                case "EffectiveDate":
+                    if (value == '') {
+                        isvalid = false;
+                    } else {
+                        isvalid = true;
+                    }
+                    //isvalid = validateTextbox("EffectiveDate");
+                    break;
+            }
+            return isvalid;
+        };
+        function validateallcontrol() {
+            var btnsubmit = $('#btnSubmit');
+
+            if ($('.is-invalid').length > 0) {
+                btnsubmit.attr("disabled", "disabled");
+
+            } else {
+                btnsubmit.removeAttr("disabled");
+
+            }
+        };
+    </script>
+    <script>
+        function validatePublicTranDelay_HalfDA(ctrlvalue) {
+            if (ctrlvalue > 0 && ctrlvalue < 1000) { return true; } else { return false; }
+        };
+        function validateOtherTranDelay_HalfDA(ctrlvalue) {
+
+            if (ctrlvalue > 0 && ctrlvalue < 1000) { return true; } else { return false; }
+        };
+        function validatePublicTranDelay_FullDA(ctrlvalue) {
+            if (ctrlvalue > 0 && ctrlvalue < 1000) { return true; } else { return false; }
+        };
+        function validateOtherTranDelay_FullDA(ctrlvalue) {
+            if (ctrlvalue > 0 && ctrlvalue < 1000) { return true; } else { return false; }
+        };
+        function validateNightPunch_From(ctrlvalue) {
+            if (ctrlvalue > '00:00' && ctrlvalue < '13:61') { return true; } else { return false; }
+        };
+        function validateNightPunch_To(ctrlvalue) {
+            if (ctrlvalue > '00:00' && ctrlvalue < '13:61') { return true; } else { return false; }
+        };
+        function validateEarlyMorningPunch_From(ctrlvalue) {
+            if (ctrlvalue > '00:00' && ctrlvalue < '13:61') { return true; } else { return false; }
+        };
+        function validateEarlyMorningPunch_To(ctrlvalue) {
+            if (ctrlvalue > '00:00' && ctrlvalue < '13:61') { return true; } else { return false; }
+        };
+        function validateMaxDayAllowed(ctrlvalue) {
+            if (ctrlvalue > 0 && ctrlvalue < 100) { return true; } else { return false; }
+        };
+        function validateMaxTraveltime_ComVeh_50km(ctrlvalue) {
+            if (ctrlvalue > 0 && ctrlvalue < 100) { return true; } else { return false; }
+        };
+        function validateMaxTraveltime_PubTran_50km(ctrlvalue) {
+            if (ctrlvalue > 0 && ctrlvalue < 100) { return true; } else { return false; }
+        };
+        function validateGracePeriod_200km(ctrlvalue) {
+            if (ctrlvalue > 0 && ctrlvalue < 100) { return true; } else { return false; }
+        };
+        //function validateTextbox(controlid) {
+        //    var result = false;
+        //    var ctrlvalue = $('#' + controlid).val();
+        //    switch (controlid) {
+        //        case "MinHoursForHalfDA":
+        //            if (ctrlvalue > 2) { result = true; }
+        //            break;
+        //        case "MinKmsForDA":
+        //            if (ctrlvalue > 0 && ctrlvalue < 100) { result = true; }
+        //            break;
+        //        case "EffectiveDate":
+        //            if (ctrlvalue == '') { result = false; } else { result = true; }
+        //            break;
+        //    }
+        //    return result;
+        //};
+        function YesNoValidator(value) {
+            if (value == "true" || value == "false") { return true; } else { return false; }
+        };
+        function OnlyYesValidator(value) {
+            if (value == "true") { return true; } else { return false; }
+        };
+    </script>
+    <script>
+        $(document).ready(() => {
+            $('#SelectedServiceTypeIds').change(function () {
+                var selectedValues = $(this).val();
+                if (selectedValues == '') {
+                    $(this).removeClass('is-valid').addClass('is-invalid');
+                } else {
+                    $(this).removeClass('is-invalid').addClass('is-valid');
+                }
+                $('#isBtn').val("1");
+                validateallcontrol();
+            });
+
+            var isvalid = false;
+            $('.isvalidate').each(function () {
+                isvalid = validatectrl($(this).attr("id"), $(this).val());
+                if (isvalid) {
+                    $(this).removeClass('is-invalid').addClass('is-valid');
+                } else {
+                    $(this).removeClass('is-valid').addClass('is-invalid');
+                }
+            });
+            validateallcontrol();
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var today = new Date();
+            var minDate = today.setDate(today.getDate());
+            var maxDate = today.setDate(today.getDate() + 30)
+            //$('#EffectiveDate').datetimepicker({
+            //    useCurrent: false,
+            //    format: "MM/DD/YYYY",
+            //    minDate: minDate,
+            //    maxDate: maxDate
+            //});
+
+            var firstOpen = true;
+            var time;
+
+            $('.timePicker').datetimepicker({
+                useCurrent: false,
+                format: "hh:mm A"
+            }).on('dp.show', function () {
+                if (firstOpen) {
+                    time = moment().startOf('day');
+                    firstOpen = false;
+                } else {
+                    time = "01:00 PM"
+                }
+
+                $(this).data('DateTimePicker').date(time);
+                validatecontrol();
+            });
+
+        });
+    </script>
+    <script>
+        $(window).scroll(function (e) {
+            var $el = $('.fixedElement');
+            var isPositionFixed = ($el.css('position') == 'fixed');
+            if ($(this).scrollTop() > 200 && !isPositionFixed) {
+                $el.css({ 'position': 'sticky', 'top': '0px' });
+            }
+            if ($(this).scrollTop() < 200 && isPositionFixed) {
+                $el.css({ 'position': 'static', 'top': '0px' });
+            }
+        });
+    </script>
+    <script>
+        $(document).ready(() => {
+            $("#PublicTranDelay_HalfDA").hover(
+                function () {
+                    $(this).css('cursor', 'pointer',).attr('title', 'value must be 1-999',);
+                }, function () {
+                    $(this).css('cursor', 'auto');
+                }
+            );
+            $("#OtherTranDelay_HalfDA").hover(
+                function () {
+                    $(this).css('cursor', 'pointer').attr('title', 'value must be 1-999');
+                }, function () {
+                    $(this).css('cursor', 'auto');
+                }
+            );
+            $("#PublicTranDelay_FullDA").hover(
+                function () {
+                    $(this).css('cursor', 'pointer').attr('title', 'value must be 1-999');
+                }, function () {
+                    $(this).css('cursor', 'auto');
+                }
+            );
+            $("#OtherTranDelay_FullDA").hover(
+                function () {
+                    $(this).css('cursor', 'pointer').attr('title', 'value must be 1-999');
+                }, function () {
+                    $(this).css('cursor', 'auto');
+                }
+            );
+            $("#NightPunch_From").hover(
+                function () {
+                    $(this).css('cursor', 'pointer').attr('title', 'Enter Time');
+                }, function () {
+                    $(this).css('cursor', 'auto');
+                }
+            );
+            $("#NightPunch_To").hover(
+                function () {
+                    $(this).css('cursor', 'pointer').attr('title', 'Enter Time');
+                }, function () {
+                    $(this).css('cursor', 'auto');
+                }
+            );
+            $("#EarlyMorningPunch_From").hover(
+                function () {
+                    $(this).css('cursor', 'pointer').attr('title', 'Enter Time');
+                }, function () {
+                    $(this).css('cursor', 'auto');
+                }
+            );
+            $("#EarlyMorningPunch_To").hover(
+                function () {
+                    $(this).css('cursor', 'pointer').attr('title', 'Enter Time');
+                }, function () {
+                    $(this).css('cursor', 'auto');
+                }
+            );
+            $("#MaxDayAllowed").hover(
+                function () {
+                    $(this).css('cursor', 'pointer').attr('title', 'Value must be 1-99');
+                }, function () {
+                    $(this).css('cursor', 'auto');
+                }
+            );
+            $("#MaxTraveltime_ComVeh_50km").hover(
+                function () {
+                    $(this).css('cursor', 'pointer').attr('title', 'Value must be 1-99');
+                }, function () {
+                    $(this).css('cursor', 'auto');
+                }
+            );
+            $("#MaxTraveltime_PubTran_50km").hover(
+                function () {
+                    $(this).css('cursor', 'pointer').attr('title', 'Value must be 1-99');
+                }, function () {
+                    $(this).css('cursor', 'auto');
+                }
+            );
+            $("#GracePeriod_200km").hover(
+                function () {
+                    $(this).css('cursor', 'pointer').attr('title', 'Value must be 1-99');
+                }, function () {
+                    $(this).css('cursor', 'auto');
+                }
+            );
+            $("#ReadRule4").hover(
+                function () {
+                    $(this).css('cursor', 'pointer').attr('title', 'Accept only Yes');
+                }, function () {
+                    $(this).css('cursor', 'auto');
+                }
+            );
+            $("#ReadRule1").hover(
+                function () {
+                    $(this).css('cursor', 'pointer').attr('title', 'Accept only Yes');
+                }, function () {
+                    $(this).css('cursor', 'auto');
+                }
+            );
+            $("#ReadRule2").hover(
+                function () {
+                    $(this).css('cursor', 'pointer').attr('title', 'Accept only Yes');
+                }, function () {
+                    $(this).css('cursor', 'auto');
+                }
+            );
+            $("#ReadRule3").hover(
+                function () {
+                    $(this).css('cursor', 'pointer').attr('title', 'Accept only Yes');
+                }, function () {
+                    $(this).css('cursor', 'auto');
+                }
+            );
+        });
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            var mymsg = '@ViewBag.DupMsg';
+            if (mymsg != '') {
+                Swal.fire({
+                    title: 'Failed to create rule',
+                    text: "@ViewBag.DupMsg",
+                    icon: 'info',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        //cancel: 'Cancel',
+                        confirm: 'Ok'
+                    },
+                    //cancelButtonClass: 'btn-cancel',
+                    confirmButtonColor: '#2527a2',
+                });
+            };
+            if ('@ViewBag.Message' != '') {
+                Swal.fire({
+                    title: 'Success',
+                    text: "@ViewBag.Message",
+                    icon: 'success',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        confirm: 'Ok'
+                    },
+                    confirmButtonColor: '#2527a2',
+                }).then(callback);
+                function callback(result) {
+                    if (result.value) {
+                        var url = "/Security/TourRule/Index";
+                        window.location.href = url;
+                    }
+                }
+            };
+        });
+        </script> 
+    <script>
+            $(document).ready(function () {
+                $('#btnBack').click(function () {
+                    var url = "/Security/TourRule/Index";
+                    if ($('.is-invalid').length > 0 || $('#isBtn').val()==1) {
+                        Swal.fire({
+                            title: 'Confirmation Message',
+                            text: "Are You Sure Want to Go Back?",
+                            icon: 'warning',
+                            customClass: 'swal-wide',
+                            confirmButtonText: "Yes",
+                            cancelButtonText: "No",
+                            cancelButtonClass: 'btn-cancel',
+                            confirmButtonColor: '#2527a2',
+                            showCancelButton: true,
+                        }).then(callback);
+                        function callback(result) {
+                            if (result.value) {
+                                window.location.href = url;
+                            } else {
+                                // second variant
+                            }
+                        }
+                    } else {
+                        window.location.href = url;
+                    };
+                });
+            });
+            
+        </script>
+
+    }
+    
+

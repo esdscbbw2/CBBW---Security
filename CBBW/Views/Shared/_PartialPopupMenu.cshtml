@@ -1,0 +1,61 @@
+﻿<ul class="list-unstyled">
+    <div class="container first">
+        <div class="dropdown-menu  flex-sm-nowrap overflow-auto" aria-labelledby="navbarDropdown" style="width:1200px;height:700px;" id="myUL">
+            <div class="container">
+                <form class="d-flex input-group">
+                    <span class="input-group-text bi bi-search"></span>
+                    <input class="form-control me-2" id="myInput" onkeyup="myFunction()" type="text" placeholder="Search" aria-label="Search">
+                </form>
+            </div>
+            <div class="row container">
+                <a class="dropdown-item text-white text-wrap" href="#">
+                    Rules
+                </a>
+            </div>
+            <div class="row container">
+                <ul class="list-unstyled ">
+                    <li>
+                        @Html.ActionLink("- Tours Rules", "TourRules", "Rules", new { area = "Security" },new { @class="dropdown-item text-white text-wrap"})
+
+                    </li>
+                    <li>
+                        <a class="dropdown-item text-white text-wrap" href="#">
+                            - TA & DA Rules
+                        </a>
+                    </li>
+                    @*<li>
+                    <a class="dropdown-item text-white text-wrap" href="#">
+                        firstItem.MenuName
+                    </a>
+                    <ol>
+                        <li>
+                            <a class="dropdown-item text-white text-wrap" href="#">
+                                secondItem.Title
+                            </a>
+                        </li>
+                    </ol>
+                </li>*@
+                </ul>
+            </div>
+            <div class="row container">
+                <a class="dropdown-item text-white text-wrap" href="#">
+                    Company Transport Vehicle Trip Schedule
+                </a>
+            </div>
+            <div class="row container">
+                <ul class="list-unstyled ">
+                    <li>
+                        <a class="dropdown-item text-white text-wrap" href="#">
+                            - Company Transport Vehicle Trip Schedule – ENTRY
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item text-white text-wrap" href="#">
+                            - Company Transport Vehicle Trip Schedule – APPROVAL
+                        </a>
+                    </li>                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</ul>

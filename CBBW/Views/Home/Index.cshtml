@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div style="padding:20px">
+    <h1>Home Page</h1>
+    <br/>
+    <table style="border:1px solid black" cellpadding="10">
+        <tr>
+            <td style="border:1px solid black">
+                Tours Rules
+            </td>
+            <td style="border:1px solid black">
+                @Html.ActionLink("Rules - Tours Rules", "Index", "TourRule", new { area = "Security" }, null)
+            </td>
+        </tr>
+        <tr>@*  *@
+            <td style="border:1px solid black">
+                TA DA Rules
+            </td>
+            <td style="border:1px solid black">
+                @Html.ActionLink("Rules - TA DA Rules", "Index", "TADARules", new { area = "Security" }, null)
+            </td>
+        </tr>
+    </table>
+</div>

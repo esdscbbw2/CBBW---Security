@@ -1,0 +1,248 @@
+﻿@model CBBW.BOL.TADA.TADAParam
+@{
+    ViewBag.Title = "View TA & DA Parameters";
+}
+<div class="row newTable">
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(m => m.IsLocalConvAllowed)
+        <div class="col-md-12">
+            <div class="fixedElement">
+                <div class="col-md-12" style="position: relative;">
+                    <div class="heading_text_btn mb-4 mt-4">
+                        <div class="leftButton">
+                            <button type="button" name="Submit" value="back" 
+                                    class="btn btn-primary me-2"
+                                    onclick="window.location.href='@Url.Action("ViewRule","TADARules",new { area = "Security",id = Model.ID,isDelete=Model.mDelete })';"
+                                    @*onclick="window.location.href='@Url.Action("CreateRule", "TADARules", new { Area = "Security" })';"*@>
+                                <i data-feather="arrow-left-circle"></i>
+                                Back
+                            </button>
+                            <button type="submit" name="Submit" value="create"
+                                    id="btnSubmit" disabled="disabled"
+                                    class="btn btn-secondary me-2 inVisible">
+                                <i data-feather="upload"></i>
+                                Submit
+                            </button>
+                            <button type="button" onclick="btnClearClicked()"
+                                    class="btn btn-success inVisible">
+                                <i data-feather="x-circle"></i>
+                                Clear
+                            </button>
+                        </div>
+                        <h2>TA & DA - RULES</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+
+            <div class="heading_text_btn2 d-block mb-4">
+                <h2>TA & DA Parameter :</h2>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    @*<form class="form-sample">*@
+                    <div class="row d-flex align-items-center">
+                        <div class="col-md-6 form-group mb-2">
+                            <label>1. DA Per Day Is Actual Spent? <span style="color:red"></span></label>
+                            @Html.DropDownListFor(m => m.IsDAActualSpend,
+                               new[] {
+                                   new SelectListItem { Text = "Yes", Value = "true" },
+                                   new SelectListItem { Text = "No", Value = "false" } }, "-",
+                               htmlAttributes: new
+                                    {
+                                       @class = "form-select isvalidate",
+                                       @onchange = "validatecontrol()"
+                                    })
+                        </div>
+                        <div class="col-md-6 form-group mb-2">
+                            <label>2. Lodging Expenses Allowed <span style="color:red"></span></label>
+                            @Html.DropDownListFor(m => m.IsLodgingAllowed,
+                               new[] {
+                                   new SelectListItem { Text = "Yes", Value = "true" },
+                                   new SelectListItem { Text = "No", Value = "false" } }, "-",
+                               htmlAttributes: new
+                                    {
+                                       @class = "form-select isvalidate ",
+                                       @onchange = "validatecontrol()"
+                                    })
+                        </div>
+
+                    </div>
+                    @*</form>*@
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-12">
+            <div class="table-responsive" style="overflow-x:inherit;">
+
+                <table class="table table-bordered mt-4">
+                    <thead>
+                        <tr>
+                            <th scope="col">Zone Code & Name</th>
+                            <th scope="col">DA Per Day</th>
+                            <th scope="col">Maximum Allowed Lodging Expenses</th>
+                            <th scope="col">Maximum Allowed Local Conveyance Per Day</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>
+                                Metropolitan
+                            </td>
+                            <td>
+                                <span class="d-flex justify-content-start align-items-center infoerror">
+                                    <div class="form-group">
+                                        @*<label  for="Metro_DAPerDay" class="mytooltipDanger">Error</label>*@
+                                        @Html.TextBoxFor(m => m.Metro_DAPerDay,
+                                           htmlAttributes: new
+                                                {
+                                                    @class = "form-control valGroup1 isvalidate ",
+                                               onkeyup = "validatecontrol()"
+                                           })
+                                    </div>
+
+
+                                    @*<button type="button" id="tooltip_Metro_DAPerDay" class="btn btn-outline-danger" data-toggle="tooltip" data-placement="top" >
+                                            <i data-feather="info"></i>
+                                        </button>*@
+                                </span>
+
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.Metro_MaxLodgingExp,
+                                       htmlAttributes: new
+                                            {
+                                                @class = "form-control valGroup2 isvalidate ",
+                                           onkeyup = "validatecontrol()"
+                                       })
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.Metro_MaxLocalConv,
+                                       htmlAttributes: new
+                                            {
+                                                @class = "form-control valGroup3 isvalidate ",
+                                           onkeyup = "validatecontrol()"
+                                       })
+                                </div>
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td>
+                                City
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.City_DAPerDay,
+                                       htmlAttributes: new
+                                            {
+                                                @class = "form-control valGroup1 isvalidate ",
+                                           onkeyup = "validatecontrol()"
+                                       })
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.City_MaxLodgingExp,
+                                       htmlAttributes: new
+                                            {
+                                                @class = "form-control valGroup2 isvalidate ",
+                                           onkeyup = "validatecontrol()"
+                                       })
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.City_MaxLocalConv,
+                                       htmlAttributes: new
+                                            {
+                                                @class = "form-control valGroup3 isvalidate ",
+                                           onkeyup = "validatecontrol()"
+                                       })
+                                </div>
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td>
+                                Town
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.Town_DAPerDay,
+                                       htmlAttributes: new
+                                            {
+                                                @class = "form-control valGroup1 isvalidate ",
+                                           onkeyup = "validatecontrol()"
+                                       })
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.Town_MaxLodgingExp,
+                                       htmlAttributes: new
+                                            {
+                                                @class = "form-control valGroup2 isvalidate ",
+                                           onkeyup = "validatecontrol()"
+                                       })
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.Town_MaxLocalConv,
+                                       htmlAttributes: new
+                                            {
+                                                @class = "form-control valGroup3 isvalidate ",
+                                           onkeyup = "validatecontrol()"
+                                       })
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="bgColor mt-4">
+                <ul style="list-style: none; padding: 0; font-size:28px;">
+                    <li>
+                        Are You Sure The Details Entered Are Correct & As Required?
+                        <select disabled="disabled" id="submitConfirmation" onchange="validatecontrol()" 
+                                class="form-select " aria-label="Default select example">
+                            <option value="0">No</option>
+                            <option selected value="1">Yes</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
+
+
+        </div>
+    }
+</div>
+
+@section headers{
+    <style>
+        .inVisible {
+            display: none;
+        }
+    </style>
+}
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('.isvalidate').each(function () {
+                $(this).attr("disabled", "disabled");
+            });
+        });
+    </script>
+}
+

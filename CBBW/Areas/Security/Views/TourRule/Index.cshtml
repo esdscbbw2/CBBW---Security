@@ -1,0 +1,126 @@
+﻿@using CBBW.BOL.Tour;
+@model IEnumerable<TourRule>
+@{
+    ViewBag.Title = "Tour Rules";
+    Layout = "~/Areas/Security/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="row newTable">
+    <div class="col-md-12">
+        
+
+
+        <div class="heading_text_btn mb-3 mt-4">
+            <div class="leftButton">
+                <button type="submit" class="btn btn-primary"
+                        onclick="window.location.href = '@Url.Action("CreateRule","TourRule",new {area ="security" })';">
+                    <i data-feather="plus-circle"></i>
+                    Add
+                </button>
+            </div>
+            <h2>Tour - RULES</h2>
+
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="table-responsive">
+
+            <table id="tblRules" class="table table-bordered btnalign mt-4">
+                <thead>
+                    <tr>
+                        <th scope="col">SL.No</th>
+                        <th scope="col">Entry Date</th>
+                        <th scope="col">Effective From Date</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+
+                <thead>
+                    <tr>
+                        <th scope="col">&nbsp;</th>
+                        <th scope="col">
+                            <div class="form-group">
+                                <input id="filterentrDate" type="text" class="form-control" placeholder="Search...">
+                            </div>
+                        </th>
+                        <th scope="col">
+                            <div class="form-group">
+                                <input id="filterEffDate" type="text" class="form-control" placeholder="Search...">
+                            </div>
+                        </th>
+                        <th scope="col">&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <th scope="row">@item.SL</th>
+                                <td>@item.EntryDate.ToString("dd-MM-yyyy")</td>
+                                <td>@item.EffectiveDate.ToString("dd-MM-yyyy")</td>
+                                <td>
+                                    <span class="actionBtn">
+                                        <button type="button" class="btn primaryLink" data-toggle="tooltip"
+                                                data-placement="top" title="Details" onclick="window.location.href='@Url.Action("ViewRule", "TourRule", new { Area = "Security" ,id=item.ID ,isDelete=false})'">
+                                            <i data-feather="eye"></i>
+                                        </button>
+
+                                        @*<button type="button" class="btn secondaryLink" data-toggle="tooltip"
+                data-placement="top" title="Delete"
+                onclick="window.location.href='@Url.Action("DeleteRule", "TourRule", new { Area = "Security",id=item.ID })';">
+            <i data-feather="trash-2"></i>
+        </button>*@
+                                        @if (!item.IsApplied)
+                                        {
+
+                                            <button type="button" class="btn secondaryLink" data-toggle="tooltip"
+                                                    data-placement="top" title="Delete" onclick="window.location.href='@Url.Action("ViewRule", "TourRule", new { Area = "Security", id = item.ID, isDelete = true })'">
+                                                <i data-feather="trash-2"></i>
+                                            </button>
+
+
+                                        }
+
+
+
+
+
+
+
+
+                                        </span>
+                                </td>
+                            </tr>
+
+                        }
+                    }
+
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+</div>
+<script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+       var tbl = $('#tblRules').DataTable();
+        var filter1 = $('#filterentrDate');
+       
+        var filter2 = $('#filterEffDate');
+        filter1.on('keyup change', function () {
+            tbl.columns(1).search(this.value).draw();
+
+        });
+        filter2.on('keyup change', function () {
+            tbl.columns(2).search(this.value).draw();
+
+        });
+        
+    });
+</script>

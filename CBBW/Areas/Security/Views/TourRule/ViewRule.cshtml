@@ -1,0 +1,512 @@
+﻿@model CBBW.BOL.Tour.TourRuleDetails
+
+@{
+    ViewBag.Title = "ViewRule";
+    
+}
+
+<div class="row newTable">
+    @using (Html.BeginForm("DeleteRule", "TourRule", new { Area = "Security", id = Model.ID }))
+    {
+    @Html.HiddenFor(m => m.ID)
+
+    <div class="fixedElement">
+
+        <div class="col-md-12" style="position: relative;">
+
+            <div class="heading_text_btn mb-4 mt-4">
+                <div class="leftButton">
+                    <button type="button" class="btn btn-primary me-2"
+                            onclick="window.location.href='@Url.Action("Index", "TourRule" , new { Area="Security" })';">
+                        <i data-feather="arrow-left-circle"></i>
+                        Back
+                    </button>
+
+                   
+                    <button id="deleteBtn" type="button" name="Submit" value="Delete"
+                            class="btn btn-primary me-2">
+                        <i data-feather="trash-2"></i>
+                        Delete
+                    </button>
+
+
+
+                    
+
+                </div>
+                <h2>Tour - RULES</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="form-sample form-inline row ms-auto ">
+
+                    <div class="row d-flex align-items-center mb-3">
+                        <div class="col-form-label col-md-2">
+                            <label>Effective From Date </label>
+                        </div>
+                        <div class="col-md-4">
+
+                            @Html.EditorFor(m => m.EffectiveDate, "{0:dd-MMM-yyyy}", new
+                            {
+
+                            htmlAttributes = new
+                            {
+                            @readonly = "readonly",
+                            onchange = "validatecontrol()",
+                            @class = "form-control datepicker1 isvalidate",
+                            value = Model.EffectiveDate.ToShortDateString()
+
+                            }
+                            })
+
+                        </div>
+
+                    </div>
+                    <div class="row d-flex align-items-center mb-3">
+                        <div class="col-form-label col-md-2">
+                            <label>Entry Date :</label>
+                        </div>
+                        <div class="col-md-4">
+
+                            @Html.HiddenFor(m => m.EntryDate)
+                            @Html.TextBoxFor(m => m.EntryDate, "{0:dd-MMM-yyyy}", htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                        </div>
+                        <div class="col-form-label col-md-2">
+                            <label>Time : </label>
+                        </div>
+
+                        <div class="col-md-4">
+
+                            @Html.HiddenFor(m => m.EntryTime)
+                            @Html.TextBoxFor(m => m.EntryTime, "{0:hh-mm-ss}", htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                        </div>
+                      
+                    </div>
+                    <div class="row d-flex align-items-center">
+                        <div class="col-form-label col-md-2">
+                            <label>Service Type :</label>
+                        </div>
+                        <div class="col-md-6">
+
+                            @Html.ListBoxFor(m => m.SelectedServiceTypeIds, new MultiSelectList(Model.ServiceTypes, "ID", "DisplayText", Model.SelectedServiceTypeIds),
+
+                            htmlAttributes: new
+                            {
+                            @multiple = "multiple",
+                            @class = "form-select example-getting-started is-valid"
+
+                            })
+
+
+                        </div>
+                    </div>
+
+                    </div>
+                </div>
+            </div>
+
+    </div>
+
+    <div class="col-12">
+        <div class="bgColor wid-100 mb-4">
+            <ul>
+                <li>
+                    An Employee Scheduled For Tour And He Attended Late Or Returned Late From Tour. The
+                    Following Are The Rules.
+                    <ol style="list-style-type: lower-latin;">
+                        <li>
+                            Mark Half Day Absent & Deduct Half Day DA If Employee Was Late By Public Transport
+                            For More Than
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.PublicTranDelay_HalfDA,
+                                htmlAttributes: new
+                                {
+                                @class = "form-control isvalidate",
+                                @placeholder = "Minutes",
+                                onkeyup = "validatecontrol()"
+                                })
+                            </div>Minutes
+                            And By Vehicle Both (4 & 2 Wheeler)
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.OtherTranDelay_HalfDA,
+                                htmlAttributes: new
+                                {
+                                @class = "form-control isvalidate ",
+                                @placeholder = "Minutes",
+                                onkeyup = "validatecontrol()"
+                                })
+                            </div> Minutes
+                        </li>
+
+                        <li>
+                            Mark Full Day Absent & Deduct Full Day DA If Employee Was Late By Public Transport
+                            For More Than <div class="form-group">
+                                @Html.TextBoxFor(m => m.PublicTranDelay_FullDA,
+                                htmlAttributes: new
+                                {
+                                @class = "form-control isvalidate",
+                                @placeholder = "Minutes",
+                                onkeyup = "validatecontrol()"
+                                })
+                            </div> Minutes
+                            And By Vehicle Both (4 & 2 Wheeler)
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.OtherTranDelay_FullDA,
+                                htmlAttributes: new
+                                {
+                                @class = "form-control isvalidate",
+                                @placeholder = "Minutes",
+                                onkeyup = "validatecontrol()"
+                                })
+                            </div> Minutes
+                        </li>
+                    </ol>
+                </li>
+
+                <li>
+                    Night Stay Punches Required During Continues Tour At Same Location. This Condition Is Only
+                    For “Driver” As Mentioned
+                    In “ENTRY – I”. And The Following Are The Rules.
+                    <ol style="list-style-type: lower-latin;">
+                        <li>
+                            Mark Half Day Absent & Deduct Half Day DA If ‘Night Stay Late Night Punch’ Required
+                            But Not Done Between The Time:
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.NightPunch_From,
+                                htmlAttributes: new
+                                {
+                                @class = "form-control isvalidate",
+                                @placeholder = "",
+                                //onkeyup = "validatecontrol()"
+                                })
+
+                            </div> To:
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.NightPunch_To,
+                                htmlAttributes: new
+                                {
+                                @class = "form-control isvalidate",
+                                @placeholder = "",
+                                // onkeyup = "validatecontrol()"
+                                })
+                            </div>
+                        </li>
+                        <li>
+                            Mark Half Day Absent & Deduct Half Day DA If ‘Night Stay Early Morning Punch’
+                            Required But Not Done Between The Time:
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.EarlyMorningPunch_From,
+                                htmlAttributes: new
+                                {
+                                @class = "form-control isvalidate",
+                                @placeholder = "",
+                                // onkeyup = "validatecontrol()"
+                                })
+                            </div> To: <div class="form-group">
+                                @Html.TextBoxFor(m => m.EarlyMorningPunch_To,
+                                htmlAttributes: new
+                                {
+                                @class = "form-control isvalidate",
+                                @placeholder = "",
+                                //   onkeyup = "validatecontrol()"
+                                })
+                            </div>
+                        </li>
+                    </ol>
+                </li>
+
+                <li>
+                    When An Employee Tour Scheduled For A Location & Continuing At The Same Location Then That
+                    Day “Actual Tour IN Time”
+                    Should Be As Follows:
+                    @Html.DropDownListFor(m => m.ReadRule1,
+                    new[] {
+                    new SelectListItem { Text = "Yes", Value = "true" },
+                    new SelectListItem { Text = "No", Value = "false" } }, "-",
+                    htmlAttributes: new
+                    {
+                    @class = "form-select isvalidate",
+                    @onchange = "validatecontrol()"
+                    })
+                    @*<select id="readrule" class="form-select" aria-label="Default select example">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+
+                    </select>*@
+                    <ol style="list-style-type: lower-latin;">
+                        <li>
+                            Mark Half Day Absent & Deduct Half Day DA If “Actual Tour IN Time” Is Not Equal /
+                            Earlier / Not Found To ‘Required Time
+                            IN’
+                            But Within 1st Session Time Of The Tour Location (For Center Visit, Branch & Center
+                            Visit).
+                        </li>
+                        <li>
+                            Mark Full Day Absent & Deduct Full Day DA If “Actual Tour IN Time” Is Not Equal /
+                            Earlier / Not Found To ‘Required Time
+                            IN’
+                            But Within 2nd Session Time Of The Tour Location (For Center Visit, Branch & Center
+                            Visit)
+                        </li>
+                        <li>
+                            Mark Half Day Absent & Deduct Half Day DA If “Actual Tour IN Time” Is Not Equal /
+                            Earlier / Not Found To ‘Required Time
+                            IN’
+                            But Within 1st Session Time Of The “Main Location” (For Other Place).
+                        </li>
+                        <li>
+                            Mark Full Day Absent & Deduct Full Day DA If “Actual Tour IN Time” Is Not Equal /
+                            Earlier / Not Found To ‘Required Time
+                            IN’
+                            But Within 2nd Session Time Of The “Main Location” (For Other Place).
+                        </li>
+
+                    </ol>
+                </li>
+
+
+                <li>
+                    When An Employee Tour Scheduled For A Location & Continuing At The Same Location Then That
+                    Day “Actual Tour OUT Time”
+                    Should Be As Follows:
+                    @Html.DropDownListFor(m => m.ReadRule2,
+                    new[] {
+                    new SelectListItem { Text = "Yes", Value = "true" },
+                    new SelectListItem { Text = "No", Value = "false" } }, "-",
+                    htmlAttributes: new
+                    {
+                    @class = "form-select isvalidate",
+                    @onchange = "validatecontrol()"
+                    })
+                    @*<select id="b" class="form-select" aria-label="Default select example">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+
+                    </select>*@
+                    <ol style="list-style-type: lower-latin;">
+                        <li>
+                            Mark Half Day Absent & Deduct Half Day DA If “Actual Tour OUT Time” Is Within 2nd
+                            Session Time Of The Tour Location (For
+                            Center Visit, Branch & Center Visit).
+                        </li>
+                        <li>
+                            Mark Full Day Absent & Deduct Full Day DA If “Actual Tour OUT Time” Is Within 1st
+                            Session Time Of The Tour Location (For
+                            Center Visit, Branch & Center Visit).
+                        </li>
+                        <li>
+                            Mark Half Day Absent & Deduct Half Day DA If “Actual Tour OUT Time” Is Within 2nd
+                            Session Time Of The “Main Location”
+                            (For Other Place).
+                        </li>
+                        <li>
+                            Mark Full Day Absent & Deduct Full Day DA If “Actual Tour OUT Time” Is Within 1st
+                            Session Time Of The “Main Location”
+                            (For Other Place).
+                        </li>
+                        <li>Mark Full Day Absent & Deduct Full Day DA If “Actual Tour OUT Time” Not Found.</li>
+                    </ol>
+                </li>
+
+
+                <li>
+                    When “Main Location” Time IN is with in office hours then the person should be present till
+                    completion of Second
+                    Session. Other Wise Rule Is As Follows:
+                    @Html.DropDownListFor(m => m.ReadRule3,
+                    new[] {
+                    new SelectListItem { Text = "No", Value = "false" },
+                    new SelectListItem { Text = "Yes", Value = "true" }
+                    }, "-",
+                    htmlAttributes: new
+                    {
+                    @class = "form-select isvalidate",
+                    @onchange = "validatecontrol()"
+                    })
+                    @*<select id="MainLocation" class="form-select"
+                              aria-label="Default select example">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+
+                    </select>*@
+                    <ol style="list-style-type: lower-latin;">
+                        <li>Mark Half Day Absent If Last Punch Found Within 2nd Session Time.</li>
+                        <li>Mark Full Day Absent If Last Punch Found Within 1st Session Time.</li>
+                    </ol>
+                </li>
+
+
+                <li>
+                    An Employee Is Allowed To Go On Tour, For A Maximum Number Of Days:
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.MaxDayAllowed,
+                        htmlAttributes: new
+                        {
+                        @class = "form-control isvalidate",
+                        @placeholder = "Days",
+                        onkeyup = "validatecontrol()"
+                        })
+                    </div>
+                </li>
+
+                <li>
+                    Company Or Other Vehicles (4 & 2 Wheel), Maximum Travel Time Is
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.MaxTraveltime_ComVeh_50km,
+                        htmlAttributes: new
+                        {
+                        @class = "form-control isvalidate",
+                        @placeholder = "Minutes",
+                        onkeyup = "validatecontrol()"
+                        })
+                    </div> Minutes For Covering A
+                    Distance Of 50 KM.
+                </li>
+
+                <li>
+                    Public Transport, Maximum Travel Time Is
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.MaxTraveltime_PubTran_50km,
+                        htmlAttributes: new
+                        {
+                        @class = "form-control isvalidate",
+                        @placeholder = "Minutes",
+                        onkeyup = "validatecontrol()"
+                        })
+                    </div>Minutes For Covering A Distance Of 50 KM.
+                </li>
+
+                <li>
+                    For Visiting Place More Then 200 km
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.GracePeriod_200km,
+                        htmlAttributes: new
+                        {
+                        @class = "form-control isvalidate",
+                        @placeholder = "Minutes",
+                        onkeyup = "validatecontrol()"
+                        })
+                    </div> Minutes Grace Period Allowed:
+                    @Html.DropDownListFor(m => m.ReadRule5,
+                    new[] {
+                    new SelectListItem { Text = "Yes", Value = "true" },
+                    new SelectListItem { Text = "No", Value = "false" } }, "-",
+                    htmlAttributes: new
+                    {
+                    @class = "form-select isvalidate",
+                    @onchange = "validatecontrol()"
+                    })
+                    @*<select class="form-select"
+                              aria-label="Default select example">
+                        <option selected="">-</option>
+                        <option value="1">Yes</option>
+                        <option value="2">No</option>
+                    </select>*@
+                </li>
+                <li>
+                    Leave In Charge Employee Not Allowed To Go On Tour:
+                    @Html.DropDownListFor(m => m.ReadRule4,
+                    new[] {
+                    new SelectListItem { Text = "No", Value = "false" },
+                    new SelectListItem { Text = "Yes", Value = "true" }
+                    }, "-",
+                    htmlAttributes: new
+                    {
+                    @class = "form-select isvalidate",
+                    @onchange = "validatecontrol()"
+                    })
+                    @*<select class="form-select"
+                              aria-label="Default select example">
+                        <option selected="">-</option>
+                        <option value="1">Yes</option>
+                        <option value="2">No</option>
+                    </select>*@
+                </li>
+            </ul>
+
+
+        </div>
+
+    </div>
+
+
+    }
+
+</div>
+<script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
+<script src="~/UIContent/JS/jquery.validate.min.js"></script>
+<script src="~/UIContent/JS/jquery.validate.unobtrusive.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        //
+        $(".isvalidate").each(function () {
+            $(this).attr("disabled", "disabled");
+        });
+        $("#SelectedServiceTypeIds").attr("disabled", "disabled");
+
+    });
+
+</script>
+
+
+
+
+
+<script>
+    $(window).scroll(function (e) {
+        var $el = $('.fixedElement');
+        var isPositionFixed = ($el.css('position') == 'fixed');
+        if ($(this).scrollTop() > 200 && !isPositionFixed) {
+            $el.css({ 'position': 'sticky', 'top': '0px' });
+        }
+        if ($(this).scrollTop() < 200 && isPositionFixed) {
+            $el.css({ 'position': 'static', 'top': '0px' });
+        }
+    });
+</script>
+
+
+<script>
+    $(document).ready(() => {
+        var btndel = $('#deleteBtn');
+        if ('@ViewBag.IsDelete' == 'True') {
+            btndel.removeClass("inVisible");
+        } else {
+            btndel.addClass("inVisible");
+        }
+        $('#deleteBtn').click(function () {
+            Swal.fire({
+                title: 'Delete Confirmation',
+                text: "Are You Sure Want to Delete This?",
+                icon: 'question',
+                customClass: 'swal-wide',
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                cancelButtonClass: 'btn-cancel',
+                confirmButtonColor: '#2527a2',
+                showCancelButton: true,
+            }).then(callback);
+            function callback(result) {
+                if (result.value) {
+                    var mid = $('#ID').val();
+                    var url = "/Security/TourRule/DeleteRule/" + mid;
+                    window.location.href = url;
+                } else {
+                    // second variant
+                }
+            }
+        });
+
+    });
+</script>
+@section headers{
+<style>
+    .inVisible {
+        display: none;
+    }
+</style>
+}
