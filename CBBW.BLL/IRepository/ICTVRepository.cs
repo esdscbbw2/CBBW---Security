@@ -11,5 +11,6 @@ namespace CBBW.BLL.IRepository
     {
         string getNewTripScheduleNo(string SchPattern, ref string pMsg);
         TripScheduleHdr NewTripScheduleNo(string SchPattern, ref string pMsg);
+
     }
 }
