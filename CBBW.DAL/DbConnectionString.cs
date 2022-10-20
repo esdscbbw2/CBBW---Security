@@ -30,7 +30,7 @@ namespace CBBW.DAL
                 case "PRODUCTION":
                     return "";
                 default:
-                    return "Data Source=CBBW_MIGRATION;Initial Catalog=CBBW;Persist Security Info=True;User ID=dbcbbw;Password=ESDS@1234#";
+                    return "Data Source=CBBW_MIGRATION;Initial Catalog=CBBW;Persist Security Info=True;User ID=db_cbbw;Password=ESDS@4321#";
             }
             
         }

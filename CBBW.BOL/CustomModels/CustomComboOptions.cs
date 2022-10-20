@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace CBBW.BOL.CustomModels
 {
-    public class CustomCheckBoxOption : CustomComboOptions
-    {        
-        public bool IsSelected { get; set; }
+    public class CustomComboOptions
+    {
+        public int ID { get; set; }
+        public string DisplayText { get; set; }
     }
 }

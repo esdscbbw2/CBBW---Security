@@ -13,11 +13,10 @@ namespace CBBW.DAL.DataSync
         public DataTable getNewCTVNoteNo(string CTVPattern, ref string pMsg)
         {
             try
-            {
-                
+            {                
                 int paracount = 0;
                 SqlParameter[] para = new SqlParameter[1];
-                para[paracount] = new SqlParameter("@NoteNoPattern", SqlDbType.Date);
+                para[paracount] = new SqlParameter("@NoteNoPattern", SqlDbType.NChar,20);
                 para[paracount++].Value = CTVPattern;
                 
                 using (SQLHelper sql = new SQLHelper("[CTV].[NewVehicleTripSchedule]", CommandType.StoredProcedure))
@@ -27,5 +26,33 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+        public DataTable getVehicleInfo(string VehicleNo, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[1];
+                para[paracount] = new SqlParameter("@VehicleNumber", SqlDbType.VarChar,20);
+                para[paracount++].Value = VehicleNo;
+
+                using (SQLHelper sql = new SQLHelper("[CTV].[getVehicleValData]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable getLCVMCVVehicles(ref string pMsg) 
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("select * from [CTV].[getListofVehicles]()", CommandType.Text))
+                {
+                    return sql.GetDataTable();
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        
     }
 }

@@ -10,7 +10,7 @@ using CBBW.BOL.TADA;
 using CBBW.DAL.Entities;
 
 namespace CBBW.BLL.Repository
-{    
+{   
     public class TADARulesRepository : ITADARulesRepository
     {
         TADAEntities _tadaEntities;
@@ -41,7 +41,11 @@ namespace CBBW.BLL.Repository
             if (result.Categories != null && result.Categories.Count > 0)
             {
                 result.SelectedCategoryIds = result.Categories.Where(o => o.IsSelected == true).Select(o => o.ID).ToList();
-            }            
+            }
+            else 
+            {
+                result.SelectedCategoryIds = new List<int>();
+            }
             return result;
         }
 
