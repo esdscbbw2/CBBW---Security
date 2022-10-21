@@ -17,7 +17,7 @@ namespace CBBW.DAL.Entities
         DataSet ds = null;
         CTVDataSync _datasync;
         CTVDBMapper _CTVDBMapper;
-        //DBResponseMapper _DBResponseMapper;
+        DBResponseMapper _DBResponseMapper;
         public CTVEntities()
         {
             _datasync = new CTVDataSync();
@@ -53,9 +53,9 @@ namespace CBBW.DAL.Entities
             catch { }
             return result;
         }
-        public List<string> getLCVMCVVehicleList(ref string pMsg)
+        public List<VehicleNo> getLCVMCVVehicleList(ref string pMsg)
         {
-            List<string> result = new List<string>();
+            List<VehicleNo> result = new List<VehicleNo>();
             try
             {
                 dt = _datasync.getLCVMCVVehicles(ref pMsg);
@@ -63,14 +63,38 @@ namespace CBBW.DAL.Entities
                 {
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
-                        if (!DBNull.Value.Equals(dt.Rows[i]["VehicleNumber"]))
-                            result.Add(dt.Rows[i]["VehicleNumber"].ToString());
+                        VehicleNo x = new VehicleNo();
+                        if (!DBNull.Value.Equals(dt.Rows[i]["VehicleNumber"])) 
+                        {
+                            x.VehicleNumber = dt.Rows[i]["VehicleNumber"].ToString();
+                            //x.VehicleID = dt.Rows[i]["VehicleNumber"].ToString();
+                        }                            
+                        result.Add(x);
                     }
                 }
             }
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
-        
+        public UserInfo getLogInUserInfo(string UserName, ref string pMsg) 
+        {
+            UserInfo result = new UserInfo();
+            try
+            {
+                dt = _datasync.getUserInfo(UserName,ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    result = _CTVDBMapper.Map_UserInfo(dt.Rows[0]);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
+        public bool CreateCTVHdr(TripScheduleHdr model, ref string pMsg)
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_datasync.setCTVHeader(model, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
     }
 }

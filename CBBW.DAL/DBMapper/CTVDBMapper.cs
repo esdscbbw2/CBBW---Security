@@ -36,6 +36,29 @@ namespace CBBW.DAL.DBMapper
                     if (!DBNull.Value.Equals(dr["Msg"]))
                         result.Msg = dr["Msg"].ToString();
                     result.IsActive = result.VehicleStatus == "ACTIVE" ? true : false;
+                    result.DriverNonName = result.DriverNo + "/" + result.DriverName;
+                }
+            }
+            catch { }
+            return result;
+        }
+        public UserInfo Map_UserInfo(DataRow dr) 
+        {
+            UserInfo result = new UserInfo();
+            try
+            {
+                if (dr != null)
+                {
+                    if (!DBNull.Value.Equals(dr["CentreCode"]))
+                        result.CentreCode = int.Parse(dr["CentreCode"].ToString());
+                    if (!DBNull.Value.Equals(dr["CentreName"]))
+                        result.CentreName = dr["CentreName"].ToString();
+                    if (!DBNull.Value.Equals(dr["EmployeeNumber"]))
+                        result.EmployeeNumber =int.Parse(dr["EmployeeNumber"].ToString());
+                    if (!DBNull.Value.Equals(dr["EmployeeName"]))
+                        result.EmployeeName = dr["EmployeeName"].ToString();
+                    if (!DBNull.Value.Equals(dr["UserName"]))
+                        result.UserName = dr["UserName"].ToString();
                 }
             }
             catch { }

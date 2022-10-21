@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CBBW.BLL.IRepository;
 using CBBW.BOL.CTV;
+using CBBW.BOL.CustomModels;
 using CBBW.DAL.Entities;
 
 namespace CBBW.BLL.Repository
@@ -12,33 +13,71 @@ namespace CBBW.BLL.Repository
     public class CTVRepository : ICTVRepository
     {
         CTVEntities _CTVEntities;
+        MasterEntities _MasterEntities;
         public CTVRepository()
         {
             _CTVEntities = new CTVEntities();
+            _MasterEntities = new MasterEntities();
+        }
+
+        public bool CreateNewCTVHdr(TripScheduleHdr model, ref string pMsg)
+        {
+            return _CTVEntities.CreateCTVHdr(model, ref pMsg);
+        }
+
+        public List<VehicleNo> getLCVMCVVehicleList(ref string pMsg)
+        {
+            return _CTVEntities.getLCVMCVVehicleList(ref pMsg);
+        }
+
+        public IEnumerable<CustomComboOptions> getLocationsFromType(int LocationTypeID, ref string pMsg)
+        {
+           return _MasterEntities.getLocationsFromType(LocationTypeID, ref pMsg);
+        }
+        public IEnumerable<CustomComboOptions> getLocationTypes(ref string pMsg)
+        {
+           return _MasterEntities.getLocationTypes(ref pMsg);
         }
         public string getNewTripScheduleNo(string SchPattern, ref string pMsg)
         {
            return _CTVEntities.getNewCTVNoteNo(SchPattern, ref pMsg);
         }
 
+        public UserInfo getUserInfo(string UserName, ref string pMsg)
+        {
+            return _CTVEntities.getLogInUserInfo(UserName, ref pMsg);
+        }
+
+        public VehicleInfo getVehicleInfo(string VehicleNo, ref string pMsg)
+        {
+           return _CTVEntities.getVehicleInfo(VehicleNo, ref pMsg);
+        }
+
         public TripScheduleHdr NewTripScheduleNo(string SchPattern, ref string pMsg)
         {
             TripScheduleHdr result = new TripScheduleHdr();
-            result.NoteNo = _CTVEntities.getNewCTVNoteNo(SchPattern, ref pMsg);
-            result.EntryDate = DateTime.Today;
-            result.EntryTime = DateTime.Now.ToString("hh:mm:ss tt");
-            result.FortheMonth = DateTime.Today.Month;
-            result.FortheYear= DateTime.Today.Year;
-            if (DateTime.Today.Day <= 15)
-            {
-                result.FromDate = new DateTime(result.FortheYear, result.FortheMonth, 1);
-                result.ToDate= new DateTime(result.FortheYear, result.FortheMonth, 15);
+            try
+            {                
+                result.NoteNo = _CTVEntities.getNewCTVNoteNo(SchPattern, ref pMsg);
+                result.EntryDate = DateTime.Today;
+                result.EntryTime = DateTime.Now.ToString("hh:mm:ss tt");
+                result.FortheMonth = DateTime.Today.Month;
+                result.FortheYear = DateTime.Today.Year;
+                result.FortheMonthnYear = DateTime.Today.ToString("MMM yyyy");
+                result.CentreCodenName = result.CenterCode + "/" + result.CenterName;
+                if (DateTime.Today.Day <= 15)
+                {
+                    result.FromDate = new DateTime(result.FortheYear, result.FortheMonth, 1);
+                    result.ToDate = new DateTime(result.FortheYear, result.FortheMonth, 15);
+                }
+                else
+                {
+                    result.FromDate = new DateTime(result.FortheYear, result.FortheMonth, 16);
+                    result.ToDate = new DateTime(result.FortheYear, result.FortheMonth, 1).AddMonths(1).AddDays(-1);
+                }
+                result.ListofVehicles = _CTVEntities.getLCVMCVVehicleList(ref pMsg);
             }
-            else 
-            {
-                result.FromDate = new DateTime(result.FortheYear, result.FortheMonth, 16);
-                result.ToDate = new DateTime(result.FortheYear, result.FortheMonth, 1).AddMonths(1).AddDays(-1);
-            }
+            catch { }
             return result;
         }
     }

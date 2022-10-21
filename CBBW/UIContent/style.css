@@ -25,8 +25,7 @@ strong.listingIcon {
 }
 
 .newTable .table>thead {
-    /* background: #4158c7; */
-    background: #4158c7;
+    background: #2527a2;
     color: #FFF;
 }
 
@@ -46,17 +45,18 @@ strong.listingIcon {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #fff;
-    color: #000;
+    background: #5052b4;
+    color: #FFF;
+    padding: 10px;
     position: relative;
 }
 
 .heading_text_btn2 h2 {
-    font-size: 17px;
+    font-size: 20px;
     margin: 0;
     padding: 0;
     display: block;
-    text-align: left;
+    text-align: center;
 }
 
 .heading_text_btn3 {
@@ -81,8 +81,7 @@ strong.listingIcon {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* background: #4158c7; */
-    background-image: linear-gradient(0deg, #522db8 0%, #1c7ce0 100%);
+    background: #2527a2;
     color: #FFF;
     padding: 15px 15px;
     position: relative;
@@ -94,7 +93,7 @@ strong.listingIcon {
 }
 
 .heading_text_btn h2 {
-    font-size: 20px;
+    font-size: 22px;
     margin: 0;
     padding: 0;
     display: block;
@@ -171,14 +170,14 @@ strong.listingIcon {
 
 .btn-primary {
     color: #FFF;
-    background-color: #4158c7;
-    border-color: #4158c7;
+    background-color: #2527a2;
+    border-color: #2527a2;
 }
 
 .btn-primary:hover {
-    color: #000000;
-    background-color: #e7f1ff;
-    border-color: #e7f1ff;
+    color: #fff;
+    background-color: #de1644;
+    border-color: #de1644;
 }
 
 .btn-secondary {
@@ -189,8 +188,8 @@ strong.listingIcon {
 
 .btn-secondary:hover {
     color: #fff;
-    background-color: #4158c7;
-    border-color: #4158c7;
+    background-color: #2527a2;
+    border-color: #2527a2;
 }
 
 .marginTop {
@@ -213,9 +212,9 @@ strong.listingIcon {
 }
 
 .actionBtn .btn.primaryLink {
-    color: #4158c7;
+    color: #2527a2;
     text-decoration: none;
-    border: solid 1px #4158c7;
+    border: solid 1px #2527a2;
     border-radius: 5px;
     padding: 1px 5px;
     background: transparent;
@@ -224,8 +223,8 @@ strong.listingIcon {
 .actionBtn .btn.primaryLink:hover {
     color: #FFF;
     text-decoration: none;
-    border: solid 1px #4158c7;
-    background: #4158c7;
+    border: solid 1px #2527a2;
+    background: #2527a2;
 }
 
 .actionBtn .btn.secondaryLink {
@@ -268,16 +267,16 @@ table.dataTable th {
 
 
 /* .actionBtn .btn-outline-primary {
-    color: #4158c7;
+    color: #2527a2;
     background-color: #FFF;
-    border-color: #4158c7;
+    border-color: #2527a2;
 
 }
 
 .actionBtn .btn-outline-primary:hover {
     color: #FFF;
-    background-color: #4158c7;
-    border-color: #4158c7;
+    background-color: #2527a2;
+    border-color: #2527a2;
 }
 
 .actionBtn .btn-outline-secondary {
@@ -295,18 +294,16 @@ table.dataTable th {
 .bgColor {
     border: dotted 1px #d3d3ec;
     padding: 15px;
-    background: #e7f1ff;
-    /* background: #e7f1ff; */
+    /* background: #e9e9f5; */
+    background: #f0f0fa;
 }
 
 .bgColor ul {
-    list-style: none;
-    padding-left: 0;
-    margin-bottom: 0;
+    list-style: auto;
 }
 
 .bgColor ul li {
-    font-weight: 600;
+    font-weight: 700;
     font-size: 14px;
     margin: 10px 0;
 }
@@ -319,12 +316,12 @@ table.dataTable th {
 
 .fontSizeform {
     font-size: 16px;
-    color: #4158c7;
+    color: #2527a2;
 }
 
 .bgColor ul li strong,
 .bgColor ol li strong {
-    color: #4158c7;
+    color: #2527a2;
     font-size: 18px;
     background: #FFF;
     border-radius: 5px;
@@ -354,8 +351,8 @@ table.dataTable th {
 .page-item.active .page-link {
     z-index: 3;
     color: #fff;
-    background-color: #4158c7;
-    border-color: #4158c7;
+    background-color: #2527a2;
+    border-color: #2527a2;
 }
 
 .table>:not(:last-child)>:last-child>* {
@@ -425,7 +422,7 @@ div.dataTables_wrapper div.dataTables_info {
 }
 
 .LogoutBtn {
-    background: #4158c7;
+    background: #2527a2;
     color: #FFF;
     padding: 5px 10px;
     border-radius: 5px;
@@ -434,7 +431,7 @@ div.dataTables_wrapper div.dataTables_info {
 
 .LogoutBtn:hover {
     background: #FFF;
-    color: #4158c7 !important;
+    color: #de1644 !important;
 }
 
 .form-select {
@@ -708,8 +705,8 @@ div.dataTables_wrapper div.dataTables_paginate {
 
 .paging_input .paginate_button:hover {
     color: #fff;
-    background: #4158c7;
-    border: solid 1px #4158c7;
+    background: #2527a2;
+    border: solid 1px #2527a2;
 }
 
 .paging_input input.paginate_input {
@@ -808,7 +805,7 @@ strong {
     width: 100%;
     content: '';
     /* background: #f2f2ff; */
-    background: #4158c7;
+    background: #2527a2;
     height: 170px;
     border-radius: 5px;
 }
@@ -1114,7 +1111,7 @@ strong {
 }
 
 .copyright-text {
-    border-top: 1px solid #4158c752;
+    border-top: 1px solid #2527a252;
     padding-top: 10px;
     margin-top: 2rem;
 }
@@ -1125,68 +1122,6 @@ strong {
     transform: translate(-50%, -46%);
     top: 50%;
     width: 100%;
-}
-
-.btn-white {
-    color: #0069d9;
-    background-color: #FFF;
-    border-color: #0069d9
-}
-
-.btn-white:hover {
-    background-color: #ebebeb;
-    color: #0069d9;
-}
-
-.w-5 {
-    width: 5% !important;
-}
-
-.w-10 {
-    width: 10% !important;
-}
-
-.accordion-item {
-    margin-bottom: 20px;
-}
-
-.accordion-item:not(:first-of-type) {
-    border: 1px solid rgba(0, 0, 0, .125);
-}
-
-.accordion-button:focus {
-    box-shadow: none;
-    border: none;
-}
-
-.accordion-button:not(.collapsed) {
-    color: #ffffff;
-    background-color: #4158c7;
-    box-shadow: none;
-}
-
-.accordion-button {
-    padding: 0.8rem 1.25rem;
-}
-
-.accordion-button:hover {
-    color: #000000;
-    background-color: #e7f1ff;
-    box-shadow: none;
-}
-
-.accordion-button:hover:not(.collapsed)::after {
-    background-image: url("img/down-arrow-dark.png");
-}
-
-.accordion-item {
-    background-color: #fff;
-    border: 1px solid rgb(206 221 243);
-}
-
-.accordion-button:not(.collapsed)::after {
-    background-image: url("img/down-arrow.png");
-    transform: rotate(-0deg);
 }
 
 @media (max-width:1920px) {
@@ -1222,49 +1157,4 @@ strong {
     .footer-bottom {
         padding-top: 2rem;
     }
-}
-
-
-/*  login V2 Style */
-
-.login-bg-img {
-    background-image: url("img/beediworkers.webp");
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
-    background-position: center;
-}
-
-.login-bg-img::before {
-    content: "";
-    background-color: #000000c9;
-    height: 100%;
-    width: 100%;
-    position: absolute;
-}
-
-.border-grey {
-    border-top: 1px solid #ffffff52;
-}
-
-.rightButton {
-    position: absolute;
-    right: 10px;
-}
-
-.remarkDiv {
-    height: 65px;
-    overflow-y: auto;
-}
-
-.upper-tab-buttons .btn-primary {
-    background: #5a5a5a;
-    color: #fff;
-    border-color: #5a5a5a;
-}
-
-.upper-tab-buttons .btn-primary:hover {
-    background: transparent;
-    color: #000;
-    border-color: #000;
 }

@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="CTV\TripSchedule.cs" />
     <Compile Include="CTV\TripScheduleHdr.cs" />
+    <Compile Include="CTV\UserInfo.cs" />
     <Compile Include="CTV\VehicleInfo.cs" />
     <Compile Include="CustomModels\CustomCheckBoxOption.cs" />
     <Compile Include="CustomModels\CustomComboOptions.cs" />

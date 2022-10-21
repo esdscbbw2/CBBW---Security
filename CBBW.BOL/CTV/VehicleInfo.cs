@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace CBBW.BOL.CTV
 {
-    public class VehicleInfo
+    public class VehicleInfo : VehicleNo
     {
-        public string VehicleNumber { get; set; }
         public string VehicleType { get; set; }
         public string ModelName { get; set; }
         public int DriverNo { get; set; }
@@ -18,5 +17,10 @@ namespace CBBW.BOL.CTV
         public bool IsActive { get; set; }
         public bool IsSuccess { get; set; }
         public string Msg { get; set; }
+        public string DriverNonName { get; set; }
+    }
+    public class VehicleNo
+    {
+        public string VehicleNumber { get; set; }
     }
 }

@@ -1,0 +1,234 @@
+﻿@using CBBW.BOL.CTV;
+@model TripScheduleHdr
+@{
+    ViewBag.Title = "CTV Entry";
+}
+<div class="row newTable">
+    <div class="col-md-12">
+        <div class="heading_text_btn mb-3 mt-4">
+            <div class="leftButton">
+                <button type="submit" class="btn btn-primary me-2" onclick="window.location.href='vehicle_trip_schedule.html';">
+                    <i data-feather="arrow-left-circle"></i>
+                    Back
+                </button>
+                <button type="submit" class="btn btn-secondary me-2" onclick="window.location.href='vehicle_trip_schedule.html';">
+                    <i data-feather="upload"></i>
+                    Submit
+                </button>
+                <button type="submit" class="btn btn-white">
+                    <i data-feather="x-circle"></i>
+                    Clear
+                </button>
+            </div>
+            <h2 style="text-align: right;">“Company Transport” Vehicle Trip Schedule - Entry</h2>
+        </div>
+    </div>
+    <div class="col-md-12 mb-4">
+        <div class="col-md-12">
+            <div class="d-flex justify-content-center mt-2 upper-tab-buttons">
+                <button type="button" class="btn btn-primary me-2" onclick="window.location.href='add_tours_rules_view.html';">
+                    Tour
+                    Rules
+                </button>
+
+                <button type="button" class="btn btn-primary me-2" onclick="window.location.href='#';">
+                    TA & DA
+                    Rules
+                </button>
+
+                <button type="button" class="btn btn-primary" onclick="window.location.href='#';">
+                    Local Vehicle
+                    Schedule
+                </button>
+
+            </div>
+        </div>
+        <div class="card mb-4 mt-4">
+            <div class="card-body formInputWidth">
+                <form class="form-sample form-inline row ms-auto">
+                    <div class="row">
+                        <label class="col-form-label col-md-2">
+                            Note No. :
+                        </label>
+                        <div class="col-md-2">
+                            @Html.TextBoxFor(m => m.NoteNo, htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                            @*<input type="text" class="form-control" value="200001-CTV-20220930-00001" disabled>*@
+                        </div>
+                        <label class="col-form-label col-md-2">
+                            Date :
+                        </label>
+                        <div class="col-md-2">
+                            @Html.TextBox("EntryDate2", DateTime.Today.ToString("dd-MMM-yyyy"),
+                               htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                            @*<input type="text" class="form-control" value="30/09/2022" disabled>*@
+                        </div>
+                        <label class="col-form-label col-md-2">
+                            Time :
+                        </label>
+                        <div class="col-md-2">
+                            @Html.TextBox("EntryTime2", DateTime.Now.ToString("hh:mm tt"),
+                               htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mt-3 mb-3">
+                            <div class="row g-3 align-items-center">
+
+                                <label class="col-form-label col-md-2">Center Code & Name : </label>
+                                <div class="col-md-6">
+                                    @Html.TextBoxFor(m => m.CentreCodenName, htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-form-label col-md-2">
+                            For The Month & Year :
+                        </label>
+                        <div class="col-md-2">
+                            @Html.TextBoxFor(m => m.FortheMonthnYear,
+                           htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                        </div>
+                        <label class="col-form-label col-md-2">
+                            From Date :
+                        </label>
+                        <div class="col-md-2">
+                            @Html.TextBoxFor(m => m.FromDate, "{0:dd-MMM-yyyy}",
+                           htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                        </div>
+                        <label class="col-form-label col-md-2">
+                            To Date :
+                        </label>
+                        <div class="col-md-2">
+                            @Html.TextBoxFor(m => m.ToDate, "{0:dd-MMM-yyyy}",
+                           htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mt-3 mb-3">
+                            <div class="row g-3 align-items-center">
+
+                                <label class="col-form-label col-md-2">Vehicle No. : </label>
+
+                                <div class="col-md-4">
+                                    @Html.DropDownListFor(m => m.Vehicleno,
+                                       new SelectList(Model.ListofVehicles, "VehicleNumber", "VehicleNumber"), "Select a vehicle",
+                                       htmlAttributes: new
+                                            {
+                                                   @class = "form-select pointer"
+                                               })
+                                </div>
+                                <div class="col-md-6">
+                                    <div id="divError" class="alert alert-danger alert-dismissible fade show inVisible">
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                        <label id="lblError">asd</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-form-label col-md-2">
+                            Vehicle Type :
+                        </label>
+                        <div class="col-md-4">
+                            @Html.TextBoxFor(m => m.VehicleType,
+                           htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                        </div>
+                        <label class="col-form-label col-md-2">
+                            Model Name :
+                        </label>
+                        <div class="col-md-4">
+                            @Html.TextBoxFor(m => m.ModelName,
+                           htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mt-3 mb-3">
+                            <div class="row g-3 align-items-center">
+
+                                <label class="col-form-label col-md-2">Driver No. & Name : </label>
+
+                                <div class="col-md-6">
+                                    @Html.TextBoxFor(m => m.DriverNonName,
+                                    htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-form-label col-md-2">
+                            Approved :
+                        </label>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" disabled>
+                        </div>
+                        <label class="col-form-label col-md-2">
+                            Date & Time Approved :
+                        </label>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" disabled>
+                        </div>
+                        <label class="col-form-label col-md-2">
+                            Reason If Not Approved :
+                        </label>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" disabled>
+                        </div>
+
+                    </div>
+
+
+
+                </form>
+
+            </div>
+
+        </div>
+        <div class="col-md-12">
+            <div class="d-flex justify-content-center mt-2">
+                <button type="button" class="btn btn-primary me-2" onclick="window.location.href='local_vehicle_schedule_details_entry.html';">
+                    Local
+                    Vehicle Schedule - Date Wise
+                    Vehicle Trip Details Entry
+                </button>
+
+
+
+                <button type="button" class="btn btn-primary" onclick="window.location.href='other_trip_schedule_details_entry.html';">
+                    Other
+                    Trip Schedule - Date Wise Vehicle
+                    Trip Details Entry
+                </button>
+            </div>
+        </div>
+        <div class="bgColor mt-4 bg-transparent border-0">
+            <ul style="list-style:none; display: flex; align-items: center; justify-content: center; margin: 0;">
+                <li style="font-size: 18px;">
+                    The Entry Is Done As Per Policy &amp; As Required: <select class="form-select" aria-label="Default select example">
+                        <option selected="">-</option>
+                        <option value="1">Yes</option>
+                        <option value="1">No</option>
+                    </select>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+@section headers
+    {
+    <style>
+        .inVisible {
+            display: none;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
+}
+@section scripts{
+
+    <script src="~/UIContent/JS/CustomePage/CTVHdrEntry.js"></script>
+
+}

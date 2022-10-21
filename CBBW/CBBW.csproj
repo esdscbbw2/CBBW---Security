@@ -133,10 +133,12 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
+    <Compile Include="Areas\Security\Controllers\CTVController.cs" />
     <Compile Include="Areas\Security\Controllers\HomeController.cs" />
     <Compile Include="Areas\Security\Controllers\TADARulesController.cs" />
     <Compile Include="Areas\Security\Controllers\TourRuleController.cs" />
     <Compile Include="Areas\Security\SecurityAreaRegistration.cs" />
+    <Compile Include="Areas\Security\ViewModel\CTVHdrEntryVM.cs" />
     <Compile Include="Areas\Security\ViewModel\TADATransViewModel.cs" />
     <Compile Include="Areas\Security\ViewModel\TourRulesViewModel.cs" />
     <Compile Include="Areas\Security\ViewModel\TrialViewModel.cs" />
@@ -201,6 +203,7 @@
     <Content Include="Images\bidi production.jpg" />
     <Content Include="Images\cb-logo.png" />
     <Content Include="Images\CEO.png" />
+    <Content Include="Images\charbhai-logo-center.jpg" />
     <Content Include="Images\charbhai-logo.png" />
     <Content Include="Images\charbhai-text.png" />
     <Content Include="Images\cool-background %281%29.png" />
@@ -213,11 +216,14 @@
     <Content Include="Images\personnel.png" />
     <Content Include="Images\User-Icon.png" />
     <Content Include="UIContent\CSS\Custom_ErrorToolTip.css" />
+    <Content Include="UIContent\CSS\font-awesome.min.css" />
     <Content Include="UIContent\CSS\jquery.dataTables.min.css" />
+    <Content Include="UIContent\CSS\style.css" />
     <Content Include="UIContent\CSS\sweetalert2.min.css" />
     <Content Include="UIContent\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="UIContent\JS\bootstrap-datetimepicker.min.js" />
     <Content Include="UIContent\JS\CustomePage\CreateRuleTADA.js" />
+    <Content Include="UIContent\JS\CustomePage\CTVHdrEntry.js" />
     <Content Include="UIContent\JS\CustomePage\SecurityRuleValidation.js" />
     <Content Include="UIContent\JS\CustomLayout.js" />
     <Content Include="UIContent\JS\DataTablePagingInput.js" />
@@ -239,7 +245,7 @@
     <Content Include="UIContent\CSS\bootstrap-multiselect.css" />
     <Content Include="UIContent\CSS\bootstrap.min.css" />
     <Content Include="UIContent\CSS\dataTables.bootstrap5.min.css" />
-    <Content Include="UIContent\CSS\style.css" />
+    <Content Include="UIContent\CSS\style_Old.css" />
     <Content Include="UIContent\CSS\themes\base\accordion.css" />
     <Content Include="UIContent\CSS\themes\base\all.css" />
     <Content Include="UIContent\CSS\themes\base\autocomplete.css" />
@@ -293,6 +299,7 @@
     <Content Include="UIContent\JS\multiselect.js" />
     <Content Include="UIContent\JS\popper.min.js" />
     <Content Include="UIContent\JS\sweetalert2.all.min.js" />
+    <Content Include="UIContent\style.css" />
     <Content Include="Views\Shared\EditorTemplates\CustomCheckBoxOption.cshtml" />
     <Content Include="Areas\Security\Views\Shared\_PartialNavBar.cshtml" />
     <Content Include="Areas\Security\Views\TADARules\CreateRule.cshtml" />
@@ -304,6 +311,8 @@
     <Content Include="Areas\Security\Views\TADARules\ViewTransModeDtls.cshtml" />
     <Content Include="Areas\Security\Views\TADARules\ViewParam.cshtml" />
     <Content Include="Areas\Security\Views\TourRule\ViewRule.cshtml" />
+    <Content Include="Areas\Security\Views\CTV\Index.cshtml" />
+    <Content Include="Areas\Security\Views\CTV\Create.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />
@@ -335,6 +344,7 @@
     <Content Include="UIContent\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="UIContent\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="UIContent\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Views\Home\Index2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -357,6 +367,10 @@
     <ProjectReference Include="..\CBBW.BOL\CBBW.BOL.csproj">
       <Project>{b162725a-af80-401d-8938-553dd790a50c}</Project>
       <Name>CBBW.BOL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CBBW.DAL\CBBW.DAL.csproj">
+      <Project>{B384A881-89E3-4A93-88E7-8F790FAE5F42}</Project>
+      <Name>CBBW.DAL</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

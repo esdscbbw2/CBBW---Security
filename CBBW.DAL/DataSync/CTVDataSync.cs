@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CBBW.BOL.CTV;
 
 namespace CBBW.DAL.DataSync
 {
@@ -53,6 +54,63 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-        
+        public DataTable getUserInfo(string UserName, ref string pMsg) 
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[1];
+                para[paracount] = new SqlParameter("@UserName", SqlDbType.VarChar, 50);
+                para[paracount++].Value = UserName;
+
+                using (SQLHelper sql = new SQLHelper("[CTV].[getLogInUserInfo]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable setCTVHeader(TripScheduleHdr model,ref string pMsg) 
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[14];
+                para[paracount] = new SqlParameter("@NoteNo", SqlDbType.NChar, 25);
+                para[paracount++].Value = model.NoteNo;
+                para[paracount] = new SqlParameter("@EntryDate", SqlDbType.Date);
+                para[paracount++].Value = model.EntryDate;
+                para[paracount] = new SqlParameter("@EntryTime", SqlDbType.NVarChar, 15);
+                para[paracount++].Value = model.EntryTime;
+                para[paracount] = new SqlParameter("@CenterCode", SqlDbType.Int);
+                para[paracount++].Value = model.CenterCode;
+                para[paracount] = new SqlParameter("@CenterName", SqlDbType.NVarChar, 50);
+                para[paracount++].Value = model.CenterName;
+                para[paracount] = new SqlParameter("@FortheMonth", SqlDbType.Int);
+                para[paracount++].Value = model.FortheMonth;
+                para[paracount] = new SqlParameter("@FortheYear", SqlDbType.Int);
+                para[paracount++].Value = model.FortheYear;
+                para[paracount] = new SqlParameter("@FromDate", SqlDbType.Date);
+                para[paracount++].Value = model.FromDate;
+                para[paracount] = new SqlParameter("@ToDate", SqlDbType.Date);
+                para[paracount++].Value = model.ToDate;
+                para[paracount] = new SqlParameter("@Vehicleno", SqlDbType.NVarChar, 20);
+                para[paracount++].Value = model.Vehicleno;
+                para[paracount] = new SqlParameter("@VehicleType", SqlDbType.NVarChar, 20);
+                para[paracount++].Value = model.VehicleType;
+                para[paracount] = new SqlParameter("@ModelName", SqlDbType.NVarChar, 20);
+                para[paracount++].Value = model.ModelName;
+                para[paracount] = new SqlParameter("@DriverNo", SqlDbType.Int);
+                para[paracount++].Value = model.DriverNo;
+                para[paracount] = new SqlParameter("@IsActive", SqlDbType.Bit);
+                para[paracount++].Value = model.IsActive;
+
+                using (SQLHelper sql = new SQLHelper("[CTV].[SetCTVHdr]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
     }
 }
