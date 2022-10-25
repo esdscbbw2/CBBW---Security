@@ -47,6 +47,7 @@
     <Compile Include="DataSync\MasterDataSync.cs" />
     <Compile Include="DataSync\RulesDataSync.cs" />
     <Compile Include="DbConnectionString.cs" />
+    <Compile Include="DBLogic\DBLogic.cs" />
     <Compile Include="DBMapper\CTVDBMapper.cs" />
     <Compile Include="DBMapper\DBResponseMapper.cs" />
     <Compile Include="DBMapper\MasterDBMapper.cs" />

@@ -26,6 +26,8 @@ namespace CBBW.BOL.CTV
         public string CentreCodenName { get; set; }
         public string FortheMonthnYear { get; set; }
         public string DriverNonName { get; set; }
+        public int IsSubmit { get; set; }
+        public int IsSubmitted { get; set; }
 
     }    
 }

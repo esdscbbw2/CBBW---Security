@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CBBW.BOL.CTV;
+using CBBW.DAL.DBLogic;
 
 namespace CBBW.DAL.DBMapper
 {
@@ -35,6 +36,8 @@ namespace CBBW.DAL.DBMapper
                         result.IsSuccess = bool.Parse(dr["IsSuccess"].ToString());
                     if (!DBNull.Value.Equals(dr["Msg"]))
                         result.Msg = dr["Msg"].ToString();
+                    if (!DBNull.Value.Equals(dr["LocalTripRecords"]))
+                        result.LocalTripRecords = int.Parse(dr["LocalTripRecords"].ToString());
                     result.IsActive = result.VehicleStatus == "ACTIVE" ? true : false;
                     result.DriverNonName = result.DriverNo + "/" + result.DriverName;
                 }
@@ -64,5 +67,35 @@ namespace CBBW.DAL.DBMapper
             catch { }
             return result;
         }
+        public LocVehSchFromMat Map_LocVehSchFromMat(DataRow dr) 
+        {
+            LocVehSchFromMat result = new LocVehSchFromMat();
+            try
+            {
+                if (dr != null)
+                {
+                    if (!DBNull.Value.Equals(dr["VehicleNumber"]))
+                        result.VehicleNumber = dr["VehicleNumber"].ToString();
+                    if (!DBNull.Value.Equals(dr["SchDate"]))
+                        result.FromDate =DateTime.Parse(dr["SchDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["FromCentreCode"]))
+                        result.FromCentreCode = int.Parse(dr["FromCentreCode"].ToString());
+                    if (!DBNull.Value.Equals(dr["FromCenterName"]))
+                        result.FromCenterName = dr["FromCenterName"].ToString();
+                    if (!DBNull.Value.Equals(dr["ToCentreCode"]))
+                        result.ToCentreCode = int.Parse(dr["ToCentreCode"].ToString());
+                    if (!DBNull.Value.Equals(dr["ToCenterName"]))
+                        result.ToCenterName = dr["ToCenterName"].ToString();
+                    if (!DBNull.Value.Equals(dr["Distance"]))
+                        result.Distance =float.Parse(dr["Distance"].ToString());
+                    result.ToDate = result.FromDate.AddDays(MyDBLogic.ReturnDaysFromDistance(result.Distance));
+                    
+                }
+            }
+            catch { }
+            return result;
+        }
+
+        
     }
 }

@@ -70,7 +70,27 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-        public DataTable setCTVHeader(TripScheduleHdr model,ref string pMsg) 
+        public DataTable getLVTSFromMat(string VehicleNo,DateTime FromDate,DateTime ToDate, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[3];
+                para[paracount] = new SqlParameter("@VehicleNumber", SqlDbType.VarChar, 20);
+                para[paracount++].Value = VehicleNo;
+                para[paracount] = new SqlParameter("@FromDate", SqlDbType.Date);
+                para[paracount++].Value = FromDate;
+                para[paracount] = new SqlParameter("@ToDate", SqlDbType.Date);
+                para[paracount++].Value = ToDate;
+
+                using (SQLHelper sql = new SQLHelper("[CTV].[LocalVehicleSchedule]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable setCTVHeader(TripScheduleHdr model,ref string pMsg)
         {
             try
             {
@@ -106,6 +126,39 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = model.IsActive;
 
                 using (SQLHelper sql = new SQLHelper("[CTV].[SetCTVHdr]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable RemoveNote(string NoteNumber, ref string pMsg) 
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[1];
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.VarChar, 25);
+                para[paracount++].Value = NoteNumber;
+
+                using (SQLHelper sql = new SQLHelper("[CTV].[RemoveCTVNote]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable CheckAvailibiltyofSchDate(string VehicleNo,DateTime ScheduleDate,ref string pMsg) 
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[2];
+                para[paracount] = new SqlParameter("@VehicleNumber", SqlDbType.VarChar, 20);
+                para[paracount++].Value = VehicleNo;
+                para[paracount] = new SqlParameter("@SchDate", SqlDbType.DateTime);
+                para[paracount++].Value = ScheduleDate;
+                using (SQLHelper sql = new SQLHelper("[CTV].[getVehicleSchDateValData]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataTable(para, ref pMsg);
                 }

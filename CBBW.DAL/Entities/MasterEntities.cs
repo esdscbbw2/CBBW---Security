@@ -110,5 +110,14 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
+        public float GetDistance(int FromLocation, int ToLocationType, int ToLocation, ref string pMsg) 
+        {
+            return _datasync.GetDistance(FromLocation, ToLocationType, ToLocation, ref pMsg);
+        }
+        public DateTime GetToSchDate(DateTime FromDate, int FromLocation, int ToLocationType,
+            int ToLocation, int IsCalculateHourly, ref string pMsg)
+        {
+            return _datasync.GetToSchDate(FromDate,FromLocation,ToLocationType,ToLocation,IsCalculateHourly,ref pMsg);
+        }
     }
 }

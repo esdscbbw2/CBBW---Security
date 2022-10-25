@@ -22,7 +22,7 @@ namespace CBBW.DAL.Entities
         {
             _datasync = new CTVDataSync();
             _CTVDBMapper = new CTVDBMapper();
-            //_DBResponseMapper = new DBResponseMapper();
+            _DBResponseMapper = new DBResponseMapper();
         }
         public string getNewCTVNoteNo(string SchPattern, ref string pMsg) 
         {
@@ -94,6 +94,34 @@ namespace CBBW.DAL.Entities
         {
             bool result = false;
             _DBResponseMapper.Map_DBResponse(_datasync.setCTVHeader(model, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
+        public bool RemoveNote(string NoteNumber, ref string pMsg)
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_datasync.RemoveNote(NoteNumber, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
+        public List<LocVehSchFromMat> getLocalVehicleSchedule(string VehicleNo, DateTime FromDate, DateTime ToDate, ref string pMsg) 
+        {
+            List<LocVehSchFromMat> result = new List<LocVehSchFromMat>();
+            dt = _datasync.getLVTSFromMat(VehicleNo,FromDate,ToDate,ref pMsg);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    if (!DBNull.Value.Equals(dt.Rows[i]["VehicleNumber"]))
+                    {
+                        result.Add(_CTVDBMapper.Map_LocVehSchFromMat(dt.Rows[i]));
+                    }                    
+                }
+            }
+            return result;
+        }
+        public bool CheckAvailibiltyofSchDate(string VehicleNo, DateTime ScheduleDate, ref string pMsg) 
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_datasync.CheckAvailibiltyofSchDate(VehicleNo, ScheduleDate, ref pMsg), ref pMsg, ref result);
             return result;
         }
     }

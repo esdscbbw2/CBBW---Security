@@ -17,6 +17,7 @@ namespace CBBW.BOL.CTV
         public bool IsActive { get; set; }
         public bool IsSuccess { get; set; }
         public string Msg { get; set; }
+        public int LocalTripRecords { get; set; }        
         public string DriverNonName { get; set; }
     }
     public class VehicleNo

@@ -20,6 +20,11 @@ namespace CBBW.BLL.Repository
             _MasterEntities = new MasterEntities();
         }
 
+        public bool CheckScheduleDateAvailibility(string VehicleNo, DateTime ScheduleDate, ref string pMsg)
+        {
+            return _CTVEntities.CheckAvailibiltyofSchDate(VehicleNo, ScheduleDate, ref pMsg);
+        }
+
         public bool CreateNewCTVHdr(TripScheduleHdr model, ref string pMsg)
         {
             return _CTVEntities.CreateCTVHdr(model, ref pMsg);
@@ -28,6 +33,10 @@ namespace CBBW.BLL.Repository
         public List<VehicleNo> getLCVMCVVehicleList(ref string pMsg)
         {
             return _CTVEntities.getLCVMCVVehicleList(ref pMsg);
+        }
+        public IEnumerable<LocVehSchFromMat> getLocalVehicleSChedules(string VehicleNo, DateTime FromDate, DateTime ToDate, ref string pMsg)
+        {
+            return _CTVEntities.getLocalVehicleSchedule(VehicleNo, FromDate, ToDate, ref pMsg);
         }
 
         public IEnumerable<CustomComboOptions> getLocationsFromType(int LocationTypeID, ref string pMsg)
@@ -41,6 +50,13 @@ namespace CBBW.BLL.Repository
         public string getNewTripScheduleNo(string SchPattern, ref string pMsg)
         {
            return _CTVEntities.getNewCTVNoteNo(SchPattern, ref pMsg);
+        }
+
+        public DateTime getSchToDate(DateTime FromSchDt, int FromLocation, int ToLocationType, 
+            int ToLocation, int IsCalculateHourly, ref string pMsg)
+        {
+            return _MasterEntities.GetToSchDate(FromSchDt, FromLocation, ToLocationType,
+                ToLocation, IsCalculateHourly, ref pMsg);
         }
 
         public UserInfo getUserInfo(string UserName, ref string pMsg)
@@ -64,6 +80,8 @@ namespace CBBW.BLL.Repository
                 result.FortheMonth = DateTime.Today.Month;
                 result.FortheYear = DateTime.Today.Year;
                 result.FortheMonthnYear = DateTime.Today.ToString("MMM yyyy");
+                result.CenterCode = 13;
+                result.CenterName = "Nizamabad";
                 result.CentreCodenName = result.CenterCode + "/" + result.CenterName;
                 if (DateTime.Today.Day <= 15)
                 {
@@ -79,6 +97,11 @@ namespace CBBW.BLL.Repository
             }
             catch { }
             return result;
+        }
+
+        public bool RemoveNote(string NoteNumber, ref string pMsg)
+        {
+            return _CTVEntities.RemoveNote(NoteNumber, ref pMsg);
         }
     }
 }

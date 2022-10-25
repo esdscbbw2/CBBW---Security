@@ -4,48 +4,67 @@
     ViewBag.Title = "CTV Entry";
 }
 <div class="row newTable">
-    <div class="col-md-12">
-        <div class="heading_text_btn mb-3 mt-4">
-            <div class="leftButton">
-                <button type="submit" class="btn btn-primary me-2" onclick="window.location.href='vehicle_trip_schedule.html';">
-                    <i data-feather="arrow-left-circle"></i>
-                    Back
-                </button>
-                <button type="submit" class="btn btn-secondary me-2" onclick="window.location.href='vehicle_trip_schedule.html';">
-                    <i data-feather="upload"></i>
-                    Submit
-                </button>
-                <button type="submit" class="btn btn-white">
-                    <i data-feather="x-circle"></i>
-                    Clear
-                </button>
-            </div>
-            <h2 style="text-align: right;">“Company Transport” Vehicle Trip Schedule - Entry</h2>
-        </div>
-    </div>
-    <div class="col-md-12 mb-4">
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(m => m.IsSubmit)
+        @Html.HiddenFor(m => m.IsSubmitted)
+        @Html.HiddenFor(m => m.NoteNo)
+        @Html.HiddenFor(m => m.CenterCode)
+        @Html.HiddenFor(m => m.CenterName)
+        @Html.HiddenFor(m => m.CentreCodenName)
+        @Html.HiddenFor(m => m.FortheMonth)
+        @Html.HiddenFor(m => m.FortheYear)
+        @Html.HiddenFor(m => m.FortheMonthnYear)
+        @Html.HiddenFor(m => m.FromDate)
+        @Html.HiddenFor(m => m.ToDate)
+        @Html.HiddenFor(m => m.VehicleType)
+        @Html.HiddenFor(m => m.ModelName)
         <div class="col-md-12">
-            <div class="d-flex justify-content-center mt-2 upper-tab-buttons">
-                <button type="button" class="btn btn-primary me-2" onclick="window.location.href='add_tours_rules_view.html';">
-                    Tour
-                    Rules
-                </button>
-
-                <button type="button" class="btn btn-primary me-2" onclick="window.location.href='#';">
-                    TA & DA
-                    Rules
-                </button>
-
-                <button type="button" class="btn btn-primary" onclick="window.location.href='#';">
-                    Local Vehicle
-                    Schedule
-                </button>
-
+            <div class="heading_text_btn mb-3 mt-4">
+                <div class="leftButton">
+                    <button id="btnBack" type="button" class="btn btn-primary me-2"
+                            @*onclick="window.location.href='vehicle_trip_schedule.html';"*@>
+                        <i data-feather="arrow-left-circle"></i>
+                        Back
+                    </button>
+                    <button type="submit" name="Submit" value="create"
+                            class="btn btn-secondary me-2" disabled="disabled"
+                            @*onclick="window.location.href='vehicle_trip_schedule.html';"*@>
+                        <i data-feather="upload"></i>
+                        Submit
+                    </button>
+                    <button type="button" id="btnClear" onclick="btnClearClicked()"
+                            class="btn btn-white">
+                        <i data-feather="x-circle"></i>
+                        Clear
+                    </button>
+                </div>
+                <h2 style="text-align: right;">“Company Transport” Vehicle Trip Schedule - Entry</h2>
             </div>
         </div>
-        <div class="card mb-4 mt-4">
-            <div class="card-body formInputWidth">
-                <form class="form-sample form-inline row ms-auto">
+        <div class="col-md-12 mb-4">
+            <div class="col-md-12">
+                <div class="d-flex justify-content-center mt-2 upper-tab-buttons">
+                    <button type="button" class="btn btn-primary me-2" onclick="window.location.href='add_tours_rules_view.html';">
+                        Tour
+                        Rules
+                    </button>
+
+                    <button type="button" class="btn btn-primary me-2" onclick="window.location.href='#';">
+                        TA & DA
+                        Rules
+                    </button>
+
+                    <button type="button" class="btn btn-primary" onclick="window.location.href='#';">
+                        Local Vehicle
+                        Schedule
+                    </button>
+
+                </div>
+            </div>
+            <div class="card mb-4 mt-4">
+                <div class="card-body formInputWidth">
+                    @*<form class="form-sample form-inline row ms-auto">*@
                     <div class="row">
                         <label class="col-form-label col-md-2">
                             Note No. :
@@ -133,14 +152,14 @@
                         </label>
                         <div class="col-md-4">
                             @Html.TextBoxFor(m => m.VehicleType,
-                           htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                           htmlAttributes: new { ID = "VehicleTypeDisplay", @class = "form-control", disabled = "disabled" })
                         </div>
                         <label class="col-form-label col-md-2">
                             Model Name :
                         </label>
                         <div class="col-md-4">
                             @Html.TextBoxFor(m => m.ModelName,
-                           htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                           htmlAttributes: new { ID = "ModelNameDisplay", @class = "form-control", disabled = "disabled" })
                         </div>
                     </div>
                     <div class="row">
@@ -151,7 +170,7 @@
 
                                 <div class="col-md-6">
                                     @Html.TextBoxFor(m => m.DriverNonName,
-                                    htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                                    htmlAttributes: new { ID = "DriverNonNameDisplay", @class = "form-control", disabled = "disabled" })
                                 </div>
                             </div>
                         </div>
@@ -180,40 +199,43 @@
 
 
 
-                </form>
+                    @*</form>*@
+
+                </div>
 
             </div>
-
-        </div>
-        <div class="col-md-12">
-            <div class="d-flex justify-content-center mt-2">
-                <button type="button" class="btn btn-primary me-2" onclick="window.location.href='local_vehicle_schedule_details_entry.html';">
-                    Local
-                    Vehicle Schedule - Date Wise
-                    Vehicle Trip Details Entry
-                </button>
-
-
-
-                <button type="button" class="btn btn-primary" onclick="window.location.href='other_trip_schedule_details_entry.html';">
-                    Other
-                    Trip Schedule - Date Wise Vehicle
-                    Trip Details Entry
-                </button>
+            <div class="col-md-12">
+                <div class="d-flex justify-content-center mt-2">
+                    <button id="btnLVT" type="submit" name="Submit" value="LVT"
+                            class="btn btn-primary me-2" disabled="disabled"
+                            @*onclick="window.location.href='local_vehicle_schedule_details_entry.html';"*@>
+                        Local
+                        Vehicle Schedule - Date Wise
+                        Vehicle Trip Details Entry
+                    </button>
+                    <button id="btnOVT" type="submit" name="Submit" value="OVT"
+                            class="btn btn-primary" disabled="disabled"
+                            @*onclick="window.location.href='other_trip_schedule_details_entry.html';"*@>
+                        Other
+                        Trip Schedule - Date Wise Vehicle
+                        Trip Details Entry
+                    </button>
+                </div>
+            </div>
+            <div class="bgColor mt-4 bg-transparent border-0">
+                <ul style="list-style:none; display: flex; align-items: center; justify-content: center; margin: 0;">
+                    <li style="font-size: 18px;">
+                        The Entry Is Done As Per Policy &amp; As Required:
+                        <select id="submitConfirmation" class="form-select pointer is-invalid"
+                                aria-label="Default select example">
+                            <option selected value="0">-</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </li>
+                </ul>
             </div>
         </div>
-        <div class="bgColor mt-4 bg-transparent border-0">
-            <ul style="list-style:none; display: flex; align-items: center; justify-content: center; margin: 0;">
-                <li style="font-size: 18px;">
-                    The Entry Is Done As Per Policy &amp; As Required: <select class="form-select" aria-label="Default select example">
-                        <option selected="">-</option>
-                        <option value="1">Yes</option>
-                        <option value="1">No</option>
-                    </select>
-                </li>
-            </ul>
-        </div>
-    </div>
+    }
 </div>
 @section headers
     {

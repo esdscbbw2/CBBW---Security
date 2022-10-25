@@ -224,6 +224,7 @@
     <Content Include="UIContent\JS\bootstrap-datetimepicker.min.js" />
     <Content Include="UIContent\JS\CustomePage\CreateRuleTADA.js" />
     <Content Include="UIContent\JS\CustomePage\CTVHdrEntry.js" />
+    <Content Include="UIContent\JS\CustomePage\OtherTripSchedule.js" />
     <Content Include="UIContent\JS\CustomePage\SecurityRuleValidation.js" />
     <Content Include="UIContent\JS\CustomLayout.js" />
     <Content Include="UIContent\JS\DataTablePagingInput.js" />
@@ -313,6 +314,7 @@
     <Content Include="Areas\Security\Views\TourRule\ViewRule.cshtml" />
     <Content Include="Areas\Security\Views\CTV\Index.cshtml" />
     <Content Include="Areas\Security\Views\CTV\Create.cshtml" />
+    <Content Include="Areas\Security\Views\CTV\OtherTrip.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />

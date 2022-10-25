@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using CBBW.Areas.Security.ViewModel;
 using CBBW.BLL.IRepository;
 using CBBW.BOL.CTV;
+using CBBW.BOL.CustomModels;
 using CBBW.DAL.DataSync;
 
 namespace CBBW.Areas.Security.Controllers
@@ -39,9 +40,28 @@ namespace CBBW.Areas.Security.Controllers
             return View(model);
         }
         [HttpPost]
-        public ActionResult Create(TripScheduleHdr model) 
+        public ActionResult Create(TripScheduleHdr model, string Submit) 
         {
+            if (TempData["CTVHDR"] != null)
+                model.ListofVehicles = (TempData["CTVHDR"] as TripScheduleHdr).ListofVehicles;
+            else
+                model.ListofVehicles = _iCTV.getLCVMCVVehicleList(ref pMsg);
+            if (Submit == "OVT")
+            {
+            }
+            else if (Submit == "LVT")
+            {
+            }
+            else if (Submit == "create") 
+            { 
+            
+            }
 
+                return View();
+        }
+        public ActionResult OtherTrip() 
+        {
+            
             return View();
         }
         public JsonResult GetLocationTypes()
@@ -55,6 +75,25 @@ namespace CBBW.Areas.Security.Controllers
         public JsonResult GetVehicleInfo(string VehicleNo)
         {
             return Json(_iCTV.getVehicleInfo(VehicleNo, ref pMsg), JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetSchToDate(string Fromdate, string FromTime, int FromLocation,
+            int ToLocationType, int ToLocation)
+        {
+            CustomAjaxResponse result = new CustomAjaxResponse();
+            DateTime SChFromDate = DateTime.Parse(Fromdate +" "+ FromTime);
+            DateTime st= _iCTV.getSchToDate(SChFromDate, FromLocation, ToLocationType, ToLocation, 1, ref pMsg);
+            result.sResponseString = st.ToString("dd-MM-yyyy");
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult CheckSchDateAvl(string VehicleNo, string ScheduleDate) 
+        {
+            string msg = "";
+            VehicleNo = "AP25X7140";
+            CustomAjaxResponse result = new CustomAjaxResponse();
+            DateTime SChFromDate = DateTime.Parse(ScheduleDate);
+            result.bResponseBool = _iCTV.CheckScheduleDateAvailibility(VehicleNo, SChFromDate, ref msg);
+            result.sResponseString = msg;
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
     }
 }
