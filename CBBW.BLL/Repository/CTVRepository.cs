@@ -52,6 +52,11 @@ namespace CBBW.BLL.Repository
            return _CTVEntities.getNewCTVNoteNo(SchPattern, ref pMsg);
         }
 
+        public CTVHdrDtl getSchDetailsFromNote(string NoteNumber, ref string pMsg)
+        {
+            return _CTVEntities.getCTVSchDetailsFromNote(NoteNumber, ref pMsg);
+        }
+
         public DateTime getSchToDate(DateTime FromSchDt, int FromLocation, int ToLocationType, 
             int ToLocation, int IsCalculateHourly, ref string pMsg)
         {
@@ -102,6 +107,11 @@ namespace CBBW.BLL.Repository
         public bool RemoveNote(string NoteNumber, ref string pMsg)
         {
             return _CTVEntities.RemoveNote(NoteNumber, ref pMsg);
+        }
+
+        public bool UpdateOthTripSchDtl(string Notenumber, List<OthTripTemp> dtldata, ref string pMsg)
+        {
+            return _CTVEntities.InsertOthTripSchDtl(Notenumber, dtldata, ref pMsg);
         }
     }
 }

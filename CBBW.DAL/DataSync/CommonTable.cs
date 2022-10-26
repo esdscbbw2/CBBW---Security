@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.Master;
 using CBBW.BOL.TADA;
@@ -71,6 +72,33 @@ namespace CBBW.DAL.DataSync
                 {
                     DataRow dr = UDTable.NewRow();
                     dr["iCommonID"] = obj;
+                    UDTable.Rows.Add(dr);
+                }
+            }
+        }
+        public CommonTable(List<OthTripTemp> customoptions)
+        {
+            UDTable = new DataTable();
+            UDTable.Columns.Add("dFromDate", typeof(DateTime));
+            UDTable.Columns.Add("sFromTime", typeof(string));
+            UDTable.Columns.Add("iFromLocationType", typeof(int));
+            UDTable.Columns.Add("iFromLocation", typeof(int));
+            UDTable.Columns.Add("iToLocationType", typeof(int));
+            UDTable.Columns.Add("iToLocation", typeof(int));
+            UDTable.Columns.Add("dToDate", typeof(DateTime));
+            
+            if (customoptions != null && customoptions.Count > 0)
+            {
+                foreach (OthTripTemp obj in customoptions)
+                {
+                    DataRow dr = UDTable.NewRow();
+                    dr["dFromDate"] =DateTime.Parse(obj.FromDate);
+                    dr["sFromTime"] = obj.FromTime;
+                    dr["iFromLocationType"] = obj.FromCentreTypeCode;
+                    dr["iFromLocation"] = obj.FromCentreCode;
+                    dr["iToLocationType"] = obj.ToCentreTypeCode;
+                    dr["iToLocation"] = obj.ToCentreCode;
+                    dr["dToDate"] = DateTime.Parse(obj.ToDate);
                     UDTable.Rows.Add(dr);
                 }
             }

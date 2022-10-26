@@ -132,6 +132,25 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+        public DataTable setOthTripSchDtls(string Notenumber, List<OthTripTemp> dtldata, ref string pMsg) 
+        {
+            try
+            {
+                CommonTable schdtlData = new CommonTable(dtldata);                
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[2];
+                para[paracount] = new SqlParameter("@NoteNo", SqlDbType.NChar,25);
+                para[paracount++].Value = Notenumber;
+                para[paracount] = new SqlParameter("@TripDtl", SqlDbType.Structured);
+                para[paracount++].Value = schdtlData.UDTable;
+                
+                using (SQLHelper sql = new SQLHelper("[CTV].[SetOtherTripSch]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
         public DataTable RemoveNote(string NoteNumber, ref string pMsg) 
         {
             try
@@ -161,6 +180,22 @@ namespace CBBW.DAL.DataSync
                 using (SQLHelper sql = new SQLHelper("[CTV].[getVehicleSchDateValData]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataSet getCTVSchDetailsFromNote(string NoteNumber, ref string pMsg) 
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[1];
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
+                para[paracount++].Value = NoteNumber;
+
+                using (SQLHelper sql = new SQLHelper("[CTV].[getOVTSchDetails]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataSet(para, ref pMsg);
                 }
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }

@@ -12,11 +12,12 @@
                         <i data-feather="arrow-left-circle"></i>
                         Back
                     </button>
-                    <button type="submit" class="btn btn-secondary me-2" onclick="window.location.href='company_transport_vehicle_trip_schedule_entry_details.html';">
+                    <button id="btnSubmit" type="submit" disabled="disabled" 
+                            class="btn btn-secondary me-2" onclick="SaveData()"> 
                         <i data-feather="upload"></i>
-                        Submit
+                        Save
                     </button>
-                    <button type="submit" class="btn btn-white">
+                    <button type="button" class="btn btn-white" onclick="ClearBtnClick()">
                         <i data-feather="x-circle"></i>
                         Clear
                     </button>
@@ -39,7 +40,10 @@
                             Trip Purpose  :
                         </label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" value="Inspection">
+                            <input id="TripPurpose" type="text" onkeyup="ValidateControl()" 
+                                   class="form-control canclear pointer" 
+                                   value="Inspection">
+                        </div>
                         </div>
                 </form>
             </div>
@@ -85,22 +89,23 @@
                             <div class="form-group">
                                 <input id="0_FromDt" type="date"
                                        onchange="SchDateChanged()"
-                                       class="form-control isvalidate is-invalid">
+                                       class="form-control canclear pointer is-invalid">
                             </div>
                         </td>
                         <td>
                             <div class="form-group position-relative">
                                 <div class="input-group date timePicker">
-                                    <input id="0_Fromtime" type="text" onchange="SchTimeChanged()" 
-                                           class="form-control pointer isvalidate" 
-                                           placeholder="11:10 PM">
-                                    <span class="input-group-addon calender-ico"><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+                                    <input id="0_Fromtime" type="text" onblur="SchTimeChanged()"
+                                           @*onchange="SchTimeChanged()"*@ 
+                                           class="form-control canclear is-invalid" 
+                                           @*placeholder="11:10 PM"*@>
+                                    <span class="input-group-addon pointer calender-ico"><i class="fa fa-clock-o" aria-hidden="true"></i></span>
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="form-group">
-                                <select id="0_FromLT" class="form-select pointer isvalidate is-invalid"
+                                <select id="0_FromLT" class="form-select pointer canclear is-invalid"
                                         onchange="ChangeLocationType()"
                                         aria-label="Default select example">
                                 </select>
@@ -108,7 +113,7 @@
                         </td>
                         <td>
                             <div class="form-group">
-                                <select id="0_FromL" class="form-select isvalidate is-invalid"
+                                <select id="0_FromL" class="form-select pointer canclear is-invalid"
                                         onchange="ChangeLocation()"
                                         aria-label="Default select example">
                                     <option value="-1">Select location</option>
@@ -117,7 +122,7 @@
                         </td>
                         <td>
                             <div class="form-group">
-                                <select id="0_ToLT" class="form-select isvalidate is-invalid"
+                                <select id="0_ToLT" class="form-select pointer canclear is-invalid"
                                         onchange="ChangeLocationType()"
                                         aria-label="Default select example">
                                 </select>
@@ -125,7 +130,7 @@
                         </td>
                         <td>
                             <div class="form-group">
-                                <select id="0_ToL" class="form-select isvalidate is-invalid"
+                                <select id="0_ToL" class="form-select pointer canclear is-invalid"
                                         onchange="ChangeLocation()"
                                         aria-label="Default select example">
                                     <option value="-1">Select location</option>
@@ -135,17 +140,19 @@
                         <td>
                             <div class="form-group">
                                 <input id="0_ToDt" type="text" disabled="disabled"
-                                       class="form-control">
+                                       class="form-control canclear is-invalid">
                             </div>
                         </td>
                         <td>
                             <span class="actionBtn">
-                                <button type="button" class="btn primaryLink" data-toggle="tooltip"
+                                <button id="0_AddBtn" type="button" class="btn primaryLink" 
+                                        data-toggle="tooltip" onclick="addBtnClick()"
                                         data-placement="top" title="Add">
-                                    <i data-feather="plus" onClick="plusAction()"></i>
+                                    <i data-feather="plus"></i>
                                 </button>
 
-                                <button type="button" class="btn secondaryLink" data-toggle="tooltip"
+                                <button id="0_DeleteBtn" type="button" class="btn secondaryLink inVisible" 
+                                        data-toggle="tooltip" onclick="removeBtnClick()"
                                         data-placement="top" title="Delete">
                                     <i data-feather="x"></i>
                                 </button>
@@ -327,18 +334,21 @@
     <div class="bgColor mb-4 mt-3">
         <ul style="list-style:none; margin: 0; padding: 0;">
             <li style="font-size: 16px;">
-                It Is Ensured That This Trip Is Prepared As Center Code/Name “Other Place” & In Factual It Is Taking Place The Same Way As It Is selected: <select class="form-select" aria-label="Default select example">
-                    <option selected="">-</option>
-                    <option value="1">Yes</option>
-                    <option value="1">No</option>
+                It Is Ensured That This Trip Is Prepared As Center Code/Name “Other Place” & In Factual It Is Taking Place The Same Way As It Is selected: 
+                <select id="CCOth" class="form-select canclear pointer is-valid" onchange="ValidateControl()" 
+                        aria-label="Default select example">
+                    <option value="0">-</option>
+                    <option selected value="1">Yes</option>
+                    @*<option selected value="0">No</option>*@
                 </select>
             </li>
-
             <li style="font-size: 16px;">
-                The Other Trip Schedule Is Taken Up With The Knowledge Of DIC P&A That Transpired Through Mail: <select class="form-select" aria-label="Default select example">
-                    <option selected="">-</option>
-                    <option value="1">Yes</option>
-                    <option value="1">No</option>
+                The Other Trip Schedule Is Taken Up With The Knowledge Of DIC P&A That Transpired Through Mail: 
+                <select id="DIC" class="form-select canclear pointer is-valid" onchange="ValidateControl()" 
+                        aria-label="Default select example">
+                    <option value="0">-</option>
+                    <option selected value="1">Yes</option>
+                    @*<option selected value="0">No</option>*@
                 </select>
             </li>
         </ul>

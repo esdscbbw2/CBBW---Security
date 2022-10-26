@@ -139,6 +139,7 @@
     <Compile Include="Areas\Security\Controllers\TourRuleController.cs" />
     <Compile Include="Areas\Security\SecurityAreaRegistration.cs" />
     <Compile Include="Areas\Security\ViewModel\CTVHdrEntryVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\OtherTripScheduleEntryVM.cs" />
     <Compile Include="Areas\Security\ViewModel\TADATransViewModel.cs" />
     <Compile Include="Areas\Security\ViewModel\TourRulesViewModel.cs" />
     <Compile Include="Areas\Security\ViewModel\TrialViewModel.cs" />

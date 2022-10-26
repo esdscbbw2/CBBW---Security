@@ -22,12 +22,15 @@ namespace CBBW.BOL.CTV
         public int DriverNo { get; set; }
         public string DriverName { get; set; }
         public bool IsActive { get; set; }
+        public string TripPurpose { get; set; }
+        public bool IsApproved { get; set; }
+        public DateTime ApprovedDateTime { get; set; }
+        public string ReasonForDisApproval { get; set; }
         public IEnumerable<VehicleNo> ListofVehicles { get; set; }
         public string CentreCodenName { get; set; }
         public string FortheMonthnYear { get; set; }
         public string DriverNonName { get; set; }
         public int IsSubmit { get; set; }
-        public int IsSubmitted { get; set; }
-
+        public int IsSubmitted { get; set; }        
     }    
 }

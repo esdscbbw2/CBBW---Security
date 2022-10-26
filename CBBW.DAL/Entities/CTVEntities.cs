@@ -50,7 +50,7 @@ namespace CBBW.DAL.Entities
                     result = _CTVDBMapper.Map_VehicleInfo(dt.Rows[0]);
                 }
             }
-            catch { }
+            catch(Exception ex) { pMsg = ex.Message; }
             return result;
         }
         public List<VehicleNo> getLCVMCVVehicleList(ref string pMsg)
@@ -96,6 +96,12 @@ namespace CBBW.DAL.Entities
             _DBResponseMapper.Map_DBResponse(_datasync.setCTVHeader(model, ref pMsg), ref pMsg, ref result);
             return result;
         }
+        public bool InsertOthTripSchDtl(string Notenumber, List<OthTripTemp> dtldata, ref string pMsg)
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_datasync.setOthTripSchDtls(Notenumber, dtldata, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
         public bool RemoveNote(string NoteNumber, ref string pMsg)
         {
             bool result = false;
@@ -105,23 +111,51 @@ namespace CBBW.DAL.Entities
         public List<LocVehSchFromMat> getLocalVehicleSchedule(string VehicleNo, DateTime FromDate, DateTime ToDate, ref string pMsg) 
         {
             List<LocVehSchFromMat> result = new List<LocVehSchFromMat>();
-            dt = _datasync.getLVTSFromMat(VehicleNo,FromDate,ToDate,ref pMsg);
-            if (dt != null && dt.Rows.Count > 0)
+            try
             {
-                for (int i = 0; i < dt.Rows.Count; i++)
+                dt = _datasync.getLVTSFromMat(VehicleNo, FromDate, ToDate, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
                 {
-                    if (!DBNull.Value.Equals(dt.Rows[i]["VehicleNumber"]))
+                    for (int i = 0; i < dt.Rows.Count; i++)
                     {
-                        result.Add(_CTVDBMapper.Map_LocVehSchFromMat(dt.Rows[i]));
-                    }                    
+                        if (!DBNull.Value.Equals(dt.Rows[i]["VehicleNumber"]))
+                        {
+                            result.Add(_CTVDBMapper.Map_LocVehSchFromMat(dt.Rows[i]));
+                        }
+                    }
                 }
             }
+            catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
         public bool CheckAvailibiltyofSchDate(string VehicleNo, DateTime ScheduleDate, ref string pMsg) 
         {
             bool result = false;
             _DBResponseMapper.Map_DBResponse(_datasync.CheckAvailibiltyofSchDate(VehicleNo, ScheduleDate, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
+        public CTVHdrDtl getCTVSchDetailsFromNote(string NoteNumber, ref string pMsg) 
+        {
+            CTVHdrDtl result = new CTVHdrDtl();
+            try
+            {
+                ds = _datasync.getCTVSchDetailsFromNote(NoteNumber, ref pMsg);
+                if (ds != null)
+                {
+                    DataTable dtl = null; DataRow hdr = null;
+                    if (ds.Tables[1] != null && ds.Tables[1].Rows.Count > 0)
+                    {
+                        dtl = ds.Tables[1];
+                    }
+                    if (ds.Tables[0] != null && ds.Tables[0].Rows.Count > 0)
+                    {
+                        hdr = ds.Tables[0].Rows[0];
+                    }
+                    return _CTVDBMapper.Map_CTVHdrDtl(hdr, dtl);
+                }
+            }
+            catch (Exception ex){pMsg = ex.Message;}
+
             return result;
         }
     }

@@ -42,7 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CTV\CTVHdrDtl.cs" />
     <Compile Include="CTV\LocVehSchFromMat.cs" />
+    <Compile Include="CTV\OthTripTemp.cs" />
     <Compile Include="CTV\TripSchedule.cs" />
     <Compile Include="CTV\TripScheduleHdr.cs" />
     <Compile Include="CTV\UserInfo.cs" />

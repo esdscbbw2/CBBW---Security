@@ -95,7 +95,76 @@ namespace CBBW.DAL.DBMapper
             catch { }
             return result;
         }
+        public CTVHdrDtl Map_CTVHdrDtl(DataRow dr, DataTable dt)
+        {
+            CTVHdrDtl result = new CTVHdrDtl();
+            try
+            {
+                if (dr != null)
+                {
+                    TripScheduleHdr hdr = new TripScheduleHdr();
+                    if (!DBNull.Value.Equals(dr["NoteNo"]))
+                        hdr.NoteNo = dr["NoteNo"].ToString();
+                    if (!DBNull.Value.Equals(dr["EntryDate"]))
+                        hdr.EntryDate = DateTime.Parse(dr["EntryDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["EntryTime"]))
+                        hdr.EntryTime = dr["EntryTime"].ToString();
+                    if (!DBNull.Value.Equals(dr["CenterCode"]))
+                        hdr.CenterCode=int.Parse(dr["CenterCode"].ToString());
+                    if (!DBNull.Value.Equals(dr["FortheMonth"]))
+                        hdr.FortheMonth = int.Parse(dr["FortheMonth"].ToString());
+                    if (!DBNull.Value.Equals(dr["FortheYear"]))
+                        hdr.FortheYear = int.Parse(dr["FortheYear"].ToString());
+                    if (!DBNull.Value.Equals(dr["FromDate"]))
+                        hdr.FromDate = DateTime.Parse(dr["FromDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["ToDate"]))
+                        hdr.ToDate = DateTime.Parse(dr["ToDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["Vehicleno"]))
+                        hdr.Vehicleno = dr["Vehicleno"].ToString();
+                    if (!DBNull.Value.Equals(dr["DriverNo"]))
+                        hdr.DriverNo = int.Parse(dr["DriverNo"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsActive"]))
+                        hdr.IsActive = bool.Parse(dr["IsActive"].ToString());
+                    if (!DBNull.Value.Equals(dr["TripPurpose"]))
+                        hdr.TripPurpose = dr["TripPurpose"].ToString();
+                    if (!DBNull.Value.Equals(dr["IsApproved"]))
+                        hdr.IsApproved = bool.Parse(dr["IsApproved"].ToString());
+                    if (!DBNull.Value.Equals(dr["ApprovedDateTime"]))
+                        hdr.ApprovedDateTime = DateTime.Parse(dr["ApprovedDateTime"].ToString());
+                    if (!DBNull.Value.Equals(dr["ReasonForDisApproval"]))
+                        hdr.ReasonForDisApproval = dr["ReasonForDisApproval"].ToString();
 
-        
+                    result.SchHdrData = hdr;
+                }
+                if (dt != null && dt.Rows.Count > 0) 
+                {
+                    List<LocVehSchFromMat> dtl = new List<LocVehSchFromMat>();
+                    for (int i = 0; i < dt.Rows.Count; i++) 
+                    {
+                        LocVehSchFromMat x = new LocVehSchFromMat();
+                        if (!DBNull.Value.Equals(dt.Rows[i]["FromDate"]))
+                            x.FromDate =DateTime.Parse(dt.Rows[i]["FromDate"].ToString());
+                        if (!DBNull.Value.Equals(dt.Rows[i]["FromLocationType"]))
+                            x.FromCenterTypeCode = int.Parse(dt.Rows[i]["FromLocationType"].ToString());
+                        if (!DBNull.Value.Equals(dt.Rows[i]["FromLocation"]))
+                            x.FromCentreCode = int.Parse(dt.Rows[i]["FromLocation"].ToString());
+                        if (!DBNull.Value.Equals(dt.Rows[i]["ToLocationType"]))
+                            x.ToCentreTypeCode = int.Parse(dt.Rows[i]["ToLocationType"].ToString());
+                        if (!DBNull.Value.Equals(dt.Rows[i]["ToLocation"]))
+                            x.ToCentreCode = int.Parse(dt.Rows[i]["ToLocation"].ToString());
+                        if (!DBNull.Value.Equals(dt.Rows[i]["ToDate"]))
+                            x.ToDate = DateTime.Parse(dt.Rows[i]["ToDate"].ToString());
+                        if (!DBNull.Value.Equals(dt.Rows[i]["FromTime"]))
+                            x.FromTime = dt.Rows[i]["FromTime"].ToString();
+                        if (!DBNull.Value.Equals(dt.Rows[i]["DriverCodenName"]))
+                            x.DriverCodenName = dt.Rows[i]["DriverCodenName"].ToString();
+                        dtl.Add(x);
+                    }
+                    result.SchDetailList = dtl;
+                }
+            }
+            catch { }
+            return result;
+        }
     }
 }

@@ -29,7 +29,7 @@ namespace CBBW.DAL.DBMapper
                 if (!DBNull.Value.Equals(dr["ID"]))
                     result.ID = int.Parse(dr["ID"].ToString());
                 if (!DBNull.Value.Equals(dr["DisplayText"]))
-                    result.DisplayText = dr["DisplayText"].ToString();
+                    result.DisplayText = result.ID+" / "+ dr["DisplayText"].ToString();
             }
             return result;
         }

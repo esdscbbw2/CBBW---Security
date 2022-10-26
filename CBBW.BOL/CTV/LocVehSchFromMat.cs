@@ -10,11 +10,15 @@ namespace CBBW.BOL.CTV
     {
         public string VehicleNumber { get; set; }
         public DateTime FromDate { get; set; }
+        public string FromTime { get; set; }
+        public int FromCenterTypeCode { get; set; }
         public int FromCentreCode { get; set; }
         public string FromCenterName { get; set; }
+        public int ToCentreTypeCode { get; set; }
         public int ToCentreCode { get; set; }
         public string ToCenterName { get; set; }
         public float Distance { get; set; }
         public DateTime ToDate { get; set; }
+        public string DriverCodenName { get; set; }
     }
 }

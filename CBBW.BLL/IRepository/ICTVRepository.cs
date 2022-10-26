@@ -22,5 +22,8 @@ namespace CBBW.BLL.IRepository
         bool CheckScheduleDateAvailibility(string VehicleNo, DateTime ScheduleDate, ref string pMsg);
         IEnumerable<LocVehSchFromMat> getLocalVehicleSChedules(string VehicleNo, DateTime FromDate, DateTime ToDate, ref string pMsg);
         DateTime getSchToDate(DateTime FromSchDt, int FromLocation, int ToLocationType, int ToLocation,int IsCalculateHourly, ref string pMsg);
+        bool UpdateOthTripSchDtl(string Notenumber, List<OthTripTemp> dtldata, ref string pMsg);
+        CTVHdrDtl getSchDetailsFromNote(string NoteNumber, ref string pMsg);
+
     }
 }

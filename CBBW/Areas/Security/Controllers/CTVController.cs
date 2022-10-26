@@ -95,5 +95,22 @@ namespace CBBW.Areas.Security.Controllers
             result.sResponseString = msg;
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+        [HttpPost]
+        public JsonResult getOTVSchData(OtherTripScheduleEntryVM model) 
+        {
+            string msg = "";
+            CustomAjaxResponse result = new CustomAjaxResponse();
+            if (_iCTV.UpdateOthTripSchDtl(model.NoteNumber, model.OTSchList, ref msg))
+            {
+                result.bResponseBool = true;
+                result.sResponseString = "Data successfully updated.";
+            }
+            else 
+            {
+                result.bResponseBool = false;
+                result.sResponseString = msg;
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
     }
 }
