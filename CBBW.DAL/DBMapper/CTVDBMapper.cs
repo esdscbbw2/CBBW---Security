@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CBBW.BOL.CTV;
+using CBBW.BOL.CustomModels;
 using CBBW.DAL.DBLogic;
 
 namespace CBBW.DAL.DBMapper
@@ -38,7 +39,15 @@ namespace CBBW.DAL.DBMapper
                         result.Msg = dr["Msg"].ToString();
                     if (!DBNull.Value.Equals(dr["LocalTripRecords"]))
                         result.LocalTripRecords = int.Parse(dr["LocalTripRecords"].ToString());
+                    if (!DBNull.Value.Equals(dr["SloatAVBL"]))
+                        result.IsSlotAvbl = bool.Parse(dr["SloatAVBL"].ToString());
+
                     result.IsActive = result.VehicleStatus == "ACTIVE" ? true : false;
+                    if (result.DriverName!=null && result.DriverName.IndexOf("-") > 0) 
+                    { 
+                        String[] spearator = {"-"};
+                        result.DriverName = result.DriverName.Split(spearator, StringSplitOptions.RemoveEmptyEntries)[1];
+                    }                    
                     result.DriverNonName = result.DriverNo + "/" + result.DriverName;
                 }
             }
@@ -88,8 +97,13 @@ namespace CBBW.DAL.DBMapper
                         result.ToCenterName = dr["ToCenterName"].ToString();
                     if (!DBNull.Value.Equals(dr["Distance"]))
                         result.Distance =float.Parse(dr["Distance"].ToString());
+                    result.FromCenterTypeCode = 2;
+                    result.ToCentreTypeCode = 2;
+                    result.FromCenterTypeName = "Centre";
+                    result.ToCenterTypeName = "Centre";
                     result.ToDate = result.FromDate.AddDays(MyDBLogic.ReturnDaysFromDistance(result.Distance));
-                    
+                    result.FromDateStr = result.FromDate.ToString("dd-MM-yyyy");
+                    result.ToDateStr = result.ToDate.ToString("dd-MM-yyyy");
                 }
             }
             catch { }
@@ -158,6 +172,9 @@ namespace CBBW.DAL.DBMapper
                             x.FromTime = dt.Rows[i]["FromTime"].ToString();
                         if (!DBNull.Value.Equals(dt.Rows[i]["DriverCodenName"]))
                             x.DriverCodenName = dt.Rows[i]["DriverCodenName"].ToString();
+
+                        x.FromDateStr = x.FromDate.ToString("dd-MM-yyyy");
+                        x.ToDateStr = x.ToDate.ToString("dd-MM-yyyy");
                         dtl.Add(x);
                     }
                     result.SchDetailList = dtl;
@@ -166,5 +183,37 @@ namespace CBBW.DAL.DBMapper
             catch { }
             return result;
         }
+        public VehicleAvblInfo Map_VehicleAvblInfo(DataRow dr, DataTable dt) 
+        {
+            VehicleAvblInfo result = new VehicleAvblInfo();
+            try
+            {
+                if (dr != null)
+                {                    
+                    if (!DBNull.Value.Equals(dr["IsSuccess"]))
+                        result.IsSlotAvbl =bool.Parse(dr["IsSuccess"].ToString());
+                    if (!DBNull.Value.Equals(dr["Msg"]))
+                        result.Msg = dr["Msg"].ToString();                    
+                }
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    List<CustomDateRange> dtl = new List<CustomDateRange>();
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        CustomDateRange x = new CustomDateRange();
+                        if (!DBNull.Value.Equals(dt.Rows[i]["FromDate"]))
+                            x.FromDate = DateTime.Parse(dt.Rows[i]["FromDate"].ToString());
+                        if (!DBNull.Value.Equals(dt.Rows[i]["ToDate"]))
+                            x.ToDate = DateTime.Parse(dt.Rows[i]["ToDate"].ToString());
+
+                        dtl.Add(x);
+                    }
+                    result.SlotsBooked = dtl;
+                }
+            }
+            catch { }
+            return result;
+        }
+
     }
 }

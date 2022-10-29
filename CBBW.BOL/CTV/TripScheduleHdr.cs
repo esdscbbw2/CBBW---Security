@@ -31,6 +31,8 @@ namespace CBBW.BOL.CTV
         public string FortheMonthnYear { get; set; }
         public string DriverNonName { get; set; }
         public int IsSubmit { get; set; }
-        public int IsSubmitted { get; set; }        
+        public int IsSubmitted { get; set; }
+        public int IsOTSSaved { get; set; }
+
     }    
 }

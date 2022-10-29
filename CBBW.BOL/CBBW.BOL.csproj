@@ -48,10 +48,12 @@
     <Compile Include="CTV\TripSchedule.cs" />
     <Compile Include="CTV\TripScheduleHdr.cs" />
     <Compile Include="CTV\UserInfo.cs" />
+    <Compile Include="CTV\VehicleAvblInfo.cs" />
     <Compile Include="CTV\VehicleInfo.cs" />
     <Compile Include="CustomModels\CustomAjaxResponse.cs" />
     <Compile Include="CustomModels\CustomCheckBoxOption.cs" />
     <Compile Include="CustomModels\CustomComboOptions.cs" />
+    <Compile Include="CustomModels\CustomDateRange.cs" />
     <Compile Include="CustomModels\RowDisplayInfo.cs" />
     <Compile Include="Master\PublicTransportType.cs" />
     <Compile Include="Master\ServiceType.cs" />

@@ -1000,8 +1000,8 @@ strong {
 
 @font-face {
     font-family: 'Glyphicons Halflings';
-    src: url(../fonts/glyphicons-halflings-regular.eot);
-    src: url(../fonts/glyphicons-halflings-regular.eot?#iefix) format('embedded-opentype'), url(../fonts/glyphicons-halflings-regular.woff2) format('woff2'), url(../fonts/glyphicons-halflings-regular.woff) format('woff'), url(../fonts/glyphicons-halflings-regular.ttf) format('truetype'), url(../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format('svg')
+    src: url(fonts/glyphicons-halflings-regular.eot);
+    src: url(fonts/glyphicons-halflings-regular.eot?#iefix) format('embedded-opentype'), url(fonts/glyphicons-halflings-regular.woff2) format('woff2'), url(fonts/glyphicons-halflings-regular.woff) format('woff'), url(fonts/glyphicons-halflings-regular.ttf) format('truetype'), url(fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format('svg')
 }
 
 .glyphicon {
@@ -1213,21 +1213,14 @@ strong {
     .formInputWidth .col-md-6 {
         width: 51.33%;
     }
+}
+
+@media (max-width:1650px) {
     .login-outer {
         padding: 2rem;
     }
     .footer-bottom {
         padding-top: 2rem;
-    }
-}
-
-@media (max-width:1366px) {
-    .formInputWidth .col-md-2 {
-        width: 23.33%;
-    }
-    .formInputWidth label.col-form-label.col-md-2 {
-        width: 10%;
-        padding-right: 0;
     }
 }
 

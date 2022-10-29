@@ -18,11 +18,11 @@ namespace CBBW.BLL.IRepository
         VehicleInfo getVehicleInfo(string VehicleNo, ref string pMsg);
         UserInfo getUserInfo(string UserName, ref string pMsg);
         bool CreateNewCTVHdr(TripScheduleHdr model, ref string pMsg);
-        bool RemoveNote(string NoteNumber, ref string pMsg);
+        bool RemoveNote(string NoteNumber,int OnlyDtl, ref string pMsg);
         bool CheckScheduleDateAvailibility(string VehicleNo, DateTime ScheduleDate, ref string pMsg);
-        IEnumerable<LocVehSchFromMat> getLocalVehicleSChedules(string VehicleNo, DateTime FromDate, DateTime ToDate, ref string pMsg);
+        List<LocVehSchFromMat> getLocalVehicleSChedules(string VehicleNo, DateTime FromDate, DateTime ToDate, ref string pMsg);
         DateTime getSchToDate(DateTime FromSchDt, int FromLocation, int ToLocationType, int ToLocation,int IsCalculateHourly, ref string pMsg);
-        bool UpdateOthTripSchDtl(string Notenumber, List<OthTripTemp> dtldata, ref string pMsg);
+        bool UpdateOthTripSchDtl(string Notenumber,string TripPurpose, List<OthTripTemp> dtldata, ref string pMsg);
         CTVHdrDtl getSchDetailsFromNote(string NoteNumber, ref string pMsg);
 
     }

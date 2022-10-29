@@ -19,6 +19,11 @@
         @Html.HiddenFor(m => m.ToDate)
         @Html.HiddenFor(m => m.VehicleType)
         @Html.HiddenFor(m => m.ModelName)
+        @Html.HiddenFor(m => m.DriverNo)
+        @Html.HiddenFor(m => m.DriverName)
+        @Html.HiddenFor(m => m.DriverNonName)
+        @Html.HiddenFor(m => m.IsOTSSaved)
+        @Html.HiddenFor(m => m.TripPurpose)
         <div class="col-md-12">
             <div class="heading_text_btn mb-3 mt-4">
                 <div class="leftButton">
@@ -27,7 +32,7 @@
                         <i data-feather="arrow-left-circle"></i>
                         Back
                     </button>
-                    <button type="submit" name="Submit" value="create"
+                    <button id="btnSubmit" type="submit" name="Submit" value="create"
                             class="btn btn-secondary me-2" disabled="disabled"
                             @*onclick="window.location.href='vehicle_trip_schedule.html';"*@>
                         <i data-feather="upload"></i>
@@ -45,17 +50,20 @@
         <div class="col-md-12 mb-4">
             <div class="col-md-12">
                 <div class="d-flex justify-content-center mt-2 upper-tab-buttons">
-                    <button type="button" class="btn btn-primary me-2" onclick="window.location.href='add_tours_rules_view.html';">
+                    <button type="button" class="btn btn-primary me-2"
+                            onclick="window.location.href='@Url.Action("Index", "TourRule", new { Area = "Security" })';">
                         Tour
                         Rules
                     </button>
 
-                    <button type="button" class="btn btn-primary me-2" onclick="window.location.href='#';">
+                    <button type="button" class="btn btn-primary me-2"
+                            onclick="window.location.href='@Url.Action("Index", "TADARules", new { Area = "Security" })';">
                         TA & DA
                         Rules
                     </button>
 
-                    <button type="button" class="btn btn-primary" onclick="window.location.href='#';">
+                    <button type="submit" name="Submit" value="LVTSChMat"  class="btn btn-primary"
+                            @*onclick="window.location.href='#';"*@>
                         Local Vehicle
                         Schedule
                     </button>
@@ -133,9 +141,9 @@
                                     @Html.DropDownListFor(m => m.Vehicleno,
                                        new SelectList(Model.ListofVehicles, "VehicleNumber", "VehicleNumber"), "Select a vehicle",
                                        htmlAttributes: new
-                                            {
-                                                   @class = "form-select pointer"
-                                               })
+                                       {
+                                           @class = "form-select pointer canclear"
+                                       })
                                 </div>
                                 <div class="col-md-6">
                                     <div id="divError" class="alert alert-danger alert-dismissible fade show inVisible">
@@ -152,14 +160,14 @@
                         </label>
                         <div class="col-md-4">
                             @Html.TextBoxFor(m => m.VehicleType,
-                           htmlAttributes: new { ID = "VehicleTypeDisplay", @class = "form-control", disabled = "disabled" })
+                           htmlAttributes: new { ID = "VehicleTypeDisplay", @class = "form-control canclear", disabled = "disabled" })
                         </div>
                         <label class="col-form-label col-md-2">
                             Model Name :
                         </label>
                         <div class="col-md-4">
                             @Html.TextBoxFor(m => m.ModelName,
-                           htmlAttributes: new { ID = "ModelNameDisplay", @class = "form-control", disabled = "disabled" })
+                           htmlAttributes: new { ID = "ModelNameDisplay", @class = "form-control canclear", disabled = "disabled" })
                         </div>
                     </div>
                     <div class="row">
@@ -170,7 +178,7 @@
 
                                 <div class="col-md-6">
                                     @Html.TextBoxFor(m => m.DriverNonName,
-                                    htmlAttributes: new { ID = "DriverNonNameDisplay", @class = "form-control", disabled = "disabled" })
+                                    htmlAttributes: new { ID = "DriverNonNameDisplay", @class = "form-control canclear", disabled = "disabled" })
                                 </div>
                             </div>
                         </div>
@@ -221,14 +229,31 @@
                         Trip Details Entry
                     </button>
                 </div>
+
+                <div class="row" style="padding:0px">
+                    <div class="col-6">
+                        <div id="divErrorLVS" class="alert alert-danger alert-dismissible fade show inVisible">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            <label id="lblErrorLVS"></label>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div id="divErrorOTS" class="alert alert-danger alert-dismissible fade show inVisible">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            <label id="lblErrorOTS"></label>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="bgColor mt-4 bg-transparent border-0">
                 <ul style="list-style:none; display: flex; align-items: center; justify-content: center; margin: 0;">
                     <li style="font-size: 18px;">
                         The Entry Is Done As Per Policy &amp; As Required:
-                        <select id="submitConfirmation" class="form-select pointer is-invalid"
+                        <select id="submitConfirmation" onchange="ValidateControl()"
+                                style="width:110px"
+                                class="form-select canclear pointer is-invalid"
                                 aria-label="Default select example">
-                            <option selected value="0">-</option>
+                            <option selected value="">-</option>
                             <option value="1">Yes</option>
                         </select>
                     </li>
@@ -252,5 +277,41 @@
 @section scripts{
 
     <script src="~/UIContent/JS/CustomePage/CTVHdrEntry.js"></script>
-
+    <script>
+        $(document).ready(function () {
+            //var mymsg = '@ViewBag.ErrMsg';
+            if ('@ViewBag.ErrMsg' != '') {
+                Swal.fire({
+                    title: 'Failed to submit',
+                    text: "@ViewBag.ErrMsg",
+                    icon: 'warning',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        //cancel: 'Cancel',
+                        confirm: 'Ok'
+                    },
+                    //cancelButtonClass: 'btn-cancel',
+                    confirmButtonColor: '#2527a2',
+                });
+            };
+            if ('@ViewBag.Msg' != '') {
+                Swal.fire({
+                    title: 'Confirmation',
+                    text: "@ViewBag.Msg",
+                    icon: 'success',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        confirm: 'Ok'
+                    },
+                    confirmButtonColor: '#2527a2',
+                }).then(callback);
+                function callback(result) {
+                    if (result.value) {
+                        var url = "/Security/CTV/Index";
+                        window.location.href = url;
+                    }
+                }
+            };
+        });
+    </script>
 }

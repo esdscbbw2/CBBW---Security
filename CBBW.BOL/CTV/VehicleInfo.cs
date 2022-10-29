@@ -19,6 +19,7 @@ namespace CBBW.BOL.CTV
         public string Msg { get; set; }
         public int LocalTripRecords { get; set; }        
         public string DriverNonName { get; set; }
+        public bool IsSlotAvbl { get; set; }
     }
     public class VehicleNo
     {

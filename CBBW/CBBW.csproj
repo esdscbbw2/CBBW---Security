@@ -139,6 +139,8 @@
     <Compile Include="Areas\Security\Controllers\TourRuleController.cs" />
     <Compile Include="Areas\Security\SecurityAreaRegistration.cs" />
     <Compile Include="Areas\Security\ViewModel\CTVHdrEntryVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\LocalVehicleTripScheduleVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\LVTSFromMatVM.cs" />
     <Compile Include="Areas\Security\ViewModel\OtherTripScheduleEntryVM.cs" />
     <Compile Include="Areas\Security\ViewModel\TADATransViewModel.cs" />
     <Compile Include="Areas\Security\ViewModel\TourRulesViewModel.cs" />
@@ -220,6 +222,7 @@
     <Content Include="UIContent\CSS\font-awesome.min.css" />
     <Content Include="UIContent\CSS\jquery.dataTables.min.css" />
     <Content Include="UIContent\CSS\style.css" />
+    <Content Include="UIContent\CSS\style_2810.css" />
     <Content Include="UIContent\CSS\sweetalert2.min.css" />
     <Content Include="UIContent\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="UIContent\JS\bootstrap-datetimepicker.min.js" />
@@ -316,6 +319,8 @@
     <Content Include="Areas\Security\Views\CTV\Index.cshtml" />
     <Content Include="Areas\Security\Views\CTV\Create.cshtml" />
     <Content Include="Areas\Security\Views\CTV\OtherTrip.cshtml" />
+    <Content Include="Areas\Security\Views\CTV\LocVehTripSch.cshtml" />
+    <Content Include="Areas\Security\Views\CTV\LocalVehicleTripSchFromMat.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />

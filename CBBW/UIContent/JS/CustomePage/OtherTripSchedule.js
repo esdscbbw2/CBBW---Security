@@ -1,4 +1,61 @@
-﻿function ClearBtnClick() {
+﻿function getInitialData() {
+    var notenumber = $('#NoteNumber').val();
+    $.ajax({
+        url: '/CTV/getOTVSChDetailData',
+        method: 'GET',
+        data: { Notenumber: notenumber },
+        dataType: 'json',
+        success: function (data) {
+            $(data).each(function (index, item) {
+                AddBtnVirtualClick(index - 1);
+                var fromdatectrl = $('#' + index + '_FromDt');
+                var fromtimectrl = $('#' + index + '_Fromtime');
+                var fromltctrl = $('#' + index + '_FromLT');
+                var toltctrl = $('#' + index + '_ToLT');
+                var todtctrl = $('#' + index + '_ToDt');
+                var fromlctrl = $('#' + index + '_FromL');
+
+                fromdatectrl.val(item.FromDateStr);
+                fromtimectrl.val(item.FromTime).removeClass('is-invalid').addClass('is-valid');
+                fromltctrl.val(item.FromCenterTypeCode).removeClass('is-invalid').addClass('is-valid');
+                toltctrl.val(item.ToCentreTypeCode).removeClass('is-invalid').addClass('is-valid');
+                todtctrl.val(item.ToDateStr).removeClass('is-invalid').addClass('is-valid');
+
+                //// Second Table cloaning
+                if (index > 0) { cloneEditRows(index); }
+                $('#' + index +'_FromDate2').val(item.FromDateStr);
+                $('#' + index +'_FromTime2').val(fromtimectrl.val());
+                $('#' + index +'_FromLT2').val(fromltctrl.find('option:selected').text());
+                $('#' + index +'_ToLT2').val(toltctrl.find('option:selected').text());
+                $('#' + index + '_ToDate2').val(item.ToDateStr);
+                $('#' + index + '_Driver2').val(item.DriverCodenName);
+                //second table cloaning end
+                FillLocationComboVirtually(item.FromCenterTypeCode, index + '_FromL', item.FromCentreCode, index+'_FromL2');
+                FillLocationComboVirtually(item.ToCentreTypeCode, index + '_ToL', item.ToCentreCode, index+'_ToL2');
+                fromlctrl.removeClass('is-invalid').addClass('is-valid');
+                $('#' + index + '_ToL').removeClass('is-invalid').addClass('is-valid');
+
+                
+                
+                
+            });
+        }
+    });
+
+};
+function cloneEditRows(index) {    
+    var cloneready = $('#tbody3').find('tr').clone();
+    cloneready.find('#0_FromDate2').attr('id', index + '_FromDate2');
+    cloneready.find('#0_FromTime2').attr('id', index + '_FromTime2');
+    cloneready.find('#0_FromLT2').attr('id', index + '_FromLT2');
+    cloneready.find('#0_ToLT2').attr('id', index + '_ToLT2');
+    cloneready.find('#0_FromL2').attr('id', index + '_FromL2');
+    cloneready.find('#0_ToL2').attr('id', index + '_ToL2');
+    cloneready.find('#0_ToDate2').attr('id', index + '_ToDate2');
+    cloneready.find('#0_Driver2').attr('id', index + '_Driver2');
+    $('#tbody4').append(cloneready);
+}
+function ClearBtnClick() {
     //$('#TripPurpose').val('');
     $('#tbody2').empty();
     $('.canclear').each(function () {
@@ -35,13 +92,13 @@ function validatectrl(targetid, value) {
     return isvalid;
 };
 function SaveData() {
-    var trippurpose = 'Inspection and others';
-    var vehicleno = 'ABC';
-    var notenumber = 'XYZ';
+    var trippurpose = $('#TripPurpose').val();
+    var vehicleno = $('#VehicleNo').val();
+    var notenumber = $('#NoteNumber').val();
     var schrecords = getSchRecords();
     $.ajax({
         method: 'POST',
-        url: '/CTV/getOTVSchData',
+        url: '/CTV/setOTVSchData',
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         data: JSON.stringify({
@@ -65,7 +122,7 @@ function SaveData() {
                     }).then(callback);
                     function callback(result) {
                         if (result.value) {
-                            var url = "/CTV/OtherTrip";
+                            var url = "/Security/CTV/Create";
                             window.location.href = url;
                         }
                     }
@@ -96,12 +153,15 @@ function getSchRecords() {
             'FromCentreCode': $('#' + rowid + '_FromL').val(),
             'ToCentreTypeCode': $('#' + rowid + '_ToLT').val(),
             'ToCentreCode': $('#' + rowid + '_ToL').val(),
-            'ToDate': $('#' + rowid + '_ToDt').val()
+            'ToDate': $('#' + rowid + '_ToDt').val(),
+            'DriverCode': $('#DriverCode').val(),
+            'DriverName': $('#DriverName').val()
         });
     });
     return schrecords;
 };
 function activateSubmitBtn() {
+    //alert($('.is-invalid').length);
     var btnSubmit = $('#btnSubmit');
     if ($('.is-invalid').length > 0) {
         btnSubmit.attr('disabled', 'disabled');
@@ -109,12 +169,10 @@ function activateSubmitBtn() {
         btnSubmit.removeAttr('disabled');
     }
 };
-function addBtnClick() {
-    var insrow = addBtnClick.caller.arguments[0].target.closest('.add-row');
-    //getting Max Row 
+function AddBtnVirtualClick(insrowid) {
     var maxrows = 0;
     $('#tbody2 tr').each(function () {
-        var maxr=$(this).attr('id')
+        var maxr = $(this).attr('id')
         if (maxr > maxrows) { maxrows = maxr; }
     });
     //alert(maxrows);
@@ -122,7 +180,7 @@ function addBtnClick() {
     //var r = parseInt($('#tbody2 tr:last').attr("id"));
     var r = 0;
     if (maxrows >= 1) { r = maxrows + 1; } else { r = 1; }
-    
+
     var cloneready = $('#tbody1').find('tr').clone();
     cloneready.attr("id", r);
     cloneready.find('#0_FromDt').attr('id', r + '_FromDt').val('').removeClass('is-valid').addClass('is-invalid');
@@ -132,7 +190,7 @@ function addBtnClick() {
     cloneready.find('#0_ToLT').attr('id', r + '_ToLT').removeClass('is-valid').addClass('is-invalid');
     cloneready.find('#0_ToL').attr('id', r + '_ToL').removeClass('is-valid').addClass('is-invalid');
     cloneready.find('#0_ToDt').attr('id', r + '_ToDt').val('').removeClass('is-valid').addClass('is-invalid');
-    
+
     var addbtn = cloneready.find('#0_AddBtn');
     addbtn.attr('id', r + '_AddBtn');
     addbtn.on('mouseenter', function () {
@@ -141,7 +199,7 @@ function addBtnClick() {
     addbtn.on('mouseleave click', function () {
         $(this).tooltip('hide');
     });
-    
+
     var deletebtn = cloneready.find('#0_DeleteBtn');
     deletebtn.attr('id', r + '_DeleteBtn').removeClass("inVisible");
     deletebtn.on('mouseenter', function () {
@@ -150,15 +208,15 @@ function addBtnClick() {
     deletebtn.on('mouseleave click', function () {
         $(this).tooltip('hide');
     });
-    
-    var insrowid = $(insrow).attr('id');
+
+    //var insrowid = $(insrow).attr('id');
     //alert(insrowid + ' - ' + maxrows);
     if (insrowid == 0) {
         if (maxrows == 0) {
             $('#tbody2').append(cloneready);
         } else {
             $(cloneready).insertBefore('#tbody2 tr:first');
-        }       
+        }
     } else {
         $(cloneready).insertAfter('#' + insrowid);
     }
@@ -174,6 +232,11 @@ function addBtnClick() {
     });
 
     activateSubmitBtn();
+};
+function addBtnClick() {
+    var insrow = addBtnClick.caller.arguments[0].target.closest('.add-row');
+    AddBtnVirtualClick($(insrow).attr('id'));
+
 };
 function removeBtnClick() {
     var r = removeBtnClick.caller.arguments[0].target.closest('.add-row');
@@ -194,14 +257,14 @@ function ChangeLocation() {
     var targetid = $(target).attr('id');
     var targetvalue = $(target).val();
     var rowid = $(target.closest('.add-row')).attr("id");
-    getToDate(rowid);
+    
     if (targetvalue >= 0) {
         $(target).removeClass('is-invalid').addClass('is-valid');
     } else {
         $(target).removeClass('is-valid').addClass('is-invalid');
     }
-
-    activateSubmitBtn();
+    getToDate(rowid);
+    //activateSubmitBtn();
 };
 function SchTimeChanged() {
     var target = SchTimeChanged.caller.arguments[0].target;
@@ -219,7 +282,7 @@ function SchDateChanged() {
     var target = SchDateChanged.caller.arguments[0].target;
     var rowid = $(target.closest('.add-row')).attr("id");
     var datevalue = $(target).val();
-    var vehicleno = '';
+    var vehicleno = $('#VehicleNo').val();
     
     if (datevalue == null) {
         $(target).removeClass('is-valid').addClass('is-invalid');
@@ -258,14 +321,36 @@ function SchDateChanged() {
         });
     }    
 };
+function FillLocationComboVirtually(locationtypeid, locationcomboid, locationid, editlocationctrlid)
+{
+    var locationcombo = $('#' + locationcomboid);
+    var editlocationctrl = $('#' + editlocationctrlid);
+    $.ajax({
+        url: '/CTV/GetLocationsFromType',
+        method: 'GET',
+        data: { TypeID: locationtypeid },
+        dataType: 'json',
+        success: function (data) {
+            locationcombo.empty();
+            locationcombo.append($('<option/>', { value: "-1", text: "Select location" }));
+            $(data).each(function (index, item) {
+                locationcombo.append($('<option/>', { value: item.ID, text: item.DisplayText }));
+            });
+            locationcombo.val(locationid);
+            editlocationctrl.val(locationcombo.find('option:selected').text());
+        }
+    });
+}
 function ChangeLocationType() {
     var target = ChangeLocationType.caller.arguments[0].target;
     var rowid = $(target.closest('.add-row')).attr("id");
+    //var locationctrl
     //var targetid = $(target).attr('id').split("_").pop();
     var targetid = $(target).attr('id');
     targetid = targetid.slice(0, - 1);
     var locationtypeid = $(target).val();
     var locationcombo = $('#' + targetid);
+    locationcombo.removeClass('is-valid').addClass('is-invalid');
     //Validations
     if (locationtypeid >= 0) {
         $(target).removeClass('is-invalid').addClass('is-valid');
@@ -281,13 +366,13 @@ function ChangeLocationType() {
             locationcombo.empty();
             locationcombo.append($('<option/>', { value: "-1", text: "Select location" }));
             $(data).each(function (index, item) {
-                locationcombo.append($('<option/>', { value: item.ID, text: item.DisplayText }));                
+                locationcombo.append($('<option/>', { value: item.ID, text: item.DisplayText }));
             });
         }
     });
 
     getToDate(rowid);
-    activateSubmitBtn();
+    //activateSubmitBtn();
 };
 function getToDate(rowid) {
     //var todate = '';
@@ -319,6 +404,7 @@ function getToDate(rowid) {
                                 confirmButtonColor: '#2527a2',
                             });
                             todateCtrl.removeClass('is-valid').addClass('is-invalid');
+                            $('#' + rowid + '_ToL').removeClass('is-valid').addClass('is-invalid');
                         }
                         else {
                             $('.add-row').each(function () {
@@ -354,6 +440,7 @@ function getToDate(rowid) {
                                             todateCtrl.val(item.sResponseString);
                                             todateCtrl.removeClass('is-invalid').addClass('is-valid');
                                         });
+                                        activateSubmitBtn();
                                     }
                                 });
                             } else {
@@ -408,8 +495,18 @@ $(document).ready(function () {
                 FromLT.append($('<option/>', { value: item.ID, text: item.DisplayText }));
                 ToLT.append($('<option/>', { value: item.ID, text: item.DisplayText }));
             });
+            getInitialData();
         }
     });
-
     
 });
+//$(function () {
+//    $('.datepicker2').datepicker({
+//        changeMonth: true,
+//        changeYear: true,
+//        dateFormat: 'dd-M-yy',
+//        minDate: new Date(),
+//        maxDate: "+1m",
+//        autoclose: true
+//    });
+//});

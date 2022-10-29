@@ -96,16 +96,16 @@ namespace CBBW.DAL.Entities
             _DBResponseMapper.Map_DBResponse(_datasync.setCTVHeader(model, ref pMsg), ref pMsg, ref result);
             return result;
         }
-        public bool InsertOthTripSchDtl(string Notenumber, List<OthTripTemp> dtldata, ref string pMsg)
+        public bool InsertOthTripSchDtl(string Notenumber, string TripPurpose, List<OthTripTemp> dtldata, ref string pMsg)
         {
             bool result = false;
-            _DBResponseMapper.Map_DBResponse(_datasync.setOthTripSchDtls(Notenumber, dtldata, ref pMsg), ref pMsg, ref result);
+            _DBResponseMapper.Map_DBResponse(_datasync.setOthTripSchDtls(Notenumber, TripPurpose, dtldata, ref pMsg), ref pMsg, ref result);
             return result;
         }
-        public bool RemoveNote(string NoteNumber, ref string pMsg)
+        public bool RemoveNote(string NoteNumber,int OnlyDtl, ref string pMsg)
         {
             bool result = false;
-            _DBResponseMapper.Map_DBResponse(_datasync.RemoveNote(NoteNumber, ref pMsg), ref pMsg, ref result);
+            _DBResponseMapper.Map_DBResponse(_datasync.RemoveNote(NoteNumber, OnlyDtl, ref pMsg), ref pMsg, ref result);
             return result;
         }
         public List<LocVehSchFromMat> getLocalVehicleSchedule(string VehicleNo, DateTime FromDate, DateTime ToDate, ref string pMsg) 
@@ -155,6 +155,30 @@ namespace CBBW.DAL.Entities
                 }
             }
             catch (Exception ex){pMsg = ex.Message;}
+
+            return result;
+        }
+        public VehicleAvblInfo getVehicleSlot(string VehicleNo, int IncludeOTVSch, ref string pMsg) 
+        {
+            VehicleAvblInfo result = new VehicleAvblInfo();
+            try
+            {
+                ds = _datasync.getVehicleSlotVacency(VehicleNo, IncludeOTVSch, ref pMsg);
+                if (ds != null)
+                {
+                    DataTable dtl = null; DataRow hdr = null;
+                    if (ds.Tables[1] != null && ds.Tables[1].Rows.Count > 0)
+                    {
+                        dtl = ds.Tables[1];
+                    }
+                    if (ds.Tables[0] != null && ds.Tables[0].Rows.Count > 0)
+                    {
+                        hdr = ds.Tables[0].Rows[0];
+                    }
+                    return _CTVDBMapper.Map_VehicleAvblInfo(hdr, dtl);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
 
             return result;
         }

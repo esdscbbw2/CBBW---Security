@@ -34,7 +34,7 @@ namespace CBBW.BLL.Repository
         {
             return _CTVEntities.getLCVMCVVehicleList(ref pMsg);
         }
-        public IEnumerable<LocVehSchFromMat> getLocalVehicleSChedules(string VehicleNo, DateTime FromDate, DateTime ToDate, ref string pMsg)
+        public List<LocVehSchFromMat> getLocalVehicleSChedules(string VehicleNo, DateTime FromDate, DateTime ToDate, ref string pMsg)
         {
             return _CTVEntities.getLocalVehicleSchedule(VehicleNo, FromDate, ToDate, ref pMsg);
         }
@@ -71,7 +71,9 @@ namespace CBBW.BLL.Repository
 
         public VehicleInfo getVehicleInfo(string VehicleNo, ref string pMsg)
         {
-           return _CTVEntities.getVehicleInfo(VehicleNo, ref pMsg);
+            VehicleInfo result = _CTVEntities.getVehicleInfo(VehicleNo, ref pMsg);
+            result.IsSlotAvbl = _CTVEntities.getVehicleSlot(VehicleNo, 0,ref pMsg).IsSlotAvbl;
+            return result;
         }
 
         public TripScheduleHdr NewTripScheduleNo(string SchPattern, ref string pMsg)
@@ -104,14 +106,14 @@ namespace CBBW.BLL.Repository
             return result;
         }
 
-        public bool RemoveNote(string NoteNumber, ref string pMsg)
+        public bool RemoveNote(string NoteNumber,int OnlyDtl, ref string pMsg)
         {
-            return _CTVEntities.RemoveNote(NoteNumber, ref pMsg);
+            return _CTVEntities.RemoveNote(NoteNumber, OnlyDtl, ref pMsg);
         }
 
-        public bool UpdateOthTripSchDtl(string Notenumber, List<OthTripTemp> dtldata, ref string pMsg)
+        public bool UpdateOthTripSchDtl(string Notenumber,string TripPurpose, List<OthTripTemp> dtldata, ref string pMsg)
         {
-            return _CTVEntities.InsertOthTripSchDtl(Notenumber, dtldata, ref pMsg);
+            return _CTVEntities.InsertOthTripSchDtl(Notenumber, TripPurpose, dtldata, ref pMsg);
         }
     }
 }
