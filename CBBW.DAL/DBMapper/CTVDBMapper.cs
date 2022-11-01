@@ -87,21 +87,34 @@ namespace CBBW.DAL.DBMapper
                         result.VehicleNumber = dr["VehicleNumber"].ToString();
                     if (!DBNull.Value.Equals(dr["SchDate"]))
                         result.FromDate =DateTime.Parse(dr["SchDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["FromCentreTypeCode"]))
+                        result.FromCenterTypeCode = int.Parse(dr["FromCentreTypeCode"].ToString());
                     if (!DBNull.Value.Equals(dr["FromCentreCode"]))
                         result.FromCentreCode = int.Parse(dr["FromCentreCode"].ToString());
                     if (!DBNull.Value.Equals(dr["FromCenterName"]))
                         result.FromCenterName = dr["FromCenterName"].ToString();
+                    if (!DBNull.Value.Equals(dr["ToCentreTypeCode"]))
+                        result.ToCentreTypeCode = int.Parse(dr["ToCentreTypeCode"].ToString());
+                    if (!DBNull.Value.Equals(dr["ToCentreTypeCodeName"]))
+                        result.ToCenterTypeName = dr["ToCentreTypeCodeName"].ToString();
                     if (!DBNull.Value.Equals(dr["ToCentreCode"]))
                         result.ToCentreCode = int.Parse(dr["ToCentreCode"].ToString());
-                    if (!DBNull.Value.Equals(dr["ToCenterName"]))
-                        result.ToCenterName = dr["ToCenterName"].ToString();
+                    if (!DBNull.Value.Equals(dr["ToCentreCodeName"]))
+                        result.ToCenterName = dr["ToCentreCodeName"].ToString();
                     if (!DBNull.Value.Equals(dr["Distance"]))
                         result.Distance =float.Parse(dr["Distance"].ToString());
-                    result.FromCenterTypeCode = 2;
-                    result.ToCentreTypeCode = 2;
+                    if (!DBNull.Value.Equals(dr["CanSchedule"]))
+                        result.CanSchedule = bool.Parse(dr["CanSchedule"].ToString());
+                    if (!DBNull.Value.Equals(dr["SchToDate"]))
+                        result.ToDate = DateTime.Parse(dr["SchToDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["CalcDays"]))
+                        result.CalcDays = float.Parse(dr["CalcDays"].ToString());
+                    if (!DBNull.Value.Equals(dr["DriverName"]))
+                        result.DriverCodenName = dr["DriverName"].ToString();
+
                     result.FromCenterTypeName = "Centre";
-                    result.ToCenterTypeName = "Centre";
-                    result.ToDate = result.FromDate.AddDays(MyDBLogic.ReturnDaysFromDistance(result.Distance));
+
+                    //result.ToDate = result.FromDate.AddDays(MyDBLogic.ReturnDaysFromDistance(result.Distance));
                     result.FromDateStr = result.FromDate.ToString("dd-MM-yyyy");
                     result.ToDateStr = result.ToDate.ToString("dd-MM-yyyy");
                 }

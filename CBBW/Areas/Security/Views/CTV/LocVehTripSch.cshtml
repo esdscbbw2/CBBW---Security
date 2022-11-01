@@ -87,9 +87,12 @@
                                 <td>@item.FromDateStr</td>
                                 <td>@item.FromCenterTypeCode / @item.FromCenterTypeName</td>
                                 <td>@item.FromCentreCode / @item.FromCenterName</td>
-                                <td>@item.ToCentreTypeCode / @item.ToCenterTypeName</td>
-                                <td>@item.ToCentreCode / @item.ToCenterName</td>
-                                <td>@item.ToDateStr</td>
+                                <td>@item.ToCenterTypeName</td>
+                                <td>@item.ToCenterName</td>
+                                <td>
+                                    <div data-toggle="tooltip" data-placement="right" title="Distance covered - @item.Distance kms, Days taken - @item.CalcDays" >
+                                    @item.ToDateStr</div>
+                                </td>
                             </tr>
                             mrow += 1;
                         }
@@ -178,10 +181,10 @@
                                     @item.FromCentreCode / @item.FromCenterName
                                 </td>
                                 <td class="text-center">
-                                    @item.ToCentreTypeCode / @item.ToCenterTypeName
+                                    @item.ToCenterTypeName
                                 </td>
                                 <td class="text-center">
-                                    @item.ToCentreCode / @item.ToCenterName
+                                    @item.ToCenterName
                                 </td>
                                 <td class="text-center">@item.ToDateStr</td>
                                 @*<td>

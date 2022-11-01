@@ -29,31 +29,38 @@ namespace CBBW.Areas.Security.Controllers
             if (TempData["CTVHDR"] != null) 
             {
                 obj = TempData["CTVHDR"] as TripScheduleHdr;
-                model.FromDate = obj.FromDate;
-                model.ToDate = obj.ToDate;
-                //model.FromDate= new DateTime(2022, 8, 1);
-                //model.ToDate= new DateTime(2022, 8, 15);
+                //model.FromDate = obj.FromDate;
+                //model.ToDate = obj.ToDate;
+                model.FromDate= new DateTime(2022, 8, 1);
+                model.ToDate= new DateTime(2022, 8, 15);
                 model.LVSDataList = _iCTV.getLocalVehicleSChedules("0", model.FromDate, model.ToDate, ref pMsg).OrderBy(o=>o.FromDate).ThenBy(o=>o.VehicleNumber).ToList();
                 TempData["CTVHDR"] = obj;
             }
             return View(model);
         }
+        public ActionResult Approval() 
+        {
+            CTVApprovalVM model = new CTVApprovalVM();
+            model.ListofNoteNumbers = _iCTV.GetNoteNumbersTobeApproved(ref pMsg);
+            model.DateTimeofApproval = DateTime.Now;
+            return View(model);
+        }
         //[HttpPost]
         //public ActionResult LocalVehicleTripSchFromMat() 
         //{
-        
+
         //}
         public ActionResult LocVehTripSch() 
         {
             TripScheduleHdr obj = new TripScheduleHdr();
             if (TempData["CTVHDR"] != null) { obj = TempData["CTVHDR"] as TripScheduleHdr; }
             LocalVehicleTripScheduleVM model = new LocalVehicleTripScheduleVM();
-            model.SCHFromDate = obj.FromDate;
-            model.SCHToDate = obj.ToDate;
-            model.VehicleNo = obj.Vehicleno;
-            //model.SCHFromDate = new DateTime(2022, 8, 1);
-            //model.SCHToDate = new DateTime(2022, 8, 15);
-            //model.VehicleNo = "AP25X1541";
+            //model.SCHFromDate = obj.FromDate;
+            //model.SCHToDate = obj.ToDate;
+            //model.VehicleNo = obj.Vehicleno;
+            model.SCHFromDate = new DateTime(2022, 8, 1);
+            model.SCHToDate = new DateTime(2022, 8, 15);
+            model.VehicleNo = "AP25X1541";
 
             model.DriverCodenName = obj.DriverNonName;
             model.LVSchDtl = _iCTV.getLocalVehicleSChedules(model.VehicleNo, model.SCHFromDate, model.SCHToDate, ref pMsg);
@@ -212,6 +219,11 @@ namespace CBBW.Areas.Security.Controllers
         {
             CTVHdrDtl result=_iCTV.getSchDetailsFromNote(Notenumber, ref pMsg);
             return Json(result.SchDetailList,JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getDataFromNote(string Notenumber)
+        {
+            CTVHdrDtl result = _iCTV.getSchDetailsFromNote(Notenumber, ref pMsg);
+            return Json(result.SchHdrData, JsonRequestBehavior.AllowGet);
         }
     }
 }

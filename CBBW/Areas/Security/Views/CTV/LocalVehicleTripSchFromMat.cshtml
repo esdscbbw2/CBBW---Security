@@ -41,14 +41,14 @@
                             From Date :
                         </label>
                         <div class="col-md-3">
-                            @Html.TextBoxFor(m => m.FromDate, "{0:dd-MMM-yyyy}",
+                            @Html.TextBoxFor(m => m.FromDate, "{0:dd-MM-yyyy}",
                            htmlAttributes: new { @class = "form-control", disabled = "disabled" })
                         </div>
                         <label class="col-form-label col-md-3">
                             To Date :
                         </label>
                         <div class="col-md-3">
-                            @Html.TextBoxFor(m => m.ToDate, "{0:dd-MMM-yyyy}",
+                            @Html.TextBoxFor(m => m.ToDate, "{0:dd-MM-yyyy}",
                            htmlAttributes: new { @class = "form-control", disabled = "disabled" })
                         </div>
                         @*</form>*@
@@ -83,8 +83,8 @@
                                 }
                                 @if (x > 0) { x -= 1; }
                                 <td class="text-center"> @item.VehicleNumber</td>
-                                <td class="text-center">@item.ToCentreTypeCode / @item.ToCenterTypeName</td>
-                                <td class="text-center">@item.ToCentreCode / @item.ToCenterName </td>
+                                <td class="text-center">@item.ToCenterTypeName</td>
+                                <td class="text-center">@item.ToCenterName </td>
                             </tr>
 
                                 }

@@ -24,5 +24,7 @@ namespace CBBW.BOL.CTV
         public string DriverCodenName { get; set; }
         public string ToDateStr { get; set; }
         public string FromDateStr { get; set; }
+        public bool CanSchedule { get; set; }
+        public float CalcDays { get; set; }
     }
 }

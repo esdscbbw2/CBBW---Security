@@ -16,20 +16,28 @@
         </tr>
         <tr>
             @*  *@
-        <td style="border:1px solid black">
-            TA DA Rules
-        </td>
-        <td style="border:1px solid black">
-            @Html.ActionLink("Rules - TA DA Rules", "Index", "TADARules", new { area = "Security" }, null)
-        </td>
-    </tr>
-    <tr>
-        <td style="border:1px solid black">
-            CTV Trip Schedule
-        </td>
-        <td style="border:1px solid black">
-            @Html.ActionLink("CTV Trip Schedule", "Create", "CTV", new { area = "Security" }, null)
-        </td>
-    </tr>
+            <td style="border:1px solid black">
+                TA DA Rules
+            </td>
+            <td style="border:1px solid black">
+                @Html.ActionLink("Rules - TA DA Rules", "Index", "TADARules", new { area = "Security" }, null)
+            </td>
+        </tr>
+        <tr>
+            <td style="border:1px solid black">
+                CTV Trip Schedule
+            </td>
+            <td style="border:1px solid black">
+                @Html.ActionLink("CTV Trip Schedule", "Create", "CTV", new { area = "Security" }, null)
+            </td>
+        </tr>
+        <tr>
+            <td style="border:1px solid black">
+                CTV Trip Schedule - Approval
+            </td>
+            <td style="border:1px solid black">
+                @Html.ActionLink("CTV Trip Schedule - Approval", "Approval", "CTV", new { area = "Security" }, null)
+            </td>
+        </tr>
     </table>
 </div>

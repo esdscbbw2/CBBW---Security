@@ -101,7 +101,7 @@ namespace CBBW.DAL.DataSync
                 para[paracount] = new SqlParameter("@ToDate", SqlDbType.Date);
                 para[paracount++].Value = ToDate;
 
-                using (SQLHelper sql = new SQLHelper("[CTV].[LocalVehicleSchedule]", CommandType.StoredProcedure))
+                using (SQLHelper sql = new SQLHelper("[CTV].[LocalVehicleScheduleV2]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataTable(para, ref pMsg);
                 }
@@ -220,6 +220,33 @@ namespace CBBW.DAL.DataSync
                 using (SQLHelper sql = new SQLHelper("[CTV].[getOVTSchDetails]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataSet(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable getNoteNumbersTobeApproved(ref string pMsg) 
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("select * from [CTV].[getNoteNumbersTobeApproved]()", CommandType.Text))
+                {
+                    return sql.GetDataTable();
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable getCTVSchHdrFromNote(string NoteNumber, ref string pMsg) 
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[1];
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
+                para[paracount++].Value = NoteNumber;
+
+                using (SQLHelper sql = new SQLHelper("[CTV].[getOVTSchHdrFromNote]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
                 }
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }

@@ -1,4 +1,30 @@
-﻿$(function () {
+﻿    $.fn.noneInteractive = function () {
+            var that = this;
+    that.focus(function (e) {
+        that.blur();
+            });
+        };
+    $.fn.preventTypying = function () {
+            var that = this;
+    that.keypress(function (e) {
+                return false;
+                //return false; or e.preventDefault();
+            });
+        };
+    $.fn.isInvalid = function () {
+            var that = this;
+    that.addClass('is-invalid').removeClass('is-valid')
+        };
+    $.fn.isValid = function () {
+            var that = this;
+    that.addClass('is-valid').removeClass('is-invalid')
+        };
+
+
+
+
+
+$(function () {
     $('[data-toggle="tooltip"]').tooltip();
 });
 $(document).ready(function () {

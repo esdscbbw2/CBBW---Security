@@ -52,6 +52,11 @@ namespace CBBW.BLL.Repository
            return _CTVEntities.getNewCTVNoteNo(SchPattern, ref pMsg);
         }
 
+        public List<NoteNumber> GetNoteNumbersTobeApproved(ref string pMsg)
+        {
+            return _CTVEntities.getNotenumbersTobeApproved(ref pMsg);
+        }
+
         public CTVHdrDtl getSchDetailsFromNote(string NoteNumber, ref string pMsg)
         {
             return _CTVEntities.getCTVSchDetailsFromNote(NoteNumber, ref pMsg);

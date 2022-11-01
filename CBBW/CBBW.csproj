@@ -138,6 +138,7 @@
     <Compile Include="Areas\Security\Controllers\TADARulesController.cs" />
     <Compile Include="Areas\Security\Controllers\TourRuleController.cs" />
     <Compile Include="Areas\Security\SecurityAreaRegistration.cs" />
+    <Compile Include="Areas\Security\ViewModel\CTVApprovalVM.cs" />
     <Compile Include="Areas\Security\ViewModel\CTVHdrEntryVM.cs" />
     <Compile Include="Areas\Security\ViewModel\LocalVehicleTripScheduleVM.cs" />
     <Compile Include="Areas\Security\ViewModel\LVTSFromMatVM.cs" />
@@ -222,11 +223,13 @@
     <Content Include="UIContent\CSS\font-awesome.min.css" />
     <Content Include="UIContent\CSS\jquery.dataTables.min.css" />
     <Content Include="UIContent\CSS\style.css" />
+    <Content Include="UIContent\CSS\style3110.css" />
     <Content Include="UIContent\CSS\style_2810.css" />
     <Content Include="UIContent\CSS\sweetalert2.min.css" />
     <Content Include="UIContent\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="UIContent\JS\bootstrap-datetimepicker.min.js" />
     <Content Include="UIContent\JS\CustomePage\CreateRuleTADA.js" />
+    <Content Include="UIContent\JS\CustomePage\CTVApproval.js" />
     <Content Include="UIContent\JS\CustomePage\CTVHdrEntry.js" />
     <Content Include="UIContent\JS\CustomePage\OtherTripSchedule.js" />
     <Content Include="UIContent\JS\CustomePage\SecurityRuleValidation.js" />
@@ -321,6 +324,7 @@
     <Content Include="Areas\Security\Views\CTV\OtherTrip.cshtml" />
     <Content Include="Areas\Security\Views\CTV\LocVehTripSch.cshtml" />
     <Content Include="Areas\Security\Views\CTV\LocalVehicleTripSchFromMat.cshtml" />
+    <Content Include="Areas\Security\Views\CTV\Approval.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />

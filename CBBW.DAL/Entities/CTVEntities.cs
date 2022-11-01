@@ -182,5 +182,28 @@ namespace CBBW.DAL.Entities
 
             return result;
         }
+        public List<NoteNumber> getNotenumbersTobeApproved(ref string pMsg) 
+        {
+            List<NoteNumber> result = new List<NoteNumber>();
+            try
+            {
+                dt = _datasync.getNoteNumbersTobeApproved(ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        NoteNumber x = new NoteNumber();
+                        if (!DBNull.Value.Equals(dt.Rows[i]["NoteNo"]))
+                        {
+                            x.NoteNo = dt.Rows[i]["NoteNo"].ToString();
+                            //x.VehicleID = dt.Rows[i]["VehicleNumber"].ToString();
+                        }
+                        result.Add(x);
+                    }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
     }
 }

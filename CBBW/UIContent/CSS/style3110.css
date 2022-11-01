@@ -559,8 +559,6 @@ th {
 
 ul.multiselect-container.dropdown-menu.show {
     list-style: none;
-    max-height: 300px;
-    overflow-y: auto;
 }
 
 .selectBoxInfo {
@@ -1002,8 +1000,8 @@ strong {
 
 @font-face {
     font-family: 'Glyphicons Halflings';
-    src: url(fonts/glyphicons-halflings-regular.eot);
-    src: url(fonts/glyphicons-halflings-regular.eot?#iefix) format('embedded-opentype'), url(fonts/glyphicons-halflings-regular.woff2) format('woff2'), url(fonts/glyphicons-halflings-regular.woff) format('woff'), url(fonts/glyphicons-halflings-regular.ttf) format('truetype'), url(fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format('svg')
+    src: url(../fonts/glyphicons-halflings-regular.eot);
+    src: url(../fonts/glyphicons-halflings-regular.eot?#iefix) format('embedded-opentype'), url(../fonts/glyphicons-halflings-regular.woff2) format('woff2'), url(../fonts/glyphicons-halflings-regular.woff) format('woff'), url(../fonts/glyphicons-halflings-regular.ttf) format('truetype'), url(../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format('svg')
 }
 
 .glyphicon {
@@ -1191,17 +1189,6 @@ strong {
     transform: rotate(-0deg);
 }
 
-.selectBox {
-    z-index: 9999;
-}
-
-.multiselect.dropdown-toggle {
-    white-space: normal;
-}
-
-
-/* media query starts */
-
 @media (max-width:1920px) {
     .table-responsive {
         overflow-x: unset;
@@ -1241,9 +1228,6 @@ strong {
     .formInputWidth label.col-form-label.col-md-2 {
         width: 10%;
         padding-right: 0;
-    }
-    .approvalForm .col-md-3 {
-        width: 27%;
     }
 }
 

@@ -24,6 +24,6 @@ namespace CBBW.BLL.IRepository
         DateTime getSchToDate(DateTime FromSchDt, int FromLocation, int ToLocationType, int ToLocation,int IsCalculateHourly, ref string pMsg);
         bool UpdateOthTripSchDtl(string Notenumber,string TripPurpose, List<OthTripTemp> dtldata, ref string pMsg);
         CTVHdrDtl getSchDetailsFromNote(string NoteNumber, ref string pMsg);
-
+        List<NoteNumber> GetNoteNumbersTobeApproved(ref string pMsg);
     }
 }
