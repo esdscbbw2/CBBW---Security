@@ -6,7 +6,7 @@
 <div class="row newTable">
     @using (Html.BeginForm())
     {
-        @Html.HiddenFor(m => m.IsSubmit)
+        @Html.HiddenFor(m => m.IsOTSActivated)
         @Html.HiddenFor(m => m.IsSubmitted)
         @Html.HiddenFor(m => m.NoteNo)
         @Html.HiddenFor(m => m.CenterCode)
@@ -50,14 +50,16 @@
         <div class="col-md-12 mb-4">
             <div class="col-md-12">
                 <div class="d-flex justify-content-center mt-2 upper-tab-buttons">
-                    <button type="button" class="btn btn-primary me-2"
-                            onclick="window.location.href='@Url.Action("Index", "TourRule", new { Area = "Security" })';">
+                    <button type="submit" name="Submit" value="TourRule" class="btn btn-primary me-2">
+                            @*onclick="window.location.href='@Url.Action("Index", "TourRule", 
+                                                          new { Area = "Security" })';">*@
                         Tour
                         Rules
                     </button>
 
-                    <button type="button" class="btn btn-primary me-2"
-                            onclick="window.location.href='@Url.Action("Index", "TADARules", new { Area = "Security" })';">
+                    <button type="submit" name="Submit" value="TADARules" class="btn btn-primary me-2">
+                            @*onclick="window.location.href='@Url.Action("ViewRedirection", "TADARules", 
+                                                          new { Area = "Security",CBUID=1 })';"*@
                         TA & DA
                         Rules
                     </button>
@@ -275,7 +277,6 @@
     </style>
 }
 @section scripts{
-
     <script src="~/UIContent/JS/CustomePage/CTVHdrEntry.js"></script>
     <script>
         $(document).ready(function () {
@@ -312,6 +313,10 @@
                     }
                 }
             };
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
         });
     </script>
 }

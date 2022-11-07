@@ -33,5 +33,6 @@ namespace CBBW.BOL.Tour
         public List<CustomCheckBoxOption> ServiceTypes { get; set; }
         
         public List<int> SelectedServiceTypeIds { get; set; }
+        public string CallBackUrl { get; set; }
     }
 }

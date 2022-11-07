@@ -26,5 +26,7 @@ namespace CBBW.BOL.CTV
         public string FromDateStr { get; set; }
         public bool CanSchedule { get; set; }
         public float CalcDays { get; set; }
+        public string TripPurpose { get; set; }
+        public bool bOtherPlace { get; set; }
     }
 }

@@ -54,13 +54,14 @@ namespace CBBW.DAL.DataSync
                 para[paracount] = new SqlParameter("@IncludeOTVSch", SqlDbType.Int);
                 para[paracount++].Value = IncludeOTVSch;
 
-                using (SQLHelper sql = new SQLHelper("[CTV].[getVehicleSlotVacency]", CommandType.StoredProcedure))
+                using (SQLHelper sql = new SQLHelper("[CTV].[getSlotVacency]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataSet(para, ref pMsg);
                 }
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+        
         public DataTable getLCVMCVVehicles(ref string pMsg) 
         {
             try

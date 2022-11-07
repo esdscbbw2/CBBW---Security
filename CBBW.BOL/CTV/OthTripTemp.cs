@@ -17,5 +17,9 @@ namespace CBBW.BOL.CTV
         public string ToDate { get; set; }
         public int DriverCode { get; set; }
         public string DriverName { get; set; }
+        public string ToCentreTypeCodes { get; set; }
+        public string ToCentreCodes { get; set; }
+        public string ToCentreTypeCodesStr { get; set; }
+        public string ToCentreCodesStr { get; set; }
     }
 }

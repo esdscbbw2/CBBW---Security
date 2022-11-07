@@ -8,7 +8,10 @@
     @Html.HiddenFor(m => m.VehicleNo)
     @Html.HiddenFor(m => m.DriverCode)
     @Html.HiddenFor(m => m.DriverName)
-
+    @Html.HiddenFor(m => m.BackBtnMsg)
+    @Html.HiddenFor(m => m.MaxDate)
+    @Html.HiddenFor(m => m.MinDate)
+    @Html.HiddenFor(m=>m.CurDate)
     <div class="row newTable">
         <div class="fixedElement">
             <div class="col-md-12" style="position: relative;">
@@ -16,7 +19,7 @@
                 <div class="heading_text_btn mb-4 mt-4">
                     <div class="leftButton">
                         <button type="button" class="btn btn-primary me-2"
-                                onclick="window.location.href='@Url.Action("Create", "CTV", new { Area = "Security" })';">
+                                onclick="BackButtonClicked()">
                             <i data-feather="arrow-left-circle"></i>
                             Back
                         </button>
@@ -95,7 +98,7 @@
                         <tr>
 
                             <th scope="col" style="text-align: center; vertical-align: middle;">Date</th>
-                            <th scope="col" style="text-align: center; vertical-align: middle;">Time</th>
+                            <th scope="col" style="text-align: center; vertical-align: middle;" width="12%">Time</th>
                         </tr>
                     </thead>
                     <tbody id="tbody1">
@@ -103,21 +106,17 @@
                             <th scope="row">1</th>
                             <td>
                                 <div class="form-group">
-                                    @*<input id="0_FromDt"
-                                        class="form-control pointer canclear datetimepicker text-box single-line hasDatepicker is-invalid"
-                                        readonly="readonly" type="date" onchange="SchDateChanged()"/>*@
-
-                                    <input id="0_FromDt" type="date" value="12-12-2022"
+                                    <input id="0_FromDt" type="date" value="@(DateTime.Now.ToString("yyyy-MM-dd"))" 
                                            onchange="SchDateChanged()"
-                                           class="form-control datePicker canclear pointer is-invalid">
+                                           class="form-control datePicker canclear pointer ">
                                 </div>
                             </td>
                             <td>
                                 <div class="form-group position-relative">
-                                    <div class="input-group date timePicker">
+                                    <div id="0_FromtimeDiv" class="input-group date pointer timePicker">
                                         <input id="0_Fromtime" type="text" onblur="SchTimeChanged()"
                                                @*onchange="SchTimeChanged()"*@
-                                               class="form-control canclear is-invalid"
+                                               class="form-control canclear is-invalid "
                                                @*placeholder="11:10 PM"*@>
                                         <span class="input-group-addon pointer calender-ico"><i class="fa fa-clock-o" aria-hidden="true"></i></span>
                                     </div>
@@ -125,7 +124,8 @@
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <select id="0_FromLT" class="form-select pointer canclear is-invalid"
+                                    <select id="0_FromLT"
+                                            class="form-select pointer canclear is-invalid"
                                             onchange="ChangeLocationType()"
                                             aria-label="Default select example">
                                     </select>
@@ -142,18 +142,24 @@
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <select id="0_ToLT" class="form-select pointer canclear is-invalid"
-                                            onchange="ChangeLocationType()"
+                                    <select id="0_ToLT"
+                                            class="form-select pointer canclear is-invalid "
+                                            onchange="ChangeLocationToType()"
                                             aria-label="Default select example">
                                     </select>
                                 </div>
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <select id="0_ToL" class="form-select pointer canclear is-invalid"
-                                            onchange="ChangeLocation()"
+                                    <select id="0_ToL"
+                                            class="form-select pointer canclear is-invalid"
+                                            onchange="ChangeLocationTo()"
                                             aria-label="Default select example">
-                                        <option value="-1">Select location</option>
+                                    </select>
+                                    <select id="M_ToL" 
+                                            class="form-select pointer canclear inVisible is-invalid"
+                                            onchange="ChangeLocationTo()"
+                                            aria-label="Default select example">
                                     </select>
                                 </div>
                             </td>
@@ -311,19 +317,21 @@
                             style="width:110px"
                             onchange="ValidateControl()"
                             aria-label="Default select example">
-                        <option selected value="0">-</option>
+                        <option selected value="-1">-</option>
                         <option value="1">Yes</option>
+                        <option value="0">No</option>
                         @*<option selected value="0">No</option>*@
                     </select>
                 </li>
                 <li style="font-size: 16px;">
                     The Other Trip Schedule Is Taken Up With The Knowledge Of DIC P&A That Transpired Through Mail:
-                    <select id="DIC" class="form-select canclear pointer is-invalid" 
+                    <select id="DIC" class="form-select canclear pointer is-invalid"
                             style="width:110px"
                             onchange="ValidateControl()"
                             aria-label="Default select example">
-                        <option selected value="0">-</option>
+                        <option selected value="-1">-</option>
                         <option value="1">Yes</option>
+                        <option value="0">No</option>
                         @*<option selected value="0">No</option>*@
                     </select>
                 </li>
@@ -372,4 +380,5 @@
             $(this).data('DateTimePicker').date(time);
         });
     </script>
+    
 }

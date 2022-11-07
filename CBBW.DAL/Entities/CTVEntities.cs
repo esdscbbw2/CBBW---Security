@@ -128,12 +128,12 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
-        public bool CheckAvailibiltyofSchDate(string VehicleNo, DateTime ScheduleDate, ref string pMsg) 
-        {
-            bool result = false;
-            _DBResponseMapper.Map_DBResponse(_datasync.CheckAvailibiltyofSchDate(VehicleNo, ScheduleDate, ref pMsg), ref pMsg, ref result);
-            return result;
-        }
+        //public bool CheckAvailibiltyofSchDate(string VehicleNo, DateTime ScheduleDate, ref string pMsg) 
+        //{
+        //    bool result = false;
+        //    _DBResponseMapper.Map_DBResponse(_datasync.CheckAvailibiltyofSchDate(VehicleNo, ScheduleDate, ref pMsg), ref pMsg, ref result);
+        //    return result;
+        //}
         public CTVHdrDtl getCTVSchDetailsFromNote(string NoteNumber, ref string pMsg) 
         {
             CTVHdrDtl result = new CTVHdrDtl();
@@ -166,16 +166,20 @@ namespace CBBW.DAL.Entities
                 ds = _datasync.getVehicleSlotVacency(VehicleNo, IncludeOTVSch, ref pMsg);
                 if (ds != null)
                 {
-                    DataTable dtl = null; DataRow hdr = null;
+                    DataTable bookedslots = null; DataTable avblslots = null; DataRow hdr = null;
+                    if (ds.Tables[2] != null && ds.Tables[2].Rows.Count > 0)
+                    {
+                        avblslots = ds.Tables[2];
+                    }
                     if (ds.Tables[1] != null && ds.Tables[1].Rows.Count > 0)
                     {
-                        dtl = ds.Tables[1];
+                        bookedslots = ds.Tables[1];
                     }
                     if (ds.Tables[0] != null && ds.Tables[0].Rows.Count > 0)
                     {
                         hdr = ds.Tables[0].Rows[0];
                     }
-                    return _CTVDBMapper.Map_VehicleAvblInfo(hdr, dtl);
+                    return _CTVDBMapper.Map_VehicleAvblInfo(hdr, bookedslots, avblslots);
                 }
             }
             catch (Exception ex) { pMsg = ex.Message; }

@@ -188,6 +188,9 @@ namespace CBBW.DAL.DBMapper
 
                         x.FromDateStr = x.FromDate.ToString("dd-MM-yyyy");
                         x.ToDateStr = x.ToDate.ToString("dd-MM-yyyy");
+                        x.TripPurpose = result.SchHdrData.TripPurpose;
+                        //Otherlocation yes no options will come here.
+
                         dtl.Add(x);
                     }
                     result.SchDetailList = dtl;
@@ -196,7 +199,7 @@ namespace CBBW.DAL.DBMapper
             catch { }
             return result;
         }
-        public VehicleAvblInfo Map_VehicleAvblInfo(DataRow dr, DataTable dt) 
+        public VehicleAvblInfo Map_VehicleAvblInfo(DataRow dr, DataTable bookedslots,DataTable avblslots) 
         {
             VehicleAvblInfo result = new VehicleAvblInfo();
             try
@@ -206,22 +209,38 @@ namespace CBBW.DAL.DBMapper
                     if (!DBNull.Value.Equals(dr["IsSuccess"]))
                         result.IsSlotAvbl =bool.Parse(dr["IsSuccess"].ToString());
                     if (!DBNull.Value.Equals(dr["Msg"]))
-                        result.Msg = dr["Msg"].ToString();                    
+                        result.Msg = dr["Msg"].ToString(); 
+                    
                 }
-                if (dt != null && dt.Rows.Count > 0)
+                if (bookedslots != null && bookedslots.Rows.Count > 0)
                 {
                     List<CustomDateRange> dtl = new List<CustomDateRange>();
-                    for (int i = 0; i < dt.Rows.Count; i++)
+                    for (int i = 0; i < bookedslots.Rows.Count; i++)
                     {
                         CustomDateRange x = new CustomDateRange();
-                        if (!DBNull.Value.Equals(dt.Rows[i]["FromDate"]))
-                            x.FromDate = DateTime.Parse(dt.Rows[i]["FromDate"].ToString());
-                        if (!DBNull.Value.Equals(dt.Rows[i]["ToDate"]))
-                            x.ToDate = DateTime.Parse(dt.Rows[i]["ToDate"].ToString());
+                        if (!DBNull.Value.Equals(bookedslots.Rows[i]["FromDate"]))
+                            x.FromDate = DateTime.Parse(bookedslots.Rows[i]["FromDate"].ToString());
+                        if (!DBNull.Value.Equals(bookedslots.Rows[i]["ToDate"]))
+                            x.ToDate = DateTime.Parse(bookedslots.Rows[i]["ToDate"].ToString());
 
                         dtl.Add(x);
                     }
                     result.SlotsBooked = dtl;
+                }
+                if (avblslots != null && avblslots.Rows.Count > 0)
+                {
+                    List<CustomDateRange> dtl2 = new List<CustomDateRange>();
+                    for (int i = 0; i < avblslots.Rows.Count; i++)
+                    {
+                        CustomDateRange x = new CustomDateRange();
+                        if (!DBNull.Value.Equals(avblslots.Rows[i]["FromDate"]))
+                            x.FromDate = DateTime.Parse(avblslots.Rows[i]["FromDate"].ToString());
+                        if (!DBNull.Value.Equals(avblslots.Rows[i]["ToDate"]))
+                            x.ToDate = DateTime.Parse(avblslots.Rows[i]["ToDate"].ToString());
+
+                        dtl2.Add(x);
+                    }
+                    result.SlotsAvailable = dtl2;
                 }
             }
             catch { }

@@ -223,10 +223,11 @@
     <Content Include="UIContent\CSS\font-awesome.min.css" />
     <Content Include="UIContent\CSS\jquery.dataTables.min.css" />
     <Content Include="UIContent\CSS\style.css" />
+    <Content Include="UIContent\CSS\style_0711.css" />
     <Content Include="UIContent\CSS\style3110.css" />
     <Content Include="UIContent\CSS\style_2810.css" />
     <Content Include="UIContent\CSS\sweetalert2.min.css" />
-    <Content Include="UIContent\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="UIContent\CSS\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="UIContent\JS\bootstrap-datetimepicker.min.js" />
     <Content Include="UIContent\JS\CustomePage\CreateRuleTADA.js" />
     <Content Include="UIContent\JS\CustomePage\CTVApproval.js" />
@@ -305,9 +306,9 @@
     <Content Include="UIContent\JS\jquery.min.js" />
     <Content Include="UIContent\JS\moment.min.js" />
     <Content Include="UIContent\JS\multiselect.js" />
+    <Content Include="UIContent\JS\multiselect_0711.js" />
     <Content Include="UIContent\JS\popper.min.js" />
     <Content Include="UIContent\JS\sweetalert2.all.min.js" />
-    <Content Include="UIContent\style.css" />
     <Content Include="Views\Shared\EditorTemplates\CustomCheckBoxOption.cshtml" />
     <Content Include="Areas\Security\Views\Shared\_PartialNavBar.cshtml" />
     <Content Include="Areas\Security\Views\TADARules\CreateRule.cshtml" />
@@ -352,10 +353,10 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="UIContent\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="UIContent\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="UIContent\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="UIContent\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="UIContent\CSS\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="UIContent\CSS\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="UIContent\CSS\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="UIContent\CSS\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Views\Home\Index2.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -403,7 +404,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>56411</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44335/</IISUrl>
+          <IISUrl>https://localhost:44390/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

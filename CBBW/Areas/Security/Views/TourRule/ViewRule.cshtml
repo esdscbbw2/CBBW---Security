@@ -9,7 +9,7 @@
     @using (Html.BeginForm("DeleteRule", "TourRule", new { Area = "Security", id = Model.ID }))
     {
     @Html.HiddenFor(m => m.ID)
-
+    @Html.HiddenFor(m=>m.CallBackUrl)
     <div class="fixedElement">
 
         <div class="col-md-12" style="position: relative;">
@@ -17,7 +17,7 @@
             <div class="heading_text_btn mb-4 mt-4">
                 <div class="leftButton">
                     <button type="button" class="btn btn-primary me-2"
-                            onclick="window.location.href='@Url.Action("Index", "TourRule" , new { Area="Security" })';">
+                            onclick="window.location.href='@Model.CallBackUrl';">
                         <i data-feather="arrow-left-circle"></i>
                         Back
                     </button>

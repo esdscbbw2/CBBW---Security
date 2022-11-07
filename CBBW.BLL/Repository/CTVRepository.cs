@@ -22,7 +22,19 @@ namespace CBBW.BLL.Repository
 
         public bool CheckScheduleDateAvailibility(string VehicleNo, DateTime ScheduleDate, ref string pMsg)
         {
-            return _CTVEntities.CheckAvailibiltyofSchDate(VehicleNo, ScheduleDate, ref pMsg);
+            bool result = false;
+            try
+            {
+                VehicleAvblInfo obj = _CTVEntities.getVehicleSlot(VehicleNo, 0, ref pMsg);
+                if (obj.SlotsAvailable != null)
+                {
+                    int avbl = obj.SlotsAvailable.Where(o => o.FromDate <= ScheduleDate && o.ToDate >= ScheduleDate).ToList().Count;
+                    if (avbl > 0) { result = true; } 
+                    else { pMsg = ScheduleDate.ToString("dd-MM-yyyy")+" is not available for vehicle no "+ VehicleNo; }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
         }
 
         public bool CreateNewCTVHdr(TripScheduleHdr model, ref string pMsg)
@@ -38,7 +50,10 @@ namespace CBBW.BLL.Repository
         {
             return _CTVEntities.getLocalVehicleSchedule(VehicleNo, FromDate, ToDate, ref pMsg);
         }
-
+        public IEnumerable<CustomComboOptions> getLocationsFromType(string LocationTypeIDs, ref string pMsg)
+        {
+            return _MasterEntities.getLocationsFromType(LocationTypeIDs, ref pMsg);
+        }
         public IEnumerable<CustomComboOptions> getLocationsFromType(int LocationTypeID, ref string pMsg)
         {
            return _MasterEntities.getLocationsFromType(LocationTypeID, ref pMsg);
@@ -61,17 +76,41 @@ namespace CBBW.BLL.Repository
         {
             return _CTVEntities.getCTVSchDetailsFromNote(NoteNumber, ref pMsg);
         }
-
-        public DateTime getSchToDate(DateTime FromSchDt, int FromLocation, int ToLocationType, 
+        public DateTime getSchToDateFromMultiLocation(string VehicleNo, DateTime FromSchDt, 
+            int FromLocation, string ToLocationType,string ToLocation, ref string pMsg)
+        {
+            DateTime result = _MasterEntities.GetToSchDateFromMultiLocation(FromSchDt, FromLocation, ToLocationType,
+                ToLocation, ref pMsg);
+            VehicleAvblInfo obj = _CTVEntities.getVehicleSlot(VehicleNo, 0, ref pMsg);
+            if (obj.SlotsAvailable != null)
+            {
+                int avbl = obj.SlotsAvailable.Where(o => o.FromDate <= result && o.ToDate >= result).ToList().Count;
+                if (avbl <= 0) { result = new DateTime(1, 1, 1); }
+            }
+            return result;
+        }
+        public DateTime getSchToDate(string VehicleNo,DateTime FromSchDt, int FromLocation, int ToLocationType, 
             int ToLocation, int IsCalculateHourly, ref string pMsg)
         {
-            return _MasterEntities.GetToSchDate(FromSchDt, FromLocation, ToLocationType,
+            DateTime result = _MasterEntities.GetToSchDate(FromSchDt, FromLocation, ToLocationType,
                 ToLocation, IsCalculateHourly, ref pMsg);
+            VehicleAvblInfo obj =_CTVEntities.getVehicleSlot(VehicleNo, 0, ref pMsg);
+            if (obj.SlotsAvailable != null) 
+            {
+                int avbl=obj.SlotsAvailable.Where(o => o.FromDate <= result && o.ToDate >= result).ToList().Count;
+                if (avbl <= 0) { result = new DateTime(1,1,1); }
+            }
+            return result;
         }
 
         public UserInfo getUserInfo(string UserName, ref string pMsg)
         {
             return _CTVEntities.getLogInUserInfo(UserName, ref pMsg);
+        }
+
+        public VehicleAvblInfo getVehicleDateSlots(string VehicleNo, int IncludeOTVSch, ref string pMsg)
+        {
+            return _CTVEntities.getVehicleSlot(VehicleNo, IncludeOTVSch, ref pMsg);
         }
 
         public VehicleInfo getVehicleInfo(string VehicleNo, ref string pMsg)

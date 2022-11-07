@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using CBBW.Areas.Security.ViewModel;
 using CBBW.BLL.IRepository;
+using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.TADA;
 
@@ -19,11 +20,24 @@ namespace CBBW.Areas.Security.Controllers
             _iTADARules = iTADARule;
             pMsg = "";
         }
+        public ActionResult ViewRedirection(int CBUID) 
+        {
+            //string callbackurl = "";
+            if (CBUID == 1) 
+            {
+                TempData["Tadacallbackurl"] = "/Security/CTV/Create";
+            }
+            int RuleID = _iTADARules.GetAffectedRuleID(ref pMsg);
+
+            return RedirectToAction("ViewRule", new { id = RuleID, isDelete = false });
+        }
         public ActionResult ViewRule(int id, bool isDelete)
         {
             TADARuleDetails model = _iTADARules.GetTADARuleByID(id, ref pMsg);
             model.mDelete = isDelete;
             ViewBag.IsDelete = isDelete;
+            model.CallBaclkUrl = TempData["Tadacallbackurl"] != null ? TempData["Tadacallbackurl"].ToString(): "/Security/TADARules/Index" ;
+            TempData["Tadacallbackurl"] = model.CallBaclkUrl;
             return View(model);
         }
         [HttpPost]

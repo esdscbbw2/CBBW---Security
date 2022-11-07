@@ -93,6 +93,23 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
+        public IEnumerable<CustomComboOptions> getLocationsFromType(string LocationTypeID, ref string pMsg)
+        {
+            List<CustomComboOptions> result = new List<CustomComboOptions>();
+            try
+            {
+                dt = _datasync.getLocationsFromType(LocationTypeID, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        result.Add(_dbresmapper.Map_CustomComboOptions(dt.Rows[i]));
+                    }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
         public IEnumerable<CustomComboOptions> getLocationsFromType(int LocationTypeID,ref string pMsg)
         {
             List<CustomComboOptions> result = new List<CustomComboOptions>();
@@ -118,6 +135,15 @@ namespace CBBW.DAL.Entities
             int ToLocation, int IsCalculateHourly, ref string pMsg)
         {
             return _datasync.GetToSchDate(FromDate,FromLocation,ToLocationType,ToLocation,IsCalculateHourly,ref pMsg);
+        }
+        public DateTime GetToSchDateFromMultiLocation(DateTime FromDate, int FromLocation, string ToLocationType,
+            string ToLocation, ref string pMsg)
+        {
+            return _datasync.GetToSchDateForMultiLocation(FromDate, FromLocation, ToLocationType, ToLocation, ref pMsg);
+        }
+        public int getEffectedRuleID(int RuleType, ref string pMsg) 
+        {
+            return _datasync.GetEffectedRuleID(RuleType, ref pMsg);
         }
     }
 }

@@ -15,5 +15,6 @@ namespace CBBW.BLL.IRepository
         bool RemoveTourRule(int ID, ref string pMsg);
         bool CreateNewTourRule(TourRuleDetails trd, ref string pMsg);
         bool IsValidRule(TourRuleDetails trd, ref string pMsg);
+        int GetAffectedRuleID(ref string pMsg);
     }
 }

@@ -54,6 +54,17 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+        public DataTable getLocationsFromType(string LocationTypeID, ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("select * from [CTV].[getLocationsFromTypes]('" + LocationTypeID + "')", CommandType.Text))
+                {
+                    return sql.GetDataTable();
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
         public DataTable getLocationsFromType(int LocationTypeID, ref string pMsg)
         {
             try
@@ -114,6 +125,47 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; }
             return ToDate;
+        }
+        public DateTime GetToSchDateForMultiLocation(DateTime FromDate, int FromLocation, string ToLocationType,
+            string ToLocation, ref string pMsg)
+        {
+            DateTime ToDate = new DateTime();
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[4];
+                para[paracount] = new SqlParameter("@FromDate", SqlDbType.DateTime);
+                para[paracount++].Value = FromDate;
+                para[paracount] = new SqlParameter("@FromLocation", SqlDbType.SmallInt);
+                para[paracount++].Value = FromLocation;
+                para[paracount] = new SqlParameter("@ToLocationType", SqlDbType.VarChar);
+                para[paracount++].Value = ToLocationType;
+                para[paracount] = new SqlParameter("@ToLocation", SqlDbType.VarChar);
+                para[paracount++].Value = ToLocation;
+
+                using (SQLHelper sql = new SQLHelper("[CTV].[GetSchDateToMulti]", CommandType.StoredProcedure))
+                {
+                    DataTable dt = sql.GetDataTable(para, ref pMsg);
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        if (!DBNull.Value.Equals(dt.Rows[0]["ToDate"]))
+                            ToDate = DateTime.Parse(dt.Rows[0]["ToDate"].ToString());
+                    }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return ToDate;
+        }
+        public int GetEffectedRuleID(int RuleType, ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("SELECT [CTV].[GetEffectiveRuleID](" + RuleType + ")", CommandType.Text))
+                {
+                    return int.Parse(sql.ExecuteScaler(ref pMsg).ToString());
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return 0; }
         }
     }
 }

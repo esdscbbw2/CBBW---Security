@@ -24,5 +24,6 @@ namespace CBBW.BOL.TADA
         public List<int> SelectedCategoryIds { get; set; }
         public List<int> LastSelectedCategoryIds { get; set; }
         public bool mDelete { get; set; }
+        public string CallBaclkUrl { get; set; }
     }
 }

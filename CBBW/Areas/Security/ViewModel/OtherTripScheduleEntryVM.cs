@@ -13,7 +13,11 @@ namespace CBBW.Areas.Security.ViewModel
         public string NoteNumber { get; set; }
         public int DriverCode { get; set; }
         public string DriverName { get; set; }
+        public string  MaxDate { get; set; }
+        public string MinDate { get; set; }
+        public string CurDate { get; set; }
         public List<OthTripTemp> OTSchList { get; set; }
+        public int BackBtnMsg { get; set; }
     }
     
 }

@@ -12,6 +12,7 @@ namespace CBBW.BOL.CTV
         public bool IsSlotAvbl { get; set; }
         public string Msg { get; set; }
         public IEnumerable<CustomDateRange> SlotsBooked { get; set; }
-        
+        public IEnumerable<CustomDateRange> SlotsAvailable { get; set; }
+
     }
 }

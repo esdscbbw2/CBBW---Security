@@ -67,71 +67,12 @@ function btnClearClicked() {
     $('#divError').addClass('inVisible');
 };
 $(document).ready(function () {    
-    var vehiclenodropdown = $('#Vehicleno');
-    var errorDiv = $('#divError');
-    var btnLS = $('#btnLVT');
-    var btnOS = $('#btnOVT');
-    var errorDivLVS = $('#divErrorLVS');
-    var errorDivOTS = $('#divErrorOTS');
-    var ErrlblLVS = $('#lblErrorLVS');
-    var ErrlblOTS = $('#lblErrorOTS');
-    
+    var vehiclenodropdown = $('#Vehicleno');    
     vehiclenodropdown.change(function () {
-        //alert('OK');
         var vno = $(this).val();
-        var notenumber = $('#NoteNo').val();
-        errorDivLVS.addClass('inVisible');
-        errorDivOTS.addClass('inVisible');
-        $('#btnSubmit').attr('disabled', 'disabled');
-        $('#submitConfirmation').val('').removeClass('is-valid').addClass('is-invalid');
-        $.ajax({
-            url: '/CTV/GetVehicleInfo',
-            method: 'GET',
-            data: { VehicleNo: vno, NoteNumber: notenumber },
-            dataType: 'json',
-            success: function (data) {
-                $(data).each(function (index, item) {
-                    if (item.IsSuccess) {                        
-                        errorDiv.addClass('inVisible');
-                        vehiclenodropdown.removeClass('is-invalid').addClass('is-valid');
-
-                        if (item.LocalTripRecords > 0) {
-                            btnLS.removeAttr('disabled');
-                            btnOS.attr('disabled', 'disabled');
-                        }
-                        else {
-                            btnLS.attr('disabled', 'disabled');
-                            btnOS.removeAttr('disabled');
-                            errorDivLVS.removeClass('inVisible');
-                            ErrlblLVS.html('Local Vehicle Schedule Was Not Updated, So It Cannot Be Enabled');
-                        }
-                        if (item.IsSlotAvbl) {
-                            btnOS.removeAttr('disabled');
-                        } else {
-                            btnOS.attr('disabled', 'disabled');
-                            errorDivOTS.removeClass('inVisible');
-                            ErrlblOTS.html('Local Vehicle Schedule Was Scheduled For All The Dates, So Other Trip Schedule Cannot Be Enabled');
-                        }
-                    } else {
-                        //alert("ok");
-                            $('#lblError').html(item.Msg);
-                            errorDiv.removeClass('inVisible');
-                            vehiclenodropdown.removeClass('is-valid').addClass('is-invalid');
-                            btnOS.attr('disabled', 'disabled');
-                        }                                        
-                    $('#VehicleTypeDisplay').val(item.VehicleType);
-                    $('#VehicleType').val(item.VehicleType);
-                    $('#ModelName').val(item.ModelName);
-                    $('#ModelNameDisplay').val(item.ModelName);
-                    $('#DriverNo').val(item.DriverNo);
-                    $('#DriverName').val(item.DriverName);
-                    $('#DriverNonName').val(item.DriverNonName);
-                    $('#DriverNonNameDisplay').val(item.DriverNonName);
-                });
-                activateSubmitBtn();
-            }
-        });
+        VehicleChange(vno,1);
     });
+    VehicleChange(vehiclenodropdown.val(), 0);    
 });
 $(document).ready(function () {
     //var btnovtctrl = $('#btnOVT');
@@ -169,3 +110,72 @@ $(document).ready(function () {
         }
     });
 });
+function VehicleChange(vno, removetemp) {
+    var vehiclenodropdown = $('#Vehicleno');
+    var errorDiv = $('#divError');
+    var btnLS = $('#btnLVT');
+    var btnOS = $('#btnOVT');
+    var errorDivLVS = $('#divErrorLVS');
+    var errorDivOTS = $('#divErrorOTS');
+    var ErrlblLVS = $('#lblErrorLVS');
+    var ErrlblOTS = $('#lblErrorOTS');
+    var notenumber = $('#NoteNo').val();
+    errorDivLVS.addClass('inVisible');
+    errorDivOTS.addClass('inVisible');
+    $('#btnSubmit').attr('disabled', 'disabled');
+    $('#submitConfirmation').val('').removeClass('is-valid').addClass('is-invalid');
+    $.ajax({
+        url: '/CTV/GetVehicleInfo',
+        method: 'GET',
+        data: { VehicleNo: vno, NoteNumber: notenumber, RemoveTemp:removetemp },
+        dataType: 'json',
+        success: function (data) {
+            $(data).each(function (index, item) {
+                if (item.IsSuccess) {
+                    errorDiv.addClass('inVisible');
+                    vehiclenodropdown.removeClass('is-invalid').addClass('is-valid');                   
+
+                    if (item.LocalTripRecords > 0) {
+                        btnLS.removeAttr('disabled');
+                        btnOS.attr('disabled', 'disabled');
+                    }
+                    else {
+                        btnLS.attr('disabled', 'disabled');
+                        btnOS.removeAttr('disabled');
+                        errorDivLVS.removeClass('inVisible');
+                        ErrlblLVS.html('Local Vehicle Schedule Was Not Updated, So It Cannot Be Enabled');
+                    }
+                    if ($('#IsOTSActivated').val() == 0) {
+                        btnOS.attr('disabled', 'disabled');
+                    } else {
+                        if (item.IsSlotAvbl) {
+                            btnOS.removeAttr('disabled');
+                        } else {
+                            btnOS.attr('disabled', 'disabled');                            
+                            errorDivOTS.removeClass('inVisible');
+                            ErrlblOTS.html('Local Vehicle Schedule Was Scheduled For All The Dates, So Other Trip Schedule Cannot Be Enabled');
+                        }
+                        //btnOS.removeAttr('disabled');
+                    }
+                    
+                } else {
+                    //alert("ok");
+                    $('#lblError').html(item.Msg);
+                    errorDiv.removeClass('inVisible');
+                    vehiclenodropdown.removeClass('is-valid').addClass('is-invalid');
+                    btnOS.attr('disabled', 'disabled');
+                    btnLS.attr('disabled', 'disabled');
+                }
+                $('#VehicleTypeDisplay').val(item.VehicleType);
+                $('#VehicleType').val(item.VehicleType);
+                $('#ModelName').val(item.ModelName);
+                $('#ModelNameDisplay').val(item.ModelName);
+                $('#DriverNo').val(item.DriverNo);
+                $('#DriverName').val(item.DriverName);
+                $('#DriverNonName').val(item.DriverNonName);
+                $('#DriverNonNameDisplay').val(item.DriverNonName);
+            });
+            activateSubmitBtn();
+        }
+    });
+};

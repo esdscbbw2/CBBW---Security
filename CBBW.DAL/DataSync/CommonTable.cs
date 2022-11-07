@@ -88,6 +88,10 @@ namespace CBBW.DAL.DataSync
             UDTable.Columns.Add("dToDate", typeof(DateTime));
             UDTable.Columns.Add("iDrivercode", typeof(int));
             UDTable.Columns.Add("sDriverName", typeof(string));
+            UDTable.Columns.Add("sToLocationType", typeof(string));
+            UDTable.Columns.Add("sToLocation", typeof(string));
+            UDTable.Columns.Add("sToLocationTypeStr", typeof(string));
+            UDTable.Columns.Add("sToLocationStr", typeof(string));
             if (customoptions != null && customoptions.Count > 0)
             {
                 foreach (OthTripTemp obj in customoptions)
@@ -102,6 +106,10 @@ namespace CBBW.DAL.DataSync
                     dr["dToDate"] = DateTime.Parse(obj.ToDate);
                     dr["iDrivercode"] = obj.DriverCode;
                     dr["sDriverName"] = obj.DriverName;
+                    dr["sToLocationType"] = obj.ToCentreTypeCodes;
+                    dr["sToLocation"] = obj.ToCentreCodes;
+                    dr["sToLocationTypeStr"] = obj.ToCentreTypeCodesStr;
+                    dr["sToLocationStr"] = obj.ToCentreCodesStr;
                     UDTable.Rows.Add(dr);
                 }
             }

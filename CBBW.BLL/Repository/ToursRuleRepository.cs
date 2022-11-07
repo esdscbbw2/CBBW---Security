@@ -12,14 +12,22 @@ namespace CBBW.BLL.Repository
     public class ToursRuleRepository : IToursRuleRepository
     {
         TourEntities _tourEntities;
+        MasterEntities _masterentities;
         public ToursRuleRepository()
         {
             _tourEntities = new TourEntities();
+            _masterentities = new MasterEntities();
         }
 
         public bool CreateNewTourRule(TourRuleDetails trd, ref string pMsg)
         {
             return _tourEntities.CreateNewTourRule(trd, ref pMsg);
+        }
+
+        public int GetAffectedRuleID(ref string pMsg)
+        {
+            //return 0;
+            return _masterentities.getEffectedRuleID(1, ref pMsg);
         }
 
         public TourRuleDetails GetLastToursRule(ref string pMsg)

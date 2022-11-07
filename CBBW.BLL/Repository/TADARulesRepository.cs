@@ -27,6 +27,11 @@ namespace CBBW.BLL.Repository
             return _tadaEntities.CreateNewTADARule(trd, ref pMsg);
         }
 
+        public int GetAffectedRuleID(ref string pMsg)
+        {
+            return _masterentities.getEffectedRuleID(2, ref pMsg);
+        }
+
         public TADARuleDetails GetLastTADARule(ref string pMsg)
         {
             TADARuleDetails result = _tadaEntities.GetLastTADARule(ref pMsg);

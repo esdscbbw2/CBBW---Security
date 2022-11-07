@@ -12,12 +12,14 @@
         @Html.HiddenFor(m => m.EntryTime)
         @Html.HiddenFor(m => m.NewConnectingID)
         @Html.HiddenFor(m => m.mDelete)
+        @Html.HiddenFor(m=>m.CallBaclkUrl)
         <div class="fixedElement">
             <div class="col-md-12" style="position: relative;">
                 <div class="heading_text_btn mb-4 mt-4">
                     <div class="leftButton">
-                        <button type="button" class="btn btn-primary me-2"
-                                onclick="window.location.href='@Url.Action("Index", "TADARules", new { Area = "Security" })';">
+                        <button type="button"  
+                                class="btn btn-primary me-2"
+                                onclick="window.location.href='@Model.CallBaclkUrl';">
                             <i data-feather="arrow-left-circle"></i>
                             Back
                         </button>

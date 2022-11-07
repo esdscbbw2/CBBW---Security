@@ -19,7 +19,16 @@ namespace CBBW.Areas.Security.Controllers
             _toursRule = toursRule;
             pMsg = "";
         }
-
+        public ActionResult ViewRedirection(int CBUID)
+        {
+            //string callbackurl = "";
+            if (CBUID == 1)
+            {
+                TempData["Tourcallbackurl"] = "/Security/CTV/Create";
+            }
+            int RuleID = _toursRule.GetAffectedRuleID(ref pMsg);
+            return RedirectToAction("ViewRule", new { id = RuleID, isDelete = false });
+        }
         // GET: Security/TourRule
         public ActionResult Index()
         {
@@ -73,7 +82,7 @@ namespace CBBW.Areas.Security.Controllers
          
            TourRuleDetails model= _toursRule.GetToursRuleByID(id,ref pMsg);
             model.ReadRule5 = true;
-            
+            model.CallBackUrl= TempData["Tourcallbackurl"] != null ? TempData["Tourcallbackurl"].ToString() : "/Security/TourRule/Index";
 
             ViewBag.isDelete = isDelete;
             return View(model);

@@ -13,6 +13,7 @@ namespace CBBW.BLL.IRepository
         string getNewTripScheduleNo(string SchPattern, ref string pMsg);
         TripScheduleHdr NewTripScheduleNo(string SchPattern, ref string pMsg);
         IEnumerable<CustomComboOptions> getLocationTypes(ref string pMsg);
+        IEnumerable<CustomComboOptions> getLocationsFromType(string LocationTypeIDs, ref string pMsg);
         IEnumerable<CustomComboOptions> getLocationsFromType(int LocationTypeID, ref string pMsg);
         List<VehicleNo> getLCVMCVVehicleList(ref string pMsg);
         VehicleInfo getVehicleInfo(string VehicleNo, ref string pMsg);
@@ -21,9 +22,12 @@ namespace CBBW.BLL.IRepository
         bool RemoveNote(string NoteNumber,int OnlyDtl, ref string pMsg);
         bool CheckScheduleDateAvailibility(string VehicleNo, DateTime ScheduleDate, ref string pMsg);
         List<LocVehSchFromMat> getLocalVehicleSChedules(string VehicleNo, DateTime FromDate, DateTime ToDate, ref string pMsg);
-        DateTime getSchToDate(DateTime FromSchDt, int FromLocation, int ToLocationType, int ToLocation,int IsCalculateHourly, ref string pMsg);
+        DateTime getSchToDate(string VehicleNo,DateTime FromSchDt, int FromLocation, int ToLocationType, int ToLocation,int IsCalculateHourly, ref string pMsg);
         bool UpdateOthTripSchDtl(string Notenumber,string TripPurpose, List<OthTripTemp> dtldata, ref string pMsg);
         CTVHdrDtl getSchDetailsFromNote(string NoteNumber, ref string pMsg);
         List<NoteNumber> GetNoteNumbersTobeApproved(ref string pMsg);
+        VehicleAvblInfo getVehicleDateSlots(string VehicleNo, int IncludeOTVSch, ref string pMsg);
+        DateTime getSchToDateFromMultiLocation(string VehicleNo, DateTime FromSchDt,
+            int FromLocation, string ToLocationType, string ToLocation, ref string pMsg);
     }
 }
