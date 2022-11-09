@@ -20,12 +20,16 @@ namespace CBBW.Areas.Security.Controllers
             _iTADARules = iTADARule;
             pMsg = "";
         }
-        public ActionResult ViewRedirection(int CBUID) 
+        public ActionResult ViewRedirection(int CBUID, string NoteNumber = "") 
         {
             //string callbackurl = "";
-            if (CBUID == 1) 
+            if (CBUID == 1)
             {
                 TempData["Tadacallbackurl"] = "/Security/CTV/Create";
+            }
+            else if (CBUID == 2) 
+            {
+                TempData["Tadacallbackurl"] = "/Security/CTV/ViewNote?NoteNumber=" + NoteNumber;
             }
             int RuleID = _iTADARules.GetAffectedRuleID(ref pMsg);
 

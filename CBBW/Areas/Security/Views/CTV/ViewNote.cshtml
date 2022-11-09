@@ -1,13 +1,12 @@
 ﻿@using CBBW.BOL.CTV;
 @model TripScheduleHdr
 @{
-    ViewBag.Title = "CTV Entry";
+    ViewBag.Title = "CTV View Note";
 }
 <div class="row newTable">
     @using (Html.BeginForm())
     {
-        @Html.HiddenFor(m => m.IsOTSActivated)
-        @Html.HiddenFor(m => m.IsSubmitted)
+        @Html.HiddenFor(m=>m.Vehicleno)
         @Html.HiddenFor(m => m.NoteNo)
         @Html.HiddenFor(m => m.CenterCode)
         @Html.HiddenFor(m => m.CenterName)
@@ -22,27 +21,16 @@
         @Html.HiddenFor(m => m.DriverNo)
         @Html.HiddenFor(m => m.DriverName)
         @Html.HiddenFor(m => m.DriverNonName)
-        @Html.HiddenFor(m => m.IsOTSSaved)
         @Html.HiddenFor(m => m.TripPurpose)
         <div class="col-md-12">
             <div class="heading_text_btn mb-3 mt-4">
                 <div class="leftButton">
                     <button id="btnBack" type="button" class="btn btn-primary me-2"
-                            @*onclick="window.location.href='vehicle_trip_schedule.html';"*@>
+                            onclick="window.location.href='@Url.Action("ScheduleLists", "CTV", new { Area = "Security" })';">
                         <i data-feather="arrow-left-circle"></i>
                         Back
                     </button>
-                    <button id="btnSubmit" type="submit" name="Submit" value="create"
-                            class="btn btn-secondary me-2" disabled="disabled"
-                            @*onclick="window.location.href='vehicle_trip_schedule.html';"*@>
-                        <i data-feather="upload"></i>
-                        Submit
-                    </button>
-                    <button type="button" id="btnClear" onclick="btnClearClicked()"
-                            class="btn btn-white">
-                        <i data-feather="x-circle"></i>
-                        Clear
-                    </button>
+                    
                 </div>
                 <h2 style="text-align: right;">“Company Transport” Vehicle Trip Schedule - Entry</h2>
             </div>
@@ -51,20 +39,20 @@
             <div class="col-md-12">
                 <div class="d-flex justify-content-center mt-2 upper-tab-buttons">
                     <button type="submit" name="Submit" value="TourRule" class="btn btn-primary me-2">
-                            @*onclick="window.location.href='@Url.Action("Index", "TourRule", 
-                                                          new { Area = "Security" })';">*@
+                        @*onclick="window.location.href='@Url.Action("Index", "TourRule",
+                            new { Area = "Security" })';">*@
                         Tour
                         Rules
                     </button>
 
                     <button type="submit" name="Submit" value="TADARules" class="btn btn-primary me-2">
-                            @*onclick="window.location.href='@Url.Action("ViewRedirection", "TADARules", 
-                                                          new { Area = "Security",CBUID=1 })';"*@
+                        @*onclick="window.location.href='@Url.Action("ViewRedirection", "TADARules",
+                            new { Area = "Security",CBUID=1 })';"*@
                         TA & DA
                         Rules
                     </button>
 
-                    <button type="submit" name="Submit" value="LVTSChMat"  class="btn btn-primary"
+                    <button type="submit" name="Submit" value="LVTSChMat" class="btn btn-primary"
                             @*onclick="window.location.href='#';"*@>
                         Local Vehicle
                         Schedule
@@ -80,7 +68,7 @@
                             Note No. :
                         </label>
                         <div class="col-md-2">
-                            @Html.TextBoxFor(m => m.NoteNo, htmlAttributes: new { @class = "form-control", disabled = "disabled",id= "Noteno2" })
+                            @Html.TextBoxFor(m => m.NoteNo, htmlAttributes: new { @class = "form-control", disabled = "disabled", id = "Noteno2" })
                             @*<input type="text" class="form-control" value="200001-CTV-20220930-00001" disabled>*@
                         </div>
                         <label class="col-form-label col-md-2">
@@ -140,19 +128,16 @@
                                 <label class="col-form-label col-md-2">Vehicle No. : </label>
 
                                 <div class="col-md-4">
-                                    @Html.DropDownListFor(m => m.Vehicleno,
-                                       new SelectList(Model.ListofVehicles, "VehicleNumber", "VehicleNumber"), "Select a vehicle",
-                                       htmlAttributes: new
-                                       {
-                                           @class = "form-select pointer canclear"
-                                       })
+                                    @Html.TextBoxFor(m => m.Vehicleno,
+                                    htmlAttributes: new { @class = "form-control", 
+                                        disabled = "disabled" })
                                 </div>
-                                <div class="col-md-6">
-                                    <div id="divError" class="alert alert-danger alert-dismissible fade show inVisible">
+                                <!--<div class="col-md-6">
+                                    <div id="divError" class="alert alert-danger alert-dismissible fade show inVisible">-->
                                         @*<button type="button" class="btn-close" data-bs-dismiss="alert"></button>*@
-                                        <label id="lblError">asd</label>
+                                        <!--<label id="lblError">asd</label>
                                     </div>
-                                </div>
+                                </div>-->
                             </div>
                         </div>
                     </div>
@@ -190,19 +175,25 @@
                             Approved :
                         </label>
                         <div class="col-md-2">
-                            <input type="text" class="form-control" disabled>
+                            @Html.TextBoxFor(m => m.IsApproved,
+                           htmlAttributes: new {  @class = "form-control canclear", disabled = "disabled" })
+                        
                         </div>
                         <label class="col-form-label col-md-2">
                             Date & Time Approved :
                         </label>
                         <div class="col-md-2">
-                            <input type="text" class="form-control" disabled>
+                            @Html.TextBoxFor(m => m.ApprovedDateTime,
+                           htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })
+
                         </div>
                         <label class="col-form-label col-md-2">
                             Reason If Not Approved :
                         </label>
                         <div class="col-md-2">
-                            <input type="text" class="form-control" disabled>
+                            @Html.TextBoxFor(m => m.ReasonForDisApproval,
+                           htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })
+
                         </div>
 
                     </div>
@@ -217,14 +208,14 @@
             <div class="col-md-12">
                 <div class="d-flex justify-content-center mt-2">
                     <button id="btnLVT" type="submit" name="Submit" value="LVT"
-                            class="btn btn-primary me-2" disabled="disabled"
+                            class="btn btn-primary me-2"
                             @*onclick="window.location.href='local_vehicle_schedule_details_entry.html';"*@>
                         Local
                         Vehicle Schedule - Date Wise
                         Vehicle Trip Details Entry
                     </button>
                     <button id="btnOVT" type="submit" name="Submit" value="OVT"
-                            class="btn btn-primary" disabled="disabled"
+                            class="btn btn-primary" 
                             @*onclick="window.location.href='other_trip_schedule_details_entry.html';"*@>
                         Other
                         Trip Schedule - Date Wise Vehicle
@@ -251,12 +242,12 @@
                 <ul style="list-style:none; display: flex; align-items: center; justify-content: center; margin: 0;">
                     <li style="font-size: 18px;">
                         The Entry Is Done As Per Policy &amp; As Required:
-                        <select id="submitConfirmation" onchange="ValidateControl()"
+                        <select id="submitConfirmation" disabled="disabled" 
                                 style="width:110px"
-                                class="form-select canclear pointer is-invalid"
+                                class="form-select canclear pointer"
                                 aria-label="Default select example">
-                            <option selected value="">-</option>
-                            <option value="1">Yes</option>
+                            <option  value="">-</option>
+                            <option selected value="1">Yes</option>
                         </select>
                     </li>
                 </ul>
@@ -277,7 +268,7 @@
     </style>
 }
 @section scripts{
-    <script src="~/UIContent/JS/CustomePage/CTVHdrEntry.js"></script>
+    @*<script src="~/UIContent/JS/CustomePage/CTVHdrEntry.js"></script>*@
     <script>
         $(document).ready(function () {
             //var mymsg = '@ViewBag.ErrMsg';

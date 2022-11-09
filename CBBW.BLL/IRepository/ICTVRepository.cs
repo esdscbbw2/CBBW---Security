@@ -25,9 +25,10 @@ namespace CBBW.BLL.IRepository
         DateTime getSchToDate(string VehicleNo,DateTime FromSchDt, int FromLocation, int ToLocationType, int ToLocation,int IsCalculateHourly, ref string pMsg);
         bool UpdateOthTripSchDtl(string Notenumber,string TripPurpose, List<OthTripTemp> dtldata, ref string pMsg);
         CTVHdrDtl getSchDetailsFromNote(string NoteNumber, ref string pMsg);
-        List<NoteNumber> GetNoteNumbersTobeApproved(ref string pMsg);
+        List<NoteNumber> GetNoteNumbersTobeApproved(int EmpNo, int CenterCode,ref string pMsg);
         VehicleAvblInfo getVehicleDateSlots(string VehicleNo, int IncludeOTVSch, ref string pMsg);
         DateTime getSchToDateFromMultiLocation(string VehicleNo, DateTime FromSchDt,
             int FromLocation, string ToLocationType, string ToLocation, ref string pMsg);
+        IEnumerable<TripScheduleHdr> getCtvSchedule(int centercode, ref string pMsg);
     }
 }

@@ -142,6 +142,7 @@
     <Compile Include="Areas\Security\ViewModel\CTVHdrEntryVM.cs" />
     <Compile Include="Areas\Security\ViewModel\LocalVehicleTripScheduleVM.cs" />
     <Compile Include="Areas\Security\ViewModel\LVTSFromMatVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\OtherTripSchDisplayVM.cs" />
     <Compile Include="Areas\Security\ViewModel\OtherTripScheduleEntryVM.cs" />
     <Compile Include="Areas\Security\ViewModel\TADATransViewModel.cs" />
     <Compile Include="Areas\Security\ViewModel\TourRulesViewModel.cs" />
@@ -219,8 +220,10 @@
     <Content Include="Images\personnel.jpg" />
     <Content Include="Images\personnel.png" />
     <Content Include="Images\User-Icon.png" />
+    <Content Include="img\charbhai-logo-center.jpg" />
     <Content Include="UIContent\CSS\Custom_ErrorToolTip.css" />
     <Content Include="UIContent\CSS\font-awesome.min.css" />
+    <Content Include="UIContent\CSS\img\main-banner.png" />
     <Content Include="UIContent\CSS\jquery.dataTables.min.css" />
     <Content Include="UIContent\CSS\style.css" />
     <Content Include="UIContent\CSS\style_0711.css" />
@@ -240,7 +243,7 @@
     <Content Include="UIContent\JS\jquery-ui-1.13.2.js" />
     <Content Include="UIContent\JS\jquery-ui-1.13.2.min.js" />
     <Content Include="UIContent\CSS\img\charbhai-logo.png" />
-    <Content Include="UIContent\CSS\img\main-banner.png" />
+    <Content Include="img\main-banner.png" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -326,6 +329,10 @@
     <Content Include="Areas\Security\Views\CTV\LocVehTripSch.cshtml" />
     <Content Include="Areas\Security\Views\CTV\LocalVehicleTripSchFromMat.cshtml" />
     <Content Include="Areas\Security\Views\CTV\Approval.cshtml" />
+    <Content Include="img\beediworkers.webp" />
+    <Content Include="Areas\Security\Views\CTV\ScheduleLists.cshtml" />
+    <Content Include="Areas\Security\Views\CTV\ViewNote.cshtml" />
+    <Content Include="Areas\Security\Views\CTV\OtherTripSchDisplay.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />
@@ -358,6 +365,7 @@
     <Content Include="UIContent\CSS\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="UIContent\CSS\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Views\Home\Index2.cshtml" />
+    <Content Include="UIContent\CSS\img\beediworkers.webp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

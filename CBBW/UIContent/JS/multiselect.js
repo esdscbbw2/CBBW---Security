@@ -370,8 +370,7 @@
             // If maximum height is exceeded a scrollbar will be displayed.
             maxHeight: false,
             checkboxName: false,
-
-            includeSelectAllOption: false,
+            //includeSelectAllOption: true,
             selectAllValue: 0,
             // selectAllName: 'select-all-name',
             includeSelectAllIfMoreThan: 0,
@@ -392,9 +391,11 @@
             preventInputChangeEvent: false,
             nonSelectedText: 'None selected',
             nSelectedText: 'selected',
-            allSelectedText: 'Selected all',
+            allSelectedText: '',
             numberDisplayed: 30,
             disableIfEmpty: false,
+            // enableFiltering: true,
+            selectAllJustVisible: false,
             disabledText: '',
             delimiterText: ', ',
             templates: {

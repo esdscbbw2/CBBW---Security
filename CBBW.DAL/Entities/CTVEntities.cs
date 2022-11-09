@@ -186,28 +186,55 @@ namespace CBBW.DAL.Entities
 
             return result;
         }
-        public List<NoteNumber> getNotenumbersTobeApproved(ref string pMsg) 
+        public List<NoteNumber> getNotenumbersTobeApproved(int EmpNo,int CenterCode,ref string pMsg) 
         {
             List<NoteNumber> result = new List<NoteNumber>();
             try
             {
-                dt = _datasync.getNoteNumbersTobeApproved(ref pMsg);
+                dt = _datasync.getNoteNumbersTobeApproved(CenterCode,ref pMsg);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
-                        NoteNumber x = new NoteNumber();
-                        if (!DBNull.Value.Equals(dt.Rows[i]["NoteNo"]))
+                        if (!DBNull.Value.Equals(dt.Rows[i]["CreateEmployeeNo"])) 
                         {
-                            x.NoteNo = dt.Rows[i]["NoteNo"].ToString();
-                            //x.VehicleID = dt.Rows[i]["VehicleNumber"].ToString();
+                            if (EmpNo != int.Parse(dt.Rows[i]["CreateEmployeeNo"].ToString())) 
+                            {
+                                NoteNumber x = new NoteNumber();
+                                if (!DBNull.Value.Equals(dt.Rows[i]["NoteNo"]))
+                                {
+                                    x.NoteNo = dt.Rows[i]["NoteNo"].ToString();
+                                    //x.VehicleID = dt.Rows[i]["VehicleNumber"].ToString();
+                                }
+                                result.Add(x);
+                            }
                         }
-                        result.Add(x);
                     }
                 }
             }
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
+
+
+        public IEnumerable<TripScheduleHdr> getCtvSchedule(int centercode, ref string pMsg)
+        {
+            List<TripScheduleHdr> tripSchedule = new List<TripScheduleHdr>();
+            try
+            {
+                dt = _datasync.getCtvSchedule(centercode, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        tripSchedule.Add(_CTVDBMapper.Map_CtvSchedule(dt.Rows[i], i + 1));
+                    }
+                }
+            }
+            catch { }
+            return tripSchedule;
+        }
+
+
     }
 }

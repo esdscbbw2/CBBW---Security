@@ -13,9 +13,9 @@ namespace CBBW.BOL.CTV
         public string EntryTime { get; set; }
         public int FortheMonth { get; set; }
         public int FortheYear { get; set; }
-        [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}")]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime FromDate { get; set; }
-        [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}")]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime ToDate { get; set; }
         public string VehicleType { get; set; }
         public string ModelName { get; set; }
@@ -33,6 +33,8 @@ namespace CBBW.BOL.CTV
         public int IsOTSActivated { get; set; }
         public int IsSubmitted { get; set; }
         public int IsOTSSaved { get; set; }
-
+        public int EmployeeNumber { get; set; }
+        public int SL { get; set; }
+        public int TotalCount { get; set; }
     }    
 }

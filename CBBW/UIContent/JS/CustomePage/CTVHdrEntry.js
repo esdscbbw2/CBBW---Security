@@ -83,7 +83,7 @@ $(document).ready(function () {
     //}
     
     $('#btnBack').click(function () {
-        var url = "/home/Index";
+        var url = "/Security/CTV/ScheduleLists";
         if ($('#IsOTSSaved').val() == 1) {
             Swal.fire({
                 title: 'Confirmation Message',

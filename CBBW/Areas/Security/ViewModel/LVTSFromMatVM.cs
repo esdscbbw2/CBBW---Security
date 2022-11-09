@@ -12,5 +12,6 @@ namespace CBBW.Areas.Security.ViewModel
         public DateTime ToDate { get; set; }
         public DateTime SCHDates { get; set; }
         public List<LocVehSchFromMat> LVSDataList { get; set; }
+        public string CallBackUrl { get; set; }
     }
 }

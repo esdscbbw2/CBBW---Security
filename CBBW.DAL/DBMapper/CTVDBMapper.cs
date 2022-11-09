@@ -138,6 +138,8 @@ namespace CBBW.DAL.DBMapper
                         hdr.EntryTime = dr["EntryTime"].ToString();
                     if (!DBNull.Value.Equals(dr["CenterCode"]))
                         hdr.CenterCode=int.Parse(dr["CenterCode"].ToString());
+                    if (!DBNull.Value.Equals(dr["centername"]))
+                        hdr.CenterName = dr["centername"].ToString();
                     if (!DBNull.Value.Equals(dr["FortheMonth"]))
                         hdr.FortheMonth = int.Parse(dr["FortheMonth"].ToString());
                     if (!DBNull.Value.Equals(dr["FortheYear"]))
@@ -150,6 +152,8 @@ namespace CBBW.DAL.DBMapper
                         hdr.Vehicleno = dr["Vehicleno"].ToString();
                     if (!DBNull.Value.Equals(dr["DriverNo"]))
                         hdr.DriverNo = int.Parse(dr["DriverNo"].ToString());
+                    if (!DBNull.Value.Equals(dr["DriverName"]))
+                        hdr.DriverName = dr["DriverName"].ToString();
                     if (!DBNull.Value.Equals(dr["IsActive"]))
                         hdr.IsActive = bool.Parse(dr["IsActive"].ToString());
                     if (!DBNull.Value.Equals(dr["TripPurpose"]))
@@ -160,7 +164,15 @@ namespace CBBW.DAL.DBMapper
                         hdr.ApprovedDateTime = DateTime.Parse(dr["ApprovedDateTime"].ToString());
                     if (!DBNull.Value.Equals(dr["ReasonForDisApproval"]))
                         hdr.ReasonForDisApproval = dr["ReasonForDisApproval"].ToString();
-
+                    if (!DBNull.Value.Equals(dr["Employeenumber"]))
+                        hdr.EmployeeNumber = int.Parse(dr["Employeenumber"].ToString());
+                    if (!DBNull.Value.Equals(dr["VehicleType"]))
+                        hdr.VehicleType = dr["VehicleType"].ToString();
+                    if (!DBNull.Value.Equals(dr["ModelName"]))
+                        hdr.ModelName = dr["ModelName"].ToString();
+                    hdr.FortheMonthnYear = new DateTime(2022,hdr.FortheMonth,1).ToString("MMM") + " " + hdr.FortheYear;
+                    hdr.CentreCodenName = hdr.CenterCode + " / " + hdr.CenterName;
+                    hdr.DriverNonName = hdr.DriverNo.ToString() + " / " + hdr.DriverName;
                     result.SchHdrData = hdr;
                 }
                 if (dt != null && dt.Rows.Count > 0) 
@@ -185,6 +197,14 @@ namespace CBBW.DAL.DBMapper
                             x.FromTime = dt.Rows[i]["FromTime"].ToString();
                         if (!DBNull.Value.Equals(dt.Rows[i]["DriverCodenName"]))
                             x.DriverCodenName = dt.Rows[i]["DriverCodenName"].ToString();
+                        if (!DBNull.Value.Equals(dt.Rows[i]["FromLocationName"]))
+                            x.FromCenterName = dt.Rows[i]["FromLocationName"].ToString();
+                        if (!DBNull.Value.Equals(dt.Rows[i]["FromLocationTypeName"]))
+                            x.FromCenterTypeName = dt.Rows[i]["FromLocationTypeName"].ToString();
+                        if (!DBNull.Value.Equals(dt.Rows[i]["ToLocationTypes"]))
+                            x.ToCenterTypeName = dt.Rows[i]["ToLocationTypes"].ToString();
+                        if (!DBNull.Value.Equals(dt.Rows[i]["ToLocations"]))
+                            x.ToCenterName = dt.Rows[i]["ToLocations"].ToString();
 
                         x.FromDateStr = x.FromDate.ToString("dd-MM-yyyy");
                         x.ToDateStr = x.ToDate.ToString("dd-MM-yyyy");
@@ -247,5 +267,39 @@ namespace CBBW.DAL.DBMapper
             return result;
         }
 
+        public TripScheduleHdr Map_CtvSchedule(DataRow dr, int SL)
+        {
+            TripScheduleHdr result = new TripScheduleHdr();
+            try
+            {
+                if (dr != null)
+                {
+                    result.SL = SL;
+                    if (!DBNull.Value.Equals(dr["ID"]))
+                        result.ID = int.Parse(dr["ID"].ToString());
+                    if (!DBNull.Value.Equals(dr["NoteNo"]))
+                        result.NoteNo = dr["NoteNo"].ToString();
+                    if (!DBNull.Value.Equals(dr["Vehicleno"]))
+                        result.Vehicleno = dr["Vehicleno"].ToString();
+                    if (!DBNull.Value.Equals(dr["CenterCode"]))
+                        result.CenterCode = int.Parse(dr["CenterCode"].ToString());
+                    if (!DBNull.Value.Equals(dr["CenterName"]))
+                        result.CenterName = dr["CenterName"].ToString();
+                    if (!DBNull.Value.Equals(dr["IsActive"]))
+                        result.IsActive = bool.Parse(dr["IsActive"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsApproved"]))
+                        result.IsApproved = bool.Parse(dr["IsApproved"].ToString());
+                    if (!DBNull.Value.Equals(dr["EntryDate"]))
+                        result.EntryDate = DateTime.Parse(dr["EntryDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["EntryTime"]))
+                        result.EntryTime = dr["EntryTime"].ToString();
+                    if (!DBNull.Value.Equals(dr["TotalCount"]))
+                        result.TotalCount = int.Parse(dr["TotalCount"].ToString());
+
+                }
+            }
+            catch { }
+            return result;
+        }
     }
 }

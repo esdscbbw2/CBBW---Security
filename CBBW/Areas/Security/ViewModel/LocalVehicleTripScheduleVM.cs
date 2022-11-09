@@ -13,5 +13,7 @@ namespace CBBW.Areas.Security.ViewModel
         public string VehicleNo { get; set; }
         public string DriverCodenName { get; set; }
         public List<LocVehSchFromMat> LVSchDtl { get; set; }
+        public string CallBackUrl { get; set; }
+        public int IsSaveVisible { get; set; }
     }
 }

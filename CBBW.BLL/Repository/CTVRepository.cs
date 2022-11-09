@@ -67,9 +67,9 @@ namespace CBBW.BLL.Repository
            return _CTVEntities.getNewCTVNoteNo(SchPattern, ref pMsg);
         }
 
-        public List<NoteNumber> GetNoteNumbersTobeApproved(ref string pMsg)
+        public List<NoteNumber> GetNoteNumbersTobeApproved(int EmpNo, int CenterCode,ref string pMsg)
         {
-            return _CTVEntities.getNotenumbersTobeApproved(ref pMsg);
+            return _CTVEntities.getNotenumbersTobeApproved(EmpNo, CenterCode,ref pMsg);
         }
 
         public CTVHdrDtl getSchDetailsFromNote(string NoteNumber, ref string pMsg)
@@ -159,5 +159,12 @@ namespace CBBW.BLL.Repository
         {
             return _CTVEntities.InsertOthTripSchDtl(Notenumber, TripPurpose, dtldata, ref pMsg);
         }
+        public IEnumerable<TripScheduleHdr> getCtvSchedule(int centercode, ref string pMsg)
+        {
+            return _CTVEntities.getCtvSchedule(centercode, ref pMsg);
+        }
+
+
+
     }
 }

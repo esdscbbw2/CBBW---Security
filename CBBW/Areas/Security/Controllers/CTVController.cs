@@ -16,15 +16,91 @@ namespace CBBW.Areas.Security.Controllers
     {
         string pMsg;
         ICTVRepository _iCTV;
+        
         public CTVController(ICTVRepository iCTV)
         {
             _iCTV = iCTV;
             pMsg = "";
         }
-        public ActionResult LocalVehicleTripSchFromMat() 
+        public ActionResult OtherTripSchDisplay(string NoteNumber,int CBUID=2) 
+        {            
+            getLogInUserInfo();
+            OtherTripSchDisplayVM model = new OtherTripSchDisplayVM();
+            CTVHdrDtl obj = _iCTV.getSchDetailsFromNote(NoteNumber, ref pMsg);
+            if (obj != null) 
+            {
+                model.SchDetailList = obj.SchDetailList;
+                model.NoteNumber = obj.SchHdrData.NoteNo;
+                model.TripPurpose = obj.SchHdrData.TripPurpose;
+            }
+            if (CBUID == 2)
+            {
+                model.CallBackUrl = "/Security/CTV/ViewNote?NoteNumber=" + NoteNumber;
+                //TempData["LVTScallbackurl"] = "/Security/CTV/ViewNote?NoteNumber=" + NoteNumber;
+                //model.IsSaveVisible = 0;
+            }
+            return View(model);
+        }
+        public ActionResult ViewNote(string NoteNumber) 
         {
+            getLogInUserInfo();
+            TripScheduleHdr model = _iCTV.getSchDetailsFromNote(NoteNumber, ref pMsg).SchHdrData;
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult ViewNote(TripScheduleHdr model, string Submit) 
+        {
+            UserInfo user = getLogInUserInfo();
+            TempData["CTVHDR"] = model;
+            if (Submit == "OVT")
+            {
+                return RedirectToAction("OtherTripSchDisplay", new { Area = "Security", NoteNumber = model.NoteNo });
+            }
+            else if (Submit == "TADARules")
+            {
+                return RedirectToAction("ViewRedirection", "TADARules", 
+                    new { Area = "Security", CBUID = 2, NoteNumber = model.NoteNo });
+            }
+            else if (Submit == "TourRule")
+            {
+                return RedirectToAction("ViewRedirection", "TourRule", 
+                    new { Area = "Security", CBUID = 2, NoteNumber=model.NoteNo });
+            }
+            else if (Submit == "LVT")
+            {
+                //TempData["CTVHDR"] = model;
+                return RedirectToAction("LocVehTripSch", new { CBUID = 2, NoteNumber = model.NoteNo });
+            }
+            else if (Submit == "LVTSChMat")
+            {
+                return RedirectToAction("LocalVehicleTripSchFromMat", new { CBUID = 2, NoteNumber = model.NoteNo });
+            }
             
+            return View(model);
+        }
+        public ActionResult DeleteTripSchedule(string NoteNumber)
+        {
+            //UserInfo user = getLogInUserInfo();
+            if (!string.IsNullOrEmpty(NoteNumber)) 
+            {
+                bool x=_iCTV.RemoveNote(NoteNumber, 3, ref pMsg);
+                if (x) 
+                { 
+                
+                }
+            }            
+            // return View();
+            return RedirectToAction("ScheduleLists");
+
+        }
+        public ActionResult LocalVehicleTripSchFromMat(int CBUID=1,string NoteNumber="") 
+        {            
             LVTSFromMatVM model = new LVTSFromMatVM();
+            if (CBUID == 1)
+            {
+                model.CallBackUrl = "/Security/CTV/Create";
+            }
+            else if (CBUID == 2) { model.CallBackUrl = "/Security/CTV/ViewNote?NoteNumber="+ NoteNumber; }
             TripScheduleHdr obj;
             if (TempData["CTVHDR"] != null) 
             {
@@ -40,8 +116,9 @@ namespace CBBW.Areas.Security.Controllers
         }
         public ActionResult Approval() 
         {
+            UserInfo user = getLogInUserInfo();
             CTVApprovalVM model = new CTVApprovalVM();
-            model.ListofNoteNumbers = _iCTV.GetNoteNumbersTobeApproved(ref pMsg);
+            model.ListofNoteNumbers = _iCTV.GetNoteNumbersTobeApproved(123,user.CentreCode,ref pMsg);
             model.DateTimeofApproval = DateTime.Now;
             return View(model);
         }
@@ -50,12 +127,8 @@ namespace CBBW.Areas.Security.Controllers
         //{
 
         //}
-        public ActionResult LocVehTripSch(int CBUID) 
-        {
-            if (CBUID == 1)
-            {
-                TempData["LVTScallbackurl"] = "Create";
-            }
+        public ActionResult LocVehTripSch(int CBUID,string NoteNumber="") 
+        {            
             TripScheduleHdr obj = new TripScheduleHdr();
             if (TempData["CTVHDR"] != null) 
             { 
@@ -73,12 +146,25 @@ namespace CBBW.Areas.Security.Controllers
             model.DriverCodenName = obj.DriverNonName;
             model.LVSchDtl = _iCTV.getLocalVehicleSChedules(model.VehicleNo, model.SCHFromDate, model.SCHToDate, ref pMsg);
 
+            if (CBUID == 1)
+            {
+                model.CallBackUrl= "/Security/CTV/Create";
+                //TempData["LVTScallbackurl"] = "/Security/CTV/Create";
+                model.IsSaveVisible = 1;
+            }
+            if (CBUID == 2)
+            {
+                model.CallBackUrl= "/Security/CTV/ViewNote?NoteNumber=" + NoteNumber;
+                //TempData["LVTScallbackurl"] = "/Security/CTV/ViewNote?NoteNumber=" + NoteNumber;
+                model.IsSaveVisible = 0;
+            }
+
             return View(model);
         }
         [HttpPost]
-        public ActionResult LocVehTripSch() 
+        public ActionResult LocVehTripSch(LocalVehicleTripScheduleVM model) 
         {
-           string callbackurl=TempData["LVTScallbackurl"] != null ? TempData["LVTScallbackurl"].ToString() : "Create";
+           //string callbackurl=TempData["LVTScallbackurl"] != null ? TempData["LVTScallbackurl"].ToString() : "/Security/CTV/Create";
             TripScheduleHdr obj = new TripScheduleHdr();
             if (TempData["CTVHDR"] != null)
             {
@@ -86,15 +172,46 @@ namespace CBBW.Areas.Security.Controllers
                 obj.IsOTSActivated = 1;
                 TempData["CTVHDR"] = obj;
             }
-            return RedirectToAction(callbackurl);
+            return Redirect(model.CallBackUrl);
         }
         public ActionResult Index()
         {
-            
-            return View();
+            UserInfo model = new UserInfo();
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult Index(UserInfo model)
+        {
+            model = _iCTV.getUserInfo(model.UserName, ref pMsg);
+            TempData["LogInUser"] = model;
+            return RedirectToAction("ScheduleLists");
+        }
+        public ActionResult ScheduleLists() 
+        {
+            UserInfo user = getLogInUserInfo();
+            IEnumerable<TripScheduleHdr> model = _iCTV.getCtvSchedule(user.CentreCode, ref pMsg);
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult ScheduleLists(string Submit)
+        {
+            UserInfo user = getLogInUserInfo();
+            TempData["CTVHDR"] = null;
+            return RedirectToAction("Create");
+        }
+        private UserInfo getLogInUserInfo() 
+        {
+            UserInfo user = new UserInfo(true);
+            if (TempData["LogInUser"] != null)
+            {
+                user = TempData["LogInUser"] as UserInfo;
+            }
+            TempData["LogInUser"] = user;
+            return user;
         }
         public ActionResult Create() 
-        {            
+        {
+            UserInfo user= getLogInUserInfo();
             TripScheduleHdr model;
             if (TempData["CTVHDR"] == null)
             {
@@ -112,6 +229,7 @@ namespace CBBW.Areas.Security.Controllers
         [HttpPost]
         public ActionResult Create(TripScheduleHdr model, string Submit) 
         {
+            UserInfo user= getLogInUserInfo();
             TempData["CTVHDR"] = model;
             if (Submit == "OVT")
             {
@@ -140,12 +258,15 @@ namespace CBBW.Areas.Security.Controllers
                     model.ListofVehicles = _iCTV.getLCVMCVVehicleList(ref pMsg);
 
                 //model.IsOTSSaved = 0;
+                model.EntryDate = DateTime.Today;
                 model.EntryTime = DateTime.Now.ToString("hh:mm:ss tt");
                 model.IsActive = true;
+                model.EmployeeNumber = user.EmployeeNumber;
                 //TempData["CTVHDR"] = model;
                 if (_iCTV.CreateNewCTVHdr(model, ref pMsg))
                 {
                     ViewBag.Msg = "Note number " + model.NoteNo + " submited successfully.";
+                    TempData["CTVHDR"] = null;
                 }
                 else
                 {
@@ -173,6 +294,26 @@ namespace CBBW.Areas.Security.Controllers
             }
                       
             //model.VehicleNo = "AP25X1541";
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult OtherTrip(OtherTripScheduleEntryVM model) 
+        {            
+            model.MinDate = DateTime.Now.ToString("yyyy-MM-dd");
+            model.CurDate = DateTime.Now.ToString("yyyy-MM-dd");
+            TripScheduleHdr obj;
+            if (TempData["CTVHDR"] != null)
+            {
+                obj = TempData["CTVHDR"] as TripScheduleHdr;
+                model.NoteNumber = obj.NoteNo;
+                model.VehicleNo = obj.Vehicleno;
+                model.TripPurpose = obj.TripPurpose;
+                model.DriverCode = obj.DriverNo;
+                model.DriverName = obj.DriverName;
+                model.MaxDate = obj.ToDate.ToString("yyyy-MM-dd");
+                TempData["CTVHDR"] = obj;
+                _iCTV.RemoveNote(model.NoteNumber, 1, ref pMsg);
+            }
             return View(model);
         }
         public JsonResult GetLocationTypes()
@@ -284,5 +425,10 @@ namespace CBBW.Areas.Security.Controllers
             CTVHdrDtl result = _iCTV.getSchDetailsFromNote(Notenumber, ref pMsg);
             return Json(result.SchHdrData, JsonRequestBehavior.AllowGet);
         }
+        //public JsonResult GetNotesToBeApproved(int EmpNo,int centrecode)
+        //{
+        //    //int x = 1;
+        //    return Json(_iCTV.GetNoteNumbersTobeApproved(EmpNo, centrecode,ref pMsg), JsonRequestBehavior.AllowGet);
+        //}
     }
 }

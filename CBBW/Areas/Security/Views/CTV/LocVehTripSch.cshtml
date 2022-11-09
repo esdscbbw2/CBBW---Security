@@ -3,36 +3,37 @@
 
 }
 <div class="row newTable">
-    @using (Html.BeginForm()) 
-    { 
-    <div class="fixedElement">
-        <div class="col-md-12" style="position: relative;">
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(m => m.IsSaveVisible)
+        @Html.HiddenFor(m=>m.CallBackUrl)
+        <div class="fixedElement">
+            <div class="col-md-12" style="position: relative;">
 
-            <div class="heading_text_btn mb-4 mt-4">
-                <div class="leftButton">
-                    <button type="button" class="btn btn-primary me-2"
-                            onclick="window.location.href='@Url.Action("Create", "CTV", new { Area = "Security" })';">
-                        <i data-feather="arrow-left-circle"></i>
-                        Back
-                    </button>
+                <div class="heading_text_btn mb-4 mt-4">
+                    <div class="leftButton">
+                        <button type="button" class="btn btn-primary me-2"
+                                onclick="window.location.href='@Model.CallBackUrl';">
+                            <i data-feather="arrow-left-circle"></i>
+                            Back
+                        </button>
 
-                    <button type="submit" class="btn btn-secondary me-2">
+                        <button id="btnSave" type="submit" class="btn btn-secondary me-2">
+                            <i data-feather="check-circle"></i>
+                            Save
+                        </button>
+                        @*<button type="button" class="btn btn-white">
+                                <i data-feather="x-circle"></i>
+                                Clear
+                            </button>*@
 
-                        <i data-feather="check-circle"></i>
-                        Save
-                    </button>
-                    @*<button type="button" class="btn btn-white">
-                        <i data-feather="x-circle"></i>
-                        Clear
-                    </button>*@
-
+                    </div>
+                    <h2>"Company Transport” Vehicle Trip Schedule – ENTRY</h2>
                 </div>
-                <h2>"Company Transport” Vehicle Trip Schedule – ENTRY</h2>
             </div>
         </div>
-    </div>
     }
-    
+
 
     <div class="col-md-12">
         <div class="heading_text_btn2 d-block mb-4">
@@ -94,8 +95,9 @@
                                 <td>@item.ToCenterTypeName</td>
                                 <td>@item.ToCenterName</td>
                                 <td>
-                                    <div data-toggle="tooltip" data-placement="right" title="Distance covered - @item.Distance kms, Days taken - @item.CalcDays" >
-                                    @item.ToDateStr</div>
+                                    <div data-toggle="tooltip" data-placement="right" title="Distance covered - @item.Distance kms, Days taken - @item.CalcDays">
+                                        @item.ToDateStr
+                                    </div>
                                 </td>
                             </tr>
                             mrow += 1;
@@ -128,7 +130,8 @@
                             SL.No
                         </th>
                         <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
-                        Edit Driver No. & Name</th>
+                            Edit Driver No. & Name
+                        </th>
                         <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
                             Add Saved Driver No. & Name
                         </th>
@@ -147,8 +150,8 @@
                             Scheduled Trip To Date
                         </th>
                         @*<th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
-                            Actions
-                        </th>*@
+                                Actions
+                            </th>*@
 
                     </tr>
 
@@ -192,18 +195,18 @@
                                 </td>
                                 <td class="text-center">@item.ToDateStr</td>
                                 @*<td>
-                                    <span class="actionBtn">
-                                        <button type="button" class="btn primaryLink" data-toggle="tooltip"
-                                                data-placement="top" title="Add" disabled>
-                                            <i data-feather="plus" onClick="plusAction()"></i>
-                                        </button>
+                                        <span class="actionBtn">
+                                            <button type="button" class="btn primaryLink" data-toggle="tooltip"
+                                                    data-placement="top" title="Add" disabled>
+                                                <i data-feather="plus" onClick="plusAction()"></i>
+                                            </button>
 
-                                        <button type="button" class="btn secondaryLink" data-toggle="tooltip"
-                                                data-placement="top" title="Delete" disabled>
-                                            <i data-feather="x"></i>
-                                        </button>
-                                    </span>
-                                </td>*@
+                                            <button type="button" class="btn secondaryLink" data-toggle="tooltip"
+                                                    data-placement="top" title="Delete" disabled>
+                                                <i data-feather="x"></i>
+                                            </button>
+                                        </span>
+                                    </td>*@
 
                             </tr>
                         }
@@ -219,3 +222,25 @@
         </div>
     </div>
 </div>
+@section headers
+    {
+    <style>
+        .inVisible {
+            display: none;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
+}
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var btnsave = $('#btnSave');
+            if ($('#IsSaveVisible').val() == 0) {
+                btnsave.addClass('inVisible');
+            } else { btnsave.removeClass('inVisible');}
+        });
+    </script>
+    }

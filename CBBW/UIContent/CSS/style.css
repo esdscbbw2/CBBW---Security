@@ -1288,7 +1288,7 @@ strong {
 /*  login V2 Style */
 
 .login-bg-img {
-    background-image: url("img/beediworkers.webp");
+    background-image: url("/img/beediworkers.webp");
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
@@ -1333,7 +1333,7 @@ strong {
     width: 150px;
 }
 
-.wid-100 {
+.wid-130 {
     width: 130px;
 }
 

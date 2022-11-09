@@ -234,7 +234,22 @@
         if (msg == 1) {
             $(target).val('-1');
             comboChangeContextChild(rowid, "-1");
-            swal.fire('Duplicate transport type');
+            Swal.fire({
+                title: 'Information Message',
+                text: "You Have Selected Duplicate Transport Type",
+                icon: 'warning',
+                customClass: 'swal-wide',
+                //buttons: {
+                //    cancel: 'No',
+                //    confirm: 'Yes'
+                //},
+                confirmButtonText: "OK",
+                //cancelButtonText: "No",
+                cancelButtonClass: 'btn-cancel',
+                confirmButtonColor: '#2527a2',
+                //showCancelButton: true,
+            })
+            //swal.fire('Duplicate transport type');
         } else {
             comboChangeContextChild(rowid, transportid);
         }

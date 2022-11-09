@@ -96,8 +96,8 @@
                             htmlAttributes: new
                             {
                             @multiple = "multiple",
-                            @class = "form-select example-getting-started is-valid"
-
+                            @class = "form-select example-getting-started is-valid",
+                            @disabled="disabled"
                             })
 
 
@@ -111,7 +111,7 @@
     </div>
 
     <div class="col-12">
-        <div class="bgColor wid-100 mb-4">
+        <div class="bgColor  mb-4">
             <ul>
                 <li>
                     An Employee Scheduled For Tour And He Attended Late Or Returned Late From Tour. The
@@ -439,6 +439,14 @@
 <script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
 <script src="~/UIContent/JS/jquery.validate.min.js"></script>
 <script src="~/UIContent/JS/jquery.validate.unobtrusive.min.js"></script>
+@*<script type="text/javascript">
+    $(document).ready(function () {
+        $('.example-getting-started').multiselect({
+            includeSelectAllOption: true,
+            selectAllValue: 0
+        });
+    });
+</script>*@
 <script type="text/javascript">
 
     $(document).ready(function () {

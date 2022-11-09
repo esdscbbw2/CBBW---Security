@@ -28,7 +28,10 @@
                             <i data-feather="check-circle"></i>
                             Save
                         </button>
-                        <button type="button" class="btn btn-white" onclick="ClearBtnClick()">
+                        <button type="submit" class="btn btn-white"
+                                name="Submit" value="Clear"
+                                @*onclick="ClearBtnClick()"*@
+                                >
                             <i data-feather="x-circle"></i>
                             Clear
                         </button>
@@ -133,7 +136,7 @@
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <select id="0_FromL" class="form-select pointer canclear is-invalid"
+                                    <select id="0_FromL" class="form-select pointer othplace canclear is-invalid"
                                             onchange="ChangeLocation()"
                                             aria-label="Default select example">
                                         <option value="-1">Select location</option>
@@ -143,7 +146,7 @@
                             <td>
                                 <div class="form-group">
                                     <select id="0_ToLT"
-                                            class="form-select pointer canclear is-invalid "
+                                            class="form-select pointer canclear2 is-invalid "
                                             onchange="ChangeLocationToType()"
                                             aria-label="Default select example">
                                     </select>
@@ -152,12 +155,12 @@
                             <td>
                                 <div class="form-group">
                                     <select id="0_ToL"
-                                            class="form-select pointer canclear is-invalid"
+                                            class="form-select pointer othplace canclear2 is-invalid"
                                             onchange="ChangeLocationTo()"
                                             aria-label="Default select example">
                                     </select>
                                     <select id="M_ToL" 
-                                            class="form-select pointer canclear inVisible is-invalid"
+                                            class="form-select pointer othplace canclear2 inVisible"
                                             onchange="ChangeLocationTo()"
                                             aria-label="Default select example">
                                     </select>
@@ -313,8 +316,8 @@
             <ul style="list-style:none; margin: 0; padding: 0;">
                 <li style="font-size: 16px;">
                     It Is Ensured That This Trip Is Prepared As Center Code/Name “Other Place” & In Factual It Is Taking Place The Same Way As It Is selected:
-                    <select id="CCOth" class="form-select canclear pointer is-invalid"
-                            style="width:110px"
+                    <select id="CCOth" class="form-select canclear pointer"
+                            style="width:110px" disabled="disabled"
                             onchange="ValidateControl()"
                             aria-label="Default select example">
                         <option selected value="-1">-</option>

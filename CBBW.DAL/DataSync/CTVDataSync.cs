@@ -114,7 +114,7 @@ namespace CBBW.DAL.DataSync
             try
             {
                 int paracount = 0;
-                SqlParameter[] para = new SqlParameter[13];
+                SqlParameter[] para = new SqlParameter[14];
                 para[paracount] = new SqlParameter("@NoteNo", SqlDbType.NChar, 25);
                 para[paracount++].Value = model.NoteNo;
                 para[paracount] = new SqlParameter("@EntryDate", SqlDbType.Date);
@@ -145,7 +145,8 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = model.VehicleType;
                 para[paracount] = new SqlParameter("@IsActive", SqlDbType.Bit);
                 para[paracount++].Value = model.IsActive;
-
+                para[paracount] = new SqlParameter("@Employeenumber", SqlDbType.Int);
+                para[paracount++].Value = model.EmployeeNumber;
                 using (SQLHelper sql = new SQLHelper("[CTV].[SetCTVHdr]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataTable(para, ref pMsg);
@@ -225,11 +226,11 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-        public DataTable getNoteNumbersTobeApproved(ref string pMsg) 
+        public DataTable getNoteNumbersTobeApproved(int CenterCode,ref string pMsg) 
         {
             try
             {
-                using (SQLHelper sql = new SQLHelper("select * from [CTV].[getNoteNumbersTobeApproved]()", CommandType.Text))
+                using (SQLHelper sql = new SQLHelper("select * from [CTV].[getNoteNumbersTobeApproved]("+ CenterCode + ")", CommandType.Text))
                 {
                     return sql.GetDataTable();
                 }
@@ -252,5 +253,44 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+
+        ///From punu's project
+        public DataTable getCtvSchedule(int centercode, ref string pMsg)
+        {
+
+            TripScheduleHdr tr = new TripScheduleHdr();
+            // IEnumerable<TripScheduleHdr> model = _ctvRepo.getCtvSchedule(x, ref pMsg);
+            // int x = tr.TotalCount;
+
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[6];
+                para[paracount] = new SqlParameter("@DisplayLength", SqlDbType.Int);
+                para[paracount++].Value = 100000;
+                para[paracount] = new SqlParameter("@DisplayStart", SqlDbType.Int);
+                para[paracount++].Value = 0;
+                para[paracount] = new SqlParameter("@sortCol", SqlDbType.Int);
+                para[paracount++].Value = 3;
+                para[paracount] = new SqlParameter("@SortDir", SqlDbType.NVarChar);
+                para[paracount++].Value = "dsc";
+                para[paracount] = new SqlParameter("@Search", SqlDbType.NVarChar);
+                para[paracount++].Value = "";
+                para[paracount] = new SqlParameter("@centrecode", SqlDbType.NVarChar);
+                para[paracount++].Value = centercode;
+                using (SQLHelper sql = new SQLHelper("[CTV].[spGetVehicleTripSchedule1]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+                //using (SQLHelper sql = new SQLHelper("Select * from [CTV].[getSchedules]()", CommandType.Text))
+                //{
+                //   return sql.GetDataTable( ref pMsg);
+                //}
+
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+
+        ///From Punus project - end
     }
 }

@@ -19,12 +19,16 @@ namespace CBBW.Areas.Security.Controllers
             _toursRule = toursRule;
             pMsg = "";
         }
-        public ActionResult ViewRedirection(int CBUID)
+        public ActionResult ViewRedirection(int CBUID,string NoteNumber="")
         {
             //string callbackurl = "";
             if (CBUID == 1)
             {
                 TempData["Tourcallbackurl"] = "/Security/CTV/Create";
+            }
+            else if (CBUID == 2)
+            {
+                TempData["Tourcallbackurl"] = "/Security/CTV/ViewNote?NoteNumber="+ NoteNumber;
             }
             int RuleID = _toursRule.GetAffectedRuleID(ref pMsg);
             return RedirectToAction("ViewRule", new { id = RuleID, isDelete = false });

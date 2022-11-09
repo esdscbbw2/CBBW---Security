@@ -7,6 +7,7 @@ $.fn.setValueToZero = function () {
     that.val('0');
 };
 function getInitialData() {
+    //alert("ok");
     var notenumber = $('#NoteNumber').val();
     $.ajax({
         url: '/CTV/getOTVSChDetailData',
@@ -35,17 +36,15 @@ function getInitialData() {
                 $('#' + index +'_FromDate2').val(item.FromDateStr);
                 $('#' + index +'_FromTime2').val(fromtimectrl.val());
                 $('#' + index +'_FromLT2').val(fromltctrl.find('option:selected').text());
-                $('#' + index +'_ToLT2').val(toltctrl.find('option:selected').text());
+                $('#' + index + '_ToLT2').val(item.ToCenterTypeName);
                 $('#' + index + '_ToDate2').val(item.ToDateStr);
                 $('#' + index + '_Driver2').val(item.DriverCodenName);
+                $('#' + index + '_ToL2').val(item.ToCenterName);
                 //second table cloaning end
                 FillLocationComboVirtually(item.FromCenterTypeCode, index + '_FromL', item.FromCentreCode, index+'_FromL2');
                 FillLocationComboVirtually(item.ToCentreTypeCode, index + '_ToL', item.ToCentreCode, index+'_ToL2');
                 fromlctrl.removeClass('is-invalid').addClass('is-valid');
                 $('#' + index + '_ToL').removeClass('is-invalid').addClass('is-valid');
-
-                
-                
                 
             });
         }
@@ -71,6 +70,15 @@ function ClearBtnClick() {
     $('.canclear').each(function () {
         $(this).val('').removeClass('is-valid').addClass('is-invalid');
     });
+    $('.canclear2').each(function () {
+        var that = $(this);
+        that.find('.btn-group').remove();
+        that.multiselect("clearSelection");
+        //that.multiselect("destroy");
+        that.multiselect("refresh");
+        that.removeClass('is-valid').addClass('is-invalid');
+    });
+    $('#M_ToL').addClass('inVisible');
 };
 function BackButtonClicked() {
     if ($('#BackBtnMsg').val() == 1) {
@@ -103,8 +111,7 @@ function ValidateControl() {
         $(target).removeClass('is-invalid').addClass('is-valid');
     } else {
         $(target).removeClass('is-valid').addClass('is-invalid');
-    }
-
+    }    
     activateSubmitBtn();
 
 };
@@ -216,8 +223,29 @@ function getSchRecords() {
     });
     return schrecords;
 };
+function isOtherPlaceButtonEnabled() {
+    var isenable = true;
+    //alert('ok');
+    var btn = $('#CCOth');
+    $('.othplace').each(function () {
+        var mval = $(this).val();
+        if (mval != '' && mval != null) {
+            if (mval.indexOf('Other Place') > 0) {
+                isenable = false;
+            }
+        }        
+    });
+    
+    if (isenable) {
+        btn.removeAttr('disabled').removeClass('is-valid').addClass('is-invalid').val('-1');
+    } else {
+        btn.val('-1').removeClass('is-invalid').attr('disabled', 'disabled');
+    }
+};
 function activateSubmitBtn() {
     //alert($('.is-invalid').length);
+    //isOtherPlaceButtonEnabled();
+    
     var btnSubmit = $('#btnSubmit');
     if ($('.is-invalid').length > 0) {
         btnSubmit.attr('disabled', 'disabled');

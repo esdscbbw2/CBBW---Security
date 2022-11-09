@@ -12,12 +12,12 @@
         @Html.HiddenFor(m => m.EntryTime)
         @Html.HiddenFor(m => m.NewConnectingID)
         @Html.HiddenFor(m => m.mDelete)
-        @Html.HiddenFor(m=>m.CallBaclkUrl)
+        @Html.HiddenFor(m => m.CallBaclkUrl)
         <div class="fixedElement">
             <div class="col-md-12" style="position: relative;">
                 <div class="heading_text_btn mb-4 mt-4">
                     <div class="leftButton">
-                        <button type="button"  
+                        <button type="button"
                                 class="btn btn-primary me-2"
                                 onclick="window.location.href='@Model.CallBaclkUrl';">
                             <i data-feather="arrow-left-circle"></i>
@@ -70,7 +70,7 @@
             </div>
         </div>
         <div class="col-12">
-            <div class="bgColor wid-100 mb-4">
+            <div class="bgColor  mb-4">
                 <ul>
                     <li>
                         Minimum Hours Of Tour Required To Get Half DA:
@@ -182,6 +182,20 @@
                     </button>
                 </div>
             </div>
+
+            <div class="bgColor bg-transparent border-blue mt-4">
+                <ul style="list-style: none; padding: 0; font-size:28px;">
+                    <li>
+                        Are You Sure The Details Entered Are Correct & As Required?
+                        <select disabled="disabled" id="submitConfirmation" onchange="validatecontrol()"
+                                class="form-select " aria-label="Default select example">
+                            <option value="0">No</option>
+                            <option selected value="1">Yes</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
+
         </div>
     }
 </div>
@@ -189,6 +203,9 @@
     <style>
         .inVisible {
             display: none;
+        }
+        .border-blue {
+            border: solid 1px #aacdfd;
         }
         .btn-primary:disabled {
             background-color: #e9ecef;
@@ -199,6 +216,14 @@
 }
 @section scripts{
     @*<script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.example-getting-started').multiselect({
+                includeSelectAllOption: true,
+                selectAllValue: 0
+            });
+        });
+    </script>
     <script>
         $(document).ready(function () {
             $('.isvalidate').each(function () {
@@ -220,7 +245,7 @@
     </script>
     <script>
         $(document).ready(function () {
-            $('#btnDelete').click(function () {                
+            $('#btnDelete').click(function () {
                 Swal.fire({
                     title: 'Delete Confirmation',
                     text: "Are You Sure Want to Delete This?",
@@ -233,7 +258,7 @@
                     confirmButtonText: "Yes",
                     cancelButtonText: "No",
                     cancelButtonClass: 'btn-cancel',
-                    confirmButtonColor: '#2527a2',                    
+                    confirmButtonColor: '#2527a2',
                     showCancelButton: true,
                 }).then(callback);
                 function callback(result) {
@@ -248,4 +273,5 @@
             });
         });
     </script>
+
 }
