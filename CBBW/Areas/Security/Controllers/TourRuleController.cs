@@ -13,7 +13,6 @@ namespace CBBW.Areas.Security.Controllers
     {
         IToursRuleRepository _toursRule;
         string pMsg;
-
         public TourRuleController(IToursRuleRepository toursRule)
         {
             _toursRule = toursRule;
@@ -30,6 +29,10 @@ namespace CBBW.Areas.Security.Controllers
             {
                 TempData["Tourcallbackurl"] = "/Security/CTV/ViewNote?NoteNumber="+ NoteNumber;
             }
+            else if (CBUID == 3)
+            {
+                TempData["Tourcallbackurl"] = "/Security/CTV/Approval?NoteNumber=" + NoteNumber;
+            }
             int RuleID = _toursRule.GetAffectedRuleID(ref pMsg);
             return RedirectToAction("ViewRule", new { id = RuleID, isDelete = false });
         }
@@ -42,12 +45,12 @@ namespace CBBW.Areas.Security.Controllers
 
         public ActionResult CreateRule()
         {
-
             TourRuleDetails model = _toursRule.GetLastToursRule(ref pMsg);
+            model.MinDate = DateTime.Today.ToString("yyyy-MM-dd");
+            model.MaxDate = DateTime.Today.AddMonths(1).ToString("yyyy-MM-dd");
             model.ReadRule5 = true;
             TempData["TourDetails"] = model;
             return View(model);
-
         }
         [HttpPost]
         public ActionResult CreateRule(TourRuleDetails model )

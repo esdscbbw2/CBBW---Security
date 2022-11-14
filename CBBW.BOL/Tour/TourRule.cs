@@ -11,10 +11,10 @@ namespace CBBW.BOL.Tour
     public class TourRule
     {
         public int ID { get; set; }
-        [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}")]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime EntryDate { get; set; }
         public string EntryTime { get; set; }
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MMM-yyyy}")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime EffectiveDate { get; set; }
         public bool IsApplied { get; set; }
         public int SL { get; set; }

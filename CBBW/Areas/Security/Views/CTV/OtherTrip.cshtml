@@ -54,7 +54,7 @@
                             Trip Purpose  :
                         </label>
                         <div class="col-md-10">
-                            @Html.TextBoxFor(m => m.TripPurpose,
+                            @Html.TextAreaFor(m => m.TripPurpose,
                                htmlAttributes: new
                                {
                                    @class = "form-control canclear pointer is-invalid",
@@ -72,12 +72,12 @@
             </div>
         </div>
         <div class="col-md-12">
-            <div class="table-responsive newTable mt-4">
+            <div class="table-responsive max-content newTable mt-4">
                 <table class="table table-bordered btnalign" id="tblOTV">
                     <thead>
                         <tr>
                             <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
-                                SL.No
+                                SL.No.
                             </th>
 
                             <th colspan="2" style="text-align: center; vertical-align: middle;" scope="col">
@@ -94,7 +94,7 @@
                             <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
                                 Scheduled Trip To Date
                             </th>
-                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                            <th scope="col" style="text-align: center;background-color:pink;color:#000; vertical-align: middle;" rowspan="2">
                                 Actions
                             </th>
                         </tr>
@@ -109,22 +109,22 @@
                             <th scope="row">1</th>
                             <td>
                                 <div class="form-group">
-                                    <input id="0_FromDt" type="date" value="@(DateTime.Now.ToString("yyyy-MM-dd"))" 
+                                    <input id="0_FromDt" type="date" value="@(DateTime.Today.ToString("yyyy-MM-dd"))"
                                            onchange="SchDateChanged()"
-                                           class="form-control datePicker canclear pointer ">
+                                           class="form-control datePicker canclear pointer is-valid">
                                 </div>
                             </td>
                             <td>
-                                <div class="form-group position-relative">
-                                    <div id="0_FromtimeDiv" class="input-group date pointer timePicker">
+                                <div class="form-group ">
+                                    <div class="input-group date pointer position-static">
                                         <input id="0_Fromtime" type="text" onblur="SchTimeChanged()"
-                                               @*onchange="SchTimeChanged()"*@
-                                               class="form-control canclear is-invalid "
-                                               @*placeholder="11:10 PM"*@>
-                                        <span class="input-group-addon pointer calender-ico"><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+                                               class="form-control canclear is-invalid timePicker"
+                                               placeholder="1:00 PM">
+                                        @*<span class="input-group-addon pointer calender-ico"><i class="fa fa-clock-o" aria-hidden="true"></i></span>*@
                                     </div>
                                 </div>
                             </td>
+
                             <td>
                                 <div class="form-group">
                                     <select id="0_FromLT"
@@ -159,7 +159,7 @@
                                             onchange="ChangeLocationTo()"
                                             aria-label="Default select example">
                                     </select>
-                                    <select id="M_ToL" 
+                                    <select id="M_ToL"
                                             class="form-select pointer othplace canclear2 inVisible"
                                             onchange="ChangeLocationTo()"
                                             aria-label="Default select example">
@@ -212,7 +212,7 @@
                     <thead>
                         <tr>
                             <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
-                                SL.No
+                                SL.No.
                             </th>
                             <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2"> Driver No. & Name</th>
                             <th colspan="2" style="text-align: center; vertical-align: middle;" scope="col">
@@ -229,7 +229,7 @@
                             <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
                                 Scheduled Trip To Date
                             </th>
-                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                            <th scope="col" style="text-align: center; background-color: pink; color: #000; vertical-align: middle;" rowspan="2">
                                 Actions
                             </th>
                         </tr>
@@ -279,7 +279,7 @@
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <input id="0_ToL2" type="text" disabled="disabled"
+                                    <input id="0_ToL2X" type="text" disabled="disabled"
                                            class="form-control ">
                                 </div>
                             </td>
@@ -329,7 +329,7 @@
                 <li style="font-size: 16px;">
                     The Other Trip Schedule Is Taken Up With The Knowledge Of DIC P&A That Transpired Through Mail:
                     <select id="DIC" class="form-select canclear pointer is-invalid"
-                            style="width:110px"
+                            style="width:110px" 
                             onchange="ValidateControl()"
                             aria-label="Default select example">
                         <option selected value="-1">-</option>

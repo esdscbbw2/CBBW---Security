@@ -6,6 +6,8 @@
 <div class="row newTable">
     @using (Html.BeginForm())
     {
+        @Html.HiddenFor(m=>m.MaxDate)
+        @Html.HiddenFor(m=>m.MinDate)
         @Html.HiddenFor(m => m.EntryDate)
         @Html.HiddenFor(m => m.EntryTime)
         @Html.HiddenFor(m => m.NewConnectingID);
@@ -46,23 +48,31 @@
                             Effective From Date :
                         </label>
                         <div class="col-md-4">
-                            @Html.EditorFor(m => m.EffectiveDate, new
-                               {
-                                   htmlAttributes = new
-                                   {
-                                       @readonly = "readonly",
-                                       onchange = "validatecontrol()",
-                                       @class = "form-control pointer datepicker1 isvalidate EffDt"
-                                   }
-                               })
-                        </div>
+                            @Html.TextBoxFor(m => m.EffectiveDate, "{0:yyyy-MM-dd}",
+                           htmlAttributes: new {
+                               @class = "form-control pointer isvalidate",
+                               type = "date",
+                               onchange = "validatecontrol()",
+                               max = Model.MaxDate,
+                               min = Model.MinDate
+                           })
+                            @*@Html.EditorFor(m => m.EffectiveDate, new
+                            {
+                                htmlAttributes = new
+                                {
+                                    @readonly = "readonly",
+                                    onchange = "validatecontrol()",
+                                    @class = "form-control pointer datepicker1 isvalidate EffDt"
+                                }
+                            })*@
+                         </div>
                     </div>
                     <div class="row d-flex align-items-center">
                         <label class="col-form-label col-md-2">
                             Entry Date  :
                         </label>
                         <div class="col-md-4">
-                            @Html.TextBoxFor(m => m.EntryDate, "{0:dd-MMM-yyyy}", 
+                            @Html.TextBoxFor(m => m.EntryDate, "{0:dd-MM-yyyy}", 
                            htmlAttributes: new { @class = "form-control", disabled = "disabled" })
                         </div>
                         <label class="col-form-label col-md-2">

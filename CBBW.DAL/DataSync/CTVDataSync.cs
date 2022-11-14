@@ -154,6 +154,30 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+        public DataTable setCTVApproval(string Notenumber,int EmployeeNumber,bool Isapproved,
+            DateTime ApprovalDatetime,string DisApprovalReason, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[5];
+                para[paracount] = new SqlParameter("@NoteNo", SqlDbType.NChar, 25);
+                para[paracount++].Value = Notenumber;
+                para[paracount] = new SqlParameter("@IsApproved", SqlDbType.Bit);
+                para[paracount++].Value = Isapproved;
+                para[paracount] = new SqlParameter("@ApprovedDateTime", SqlDbType.DateTime);
+                para[paracount++].Value = ApprovalDatetime;
+                para[paracount] = new SqlParameter("@ReasonForDisApproval", SqlDbType.NVarChar);
+                para[paracount++].Value = DisApprovalReason;
+                para[paracount] = new SqlParameter("@ApprovedEmployeeNo", SqlDbType.Int);
+                para[paracount++].Value = EmployeeNumber;
+                using (SQLHelper sql = new SQLHelper("[CTV].[SetCTVApproval]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
         public DataTable setOthTripSchDtls(string Notenumber,string TripPurpose, List<OthTripTemp> dtldata, ref string pMsg) 
         {
             try
@@ -255,27 +279,24 @@ namespace CBBW.DAL.DataSync
         }
 
         ///From punu's project
-        public DataTable getCtvSchedule(int centercode, ref string pMsg)
+        public DataTable getCtvSchedule(int PageSize, int PageNumber, int SortCol, string SortDirection,
+            string SearchText, int centercode, ref string pMsg)
+        //public DataTable getCtvSchedule(int centercode, ref string pMsg)
         {
-
-            TripScheduleHdr tr = new TripScheduleHdr();
-            // IEnumerable<TripScheduleHdr> model = _ctvRepo.getCtvSchedule(x, ref pMsg);
-            // int x = tr.TotalCount;
-
             try
             {
                 int paracount = 0;
                 SqlParameter[] para = new SqlParameter[6];
                 para[paracount] = new SqlParameter("@DisplayLength", SqlDbType.Int);
-                para[paracount++].Value = 100000;
+                para[paracount++].Value = PageSize;
                 para[paracount] = new SqlParameter("@DisplayStart", SqlDbType.Int);
-                para[paracount++].Value = 0;
+                para[paracount++].Value = PageNumber;
                 para[paracount] = new SqlParameter("@sortCol", SqlDbType.Int);
-                para[paracount++].Value = 3;
+                para[paracount++].Value = SortCol;
                 para[paracount] = new SqlParameter("@SortDir", SqlDbType.NVarChar);
-                para[paracount++].Value = "dsc";
+                para[paracount++].Value = SortDirection;
                 para[paracount] = new SqlParameter("@Search", SqlDbType.NVarChar);
-                para[paracount++].Value = "";
+                para[paracount++].Value = SearchText;
                 para[paracount] = new SqlParameter("@centrecode", SqlDbType.NVarChar);
                 para[paracount++].Value = centercode;
                 using (SQLHelper sql = new SQLHelper("[CTV].[spGetVehicleTripSchedule1]", CommandType.StoredProcedure))

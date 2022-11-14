@@ -57,6 +57,7 @@
     <Compile Include="CustomModels\RowDisplayInfo.cs" />
     <Compile Include="Master\PublicTransportType.cs" />
     <Compile Include="Master\ServiceType.cs" />
+    <Compile Include="MGP\MGPNotes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TADA\TADAParam.cs" />
     <Compile Include="TADA\TADAPubTransOption.cs" />

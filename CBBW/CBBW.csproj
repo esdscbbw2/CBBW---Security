@@ -135,6 +135,7 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="Areas\Security\Controllers\CTVController.cs" />
     <Compile Include="Areas\Security\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Security\Controllers\MaterialGatePassController.cs" />
     <Compile Include="Areas\Security\Controllers\TADARulesController.cs" />
     <Compile Include="Areas\Security\Controllers\TourRuleController.cs" />
     <Compile Include="Areas\Security\SecurityAreaRegistration.cs" />
@@ -221,8 +222,10 @@
     <Content Include="Images\personnel.png" />
     <Content Include="Images\User-Icon.png" />
     <Content Include="img\charbhai-logo-center.jpg" />
+    <Content Include="UIContent\CSS\bootstrap-datetimepicker.min.css" />
     <Content Include="UIContent\CSS\Custom_ErrorToolTip.css" />
     <Content Include="UIContent\CSS\font-awesome.min.css" />
+    <Content Include="UIContent\CSS\img\clock.png" />
     <Content Include="UIContent\CSS\img\main-banner.png" />
     <Content Include="UIContent\CSS\jquery.dataTables.min.css" />
     <Content Include="UIContent\CSS\style.css" />
@@ -333,6 +336,8 @@
     <Content Include="Areas\Security\Views\CTV\ScheduleLists.cshtml" />
     <Content Include="Areas\Security\Views\CTV\ViewNote.cshtml" />
     <Content Include="Areas\Security\Views\CTV\OtherTripSchDisplay.cshtml" />
+    <Content Include="Areas\Security\Views\MaterialGatePass\Index.cshtml" />
+    <Content Include="Areas\Security\Views\CTV\ApprovalLists.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />
@@ -412,7 +417,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>56411</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44390/</IISUrl>
+          <IISUrl>https://localhost:44391/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

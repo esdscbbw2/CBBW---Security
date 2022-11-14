@@ -34,5 +34,8 @@ namespace CBBW.BOL.Tour
         
         public List<int> SelectedServiceTypeIds { get; set; }
         public string CallBackUrl { get; set; }
+        public string MinDate { get; set; }
+        public string MaxDate { get; set; }
+
     }
 }

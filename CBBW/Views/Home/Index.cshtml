@@ -44,7 +44,15 @@
                 CTV Trip Schedule - Approval
             </td>
             <td style="border:1px solid black">
-                @Html.ActionLink("CTV Trip Schedule - Approval", "Approval", "CTV", new { area = "Security" }, null)
+                @Html.ActionLink("CTV Trip Schedule - Approval", "ApprovalLists", "CTV", new { area = "Security" }, null)
+            </td>
+        </tr>
+        <tr>
+            <td style="border:1px solid black">
+                Material Gatepass
+            </td>
+            <td style="border:1px solid black">
+                @Html.ActionLink("Material GatePass", "Index", "MaterialGatePass", new { area = "Security" }, null)
             </td>
         </tr>
     </table>

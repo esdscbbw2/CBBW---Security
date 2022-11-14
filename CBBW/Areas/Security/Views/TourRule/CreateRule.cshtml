@@ -8,6 +8,8 @@
     @using (Html.BeginForm("CreateRule", "TourRule", FormMethod.Post))
     {
         @Html.HiddenFor(m => m.isBtn)
+        @Html.HiddenFor(m => m.MaxDate)
+        @Html.HiddenFor(m => m.MinDate)
         <div class="fixedElement">
             @*@if (ViewBag.Message != null)
                 {
@@ -52,15 +54,15 @@
                                 <label>Effective From Date :</label>
                             </div>
                             <div class="col-md-4">
-                                @Html.EditorFor(m => m.EffectiveDate, new
-                                   {
-                                       htmlAttributes = new
-                                       {
-                                           @readonly = "readonly",
-                                           onchange = "validatecontrol()",
-                                           @class = "form-control pointer datepicker1 isvalidate EffDt"
-                                       }
-                                   })
+                                @Html.TextBoxFor(m => m.EffectiveDate,"{0:yyyy-MM-dd}",
+                               new {
+                                   @class= "form-control pointer isvalidate",
+                                   type="date",
+                                   onchange = "validatecontrol()",
+                                   max =Model.MaxDate,
+                                   min=Model.MinDate
+                               })
+                                
                             </div>
 
                         </div>
@@ -70,10 +72,10 @@
                                 <label>Entry Date :</label>
                             </div>
                             <div class="col-md-4">
-                                @Html.TextBox("EntryDate2",DateTime.Today.ToString("dd-MMM-yyyy"),
+                                @Html.TextBox("EntryDate2", DateTime.Today.ToString("dd-MM-yyyy"),
                                htmlAttributes: new { @class = "form-control", disabled = "disabled" })
                                 @*@Html.TextBoxFor(m => m.EntryDate, "{0:dd-MMM-yyyy}",
-                                htmlAttributes: new { @class = "form-control", disabled = "disabled" })*@
+                                    htmlAttributes: new { @class = "form-control", disabled = "disabled" })*@
                             </div>
                             <div class="col-form-label col-md-2">
                                 <label>Time : </label>
@@ -177,15 +179,15 @@
                                 But Not Done Between The Time:
                                 <div class="form-group">
                                     @*@Html.TextBoxFor(m => m.NightPunch_From,
-                           htmlAttributes: new
-               {
+                                                       htmlAttributes: new
+                                           {
 
 
-                @class = "form-control timepicker isvalidate is-valid",
+                                            @class = "form-control timepicker isvalidate is-valid",
 
-                @placeholder = "",
-                onkeyup = "validatecontrol()"
-            })
+                                            @placeholder = "",
+                                            onkeyup = "validatecontrol()"
+                                        })
                                     *@
                                     <div class="date position-relative">
                                         @Html.TextBoxFor(m => m.NightPunch_From,
@@ -204,12 +206,12 @@
                                 </div> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To: &nbsp;&nbsp;&nbsp;
                                 <div class="form-group">
                                     @*@Html.TextBoxFor(m => m.NightPunch_To,
-            htmlAttributes: new
-                 {
-                     @class = "form-control isvalidate is-valid",
-                @placeholder = "",
-                onkeyup = "validatecontrol()"
-            })*@
+                                        htmlAttributes: new
+                                             {
+                                                 @class = "form-control isvalidate is-valid",
+                                            @placeholder = "",
+                                            onkeyup = "validatecontrol()"
+                                        })*@
                                     <div class="date position-relative">
                                         @Html.TextBoxFor(m => m.NightPunch_To, new
                                         {
@@ -700,7 +702,18 @@
             validateallcontrol();
         });
     </script>
-
+    <script>
+        $(document).ready(function () {
+            $('.datepicker5').datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: 'dd-m-yy',
+                minDate: new Date(),
+                maxDate: "+1m",
+                autoclose: true
+            });
+        });
+    </script>
     <script>
         $(document).ready(function () {
             var today = new Date();

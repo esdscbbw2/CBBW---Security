@@ -43,11 +43,13 @@
   <ItemGroup>
     <Compile Include="IRepository\ICTVRepository.cs" />
     <Compile Include="IRepository\IMasterRepository.cs" />
+    <Compile Include="IRepository\IMGPRepository.cs" />
     <Compile Include="IRepository\ITADARulesRepository.cs" />
     <Compile Include="IRepository\IToursRuleRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\CTVRepository.cs" />
     <Compile Include="Repository\MasterRepository.cs" />
+    <Compile Include="Repository\MGPRepository.cs" />
     <Compile Include="Repository\TADARulesRepository.cs" />
     <Compile Include="Repository\ToursRuleRepository.cs" />
   </ItemGroup>

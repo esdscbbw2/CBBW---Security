@@ -159,12 +159,24 @@ namespace CBBW.BLL.Repository
         {
             return _CTVEntities.InsertOthTripSchDtl(Notenumber, TripPurpose, dtldata, ref pMsg);
         }
-        public IEnumerable<TripScheduleHdr> getCtvSchedule(int centercode, ref string pMsg)
+        public IEnumerable<TripScheduleHdr> getCtvSchedule(int PageSize, int PageNumber, int SortCol, string SortDirection,
+            string SearchText, int centercode, ref string pMsg)
         {
-            return _CTVEntities.getCtvSchedule(centercode, ref pMsg);
+            return _CTVEntities.getCtvSchedule(PageSize, PageNumber, SortCol, SortDirection,
+                SearchText,centercode, ref pMsg);
         }
-
-
-
+        public IEnumerable<TripScheduleHdr> getApprovedCtvSchedule(int PageSize, int PageNumber, int SortCol, string SortDirection,
+            string SearchText, int centercode, ref string pMsg)
+        {
+            return _CTVEntities.getCtvSchedule(PageSize, PageNumber, SortCol, SortDirection,
+                SearchText, centercode, ref pMsg).Where(o => o.IsApproved).ToList();
+        }
+        public bool setCTVApproval(string Notenumber, int EmployeeNumber, bool Isapproved, 
+            DateTime ApprovalDatetime, string DisApprovalReason, ref string pMsg)
+        {
+            if (DisApprovalReason == null) { DisApprovalReason = " "; }
+            return _CTVEntities.setCTVApproval(Notenumber,EmployeeNumber,Isapproved,
+                ApprovalDatetime,DisApprovalReason,ref pMsg);
+        }
     }
 }

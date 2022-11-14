@@ -9,6 +9,7 @@ $.fn.setValueToZero = function () {
 function getInitialData() {
     //alert("ok");
     var notenumber = $('#NoteNumber').val();
+    var drivercnn = $('#DriverCode').val() + ' / ' + $('#DriverName').val();
     $.ajax({
         url: '/CTV/getOTVSChDetailData',
         method: 'GET',
@@ -25,12 +26,14 @@ function getInitialData() {
                 var todtctrl = $('#' + index + '_ToDt');
                 var fromlctrl = $('#' + index + '_FromL');
 
-                fromdatectrl.val(item.FromDateStr);
+                fromdatectrl.val(item.FromDateStrYMD);
                 fromtimectrl.val(item.FromTime).removeClass('is-invalid').addClass('is-valid');
                 fromltctrl.val(item.FromCenterTypeCode).removeClass('is-invalid').addClass('is-valid');
-                toltctrl.val(item.ToCentreTypeCode).removeClass('is-invalid').addClass('is-valid');
+                toltctrl.val(item.ToCentreTypeCodes).removeClass('is-invalid').addClass('is-valid');
                 todtctrl.val(item.ToDateStr).removeClass('is-invalid').addClass('is-valid');
+                toltctrl.multiselect('refresh');
 
+                //alert(item.ToCentreTypeCodes);
                 //// Second Table cloaning
                 if (index > 0) { cloneEditRows(index); }
                 $('#' + index +'_FromDate2').val(item.FromDateStr);
@@ -38,8 +41,9 @@ function getInitialData() {
                 $('#' + index +'_FromLT2').val(fromltctrl.find('option:selected').text());
                 $('#' + index + '_ToLT2').val(item.ToCenterTypeName);
                 $('#' + index + '_ToDate2').val(item.ToDateStr);
-                $('#' + index + '_Driver2').val(item.DriverCodenName);
-                $('#' + index + '_ToL2').val(item.ToCenterName);
+                $('#' + index + '_Driver2').val(drivercnn);
+                $('#' + index + '_ToL2X').val(item.ToCenterName);
+                //alert(item.ToCenterName);
                 //second table cloaning end
                 FillLocationComboVirtually(item.FromCenterTypeCode, index + '_FromL', item.FromCentreCode, index+'_FromL2');
                 FillLocationComboVirtually(item.ToCentreTypeCode, index + '_ToL', item.ToCentreCode, index+'_ToL2');
@@ -87,10 +91,14 @@ function BackButtonClicked() {
                     text: 'Are you sure to go back?',
                     icon: 'question',
                     customClass: 'swal-wide',
-                    buttons: {
-                        confirm: 'Ok'
-                    },
-                    confirmButtonColor: '#2527a2',
+                    //buttons: {
+                    //    confirm: 'Ok'
+                    //},
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            cancelButtonClass: 'btn-cancel',
+            confirmButtonColor: '#2527a2',
+            showCancelButton: true,
                 }).then(callback);
                 function callback(result) {
                     if (result.value) {
@@ -119,7 +127,8 @@ function validatectrl(targetid, value) {
     var isvalid = false;
     switch (targetid) {
         case "TripPurpose":
-            if (value.length >1) { isvalid = true; }
+            var words = $.trim(value).split(" ");
+            if (value.length > 1 && words.length<=100) { isvalid = true; }
             break;
         case "CCOth":
             if (value == 1) { isvalid = true; }
@@ -274,21 +283,11 @@ function AddBtnVirtualClick(insrowid) {
         .val(curdt)
         .removeClass('is-invalid')
         .addClass('is-valid');
-    cloneready.find('#0_Fromtime').attr('id', r + '_Fromtime').val('').removeClass('is-valid').addClass('is-invalid');;
-    cloneready.find('#0_FromLT').attr('id', r + '_FromLT').removeClass('is-valid').addClass('is-invalid');
-    cloneready.find('#0_FromL').attr('id', r + '_FromL').removeClass('is-valid').addClass('is-invalid');
-    cloneready.find('#0_ToLT').attr('id', r + '_ToLT').removeClass('is-valid').addClass('is-invalid');
-    cloneready.find('#B0').remove();
-    cloneready.find('.btn-group').remove();
-    cloneready.find('#BL0').remove(); 
-    cloneready.find('#0_ToL').removeClass('is-invalid').addClass('inVisible');
-    cloneready.find('#M_ToL').attr('id', r + '_ToL')
-        .removeClass('is-valid inVisible').addClass('is-invalid');
-    cloneready.find('#0_ToDt').attr('id', r + '_ToDt').val('').removeClass('is-valid').addClass('is-invalid');
-    //cloanready.find('#0_FromtimeDiv').attr('id', r + '_FromtimeDiv')
 
-    var ftime = cloneready.find('#0_FromtimeDiv');
-    ftime.datetimepicker({
+    var firstOpen = true;
+    var time;
+
+    cloneready.find('#0_Fromtime').datetimepicker({
         useCurrent: false,
         format: "hh:mm A"
     }).on('dp.show', function () {
@@ -302,6 +301,37 @@ function AddBtnVirtualClick(insrowid) {
         $(this).data('DateTimePicker').date(time);
     });
 
+    cloneready.find('#0_Fromtime').attr('id', r + '_Fromtime').val('')
+        .removeClass('is-valid').addClass('is-invalid').addClass('timePicker');
+
+    cloneready.find('#0_FromLT').attr('id', r + '_FromLT').removeClass('is-valid').addClass('is-invalid');
+    cloneready.find('#0_FromL').attr('id', r + '_FromL').removeClass('is-valid').addClass('is-invalid');
+    cloneready.find('#0_ToLT').attr('id', r + '_ToLT').removeClass('is-valid').addClass('is-invalid');
+    cloneready.find('#B0').remove();
+    cloneready.find('.btn-group').remove();
+    cloneready.find('#BL0').remove(); 
+    cloneready.find('#0_ToL').removeClass('is-invalid').addClass('inVisible');
+    cloneready.find('#M_ToL').attr('id', r + '_ToL')
+        .removeClass('is-valid inVisible').addClass('is-invalid');
+    cloneready.find('#0_ToDt').attr('id', r + '_ToDt').val('').removeClass('is-valid').addClass('is-invalid');
+    //cloanready.find('#0_FromtimeDiv').attr('id', r + '_FromtimeDiv')
+    var ftime = cloneready.find('#' + r + '_Fromtime');
+    //var firstOpen = true;
+    //var time;
+    //ftime.datetimepicker({
+    //    useCurrent: false,
+    //    format: "hh:mm A"
+    //}).on('dp.show', function () {
+    //    if (firstOpen) {
+    //        time = moment().startOf('day');
+    //        firstOpen = false;
+    //    } else {
+    //        time = "01:00 PM"
+    //    }
+    //    $(this).data('DateTimePicker').date(time);
+    //});
+
+    
     var addbtn = cloneready.find('#0_AddBtn');
     addbtn.attr('id', r + '_AddBtn');
     addbtn.on('mouseenter', function () {
@@ -453,8 +483,26 @@ function SchDateChanged() {
         });
     }    
 };
-function FillLocationComboVirtually(locationtypeid, locationcomboid, locationid, editlocationctrlid)
-{
+function FillToLocationComboVirtually(locationtypeid, locationcomboid, locationid, ) {
+    var locationcombo = $('#' + locationcomboid);
+    var editlocationctrl = $('#' + editlocationctrlid);
+    $.ajax({
+        url: '/CTV/GetLocationsFromType',
+        method: 'GET',
+        data: { TypeID: locationtypeid },
+        dataType: 'json',
+        success: function (data) {
+            locationcombo.empty();
+            locationcombo.append($('<option/>', { value: "-1", text: "Select location" }));
+            $(data).each(function (index, item) {
+                locationcombo.append($('<option/>', { value: item.ID, text: item.DisplayText }));
+            });
+            locationcombo.val(locationid);
+            editlocationctrl.val(locationcombo.find('option:selected').text());
+        }
+    });
+}
+function FillLocationComboVirtually(locationtypeid, locationcomboid, locationid, editlocationctrlid){
     var locationcombo = $('#' + locationcomboid);
     var editlocationctrl = $('#' + editlocationctrlid);
     $.ajax({
@@ -515,20 +563,18 @@ function ChangeLocationToType() {
     var x = '';
     $('#' + rowid+'_ToLT option:selected').each(function () {
         x = x + '_' + $(this).val();
-    });    
+    });
+    //alert(x);
     //var targetid = $(target).attr('id').split("_").pop();
     var targetid = $(target).attr('id');
     targetid = targetid.slice(0, - 1);
     var locationtypeid = $(target).val();
-    var locationcombo = $('#' + targetid);
-
-    //locationcombo.attr('multiple', 'multiple');
     
-    //locationcombo.removeAttr('multiple');
-
+    //fillLocationMulti(x, targetid);
+    var locationcombo = $('#' + targetid);
     locationcombo.removeClass('is-valid').addClass('is-invalid');
     //Validations
-    if (x == '' || x==null || x=='_-1') {
+    if (x == '' || x == null || x == '_-1') {
         $(target).removeClass('is-valid').addClass('is-invalid');
     } else {
         $(target).removeClass('is-invalid').addClass('is-valid');
@@ -538,7 +584,7 @@ function ChangeLocationToType() {
         method: 'GET',
         data: { TypeIDs: x },
         dataType: 'json',
-        success: function (data) {            
+        success: function (data) {
             locationcombo.empty();
             locationcombo.multiselect('destroy');
             $('#BL' + rowid).remove();
@@ -550,7 +596,7 @@ function ChangeLocationToType() {
             locationcombo.find('.btn-group').remove();
             locationcombo.multiselect({
                 templates: {
-                    button: '<button id="BL' + rowid+'" type="button" class="multiselect dropdown-toggle btn btn-primary w-100 selectBox" data-bs-toggle="dropdown" aria-expanded="false"><span class="multiselect-selected-text"></span></button>',
+                    button: '<button id="BL' + rowid + '" type="button" class="multiselect dropdown-toggle btn btn-primary w-100 selectBox" data-bs-toggle="dropdown" aria-expanded="false"><span class="multiselect-selected-text"></span></button>',
                 }, enableFiltering: true,
             });
             //locationcombo.multiselect();
@@ -561,8 +607,45 @@ function ChangeLocationToType() {
     var todateCtrl = $('#' + rowid + '_ToDt');
     todateCtrl.val('');
     todateCtrl.removeClass('is-valid').addClass('is-invalid');
-    //getToDate(rowid);
-    //activateSubmitBtn();
+};
+function fillLocationMulti(x, target, targetid) {
+    alert(ok);
+    var locationcombo = $('#' + targetid);
+    locationcombo.removeClass('is-valid').addClass('is-invalid');
+    //Validations
+    if (x == '' || x == null || x == '_-1') {
+        $(target).removeClass('is-valid').addClass('is-invalid');
+    } else {
+        $(target).removeClass('is-invalid').addClass('is-valid');
+    }
+    $.ajax({
+        url: '/CTV/GetToLocationsFromType',
+        method: 'GET',
+        data: { TypeIDs: x },
+        dataType: 'json',
+        success: function (data) {
+            locationcombo.empty();
+            locationcombo.multiselect('destroy');
+            $('#BL' + rowid).remove();
+            //locationcombo.append($('<option/>', { value: "-1", text: "Select location" }));
+            $(data).each(function (index, item) {
+                locationcombo.append($('<option/>', { value: item.ID, text: item.DisplayText }));
+            });
+            locationcombo.attr('multiple', 'multiple');
+            locationcombo.find('.btn-group').remove();
+            locationcombo.multiselect({
+                templates: {
+                    button: '<button id="BL' + rowid + '" type="button" class="multiselect dropdown-toggle btn btn-primary w-100 selectBox" data-bs-toggle="dropdown" aria-expanded="false"><span class="multiselect-selected-text"></span></button>',
+                }, enableFiltering: true,
+            });
+            //locationcombo.multiselect();
+            locationcombo.multiselect('clearSelection');
+            locationcombo.multiselect('refresh');
+        }
+    });
+    var todateCtrl = $('#' + rowid + '_ToDt');
+    todateCtrl.val('');
+    todateCtrl.removeClass('is-valid').addClass('is-invalid');
 };
 function getToDate(rowid) {
     //var todate = '';
@@ -716,7 +799,6 @@ $(document).ready(function () {
     var maxdt = $('#MaxDate').val();
     var mindt = $('#MinDate').val();
     $('#0_FromDt').attr('max', maxdt).attr('min', mindt);
-
     var FromLT = $('#0_FromLT');
     var ToLT = $('#0_ToLT');
     var mmtctrl = $('#mmt');

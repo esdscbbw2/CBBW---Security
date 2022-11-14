@@ -26,11 +26,18 @@
             <div class="heading_text_btn mb-3 mt-4">
                 <div class="leftButton">
                     <button id="btnBack" type="button" class="btn btn-primary me-2"
-                            onclick="window.location.href='@Url.Action("ScheduleLists", "CTV", new { Area = "Security" })';">
+                            onclick="window.location.href='@ViewBag.CallBackUrl';">
                         <i data-feather="arrow-left-circle"></i>
                         Back
                     </button>
-                    
+                    @if (Model.EntryDate == DateTime.Today) 
+                    {
+                        <button id="btnDelete" type="button" name="Submit" value="Delete"
+                                class="btn btn-primary me-2">
+                            <i data-feather="trash-2"></i>
+                            Delete
+                        </button>
+                    }                    
                 </div>
                 <h2 style="text-align: right;">“Company Transport” Vehicle Trip Schedule - Entry</h2>
             </div>
@@ -269,7 +276,7 @@
 }
 @section scripts{
     @*<script src="~/UIContent/JS/CustomePage/CTVHdrEntry.js"></script>*@
-    <script>
+    @*<script>
         $(document).ready(function () {
             //var mymsg = '@ViewBag.ErrMsg';
             if ('@ViewBag.ErrMsg' != '') {
@@ -305,9 +312,40 @@
                 }
             };
         });
-    </script>
-    <script>
-        $(document).ready(function () {
+    </script>*@
+<script>
+    $(document).ready(function () {
+        $('#btnDelete').click(function () {
+            var noteno = $('#NoteNo').val();
+            Swal.fire({
+                title: 'Delete Confirmation',
+                text: "Are you sure want to delete this note?",
+                icon: 'question',
+                customClass: 'swal-wide',
+                //buttons: {
+                //    cancel: "No",
+                //    confirm: "Yes"
+                //},
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                cancelButtonClass: 'btn-cancel',
+                confirmButtonColor: '#2527a2',
+                showCancelButton: true,
+            }).then(callback);
+            function callback(result) {
+                if (result.value) {
+                    var mid = $('#ID').val();
+                    var url = "/Security/CTV/DeleteTripSchedule?NoteNumber=" + noteno;
+                    window.location.href = url;
+                } else {
+                    // second variant
+                }
+            }
         });
-    </script>
+        var isapp = $('#IsApproved');
+        var appdatetime = $('#ApprovedDateTime');
+        if (isapp.val() == 'False') { isapp.val('No') }
+        if (appdatetime.val() == '01-01-0001 00:00:00') { appdatetime.val('') }
+    });
+</script>
 }

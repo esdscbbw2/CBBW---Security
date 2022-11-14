@@ -30,7 +30,8 @@ function validatectrl(targetid, value) {
     var isvalid = false;
     switch (targetid) {        
         case "submitConfirmation":
-            if (value == 1) { isvalid = true; }
+            if (value == 1)
+            { isvalid = true; }
             break;
         case "DIC":
             if (value == 1) { isvalid = true; }
@@ -65,12 +66,33 @@ function btnClearClicked() {
     $('#divErrorLVS').addClass('inVisible');
     $('#divErrorOTS').addClass('inVisible');
     $('#divError').addClass('inVisible');
+    $('#btnLVT').attr('disabled', 'disabled');
+    $('#btnOVT').attr('disabled', 'disabled');
+    var noteno = $('#NoteNo').val();
+    $.ajax({
+        url: '/CTV/RemoveNoteDetails',
+        method: 'GET',
+        data: { NoteNumber: noteno },
+        dataType: 'json',
+        success: function (data) {
+            $(data).each(function (index, item) {
+                
+            });
+        }
+    });
 };
-$(document).ready(function () {    
+$(document).ready(function () {
+    $('#divErrorX').addClass('inVisible');
     var vehiclenodropdown = $('#Vehicleno');    
     vehiclenodropdown.change(function () {
         var vno = $(this).val();
-        VehicleChange(vno,1);
+        if (vno != '') {
+            $('#divErrorX').removeClass('inVisible')
+            VehicleChange(vno, 1);
+        } else {
+            $('#Vehicleno').addClass('is-invalid').removeClass('is-valid');
+            $('#divError').removeClass('show');
+        }        
     });
     VehicleChange(vehiclenodropdown.val(), 0);    
 });
@@ -132,36 +154,44 @@ function VehicleChange(vno, removetemp) {
         success: function (data) {
             $(data).each(function (index, item) {
                 if (item.IsSuccess) {
-                    errorDiv.addClass('inVisible');
-                    vehiclenodropdown.removeClass('is-invalid').addClass('is-valid');                   
+                    errorDiv.removeClass('show');
+                    vehiclenodropdown.removeClass('is-invalid').addClass('is-valid');                  
 
                     if (item.LocalTripRecords > 0) {
                         btnLS.removeAttr('disabled');
-                        btnOS.attr('disabled', 'disabled');
+                        if ($('#IsOTSActivated').val() == 0) {
+                            btnOS.attr('disabled', 'disabled');
+                        } else {
+                            if (item.IsSlotAvbl) {
+                                btnOS.removeAttr('disabled');
+                            } else {
+                                btnOS.attr('disabled', 'disabled');
+                                errorDivOTS.removeClass('inVisible');
+                                ErrlblOTS.html('Local Vehicle Schedule Was Scheduled For All The Dates, So Other Trip Schedule Cannot Be Enabled');
+                            }
+                            //btnOS.removeAttr('disabled');
+                        }
+                        //btnOS.attr('disabled', 'disabled');
                     }
                     else {
-                        btnLS.attr('disabled', 'disabled');
-                        btnOS.removeAttr('disabled');
-                        errorDivLVS.removeClass('inVisible');
-                        ErrlblLVS.html('Local Vehicle Schedule Was Not Updated, So It Cannot Be Enabled');
-                    }
-                    if ($('#IsOTSActivated').val() == 0) {
-                        btnOS.attr('disabled', 'disabled');
-                    } else {
                         if (item.IsSlotAvbl) {
                             btnOS.removeAttr('disabled');
                         } else {
-                            btnOS.attr('disabled', 'disabled');                            
+                            btnOS.attr('disabled', 'disabled');
                             errorDivOTS.removeClass('inVisible');
                             ErrlblOTS.html('Local Vehicle Schedule Was Scheduled For All The Dates, So Other Trip Schedule Cannot Be Enabled');
                         }
+                        //$('#IsOTSActivated').val('1');
+                        btnLS.attr('disabled', 'disabled');
                         //btnOS.removeAttr('disabled');
-                    }
+                        errorDivLVS.removeClass('inVisible');
+                        ErrlblLVS.html('Local Vehicle Schedule Was Not Updated, So It Cannot Be Enabled');
+                    }                    
                     
                 } else {
                     //alert("ok");
                     $('#lblError').html(item.Msg);
-                    errorDiv.removeClass('inVisible');
+                    errorDiv.addClass('show');
                     vehiclenodropdown.removeClass('is-valid').addClass('is-invalid');
                     btnOS.attr('disabled', 'disabled');
                     btnLS.attr('disabled', 'disabled');

@@ -31,6 +31,10 @@ namespace CBBW.Areas.Security.Controllers
             {
                 TempData["Tadacallbackurl"] = "/Security/CTV/ViewNote?NoteNumber=" + NoteNumber;
             }
+            else if (CBUID == 3)
+            {
+                TempData["Tadacallbackurl"] = "/Security/CTV/Approval?NoteNumber=" + NoteNumber;
+            }
             int RuleID = _iTADARules.GetAffectedRuleID(ref pMsg);
 
             return RedirectToAction("ViewRule", new { id = RuleID, isDelete = false });
@@ -106,6 +110,8 @@ namespace CBBW.Areas.Security.Controllers
                 TempData["TADARuleDetail"]=_iTADARules.GetLastTADARule(ref pMsg);
             }
             model = TempData["TADARuleDetail"] as TADARuleDetails;
+            model.MinDate = DateTime.Today.ToString("yyyy-MM-dd");
+            model.MaxDate = DateTime.Today.AddMonths(1).ToString("yyyy-MM-dd");
             TempData["TADARuleDetail"] = model;            
             return View(model);
         }

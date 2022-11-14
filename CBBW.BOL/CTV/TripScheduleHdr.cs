@@ -36,5 +36,8 @@ namespace CBBW.BOL.CTV
         public int EmployeeNumber { get; set; }
         public int SL { get; set; }
         public int TotalCount { get; set; }
+        public string FromDateStr { get; set; }
+        public string ToDateStr { get; set; }
+        public int ApprovalFor { get; set; }
     }    
 }

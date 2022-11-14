@@ -166,13 +166,22 @@ namespace CBBW.DAL.DBMapper
                         hdr.ReasonForDisApproval = dr["ReasonForDisApproval"].ToString();
                     if (!DBNull.Value.Equals(dr["Employeenumber"]))
                         hdr.EmployeeNumber = int.Parse(dr["Employeenumber"].ToString());
+                    if (!DBNull.Value.Equals(dr["ApprovalFor"]))
+                        hdr.ApprovalFor = int.Parse(dr["ApprovalFor"].ToString());
                     if (!DBNull.Value.Equals(dr["VehicleType"]))
                         hdr.VehicleType = dr["VehicleType"].ToString();
                     if (!DBNull.Value.Equals(dr["ModelName"]))
                         hdr.ModelName = dr["ModelName"].ToString();
-                    hdr.FortheMonthnYear = new DateTime(2022,hdr.FortheMonth,1).ToString("MMM") + " " + hdr.FortheYear;
-                    hdr.CentreCodenName = hdr.CenterCode + " / " + hdr.CenterName;
+                    if (hdr.FortheMonth > 0) 
+                    {
+                        hdr.FortheMonthnYear = new DateTime(2022, hdr.FortheMonth, 1).ToString("MMM") + " " + hdr.FortheYear;
+                    }
+                    hdr.CentreCodenName = hdr.CenterCode + " / " + hdr.CenterName;                     
                     hdr.DriverNonName = hdr.DriverNo.ToString() + " / " + hdr.DriverName;
+
+                    hdr.FromDateStr = hdr.FromDate.ToString("dd-MM-yyyy");
+                    hdr.ToDateStr = hdr.ToDate.ToString("dd-MM-yyyy");
+
                     result.SchHdrData = hdr;
                 }
                 if (dt != null && dt.Rows.Count > 0) 
@@ -205,9 +214,14 @@ namespace CBBW.DAL.DBMapper
                             x.ToCenterTypeName = dt.Rows[i]["ToLocationTypes"].ToString();
                         if (!DBNull.Value.Equals(dt.Rows[i]["ToLocations"]))
                             x.ToCenterName = dt.Rows[i]["ToLocations"].ToString();
+                        if (!DBNull.Value.Equals(dt.Rows[i]["ToLocationTypeCodes"]))
+                            x.ToCentreTypeCodes = dt.Rows[i]["ToLocationTypeCodes"].ToString();
+                        if (!DBNull.Value.Equals(dt.Rows[i]["ToLocationCodes"]))
+                            x.ToCentreCodes = dt.Rows[i]["ToLocationCodes"].ToString();
 
                         x.FromDateStr = x.FromDate.ToString("dd-MM-yyyy");
                         x.ToDateStr = x.ToDate.ToString("dd-MM-yyyy");
+                        x.FromDateStrYMD = x.FromDate.ToString("yyyy-MM-dd");
                         x.TripPurpose = result.SchHdrData.TripPurpose;
                         //Otherlocation yes no options will come here.
 
@@ -295,7 +309,12 @@ namespace CBBW.DAL.DBMapper
                         result.EntryTime = dr["EntryTime"].ToString();
                     if (!DBNull.Value.Equals(dr["TotalCount"]))
                         result.TotalCount = int.Parse(dr["TotalCount"].ToString());
-
+                    if (!DBNull.Value.Equals(dr["FortheMonth"]))
+                        result.FortheMonth = int.Parse(dr["FortheMonth"].ToString());
+                    if (!DBNull.Value.Equals(dr["FortheYear"]))
+                        result.FortheYear = int.Parse(dr["FortheYear"].ToString());
+                    if (!DBNull.Value.Equals(dr["ForMonthYear"]))
+                        result.FortheMonthnYear = dr["ForMonthYear"].ToString();
                 }
             }
             catch { }

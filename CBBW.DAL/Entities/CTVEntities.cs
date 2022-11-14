@@ -96,6 +96,14 @@ namespace CBBW.DAL.Entities
             _DBResponseMapper.Map_DBResponse(_datasync.setCTVHeader(model, ref pMsg), ref pMsg, ref result);
             return result;
         }
+        public bool setCTVApproval(string Notenumber, int EmployeeNumber, bool Isapproved,
+            DateTime ApprovalDatetime, string DisApprovalReason, ref string pMsg)
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_datasync.setCTVApproval(Notenumber,EmployeeNumber,
+                Isapproved,ApprovalDatetime,DisApprovalReason, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
         public bool InsertOthTripSchDtl(string Notenumber, string TripPurpose, List<OthTripTemp> dtldata, ref string pMsg)
         {
             bool result = false;
@@ -217,12 +225,14 @@ namespace CBBW.DAL.Entities
         }
 
 
-        public IEnumerable<TripScheduleHdr> getCtvSchedule(int centercode, ref string pMsg)
+        public List<TripScheduleHdr> getCtvSchedule(int PageSize, int PageNumber, int SortCol, string SortDirection,
+            string SearchText, int centercode, ref string pMsg)
         {
             List<TripScheduleHdr> tripSchedule = new List<TripScheduleHdr>();
             try
             {
-                dt = _datasync.getCtvSchedule(centercode, ref pMsg);
+                dt = _datasync.getCtvSchedule(PageSize, PageNumber, SortCol, SortDirection, SearchText,
+                    centercode,ref pMsg);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     for (int i = 0; i < dt.Rows.Count; i++)
@@ -231,7 +241,7 @@ namespace CBBW.DAL.Entities
                     }
                 }
             }
-            catch { }
+            catch(Exception ex) { pMsg = ex.Message; }
             return tripSchedule;
         }
 

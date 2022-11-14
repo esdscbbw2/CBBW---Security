@@ -20,6 +20,7 @@ namespace CBBW
             container.RegisterType<IToursRuleRepository, ToursRuleRepository>();
             container.RegisterType<ITADARulesRepository, TADARulesRepository>();
             container.RegisterType<ICTVRepository, CTVRepository>();
+            container.RegisterType<IMGPRepository, MGPRepository>();
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }
     }

@@ -29,6 +29,11 @@ namespace CBBW.BLL.IRepository
         VehicleAvblInfo getVehicleDateSlots(string VehicleNo, int IncludeOTVSch, ref string pMsg);
         DateTime getSchToDateFromMultiLocation(string VehicleNo, DateTime FromSchDt,
             int FromLocation, string ToLocationType, string ToLocation, ref string pMsg);
-        IEnumerable<TripScheduleHdr> getCtvSchedule(int centercode, ref string pMsg);
+        IEnumerable<TripScheduleHdr> getCtvSchedule(int PageSize, int PageNumber, int SortCol, string SortDirection,
+            string SearchText, int centercode, ref string pMsg);
+        bool setCTVApproval(string Notenumber, int EmployeeNumber, bool Isapproved,
+            DateTime ApprovalDatetime, string DisApprovalReason, ref string pMsg);
+        IEnumerable<TripScheduleHdr> getApprovedCtvSchedule(int PageSize, int PageNumber, int SortCol, string SortDirection,
+            string SearchText, int centercode, ref string pMsg);
     }
 }

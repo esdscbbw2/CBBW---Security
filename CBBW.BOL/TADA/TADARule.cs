@@ -9,10 +9,10 @@ namespace CBBW.BOL.TADA
     public class TADARule
     {
         public int ID { get; set; }
-        [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}")]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime EntryDate { get; set; }
         public string EntryTime { get; set; }
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MMM-yyyy}")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime EffectiveDate { get; set; }
         public bool IsApplied { get; set; }
         public string ConnectingID { get; set; }
@@ -22,5 +22,7 @@ namespace CBBW.BOL.TADA
         public int IsBtn { get; set; }
         public int IsParamBtn { get; set; }
         public int IsSubmitBtn { get; set; }
+        public string MaxDate { get; set; }
+        public string MinDate { get; set; }
     }
 }
