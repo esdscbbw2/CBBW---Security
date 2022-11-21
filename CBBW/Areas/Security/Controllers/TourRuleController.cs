@@ -27,11 +27,15 @@ namespace CBBW.Areas.Security.Controllers
             }
             else if (CBUID == 2)
             {
-                TempData["Tourcallbackurl"] = "/Security/CTV/ViewNote?NoteNumber="+ NoteNumber;
+                TempData["Tourcallbackurl"] = "/Security/CTV/ViewNote?CBUID=2&NoteNumber="+ NoteNumber;
             }
             else if (CBUID == 3)
             {
                 TempData["Tourcallbackurl"] = "/Security/CTV/Approval?NoteNumber=" + NoteNumber;
+            }
+            else if (CBUID == 5)
+            {
+                TempData["Tourcallbackurl"] = "/Security/CTV/EditNote?NoteNumber=" + NoteNumber;
             }
             int RuleID = _toursRule.GetAffectedRuleID(ref pMsg);
             return RedirectToAction("ViewRule", new { id = RuleID, isDelete = false });

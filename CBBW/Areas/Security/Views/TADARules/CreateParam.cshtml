@@ -23,7 +23,7 @@
                                 <i data-feather="upload"></i>
                                 Submit
                             </button>
-                            <button type="button" onclick="btnClearClicked()" class="btn btn-success">
+                            <button type="button" onclick="btnClearClicked()" class="btn btn-white">
                                 <i data-feather="x-circle"></i>
                                 Clear
                             </button>
@@ -40,8 +40,8 @@
             </div>
 
             <div class="card mb-4">
-                <div class="card-body">                    
-                        @*<form class="form-sample">*@
+                <div class="card-body">
+                    @*<form class="form-sample">*@
                     <div class="row d-flex align-items-center mb-3">
                         <label class="col-form-label col-md-3">
                             1. DA Per Day Is Actual Spent? :
@@ -58,26 +58,26 @@
                                     })
                         </div>
                     </div>
-                        <div class="row d-flex align-items-center mb-3">
-                            <label class="col-form-label col-md-3">
-                                2. Lodging Expenses Allowed :
-                            </label>
-                            <div class="col-md-6 form-group mb-2">
-                                @Html.DropDownListFor(m => m.IsLodgingAllowed,
-                                   new[] {
-                                       new SelectListItem { Text = "Yes", Value = "true" },
-                                       new SelectListItem { Text = "No", Value = "false" } }, "-",
-                                   htmlAttributes: new
-                                        {
-                                           @class = "form-select pointer isvalidate is-valid",
-                                           @onchange = "validatecontrol()"
-                                        })
-                            </div> 
+                    <div class="row d-flex align-items-center mb-3">
+                        <label class="col-form-label col-md-3">
+                            2. Lodging Expenses Allowed :
+                        </label>
+                        <div class="col-md-6 form-group mb-2">
+                            @Html.DropDownListFor(m => m.IsLodgingAllowed,
+                               new[] {
+                                   new SelectListItem { Text = "Yes", Value = "true" },
+                                   new SelectListItem { Text = "No", Value = "false" } }, "-",
+                               htmlAttributes: new
+                                    {
+                                       @class = "form-select pointer isvalidate is-valid",
+                                       @onchange = "validatecontrol()"
+                                    })
                         </div>
+                    </div>
 
-                        @*</form>*@
+                    @*</form>*@
                 </div>
-                </div>
+            </div>
 
         </div>
         <div class="col-md-12">
@@ -110,9 +110,9 @@
                                                title = "Value must be 0 - 9999"
                                            })
                                     </div>
-                                    @*<button type="button" id="tt_Metro_DAPerDay"  
-                                            class="btn btn-outline-danger inVisible" 
-                                            data-toggle="tooltip" data-placement="top" 
+                                    @*<button type="button" id="tt_Metro_DAPerDay"
+                                            class="btn btn-outline-danger inVisible"
+                                            data-toggle="tooltip" data-placement="top"
                                             title="Value must be 0 - 9999">
                                             <i data-feather="info"></i>
                                         </button>*@
@@ -130,12 +130,12 @@
                                                title = "Value must be 0 - 9999"
                                            })
                                     </div>
-                                    @*<button type="button" id="tt_Metro_MaxLodgingExp" 
-                                            class="btn btn-outline-danger inVisible" 
-                                            title="Value must be 0 - 9999" 
-                                            data-toggle="tooltip" data-placement="top">
-                                        <i data-feather="info"></i>
-                                    </button>*@
+                                    @*<button type="button" id="tt_Metro_MaxLodgingExp"
+                                                class="btn btn-outline-danger inVisible"
+                                                title="Value must be 0 - 9999"
+                                                data-toggle="tooltip" data-placement="top">
+                                            <i data-feather="info"></i>
+                                        </button>*@
                                 </span>
                             </td>
                             <td>
@@ -149,11 +149,11 @@
                                                title = "Maximum Value - 999"
                                            })
                                     </div>
-                                    @*<button type="button" id="tt_Metro_MaxLocalConv" 
-                                            title="Maximum Value - 999" class="btn btn-outline-danger inVisible"
-                                            data-toggle="tooltip" data-placement="top">
-                                        <i data-feather="info"></i>
-                                    </button>*@
+                                    @*<button type="button" id="tt_Metro_MaxLocalConv"
+                                                title="Maximum Value - 999" class="btn btn-outline-danger inVisible"
+                                                data-toggle="tooltip" data-placement="top">
+                                            <i data-feather="info"></i>
+                                        </button>*@
                                 </span>
                             </td>
                         </tr>
@@ -174,11 +174,11 @@
                                                title = "Value must be 0 - 9999"
                                            })
                                     </div>
-                                    @*<button type="button" id="tt_City_DAPerDay" 
-                                            title="Value must be 0 - 9999" class="btn btn-outline-danger inVisible"
-                                            data-toggle="tooltip" data-placement="top">
-                                        <i data-feather="info"></i>
-                                    </button>*@
+                                    @*<button type="button" id="tt_City_DAPerDay"
+                                                title="Value must be 0 - 9999" class="btn btn-outline-danger inVisible"
+                                                data-toggle="tooltip" data-placement="top">
+                                            <i data-feather="info"></i>
+                                        </button>*@
                                 </span>
                             </td>
                             <td>
@@ -192,11 +192,11 @@
                                                title = "Value must be 0 - 9999"
                                            })
                                     </div>
-                                    @*<button type="button" id="tt_City_MaxLodgingExp" 
-                                            title="Value must be 0 - 9999" class="btn btn-outline-danger inVisible"
-                                            data-toggle="tooltip" data-placement="top">
-                                        <i data-feather="info"></i>
-                                    </button>*@
+                                    @*<button type="button" id="tt_City_MaxLodgingExp"
+                                                title="Value must be 0 - 9999" class="btn btn-outline-danger inVisible"
+                                                data-toggle="tooltip" data-placement="top">
+                                            <i data-feather="info"></i>
+                                        </button>*@
                                 </span>
                             </td>
                             <td>
@@ -210,11 +210,11 @@
                                                title = "Maximum Value - 500"
                                            })
                                     </div>
-                                    @*<button type="button" id="tt_City_MaxLocalConv" 
-                                            title="Maximum Value - 500" class="btn btn-outline-danger inVisible"
-                                            data-toggle="tooltip" data-placement="top">
-                                        <i data-feather="info"></i>
-                                    </button>*@
+                                    @*<button type="button" id="tt_City_MaxLocalConv"
+                                                title="Maximum Value - 500" class="btn btn-outline-danger inVisible"
+                                                data-toggle="tooltip" data-placement="top">
+                                            <i data-feather="info"></i>
+                                        </button>*@
                                 </span>
                             </td>
                         </tr>
@@ -236,9 +236,9 @@
                                            })
                                     </div>
                                     @*<button type="button" id="tt_Town_DAPerDay"  class="btn btn-outline-danger inVisible"
-                                            data-toggle="tooltip" data-placement="top">
-                                        <i data-feather="info"></i>
-                                    </button>*@
+                                                data-toggle="tooltip" data-placement="top">
+                                            <i data-feather="info"></i>
+                                        </button>*@
                                 </span>
                             </td>
                             <td>
@@ -252,12 +252,12 @@
                                                title = "Value must be 0 - 9999"
                                            })
                                     </div>
-                                    @*<button type="button" id="tt_Town_MaxLodgingExp" 
-                                            title="Value must be 0 - 9999" 
-                                            class="btn btn-outline-danger inVisible"
-                                            data-toggle="tooltip" data-placement="top">
-                                        <i data-feather="info"></i>
-                                    </button>*@
+                                    @*<button type="button" id="tt_Town_MaxLodgingExp"
+                                                title="Value must be 0 - 9999"
+                                                class="btn btn-outline-danger inVisible"
+                                                data-toggle="tooltip" data-placement="top">
+                                            <i data-feather="info"></i>
+                                        </button>*@
                                 </span>
                             </td>
                             <td>
@@ -271,12 +271,12 @@
                                                title = "Maximum value - 200"
                                            })
                                     </div>
-                                    @*<button type="button" id="tt_Town_MaxLocalConv" 
-                                            title="Maximum value - 200" 
-                                            class="btn btn-outline-danger inVisible"
-                                            data-toggle="tooltip" data-placement="top">
-                                        <i data-feather="info"></i>
-                                    </button>*@
+                                    @*<button type="button" id="tt_Town_MaxLocalConv"
+                                                title="Maximum value - 200"
+                                                class="btn btn-outline-danger inVisible"
+                                                data-toggle="tooltip" data-placement="top">
+                                            <i data-feather="info"></i>
+                                        </button>*@
                                 </span>
                             </td>
                         </tr>
@@ -287,7 +287,7 @@
                 <ul style="list-style: none; padding: 0; font-size:28px;">
                     <li>
                         Are You Sure The Details Entered Are Correct & As Required?
-                        <select id="submitConfirmation" class="form-select pointer is-valid" 
+                        <select id="submitConfirmation" class="form-select pointer is-valid"
                                 aria-label="Default select example" style="width:110px">
                             <option value="0">No</option>
                             <option selected value="1">Yes</option>
@@ -303,8 +303,9 @@
     <link href="~/UIContent/CSS/Custom_ErrorToolTip.css" rel="stylesheet" />
     <style>
         .inVisible {
-            display:none
+            display: none
         }
+
         .pointer {
             cursor: pointer;
         }
@@ -345,7 +346,7 @@
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
-    </script>  
+    </script>
     <script>
         $('#submitConfirmation').change(function () {
             var cnf = $(this);
@@ -369,6 +370,28 @@
                 cnf.removeClass('is-invalid').addClass('is-valid');
                 $('#btnSubmit').removeAttr("disabled");
             };
+        });
+    </script>
+    <script>
+        $.fn.CustomDateFormat = function () {
+            var that = this;
+            var parentid = that.attr('id');
+            var lblid = parentid + 'lbl';
+            var dt = this.val();
+            var e = dt;
+            if (dt.indexOf('/') != -1) {
+                var e = dt.split('/').reverse().join('-');
+            }
+            else {
+                var e = dt.split('-').reverse().join('-');
+            }
+            $('#' + lblid).html(e);
+            //that.addClass('is-valid').removeClass('is-invalid')
+        };
+        $(document).ready(function () {
+            $('#EffectiveDate').change(function () {
+                $(this).CustomDateFormat();
+            });
         });
     </script>
 }

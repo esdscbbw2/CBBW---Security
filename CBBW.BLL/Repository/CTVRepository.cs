@@ -84,7 +84,7 @@ namespace CBBW.BLL.Repository
             VehicleAvblInfo obj = _CTVEntities.getVehicleSlot(VehicleNo, 0, ref pMsg);
             if (obj.SlotsAvailable != null)
             {
-                int avbl = obj.SlotsAvailable.Where(o => o.FromDate <= result && o.ToDate >= result).ToList().Count;
+                int avbl = obj.SlotsAvailable.Where(o => o.FromDate <= result && o.ToDate.AddDays(1) > result).ToList().Count;
                 if (avbl <= 0) { result = new DateTime(1, 1, 1); }
             }
             return result;
@@ -169,7 +169,12 @@ namespace CBBW.BLL.Repository
             string SearchText, int centercode, ref string pMsg)
         {
             return _CTVEntities.getCtvSchedule(PageSize, PageNumber, SortCol, SortDirection,
-                SearchText, centercode, ref pMsg).Where(o => o.IsApproved).ToList();
+                SearchText, centercode, ref pMsg).Where(o=> 
+                { if (o.IsApproved || o.IsLocked == 1) 
+                        return true; 
+                    else 
+                        return false; 
+                }).ToList();
         }
         public bool setCTVApproval(string Notenumber, int EmployeeNumber, bool Isapproved, 
             DateTime ApprovalDatetime, string DisApprovalReason, ref string pMsg)
@@ -177,6 +182,16 @@ namespace CBBW.BLL.Repository
             if (DisApprovalReason == null) { DisApprovalReason = " "; }
             return _CTVEntities.setCTVApproval(Notenumber,EmployeeNumber,Isapproved,
                 ApprovalDatetime,DisApprovalReason,ref pMsg);
+        }
+
+        public IEnumerable<CustomComboOptions> getDriverList(string ExpDriverName, ref string pMsg)
+        {
+            return _CTVEntities.getDriverList(ExpDriverName, ref pMsg);
+        }
+
+        public bool setLocalTripSchDriver(string Notenumber, List<LTSDriVerChange> dtldata, ref string pMsg)
+        {
+           return _CTVEntities.setLocalTripSchDriver(Notenumber, dtldata, ref pMsg);
         }
     }
 }

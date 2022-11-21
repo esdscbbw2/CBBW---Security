@@ -22,6 +22,8 @@ namespace CBBW.BOL.CTV
         public int DriverNo { get; set; }
         public string DriverName { get; set; }
         public bool IsActive { get; set; }
+        public int IsLocked { get; set; }
+        public int mResult { get; set; }
         public string TripPurpose { get; set; }
         public bool IsApproved { get; set; }
         public DateTime ApprovedDateTime { get; set; }
@@ -39,5 +41,7 @@ namespace CBBW.BOL.CTV
         public string FromDateStr { get; set; }
         public string ToDateStr { get; set; }
         public int ApprovalFor { get; set; }
+        public int IsDeleteBtn { get; set; }
+        public int CBUID { get; set; }
     }    
 }

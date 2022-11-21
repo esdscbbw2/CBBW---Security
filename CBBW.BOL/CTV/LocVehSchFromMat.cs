@@ -31,5 +31,8 @@ namespace CBBW.BOL.CTV
         public float CalcDays { get; set; }
         public string TripPurpose { get; set; }
         public bool bOtherPlace { get; set; }
+        public int IsActivetoEdit { get; set; }
+        public int EditDriverNo { get; set; }
+        public string EditDriverName { get; set; }
     }
 }

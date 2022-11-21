@@ -199,6 +199,25 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+        public DataTable setLocalTripSchDriver(string Notenumber, List<LTSDriVerChange> dtldata, ref string pMsg)
+        {
+            try
+            {
+                CommonTable dtl = new CommonTable(dtldata);
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[2];
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
+                para[paracount++].Value = Notenumber;
+                para[paracount] = new SqlParameter("@DriverDtl", SqlDbType.Structured);
+                para[paracount++].Value = dtl.UDTable;
+
+                using (SQLHelper sql = new SQLHelper("[CTV].[SetLocalVehicleTripSchDriverChange]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
         public DataTable RemoveNote(string NoteNumber,int OnlyDtl, ref string pMsg) 
         {
             try
@@ -313,5 +332,21 @@ namespace CBBW.DAL.DataSync
         }
 
         ///From Punus project - end
+        ///
+        public DataTable getDriverList(string ExpDriverName,ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("select * from [MTR].[getDriverList]('"+ ExpDriverName + "')", CommandType.Text))
+                {
+                    return sql.GetDataTable();
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+
+
+
+
     }
 }

@@ -111,9 +111,12 @@ namespace CBBW.DAL.DBMapper
                         result.CalcDays = float.Parse(dr["CalcDays"].ToString());
                     if (!DBNull.Value.Equals(dr["DriverName"]))
                         result.DriverCodenName = dr["DriverName"].ToString();
-
+                    if (!DBNull.Value.Equals(dr["EditDriverNo"]))
+                        result.EditDriverNo =int.Parse(dr["EditDriverNo"].ToString());
+                    if (!DBNull.Value.Equals(dr["EditDriverName"]))
+                        result.EditDriverName = dr["EditDriverName"].ToString();
                     result.FromCenterTypeName = "Centre";
-
+                    result.IsActivetoEdit = result.FromDate >= DateTime.Today ? 1 : 0;
                     //result.ToDate = result.FromDate.AddDays(MyDBLogic.ReturnDaysFromDistance(result.Distance));
                     result.FromDateStr = result.FromDate.ToString("dd-MM-yyyy");
                     result.ToDateStr = result.ToDate.ToString("dd-MM-yyyy");
@@ -218,7 +221,12 @@ namespace CBBW.DAL.DBMapper
                             x.ToCentreTypeCodes = dt.Rows[i]["ToLocationTypeCodes"].ToString();
                         if (!DBNull.Value.Equals(dt.Rows[i]["ToLocationCodes"]))
                             x.ToCentreCodes = dt.Rows[i]["ToLocationCodes"].ToString();
+                        if (!DBNull.Value.Equals(dt.Rows[i]["EditDriverNo"]))
+                            x.EditDriverNo = int.Parse(dt.Rows[i]["EditDriverNo"].ToString());
+                        if (!DBNull.Value.Equals(dt.Rows[i]["EditDriverName"]))
+                            x.EditDriverName = dt.Rows[i]["EditDriverName"].ToString();
 
+                        x.IsActivetoEdit = x.FromDate >= DateTime.Today ? 1 : 0;
                         x.FromDateStr = x.FromDate.ToString("dd-MM-yyyy");
                         x.ToDateStr = x.ToDate.ToString("dd-MM-yyyy");
                         x.FromDateStrYMD = x.FromDate.ToString("yyyy-MM-dd");
@@ -230,7 +238,7 @@ namespace CBBW.DAL.DBMapper
                     result.SchDetailList = dtl;
                 }
             }
-            catch { }
+            catch(Exception ex) { string errmsg = ex.Message; }
             return result;
         }
         public VehicleAvblInfo Map_VehicleAvblInfo(DataRow dr, DataTable bookedslots,DataTable avblslots) 
@@ -301,6 +309,10 @@ namespace CBBW.DAL.DBMapper
                         result.CenterName = dr["CenterName"].ToString();
                     if (!DBNull.Value.Equals(dr["IsActive"]))
                         result.IsActive = bool.Parse(dr["IsActive"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsLocked"]))
+                        result.IsLocked = int.Parse(dr["IsLocked"].ToString());
+                    if (!DBNull.Value.Equals(dr["mResult"]))
+                        result.mResult = int.Parse(dr["mResult"].ToString());
                     if (!DBNull.Value.Equals(dr["IsApproved"]))
                         result.IsApproved = bool.Parse(dr["IsApproved"].ToString());
                     if (!DBNull.Value.Equals(dr["EntryDate"]))

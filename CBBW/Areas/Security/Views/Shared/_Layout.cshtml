@@ -27,7 +27,7 @@
         <div class="bgTop">
             <div class="row">
                 <div class="col-md-4">
-                    <img src="~/Images/cb-logo.png" alt="logo" class="img-fluid">
+                    <img src="~/UIContent/CSS/img/charbhai-logo.png" alt="logo" class="img-fluid">
                 </div>
                 <div class="col-md-8 topLoginText">
                     <ul>
@@ -63,9 +63,51 @@
     <!-- Time Picker -->
     <script src="~/UIContent/JS/moment.min.js"></script>
     <script src="~/UIContent/JS/bootstrap-datetimepicker.min.js"></script>
-
+    <script>
+        $.fn.CustomDateFormat = function () {
+            var that = this;
+            var parentid = that.attr('id');
+            var lblid = parentid + 'lbl';
+            var dt = this.val();
+            var e = dt;
+            if (dt.indexOf('/') != -1) {
+                var e = dt.split('/').reverse().join('-');
+            }
+            else {
+                var e = dt.split('-').reverse().join('-');
+            }
+            $('#' + lblid).html(e);
+            //that.addClass('is-valid').removeClass('is-invalid')
+        };
+        $(document).ready(function () {
+            $('.CustomDateFormat').each(function () {
+                $(this).change(function () {
+                    $(this).CustomDateFormat();
+                });
+            });
+        });
+    </script>
     <script>
         feather.replace()
+    </script>
+    <script>
+        var today = new Date();
+
+        var minDate = today.setDate(today.getDate() + 1);
+
+
+
+        $('.datePicker').datetimepicker({
+
+            useCurrent: false,
+
+            format: "DD/MM/YYYY",
+
+            minDate: minDate
+
+        });
+
+
     </script>
     @RenderSection("scripts", required: false)
 </body>

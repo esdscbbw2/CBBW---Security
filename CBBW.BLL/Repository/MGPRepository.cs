@@ -20,5 +20,15 @@ namespace CBBW.BLL.Repository
         {
             return _MGPEntities.getApprovedNoteNumbers(Centercode, ref pMsg);
         }
+
+        public List<MGPMatOut> getMGPOutDetails(string NoteNumber, ref string pMsg)
+        {
+           return _MGPEntities.getMGPOutDetails(NoteNumber, ref pMsg);
+        }
+
+        public List<RFID> getRFIDCards(ref string pMsg)
+        {
+            return _MGPEntities.getRFIDCards(ref pMsg);
+        }
     }
 }

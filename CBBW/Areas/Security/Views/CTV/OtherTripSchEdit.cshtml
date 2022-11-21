@@ -2,6 +2,7 @@
 @{
 
 }
+
 @using (Html.BeginForm())
 {
     @Html.HiddenFor(m => m.NoteNumber)
@@ -11,7 +12,7 @@
     @Html.HiddenFor(m => m.BackBtnMsg)
     @Html.HiddenFor(m => m.MaxDate)
     @Html.HiddenFor(m => m.MinDate)
-    @Html.HiddenFor(m=>m.CurDate)
+    @Html.HiddenFor(m => m.CurDate)
     <div class="row newTable">
         <div class="fixedElement">
             <div class="col-md-12" style="position: relative;">
@@ -30,8 +31,7 @@
                         </button>
                         <button type="submit" class="btn btn-white"
                                 name="Submit" value="Clear"
-                                @*onclick="ClearBtnClick()"*@
-                                >
+                                @*onclick="ClearBtnClick()"*@>
                             <i data-feather="x-circle"></i>
                             Clear
                         </button>
@@ -45,41 +45,156 @@
                 <h2 class="text-center">A. Other Trip Schedule - Date Wise Vehicle Trip Details Entry:</h2>
             </div>
         </div>
-        <div class="col-md-12 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    @*<form class="form-sample form-inline ms-auto row">*@
-                    <div class="row d-flex align-items-center">
-                        <label class="col-form-label col-md-2">
-                            Trip Purpose  :
-                        </label>
-                        <div class="col-md-10">
-                            @Html.TextAreaFor(m => m.TripPurpose,
-                               htmlAttributes: new
-                               {
-                                   @class = "form-control canclear pointer is-invalid",
-                                   onkeyup = "ValidateControl()"
-                               })
-                            @*<input id="TripPurpose" type="text" onkeyup="ValidateControl()"
-                                class="form-control canclear pointer"
-                                value="Inspection">*@
+        <div class="sectionB">
+            <div class="col-md-12 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        @*<form class="form-sample form-inline ms-auto row">*@
+                        <div class="row d-flex align-items-center">
+                            <label class="col-form-label col-md-2">
+                                Trip Purpose  :
+                            </label>
+                            <div class="col-md-10">
+                                @Html.TextAreaFor(m => m.TripPurpose,
+                                   htmlAttributes: new
+                                   {
+                                       @class = "form-control canclear pointer",
+                                       onkeyup = "ValidateControl()"
+                                   })
+                                @*<input id="TripPurpose" type="text" onkeyup="ValidateControl()"
+                            class="form-control canclear pointer"
+                            value="Inspection">*@
+                            </div>
                         </div>
+                        @*<input id="0_FromDt" class="form-control pointer canclear datepicker2 text-box single-line hasDatepicker is-invalid"
+                    readonly="readonly" type="date" onchange="SchDateChanged()" />*@
+                        @*</form>*@
                     </div>
-                    @*<input id="0_FromDt" class="form-control pointer canclear datepicker2 text-box single-line hasDatepicker is-invalid"
-                        readonly="readonly" type="date" onchange="SchDateChanged()" />*@
-                    @*</form>*@
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="table-responsive max-content newTable mt-4">
+                    <table class="table table-bordered btnalign">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                    SL.No.
+                                </th>
+                                <th class="inVisible" scope="col" style="text-align: center; vertical-align: middle;" rowspan="2"> 
+                                Driver No. & Name</th>
+                                <th colspan="2" style="text-align: center; vertical-align: middle;" scope="col">
+                                    Scheduled Trip From
+                                </th>
+                                <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">From Location Type Code & Name</th>
+                                <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                    From Location Code & Name
+                                </th>
+                                <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">To Location Type Code & Name</th>
+                                <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                    To Location Code & Name
+                                </th>
+                                <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                    Scheduled Trip To Date
+                                </th>
+                                <th scope="col" style="text-align: center; background-color: pink; color: #000; vertical-align: middle;" rowspan="2">
+                                    Actions
+                                </th>
+                            </tr>
+                            <tr>
+                                <th scope="col" style="text-align: center; vertical-align: middle;">Date</th>
+                                <th scope="col" style="text-align: center; vertical-align: middle;">Time</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody3">
+                            <tr id="0">
+                                <th scope="row">1</th>
+                                <td class="inVisible">
+                                    
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input id="0_FromDate2" type="text" disabled="disabled"
+                                               class="form-control ">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input id="0_FromTime2" type="text" disabled="disabled"
+                                               class="form-control ">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input id="0_FromLT2" type="text" disabled="disabled"
+                                               class="form-control ">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input id="0_FromL2" type="text" disabled="disabled"
+                                               class="form-control ">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input id="0_ToLT2" type="text" disabled="disabled"
+                                               class="form-control ">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input id="0_ToL2X" type="text" disabled="disabled"
+                                               class="form-control ">
+                                    </div>
+                                </td>
+                                <td>
+                                    <input id="0_ToDate2" type="text" disabled="disabled"
+                                           class="form-control ">
+                                </td>
+                                <td>
+                                    <span class="actionBtn">
+                                        <button type="button" class="btn primaryLink" data-toggle="tooltip"
+                                                data-placement="top" title="Add" disabled>
+                                            <i data-feather="plus" onClick="plusAction()"></i>
+                                        </button>
+
+                                        <button type="button" class="btn secondaryLink" data-toggle="tooltip"
+                                                data-placement="top" title="Delete" disabled>
+                                            <i data-feather="x"></i>
+                                        </button>
+                                    </span>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                        <tbody id="tbody4"></tbody>
+                    </table>
+
                 </div>
             </div>
         </div>
+    </div>
+    <div class="">
         <div class="col-md-12">
-            <div class="table-responsive max-content newTable mt-4">
+            <div class="heading_text_btn2 d-block mb-4 mt-4 pt-4">
+                <h2 class="text-center">
+                    B. Updated Other Trip Schedule - Date Wise Vehicle Trip Details Entry:
+
+                </h2>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="table-responsive max-content newTable">
+
                 <table class="table table-bordered btnalign" id="tblOTV">
                     <thead>
                         <tr>
                             <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
                                 SL.No.
                             </th>
-
+                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                Driver No. & Name
+                            </th>
                             <th colspan="2" style="text-align: center; vertical-align: middle;" scope="col">
                                 Scheduled Trip From
                             </th>
@@ -108,14 +223,19 @@
                         <tr id="0" class="add-row">
                             <th scope="row">1</th>
                             <td>
+                                <div class="form-group cmbDriver">
+                                    
+                                </div>
+                            </td>
+                            <td>
                                 <div class="form-group">
                                     <div class="position-relative">
                                         <input id="0_FromDt" type="date" value="@(DateTime.Today.ToString("yyyy-MM-dd"))"
                                                onchange="SchDateChanged()"
                                                class="form-control CustomDateFormat canclear pointer is-valid">
-                                        <label id="0_FromDtlbl" class="datelabel" style="width:100px">Select a date</label>
+                                        <label id="0_FromDtlbl" class="datelabel inVisible" style="width:110px">Select a date</label>
                                     </div>
-                                    
+
                                 </div>
                             </td>
                             <td>
@@ -196,120 +316,6 @@
                     <tbody id="tbody2">
                     </tbody>
                 </table>
-            </div>
-        </div>
-
-    </div>
-    <div class="sectionB">
-        <div class="col-md-12">
-            <div class="heading_text_btn2 d-block mb-4">
-                <h2 class="text-center">
-                    B. Updated Other Trip Schedule - Date Wise Vehicle Trip Details Entry:
-
-                </h2>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="table-responsive newTable">
-
-                <table class="table table-bordered btnalign">
-                    <thead>
-                        <tr>
-                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
-                                SL.No.
-                            </th>
-                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2"> Driver No. & Name</th>
-                            <th colspan="2" style="text-align: center; vertical-align: middle;" scope="col">
-                                Scheduled Trip From
-                            </th>
-                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">From Location Type Code & Name</th>
-                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
-                                From Location Code & Name
-                            </th>
-                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">To Location Type Code & Name</th>
-                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
-                                To Location Code & Name
-                            </th>
-                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
-                                Scheduled Trip To Date
-                            </th>
-                            <th scope="col" style="text-align: center; background-color: pink; color: #000; vertical-align: middle;" rowspan="2">
-                                Actions
-                            </th>
-                        </tr>
-                        <tr>
-                            <th scope="col" style="text-align: center; vertical-align: middle;">Date</th>
-                            <th scope="col" style="text-align: center; vertical-align: middle;">Time</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody3">
-                        <tr id="0">
-                            <th scope="row">1</th>
-                            <td>
-                                <div class="form-group">
-                                    <input id="0_Driver2" type="text" disabled="disabled"
-                                           class="form-control ">
-                                </div>
-                            </td>
-                            <td>
-                                <div class="form-group">
-                                    <input id="0_FromDate2" type="text" disabled="disabled"
-                                           class="form-control ">
-                                </div>
-                            </td>
-                            <td>
-                                <div class="form-group">
-                                    <input id="0_FromTime2" type="text" disabled="disabled"
-                                           class="form-control ">
-                                </div>
-                            </td>
-                            <td>
-                                <div class="form-group">
-                                    <input id="0_FromLT2" type="text" disabled="disabled"
-                                           class="form-control ">
-                                </div>
-                            </td>
-                            <td>
-                                <div class="form-group">
-                                    <input id="0_FromL2" type="text" disabled="disabled"
-                                           class="form-control ">
-                                </div>
-                            </td>
-                            <td>
-                                <div class="form-group">
-                                    <input id="0_ToLT2" type="text" disabled="disabled"
-                                           class="form-control ">
-                                </div>
-                            </td>
-                            <td>
-                                <div class="form-group">
-                                    <input id="0_ToL2X" type="text" disabled="disabled"
-                                           class="form-control ">
-                                </div>
-                            </td>
-                            <td>
-                                <input id="0_ToDate2" type="text" disabled="disabled"
-                                       class="form-control ">
-                            </td>
-                            <td>
-                                <span class="actionBtn">
-                                    <button type="button" class="btn primaryLink" data-toggle="tooltip"
-                                            data-placement="top" title="Add" disabled>
-                                        <i data-feather="plus" onClick="plusAction()"></i>
-                                    </button>
-
-                                    <button type="button" class="btn secondaryLink" data-toggle="tooltip"
-                                            data-placement="top" title="Delete" disabled>
-                                        <i data-feather="x"></i>
-                                    </button>
-                                </span>
-                            </td>
-
-                        </tr>
-                    </tbody>
-                    <tbody id="tbody4"></tbody>
-                </table>
-
 
 
             </div>
@@ -333,7 +339,7 @@
                 <li style="font-size: 16px;">
                     The Other Trip Schedule Is Taken Up With The Knowledge Of DIC P&A That Transpired Through Mail:
                     <select id="DIC" class="form-select canclear pointer is-invalid"
-                            style="width:110px" 
+                            style="width:110px"
                             onchange="ValidateControl()"
                             aria-label="Default select example">
                         <option selected value="-1">-</option>
@@ -359,7 +365,7 @@
     </style>
 }
 @section scripts{
-    <script src="~/UIContent/JS/CustomePage/OtherTripSchedule.js"></script>
+    <script src="~/UIContent/JS/CustomePage/OtherTripSchEdit.js"></script>
     <script>
         var today = new Date();
         var minDate = today.setDate(today.getDate() + 1);
@@ -387,5 +393,5 @@
             $(this).data('DateTimePicker').date(time);
         });
     </script>
-    
+
 }

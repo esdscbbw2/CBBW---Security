@@ -110,6 +110,12 @@ namespace CBBW.DAL.Entities
             _DBResponseMapper.Map_DBResponse(_datasync.setOthTripSchDtls(Notenumber, TripPurpose, dtldata, ref pMsg), ref pMsg, ref result);
             return result;
         }
+        public bool setLocalTripSchDriver(string Notenumber, List<LTSDriVerChange> dtldata, ref string pMsg)
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_datasync.setLocalTripSchDriver(Notenumber, dtldata, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
         public bool RemoveNote(string NoteNumber,int OnlyDtl, ref string pMsg)
         {
             bool result = false;
@@ -244,7 +250,23 @@ namespace CBBW.DAL.Entities
             catch(Exception ex) { pMsg = ex.Message; }
             return tripSchedule;
         }
-
+        public IEnumerable<CustomComboOptions> getDriverList(string ExpDriverName,ref string pMsg)
+        {
+            List<CustomComboOptions> result = new List<CustomComboOptions>();
+            try
+            {
+                dt = _datasync.getDriverList(ExpDriverName,ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        result.Add(_DBResponseMapper.Map_CustomComboOptions(dt.Rows[i]));
+                    }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
 
     }
 }

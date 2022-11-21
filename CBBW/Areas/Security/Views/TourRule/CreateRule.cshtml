@@ -4,6 +4,14 @@
 @{
     ViewBag.Title = "CreateRule";
 }
+@section headers{
+    <style>
+        .pointer {
+            cursor: pointer;
+        }        
+    </style>
+}
+
 <div class="row newTable">
     @using (Html.BeginForm("CreateRule", "TourRule", FormMethod.Post))
     {
@@ -36,7 +44,7 @@
                             <i data-feather="upload"></i>
                             Submit
                         </button>
-                        <button type="button" id="btnClear" class="btn btn-success">
+                        <button type="button" id="btnClear" class="btn btn-white">
                             <i data-feather="x-circle"></i>
                             Clear
                         </button>
@@ -46,6 +54,7 @@
             </div>
         </div>
         <div class="col-12">
+
             <div class="card mb-4">
                 <div class="card-body">
                     <div class="form-sample form-inline row ms-auto ">
@@ -54,17 +63,19 @@
                                 <label>Effective From Date :</label>
                             </div>
                             <div class="col-md-4">
-                                @Html.TextBoxFor(m => m.EffectiveDate,"{0:yyyy-MM-dd}",
-                               new {
-                                   @class= "form-control pointer isvalidate",
-                                   type="date",
+                                <div class="position-relative">
+                                    @Html.TextBoxFor(m => m.EffectiveDate, "{0:yyyy-MM-dd}",
+                               new
+                                    {
+                                   @class = "form-control pointer isvalidate CustomDateFormat",
+                                   @type = "date",
                                    onchange = "validatecontrol()",
-                                   max =Model.MaxDate,
-                                   min=Model.MinDate
+                                   max = Model.MaxDate,
+                                   min = Model.MinDate
                                })
-                                
+                                    <label id="EffectiveDatelbl" class="datelabel">Select a date</label>
+                                </div>                                
                             </div>
-
                         </div>
                         @Html.HiddenFor(m => m.EntryDate)
                         <div class="row d-flex align-items-center mb-3">
@@ -88,26 +99,40 @@
                             </div>
 
                         </div>
-                        <div class="row d-flex align-items-center">
-                            <div class="col-form-label col-md-2">
-                                <label>Service Type :</label>
-                            </div>
-                            <div class="col-md-6">
 
 
-                                @Html.ListBoxFor(m => m.SelectedServiceTypeIds, new MultiSelectList(Model.ServiceTypes, "ID", "DisplayText", Model.SelectedServiceTypeIds),
-
-                               htmlAttributes: new
-                               {
-                                   @multiple = "multiple",
-                                 @class = "form-select pointer example-getting-started isvalidate2 is-valid"
-                               })
 
 
+
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="form-sample form-inline row ms-auto ">
+                        <div class="row d-flex align-items-center mb-3">
+                            <div class="row d-flex align-items-center">
+                                <div class="col-form-label col-md-2">
+                                    <label>Service Type :</label>
+                                </div>
+                                <div class="col-md-6">
+
+
+                                    @Html.ListBoxFor(m => m.SelectedServiceTypeIds, new MultiSelectList(Model.ServiceTypes, "ID", "DisplayText", Model.SelectedServiceTypeIds),
+
+                                   htmlAttributes: new
+                                   {
+                                       @multiple = "multiple",
+                                     @class = "form-select pointer example-getting-started isvalidate2 is-valid"
+                                   })
+
+
+                                </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
 
@@ -282,27 +307,27 @@
                                 Mark Half Day Absent & Deduct Half Day DA If “Actual Tour IN Time” Is Not Equal /
                                 Earlier / Not Found To ‘Required Time
                                 IN’
-                                But Within 1st Session Time Of The Tour Location (For Center Visit, Branch & Center
+                                But Within 1<sup>st</sup> Session Time Of The Tour Location (For Center Visit, Branch & Center
                                 Visit).
                             </li>
                             <li>
                                 Mark Full Day Absent & Deduct Full Day DA If “Actual Tour IN Time” Is Not Equal /
                                 Earlier / Not Found To ‘Required Time
                                 IN’
-                                But Within 2nd Session Time Of The Tour Location (For Center Visit, Branch & Center
+                                But Within 2<sup>nd</sup> Session Time Of The Tour Location (For Center Visit, Branch & Center
                                 Visit)
                             </li>
                             <li>
                                 Mark Half Day Absent & Deduct Half Day DA If “Actual Tour IN Time” Is Not Equal /
                                 Earlier / Not Found To ‘Required Time
                                 IN’
-                                But Within 1st Session Time Of The “Main Location” (For Other Place).
+                                But Within 1<sup>st</sup> Session Time Of The “Main Location” (For Other Place).
                             </li>
                             <li>
                                 Mark Full Day Absent & Deduct Full Day DA If “Actual Tour IN Time” Is Not Equal /
                                 Earlier / Not Found To ‘Required Time
                                 IN’
-                                But Within 2nd Session Time Of The “Main Location” (For Other Place).
+                                But Within 2<sup>nd</sup> Session Time Of The “Main Location” (For Other Place).
                             </li>
 
                         </ol>
@@ -329,22 +354,22 @@
                             </select>*@
                         <ol style="list-style-type: lower-latin;">
                             <li>
-                                Mark Half Day Absent & Deduct Half Day DA If “Actual Tour OUT Time” Is Within 2nd
+                                Mark Half Day Absent & Deduct Half Day DA If “Actual Tour OUT Time” Is Within 2<sup>nd</sup>
                                 Session Time Of The Tour Location (For
                                 Center Visit, Branch & Center Visit).
                             </li>
                             <li>
-                                Mark Full Day Absent & Deduct Full Day DA If “Actual Tour OUT Time” Is Within 1st
+                                Mark Full Day Absent & Deduct Full Day DA If “Actual Tour OUT Time” Is Within 1<sup>st</sup>
                                 Session Time Of The Tour Location (For
                                 Center Visit, Branch & Center Visit).
                             </li>
                             <li>
-                                Mark Half Day Absent & Deduct Half Day DA If “Actual Tour OUT Time” Is Within 2nd
+                                Mark Half Day Absent & Deduct Half Day DA If “Actual Tour OUT Time” Is Within 2<sup>nd</sup>
                                 Session Time Of The “Main Location”
                                 (For Other Place).
                             </li>
                             <li>
-                                Mark Full Day Absent & Deduct Full Day DA If “Actual Tour OUT Time” Is Within 1st
+                                Mark Full Day Absent & Deduct Full Day DA If “Actual Tour OUT Time” Is Within 1<sup>st</sup>
                                 Session Time Of The “Main Location”
                                 (For Other Place).
                             </li>
@@ -354,8 +379,8 @@
 
 
                     <li>
-                        When “Main Location” Time IN is with in office hours then the person should be present till
-                        completion of Second
+                        When “Main Location” Time IN Is With In Office Hours Then The Person Should Be Present Till
+                        Completion Of Second
                         Session. Other Wise Rule Is As Follows:
                         @Html.DropDownListFor(m => m.ReadRule3,
                    new[] {
@@ -374,8 +399,8 @@
 
                             </select>*@
                         <ol style="list-style-type: lower-latin;">
-                            <li>Mark Half Day Absent If Last Punch Found Within 2nd Session Time.</li>
-                            <li>Mark Full Day Absent If Last Punch Found Within 1st Session Time.</li>
+                            <li>Mark Half Day Absent If Last Punch Found Within 2<sup>nd</sup> Session Time.</li>
+                            <li>Mark Full Day Absent If Last Punch Found Within 1<sup>st</sup> Session Time.</li>
                         </ol>
                     </li>
 
@@ -594,6 +619,7 @@
                     isvalid = YesNoValidator(value);
                     break;
                 case "EffectiveDate":
+                    //alert(value);
                     if (value == '') {
                         isvalid = false;
                     } else {
@@ -911,38 +937,38 @@
                 }
             };
         });
-        </script> 
+    </script>
     <script>
-            $(document).ready(function () {
-                $('#btnBack').click(function () {
-                    var url = "/Security/TourRule/Index";
-                    if ($('.is-invalid').length > 0 || $('#isBtn').val()==1) {
-                        Swal.fire({
-                            title: 'Confirmation Message',
-                            text: "Are You Sure Want to Go Back?",
-                            icon: 'warning',
-                            customClass: 'swal-wide',
-                            confirmButtonText: "Yes",
-                            cancelButtonText: "No",
-                            cancelButtonClass: 'btn-cancel',
-                            confirmButtonColor: '#2527a2',
-                            showCancelButton: true,
-                        }).then(callback);
-                        function callback(result) {
-                            if (result.value) {
-                                window.location.href = url;
-                            } else {
-                                // second variant
-                            }
+        $(document).ready(function () {
+            $('#btnBack').click(function () {
+                var url = "/Security/TourRule/Index";
+                if ($('.is-invalid').length > 0 || $('#isBtn').val() == 1) {
+                    Swal.fire({
+                        title: 'Confirmation Message',
+                        text: "Are You Sure Want to Go Back?",
+                        icon: 'warning',
+                        customClass: 'swal-wide',
+                        confirmButtonText: "Yes",
+                        cancelButtonText: "No",
+                        cancelButtonClass: 'btn-cancel',
+                        confirmButtonColor: '#2527a2',
+                        showCancelButton: true,
+                    }).then(callback);
+                    function callback(result) {
+                        if (result.value) {
+                            window.location.href = url;
+                        } else {
+                            // second variant
                         }
-                    } else {
-                        window.location.href = url;
-                    };
-                });
+                    }
+                } else {
+                    window.location.href = url;
+                };
             });
-            
-        </script>
+        });
 
-    }
-    
+    </script>    
+
+}
+
 

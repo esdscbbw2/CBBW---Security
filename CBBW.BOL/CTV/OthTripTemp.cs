@@ -21,5 +21,8 @@ namespace CBBW.BOL.CTV
         public string ToCentreCodes { get; set; }
         public string ToCentreTypeCodesStr { get; set; }
         public string ToCentreCodesStr { get; set; }
+        public int IsActivetoEdit { get; set; }
+        public int EditDriverNo { get; set; }
+        public string EditDriverName { get; set; }
     }
 }

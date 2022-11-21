@@ -14,7 +14,6 @@
                 </button>
             </div>
             <h2>TA & DA - RULES</h2>
-
         </div>
     </div>
     <div class="col-md-12 mb-4">
@@ -23,10 +22,10 @@
             <table id="tblTADARules" class="table table-bordered btnalign">
                 <thead>
                     <tr>
-                        <th scope="col">SL.No</th>
+                        <th scope="col">SL.No.</th>
                         <th scope="col">Entry Date</th>
                         <th scope="col">Effective From Date</th>
-                        <th scope="col">Actions</th>
+                        <th scope="col" style="background-color: pink; color: black; border: none; text-align: center;">Actions</th>
                     </tr>
                 </thead>
                 <thead>
@@ -42,7 +41,7 @@
                                 <input id="sEffectiveDate" type="text" class="form-control pointer" placeholder="Search...">
                             </div>
                         </th>
-                        <th scope="col"></th>
+                        <th style="background-color:pink;color:black;border:none" scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -89,39 +88,7 @@
     </div>
 </div>
 @section headers{
-    @*<script src="~/UIContent/JS/jquery-2.1.3.min.js"></script>
-    <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
-    <script src="//cdn.datatables.net/tabletools/2.2.4/js/dataTables.tableTools.min.js"></script>
-    <link rel="stylesheet" type="text/css"
-          href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css" />
-    <link rel="stylesheet" type="text/css"
-          href="//cdn.datatables.net/tabletools/2.2.4/css/dataTables.tableTools.css" />
-    <script type="text/javascript">
-        $(document).ready(function () {
-            var table = $('#tblTADARules').dataTable();
-            var tableTools = new $.fn.dataTable.TableTools(table, {
-                'aButtons': [
-                    {
-                        'sExtends': 'xls',
-                        'sButtonText': 'Save to Excel',
-                        'sFileName': 'Data.xls'
-                    },
-                    {
-                        'sExtends': 'print',
-                        'bShowAll': true,
-                    },
-                    {
-                        'sExtends': 'pdf',
-                        'bFooter': false
-                    },
-                    'copy',
-                    'csv'
-                ],
-                'sSwfPath': '//cdn.datatables.net/tabletools/2.2.4/swf/copy_csv_xls_pdf.swf'
-            });
-            $(tableTools.fnContainer()).insertBefore('#datatable_wrapper');
-        });
-    </script>*@
+    
     <style>
         .paginate_input {
             width: 50px;
@@ -138,6 +105,7 @@
 
     <script>
         $(document).ready(function () {
+            //$('#tblTADARules').DataTable();
             var dtinstance = $('#tblTADARules').DataTable({
             });
             

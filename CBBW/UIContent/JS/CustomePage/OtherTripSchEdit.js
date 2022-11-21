@@ -36,17 +36,16 @@ function getInitialData() {
                 //alert(item.ToCentreTypeCodes);
                 //// Second Table cloaning
                 if (index > 0) { cloneEditRows(index); }
-                $('#' + index +'_FromDate2').val(item.FromDateStr);
-                $('#' + index +'_FromTime2').val(fromtimectrl.val());
-                $('#' + index +'_FromLT2').val(fromltctrl.find('option:selected').text());
+                $('#' + index + '_FromDate2').val(item.FromDateStr);
+                $('#' + index + '_FromTime2').val(fromtimectrl.val());
+                $('#' + index + '_FromLT2').val(fromltctrl.find('option:selected').text());
                 $('#' + index + '_ToLT2').val(item.ToCenterTypeName);
                 $('#' + index + '_ToDate2').val(item.ToDateStr);
                 $('#' + index + '_Driver2').val(drivercnn);
                 $('#' + index + '_ToL2X').val(item.ToCenterName);
-                //alert(item.ToCenterName);
-                //second table cloaning end
-                FillLocationComboVirtually(item.FromCenterTypeCode, index + '_FromL', item.FromCentreCode, index+'_FromL2');
-                FillLocationComboVirtually(item.ToCentreTypeCode, index + '_ToL', item.ToCentreCode, index+'_ToL2');
+                alert(item.ToCenterTypeName);
+                FillLocationComboVirtually(item.FromCenterTypeCode, index + '_FromL', item.FromCentreCode, index + '_FromL2');
+                //FillLocationComboVirtually(item.ToCentreTypeCode, index + '_ToL', item.ToCentreCode, index + '_ToL2');
 
                 fromlctrl.removeClass('is-invalid').addClass('is-valid');
                 $('#' + index + '_ToL').removeClass('is-invalid').addClass('is-valid');
@@ -57,7 +56,7 @@ function getInitialData() {
     });
 
 };
-function cloneEditRows(index) {    
+function cloneEditRows(index) {
     var cloneready = $('#tbody3').find('tr').clone();
     cloneready.find('#0_FromDate2').attr('id', index + '_FromDate2');
     cloneready.find('#0_FromTime2').attr('id', index + '_FromTime2');
@@ -89,25 +88,25 @@ function ClearBtnClick() {
 function BackButtonClicked() {
     if ($('#BackBtnMsg').val() == 1) {
         Swal.fire({
-                    title: 'Confirmation',
-                    text: 'Are you sure to go back?',
-                    icon: 'question',
-                    customClass: 'swal-wide',
-                    //buttons: {
-                    //    confirm: 'Ok'
-                    //},
+            title: 'Confirmation',
+            text: 'Are you sure to go back?',
+            icon: 'question',
+            customClass: 'swal-wide',
+            //buttons: {
+            //    confirm: 'Ok'
+            //},
             confirmButtonText: "Yes",
             cancelButtonText: "No",
             cancelButtonClass: 'btn-cancel',
             confirmButtonColor: '#2527a2',
             showCancelButton: true,
-                }).then(callback);
-                function callback(result) {
-                    if (result.value) {
-                        var url = "/Security/CTV/Create";
-                        window.location.href = url;
-                    }
-                }
+        }).then(callback);
+        function callback(result) {
+            if (result.value) {
+                var url = "/Security/CTV/Create";
+                window.location.href = url;
+            }
+        }
     } else {
         var url = "/Security/CTV/Create";
         window.location.href = url;
@@ -121,7 +120,7 @@ function ValidateControl() {
         $(target).removeClass('is-invalid').addClass('is-valid');
     } else {
         $(target).removeClass('is-valid').addClass('is-invalid');
-    }    
+    }
     activateSubmitBtn();
 
 };
@@ -130,7 +129,7 @@ function validatectrl(targetid, value) {
     switch (targetid) {
         case "TripPurpose":
             var words = $.trim(value).split(" ");
-            if (value.length > 1 && words.length<=100) { isvalid = true; }
+            if (value.length > 1 && words.length <= 100) { isvalid = true; }
             break;
         case "CCOth":
             if (value == 1) { isvalid = true; }
@@ -153,7 +152,7 @@ function validatectrl(targetid, value) {
                 });
             };
             break;
-        
+
     }
     return isvalid;
 };
@@ -231,7 +230,7 @@ function getSchRecords() {
         $('#' + rowid + '_ToL option:selected').each(function () {
             ystr = ystr + '_' + $(this).text();
         });
-        schrecords.push({            
+        schrecords.push({
             'FromDate': $('#' + rowid + '_FromDt').val(),
             'FromTime': $('#' + rowid + '_Fromtime').val(),
             'FromCentreTypeCode': $('#' + rowid + '_FromLT').val(),
@@ -259,9 +258,9 @@ function isOtherPlaceButtonEnabled() {
             if (mval.indexOf('Other Place') > 0) {
                 isenable = false;
             }
-        }        
+        }
     });
-    
+
     if (isenable) {
         btn.removeAttr('disabled').removeClass('is-valid').addClass('is-invalid').val('-1');
     } else {
@@ -271,7 +270,7 @@ function isOtherPlaceButtonEnabled() {
 function activateSubmitBtn() {
     //alert($('.is-invalid').length);
     //isOtherPlaceButtonEnabled();
-    
+
     var btnSubmit = $('#btnSubmit');
     if ($('.is-invalid').length > 0) {
         btnSubmit.attr('disabled', 'disabled');
@@ -328,7 +327,7 @@ function AddBtnVirtualClick(insrowid) {
     cloneready.find('#0_ToLT').attr('id', r + '_ToLT').removeClass('is-valid').addClass('is-invalid');
     cloneready.find('#B0').remove();
     cloneready.find('.btn-group').remove();
-    cloneready.find('#BL0').remove(); 
+    cloneready.find('#BL0').remove();
     cloneready.find('#0_ToL').removeClass('is-invalid').addClass('inVisible');
     cloneready.find('#M_ToL').attr('id', r + '_ToL')
         .removeClass('is-valid inVisible').addClass('is-invalid');
@@ -351,9 +350,9 @@ function AddBtnVirtualClick(insrowid) {
     //});
 
     //var dtctrl = $('#' + r + '_FromDt');
-    
+
     var addbtn = cloneready.find('#0_AddBtn');
-    addbtn.attr('id', r + '_AddBtn').attr('disabled','disabled');
+    addbtn.attr('id', r + '_AddBtn').attr('disabled', 'disabled');
     addbtn.on('mouseenter', function () {
         $(this).tooltip('show');
     });
@@ -379,7 +378,7 @@ function AddBtnVirtualClick(insrowid) {
     } else {
         $(cloneready).insertAfter('#' + insrowid);
     }
-    
+
     $('#0_AddBtn').on('mouseleave click', function () {
         $(this).tooltip('hide');
     });
@@ -393,10 +392,10 @@ function AddBtnVirtualClick(insrowid) {
     var ltm = $('#' + r + '_ToLT');
     ltm.multiselect({
         templates: {
-            button: '<button id="B' + r+'" type="button" class="multiselect dropdown-toggle btn btn-primary w-100 selectBox" data-bs-toggle="dropdown" aria-expanded="false"><span class="multiselect-selected-text"></span></button>',
+            button: '<button id="B' + r + '" type="button" class="multiselect dropdown-toggle btn btn-primary w-100 selectBox" data-bs-toggle="dropdown" aria-expanded="false"><span class="multiselect-selected-text"></span></button>',
         },
     });
-    
+
     activateSubmitBtn();
 };
 function addBtnClick() {
@@ -425,7 +424,7 @@ function ChangeLocation() {
     var targetid = $(target).attr('id');
     var targetvalue = $(target).val();
     var rowid = $(target.closest('.add-row')).attr("id");
-    
+
     if (targetvalue >= 0) {
         $(target).removeClass('is-invalid').addClass('is-valid');
     } else {
@@ -452,7 +451,7 @@ function SchTimeChanged() {
     var target = SchTimeChanged.caller.arguments[0].target;
     var rowid = $(target.closest('.add-row')).attr("id");
     var targetvalue = $(target).val();
-    if (targetvalue == null || targetvalue=='') {
+    if (targetvalue == null || targetvalue == '') {
         $(target).removeClass('is-valid').addClass('is-invalid');
     } else {
         $(target).removeClass('is-invalid').addClass('is-valid');
@@ -482,7 +481,7 @@ function SchDateChanged() {
     var rowid = $(target.closest('.add-row')).attr("id");
     var datevalue = $(target).val();
     var vehicleno = $('#VehicleNo').val();
-    
+
     if (datevalue == null) {
         $(target).removeClass('is-valid').addClass('is-invalid');
     } else {
@@ -518,9 +517,9 @@ function SchDateChanged() {
                 getToDate(rowid);
             }
         });
-    }    
+    }
 };
-function FillToLocationComboVirtually(locationtypeid, locationcomboid, locationid, ) {
+function FillToLocationComboVirtually(locationtypeid, locationcomboid, locationid,) {
     var locationcombo = $('#' + locationcomboid);
     //var editlocationctrl = $('#' + editlocationctrlid);
     $.ajax({
@@ -539,7 +538,7 @@ function FillToLocationComboVirtually(locationtypeid, locationcomboid, locationi
         }
     });
 }
-function FillLocationComboVirtually(locationtypeid, locationcomboid, locationid, editlocationctrlid){
+function FillLocationComboVirtually(locationtypeid, locationcomboid, locationid, editlocationctrlid) {
     var locationcombo = $('#' + locationcomboid);
     var editlocationctrl = $('#' + editlocationctrlid);
     $.ajax({
@@ -598,7 +597,7 @@ function ChangeLocationToType() {
     var target = ChangeLocationToType.caller.arguments[0].target;
     var rowid = $(target.closest('.add-row')).attr("id");
     var x = '';
-    $('#' + rowid+'_ToLT option:selected').each(function () {
+    $('#' + rowid + '_ToLT option:selected').each(function () {
         x = x + '_' + $(this).val();
     });
     //alert(x);
@@ -606,7 +605,7 @@ function ChangeLocationToType() {
     var targetid = $(target).attr('id');
     targetid = targetid.slice(0, - 1);
     var locationtypeid = $(target).val();
-    
+
     //fillLocationMulti(x, targetid);
     var locationcombo = $('#' + targetid);
     locationcombo.removeClass('is-valid').addClass('is-invalid');
@@ -708,13 +707,13 @@ function getToDate(rowid) {
     $('#' + rowid + '_ToL option:selected').each(function () {
         y = y + '_' + $(this).val();
     });
-    
+
     todateCtrl.val('').removeClass('is-valid').addClass('is-invalid');
     if (fromDate != '') {
         if (fromTime != '') {
             if (fromlocation > 0) {
-                if (tolocationtype != '') {                    
-                    if (tolocation !='') {
+                if (tolocationtype != '') {
+                    if (tolocation != '') {
                         if (fromlocation == tolocation) {
                             Swal.fire({
                                 title: 'Warning!',
@@ -750,7 +749,7 @@ function getToDate(rowid) {
                                 };
                             });
                             if (mduprec == 0) {
-                                if (duprec == 0) {                                    
+                                if (duprec == 0) {
                                     $.ajax({
                                         url: '/CTV/GetSchToDate',
                                         method: 'GET',
@@ -819,9 +818,9 @@ function getToDate(rowid) {
                                     confirmButtonColor: '#2527a2',
                                 });
                             }
-                            
+
                         }
-                        
+
                     }
                 }
             }
@@ -829,7 +828,7 @@ function getToDate(rowid) {
     }
     addbtn.attr('disabled', 'disabled');
     //activateSubmitBtn();
-    
+
 };
 function DisableCombo() {
     $('#CCOth').val(0).removeClass('is-valid').addClass('is-invalid');
@@ -866,9 +865,9 @@ $(document).ready(function () {
             $("#0_ToLT").multiselect('clearSelection');
             //ToLT.multiselect('refresh');
             //$("#0_ToLT").multiselect('refresh');
-            //getInitialData();
+            getInitialData();
         }
-    });    
+    });
 });
 //$(function () {
 //    $('.datepicker2').datepicker({

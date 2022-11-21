@@ -114,5 +114,29 @@ namespace CBBW.DAL.DataSync
                 }
             }
         }
+        public CommonTable(List<LTSDriVerChange> customoptions)
+        {
+            UDTable = new DataTable();
+            UDTable.Columns.Add("sNoteNo", typeof(string));
+            UDTable.Columns.Add("sVehicleNo", typeof(string));
+            UDTable.Columns.Add("dSchDate", typeof(DateTime));
+            UDTable.Columns.Add("iDrivercode", typeof(int));
+            UDTable.Columns.Add("sDriverName", typeof(string));
+            UDTable.Columns.Add("sDriverNonName", typeof(string));            
+            if (customoptions != null && customoptions.Count > 0)
+            {
+                foreach (LTSDriVerChange obj in customoptions)
+                {
+                    DataRow dr = UDTable.NewRow();
+                    dr["sNoteNo"] = obj.NoteNo;
+                    dr["sVehicleNo"] = obj.VehicleNo;
+                    dr["dSchDate"] = obj.SchDate;
+                    dr["iDrivercode"] = obj.DriverNo;
+                    dr["sDriverName"] = obj.DriverName;
+                    dr["sDriverNonName"] = obj.DriverNonName;                    
+                    UDTable.Rows.Add(dr);
+                }
+            }
+        }
     }
 }

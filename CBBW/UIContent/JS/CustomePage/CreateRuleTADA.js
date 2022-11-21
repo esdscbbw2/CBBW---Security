@@ -81,7 +81,10 @@ function validateallcontrol() {
                     if (ctrlvalue > 0 && ctrlvalue < 100) { result = true; }
                     break;
                 case "EffectiveDate":
-                    if (ctrlvalue == '') { result = false; } else { result = true; }
+                    if (ctrlvalue == '') { result = false; }
+                    else {
+                        if (ctrlvalue == '0001-01-01') { result = false; } else { result = true;}                        
+                    }
                     break;
             }
             return result;
@@ -103,7 +106,8 @@ function validateallcontrol() {
             $("#SelectedCategoryIds").multiselect('refresh');
             validateallcontrol();
         }; 
-        $(document).ready(() => {
+$(document).ready(() => {
+
             $('#SelectedCategoryIds').change(function () {
                 var selectedValues = $(this).val();
                 if (selectedValues == '') {

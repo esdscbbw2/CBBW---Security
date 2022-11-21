@@ -31,7 +31,7 @@
                             Submit
                         </button>
                         <button type="button" id="btnClear" onclick="btnClearClicked()"
-                                class="btn btn-success">
+                                class="btn btn-white">
                             <i data-feather="x-circle"></i>
                             Clear
                         </button>
@@ -48,14 +48,19 @@
                             Effective From Date :
                         </label>
                         <div class="col-md-4">
-                            @Html.TextBoxFor(m => m.EffectiveDate, "{0:yyyy-MM-dd}",
-                           htmlAttributes: new {
-                               @class = "form-control pointer isvalidate",
+                            <div class="position-relative">
+                                @Html.TextBoxFor(m => m.EffectiveDate, "{0:yyyy-MM-dd}",
+                           htmlAttributes: new
+                                {
+                               @class = "form-control pointer isvalidate CustomDateFormat",
                                type = "date",
                                onchange = "validatecontrol()",
                                max = Model.MaxDate,
                                min = Model.MinDate
                            })
+                                <label id="EffectiveDatelbl" class="datelabel">Select a date</label>
+                            </div>
+                            
                             @*@Html.EditorFor(m => m.EffectiveDate, new
                             {
                                 htmlAttributes = new
@@ -320,6 +325,9 @@
                     window.location.href = url;
                 };
             });
+            var dtctrl = $('#EffectiveDate');
+            dtctrl.CustomDateFormat();
+            if (dtctrl.val() == '0001-01-01') { $('#EffectiveDatelbl').html('Select a date');}
         });
     </script>
     @*<script type="text/javascript">

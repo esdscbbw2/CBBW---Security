@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="CTV\CTVHdrDtl.cs" />
     <Compile Include="CTV\LocVehSchFromMat.cs" />
+    <Compile Include="CTV\LTSDriVerChange.cs" />
     <Compile Include="CTV\OthTripTemp.cs" />
     <Compile Include="CTV\TripSchedule.cs" />
     <Compile Include="CTV\TripScheduleHdr.cs" />
@@ -57,7 +58,9 @@
     <Compile Include="CustomModels\RowDisplayInfo.cs" />
     <Compile Include="Master\PublicTransportType.cs" />
     <Compile Include="Master\ServiceType.cs" />
+    <Compile Include="MGP\MGPMatOut.cs" />
     <Compile Include="MGP\MGPNotes.cs" />
+    <Compile Include="MGP\RFID.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TADA\TADAParam.cs" />
     <Compile Include="TADA\TADAPubTransOption.cs" />

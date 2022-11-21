@@ -21,6 +21,86 @@ namespace CBBW.Areas.Security.Controllers
             _iCTV = iCTV;
             pMsg = "";
         }
+        public ActionResult OtherTripSchEdit() 
+        {
+            OtherTripScheduleEntryVM model = new OtherTripScheduleEntryVM();
+            model.MinDate = DateTime.Now.ToString("yyyy-MM-dd");
+            model.CurDate = DateTime.Now.ToString("yyyy-MM-dd");
+            TripScheduleHdr obj;
+            if (TempData["CTVHDR"] != null)
+            {
+                obj = TempData["CTVHDR"] as TripScheduleHdr;
+                model.NoteNumber = obj.NoteNo;
+                model.VehicleNo = obj.Vehicleno;
+                model.TripPurpose = obj.TripPurpose;
+                model.DriverCode = obj.DriverNo;
+                model.DriverName = obj.DriverName;
+                model.MaxDate = obj.ToDate.ToString("yyyy-MM-dd");
+                TempData["CTVHDR"] = obj;
+            }
+            return View(model);
+        }
+        public ActionResult LocVehTripSchEdit(int CBUID, string NoteNumber = "")
+        {
+            TripScheduleHdr obj = new TripScheduleHdr();
+            if (TempData["CTVHDR"] != null)
+            {
+                obj = TempData["CTVHDR"] as TripScheduleHdr;
+                TempData["CTVHDR"] = obj;
+            }
+            LocalVehicleTripScheduleVM model = new LocalVehicleTripScheduleVM();
+            //model.SCHFromDate = obj.FromDate;
+            //model.SCHToDate = obj.ToDate;
+            //model.VehicleNo = obj.Vehicleno;
+            model.SCHFromDate = new DateTime(2022, 11, 1);
+            model.SCHToDate = new DateTime(2022, 11, 15);
+            model.VehicleNo = "AP25X1541";
+            model.NoteNo = obj.NoteNo;
+
+            model.DriverCodenName = obj.DriverNonName;
+            model.LVSchDtl = _iCTV.getLocalVehicleSChedules(model.VehicleNo, model.SCHFromDate, model.SCHToDate, ref pMsg);
+            model.ListofDrivers = _iCTV.getDriverList(model.DriverCodenName, ref pMsg);
+
+            //model.CallBackUrl = "/CTV/EditNote?NoteNumber="+model.NoteNo;
+            return View(model);
+        }
+        public ActionResult EditNote(string NoteNumber) 
+        {
+            getLogInUserInfo();
+            TripScheduleHdr model = _iCTV.getSchDetailsFromNote(NoteNumber, ref pMsg).SchHdrData;
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult EditNote(TripScheduleHdr model, string Submit) 
+        {
+            UserInfo user = getLogInUserInfo();
+            TempData["CTVHDR"] = model;
+            if (Submit == "OVT")
+            {
+                return RedirectToAction("OtherTripSchEdit", 
+                    new { Area = "Security", NoteNumber = model.NoteNo, CBUID = 5 });
+            }
+            else if (Submit == "TADARules")
+            {
+                return RedirectToAction("ViewRedirection", "TADARules",
+                    new { Area = "Security", CBUID = 5, NoteNumber = model.NoteNo });
+            }
+            else if (Submit == "TourRule")
+            {
+                return RedirectToAction("ViewRedirection", "TourRule",
+                    new { Area = "Security", CBUID = 5, NoteNumber = model.NoteNo });
+            }
+            else if (Submit == "LVT")
+            {
+                //TempData["CTVHDR"] = model;
+                return RedirectToAction("LocVehTripSchEdit", new { CBUID = 5, NoteNumber = model.NoteNo });
+            }
+            else if (Submit == "LVTSChMat")
+            {
+                return RedirectToAction("LocalVehicleTripSchFromMat", new { CBUID = 5, NoteNumber = model.NoteNo });
+            }
+            return View(model);
+        }
         public ActionResult OtherTripSchDisplay(string NoteNumber,int CBUID=2) 
         {            
             getLogInUserInfo();
@@ -34,7 +114,7 @@ namespace CBBW.Areas.Security.Controllers
             }
             if (CBUID == 2)
             {
-                model.CallBackUrl = "/Security/CTV/ViewNote?NoteNumber=" + NoteNumber;
+                model.CallBackUrl = "/Security/CTV/ViewNote?CBUID=2&NoteNumber=" + NoteNumber;
                 //TempData["LVTScallbackurl"] = "/Security/CTV/ViewNote?NoteNumber=" + NoteNumber;
                 //model.IsSaveVisible = 0;
             }
@@ -51,7 +131,7 @@ namespace CBBW.Areas.Security.Controllers
             }
             return View(model);
         }
-        public ActionResult ViewNote(string NoteNumber, int CBUID = 1) 
+        public ActionResult ViewNote(string NoteNumber, int CBUID = 1, int IsDelete=0) 
         {
             if (CBUID == 1)
             {
@@ -67,6 +147,8 @@ namespace CBBW.Areas.Security.Controllers
             }
             getLogInUserInfo();
             TripScheduleHdr model = _iCTV.getSchDetailsFromNote(NoteNumber, ref pMsg).SchHdrData;
+            model.IsDeleteBtn = IsDelete;
+            model.CBUID = CBUID;
             return View(model);
         }
         [HttpPost]
@@ -91,7 +173,7 @@ namespace CBBW.Areas.Security.Controllers
             else if (Submit == "LVT")
             {
                 //TempData["CTVHDR"] = model;
-                return RedirectToAction("LocVehTripSch", new { CBUID = 2, NoteNumber = model.NoteNo });
+                return RedirectToAction("LocVehTripSch", new { CBUID = model.CBUID, NoteNumber = model.NoteNo });
             }
             else if (Submit == "LVTSChMat")
             {
@@ -124,7 +206,7 @@ namespace CBBW.Areas.Security.Controllers
             }
             else if (CBUID == 2) { model.CallBackUrl = "/Security/CTV/ViewNote?NoteNumber="+ NoteNumber; }
             else if (CBUID == 3) { model.CallBackUrl = "/Security/CTV/Approval?NoteNumber=" + NoteNumber; }
-            
+            else if (CBUID == 5) { model.CallBackUrl = "/Security/CTV/EditNote?NoteNumber=" + NoteNumber; }
             int yr = DateTime.Today.Year;
             int mon = DateTime.Today.Month;
             int day = DateTime.Today.Day;
@@ -250,12 +332,12 @@ namespace CBBW.Areas.Security.Controllers
                 TempData["CTVHDR"] = obj;
             }
             LocalVehicleTripScheduleVM model = new LocalVehicleTripScheduleVM();
-            model.SCHFromDate = obj.FromDate;
-            model.SCHToDate = obj.ToDate;
-            model.VehicleNo = obj.Vehicleno;
-            ////model.SCHFromDate = new DateTime(2022, 8, 1);
-            ////model.SCHToDate = new DateTime(2022, 8, 15);
-            ////model.VehicleNo = "AP25X1541";
+            //model.SCHFromDate = obj.FromDate;
+            //model.SCHToDate = obj.ToDate;
+            //model.VehicleNo = obj.Vehicleno;
+            model.SCHFromDate = new DateTime(2022, 11, 1);
+            model.SCHToDate = new DateTime(2022, 11, 15);
+            model.VehicleNo = "AP25X1541";
 
             model.DriverCodenName = obj.DriverNonName;
             model.LVSchDtl = _iCTV.getLocalVehicleSChedules(model.VehicleNo, model.SCHFromDate, model.SCHToDate, ref pMsg);
@@ -268,7 +350,7 @@ namespace CBBW.Areas.Security.Controllers
             }
             else if (CBUID == 2)
             {
-                model.CallBackUrl= "/Security/CTV/ViewNote?NoteNumber=" + NoteNumber;
+                model.CallBackUrl= "/Security/CTV/ViewNote?CBUID=2&NoteNumber=" + NoteNumber;
                 //TempData["LVTScallbackurl"] = "/Security/CTV/ViewNote?NoteNumber=" + NoteNumber;
                 model.IsSaveVisible = 0;
             }
@@ -276,7 +358,10 @@ namespace CBBW.Areas.Security.Controllers
             {
                 TempData["Tourcallbackurl"] = "/Security/CTV/Approval?NoteNumber=" + NoteNumber;
             }
-
+            else if (CBUID == 5)
+            {
+                TempData["Tourcallbackurl"] = "/Security/CTV/EditNote?NoteNumber=" + NoteNumber;
+            }
             return View(model);
         }
         [HttpPost]
@@ -517,6 +602,30 @@ namespace CBBW.Areas.Security.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
+        public JsonResult setLVSDriverChange(LocalVehicleTripScheduleEditVM model)
+        {
+            //TripScheduleHdr obj = new TripScheduleHdr();
+            //if (TempData["CTVHDR"] != null)
+            //{
+            //    obj = TempData["CTVHDR"] as TripScheduleHdr;
+            //}
+            //TempData["CTVHDR"] = obj;
+            string msg = "";
+            CustomAjaxResponse result = new CustomAjaxResponse();
+            if (_iCTV.setLocalTripSchDriver(model.NoteNo,model.DriverList, ref msg))
+            {
+                //obj.IsOTSSaved = 1;
+                result.bResponseBool = true;
+                result.sResponseString = "Data successfully updated.";
+            }
+            else
+            {
+                result.bResponseBool = false;
+                result.sResponseString = msg;
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
         public JsonResult RemoveNote(string NoteNumber)
         {
             string msg = "";
@@ -570,7 +679,12 @@ namespace CBBW.Areas.Security.Controllers
             CTVHdrDtl result = _iCTV.getSchDetailsFromNote(Notenumber, ref pMsg);
             return Json(result.SchHdrData, JsonRequestBehavior.AllowGet);
         }
-        
+        public JsonResult GetDriverList(string ExpDriverName)
+        {            
+            IEnumerable<CustomComboOptions> result = _iCTV.getDriverList(ExpDriverName,ref pMsg);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
         //public JsonResult getSCHNotes(int iDisplayLength, int iDisplayStart,
         //    int iSortCol_0, string sSortDir_0, string sSearch)
         //{

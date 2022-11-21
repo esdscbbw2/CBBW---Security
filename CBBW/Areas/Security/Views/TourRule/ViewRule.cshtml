@@ -93,8 +93,15 @@
                             @Html.HiddenFor(m => m.EntryTime)
                             @Html.TextBoxFor(m => m.EntryTime, "{0:hh-mm-ss}", htmlAttributes: new { @class = "form-control", disabled = "disabled" })
                         </div>
-                      
+
                     </div>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="form-sample form-inline row ms-auto ">
                     <div class="row d-flex align-items-center">
                         <div class="col-form-label col-md-2">
                             <label>Service Type :</label>
@@ -107,17 +114,16 @@
                             {
                             @multiple = "multiple",
                             @class = "form-select example-getting-started is-valid",
-                            @disabled="disabled"
+                            @disabled = "disabled"
                             })
 
 
                         </div>
                     </div>
 
-                    </div>
                 </div>
             </div>
-
+        </div>
     </div>
 
     <div class="col-12">
@@ -251,27 +257,27 @@
                             Mark Half Day Absent & Deduct Half Day DA If “Actual Tour IN Time” Is Not Equal /
                             Earlier / Not Found To ‘Required Time
                             IN’
-                            But Within 1st Session Time Of The Tour Location (For Center Visit, Branch & Center
+                            But Within 1<sup>st</sup> Session Time Of The Tour Location (For Center Visit, Branch & Center
                             Visit).
                         </li>
                         <li>
                             Mark Full Day Absent & Deduct Full Day DA If “Actual Tour IN Time” Is Not Equal /
                             Earlier / Not Found To ‘Required Time
                             IN’
-                            But Within 2nd Session Time Of The Tour Location (For Center Visit, Branch & Center
+                            But Within 2<sup>nd</sup> Session Time Of The Tour Location (For Center Visit, Branch & Center
                             Visit)
                         </li>
                         <li>
                             Mark Half Day Absent & Deduct Half Day DA If “Actual Tour IN Time” Is Not Equal /
                             Earlier / Not Found To ‘Required Time
                             IN’
-                            But Within 1st Session Time Of The “Main Location” (For Other Place).
+                            But Within 1<sup>st</sup> Session Time Of The “Main Location” (For Other Place).
                         </li>
                         <li>
                             Mark Full Day Absent & Deduct Full Day DA If “Actual Tour IN Time” Is Not Equal /
                             Earlier / Not Found To ‘Required Time
                             IN’
-                            But Within 2nd Session Time Of The “Main Location” (For Other Place).
+                            But Within 2<sup>nd</sup> Session Time Of The “Main Location” (For Other Place).
                         </li>
 
                     </ol>
@@ -298,22 +304,22 @@
                     </select>*@
                     <ol style="list-style-type: lower-latin;">
                         <li>
-                            Mark Half Day Absent & Deduct Half Day DA If “Actual Tour OUT Time” Is Within 2nd
+                            Mark Half Day Absent & Deduct Half Day DA If “Actual Tour OUT Time” Is Within 2<sup>nd</sup>
                             Session Time Of The Tour Location (For
                             Center Visit, Branch & Center Visit).
                         </li>
                         <li>
-                            Mark Full Day Absent & Deduct Full Day DA If “Actual Tour OUT Time” Is Within 1st
+                            Mark Full Day Absent & Deduct Full Day DA If “Actual Tour OUT Time” Is Within 1<sup>st</sup>
                             Session Time Of The Tour Location (For
                             Center Visit, Branch & Center Visit).
                         </li>
                         <li>
-                            Mark Half Day Absent & Deduct Half Day DA If “Actual Tour OUT Time” Is Within 2nd
+                            Mark Half Day Absent & Deduct Half Day DA If “Actual Tour OUT Time” Is Within 2<sup>nd</sup>
                             Session Time Of The “Main Location”
                             (For Other Place).
                         </li>
                         <li>
-                            Mark Full Day Absent & Deduct Full Day DA If “Actual Tour OUT Time” Is Within 1st
+                            Mark Full Day Absent & Deduct Full Day DA If “Actual Tour OUT Time” Is Within 1<sup>st</sup>
                             Session Time Of The “Main Location”
                             (For Other Place).
                         </li>
@@ -323,8 +329,8 @@
 
 
                 <li>
-                    When “Main Location” Time IN is with in office hours then the person should be present till
-                    completion of Second
+                    When “Main Location” Time IN Is With In Office Hours Then The Person Should Be Present Till
+                    Completion Of Second
                     Session. Other Wise Rule Is As Follows:
                     @Html.DropDownListFor(m => m.ReadRule3,
                     new[] {
@@ -337,14 +343,14 @@
                     @onchange = "validatecontrol()"
                     })
                     @*<select id="MainLocation" class="form-select"
-                              aria-label="Default select example">
-                        <option value="0">No</option>
-                        <option value="1">Yes</option>
+                  aria-label="Default select example">
+            <option value="0">No</option>
+            <option value="1">Yes</option>
 
-                    </select>*@
+        </select>*@
                     <ol style="list-style-type: lower-latin;">
-                        <li>Mark Half Day Absent If Last Punch Found Within 2nd Session Time.</li>
-                        <li>Mark Full Day Absent If Last Punch Found Within 1st Session Time.</li>
+                        <li>Mark Half Day Absent If Last Punch Found Within 2<sup>nd</sup> Session Time.</li>
+                        <li>Mark Full Day Absent If Last Punch Found Within 1<sup>st</sup> Session Time.</li>
                     </ol>
                 </li>
 

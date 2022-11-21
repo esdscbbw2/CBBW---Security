@@ -29,11 +29,15 @@ namespace CBBW.Areas.Security.Controllers
             }
             else if (CBUID == 2) 
             {
-                TempData["Tadacallbackurl"] = "/Security/CTV/ViewNote?NoteNumber=" + NoteNumber;
+                TempData["Tadacallbackurl"] = "/Security/CTV/ViewNote?CBUID=2&NoteNumber=" + NoteNumber;
             }
             else if (CBUID == 3)
             {
                 TempData["Tadacallbackurl"] = "/Security/CTV/Approval?NoteNumber=" + NoteNumber;
+            }
+            else if (CBUID == 5)
+            {
+                TempData["Tadacallbackurl"] = "/Security/CTV/EditNote?NoteNumber=" + NoteNumber;
             }
             int RuleID = _iTADARules.GetAffectedRuleID(ref pMsg);
 
@@ -107,7 +111,9 @@ namespace CBBW.Areas.Security.Controllers
             TADARuleDetails model;
             if (TempData["TADARuleDetail"] == null)
             {
-                TempData["TADARuleDetail"]=_iTADARules.GetLastTADARule(ref pMsg);
+                TADARuleDetails obj= _iTADARules.GetLastTADARule(ref pMsg);
+                obj.EffectiveDate = new DateTime(1,1,1);
+                TempData["TADARuleDetail"] = obj; 
             }
             model = TempData["TADARuleDetail"] as TADARuleDetails;
             model.MinDate = DateTime.Today.ToString("yyyy-MM-dd");

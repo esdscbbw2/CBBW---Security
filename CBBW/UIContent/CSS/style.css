@@ -1407,3 +1407,11 @@ strong {
 .position-static{
     position:static;
 }
+.datelabel {
+    font-weight: 400 !important;
+    position: absolute;
+    top: 6px;
+    width: 200px;
+    background: #fff;
+    left: 10px;
+}

@@ -24,7 +24,7 @@ namespace CBBW.DAL.Entities
             _mapper = new MasterDBMapper();
             _datasync = new MasterDataSync();
             _dbresmapper = new DBResponseMapper();
-        }
+        }        
         public IEnumerable<ServiceType> getServiceTypes(int ID, ref string pMsg) 
         {
             List<ServiceType> servicetypes = new List<ServiceType>();
@@ -140,6 +140,7 @@ namespace CBBW.DAL.Entities
             string ToLocation, ref string pMsg)
         {
             return _datasync.GetToSchDateForMultiLocation(FromDate, FromLocation, ToLocationType, ToLocation, ref pMsg);
+            
         }
         public int getEffectedRuleID(int RuleType, ref string pMsg) 
         {

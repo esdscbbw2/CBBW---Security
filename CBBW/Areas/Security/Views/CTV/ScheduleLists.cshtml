@@ -85,18 +85,19 @@
                                                 new { Area = "Security", NoteNumber = item.NoteNo})'">
                                     <i data-feather="eye"></i>
                                 </button>
-                                @if (item.IsApproved == true)
+                                @if (item.mResult == 1)
                                 {
                                     <button type="button" class="btn primaryLink" data-toggle="tooltip"
                                             data-placement="top"
-                                            title="Edit" onclick="window.location.href='#';">
+                                            title="Edit" onclick="window.location.href='@Url.Action("EditNote", "CTV",
+                                                new { Area = "Security", NoteNumber = item.NoteNo})';">
                                         <i data-feather="edit"></i>
                                     </button>
                                 }
                                 @if (item.EntryDate == DateTime.Today)
                                 {
                                     <button id="deleteBtn" onclick="window.location.href='@Url.Action("ViewNote", "CTV",
-                                                new { Area = "Security", NoteNumber = item.NoteNo})'" type="button"
+                                                new { Area = "Security", NoteNumber = item.NoteNo,IsDelete=1})'" type="button"
                                             class="btn secondaryLink" data-toggle="tooltip"
                                             data-placement="top" title="Delete">
                                         <i data-feather="trash-2"></i>

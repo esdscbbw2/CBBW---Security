@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using CBBW.BOL.CTV;
+using CBBW.BOL.CustomModels;
 
 namespace CBBW.Areas.Security.ViewModel
 {
@@ -15,5 +16,12 @@ namespace CBBW.Areas.Security.ViewModel
         public List<LocVehSchFromMat> LVSchDtl { get; set; }
         public string CallBackUrl { get; set; }
         public int IsSaveVisible { get; set; }
+        public IEnumerable<CustomComboOptions> ListofDrivers { get; set; }
+        public string NoteNo { get; set; }
+    }
+    public class LocalVehicleTripScheduleEditVM 
+    {
+        public string NoteNo { get; set; }
+        public List<LTSDriVerChange> DriverList { get; set; }
     }
 }

@@ -35,5 +35,7 @@ namespace CBBW.BLL.IRepository
             DateTime ApprovalDatetime, string DisApprovalReason, ref string pMsg);
         IEnumerable<TripScheduleHdr> getApprovedCtvSchedule(int PageSize, int PageNumber, int SortCol, string SortDirection,
             string SearchText, int centercode, ref string pMsg);
+        IEnumerable<CustomComboOptions> getDriverList(string ExpDriverName, ref string pMsg);
+        bool setLocalTripSchDriver(string Notenumber, List<LTSDriVerChange> dtldata, ref string pMsg);
     }
 }
