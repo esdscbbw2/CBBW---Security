@@ -15,7 +15,7 @@ namespace CBBW.DAL
         public static string GetDBConnectionString() 
         {
             if (DBConRead == "WEBCONFIG")
-                return ConfigurationManager.ConnectionStrings["CBBWConnectionString"].ConnectionString;
+                return ConfigurationManager.ConnectionStrings["CBBWDevConnectionString"].ConnectionString;
             else
                 return Get_Environment_ConnectionString();
         }
@@ -24,13 +24,13 @@ namespace CBBW.DAL
             switch (AppEnvironment)
             {
                 case "QA":
-                    return "";
+                    return "Data Source=.;Initial Catalog=CBBWQA;Integrated Security=True";
                 case "UAT":
-                    return "";
+                    return "Data Source=.;Initial Catalog=CBBWUAT;Integrated Security=True";
                 case "PRODUCTION":
                     return "";
                 default:
-                    return "Data Source=CBBW_MIGRATION;Initial Catalog=CBBW;Persist Security Info=True;User ID=db_cbbw;Password=ESDS@4321#";
+                    return "Data Source=Data Source=.;Initial Catalog=CBBWDev;Integrated Security=True";
             }
             
         }

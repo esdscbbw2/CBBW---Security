@@ -55,6 +55,7 @@ namespace CBBW.DAL.Entities
                     {
                         result = _mapper.Map_TourRuleDetails(ds.Tables[0].Rows[0], dt);
                     }
+                    else { result = _mapper.Map_TourRuleDetails(null, dt); }
                 }
             }
             catch { }
