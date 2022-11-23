@@ -8,6 +8,7 @@ namespace CBBW.BOL.CTV
 {
     public class OthTripTemp
     {
+        public string VehicleNo { get; set; }
         public string FromDate { get; set; }
         public string FromTime { get; set; }
         public int FromCentreTypeCode { get; set; }

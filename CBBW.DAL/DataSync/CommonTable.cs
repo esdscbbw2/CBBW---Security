@@ -92,6 +92,7 @@ namespace CBBW.DAL.DataSync
             UDTable.Columns.Add("sToLocation", typeof(string));
             UDTable.Columns.Add("sToLocationTypeStr", typeof(string));
             UDTable.Columns.Add("sToLocationStr", typeof(string));
+            UDTable.Columns.Add("sVehicleNo", typeof(string));
             if (customoptions != null && customoptions.Count > 0)
             {
                 foreach (OthTripTemp obj in customoptions)
@@ -110,6 +111,7 @@ namespace CBBW.DAL.DataSync
                     dr["sToLocation"] = obj.ToCentreCodes;
                     dr["sToLocationTypeStr"] = obj.ToCentreTypeCodesStr;
                     dr["sToLocationStr"] = obj.ToCentreCodesStr;
+                    dr["sVehicleNo"] = obj.VehicleNo;
                     UDTable.Rows.Add(dr);
                 }
             }
@@ -134,6 +136,42 @@ namespace CBBW.DAL.DataSync
                     dr["iDrivercode"] = obj.DriverNo;
                     dr["sDriverName"] = obj.DriverName;
                     dr["sDriverNonName"] = obj.DriverNonName;                    
+                    UDTable.Rows.Add(dr);
+                }
+            }
+        }
+        public CommonTable(List<LocVehSchFromMat> customoptions)
+        {
+            UDTable = new DataTable();
+            UDTable.Columns.Add("dFromDate", typeof(DateTime));
+            UDTable.Columns.Add("iFromLocationType", typeof(int));
+            UDTable.Columns.Add("sFromLocationTypeName", typeof(string));
+            UDTable.Columns.Add("iFromLocation", typeof(int));            
+            UDTable.Columns.Add("sFromLocationName", typeof(string));
+            UDTable.Columns.Add("sToLocationTypes", typeof(string));
+            UDTable.Columns.Add("sToLocations", typeof(string));
+            UDTable.Columns.Add("dToDate", typeof(DateTime));
+            UDTable.Columns.Add("iDrivercode", typeof(int));
+            UDTable.Columns.Add("sDriverName", typeof(string));
+            UDTable.Columns.Add("sVehicleNo", typeof(string));
+            UDTable.Columns.Add("bCanSchedule", typeof(string));            
+            if (customoptions != null && customoptions.Count > 0)
+            {
+                foreach (LocVehSchFromMat obj in customoptions)
+                {
+                    DataRow dr = UDTable.NewRow();
+                    dr["dFromDate"] = obj.FromDate;
+                    dr["iFromLocationType"] = obj.FromCenterTypeCode;
+                    dr["iFromLocation"] = obj.FromCentreCode;
+                    dr["sFromLocationTypeName"] = obj.FromCenterTypeName;
+                    dr["sFromLocationName"] = obj.FromCenterName;
+                    dr["sToLocationTypes"] = obj.ToCenterTypeName;
+                    dr["sToLocations"] = obj.ToCenterName;
+                    dr["dToDate"] = obj.ToDate;
+                    dr["iDrivercode"] = 0;
+                    dr["sDriverName"] = obj.DriverCodenName;
+                    dr["sVehicleNo"] = obj.VehicleNumber;
+                    dr["bCanSchedule"] = obj.CanSchedule;
                     UDTable.Rows.Add(dr);
                 }
             }

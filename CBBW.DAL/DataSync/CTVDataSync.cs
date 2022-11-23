@@ -114,7 +114,7 @@ namespace CBBW.DAL.DataSync
             try
             {
                 int paracount = 0;
-                SqlParameter[] para = new SqlParameter[14];
+                SqlParameter[] para = new SqlParameter[17];
                 para[paracount] = new SqlParameter("@NoteNo", SqlDbType.NChar, 25);
                 para[paracount++].Value = model.NoteNo;
                 para[paracount] = new SqlParameter("@EntryDate", SqlDbType.Date);
@@ -135,18 +135,20 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = model.ToDate;
                 para[paracount] = new SqlParameter("@Vehicleno", SqlDbType.NVarChar, 20);
                 para[paracount++].Value = model.Vehicleno;
-                //para[paracount] = new SqlParameter("@VehicleType", SqlDbType.NVarChar, 20);
-                //para[paracount++].Value = model.VehicleType;
-                //para[paracount] = new SqlParameter("@ModelName", SqlDbType.NVarChar, 20);
-                //para[paracount++].Value = model.ModelName;
+                para[paracount] = new SqlParameter("@VehicleType", SqlDbType.NVarChar, 20);
+                para[paracount++].Value = model.VehicleType;
+                para[paracount] = new SqlParameter("@ModelName", SqlDbType.NVarChar, 20);
+                para[paracount++].Value = model.ModelName;
                 para[paracount] = new SqlParameter("@DriverNo", SqlDbType.Int);
                 para[paracount++].Value = model.DriverNo;
                 para[paracount] = new SqlParameter("@DriverName", SqlDbType.NVarChar, 50);
-                para[paracount++].Value = model.VehicleType;
+                para[paracount++].Value = model.DriverName==null?"NA":model.DriverName;
                 para[paracount] = new SqlParameter("@IsActive", SqlDbType.Bit);
                 para[paracount++].Value = model.IsActive;
                 para[paracount] = new SqlParameter("@Employeenumber", SqlDbType.Int);
                 para[paracount++].Value = model.EmployeeNumber;
+                para[paracount] = new SqlParameter("@TripPurpose", SqlDbType.NVarChar);
+                para[paracount++].Value = model.TripPurpose;
                 using (SQLHelper sql = new SQLHelper("[CTV].[SetCTVHdr]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataTable(para, ref pMsg);
@@ -193,6 +195,25 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = schdtlData.UDTable;
                 
                 using (SQLHelper sql = new SQLHelper("[CTV].[SetOtherTripSch]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable setLocalTripSchDtls(string Notenumber, List<LocVehSchFromMat> dtldata, ref string pMsg)
+        {
+            try
+            {
+                CommonTable schdtlData = new CommonTable(dtldata);
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[2];
+                para[paracount] = new SqlParameter("@NoteNo", SqlDbType.NChar, 25);
+                para[paracount++].Value = Notenumber;
+                para[paracount] = new SqlParameter("@TripDtl2", SqlDbType.Structured);
+                para[paracount++].Value = schdtlData.UDTable;
+
+                using (SQLHelper sql = new SQLHelper("[CTV].[SetLocTripSch]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataTable(para, ref pMsg);
                 }
@@ -275,7 +296,7 @@ namespace CBBW.DAL.DataSync
             {
                 using (SQLHelper sql = new SQLHelper("select * from [CTV].[getNoteNumbersTobeApproved]("+ CenterCode + ")", CommandType.Text))
                 {
-                    return sql.GetDataTable();
+                    return sql.GetDataTable(ref pMsg);
                 }
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
@@ -316,7 +337,7 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = SortDirection;
                 para[paracount] = new SqlParameter("@Search", SqlDbType.NVarChar);
                 para[paracount++].Value = SearchText;
-                para[paracount] = new SqlParameter("@centrecode", SqlDbType.NVarChar);
+                para[paracount] = new SqlParameter("@centrecode", SqlDbType.Int);
                 para[paracount++].Value = centercode;
                 using (SQLHelper sql = new SQLHelper("[CTV].[spGetVehicleTripSchedule1]", CommandType.StoredProcedure))
                 {

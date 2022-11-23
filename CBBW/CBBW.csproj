@@ -376,6 +376,7 @@
     <Content Include="UIContent\CSS\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Views\Home\Index2.cshtml" />
     <Content Include="UIContent\CSS\img\beediworkers.webp" />
+    <Content Include="Views\Home\LogIn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

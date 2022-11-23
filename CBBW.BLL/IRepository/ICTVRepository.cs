@@ -37,5 +37,9 @@ namespace CBBW.BLL.IRepository
             string SearchText, int centercode, ref string pMsg);
         IEnumerable<CustomComboOptions> getDriverList(string ExpDriverName, ref string pMsg);
         bool setLocalTripSchDriver(string Notenumber, List<LTSDriVerChange> dtldata, ref string pMsg);
+        bool setLocalTripSchDtls(string Notenumber, List<LocVehSchFromMat> dtldata, ref string pMsg);
+
+
+
     }
 }

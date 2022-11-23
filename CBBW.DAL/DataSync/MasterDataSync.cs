@@ -139,9 +139,9 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = FromDate;
                 para[paracount] = new SqlParameter("@FromLocation", SqlDbType.SmallInt);
                 para[paracount++].Value = FromLocation;
-                para[paracount] = new SqlParameter("@ToLocationType", SqlDbType.VarChar);
+                para[paracount] = new SqlParameter("@ToLocationType", SqlDbType.VarChar,100);
                 para[paracount++].Value = ToLocationType;
-                para[paracount] = new SqlParameter("@ToLocation", SqlDbType.VarChar);
+                para[paracount] = new SqlParameter("@ToLocation", SqlDbType.VarChar,100);
                 para[paracount++].Value = ToLocation;
 
                 using (SQLHelper sql = new SQLHelper("[CTV].[GetSchDateToMulti]", CommandType.StoredProcedure))

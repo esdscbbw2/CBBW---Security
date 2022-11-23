@@ -193,5 +193,10 @@ namespace CBBW.BLL.Repository
         {
            return _CTVEntities.setLocalTripSchDriver(Notenumber, dtldata, ref pMsg);
         }
+
+        public bool setLocalTripSchDtls(string Notenumber, List<LocVehSchFromMat> dtldata, ref string pMsg)
+        {
+           return _CTVEntities.setLocalTripSchDtls(Notenumber, dtldata, ref pMsg);
+        }
     }
 }

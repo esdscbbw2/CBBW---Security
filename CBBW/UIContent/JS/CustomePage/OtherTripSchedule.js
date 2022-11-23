@@ -231,7 +231,8 @@ function getSchRecords() {
         $('#' + rowid + '_ToL option:selected').each(function () {
             ystr = ystr + '_' + $(this).text();
         });
-        schrecords.push({            
+        schrecords.push({
+            'VehicleNo': $('#VehicleNo').val(),
             'FromDate': $('#' + rowid + '_FromDt').val(),
             'FromTime': $('#' + rowid + '_Fromtime').val(),
             'FromCentreTypeCode': $('#' + rowid + '_FromLT').val(),
@@ -774,7 +775,7 @@ function getToDate(rowid) {
                                                     todateCtrl.removeClass('is-valid').addClass('is-invalid');
                                                     Swal.fire({
                                                         title: 'Can not schedule to the destination',
-                                                        text: 'The calculated schedule to date is already occupied',
+                                                        text: 'The calculated schedule to date is not falling in available slots.',
                                                         icon: 'warning',
                                                         customClass: 'swal-wide',
                                                         buttons: {

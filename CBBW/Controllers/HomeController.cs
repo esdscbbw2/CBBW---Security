@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CBBW.BLL.IRepository;
+using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.Master;
 using CBBW.BOL.TADA;
@@ -16,19 +17,41 @@ namespace CBBW.Controllers
     public class HomeController : Controller
     {
         IMasterRepository _masterrepo;
-        public HomeController(IMasterRepository masterrepo)
+        string pMsg;
+        ICTVRepository _iCTV;
+        UserInfo user;
+        private UserInfo getLogInUserInfo()
+        {
+            UserInfo user = new UserInfo(true);
+            if (TempData["LogInUser"] != null)
+            {
+                user = TempData["LogInUser"] as UserInfo;
+            }
+            TempData["LogInUser"] = user;
+            return user;
+        }
+        public HomeController(IMasterRepository masterrepo, ICTVRepository iCTVRepo)
         {
             _masterrepo = masterrepo;
+            _iCTV = iCTVRepo;
+            pMsg = "";
+        }
+        public ActionResult LogIn() 
+        {
+            UserInfo model = new UserInfo();
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult LogIn(UserInfo model)
+        {
+            model = _iCTV.getUserInfo(model.UserName, ref pMsg);
+            TempData["LogInUser"] = model;
+            return RedirectToAction("Index");
         }
         public ActionResult Index()
         {
-            string pMsg = "";
-            TourEntities x = new TourEntities();
-            DateTime fromdate = new DateTime(2022, 11, 2);
-
-            bool result = x.RemoveTourRule(22,ref pMsg);
-
-            Object obj=Json(result, JsonRequestBehavior.AllowGet);
+            user = getLogInUserInfo();
+            
 
             return View();
         }

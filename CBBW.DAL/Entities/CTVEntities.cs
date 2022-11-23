@@ -110,6 +110,12 @@ namespace CBBW.DAL.Entities
             _DBResponseMapper.Map_DBResponse(_datasync.setOthTripSchDtls(Notenumber, TripPurpose, dtldata, ref pMsg), ref pMsg, ref result);
             return result;
         }
+        public bool setLocalTripSchDtls(string Notenumber, List<LocVehSchFromMat> dtldata, ref string pMsg) 
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_datasync.setLocalTripSchDtls(Notenumber, dtldata, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
         public bool setLocalTripSchDriver(string Notenumber, List<LTSDriVerChange> dtldata, ref string pMsg)
         {
             bool result = false;
