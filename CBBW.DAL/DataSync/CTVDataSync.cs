@@ -180,6 +180,46 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+        public DataTable SetCTVEditHdr(string Notenumber, int EmployeeNumber,int ApprovalFor, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[3];
+                para[paracount] = new SqlParameter("@NoteNo", SqlDbType.NChar, 25);
+                para[paracount++].Value = Notenumber;
+                para[paracount] = new SqlParameter("@ApprovalFor", SqlDbType.Int);
+                para[paracount++].Value = ApprovalFor;
+                para[paracount] = new SqlParameter("@LastEditEmployeeId", SqlDbType.Int);
+                para[paracount++].Value = EmployeeNumber;                
+                using (SQLHelper sql = new SQLHelper("[CTV].[SetCTVEditHdr]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable setEditOtherTripSchDtls(string Notenumber, string TripPurpose, List<OthTripTemp> dtldata, ref string pMsg)
+        {
+            try
+            {
+                CommonTable schdtlData = new CommonTable(dtldata,true);
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[3];
+                para[paracount] = new SqlParameter("@NoteNo", SqlDbType.NChar, 25);
+                para[paracount++].Value = Notenumber;
+                para[paracount] = new SqlParameter("@TripPurpose", SqlDbType.NVarChar);
+                para[paracount++].Value = TripPurpose;
+                para[paracount] = new SqlParameter("@TripDtl", SqlDbType.Structured);
+                para[paracount++].Value = schdtlData.UDTable;
+
+                using (SQLHelper sql = new SQLHelper("[CTV].[SetOtherTripSchEDIT]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
         public DataTable setOthTripSchDtls(string Notenumber,string TripPurpose, List<OthTripTemp> dtldata, ref string pMsg) 
         {
             try

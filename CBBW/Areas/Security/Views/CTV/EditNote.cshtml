@@ -23,6 +23,7 @@
         @Html.HiddenFor(m => m.DriverName)
         @Html.HiddenFor(m => m.DriverNonName)
         @Html.HiddenFor(m => m.TripPurpose)
+        @Html.HiddenFor(m => m.IsOTSSaved)
         <div class="col-md-12">
             <div class="heading_text_btn mb-3 mt-4">
                 <div class="leftButton">
@@ -31,14 +32,17 @@
                         <i data-feather="arrow-left-circle"></i>
                         Back
                     </button>
-                    @if (Model.EntryDate == DateTime.Today)
-                    {
-                        <button id="btnDelete" type="button" name="Submit" value="Delete"
-                                class="btn btn-primary me-2">
-                            <i data-feather="trash-2"></i>
-                            Delete
-                        </button>
-                    }
+                    <button id="btnSubmit" type="submit" name="Submit" value="Edit"
+                            class="btn btn-secondary me-2" disabled="disabled"
+                            @*onclick="window.location.href='vehicle_trip_schedule.html';"*@>
+                        <i data-feather="upload"></i>
+                        Submit
+                    </button>
+                    <button type="button" id="btnClear" onclick="btnClearClicked()"
+                            class="btn btn-white">
+                        <i data-feather="x-circle"></i>
+                        Clear
+                    </button>
                 </div>
                 <h2 style="text-align: right;">“Company Transport” Vehicle Trip Schedule - EDIT</h2>
             </div>
@@ -253,12 +257,12 @@
                 <ul style="list-style:none; display: flex; align-items: center; justify-content: center; margin: 0;">
                     <li style="font-size: 18px;">
                         The Entry Is Done As Per Policy &amp; As Required:
-                        <select id="submitConfirmation" disabled="disabled"
+                        <select id="submitConfirmation" onchange="ValidateControl()"
                                 style="width:110px"
-                                class="form-select canclear pointer"
+                                class="form-select canclear pointer is-invalid"
                                 aria-label="Default select example">
-                            <option value="">-</option>
-                            <option selected value="1">Yes</option>
+                            <option selected value="">-</option>
+                            <option value="1">Yes</option>
                         </select>
                     </li>
                 </ul>
@@ -279,5 +283,92 @@
     </style>
 }
 @section scripts{
-    
-    }
+    <script>
+        $(document).ready(function () {
+            //var mymsg = '@ViewBag.ErrMsg';
+            if ('@ViewBag.ErrMsg' != '') {
+                Swal.fire({
+                    title: 'Failed to submit',
+                    text: "@ViewBag.ErrMsg",
+                    icon: 'warning',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        //cancel: 'Cancel',
+                        confirm: 'Ok'
+                    },
+                    //cancelButtonClass: 'btn-cancel',
+                    confirmButtonColor: '#2527a2',
+                });
+            };
+            if ('@ViewBag.Msg' != '') {
+                Swal.fire({
+                    title: 'Confirmation',
+                    text: "@ViewBag.Msg",
+                    icon: 'success',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        confirm: 'Ok'
+                    },
+                    confirmButtonColor: '#2527a2',
+                }).then(callback);
+                function callback(result) {
+                    if (result.value) {
+                        var url = "/Security/CTV/ScheduleLists";
+                        window.location.href = url;
+                    }
+                }
+            };
+        });
+    </script>
+    <script>
+        function ValidateControl() {
+            var target = ValidateControl.caller.arguments[0].target;
+            var targetid = $(target).attr('id');
+            var isvalid = validatectrl(targetid, $(target).val());
+            if (isvalid) {
+                $(target).removeClass('is-invalid').addClass('is-valid');
+            } else {
+                $(target).removeClass('is-valid').addClass('is-invalid');
+            }
+            activateSubmitBtn();
+        };
+        function validatectrl(targetid, value) {
+            var isvalid = false;
+            switch (targetid) {
+                case "submitConfirmation":
+                    if (value == 1) { isvalid = true; }
+                    break;
+                case "DIC":
+                    if (value == 1) { isvalid = true; }
+                    break;
+
+            }
+            return isvalid;
+        };
+        function activateSubmitBtn() {
+            var isactive = false;
+            //alert($('.is-invalid').length);
+            var btnSubmit = $('#btnSubmit');
+            if ($('.is-invalid').length > 0) {
+            }
+            else {
+                if ($('#IsOTSSaved').val() == 1) {
+                    isactive = true;
+                }
+            }
+            if (isactive) {
+                btnSubmit.removeAttr('disabled');
+            } else {
+                btnSubmit.attr('disabled', 'disabled');
+            }
+        };
+        function btnClearClicked() {
+            $('#submitConfirmation').val('').removeClass('is-valid').addClass('is-invalid');
+            $('#IsOTSSaved').val('0');
+            activateSubmitBtn();
+        };
+        function SaveData() {
+
+        };
+    </script>
+}

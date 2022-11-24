@@ -104,10 +104,23 @@ namespace CBBW.DAL.Entities
                 Isapproved,ApprovalDatetime,DisApprovalReason, ref pMsg), ref pMsg, ref result);
             return result;
         }
+        public bool SetCTVEditHdr(string Notenumber, int EmployeeNumber, 
+            int ApprovalFor, ref string pMsg)
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_datasync.SetCTVEditHdr(Notenumber,EmployeeNumber,ApprovalFor,ref pMsg), ref pMsg, ref result);
+            return result;
+        }
         public bool InsertOthTripSchDtl(string Notenumber, string TripPurpose, List<OthTripTemp> dtldata, ref string pMsg)
         {
             bool result = false;
             _DBResponseMapper.Map_DBResponse(_datasync.setOthTripSchDtls(Notenumber, TripPurpose, dtldata, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
+        public bool EditOthTripSchDtl(string Notenumber, string TripPurpose, List<OthTripTemp> dtldata, ref string pMsg)
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_datasync.setEditOtherTripSchDtls(Notenumber, TripPurpose, dtldata, ref pMsg), ref pMsg, ref result);
             return result;
         }
         public bool setLocalTripSchDtls(string Notenumber, List<LocVehSchFromMat> dtldata, ref string pMsg) 

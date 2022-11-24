@@ -36,7 +36,7 @@
                             Clear
                         </button>
                     </div>
-                    <h2>"Company Transport” Vehicle Trip Schedule – ENTRY</h2>
+                    <h2>"Company Transport” Vehicle Trip Schedule – EDIT</h2>
                 </div>
             </div>
         </div>
@@ -224,7 +224,16 @@
                             <th scope="row">1</th>
                             <td>
                                 <div class="form-group cmbDriver">
-                                    
+                                    <div class="form-group">
+                                        <select id="0_DriverCmb"
+                                                class="form-select PickDriver pointer"
+                                                onchange="DriverChanged()"
+                                                aria-label="Default select example">
+                                        </select>
+                                        <input type="text" placeholder="Enter driver name"
+                                               id="0_DriverCmbtxt"
+                                               class="form-control pointer canClear inVisible" />
+                                    </div>
                                 </div>
                             </td>
                             <td>
@@ -298,7 +307,7 @@
                             </td>
                             <td>
                                 <span class="actionBtn">
-                                    <button id="0_AddBtn" type="button" disabled="disabled" class="btn primaryLink"
+                                    <button id="0_AddBtn" type="button" class="btn primaryLink"
                                             data-toggle="tooltip" onclick="addBtnClick()"
                                             data-placement="top" title="Add">
                                         <i data-feather="plus"></i>

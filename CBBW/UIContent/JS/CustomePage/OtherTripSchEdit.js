@@ -6,6 +6,17 @@ $.fn.setValueToZero = function () {
     var that = this;
     that.val('0');
 };
+function DriverChanged() {
+    var target = DriverChanged.caller.arguments[0].target;
+    var targetid = $(target).attr('id');
+    var txtid = targetid + "txt";
+    var txtbox = $('#' + txtid);
+    var ddbox = $('#' + targetid);
+    //$('#IsSaveVisible').val(1);
+    //$('#btnSubmit').removeAttr('disabled')
+    //alert(targetid.val());
+    if (ddbox.val() == 0) { txtbox.removeClass('inVisible'); } else { txtbox.addClass('inVisible'); }
+}
 function getInitialData() {
     //alert("ok");
     var notenumber = $('#NoteNumber').val();
@@ -18,7 +29,7 @@ function getInitialData() {
         success: function (data) {
             $(data).each(function (index, item) {
                 $('#TripPurpose').val(item.TripPurpose);
-                AddBtnVirtualClick(index - 1);
+                AddBtnVirtualClick2(index - 1, item.ToCentreTypeCodes,item.ToCentreCodes);
                 var fromdatectrl = $('#' + index + '_FromDt');
                 var fromtimectrl = $('#' + index + '_Fromtime');
                 var fromltctrl = $('#' + index + '_FromLT');
@@ -29,7 +40,7 @@ function getInitialData() {
                 fromdatectrl.val(item.FromDateStrYMD);
                 fromtimectrl.val(item.FromTime).removeClass('is-invalid').addClass('is-valid');
                 fromltctrl.val(item.FromCenterTypeCode).removeClass('is-invalid').addClass('is-valid');
-                toltctrl.val(item.ToCentreTypeCodes).removeClass('is-invalid').addClass('is-valid');
+                toltctrl.val(item.ToCentreTypeCodes.split(',')).removeClass('is-invalid').addClass('is-valid');
                 todtctrl.val(item.ToDateStr).removeClass('is-invalid').addClass('is-valid');
                 toltctrl.multiselect('refresh');
 
@@ -43,19 +54,53 @@ function getInitialData() {
                 $('#' + index + '_ToDate2').val(item.ToDateStr);
                 $('#' + index + '_Driver2').val(drivercnn);
                 $('#' + index + '_ToL2X').val(item.ToCenterName);
-                alert(item.ToCenterTypeName);
+                //alert(item.ToCenterName);
+                //second table cloaning end
+                FillDriverComboVirtually(index);
                 FillLocationComboVirtually(item.FromCenterTypeCode, index + '_FromL', item.FromCentreCode, index + '_FromL2');
                 //FillLocationComboVirtually(item.ToCentreTypeCode, index + '_ToL', item.ToCentreCode, index + '_ToL2');
 
                 fromlctrl.removeClass('is-invalid').addClass('is-valid');
                 $('#' + index + '_ToL').removeClass('is-invalid').addClass('is-valid');
 
-                FillToLocationComboVirtually(item.ToCentreTypeCode, index + '_ToL', item.ToCentreCode)
+                FillToLocationComboVirtually(item.ToCentreTypeCodes, index, item.ToCentreCodes)
             });
         }
     });
 
 };
+function FillToLocationComboVirtually(locationtypeid, locationcomboid, locationid,) {
+    var locationcombo = $('#' + locationcomboid + '_ToL');
+    //var locationTypeCombo = $('#' + locationcomboid + '_ToLT');
+    //alert(locationcomboid+'-'+locationtypeid + '-' + locationid);    
+    $.ajax({
+        url: '/CTV/GetToLocationsFromType',
+        method: 'GET',
+        data: { TypeIDs: locationtypeid },
+        dataType: 'json',
+        success: function (data) {
+            locationcombo.empty();
+            locationcombo.append($('<option/>', { value: "-1", text: "Select location" }));
+            $(data).each(function (index, item) {
+                locationcombo.append($('<option/>', { value: item.ID, text: item.DisplayText }));
+            });
+            locationcombo.attr('multiple', 'multiple');
+            locationcombo.find('.btn-group').remove();
+            locationcombo.multiselect({
+                templates: {
+                    button: '<button id="BL' + locationcomboid + '" type="button" class="multiselect dropdown-toggle btn btn-primary w-100 selectBox" data-bs-toggle="dropdown" aria-expanded="false"><span class="multiselect-selected-text"></span></button>',
+                }, enableFiltering: true,
+            });
+            //locationcombo.multiselect();
+            locationcombo.multiselect('clearSelection');
+            locationcombo.val(locationid.split(','));
+            locationcombo.multiselect('refresh');
+
+            
+            //editlocationctrl.val(locationcombo.find('option:selected').text());
+        }
+    });
+}
 function cloneEditRows(index) {
     var cloneready = $('#tbody3').find('tr').clone();
     cloneready.find('#0_FromDate2').attr('id', index + '_FromDate2');
@@ -64,6 +109,7 @@ function cloneEditRows(index) {
     cloneready.find('#0_ToLT2').attr('id', index + '_ToLT2');
     cloneready.find('#0_FromL2').attr('id', index + '_FromL2');
     cloneready.find('#0_ToL2').attr('id', index + '_ToL2');
+    cloneready.find('#0_ToL2X').attr('id', index + '_ToL2X');
     cloneready.find('#0_ToDate2').attr('id', index + '_ToDate2');
     cloneready.find('#0_Driver2').attr('id', index + '_Driver2');
     $('#tbody4').append(cloneready);
@@ -86,7 +132,8 @@ function ClearBtnClick() {
     $('#M_ToL').addClass('inVisible');
 };
 function BackButtonClicked() {
-    if ($('#BackBtnMsg').val() == 1) {
+    var url = "/Security/CTV/EditNote?NoteNumber=" + $('#NoteNumber').val();
+    if ($('#BackBtnMsg').val() == 1) {        
         Swal.fire({
             title: 'Confirmation',
             text: 'Are you sure to go back?',
@@ -103,12 +150,12 @@ function BackButtonClicked() {
         }).then(callback);
         function callback(result) {
             if (result.value) {
-                var url = "/Security/CTV/Create";
+                
                 window.location.href = url;
             }
         }
     } else {
-        var url = "/Security/CTV/Create";
+        //var url = "/Security/CTV/EditNote";
         window.location.href = url;
     }
 };
@@ -163,7 +210,7 @@ function SaveData() {
     var schrecords = getSchRecords();
     $.ajax({
         method: 'POST',
-        url: '/CTV/setOTVSchData',
+        url: '/CTV/setOTVSchEditData',
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         data: JSON.stringify({
@@ -175,7 +222,7 @@ function SaveData() {
         success: function (data) {
             $(data).each(function (index, item) {
                 if (item.bResponseBool == true) {
-                    var url = "/Security/CTV/Create";
+                    var url = "/Security/CTV/EditNote?NoteNumber=" + notenumber;
                     window.location.href = url;
                     $('#BackBtnMsg').setValueToZero();
                     //Swal.fire({
@@ -214,6 +261,13 @@ function getSchRecords() {
     var schrecords = [];
     $('.add-row').each(function () {
         var rowid = $(this).attr('id');
+        var exDrivername = '';
+        var driverID = $('#' + rowid + '_DriverCmb').val();
+        if (driverID == 0) {
+            exDrivername = $('#' + rowid + '_DriverCmbtxt').val();
+        } else {
+            exDrivername = $('#' + rowid + '_DriverCmb option:selected').text();
+        }
         var x = '';
         $('#' + rowid + '_ToLT option:selected').each(function () {
             x = x + '_' + $(this).val();
@@ -243,7 +297,9 @@ function getSchRecords() {
             'ToCentreTypeCodes': x,
             'ToCentreCodes': y,
             'ToCentreTypeCodesStr': xstr,
-            'ToCentreCodesStr': ystr
+            'ToCentreCodesStr': ystr,
+            'EditDriverNo': driverID,
+            'EditDriverName': exDrivername
         });
     });
     return schrecords;
@@ -277,6 +333,115 @@ function activateSubmitBtn() {
     } else {
         btnSubmit.removeAttr('disabled');
     }
+};
+function AddBtnVirtualClick2(insrowid,locationtypecombovalue) {
+    var maxrows = 0;
+    //alert(locationcombovalue);
+    $('#tbody2 tr').each(function () {
+        var maxr = $(this).attr('id')
+        if (maxr > maxrows) { maxrows = maxr; }
+    });
+    //alert(maxrows);
+    //var rows = $('#tbody2 tr').length + 1;
+    //var r = parseInt($('#tbody2 tr:last').attr("id"));
+    var r = 0;
+    if (maxrows >= 1) { r = maxrows + 1; } else { r = 1; }
+
+    var cloneready = $('#tbody1').find('tr').clone();
+    cloneready.attr("id", r);
+    //var fromdatectrl = cloneready.find('#0_FromDt');
+    var curdt = $('#CurDate').val();
+    cloneready.find('#0_FromDt')
+        .attr('id', r + '_FromDt')
+        .val(curdt)
+        .removeClass('is-invalid')
+        .addClass('is-valid');
+    cloneready.find('#0_FromDtlbl').attr('id', r + '_FromDtlbl');
+
+
+    var firstOpen = true;
+    var time;
+
+    cloneready.find('#0_Fromtime').datetimepicker({
+        useCurrent: false,
+        format: "hh:mm A"
+    }).on('dp.show', function () {
+        if (firstOpen) {
+            time = moment().startOf('day');
+            firstOpen = false;
+        } else {
+            time = "01:00 PM"
+        }
+
+        $(this).data('DateTimePicker').date(time);
+    });
+
+    cloneready.find('#0_Fromtime').attr('id', r + '_Fromtime').val('')
+        .removeClass('is-valid').addClass('is-invalid').addClass('timePicker');
+    cloneready.find('#0_DriverCmb').attr('id', r + '_DriverCmb');
+    cloneready.find('#0_DriverCmbtxt').attr('id', r + '_DriverCmbtxt');
+    cloneready.find('#0_FromLT').attr('id', r + '_FromLT').removeClass('is-valid').addClass('is-invalid');
+    cloneready.find('#0_FromL').attr('id', r + '_FromL').removeClass('is-valid').addClass('is-invalid');
+    cloneready.find('#0_ToLT').attr('id', r + '_ToLT').removeClass('is-valid').addClass('is-invalid');
+    cloneready.find('#B0').remove();
+    cloneready.find('.btn-group').remove();
+    cloneready.find('#BL0').remove();
+    cloneready.find('#0_ToL').removeClass('is-invalid').addClass('inVisible');
+    cloneready.find('#M_ToL').attr('id', r + '_ToL')
+        .removeClass('is-valid inVisible').addClass('is-invalid');
+    cloneready.find('#0_ToDt').attr('id', r + '_ToDt').val('').removeClass('is-valid').addClass('is-invalid');
+    //cloanready.find('#0_FromtimeDiv').attr('id', r + '_FromtimeDiv')
+    var ftime = cloneready.find('#' + r + '_Fromtime');
+
+    var addbtn = cloneready.find('#0_AddBtn');
+    addbtn.attr('id', r + '_AddBtn');
+    addbtn.on('mouseenter', function () {
+        $(this).tooltip('show');
+    });
+    addbtn.on('mouseleave click', function () {
+        $(this).tooltip('hide');
+    });
+
+    var deletebtn = cloneready.find('#0_DeleteBtn');
+    deletebtn.attr('id', r + '_DeleteBtn').removeClass("inVisible");
+    deletebtn.on('mouseenter', function () {
+        $(this).tooltip('show');
+    });
+    deletebtn.on('mouseleave click', function () {
+        $(this).tooltip('hide');
+    });
+
+    if (insrowid == 0) {
+        if (maxrows == 0) {
+            $('#tbody2').append(cloneready);
+        } else {
+            $(cloneready).insertBefore('#tbody2 tr:first');
+        }
+    } else {
+        $(cloneready).insertAfter('#' + insrowid);
+    }
+
+    $('#0_AddBtn').on('mouseleave click', function () {
+        $(this).tooltip('hide');
+    });
+
+    var sl = 2;
+    $('#tbody2 th').each(function () {
+        $(this).html(sl);
+        sl += 1;
+    });
+
+    var ltm = $('#' + r + '_ToLT');
+    ltm.val(locationtypecombovalue.split(","));
+    ltm.multiselect({
+        templates: {
+            button: '<button id="B' + r + '" type="button" class="multiselect dropdown-toggle btn btn-primary w-100 selectBox" data-bs-toggle="dropdown" aria-expanded="false"><span class="multiselect-selected-text"></span></button>',
+        },
+    });
+    ltm.multiselect('rebuild').multiselect('refresh');
+    
+
+    activateSubmitBtn();
 };
 function AddBtnVirtualClick(insrowid) {
     var maxrows = 0;
@@ -321,7 +486,8 @@ function AddBtnVirtualClick(insrowid) {
 
     cloneready.find('#0_Fromtime').attr('id', r + '_Fromtime').val('')
         .removeClass('is-valid').addClass('is-invalid').addClass('timePicker');
-
+    cloneready.find('#0_DriverCmb').attr('id', r + '_DriverCmb');
+    cloneready.find('#0_DriverCmbtxt').attr('id', r + '_DriverCmbtxt');
     cloneready.find('#0_FromLT').attr('id', r + '_FromLT').removeClass('is-valid').addClass('is-invalid');
     cloneready.find('#0_FromL').attr('id', r + '_FromL').removeClass('is-valid').addClass('is-invalid');
     cloneready.find('#0_ToLT').attr('id', r + '_ToLT').removeClass('is-valid').addClass('is-invalid');
@@ -333,23 +499,7 @@ function AddBtnVirtualClick(insrowid) {
         .removeClass('is-valid inVisible').addClass('is-invalid');
     cloneready.find('#0_ToDt').attr('id', r + '_ToDt').val('').removeClass('is-valid').addClass('is-invalid');
     //cloanready.find('#0_FromtimeDiv').attr('id', r + '_FromtimeDiv')
-    var ftime = cloneready.find('#' + r + '_Fromtime');
-    //var firstOpen = true;
-    //var time;
-    //ftime.datetimepicker({
-    //    useCurrent: false,
-    //    format: "hh:mm A"
-    //}).on('dp.show', function () {
-    //    if (firstOpen) {
-    //        time = moment().startOf('day');
-    //        firstOpen = false;
-    //    } else {
-    //        time = "01:00 PM"
-    //    }
-    //    $(this).data('DateTimePicker').date(time);
-    //});
-
-    //var dtctrl = $('#' + r + '_FromDt');
+    var ftime = cloneready.find('#' + r + '_Fromtime');   
 
     var addbtn = cloneready.find('#0_AddBtn');
     addbtn.attr('id', r + '_AddBtn').attr('disabled', 'disabled');
@@ -519,25 +669,24 @@ function SchDateChanged() {
         });
     }
 };
-function FillToLocationComboVirtually(locationtypeid, locationcomboid, locationid,) {
-    var locationcombo = $('#' + locationcomboid);
-    //var editlocationctrl = $('#' + editlocationctrlid);
+function FillDriverComboVirtually(rowid) {
+    var drivercombo = $('#' + rowid+'_DriverCmb');
+    var exDrivername = $('#DriverName').val();
     $.ajax({
-        url: '/CTV/GetLocationsFromType',
+        url: '/CTV/GetDriverList?ExpDriverName=' + exDrivername,
         method: 'GET',
-        data: { TypeID: locationtypeid },
         dataType: 'json',
         success: function (data) {
-            locationcombo.empty();
-            locationcombo.append($('<option/>', { value: "-1", text: "Select location" }));
+            drivercombo.empty();
+            drivercombo.append($('<option/>', { value: "-1", text: "Select a driver" }));
+            drivercombo.append($('<option/>', { value: "0", text: "Other driver" }));
             $(data).each(function (index, item) {
-                locationcombo.append($('<option/>', { value: item.ID, text: item.DisplayText }));
+                drivercombo.append($('<option/>', { value: item.ID, text: item.DisplayText }));
             });
-            locationcombo.val(locationid);
-            //editlocationctrl.val(locationcombo.find('option:selected').text());
+
         }
     });
-}
+};
 function FillLocationComboVirtually(locationtypeid, locationcomboid, locationid, editlocationctrlid) {
     var locationcombo = $('#' + locationcomboid);
     var editlocationctrl = $('#' + editlocationctrlid);
@@ -866,6 +1015,23 @@ $(document).ready(function () {
             //ToLT.multiselect('refresh');
             //$("#0_ToLT").multiselect('refresh');
             getInitialData();
+        }
+    });
+});
+$(document).ready(function () {
+    var drivercombo = $('#0_DriverCmb');
+    var exDrivername = $('#DriverName').val();
+    $.ajax({
+        url: '/CTV/GetDriverList?ExpDriverName='+exDrivername,
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {            
+            drivercombo.append($('<option/>', { value: "-1", text: "Select a driver" }));
+            drivercombo.append($('<option/>', { value: "0", text: "Other driver" }));
+            $(data).each(function (index, item) {
+                drivercombo.append($('<option/>', { value: item.ID, text: item.DisplayText }));
+            });
+            
         }
     });
 });

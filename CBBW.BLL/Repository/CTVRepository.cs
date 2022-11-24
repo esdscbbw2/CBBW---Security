@@ -159,6 +159,10 @@ namespace CBBW.BLL.Repository
         {
             return _CTVEntities.InsertOthTripSchDtl(Notenumber, TripPurpose, dtldata, ref pMsg);
         }
+        public bool EditOthTripSchDtl(string Notenumber, string TripPurpose, List<OthTripTemp> dtldata, ref string pMsg)
+        {
+            return _CTVEntities.EditOthTripSchDtl(Notenumber, TripPurpose, dtldata, ref pMsg);
+        }
         public IEnumerable<TripScheduleHdr> getCtvSchedule(int PageSize, int PageNumber, int SortCol, string SortDirection,
             string SearchText, int centercode, ref string pMsg)
         {
@@ -197,6 +201,11 @@ namespace CBBW.BLL.Repository
         public bool setLocalTripSchDtls(string Notenumber, List<LocVehSchFromMat> dtldata, ref string pMsg)
         {
            return _CTVEntities.setLocalTripSchDtls(Notenumber, dtldata, ref pMsg);
+        }
+
+        public bool SetCTVEditHdr(string Notenumber, int EmployeeNumber, int ApprovalFor, ref string pMsg)
+        {
+            return _CTVEntities.SetCTVEditHdr(Notenumber, EmployeeNumber, ApprovalFor, ref pMsg);
         }
     }
 }

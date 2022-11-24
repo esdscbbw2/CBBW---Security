@@ -24,13 +24,13 @@ namespace CBBW.DAL
             switch (AppEnvironment)
             {
                 case "QA":
-                    return "Data Source=.;Initial Catalog=CBBWQA;Integrated Security=True";
+                    return "Data Source=CBBW_MIGRATION;Initial Catalog=CBBWQA;Persist Security Info=True;User ID=db_cbbw;Password=ESDS@4321#";
                 case "UAT":
-                    return "Data Source=.;Initial Catalog=CBBWUAT;Integrated Security=True";
+                    return "Data Source=CBBW_MIGRATION;Initial Catalog=CBBWQA;Persist Security Info=True;User ID=db_cbbw;Password=ESDS@4321#";
                 case "PRODUCTION":
                     return "";
                 default:
-                    return "Data Source=Data Source=.;Initial Catalog=CBBWDev;Integrated Security=True";
+                    return "Data Source=CBBW_MIGRATION;Initial Catalog=CBBWDev;Persist Security Info=True;User ID=db_cbbw;Password=ESDS@4321#";
             }
             
         }

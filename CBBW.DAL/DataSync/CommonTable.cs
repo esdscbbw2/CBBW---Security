@@ -116,6 +116,50 @@ namespace CBBW.DAL.DataSync
                 }
             }
         }
+        public CommonTable(List<OthTripTemp> customoptions,bool IsEdit)
+        {            
+            UDTable = new DataTable();
+            UDTable.Columns.Add("dFromDate", typeof(DateTime));
+            UDTable.Columns.Add("sFromTime", typeof(string));
+            UDTable.Columns.Add("iFromLocationType", typeof(int));
+            UDTable.Columns.Add("iFromLocation", typeof(int));
+            UDTable.Columns.Add("iToLocationType", typeof(int));
+            UDTable.Columns.Add("iToLocation", typeof(int));
+            UDTable.Columns.Add("dToDate", typeof(DateTime));
+            UDTable.Columns.Add("iDrivercode", typeof(int));
+            UDTable.Columns.Add("sDriverName", typeof(string));
+            UDTable.Columns.Add("sToLocationType", typeof(string));
+            UDTable.Columns.Add("sToLocation", typeof(string));
+            UDTable.Columns.Add("sToLocationTypeStr", typeof(string));
+            UDTable.Columns.Add("sToLocationStr", typeof(string));
+            UDTable.Columns.Add("sVehicleNo", typeof(string));
+            UDTable.Columns.Add("iEditDrivercode", typeof(int));
+            UDTable.Columns.Add("sEditDriverName", typeof(string));
+            if (customoptions != null && customoptions.Count > 0)
+            {
+                foreach (OthTripTemp obj in customoptions)
+                {
+                    DataRow dr = UDTable.NewRow();
+                    dr["dFromDate"] = DateTime.Parse(obj.FromDate);
+                    dr["sFromTime"] = obj.FromTime;
+                    dr["iFromLocationType"] = obj.FromCentreTypeCode;
+                    dr["iFromLocation"] = obj.FromCentreCode;
+                    dr["iToLocationType"] = obj.ToCentreTypeCode;
+                    dr["iToLocation"] = obj.ToCentreCode;
+                    dr["dToDate"] = DateTime.Parse(obj.ToDate);
+                    dr["iDrivercode"] = obj.DriverCode;
+                    dr["sDriverName"] = obj.DriverName;
+                    dr["sToLocationType"] = obj.ToCentreTypeCodes;
+                    dr["sToLocation"] = obj.ToCentreCodes;
+                    dr["sToLocationTypeStr"] = obj.ToCentreTypeCodesStr;
+                    dr["sToLocationStr"] = obj.ToCentreCodesStr;
+                    dr["sVehicleNo"] = obj.VehicleNo;
+                    dr["iEditDrivercode"] = obj.EditDriverNo;
+                    dr["sEditDriverName"] = obj.EditDriverName;
+                    UDTable.Rows.Add(dr);
+                }
+            }
+        }
         public CommonTable(List<LTSDriVerChange> customoptions)
         {
             UDTable = new DataTable();

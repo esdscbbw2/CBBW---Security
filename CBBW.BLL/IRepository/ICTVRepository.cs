@@ -38,6 +38,10 @@ namespace CBBW.BLL.IRepository
         IEnumerable<CustomComboOptions> getDriverList(string ExpDriverName, ref string pMsg);
         bool setLocalTripSchDriver(string Notenumber, List<LTSDriVerChange> dtldata, ref string pMsg);
         bool setLocalTripSchDtls(string Notenumber, List<LocVehSchFromMat> dtldata, ref string pMsg);
+        bool EditOthTripSchDtl(string Notenumber, string TripPurpose, List<OthTripTemp> dtldata, ref string pMsg);
+        bool SetCTVEditHdr(string Notenumber, int EmployeeNumber,int ApprovalFor, ref string pMsg);
+
+
 
 
 
