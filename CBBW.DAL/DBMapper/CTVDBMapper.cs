@@ -111,10 +111,14 @@ namespace CBBW.DAL.DBMapper
                         result.CalcDays = float.Parse(dr["CalcDays"].ToString());
                     if (!DBNull.Value.Equals(dr["DriverName"]))
                         result.DriverCodenName = dr["DriverName"].ToString();
-                    //if (!DBNull.Value.Equals(dr["EditDriverNo"]))
-                    //    result.EditDriverNo =int.Parse(dr["EditDriverNo"].ToString());
-                    //if (!DBNull.Value.Equals(dr["EditDriverName"]))
-                    //    result.EditDriverName = dr["EditDriverName"].ToString();
+                    if (!DBNull.Value.Equals(dr["EditDriverCode"]))
+                        result.EditDriverNo = int.Parse(dr["EditDriverCode"].ToString());
+                    if (!DBNull.Value.Equals(dr["EditDriverName"]))
+                        result.EditDriverName = dr["EditDriverName"].ToString();
+                    if (!DBNull.Value.Equals(dr["CurrentDriverCode"]))
+                        result.CurrentDriverCode = int.Parse(dr["CurrentDriverCode"].ToString());
+                    if (!DBNull.Value.Equals(dr["CurrentDriverName"]))
+                        result.CurrentDriverName = dr["CurrentDriverName"].ToString();
                     result.FromCenterTypeName = "Centre";
                     result.IsActivetoEdit = result.FromDate >= DateTime.Today ? 1 : 0;
                     //result.ToDate = result.FromDate.AddDays(MyDBLogic.ReturnDaysFromDistance(result.Distance));
@@ -225,6 +229,11 @@ namespace CBBW.DAL.DBMapper
                             x.EditDriverNo = int.Parse(dt.Rows[i]["EditDriverNo"].ToString());
                         if (!DBNull.Value.Equals(dt.Rows[i]["EditDriverName"]))
                             x.EditDriverName = dt.Rows[i]["EditDriverName"].ToString();
+                        
+                        if (!DBNull.Value.Equals(dt.Rows[i]["CurrentDriverCode"]))
+                            x.CurrentDriverCode = int.Parse(dt.Rows[i]["CurrentDriverCode"].ToString());
+                        if (!DBNull.Value.Equals(dt.Rows[i]["CurrentDriverName"]))
+                            x.CurrentDriverName = dt.Rows[i]["CurrentDriverName"].ToString();
 
                         x.IsActivetoEdit = x.FromDate >= DateTime.Today ? 1 : 0;
                         x.FromDateStr = x.FromDate.ToString("dd-MM-yyyy");
@@ -325,6 +334,8 @@ namespace CBBW.DAL.DBMapper
                         result.FortheMonth = int.Parse(dr["FortheMonth"].ToString());
                     if (!DBNull.Value.Equals(dr["FortheYear"]))
                         result.FortheYear = int.Parse(dr["FortheYear"].ToString());
+                    if (!DBNull.Value.Equals(dr["DeleteLock"]))
+                        result.IsDeleteBtn = int.Parse(dr["DeleteLock"].ToString());
                     //if (!DBNull.Value.Equals(dr["ForMonthYear"]))
                     //    result.FortheMonthnYear = dr["ForMonthYear"].ToString();
                     result.FortheMonthnYear = new DateTime(result.FortheYear, result.FortheMonth, 1).ToString("MMM yyyy");

@@ -156,37 +156,46 @@ function VehicleChange(vno, removetemp) {
                 if (item.IsSuccess) {
                     errorDiv.removeClass('show');
                     vehiclenodropdown.removeClass('is-invalid').addClass('is-valid');                  
-
-                    if (item.LocalTripRecords > 0) {
-                        btnLS.removeAttr('disabled');
-                        if ($('#IsOTSActivated').val() == 0) {
-                            btnOS.attr('disabled', 'disabled');
-                        } else {
+                    if (item.isactive) {
+                        if (item.LocalTripRecords > 0) {
+                            btnLS.removeAttr('disabled');
+                            if ($('#IsOTSActivated').val() == 0) {
+                                btnOS.attr('disabled', 'disabled');
+                            } else {
+                                if (item.IsSlotAvbl) {
+                                    btnOS.removeAttr('disabled');
+                                } else {
+                                    btnOS.attr('disabled', 'disabled');
+                                    errorDivOTS.removeClass('inVisible');
+                                    ErrlblOTS.html('Local Vehicle Schedule Was Scheduled For All The Dates, So Other Trip Schedule Cannot Be Enabled');
+                                }
+                                //btnOS.removeAttr('disabled');
+                            }
+                            //btnOS.attr('disabled', 'disabled');
+                        }
+                        else {
                             if (item.IsSlotAvbl) {
                                 btnOS.removeAttr('disabled');
                             } else {
+                                //alert('ok');
                                 btnOS.attr('disabled', 'disabled');
                                 errorDivOTS.removeClass('inVisible');
                                 ErrlblOTS.html('Local Vehicle Schedule Was Scheduled For All The Dates, So Other Trip Schedule Cannot Be Enabled');
                             }
+                            //$('#IsOTSActivated').val('1');
+                            btnLS.attr('disabled', 'disabled');
                             //btnOS.removeAttr('disabled');
+                            errorDivLVS.removeClass('inVisible');
+                            ErrlblLVS.html('Local Vehicle Schedule Was Not Updated, So It Cannot Be Enabled');
                         }
-                        //btnOS.attr('disabled', 'disabled');
                     }
                     else {
-                        if (item.IsSlotAvbl) {
-                            btnOS.removeAttr('disabled');
-                        } else {
-                            btnOS.attr('disabled', 'disabled');
-                            errorDivOTS.removeClass('inVisible');
-                            ErrlblOTS.html('Local Vehicle Schedule Was Scheduled For All The Dates, So Other Trip Schedule Cannot Be Enabled');
-                        }
-                        //$('#IsOTSActivated').val('1');
+                        $('#lblError').html('Vehicle is not active');
+                        errorDiv.addClass('show');
+                        vehiclenodropdown.removeClass('is-valid').addClass('is-invalid');
+                        btnOS.attr('disabled', 'disabled');
                         btnLS.attr('disabled', 'disabled');
-                        //btnOS.removeAttr('disabled');
-                        errorDivLVS.removeClass('inVisible');
-                        ErrlblLVS.html('Local Vehicle Schedule Was Not Updated, So It Cannot Be Enabled');
-                    }                    
+                    }                                       
                     
                 } else {
                     //alert("ok");

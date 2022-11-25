@@ -580,6 +580,7 @@ namespace CBBW.Areas.Security.Controllers
                 _iCTV.RemoveNote(NoteNumber, 1, ref pMsg); 
             }            
             VehicleInfo result = _iCTV.getVehicleInfo(VehicleNo, ref pMsg);
+            if (!result.IsActive) { result.Msg = "Vehicle is not active or information is missing"; }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetSchToDate(string Fromdate, string FromTime, int FromLocation,

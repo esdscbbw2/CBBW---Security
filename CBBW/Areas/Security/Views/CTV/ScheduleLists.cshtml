@@ -93,7 +93,7 @@
                                         <i data-feather="edit"></i>
                                     </button>
                                 }
-                                @if (item.EntryDate == DateTime.Today && item.IsLocked==0)
+                                @if (item.EntryDate == DateTime.Today && item.IsDeleteBtn==0)
                                 {
                                     <button id="deleteBtn" onclick="window.location.href='@Url.Action("ViewNote", "CTV",
                                                 new { Area = "Security", NoteNumber = item.NoteNo,IsDelete=1})'" type="button"

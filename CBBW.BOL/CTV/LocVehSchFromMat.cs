@@ -34,5 +34,7 @@ namespace CBBW.BOL.CTV
         public int IsActivetoEdit { get; set; }
         public int EditDriverNo { get; set; }
         public string EditDriverName { get; set; }
+        public int CurrentDriverCode { get; set; }
+        public string CurrentDriverName { get; set; }
     }
 }

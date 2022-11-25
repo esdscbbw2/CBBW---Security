@@ -42,6 +42,6 @@ namespace CBBW.BOL.CTV
         public string ToDateStr { get; set; }
         public int ApprovalFor { get; set; }
         public int IsDeleteBtn { get; set; }
-        public int CBUID { get; set; }
+        public int CBUID { get; set; }        
     }    
 }

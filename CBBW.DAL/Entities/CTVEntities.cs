@@ -141,7 +141,7 @@ namespace CBBW.DAL.Entities
             _DBResponseMapper.Map_DBResponse(_datasync.RemoveNote(NoteNumber, OnlyDtl, ref pMsg), ref pMsg, ref result);
             return result;
         }
-        public List<LocVehSchFromMat> getLocalVehicleSchedule(string VehicleNo, DateTime FromDate, DateTime ToDate, ref string pMsg) 
+        public List<LocVehSchFromMat>getLocalVehicleSchedule(string VehicleNo, DateTime FromDate, DateTime ToDate, ref string pMsg) 
         {
             List<LocVehSchFromMat> result = new List<LocVehSchFromMat>();
             try
