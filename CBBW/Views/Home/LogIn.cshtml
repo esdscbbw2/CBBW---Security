@@ -34,11 +34,11 @@
                                 <div class="input-container">
                                     <i class="fa fa-user icon"></i>
                                     @Html.TextBoxFor(m => m.UserName,
-                       htmlAttributes: new
-                       {
-                           @class = "input-field form-control",
-                           placeholder = "Username"
-                       })
+                                           htmlAttributes: new
+                                           {
+                                               @class = "input-field form-control",
+                                               placeholder = "Username"
+                                           })
 
                                 </div>
                                 <div class="input-container">
@@ -83,14 +83,55 @@
 
     }
     <!-- Optional JavaScript; choose one of the two! -->
-    <script src="js/jquery.min.js"></script>
+    <script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
+    <script src="~/UIContent/JS/sweetalert2.all.min.js"></script>
+    <!--<script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/feather.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/jquery.dataTables.min.js"></script>
-    <script src="js/dataTables.bootstrap5.min.js"></script>
+    <script src="js/dataTables.bootstrap5.min.js"></script>-->
     <!-- sweet alert -->
-    <script src="js/sweetalert2.all.min.js"></script>
+    <!--<script src="js/sweetalert2.all.min.js"></script>-->
+    <script>
+
+        $(document).ready(function () {
+            //var mymsg = '@ViewBag.ErrMsg';
+            if ('@ViewBag.ErrMsg' != '') {
+                //alert('ok');
+                Swal.fire({
+                    title: 'Login failed',
+                    text: "@ViewBag.ErrMsg",
+                    icon: 'warning',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        //cancel: 'Cancel',
+                        confirm: 'Ok'
+                    },
+                    //cancelButtonClass: 'btn-cancel',
+                    confirmButtonColor: '#2527a2',
+                });
+            };
+            if ('@ViewBag.Msg' != '') {
+                Swal.fire({
+                    title: 'Confirmation',
+                    text: "@ViewBag.Msg",
+                    icon: 'success',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        confirm: 'Ok'
+                    },
+                    confirmButtonColor: '#2527a2',
+                }).then(callback);
+                function callback(result) {
+                    if (result.value) {
+                        var url = "/Security/CTV/ScheduleLists";
+                        window.location.href = url;
+                    }
+                }
+            };
+        });
+    </script>
 </body>
 
 </html>

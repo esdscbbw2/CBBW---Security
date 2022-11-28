@@ -12,20 +12,24 @@
 
                 <div class="heading_text_btn mb-4 mt-4">
                     <div class="leftButton">
-                        <button type="button" class="btn btn-primary me-2"
-                                onclick="window.location.href='@Model.CallBackUrl';">
+                        @*<button type="button" class="btn btn-primary me-2"
+                onclick="window.location.href='@Model.CallBackUrl';">
+            <i data-feather="arrow-left-circle"></i>
+            Back
+        </button>*@
+                        <button id="btnBack" type="button" class="btn btn-primary me-2"
+                                @*onclick="window.location.href='@Model.CallBackUrl';"*@>
                             <i data-feather="arrow-left-circle"></i>
                             Back
                         </button>
-
                         <button id="btnSave" type="submit" class="btn btn-secondary me-2">
                             <i data-feather="check-circle"></i>
                             Save
                         </button>
                         @*<button type="button" class="btn btn-white">
-                                <i data-feather="x-circle"></i>
-                                Clear
-                            </button>*@
+            <i data-feather="x-circle"></i>
+            Clear
+        </button>*@
 
                     </div>
                     <h2>"Company Transport” Vehicle Trip Schedule – ENTRY</h2>
@@ -242,6 +246,19 @@
             if ($('#IsSaveVisible').val() == 0) {
                 btnsave.addClass('inVisible');
             } else { btnsave.removeClass('inVisible');}
+        });
+
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#btnBack').click(function () {
+                $.ajax({
+                    url: "/Security/CTV/BackButtonClicked",
+                    success: function (result) { window.location.href = result; }
+                });
+                
+            });
         });
     </script>
     }

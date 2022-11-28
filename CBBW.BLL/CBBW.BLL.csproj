@@ -31,8 +31,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,12 +50,14 @@
     <Compile Include="IRepository\IMGPRepository.cs" />
     <Compile Include="IRepository\ITADARulesRepository.cs" />
     <Compile Include="IRepository\IToursRuleRepository.cs" />
+    <Compile Include="IRepository\IUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\CTVRepository.cs" />
     <Compile Include="Repository\MasterRepository.cs" />
     <Compile Include="Repository\MGPRepository.cs" />
     <Compile Include="Repository\TADARulesRepository.cs" />
     <Compile Include="Repository\ToursRuleRepository.cs" />
+    <Compile Include="Repository\UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CBBW.BOL\CBBW.BOL.csproj">
@@ -62,6 +68,9 @@
       <Project>{b384a881-89e3-4a93-88e7-8f790fae5f42}</Project>
       <Name>CBBW.DAL</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

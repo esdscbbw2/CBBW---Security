@@ -11,21 +11,19 @@
 
                 <div class="heading_text_btn mb-4 mt-4">
                     <div class="leftButton">
-                        <button type="button" name="Submit" value="Back"   
+                        @*<button type="button" name="Submit" value="Back"
+                                    class="btn btn-primary me-2"
+                                    onclick="window.location.href='@Model.CallBackUrl';">
+                                <i data-feather="arrow-left-circle"></i>
+                                Back
+                            </button>*@
+
+                        <button id="btnBack" type="button" name="Submit" value="Back"
                                 class="btn btn-primary me-2"
-                                onclick="window.location.href='@Model.CallBackUrl';">
+                                @*onclick="window.location.href='@Model.CallBackUrl';"*@>
                             <i data-feather="arrow-left-circle"></i>
                             Back
                         </button>
-
-                        @*<button type="submit" class="btn btn-secondary me-2" onclick="window.location.href='company_transport_vehicle_trip_schedule_entry_details.html';">
-                                <i data-feather="check-circle"></i>
-                                Save
-                            </button>
-                            <button type="submit" class="btn btn-white">
-                                <i data-feather="x-circle"></i>
-                                Clear
-                            </button>*@
 
                     </div>
                     <h2>Local Vehicle Schedule</h2>
@@ -73,24 +71,24 @@
                                 foreach (var item in Model.LVSDataList)
                                 {
                                     int rowspan = Model.LVSDataList.Where(o => o.FromDate == item.FromDate).ToList().Count;
-                            <tr>
-                                @if (x == 0)
-                                {
-                                    <td rowspan="@rowspan" class="text-center">
-                                        @item.FromDate.ToString("dd/MM/yyyy")
-                                    </td>
-                                    x = rowspan;
-                                }
-                                @if (x > 0) { x -= 1; }
-                                <td class="text-center"> @item.VehicleNumber</td>
-                                <td class="text-center">@item.ToCenterTypeName</td>
-                                <td class="text-center">@item.ToCenterName </td>
-                            </tr>
+                                    <tr>
+                                        @if (x == 0)
+                                        {
+                                            <td rowspan="@rowspan" class="text-center">
+                                                @item.FromDate.ToString("dd/MM/yyyy")
+                                            </td>
+                                            x = rowspan;
+                                        }
+                                        @if (x > 0) { x -= 1; }
+                                        <td class="text-center"> @item.VehicleNumber</td>
+                                        <td class="text-center">@item.ToCenterTypeName</td>
+                                        <td class="text-center">@item.ToCenterName </td>
+                                    </tr>
 
                                 }
-                             }
-                                    
-                                </tbody>
+                            }
+
+                        </tbody>
                     </table>
 
                 </div>
@@ -122,6 +120,17 @@
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#btnBack').click(function () {
+                $.ajax({
+                    url: "/Security/CTV/BackButtonClicked",
+                    success: function (result) { window.location.href = result; }
+                });
+
+            });
+        });
     </script>
 }
 

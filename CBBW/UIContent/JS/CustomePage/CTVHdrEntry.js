@@ -104,8 +104,9 @@ $(document).ready(function () {
     //    btnovtctrl.removeAttr('disabled');
     //}
     
-    $('#btnBack').click(function () {
-        var url = "/Security/CTV/ScheduleLists";
+    $('#btnBack').click(function () {        
+        //var url = getCBUrl();
+        //alert(url);
         if ($('#IsOTSSaved').val() == 1) {
             Swal.fire({
                 title: 'Confirmation Message',
@@ -121,14 +122,21 @@ $(document).ready(function () {
             function callback(result) {
                 if (result.value) {
                     DeleteNote();
-                    window.location.href = url;                    
+                    $.ajax({
+                        url: "/Security/CTV/BackButtonClicked",
+                        success: function (result) { window.location.href = result; }
+                    });
                 } else {
                     // second variant
                 }
             }
         } else {
             DeleteNote();
-            window.location.href = url;
+            $.ajax({
+                url: "/Security/CTV/BackButtonClicked",
+                success: function (result) {window.location.href =result;}
+            });
+            //window.location.href = url;
         }
     });
 });
@@ -155,8 +163,9 @@ function VehicleChange(vno, removetemp) {
             $(data).each(function (index, item) {
                 if (item.IsSuccess) {
                     errorDiv.removeClass('show');
-                    vehiclenodropdown.removeClass('is-invalid').addClass('is-valid');                  
-                    if (item.isactive) {
+                    vehiclenodropdown.removeClass('is-invalid').addClass('is-valid');
+                    //alert(item.IsActive);
+                    if (item.IsActive) {
                         if (item.LocalTripRecords > 0) {
                             btnLS.removeAttr('disabled');
                             if ($('#IsOTSActivated').val() == 0) {

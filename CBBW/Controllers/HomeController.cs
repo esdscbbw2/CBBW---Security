@@ -16,24 +16,22 @@ namespace CBBW.Controllers
 {
     public class HomeController : Controller
     {
-        IMasterRepository _masterrepo;
+        IUserRepository _iUser;
         string pMsg;
-        ICTVRepository _iCTV;
         UserInfo user;
-        private UserInfo getLogInUserInfo()
+        //private UserInfo getLogInUserInfo()
+        //{
+        //    UserInfo user = new UserInfo(true);
+        //    if (TempData["LogInUser"] != null)
+        //    {
+        //        user = TempData["LogInUser"] as UserInfo;
+        //    }
+        //    TempData["LogInUser"] = user;
+        //    return user;
+        //}
+        public HomeController(IUserRepository iuserrepo)
         {
-            UserInfo user = new UserInfo(true);
-            if (TempData["LogInUser"] != null)
-            {
-                user = TempData["LogInUser"] as UserInfo;
-            }
-            TempData["LogInUser"] = user;
-            return user;
-        }
-        public HomeController(IMasterRepository masterrepo, ICTVRepository iCTVRepo)
-        {
-            _masterrepo = masterrepo;
-            _iCTV = iCTVRepo;
+            _iUser = iuserrepo;
             pMsg = "";
         }
         public ActionResult LogIn() 
@@ -44,20 +42,25 @@ namespace CBBW.Controllers
         [HttpPost]
         public ActionResult LogIn(UserInfo model)
         {
-            model = _iCTV.getUserInfo(model.UserName, ref pMsg);
-            TempData["LogInUser"] = model;
-            return RedirectToAction("Index");
+            if (_iUser.LogIn(model.UserName, ref pMsg))
+            {
+                return RedirectToAction("Index");
+            }
+            else 
+            {
+                ViewBag.ErrMsg = "Invalid user name";
+                return View(model);
+            }
         }
         public ActionResult Index()
         {
-            user = getLogInUserInfo();
-            
-
-            return View();
+            user = _iUser.getLoggedInUser();
+            return View(user);
         }
-        public ActionResult Index2()
+        public ActionResult LogOut() 
         {
-            return View();
+            _iUser.LogOut();
+            return RedirectToAction("LogIn");
         }
     }
 }

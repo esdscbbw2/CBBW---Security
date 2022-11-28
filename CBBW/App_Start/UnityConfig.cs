@@ -16,6 +16,7 @@ namespace CBBW
             // it is NOT necessary to register your controllers
 
             // e.g. container.RegisterType<ITestService, TestService>();
+            container.RegisterType<IUserRepository, UserRepository>();
             container.RegisterType<IMasterRepository, MasterRepository>();
             container.RegisterType<IToursRuleRepository, ToursRuleRepository>();
             container.RegisterType<ITADARulesRepository, TADARulesRepository>();

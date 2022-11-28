@@ -14,26 +14,35 @@ namespace CBBW.Areas.Security.Controllers
 {
     public class CTVController : Controller
     {
+        IUserRepository _iUser;
         string pMsg;
         ICTVRepository _iCTV;
+        IToursRuleRepository _toursRule;
         UserInfo user;
-        private UserInfo getLogInUserInfo()
-        {
-            UserInfo user = new UserInfo(true);
-            if (TempData["LogInUser"] != null)
-            {
-                user = TempData["LogInUser"] as UserInfo;
-            }
-            TempData["LogInUser"] = user;
-            return user;
-        }
-        public CTVController(ICTVRepository iCTV)
+        //private UserInfo getLogInUserInfo()
+        //{
+        //    UserInfo user = new UserInfo(true);
+        //    if (TempData["LogInUser"] != null)
+        //    {
+        //        user = TempData["LogInUser"] as UserInfo;
+        //    }
+        //    TempData["LogInUser"] = user;
+        //    return user;
+        //}
+        public CTVController(ICTVRepository iCTV, IUserRepository iUser, IToursRuleRepository toursRule)
         {
             _iCTV = iCTV;
+            _iUser = iUser;
             pMsg = "";
-            user = getLogInUserInfo();
+            _toursRule = toursRule;
+            user = iUser.getLoggedInUser();
+            ViewBag.LogInUser = user.UserName;
         }
-        
+        public JsonResult BackButtonClicked() 
+        {
+            string url = _iUser.GetCallBackUrl();
+            return Json(url, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult OtherTripSchEdit() 
         {
             OtherTripScheduleEntryVM model = new OtherTripScheduleEntryVM();
@@ -79,7 +88,7 @@ namespace CBBW.Areas.Security.Controllers
         }
         public ActionResult EditNote(string NoteNumber) 
         {
-            getLogInUserInfo();
+            //getLogInUserInfo();
             TripScheduleHdr model;
             if (TempData["CTVHDR"] != null)
             {
@@ -96,7 +105,7 @@ namespace CBBW.Areas.Security.Controllers
         [HttpPost]
         public ActionResult EditNote(TripScheduleHdr model, string Submit) 
         {
-            UserInfo user = getLogInUserInfo();
+            //UserInfo user = getLogInUserInfo();
             TempData["CTVHDR"] = model;
             if (Submit == "OVT")
             {
@@ -116,10 +125,12 @@ namespace CBBW.Areas.Security.Controllers
             else if (Submit == "LVT")
             {
                 //TempData["CTVHDR"] = model;
+                _iUser.RecordCallBack("/Security/CTV/EditNote?NoteNumber=" + model.NoteNo);
                 return RedirectToAction("LocVehTripSchEdit", new { CBUID = 5, NoteNumber = model.NoteNo });
             }
             else if (Submit == "LVTSChMat")
             {
+                _iUser.RecordCallBack("/Security/CTV/EditNote?NoteNumber="+model.NoteNo);
                 return RedirectToAction("LocalVehicleTripSchFromMat", new { CBUID = 5, NoteNumber = model.NoteNo });
             }
             else if (Submit == "Edit") 
@@ -138,7 +149,7 @@ namespace CBBW.Areas.Security.Controllers
         }
         public ActionResult OtherTripSchDisplay(string NoteNumber,int CBUID=2) 
         {            
-            getLogInUserInfo();
+            //getLogInUserInfo();
             OtherTripSchDisplayVM model = new OtherTripSchDisplayVM();
             CTVHdrDtl obj = _iCTV.getSchDetailsFromNote(NoteNumber, ref pMsg);
             if (obj != null) 
@@ -180,7 +191,7 @@ namespace CBBW.Areas.Security.Controllers
                 //TempData["LVTScallbackurl"] = "/Security/CTV/ViewNote?NoteNumber=" + NoteNumber;
                 //model.IsSaveVisible = 0;
             }
-            getLogInUserInfo();
+            //getLogInUserInfo();
             TripScheduleHdr model = _iCTV.getSchDetailsFromNote(NoteNumber, ref pMsg).SchHdrData;
             model.IsDeleteBtn = IsDelete;
             model.CBUID = CBUID;
@@ -189,7 +200,7 @@ namespace CBBW.Areas.Security.Controllers
         [HttpPost]
         public ActionResult ViewNote(TripScheduleHdr model, string Submit) 
         {
-            UserInfo user = getLogInUserInfo();
+            //UserInfo user = getLogInUserInfo();
             TempData["CTVHDR"] = model;
             if (Submit == "OVT")
             {
@@ -208,10 +219,12 @@ namespace CBBW.Areas.Security.Controllers
             else if (Submit == "LVT")
             {
                 //TempData["CTVHDR"] = model;
+                _iUser.RecordCallBack("/Security/CTV/ViewNote?NoteNumber=" + model.NoteNo);
                 return RedirectToAction("LocVehTripSch", new { CBUID = model.CBUID, NoteNumber = model.NoteNo });
             }
             else if (Submit == "LVTSChMat")
             {
+                _iUser.RecordCallBack("/Security/CTV/ViewNote?NoteNumber="+model.NoteNo);
                 return RedirectToAction("LocalVehicleTripSchFromMat", new { CBUID = 2, NoteNumber = model.NoteNo });
             }
             
@@ -274,14 +287,14 @@ namespace CBBW.Areas.Security.Controllers
         }
         public ActionResult ApprovalLists() 
         {
-            UserInfo user = getLogInUserInfo();
+            //UserInfo user = getLogInUserInfo();
             IEnumerable<TripScheduleHdr> model = _iCTV.getApprovedCtvSchedule(1000, 0, 1, "des", "", user.CentreCode, ref pMsg);
             return View(model);
         }
         [HttpPost]
         public ActionResult ApprovalLists(string Submit)
         {
-            UserInfo user = getLogInUserInfo();
+            //UserInfo user = getLogInUserInfo();
             TempData["AppNoteDtl"] = null;
             return RedirectToAction("Approval");
         }
@@ -290,7 +303,7 @@ namespace CBBW.Areas.Security.Controllers
             CTVApprovalVM model= new CTVApprovalVM(); ;
             try
             {
-                UserInfo user = getLogInUserInfo();
+                //UserInfo user = getLogInUserInfo();
                 if (TempData["AppNoteDtl"] != null) 
             {
                 model = TempData["AppNoteDtl"] as CTVApprovalVM;
@@ -311,7 +324,7 @@ namespace CBBW.Areas.Security.Controllers
             //TempData["CTVHDR"]=_iCTV.getSchDetailsFromNote(model.NoteNo, ref pMsg).SchHdrData;
             model.IsApproved = model.IsApprovedComboValue == 1 ? true : false;
             TempData["AppNoteDtl"] = model;
-            UserInfo user = getLogInUserInfo();
+            //UserInfo user = getLogInUserInfo();
             if (Submit == "OVT")
             {
                 return RedirectToAction("OtherTripSchDisplay", 
@@ -330,10 +343,12 @@ namespace CBBW.Areas.Security.Controllers
             else if (Submit == "LVT")
             {
                 //TempData["CTVHDR"] = model;
+                _iUser.RecordCallBack("/Security/CTV/Approval");
                 return RedirectToAction("LocVehTripSch", new { CBUID = 3, NoteNumber = model.NoteNo });
             }
             else if (Submit == "LVTSChMat")
             {
+                _iUser.RecordCallBack("/Security/CTV/Approval");
                 return RedirectToAction("LocalVehicleTripSchFromMat", 
                     new { CBUID = 3, NoteNumber = model.NoteNo });
             }
@@ -436,21 +451,24 @@ namespace CBBW.Areas.Security.Controllers
         }
         public ActionResult ScheduleLists() 
         {
-            UserInfo user = getLogInUserInfo();
+            _iUser.ClearCallBackRecording();
+            //UserInfo user = getLogInUserInfo();
+            //int cencode = user.CentreCode;
             IEnumerable<TripScheduleHdr> model = _iCTV.getCtvSchedule(1000,0,1,"des","",user.CentreCode, ref pMsg);
             return View(model);
         }
         [HttpPost]
         public ActionResult ScheduleLists(string Submit)
         {
-            UserInfo user = getLogInUserInfo();
+            //UserInfo user = getLogInUserInfo();
             TempData["CTVHDR"] = null;
+            _iUser.RecordCallBack("/Security/CTV/ScheduleLists");
             return RedirectToAction("Create");
         }
         
         public ActionResult Create() 
         {
-            UserInfo user= getLogInUserInfo();
+            //UserInfo user= getLogInUserInfo();
             TripScheduleHdr model;
             if (TempData["CTVHDR"] == null)
             {
@@ -468,7 +486,7 @@ namespace CBBW.Areas.Security.Controllers
         [HttpPost]
         public ActionResult Create(TripScheduleHdr model, string Submit) 
         {
-            UserInfo user= getLogInUserInfo();
+            //UserInfo user= getLogInUserInfo();
             TempData["CTVHDR"] = model;
             if (Submit == "OVT")
             {
@@ -480,15 +498,17 @@ namespace CBBW.Areas.Security.Controllers
             }
             else if (Submit == "TourRule") 
             {
-                return RedirectToAction("ViewRedirection", "TourRule", new { Area = "Security", CBUID = 1 });
+                return RedirectToAction("ViewRedirection", "TourRule", new { Area = "Security", CBUID = 1 });                
             }
             else if (Submit == "LVT")
             {
+                _iUser.RecordCallBack("/Security/CTV/Create");
                 //TempData["CTVHDR"] = model;
                 return RedirectToAction("LocVehTripSch",new { CBUID =1});
             }
             else if (Submit == "LVTSChMat")
             {
+                _iUser.RecordCallBack("/Security/CTV/Create");
                 return RedirectToAction("LocalVehicleTripSchFromMat");
             }
             else if (Submit == "create")
