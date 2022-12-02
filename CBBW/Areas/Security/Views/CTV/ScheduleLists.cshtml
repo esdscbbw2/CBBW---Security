@@ -80,7 +80,7 @@
                         <td>
                             <span class="actionBtn">
                                 <button type="button" class="btn primaryLink" data-toggle="tooltip" data-placement="top"
-                                        onclick="window.location.href='@Url.Action("ViewNote", "CTV",
+                                        onclick="window.location.href='@Url.Action("ViewRedirection", "CTV",
                                                 new { Area = "Security", NoteNumber = item.NoteNo})'">
                                     <i data-feather="eye"></i>
                                 </button>
@@ -95,8 +95,8 @@
                                 }
                                 @if (item.EntryDate == DateTime.Today && item.IsDeleteBtn==0)
                                 {
-                                    <button id="deleteBtn" onclick="window.location.href='@Url.Action("ViewNote", "CTV",
-                                                new { Area = "Security", NoteNumber = item.NoteNo,IsDelete=1})'" type="button"
+                                    <button id="deleteBtn" onclick="window.location.href='@Url.Action("ViewRedirection", "CTV",
+                                                new { Area = "Security", NoteNumber = item.NoteNo,CBUID=1})'" type="button"
                                             class="btn secondaryLink" data-toggle="tooltip"
                                             data-placement="top" title="Delete">
                                         <i data-feather="trash-2"></i>

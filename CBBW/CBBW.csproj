@@ -143,6 +143,8 @@
     <Compile Include="Areas\Security\ViewModel\CTVHdrEntryVM.cs" />
     <Compile Include="Areas\Security\ViewModel\LocalVehicleTripScheduleVM.cs" />
     <Compile Include="Areas\Security\ViewModel\LVTSFromMatVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\MGPCreateVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\MGPOutInVM.cs" />
     <Compile Include="Areas\Security\ViewModel\OtherTripSchDisplayVM.cs" />
     <Compile Include="Areas\Security\ViewModel\OtherTripScheduleEntryVM.cs" />
     <Compile Include="Areas\Security\ViewModel\TADATransViewModel.cs" />
@@ -295,6 +297,8 @@
     <Content Include="UIContent\JS\CustomePage\CTVApproval.js" />
     <Content Include="UIContent\JS\CustomePage\CTVHdrEntry.js" />
     <Content Include="UIContent\JS\CustomePage\LocVehTripSchEdit.js" />
+    <Content Include="UIContent\JS\CustomePage\MGPass.js" />
+    <Content Include="UIContent\JS\CustomePage\MGPOutDetails.js" />
     <Content Include="UIContent\JS\CustomePage\OtherTripSchEdit.js" />
     <Content Include="UIContent\JS\CustomePage\OtherTripSchedule.js" />
     <Content Include="UIContent\JS\CustomePage\SecurityRuleValidation.js" />
@@ -344,6 +348,10 @@
     <Content Include="Areas\Security\Views\CTV\EditNote.cshtml" />
     <Content Include="Areas\Security\Views\CTV\LocVehTripSchEdit.cshtml" />
     <Content Include="Areas\Security\Views\CTV\OtherTripSchEdit.cshtml" />
+    <Content Include="Areas\Security\Views\MaterialGatePass\Create.cshtml" />
+    <Content Include="Areas\Security\Views\MaterialGatePass\Details.cshtml" />
+    <Content Include="Areas\Security\Views\MaterialGatePass\VehicleMaterialInDetails.cshtml" />
+    <Content Include="Areas\Security\Views\MaterialGatePass\VehicleMaterialOutDetails.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />

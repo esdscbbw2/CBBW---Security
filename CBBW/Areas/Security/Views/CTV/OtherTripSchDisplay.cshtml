@@ -1,6 +1,6 @@
 ﻿@model CBBW.Areas.Security.ViewModel.OtherTripSchDisplayVM
 @{
-    
+
 }
 <div class="container">
     <div class="row newTable">
@@ -10,15 +10,14 @@
 
                 <div class="heading_text_btn mb-4 mt-4">
                     <div class="leftButton">
-                        <button type="submit" class="btn btn-primary me-2" 
-                                onclick="window.location.href='@Model.CallBackUrl';"
-                                >
+                        <button id="btnBack" type="submit" class="btn btn-primary me-2"
+                                @*onclick="window.location.href='@Model.CallBackUrl';"*@>
                             <i data-feather="arrow-left-circle"></i>
                             Back
                         </button>
 
                     </div>
-                    <h2>"Company Transport” Vehicle Trip Schedule – ENTRY</h2>
+                    <h2>"Company Transport” Vehicle Trip Schedule – VIEW</h2>
                 </div>
             </div>
         </div>
@@ -43,7 +42,8 @@
                                 @Html.TextAreaFor(m => m.TripPurpose,
                                htmlAttributes: new
                                {
-                                   @class = "form-control",@disabled= "disabled"
+                                   @class = "form-control",
+                                        @disabled = "disabled"
                                })
                                 @*<input type="text" class="form-control" value="Inspection" disabled>*@
                             </div>
@@ -84,7 +84,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if (Model.SchDetailList != null )
+                        @if (Model.SchDetailList != null)
                         {
                             int i = 1;
                             foreach (var item in Model.SchDetailList)
@@ -101,12 +101,12 @@
                                     <td>@item.ToCenterName</td>
                                     <td>@item.ToDate.ToString("dd/MM/yyyy")</td>
                                 </tr>
-                                
+                                i += 1;
                             }
                         }
                     </tbody>
                 </table>
-            </div>            
+            </div>
         </div>
     </div>
     <div class="sectionB">
@@ -155,29 +155,29 @@
                             int i = 1;
                             foreach (var item in Model.SchDetailList)
                             {
-                            <tr>
-                                <th scope="row">@i</th>
-                                <td class="text-center">@item.CurrentDriverName</td>
-                                <td class="text-center">@item.FromDate.ToString("dd/MM/yyyy") </td>
-                                <td class="text-center">@item.FromTime </td>
-                                <td class="text-center">
-                                    @item.FromCenterTypeCode / @item.FromCenterTypeName
-                                </td>
-                                <td class="text-center">
-                                    @item.FromCentreCode / @item.FromCenterName
-                                </td>
-                                <td class="text-center">
-                                    @item.ToCenterTypeName
-                                </td>
-                                <td class="text-center">
-                                    @item.ToCenterName
-                                </td>
-                                <td class="text-center">@item.ToDate.ToString("dd/MM/yyyy")</td>
-                            </tr>
-                            
+                                <tr>
+                                    <th scope="row">@i</th>
+                                    <td class="text-center">@item.CurrentDriverName</td>
+                                    <td class="text-center">@item.FromDate.ToString("dd/MM/yyyy") </td>
+                                    <td class="text-center">@item.FromTime </td>
+                                    <td class="text-center">
+                                        @item.FromCenterTypeCode / @item.FromCenterTypeName
+                                    </td>
+                                    <td class="text-center">
+                                        @item.FromCentreCode / @item.FromCenterName
+                                    </td>
+                                    <td class="text-center">
+                                        @item.ToCenterTypeName
+                                    </td>
+                                    <td class="text-center">
+                                        @item.ToCenterName
+                                    </td>
+                                    <td class="text-center">@item.ToDate.ToString("dd/MM/yyyy")</td>
+                                </tr>
+                                i += 1;
                             }
                         }
-                        
+
                     </tbody>
                 </table>
             </div>
@@ -198,7 +198,7 @@
                 <li style="font-size: 16px;">
                     The Other Trip Schedule Is Taken Up With The Knowledge Of DIC P&A That Transpired Through Mail:
                     <select class="form-select" aria-label="Default select example" disabled>
-                        <option  value="-1">-</option>
+                        <option value="-1">-</option>
                         <option selected value="1">Yes</option>
                         <option value="0">No</option>
                     </select>
@@ -207,3 +207,20 @@
         </div>
     </div>
 </div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#btnBack').click(function () {
+                $.ajax({
+                    url: "/Security/CTV/BackButtonClicked",
+                    success: function (result) { window.location.href = result; }
+                });
+
+            });
+        });
+    </script>
+    
+    
+    }
+

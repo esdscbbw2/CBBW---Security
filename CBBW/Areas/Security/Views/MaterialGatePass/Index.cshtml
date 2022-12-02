@@ -1,17 +1,197 @@
-﻿
-@{
-    Layout = null;
-}
+﻿@using CBBW.BOL.CTV
+@model IEnumerable<TripScheduleHdr>
+@{ ViewBag.Title = "Index";
+    Layout = "~/Areas/Security/Views/Shared/_Layout.cshtml"; }
 
-<!DOCTYPE html>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
-<body>
-    <div> 
+    
+
+<div class="container">
+    <div class="row newTable">
+        <div class="fixedElement">
+            <div class="col-md-12" style="position: relative;">
+                <div class="heading_text_btn mb-4 mt-4">
+                    <div class="leftButton">
+                        <button type="submit" class="btn btn-primary me-2" onclick="window.location.href='@Url.Action("Create", "MaterialGatePass",
+                                    new { Area = "Security"})'">
+                            <i data-feather="plus-circle"></i>
+                            Add
+                        </button>
+                    </div>
+                    <h2>Material Gate Pass (For Company Transport) – ENTRY </h2>
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive mb-4">
+
+            <table class="table table-bordered btnalign" id="example">
+                <thead>
+                    <tr>
+                        <th scope="col" rowspan="2">SL.No.</th>
+                        <th scope="col">Ref. Note No.</th>
+                        <th scope="col">Center Code & Name</th>
+                        <th scope="col">Vehicle No.</th>
+                        <th scope="col" rowspan="2" style="background: pink;color: #000;">Action</th>
+                    </tr>
+
+                    <tr>
+                        <th scope="col">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Search...">
+                            </div>
+                        </th>
+                        <th scope="col">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Search...">
+                            </div>
+                        </th>
+                        <th scope="col">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Search...">
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>200001-CTV-20220930-00001</td>
+                    <td>01 / Nizamabad</td>
+                    <td>Vehicle Number 1</td>
+                    <td>
+                        <span class="actionBtn">
+                            <button type="button" class="btn primaryLink" data-toggle="tooltip" data-placement="top" onclick="window.location.href='@Url.Action("Details", "MaterialGatePass",
+                                    new { Area = "Security"})'"
+                                    title="Details">
+                                <i data-feather="eye"></i>
+                            </button>
+                        </span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th scope="row">2</th>
+                    <td>200001-CTV-20220930-00002</td>
+                    <td>02 / Koratla</td>
+                    <td>Vehicle Number 2</td>
+                    <td>
+                        <span class="actionBtn">
+                            <button type="button" class="btn primaryLink" data-toggle="tooltip" data-placement="top" onclick="window.location.href='@Url.Action("Details", "MaterialGatePass",
+                                    new { Area = "Security"})'"
+                                    title="Details">
+                                <i data-feather="eye"></i>
+                            </button>
+                        </span>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+
+
+        </div>
+
     </div>
-</body>
-</html>
+</div>
+        <!-- Optional JavaScript; choose one of the two! -->
+        <script src="js/jquery.min.js"></script>
+
+        <script src="js/bootstrap.bundle.min.js"></script>
+        <script src="js/popper.min.js"></script>
+        <script src="js/multiselect.js"></script>
+
+        <script src="js/jquery.dataTables.min.js"></script>
+        <script src="js/dataTables.bootstrap5.min.js"></script>
+
+        <script src="js/dataTables.js"></script>
+
+        <script src="https://unpkg.com/feather-icons"></script>
+
+        <script>
+            feather.replace()
+        </script>
+
+        <script>
+            $(document).ready(function() {
+                $('#example').DataTable({
+                    "pagingType": "input"
+                });
+
+            });
+        </script>
+
+
+
+
+        <script>
+            $(document).ready(function() {
+                $('.example-getting-started').multiselect({
+                    templates: {
+                        button: '<button type="button" class="multiselect dropdown-toggle btn btn-primary w-100 selectBox" data-bs-toggle="dropdown" aria-expanded="false"><span class="multiselect-selected-text"></span></button>',
+                    },
+                });
+            });
+        </script>
+        <script>
+            $(window).scroll(function(e) {
+                var $el = $('.fixedElement');
+                var isPositionFixed = ($el.css('position') == 'fixed');
+                if ($(this).scrollTop() > 200 && !isPositionFixed) {
+                    $el.css({
+                        'position': 'sticky',
+                        'top': '0px'
+                    });
+                }
+                if ($(this).scrollTop() < 200 && isPositionFixed) {
+                    $el.css({
+                        'position': 'static',
+                        'top': '0px'
+                    });
+                }
+            });
+        </script>
+
+        <script>
+            $(function() {
+                $('[data-toggle="tooltip"]').tooltip()
+            });
+
+
+            function changeaction(thisObj) {
+                busID.style.display = "none";
+                airID.style.display = "none";
+                trainID.style.display = "none";
+
+                if (thisObj.value == "2") {
+                    busID.style.display = "";
+                    airID.style.display = "none";
+                    trainID.style.display = "none";
+                }
+
+                if (thisObj.value == "3") {
+                    busID.style.display = "none";
+                    airID.style.display = "";
+                    trainID.style.display = "none";
+                }
+
+                if (thisObj.value == "1") {
+                    busID.style.display = "none";
+                    airID.style.display = "none";
+                    trainID.style.display = "";
+                }
+            }
+
+            function plusAction() {
+                alert(tbaBody.firstChild());
+                tbaBody.appendChild(tbaBody.firstChild);
+
+            }
+        </script>
+
+
+
+
+

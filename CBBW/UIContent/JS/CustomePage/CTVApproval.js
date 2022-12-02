@@ -101,7 +101,23 @@ function Notenumberchanged(notenumber) {
     var that = $('#NoteNo');
     var lsbtn = $('#btnLVT');
     var osbtn = $('#btnOVT');
-    //alert(notenumber);
+    var appCombo = $('#IsApprovedComboValue');
+    var disappreason = $('#DisapprovalReason');
+    if (notenumber.length > 1){
+        that.isValid();        
+        appCombo.makeEnabled();
+        disappreason.makeDisable();
+        //appCombo.addClass('pointer');
+    }
+    else {
+        that.isInvalid();
+        appCombo.makeDisable();
+        disappreason.makeDisable();
+        //appCombo.removeClass('pointer')
+    }
+    appCombo.val(0).isInvalid();
+    $('#IsApprovedComboValue option:selected').removeAttr("selected");
+    //alert(notenumber.length);
     $.ajax({
         url: '/CTV/getDataFromNote',
         method: 'GET',
@@ -120,7 +136,7 @@ function Notenumberchanged(notenumber) {
                 if (item.ApprovalFor == 0 || item.ApprovalFor == 2) { osbtn.removeAttr('disabled'); }
                 else if (item.ApprovalFor == 1) { lsbtn.removeAttr('disabled'); }
                 else if (item.ApprovalFor == 3) { lsbtn.removeAttr('disabled'); osbtn.removeAttr('disabled'); }
-                that.isValid();
+                
                 ActivateSubmit();
             });
 

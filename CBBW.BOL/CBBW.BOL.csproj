@@ -58,8 +58,13 @@
     <Compile Include="CustomModels\RowDisplayInfo.cs" />
     <Compile Include="Master\PublicTransportType.cs" />
     <Compile Include="Master\ServiceType.cs" />
+    <Compile Include="MGP\MGPHistoryDCDetails.cs" />
+    <Compile Include="MGP\MGPItemWiseDetails.cs" />
     <Compile Include="MGP\MGPMatOut.cs" />
     <Compile Include="MGP\MGPNotes.cs" />
+    <Compile Include="MGP\MGPOutInDetails.cs" />
+    <Compile Include="MGP\MGPReferenceDCDetails.cs" />
+    <Compile Include="MGP\MGPVehicleOutDetails.cs" />
     <Compile Include="MGP\RFID.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TADA\TADAParam.cs" />

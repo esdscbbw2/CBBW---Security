@@ -11,32 +11,41 @@ namespace CBBW.Areas.Security.Controllers
 {
     public class TourRuleController : Controller
     {
+        IUserRepository _iUser;
         IToursRuleRepository _toursRule;
         string pMsg;
-        public TourRuleController(IToursRuleRepository toursRule)
+        public TourRuleController(IToursRuleRepository toursRule, IUserRepository iUser)
         {
             _toursRule = toursRule;
+            _iUser = iUser;
             pMsg = "";
+        }
+        public JsonResult BackButtonClicked()
+        {
+            string url = _iUser.GetCallBackUrl();
+            if (string.IsNullOrEmpty(url)) { url = "/Security/TourRule/Index"; }
+            return Json(url, JsonRequestBehavior.AllowGet);
         }
         public ActionResult ViewRedirection(int CBUID,string NoteNumber="")
         {
             //string callbackurl = "";
-            if (CBUID == 1)
-            {
-                TempData["Tourcallbackurl"] = "/Security/CTV/Create";
-            }
-            else if (CBUID == 2)
-            {
-                TempData["Tourcallbackurl"] = "/Security/CTV/ViewNote?CBUID=2&NoteNumber="+ NoteNumber;
-            }
-            else if (CBUID == 3)
-            {
-                TempData["Tourcallbackurl"] = "/Security/CTV/Approval?NoteNumber=" + NoteNumber;
-            }
-            else if (CBUID == 5)
-            {
-                TempData["Tourcallbackurl"] = "/Security/CTV/EditNote?NoteNumber=" + NoteNumber;
-            }
+            //if (CBUID == 1)
+            //{
+            //    TempData["Tourcallbackurl"] = "/Security/CTV/Create";
+            //}
+            //else if (CBUID == 2)
+            //{
+            //    TempData["Tourcallbackurl"] = "/Security/CTV/ViewNote?CBUID=2&NoteNumber="+ NoteNumber;
+            //}
+            //else if (CBUID == 3)
+            //{
+            //    TempData["Tourcallbackurl"] = "/Security/CTV/Approval?NoteNumber=" + NoteNumber;
+            //}
+            //else if (CBUID == 5)
+            //{
+            //    TempData["Tourcallbackurl"] = "/Security/CTV/EditNote?NoteNumber=" + NoteNumber;
+            //}
+            
             int RuleID = _toursRule.GetAffectedRuleID(ref pMsg);
             return RedirectToAction("ViewRule", new { id = RuleID, isDelete = false });
         }
@@ -90,6 +99,7 @@ namespace CBBW.Areas.Security.Controllers
         
         public ActionResult ViewRule(int id ,bool isDelete)
         {
+            
          
            TourRuleDetails model= _toursRule.GetToursRuleByID(id,ref pMsg);
             model.ReadRule5 = true;

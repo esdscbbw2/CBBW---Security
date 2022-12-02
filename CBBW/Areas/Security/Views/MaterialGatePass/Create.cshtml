@@ -1,0 +1,281 @@
+﻿@using CBBW.BOL.MGP
+@model MGPNotes
+@{
+    ViewBag.Title = "Material Gate Pass (For Company Transport)–ENTRY";
+    var btnactive = TempData["btnactive"];
+}
+
+
+<div class="container">
+    <div class="row newTable">
+        @using (Html.BeginForm("Create", "MaterialGatePass", FormMethod.Post))
+        {
+            @*@Html.HiddenFor(m => m.CenterCode)
+                @Html.HiddenFor(m => m.FortheMonthnYear)
+                @Html.HiddenFor(m => m.VehicleType)
+                @Html.HiddenFor(m => m.ModelName)*@
+            @Html.HiddenFor(m => m.ISSubmitActive)
+            <input id="btnactive" value="@btnactive" type="hidden"
+                   class="form-control ">
+            <div class="fixedElement">
+                <div class="col-md-12">
+                    <div class="heading_text_btn mb-3 mt-4">
+                        <div class="leftButton">
+                            <button id="btnBack" type="button"
+                                    class="btn btn-primary me-2">
+                                <i data-feather="arrow-left-circle"></i>
+                                Back
+                            </button>
+                            <button id="btnSubmit" type="submit" name="Submit" value="create"
+                                    class="btn btn-secondary me-2" disabled="disabled">
+                                <i data-feather="upload"></i>
+                                Submit
+                            </button>
+                            <button type="button" id="btnClear" onclick="btnClearClicked()"
+                                    class="btn btn-white">
+                                <i data-feather="x-circle"></i>
+                                Clear
+                            </button>
+                        </div>
+                        <h2>@ViewBag.Title</h2>
+                        <div class="rightButton">
+                            <button type="submit" class="btn btn-white" onclick="window.location.href='#';">
+                                <i data-feather="printer"></i>
+                                Print / View
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="col-md-12 mb-4">
+                <div class="card mb-4 mt-4">
+                    <div class="card-body approvalForm">
+                        <form class="form-sample form-inline row ms-auto">
+                            <div class="row d-flex align-items-center mb-4">
+                                <label class="col-form-label col-md-3">
+                                    Ref. Company Transport Vehicle Trip Schedule – ENTRY Note No. :
+                                </label>
+                                <div class="col-md-3">
+                                    @Html.DropDownListFor(m => m.NoteNo,
+                                       new SelectList(Model.ListofNotes, "NoteNo", "NoteNo"), "Select a Note Number",
+                                       htmlAttributes: new
+                                       {
+                                           @class = "form-select canclear pointer is-invalid",
+                                                onchange = "ValidateControl()"
+                                       })
+                                </div>
+
+                                <label class="col-form-label col-md-1">
+                                    Date  :
+                                </label>
+                                <div class="col-md-2">
+                                    @Html.TextBox("EntryDate", DateTime.Today.ToString("dd/MM/yyyy"),
+                               htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                                </div>
+                                <label class="col-form-label col-md-1">
+                                    Time  :
+                                </label>
+                                <div class="col-md-2">
+                                    @Html.TextBox("EntryTime", DateTime.Now.ToString("hh:mm tt"),
+                               htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                                </div>
+
+
+
+                            </div>
+                            <div class="row d-flex align-items-center mb-4">
+                                <label class="col-form-label col-md-3">
+                                    Center Code & Name  :
+                                </label>
+                                <div class="col-md-3">
+                                    @Html.TextBoxFor(m => m.CenterCode, htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })
+                                </div>
+                                <label class="col-form-label col-md-1">
+                                    Month & Year  :
+                                </label>
+                                <div class="col-md-2">
+                                    @Html.TextBoxFor(m => m.FortheMonthnYear,
+                            htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })
+                                </div>
+                            </div>
+
+                            <div class="row d-flex align-items-center mb-4">
+                                <label class="col-form-label col-md-3">
+                                    Vehicle No.  :
+                                </label>
+                                <div class="col-md-3">
+                                    @Html.TextBoxFor(m => m.VehicleNo, htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })
+                                </div>
+                                <label class="col-form-label col-md-1">
+                                    Vehicle Type  :
+                                </label>
+                                <div class="col-md-2">
+                                    @Html.TextBoxFor(m => m.VehicleType, htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })
+                                </div>
+                                <label class="col-form-label col-md-1">
+                                    Model Name  :
+                                </label>
+                                <div class="col-md-2">
+                                    @Html.TextBoxFor(m => m.ModelName, htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="d-flex justify-content-center mt-2">
+                        <button id="btnCMOD" type="submit" name="Submit" value="CMOD"
+                                class="btn btn-primary me-2" disabled="disabled">
+
+                            Vehicle & Material Out Details
+                        </button>
+
+                        @*<button type="button" class="btn btn-primary me-2" onclick="window.location.href='@Url.Action("VehicleMaterialOutDetails", "MaterialGatePass",
+                            new { Area = "Security" })'">
+
+                                                    </button>*@
+                        @*<button type="button" class="btn btn-primary" onclick="window.location.href='@Url.Action("VehicleMaterialInDetails", "MaterialGatePass",
+                            new { Area = "Security" })'">
+                                                        Vehicle & Material In Details
+                                                    </button>*@
+                        <button id="btnCMID" type="submit" name="Submit" value="CMID"
+                                class="btn btn-primary me-2" disabled="disabled">
+
+                            Vehicle & Material In Details
+                        </button>
+                    </div>
+                </div>
+                <div class="bgColor mt-4 bg-transparent border-blue">
+
+                    <ul style="list-style:none;">
+                        <li style="font-size: 16px;">
+                            If The Driver Name Given In The System & The Person Driving The Vehicle Are Same:
+                            <select id="driversame" style="width:110px"
+                                    class="form-select pointer is-invalid"
+                                    onchange="ValidateControl()"
+                                    aria-label="Default select example">
+                                <option selected="">-</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bgColor mt-4 bg-transparent border-blue">
+
+                    <ul style="list-style:none;">
+                        <li style="font-size: 16px;">
+                            Have You Collected / Given Back The Mobile Phone To The Driver Who Is Driving The Vehicle:
+
+                            <select id="vehicledriver" style="width:110px"
+                                    class="form-select pointer is-invalid"
+                                    onchange="ValidateControl()" aria-label="Default select example">
+                                <option selected="">-</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </li>
+                    </ul>
+                </div>
+
+
+
+
+
+            </div>
+        }
+    </div>
+</div>
+@section headers
+    {
+    <style>
+        .inVisible {
+            display: none;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
+}
+
+@section scripts{
+    <script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
+    <script src="~/UIContent/JS/CustomePage/MGPass.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#btnBack').click(function () {
+                var url = "/Security/MaterialGatePass/Index";
+                if ($('#VehicleNo').val() != "") {
+                    Swal.fire({
+                        title: 'Confirmation Message',
+                        text: "Are You Sure Want to Go Back?",
+                        icon: 'question',
+                        customClass: 'swal-wide',
+                        //buttons: {
+                        //    cancel: 'No',
+                        //    confirm: 'Yes'
+                        //},
+                        confirmButtonText: "Yes",
+                        cancelButtonText: "No",
+                        cancelButtonClass: 'btn-cancel',
+                        confirmButtonColor: '#2527a2',
+                        showCancelButton: true,
+                    }).then(callback);
+                    function callback(result) {
+                        if (result.value) {
+                            window.location.href = url;
+                        } else {
+                            // second variant
+                        }
+                    }
+                } else {
+                    window.location.href = url;
+                };
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            //var mymsg = '@ViewBag.ErrMsg';
+            if ('@ViewBag.ErrMsg' != '') {
+                Swal.fire({
+                    title: 'Failed to submit',
+                    text: "@ViewBag.ErrMsg",
+                    icon: 'warning',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        //cancel: 'Cancel',
+                        confirm: 'Ok'
+                    },
+                    //cancelButtonClass: 'btn-cancel',
+                    confirmButtonColor: '#2527a2',
+                });
+            };
+            if ('@ViewBag.Msg' != '') {
+                Swal.fire({
+                    title: 'Confirmation',
+                    text: "@ViewBag.Msg",
+                    icon: 'success',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        confirm: 'Ok'
+                    },
+                    confirmButtonColor: '#2527a2',
+                }).then(callback);
+                function callback(result) {
+                    if (result.value) {
+                        var url = "/Security/MaterialGatePass/Index";
+                        window.location.href = url;
+                    }
+                }
+            };
+        });
+    </script>
+}
+
+

@@ -8,6 +8,7 @@ namespace CBBW.BOL.MGP
 {
     public class RFID
     {
+
         public string RFIDCardNo { get; set; }
     }
 }

@@ -239,12 +239,13 @@ namespace CBBW.DAL.DBMapper
                         x.FromDateStr = x.FromDate.ToString("dd-MM-yyyy");
                         x.ToDateStr = x.ToDate.ToString("dd-MM-yyyy");
                         x.FromDateStrYMD = x.FromDate.ToString("yyyy-MM-dd");
-                        x.TripPurpose = result.SchHdrData.TripPurpose;
+                        if (result.SchHdrData != null && result.SchHdrData.TripPurpose!=null)
+                        { x.TripPurpose = result.SchHdrData.TripPurpose; }
                         //Otherlocation yes no options will come here.
 
                         dtl.Add(x);
                     }
-                    result.SchDetailList = dtl;
+                    result.SchDetailList = dtl.OrderBy(o=>o.FromDate).ToList();
                 }
             }
             catch(Exception ex) { string errmsg = ex.Message; }

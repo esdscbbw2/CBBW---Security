@@ -6,6 +6,88 @@ $.fn.setValueToZero = function () {
     var that = this;
     that.val('0');
 };
+async function ChangeFromLocationType(index, locationtypeid, locationid) {
+    var locationcombo = $('#' + index + '_FromL');
+    const response = await $.ajax({
+        url: '/CTV/GetLocationsFromType',
+        method: 'GET',
+        data: { TypeID: locationtypeid },
+        dataType: 'json',
+        success: function (data) {
+            locationcombo.empty();
+            locationcombo.append($('<option/>', { value: "-1", text: "Select location" }));
+            $(data).each(function (index, item) {
+                locationcombo.append($('<option/>', { value: item.ID, text: item.DisplayText }));
+            });
+            locationcombo.val(locationid).removeClass('is-invalid').addClass('is-valid');
+            //alert(locationid);
+        }
+    });
+    return response;
+}
+async function ChangeToLocationType(index, locationtypeid, locationid) {    
+    var i = locationid.indexOf(',');
+    //alert(i);
+    var locationcombo = $('#' + index + '_ToL');
+    const response = await $.ajax({
+        url: '/CTV/GetToLocationsFromType',
+        method: 'GET',
+        data: { TypeIDs: locationtypeid },
+        dataType: 'json',
+        success: function (data) {
+            locationcombo.empty();
+            locationcombo.append($('<option/>', { value: "-1", text: "Select location" }));
+            $(data).each(function (index, item) {
+                locationcombo.append($('<option/>', { value: item.ID, text: item.DisplayText }));
+            });
+            locationcombo.attr('multiple', 'multiple');
+            locationcombo.find('.btn-group').remove();
+            locationcombo.multiselect({
+                templates: {
+                    button: '<button id="BL' + index + '" type="button" class="multiselect dropdown-toggle btn btn-primary w-100 selectBox" data-bs-toggle="dropdown" aria-expanded="false"><span class="multiselect-selected-text"></span></button>',
+                }, enableFiltering: true,
+            });
+            locationcombo.multiselect();
+            locationcombo.multiselect('clearSelection');
+            if (i > 0) {
+                locationcombo.val(locationid.split(','));
+            } else {
+                locationcombo.val(locationid);
+            }
+            
+            locationcombo.multiselect('refresh');
+            locationcombo.removeClass('is-invalid').addClass('is-valid');
+
+            //editlocationctrl.val(locationcombo.find('option:selected').text());
+        }
+    });
+
+    return response;
+}
+async function ChangeDriverCombo(index, driverid, drivername) {
+    //alert(driverid);
+    var drivercombo = $('#' + index + '_DriverCmb');
+   var exDrivername = $('#DriverName').val();
+   const response =await $.ajax({
+        url: '/CTV/GetDriverList?ExpDriverName=' + exDrivername,
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            drivercombo.empty();
+            drivercombo.append($('<option/>', { value: "-1", text: "Select a driver" }));
+            drivercombo.append($('<option/>', { value: "0", text: "Other driver" }));
+            $(data).each(function (index, item) {
+                drivercombo.append($('<option/>', { value: item.ID, text: item.DisplayText }));
+            });
+        }
+   });
+    drivercombo.val(driverid);
+    var txtbox = $('#' + index + '_DriverCmbtxt');
+    txtbox.val(drivername);
+    if (driverid == 0) { txtbox.removeClass('inVisible'); } else { txtbox.addClass('inVisible'); }
+
+    return response;
+}
 function DriverChanged() {
     var target = DriverChanged.caller.arguments[0].target;
     var targetid = $(target).attr('id');
@@ -18,9 +100,9 @@ function DriverChanged() {
     if (ddbox.val() == 0) { txtbox.removeClass('inVisible'); } else { txtbox.addClass('inVisible'); }
 }
 function getInitialData() {
-    //alert("ok");
     var notenumber = $('#NoteNumber').val();
     var drivercnn = $('#DriverCode').val() + ' / ' + $('#DriverName').val();
+    var addbtnindex = 0;
     $.ajax({
         url: '/CTV/getOTVSChDetailData',
         method: 'GET',
@@ -29,45 +111,155 @@ function getInitialData() {
         success: function (data) {
             $(data).each(function (index, item) {
                 $('#TripPurpose').val(item.TripPurpose);
-                AddBtnVirtualClick2(index - 1, item.ToCentreTypeCodes,item.ToCentreCodes);
-                var fromdatectrl = $('#' + index + '_FromDt');
-                var fromtimectrl = $('#' + index + '_Fromtime');
-                var fromltctrl = $('#' + index + '_FromLT');
-                var toltctrl = $('#' + index + '_ToLT');
-                var todtctrl = $('#' + index + '_ToDt');
-                var fromlctrl = $('#' + index + '_FromL');
-
-                fromdatectrl.val(item.FromDateStrYMD);
-                fromtimectrl.val(item.FromTime).removeClass('is-invalid').addClass('is-valid');
-                fromltctrl.val(item.FromCenterTypeCode).removeClass('is-invalid').addClass('is-valid');
-                toltctrl.val(item.ToCentreTypeCodes.split(',')).removeClass('is-invalid').addClass('is-valid');
-                todtctrl.val(item.ToDateStr).removeClass('is-invalid').addClass('is-valid');
-                toltctrl.multiselect('refresh');
-
-                //alert(item.ToCentreTypeCodes);
-                //// Second Table cloaning
                 if (index > 0) { cloneEditRows(index); }
                 $('#' + index + '_FromDate2').val(item.FromDateStr);
-                $('#' + index + '_FromTime2').val(fromtimectrl.val());
-                $('#' + index + '_FromLT2').val(fromltctrl.find('option:selected').text());
+                $('#' + index + '_FromTime2').val(item.FromTime);
+                $('#' + index + '_FromLT2').val(item.FromCenterTypeCode + ' / ' + item.FromCenterTypeName);
+                $('#' + index + '_FromL2').val(item.FromCentreCode + ' / ' + item.FromCenterName);
                 $('#' + index + '_ToLT2').val(item.ToCenterTypeName);
                 $('#' + index + '_ToDate2').val(item.ToDateStr);
                 $('#' + index + '_Driver2').val(drivercnn);
                 $('#' + index + '_ToL2X').val(item.ToCenterName);
-                //alert(item.ToCenterName);
-                //second table cloaning end
-                FillDriverComboVirtually(index);
-                FillLocationComboVirtually(item.FromCenterTypeCode, index + '_FromL', item.FromCentreCode, index + '_FromL2');
-                //FillLocationComboVirtually(item.ToCentreTypeCode, index + '_ToL', item.ToCentreCode, index + '_ToL2');
+                if (index >= 1) { AddBtnVirtualClick3(index); }
 
-                fromlctrl.removeClass('is-invalid').addClass('is-valid');
-                $('#' + index + '_ToL').removeClass('is-invalid').addClass('is-valid');
+                var fromdtctrl = $('#' + index + '_FromDt');
+                var fromtimectrl = $('#' + index + '_Fromtime');
+                var fromltctrl = $('#' + index + '_FromLT');
+                var toltctrl = $('#' + index + '_ToLT');
+                var fromlctrl = $('#' + index + '_FromL');
+                var tolctrl = $('#' + index + '_ToL');
+                var drivercombo = $('#' + index + '_DriverCmb');
+                var drivercombotxt = $('#' + index + '_DriverCmbtxt');
+                var addbtn = $('#' + index + '_AddBtn');
+                var deletebtn = $('#' + index + '_DeleteBtn');
 
-                FillToLocationComboVirtually(item.ToCentreTypeCodes, index, item.ToCentreCodes)
+                fromdtctrl.val(item.FromDateStrYMD).removeClass('is-invalid').addClass('is-valid');
+                fromtimectrl.val(item.FromTime).removeClass('is-invalid').addClass('is-valid');
+                fromltctrl.val(item.FromCenterTypeCode).removeClass('is-invalid').addClass('is-valid');
+                toltctrl.val(item.ToCentreTypeCodes.split(',')).removeClass('is-invalid').addClass('is-valid').multiselect('refresh');
+                $('#' + index + '_ToDt').val(item.ToDateStr)
+                    .removeClass('is-invalid').addClass('is-valid');
+
+                (async function () {
+                    const r1 = await ChangeFromLocationType(index, item.FromCenterTypeCode, item.FromCentreCode);
+                    const r2 = await ChangeToLocationType(index, item.ToCentreTypeCodes, item.ToCentreCodes);
+                    const r3 = await ChangeDriverCombo(index, item.EditDriverNo, item.EditDriverName);
+                })();
+                //alert(item.IsActivetoEdit);
+                if (item.IsActivetoEdit == 0) {
+                    addbtnindex = index;
+                    fromdtctrl.attr('disabled', 'disabled');
+                    fromtimectrl.attr('disabled', 'disabled');
+                    fromltctrl.attr('disabled', 'disabled');
+                    toltctrl.multiselect("disable");
+                    fromlctrl.attr('disabled', 'disabled');
+                    tolctrl.attr('disabled', 'disabled');
+                    drivercombo.attr('disabled', 'disabled');
+                    drivercombotxt.attr('disabled', 'disabled');
+                    addbtn.attr('disabled', 'disabled');
+                    deletebtn.attr('disabled', 'disabled');
+                }
+                else {
+                    fromdtctrl.removeAttr('disabled', 'disabled');
+                    fromtimectrl.removeAttr('disabled', 'disabled');
+                    fromltctrl.removeAttr('disabled', 'disabled');
+                    toltctrl.removeAttr('disabled', 'disabled');
+                    fromlctrl.removeAttr('disabled', 'disabled');
+                    tolctrl.removeAttr('disabled', 'disabled');
+                    drivercombo.removeAttr('disabled', 'disabled');
+                    drivercombotxt.removeAttr('disabled', 'disabled');
+                    addbtn.removeAttr('disabled', 'disabled');
+                    deletebtn.removeAttr('disabled', 'disabled');
+                }                
             });
+
+            $('#' + addbtnindex + '_AddBtn').removeAttr('disabled', 'disabled');
         }
     });
+};
 
+function AddBtnVirtualClick3(r) { 
+    var cloneready = $('#tbody1').find('tr').clone();
+    cloneready.attr("id", r);    
+    var curdt = $('#CurDate').val();
+    cloneready.find('#0_FromDt')
+        .attr('id', r + '_FromDt')
+        .val(curdt)
+        .removeClass('is-invalid')
+        .addClass('is-valid');
+    cloneready.find('#0_FromDtlbl').attr('id', r + '_FromDtlbl');
+
+    var firstOpen = true;
+    var time;
+
+    cloneready.find('#0_Fromtime').datetimepicker({
+        useCurrent: false,
+        format: "hh:mm A"
+    }).on('dp.show', function () {
+        if (firstOpen) {
+            time = moment().startOf('day');
+            firstOpen = false;
+        } else {
+            time = "01:00 PM"
+        }
+
+        $(this).data('DateTimePicker').date(time);
+    });
+
+    cloneready.find('#0_Fromtime').attr('id', r + '_Fromtime').val('')
+        .removeClass('is-valid').addClass('is-invalid').addClass('timePicker');
+    cloneready.find('#0_DriverCmb').attr('id', r + '_DriverCmb');
+    cloneready.find('#0_DriverCmbtxt').attr('id', r + '_DriverCmbtxt');
+    cloneready.find('#0_FromLT').attr('id', r + '_FromLT').removeClass('is-valid').addClass('is-invalid');
+    cloneready.find('#0_FromL').attr('id', r + '_FromL').removeClass('is-valid').addClass('is-invalid');
+    cloneready.find('#0_ToLT').attr('id', r + '_ToLT').removeClass('is-valid').addClass('is-invalid');
+    cloneready.find('#B0').remove();
+    cloneready.find('.btn-group').remove();
+    cloneready.find('#BL0').remove();
+    cloneready.find('#0_ToL').removeClass('is-invalid').addClass('inVisible');
+    cloneready.find('#M_ToL').attr('id', r + '_ToL')
+        .removeClass('is-valid inVisible').addClass('is-invalid');
+    cloneready.find('#0_ToDt').attr('id', r + '_ToDt').val('').removeClass('is-valid').addClass('is-invalid');
+    var ftime = cloneready.find('#' + r + '_Fromtime');
+
+    var addbtn = cloneready.find('#0_AddBtn');
+    addbtn.attr('id', r + '_AddBtn');
+    addbtn.on('mouseenter', function () {
+        $(this).tooltip('show');
+    });
+    addbtn.on('mouseleave click', function () {
+        $(this).tooltip('hide');
+    });
+
+    var deletebtn = cloneready.find('#0_DeleteBtn');
+    deletebtn.attr('id', r + '_DeleteBtn').removeClass("inVisible");
+    deletebtn.on('mouseenter', function () {
+        $(this).tooltip('show');
+    });
+    deletebtn.on('mouseleave click', function () {
+        $(this).tooltip('hide');
+    });
+
+    $('#tbody2').append(cloneready);
+    
+
+    $('#0_AddBtn').on('mouseleave click', function () {
+        $(this).tooltip('hide');
+    });
+
+    var sl = 2;
+    $('#tbody2 th').each(function () {
+        $(this).html(sl);
+        sl += 1;
+    });
+    var ltm = $('#' + r + '_ToLT');
+    //ltm.val(locationtypecombovalue.split(","));
+    ltm.multiselect({
+        templates: {
+            button: '<button id="B' + r + '" type="button" class="multiselect dropdown-toggle btn btn-primary w-100 selectBox" data-bs-toggle="dropdown" aria-expanded="false"><span class="multiselect-selected-text"></span></button>',
+        },
+    });
+    ltm.multiselect('rebuild').multiselect('refresh');
 };
 function FillToLocationComboVirtually(locationtypeid, locationcomboid, locationid,) {
     var locationcombo = $('#' + locationcomboid + '_ToL');
@@ -112,7 +304,13 @@ function cloneEditRows(index) {
     cloneready.find('#0_ToL2X').attr('id', index + '_ToL2X');
     cloneready.find('#0_ToDate2').attr('id', index + '_ToDate2');
     cloneready.find('#0_Driver2').attr('id', index + '_Driver2');
+
     $('#tbody4').append(cloneready);
+    var sl = 2;
+    $('#tbody4 th').each(function () {
+        $(this).html(sl);
+        sl += 1;
+    });
 }
 function ClearBtnClick() {
     $('#BackBtnMsg').setValueToOne();
@@ -168,6 +366,7 @@ function ValidateControl() {
     } else {
         $(target).removeClass('is-valid').addClass('is-invalid');
     }
+    //alert('OK');
     activateSubmitBtn();
 
 };
@@ -206,7 +405,7 @@ function validatectrl(targetid, value) {
 function SaveData() {
     var trippurpose = $('#TripPurpose').val();
     var vehicleno = $('#VehicleNo').val();
-    var notenumber = $('#NoteNumber').val();
+    var notenumber = $('#NoteNumber').val();    
     var schrecords = getSchRecords();
     $.ajax({
         method: 'POST',
@@ -285,6 +484,7 @@ function getSchRecords() {
             ystr = ystr + '_' + $(this).text();
         });
         schrecords.push({
+            'VehicleNo': $('#VehicleNo').val(),
             'FromDate': $('#' + rowid + '_FromDt').val(),
             'FromTime': $('#' + rowid + '_Fromtime').val(),
             'FromCentreTypeCode': $('#' + rowid + '_FromLT').val(),
@@ -336,7 +536,7 @@ function activateSubmitBtn() {
 };
 function AddBtnVirtualClick2(insrowid,locationtypecombovalue) {
     var maxrows = 0;
-    //alert(locationcombovalue);
+    alert(locationcombovalue);
     $('#tbody2 tr').each(function () {
         var maxr = $(this).attr('id')
         if (maxr > maxrows) { maxrows = maxr; }
@@ -459,7 +659,7 @@ function AddBtnVirtualClick(insrowid) {
     cloneready.attr("id", r);
     //var fromdatectrl = cloneready.find('#0_FromDt');
     var curdt = $('#CurDate').val();
-    cloneready.find('#0_FromDt')
+    cloneready.find('#0_FromDt').removeAttr('disabled')
         .attr('id', r + '_FromDt')
         .val(curdt)
         .removeClass('is-invalid')
@@ -484,19 +684,22 @@ function AddBtnVirtualClick(insrowid) {
         $(this).data('DateTimePicker').date(time);
     });
 
-    cloneready.find('#0_Fromtime').attr('id', r + '_Fromtime').val('')
+    cloneready.find('#0_Fromtime').attr('id', r + '_Fromtime').val('').removeAttr('disabled')
         .removeClass('is-valid').addClass('is-invalid').addClass('timePicker');
-    cloneready.find('#0_DriverCmb').attr('id', r + '_DriverCmb');
-    cloneready.find('#0_DriverCmbtxt').attr('id', r + '_DriverCmbtxt');
-    cloneready.find('#0_FromLT').attr('id', r + '_FromLT').removeClass('is-valid').addClass('is-invalid');
-    cloneready.find('#0_FromL').attr('id', r + '_FromL').removeClass('is-valid').addClass('is-invalid');
-    cloneready.find('#0_ToLT').attr('id', r + '_ToLT').removeClass('is-valid').addClass('is-invalid');
+    cloneready.find('#0_DriverCmb').attr('id', r + '_DriverCmb').removeAttr('disabled');
+    cloneready.find('#0_DriverCmbtxt').attr('id', r + '_DriverCmbtxt').removeAttr('disabled');
+    cloneready.find('#0_FromLT').attr('id', r + '_FromLT').removeClass('is-valid')
+        .addClass('is-invalid').removeAttr('disabled');
+    cloneready.find('#0_FromL').attr('id', r + '_FromL').removeClass('is-valid')
+        .addClass('is-invalid').removeAttr('disabled');
+    cloneready.find('#0_ToLT').attr('id', r + '_ToLT').removeClass('is-valid')
+        .addClass('is-invalid').removeAttr('disabled');
     cloneready.find('#B0').remove();
     cloneready.find('.btn-group').remove();
     cloneready.find('#BL0').remove();
-    cloneready.find('#0_ToL').removeClass('is-invalid').addClass('inVisible');
+    cloneready.find('#0_ToL').removeClass('is-invalid').addClass('inVisible').removeAttr('disabled');
     cloneready.find('#M_ToL').attr('id', r + '_ToL')
-        .removeClass('is-valid inVisible').addClass('is-invalid');
+        .removeClass('is-valid inVisible').addClass('is-invalid').removeAttr('disabled');
     cloneready.find('#0_ToDt').attr('id', r + '_ToDt').val('').removeClass('is-valid').addClass('is-invalid');
     //cloanready.find('#0_FromtimeDiv').attr('id', r + '_FromtimeDiv')
     var ftime = cloneready.find('#' + r + '_Fromtime');   
@@ -518,6 +721,7 @@ function AddBtnVirtualClick(insrowid) {
     deletebtn.on('mouseleave click', function () {
         $(this).tooltip('hide');
     });
+    deletebtn.removeAttr('disabled');
 
     if (insrowid == 0) {
         if (maxrows == 0) {
@@ -669,7 +873,7 @@ function SchDateChanged() {
         });
     }
 };
-function FillDriverComboVirtually(rowid) {
+function FillDriverComboVirtually(rowid, mval) {    
     var drivercombo = $('#' + rowid+'_DriverCmb');
     var exDrivername = $('#DriverName').val();
     $.ajax({
@@ -687,9 +891,9 @@ function FillDriverComboVirtually(rowid) {
         }
     });
 };
-function FillLocationComboVirtually(locationtypeid, locationcomboid, locationid, editlocationctrlid) {
+function FillLocationComboVirtually(locationtypeid, locationcomboid, locationid) {
     var locationcombo = $('#' + locationcomboid);
-    var editlocationctrl = $('#' + editlocationctrlid);
+    //var editlocationctrl = $('#' + editlocationctrlid);
     $.ajax({
         url: '/CTV/GetLocationsFromType',
         method: 'GET',
@@ -702,7 +906,7 @@ function FillLocationComboVirtually(locationtypeid, locationcomboid, locationid,
                 locationcombo.append($('<option/>', { value: item.ID, text: item.DisplayText }));
             });
             locationcombo.val(locationid);
-            editlocationctrl.val(locationcombo.find('option:selected').text());
+            //editlocationctrl.val(locationcombo.find('option:selected').text());
         }
     });
 }
@@ -863,7 +1067,10 @@ function getToDate(rowid) {
             if (fromlocation > 0) {
                 if (tolocationtype != '') {
                     if (tolocation != '') {
-                        if (fromlocation == tolocation) {
+                        var fromlocationname = $('#' + rowid + '_FromL option:selected').text();
+                        var tolocationname = $('#' + rowid + '_ToL option:selected').toArray().map(item => item.text).join();
+                        var isx = tolocationname.indexOf(fromlocationname);
+                        if (fromlocation == tolocation || isx>=0) {
                             Swal.fire({
                                 title: 'Warning!',
                                 text: 'Source and destination must be different.',
@@ -969,15 +1176,13 @@ function getToDate(rowid) {
                             }
 
                         }
-
                     }
                 }
             }
         }
     }
     addbtn.attr('disabled', 'disabled');
-    //activateSubmitBtn();
-
+    activateSubmitBtn();
 };
 function DisableCombo() {
     $('#CCOth').val(0).removeClass('is-valid').addClass('is-invalid');

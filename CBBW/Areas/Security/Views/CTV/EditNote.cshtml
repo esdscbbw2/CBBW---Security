@@ -144,7 +144,7 @@
                                     htmlAttributes: new
                                          {
                                              @class = "form-control",
-                                        disabled = "disabled"
+                                        disabled = "disabled",id="vno"
                                          })
                                 </div>
                                 <!--<div class="col-md-6">
@@ -395,5 +395,14 @@
                 window.location.href = url;
             }
         };
+    </script>
+    <script>
+        $(document).ready(function () {
+            var isapp = $('#IsApproved');
+            var appdatetime = $('#ApprovedDateTime');
+            if (isapp.val() == 'False') { isapp.val('No') }
+            else { $('#ReasonForDisApproval').val(''); }
+            if (appdatetime.val() == '01-01-0001 00:00:00') { appdatetime.val('') }
+        });
     </script>
 }

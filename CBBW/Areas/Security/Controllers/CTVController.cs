@@ -38,6 +38,24 @@ namespace CBBW.Areas.Security.Controllers
             user = iUser.getLoggedInUser();
             ViewBag.LogInUser = user.UserName;
         }
+        public ActionResult ViewRedirection(string NoteNumber="",int CBUID=0) 
+        {
+            if (CBUID == 2)
+            {
+                _iUser.RecordCallBack("/Security/CTV/ApprovalLists");
+                return RedirectToAction("ViewNote", new { NoteNumber = NoteNumber, IsDelete = 0 });
+            }
+            else if (CBUID==1) 
+            {
+                _iUser.RecordCallBack("/Security/CTV/ScheduleLists");
+                return RedirectToAction("ViewNote", new { NoteNumber = NoteNumber, IsDelete = 1 });
+            }
+            else
+            {
+                _iUser.RecordCallBack("/Security/CTV/ScheduleLists");
+                return RedirectToAction("ViewNote", new { NoteNumber = NoteNumber, IsDelete = 0 });
+            }
+        }
         public JsonResult BackButtonClicked() 
         {
             string url = _iUser.GetCallBackUrl();
@@ -109,16 +127,19 @@ namespace CBBW.Areas.Security.Controllers
             TempData["CTVHDR"] = model;
             if (Submit == "OVT")
             {
+                _iUser.RecordCallBack("/Security/CTV/EditNote?NoteNumber=" + model.NoteNo);
                 return RedirectToAction("OtherTripSchEdit",
                     new { Area = "Security", NoteNumber = model.NoteNo, CBUID = 5 });
             }
             else if (Submit == "TADARules")
             {
+                _iUser.RecordCallBack("/Security/CTV/EditNote?NoteNumber=" + model.NoteNo);
                 return RedirectToAction("ViewRedirection", "TADARules",
                     new { Area = "Security", CBUID = 5, NoteNumber = model.NoteNo });
             }
             else if (Submit == "TourRule")
             {
+                _iUser.RecordCallBack("/Security/CTV/EditNote?NoteNumber=" + model.NoteNo);
                 return RedirectToAction("ViewRedirection", "TourRule",
                     new { Area = "Security", CBUID = 5, NoteNumber = model.NoteNo });
             }
@@ -204,15 +225,18 @@ namespace CBBW.Areas.Security.Controllers
             TempData["CTVHDR"] = model;
             if (Submit == "OVT")
             {
+                _iUser.RecordCallBack("/Security/CTV/ViewNote?NoteNumber=" + model.NoteNo);
                 return RedirectToAction("OtherTripSchDisplay", new { Area = "Security", NoteNumber = model.NoteNo });
             }
             else if (Submit == "TADARules")
             {
+                _iUser.RecordCallBack("/Security/CTV/ViewNote?NoteNumber=" + model.NoteNo);
                 return RedirectToAction("ViewRedirection", "TADARules", 
                     new { Area = "Security", CBUID = 2, NoteNumber = model.NoteNo });
             }
             else if (Submit == "TourRule")
             {
+                _iUser.RecordCallBack("/Security/CTV/ViewNote?NoteNumber=" + model.NoteNo);
                 return RedirectToAction("ViewRedirection", "TourRule", 
                     new { Area = "Security", CBUID = 2, NoteNumber=model.NoteNo });
             }
@@ -327,16 +351,19 @@ namespace CBBW.Areas.Security.Controllers
             //UserInfo user = getLogInUserInfo();
             if (Submit == "OVT")
             {
+                _iUser.RecordCallBack("/Security/CTV/Approval");
                 return RedirectToAction("OtherTripSchDisplay", 
                     new { Area = "Security", CBUID = 3, NoteNumber = model.NoteNo });
             }
             else if (Submit == "TADARules")
             {
+                _iUser.RecordCallBack("/Security/CTV/Approval");
                 return RedirectToAction("ViewRedirection", "TADARules",
                     new { Area = "Security", CBUID = 3, NoteNumber = model.NoteNo });
             }
             else if (Submit == "TourRule")
             {
+                _iUser.RecordCallBack("/Security/CTV/Approval");
                 return RedirectToAction("ViewRedirection", "TourRule",
                     new { Area = "Security", CBUID = 3, NoteNumber = model.NoteNo });
             }
@@ -376,8 +403,10 @@ namespace CBBW.Areas.Security.Controllers
             }
             return View(model);
         }
-        public ActionResult LocVehTripSch(int CBUID=1,string NoteNumber="") 
-        {            
+        public ActionResult LocVehTripSch(int ShowSaveBtn=0,string NoteNumber="") 
+        {
+            //ViewBag.HeaderText = "VIEW";
+            //if (ShowSaveBtn == 1) { ViewBag.HeaderText = "ENTRY"; }
             TripScheduleHdr obj = new TripScheduleHdr();
             if (TempData["CTVHDR"] != null) 
             { 
@@ -394,27 +423,8 @@ namespace CBBW.Areas.Security.Controllers
 
             model.DriverCodenName = obj.DriverNonName;
             model.LVSchDtl = _iCTV.getLocalVehicleSChedules(model.VehicleNo, model.SCHFromDate, model.SCHToDate, ref pMsg);
-
-            if (CBUID == 1)
-            {
-                model.CallBackUrl= "/Security/CTV/Create";
-                //TempData["LVTScallbackurl"] = "/Security/CTV/Create";
-                model.IsSaveVisible = 1;
-            }
-            else if (CBUID == 2)
-            {
-                model.CallBackUrl= "/Security/CTV/ViewNote?CBUID=2&NoteNumber=" + NoteNumber;
-                //TempData["LVTScallbackurl"] = "/Security/CTV/ViewNote?NoteNumber=" + NoteNumber;
-                model.IsSaveVisible = 0;
-            }
-            else if (CBUID == 3)
-            {
-                TempData["Tourcallbackurl"] = "/Security/CTV/Approval?NoteNumber=" + NoteNumber;
-            }
-            else if (CBUID == 5)
-            {
-                TempData["Tourcallbackurl"] = "/Security/CTV/EditNote?NoteNumber=" + NoteNumber;
-            }
+            model.IsSaveVisible = ShowSaveBtn;
+            
             TempData["mLVTSData"] = model;
             return View(model);
         }
@@ -427,6 +437,7 @@ namespace CBBW.Areas.Security.Controllers
             {
                 obj = TempData["CTVHDR"] as TripScheduleHdr;
                 obj.IsOTSActivated = 1;
+                obj.IsOTSSaved = 1;
                 TempData["CTVHDR"] = obj;
             }
             if (TempData["mLVTSData"] != null)
@@ -435,7 +446,8 @@ namespace CBBW.Areas.Security.Controllers
             }
             string note = obj.NoteNo == null ? "Temp" : obj.NoteNo;
             _iCTV.setLocalTripSchDtls(note, model.LVSchDtl, ref pMsg);
-            return Redirect(model.CallBackUrl);
+            string callbackurl = _iUser.GetCallBackUrl();
+            return Redirect(callbackurl);
         }
         public ActionResult Index()
         {
@@ -490,21 +502,24 @@ namespace CBBW.Areas.Security.Controllers
             TempData["CTVHDR"] = model;
             if (Submit == "OVT")
             {
+                _iUser.RecordCallBack("/Security/CTV/Create");
                 return RedirectToAction("OtherTrip");
             }
             else if (Submit == "TADARules")
             {
+                _iUser.RecordCallBack("/Security/CTV/Create");
                 return RedirectToAction("ViewRedirection", "TADARules", new { Area = "Security", CBUID = 1 });
             }
             else if (Submit == "TourRule") 
             {
+                _iUser.RecordCallBack("/Security/CTV/Create");
                 return RedirectToAction("ViewRedirection", "TourRule", new { Area = "Security", CBUID = 1 });                
             }
             else if (Submit == "LVT")
             {
                 _iUser.RecordCallBack("/Security/CTV/Create");
                 //TempData["CTVHDR"] = model;
-                return RedirectToAction("LocVehTripSch",new { CBUID =1});
+                return RedirectToAction("LocVehTripSch",new { ShowSaveBtn = 1});
             }
             else if (Submit == "LVTSChMat")
             {

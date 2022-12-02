@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.Master;
+using CBBW.BOL.MGP;
 using CBBW.BOL.TADA;
 
 namespace CBBW.DAL.DataSync
@@ -216,6 +217,34 @@ namespace CBBW.DAL.DataSync
                     dr["sDriverName"] = obj.DriverCodenName;
                     dr["sVehicleNo"] = obj.VehicleNumber;
                     dr["bCanSchedule"] = obj.CanSchedule;
+                    UDTable.Rows.Add(dr);
+                }
+            }
+        }
+        public CommonTable(List<MGPReferenceDCDetails> customoptions)
+        {
+            UDTable = new DataTable();
+            UDTable.Columns.Add("sNoteNumber", typeof(string));
+            UDTable.Columns.Add("dNoteDate", typeof(DateTime));
+            UDTable.Columns.Add("iFromLocationCode", typeof(int));
+            UDTable.Columns.Add("sFromLocationText", typeof(string));
+            UDTable.Columns.Add("iToLocationCode", typeof(int));
+            UDTable.Columns.Add("iToLocationText", typeof(string));
+            UDTable.Columns.Add("sVehicleNo", typeof(string));
+            UDTable.Columns.Add("sCheckFound", typeof(string));
+            if (customoptions != null && customoptions.Count > 0)
+            {
+                foreach (MGPReferenceDCDetails obj in customoptions)
+                {
+                    DataRow dr = UDTable.NewRow();
+                    dr["sNoteNumber"] = obj.NoteNumber;
+                    dr["dNoteDate"] = obj.NoteDate;
+                    dr["iFromLocationCode"] = obj.FromLocationCode;
+                    dr["sFromLocationText"] = obj.FromLocationText;
+                    dr["iToLocationCode"] = obj.ToLocationCode;
+                    dr["iToLocationText"] = obj.ToLocationText;
+                    dr["sVehicleNo"] = obj.VehicleNo;
+                    dr["sCheckFound"] = obj.FindOk;
                     UDTable.Rows.Add(dr);
                 }
             }

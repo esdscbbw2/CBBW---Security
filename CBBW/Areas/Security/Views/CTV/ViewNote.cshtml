@@ -6,7 +6,7 @@
 <div class="row newTable">
     @using (Html.BeginForm())
     {
-        @Html.HiddenFor(m=>m.Vehicleno)
+        @Html.HiddenFor(m => m.Vehicleno)
         @Html.HiddenFor(m => m.NoteNo)
         @Html.HiddenFor(m => m.CenterCode)
         @Html.HiddenFor(m => m.CenterName)
@@ -22,26 +22,26 @@
         @Html.HiddenFor(m => m.DriverName)
         @Html.HiddenFor(m => m.DriverNonName)
         @Html.HiddenFor(m => m.TripPurpose)
-        @Html.HiddenFor(m=>m.IsDeleteBtn)
-        @Html.HiddenFor(m=>m.CBUID)
+        @Html.HiddenFor(m => m.IsDeleteBtn)
+        @Html.HiddenFor(m => m.CBUID)
         <div class="col-md-12">
             <div class="heading_text_btn mb-3 mt-4">
                 <div class="leftButton">
                     <button id="btnBack" type="button" class="btn btn-primary me-2"
-                            onclick="window.location.href='@ViewBag.CallBackUrl';">
+                            @*onclick="window.location.href='@ViewBag.CallBackUrl';"*@>
                         <i data-feather="arrow-left-circle"></i>
                         Back
                     </button>
-                    @if (Model.EntryDate == DateTime.Today) 
+                    @if (Model.EntryDate == DateTime.Today)
                     {
                         <button id="btnDelete" type="button" name="Submit" value="Delete"
                                 class="btn btn-primary me-2">
                             <i data-feather="trash-2"></i>
                             Delete
                         </button>
-                    }                    
+                    }
                 </div>
-                <h2 style="text-align: right;">“Company Transport” Vehicle Trip Schedule - Entry</h2>
+                <h2 style="text-align: right;">“Company Transport” Vehicle Trip Schedule - VIEW</h2>
             </div>
         </div>
         <div class="col-md-12 mb-4">
@@ -138,13 +138,16 @@
 
                                 <div class="col-md-4">
                                     @Html.TextBoxFor(m => m.Vehicleno,
-                                    htmlAttributes: new { @class = "form-control", 
-                                        disabled = "disabled" })
+                                    htmlAttributes: new
+                                         {
+                                             @class = "form-control",
+                                        disabled = "disabled"
+                                         })
                                 </div>
                                 <!--<div class="col-md-6">
                                     <div id="divError" class="alert alert-danger alert-dismissible fade show inVisible">-->
-                                        @*<button type="button" class="btn-close" data-bs-dismiss="alert"></button>*@
-                                        <!--<label id="lblError">asd</label>
+                                @*<button type="button" class="btn-close" data-bs-dismiss="alert"></button>*@
+                                <!--<label id="lblError">asd</label>
                                     </div>
                                 </div>-->
                             </div>
@@ -185,8 +188,8 @@
                         </label>
                         <div class="col-md-2">
                             @Html.TextBoxFor(m => m.IsApproved,
-                           htmlAttributes: new {  @class = "form-control canclear", disabled = "disabled" })
-                        
+                           htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })
+
                         </div>
                         <label class="col-form-label col-md-2">
                             Date & Time Approved :
@@ -224,7 +227,7 @@
                         Vehicle Trip Details Entry
                     </button>
                     <button id="btnOVT" type="submit" name="Submit" value="OVT"
-                            class="btn btn-primary" 
+                            class="btn btn-primary"
                             @*onclick="window.location.href='other_trip_schedule_details_entry.html';"*@>
                         Other
                         Trip Schedule - Date Wise Vehicle
@@ -251,13 +254,15 @@
                 <ul style="list-style:none; display: flex; align-items: center; justify-content: center; margin: 0;">
                     <li style="font-size: 18px;">
                         The Entry Is Done As Per Policy &amp; As Required:
-                        <select id="submitConfirmation" disabled="disabled" 
+                        @*<select id="submitConfirmation" disabled="disabled"
                                 style="width:110px"
-                                class="form-select canclear pointer"
+                                class="form-select canclear"
                                 aria-label="Default select example">
-                            <option  value="">-</option>
+                            <option value="">-</option>
                             <option selected value="1">Yes</option>
-                        </select>
+                        </select>*@
+                        <input type="text" disabled="disabled"                              
+                               value="Yes" style="width:50px"/>
                     </li>
                 </ul>
             </div>
@@ -279,77 +284,90 @@
 @section scripts{
     @*<script src="~/UIContent/JS/CustomePage/CTVHdrEntry.js"></script>*@
     @*<script>
+            $(document).ready(function () {
+                //var mymsg = '@ViewBag.ErrMsg';
+                if ('@ViewBag.ErrMsg' != '') {
+                    Swal.fire({
+                        title: 'Failed to submit',
+                        text: "@ViewBag.ErrMsg",
+                        icon: 'warning',
+                        customClass: 'swal-wide',
+                        buttons: {
+                            //cancel: 'Cancel',
+                            confirm: 'Ok'
+                        },
+                        //cancelButtonClass: 'btn-cancel',
+                        confirmButtonColor: '#2527a2',
+                    });
+                };
+                if ('@ViewBag.Msg' != '') {
+                    Swal.fire({
+                        title: 'Confirmation',
+                        text: "@ViewBag.Msg",
+                        icon: 'success',
+                        customClass: 'swal-wide',
+                        buttons: {
+                            confirm: 'Ok'
+                        },
+                        confirmButtonColor: '#2527a2',
+                    }).then(callback);
+                    function callback(result) {
+                        if (result.value) {
+                            var url = "/Security/CTV/ScheduleLists";
+                            window.location.href = url;
+                        }
+                    }
+                };
+            });
+        </script>*@
+    <script>
         $(document).ready(function () {
-            //var mymsg = '@ViewBag.ErrMsg';
-            if ('@ViewBag.ErrMsg' != '') {
+            var deletectrl = $('#btnDelete');
+            if ($('#IsDeleteBtn').val() == 1) { deletectrl.removeClass('inVisible'); } else { deletectrl.addClass('inVisible'); }
+            deletectrl.click(function () {
+                var noteno = $('#NoteNo').val();
                 Swal.fire({
-                    title: 'Failed to submit',
-                    text: "@ViewBag.ErrMsg",
-                    icon: 'warning',
+                    title: 'Delete Confirmation',
+                    text: "Are you sure want to delete this note?",
+                    icon: 'question',
                     customClass: 'swal-wide',
-                    buttons: {
-                        //cancel: 'Cancel',
-                        confirm: 'Ok'
-                    },
-                    //cancelButtonClass: 'btn-cancel',
+                    //buttons: {
+                    //    cancel: "No",
+                    //    confirm: "Yes"
+                    //},
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                    cancelButtonClass: 'btn-cancel',
                     confirmButtonColor: '#2527a2',
-                });
-            };
-            if ('@ViewBag.Msg' != '') {
-                Swal.fire({
-                    title: 'Confirmation',
-                    text: "@ViewBag.Msg",
-                    icon: 'success',
-                    customClass: 'swal-wide',
-                    buttons: {
-                        confirm: 'Ok'
-                    },
-                    confirmButtonColor: '#2527a2',
+                    showCancelButton: true,
                 }).then(callback);
                 function callback(result) {
                     if (result.value) {
-                        var url = "/Security/CTV/ScheduleLists";
+                        var mid = $('#ID').val();
+                        var url = "/Security/CTV/DeleteTripSchedule?NoteNumber=" + noteno;
                         window.location.href = url;
+                    } else {
+                        // second variant
                     }
                 }
-            };
+            });
+            var isapp = $('#IsApproved');
+            var appdatetime = $('#ApprovedDateTime');
+            if (isapp.val() == 'False')
+            { isapp.val('No') }
+            else { $('#ReasonForDisApproval').val(''); }
+            if (appdatetime.val() == '01-01-0001 00:00:00') { appdatetime.val('') }
         });
-    </script>*@
-<script>
-    $(document).ready(function () {
-        var deletectrl = $('#btnDelete');
-        if ($('#IsDeleteBtn').val() == 1) { deletectrl.removeClass('inVisible'); } else { deletectrl.addClass('inVisible'); }
-        deletectrl.click(function () {
-            var noteno = $('#NoteNo').val();
-            Swal.fire({
-                title: 'Delete Confirmation',
-                text: "Are you sure want to delete this note?",
-                icon: 'question',
-                customClass: 'swal-wide',
-                //buttons: {
-                //    cancel: "No",
-                //    confirm: "Yes"
-                //},
-                confirmButtonText: "Yes",
-                cancelButtonText: "No",
-                cancelButtonClass: 'btn-cancel',
-                confirmButtonColor: '#2527a2',
-                showCancelButton: true,
-            }).then(callback);
-            function callback(result) {
-                if (result.value) {
-                    var mid = $('#ID').val();
-                    var url = "/Security/CTV/DeleteTripSchedule?NoteNumber=" + noteno;
-                    window.location.href = url;
-                } else {
-                    // second variant
-                }
-            }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#btnBack').click(function () {
+                $.ajax({
+                    url: "/Security/CTV/BackButtonClicked",
+                    success: function (result) { window.location.href = result; }
+                });
+
+            });
         });
-        var isapp = $('#IsApproved');
-        var appdatetime = $('#ApprovedDateTime');
-        if (isapp.val() == 'False') { isapp.val('No') }
-        if (appdatetime.val() == '01-01-0001 00:00:00') { appdatetime.val('') }
-    });
-</script>
+    </script>
 }

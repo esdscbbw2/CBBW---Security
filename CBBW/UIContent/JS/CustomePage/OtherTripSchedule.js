@@ -6,7 +6,142 @@ $.fn.setValueToZero = function () {
     var that = this;
     that.val('0');
 };
-function getInitialData() {
+async function ChangeFromLocationType(index, locationtypeid, locationid) {
+    var locationcombo = $('#' + index + '_FromL');
+    const response = await $.ajax({
+        url: '/CTV/GetLocationsFromType',
+        method: 'GET',
+        data: { TypeID: locationtypeid },
+        dataType: 'json',
+        success: function (data) {
+            locationcombo.empty();
+            locationcombo.append($('<option/>', { value: "-1", text: "Select location" }));
+            $(data).each(function (index, item) {
+                locationcombo.append($('<option/>', { value: item.ID, text: item.DisplayText }));
+            });
+            locationcombo.val(locationid).removeClass('is-invalid').addClass('is-valid');
+            //alert(locationid);
+        }
+    });
+    return response;
+}
+async function ChangeToLocationType(index, locationtypeid, locationid) {
+    var i = locationid.indexOf(',');
+    //alert(i);
+    var locationcombo = $('#' + index + '_ToL');
+    const response = await $.ajax({
+        url: '/CTV/GetToLocationsFromType',
+        method: 'GET',
+        data: { TypeIDs: locationtypeid },
+        dataType: 'json',
+        success: function (data) {
+            locationcombo.empty();
+            locationcombo.append($('<option/>', { value: "-1", text: "Select location" }));
+            $(data).each(function (index, item) {
+                locationcombo.append($('<option/>', { value: item.ID, text: item.DisplayText }));
+            });
+            locationcombo.attr('multiple', 'multiple');
+            locationcombo.find('.btn-group').remove();
+            locationcombo.multiselect({
+                templates: {
+                    button: '<button id="BL' + index + '" type="button" class="multiselect dropdown-toggle btn btn-primary w-100 selectBox" data-bs-toggle="dropdown" aria-expanded="false"><span class="multiselect-selected-text"></span></button>',
+                }, enableFiltering: true,
+            });
+            locationcombo.multiselect();
+            locationcombo.multiselect('clearSelection');
+            if (i > 0) {
+                locationcombo.val(locationid.split(','));
+            } else {
+                locationcombo.val(locationid);
+            }
+
+            locationcombo.multiselect('refresh');
+
+
+            //editlocationctrl.val(locationcombo.find('option:selected').text());
+        }
+    });
+
+    return response;
+}
+function getInitialData() {    
+    var notenumber = $('#NoteNumber').val();
+    var drivercnn = $('#DriverCode').val() + ' / ' + $('#DriverName').val();
+    $.ajax({
+        url: '/CTV/getOTVSChDetailData',
+        method: 'GET',
+        data: { Notenumber: notenumber },
+        dataType: 'json',
+        success: function (data) {
+            $(data).each(function (index, item) {
+                $('#TripPurpose').val(item.TripPurpose);
+                if (index > 0) { cloneEditRows(index); }
+                $('#' + index + '_FromDate2').val(item.FromDateStr);
+                $('#' + index + '_FromTime2').val(item.FromTime);
+                $('#' + index + '_FromLT2').val(item.FromCenterTypeCode + ' / ' + item.FromCenterTypeName);
+                $('#' + index + '_FromL2').val(item.FromCentreCode + ' / ' + item.FromCenterName);
+                $('#' + index + '_ToLT2').val(item.ToCenterTypeName);
+                $('#' + index + '_ToDate2').val(item.ToDateStr);
+                $('#' + index + '_Driver2').val(drivercnn);
+                $('#' + index + '_ToL2X').val(item.ToCenterName);
+                if (index >= 1) { AddBtnVirtualClick3(index); }
+
+                var fromdtctrl = $('#' + index + '_FromDt');
+                var fromtimectrl = $('#' + index + '_Fromtime');
+                var fromltctrl = $('#' + index + '_FromLT');
+                var toltctrl = $('#' + index + '_ToLT');
+                var fromlctrl = $('#' + index + '_FromL');
+                var tolctrl = $('#' + index + '_ToL');
+                var drivercombo = $('#' + index + '_DriverCmb');
+                var drivercombotxt = $('#' + index + '_DriverCmbtxt');
+                var addbtn = $('#' + index + '_AddBtn');
+                var deletebtn = $('#' + index + '_DeleteBtn');
+
+                fromdtctrl.val(item.FromDateStrYMD);
+                fromtimectrl.val(item.FromTime).removeClass('is-invalid').addClass('is-valid');
+                fromltctrl.val(item.FromCenterTypeCode).removeClass('is-invalid').addClass('is-valid');
+                toltctrl.val(item.ToCentreTypeCodes.split(',')).removeClass('is-invalid').addClass('is-valid').multiselect('refresh');
+                $('#' + index + '_ToDt').val(item.ToDateStr)
+                    .removeClass('is-invalid').addClass('is-valid');
+
+                (async function () {
+                    const r1 = await ChangeFromLocationType(index, item.FromCenterTypeCode, item.FromCentreCode);
+                    const r2 = await ChangeToLocationType(index, item.ToCentreTypeCodes, item.ToCentreCodes);
+                    //const r3 = await ChangeDriverCombo(index, item.EditDriverNo, item.EditDriverName);
+                })();
+
+                //alert(item.IsActivetoEdit);
+                if (item.IsActivetoEdit == 0) {
+                    fromdtctrl.attr('disabled', 'disabled');
+                    fromtimectrl.attr('disabled', 'disabled');
+                    fromltctrl.attr('disabled', 'disabled');
+                    toltctrl.attr('disabled', 'disabled');
+                    fromlctrl.attr('disabled', 'disabled');
+                    tolctrl.attr('disabled', 'disabled');
+                    drivercombo.attr('disabled', 'disabled');
+                    drivercombotxt.attr('disabled', 'disabled');
+                    addbtn.attr('disabled', 'disabled');
+                    deletebtn.attr('disabled', 'disabled');
+                }
+                else {
+                    fromdtctrl.removeAttr('disabled', 'disabled');
+                    fromtimectrl.removeAttr('disabled', 'disabled');
+                    fromltctrl.removeAttr('disabled', 'disabled');
+                    toltctrl.removeAttr('disabled', 'disabled');
+                    fromlctrl.removeAttr('disabled', 'disabled');
+                    tolctrl.removeAttr('disabled', 'disabled');
+                    drivercombo.removeAttr('disabled', 'disabled');
+                    drivercombotxt.removeAttr('disabled', 'disabled');
+                    addbtn.removeAttr('disabled', 'disabled');
+                    deletebtn.removeAttr('disabled', 'disabled');
+                }
+
+            });
+        }
+    });
+
+};
+function getInitialData2() {
     //alert("ok");
     var notenumber = $('#NoteNumber').val();
     var drivercnn = $('#DriverCode').val() + ' / ' + $('#DriverName').val();
@@ -271,8 +406,7 @@ function isOtherPlaceButtonEnabled() {
 };
 function activateSubmitBtn() {
     //alert($('.is-invalid').length);
-    //isOtherPlaceButtonEnabled();
-    
+    //isOtherPlaceButtonEnabled();    
     var btnSubmit = $('#btnSubmit');
     if ($('.is-invalid').length > 0) {
         btnSubmit.attr('disabled', 'disabled');
@@ -420,7 +554,7 @@ function removeBtnClick() {
     });
     activateSubmitBtn();
     return false;
-}
+};
 function ChangeLocation() {
     var target = ChangeLocation.caller.arguments[0].target;
     var targetid = $(target).attr('id');
@@ -698,6 +832,10 @@ function getToDate(rowid) {
     var fromDate = $('#' + rowid + '_FromDt').val();
     var fromTime = $('#' + rowid + '_Fromtime').val();
     var todateCtrl = $('#' + rowid + '_ToDt');
+    var fromlocationname = $('#' + rowid + '_FromL option:selected').text();
+    var tolocationname = $('#' + rowid + '_ToL option:selected').toArray().map(item => item.text).join();
+
+    //var tolocationname = $('#' + rowid + '_ToL').attr('text');
     //addbtn.removeAttr('disabled').Attr('disabled', 'disabled');
     //alert('ok');
     //--converting comma separeted to _ separated.
@@ -708,18 +846,19 @@ function getToDate(rowid) {
     var y = '';
     $('#' + rowid + '_ToL option:selected').each(function () {
         y = y + '_' + $(this).val();
-    });
-    
+    });    
     todateCtrl.val('').removeClass('is-valid').addClass('is-invalid');
     if (fromDate != '') {
         if (fromTime != '') {
             if (fromlocation > 0) {
                 if (tolocationtype != '') {                    
-                    if (tolocation !='') {
-                        if (fromlocation == tolocation) {
+                    if (tolocation != '') {
+                        var isx = tolocationname.indexOf(fromlocationname);
+                        //alert(isx);
+                        if (fromlocation == tolocation || isx>=0) {
                             Swal.fire({
                                 title: 'Warning!',
-                                text: 'Source and destination must be different.',
+                                text: 'Source And Destination Must Be Different.',
                                 icon: 'warning',
                                 customClass: 'swal-wide',
                                 buttons: {
@@ -829,7 +968,7 @@ function getToDate(rowid) {
         }
     }
     addbtn.attr('disabled', 'disabled');
-    //activateSubmitBtn();
+    activateSubmitBtn();
     
 };
 function DisableCombo() {

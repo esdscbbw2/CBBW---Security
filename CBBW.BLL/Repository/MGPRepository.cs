@@ -21,7 +21,7 @@ namespace CBBW.BLL.Repository
             return _MGPEntities.getApprovedNoteNumbers(Centercode, ref pMsg);
         }
 
-        public List<MGPMatOut> getMGPOutDetails(string NoteNumber, ref string pMsg)
+        public List<MGPOutInDetails> getMGPOutDetails(string NoteNumber, ref string pMsg)
         {
            return _MGPEntities.getMGPOutDetails(NoteNumber, ref pMsg);
         }
@@ -30,5 +30,37 @@ namespace CBBW.BLL.Repository
         {
             return _MGPEntities.getRFIDCards(ref pMsg);
         }
+
+        // Getting data for Out details in Item Wise Details using NoteNo(For New Data insert)
+        public List<MGPItemWiseDetails> getItemWiseDetails(string NoteNumber, ref string pMsg)
+        {
+            return _MGPEntities.getItemWiseDetails(NoteNumber, ref pMsg);
+        }
+        // Getting data for Out details in Reference DC Details using NoteNo(For New Data insert)
+        public List<MGPReferenceDCDetails> getReferenceDCDetails(string VehicleNo, DateTime FromDT, DateTime ToDT, ref string pMsg)
+        {
+            return _MGPEntities.getReferenceDCDetails( VehicleNo,  FromDT,  ToDT, ref pMsg);
+        }
+        public List<MGPVehicleOutDetails> getSchDtlsForMGP(string NoteNumber, ref string pMsg)
+        {
+            return _MGPEntities.getSchDtlsForMGP( NoteNumber, ref  pMsg);
+        }
+
+
+        public List<MGPHistoryDCDetails> getMGPHistoryDCDetails(long ID, ref string pMsg)
+        {
+            return _MGPEntities.getMGPHistoryDCDetails(ID, ref pMsg);
+        }
+
+        public bool setMGPOutDetails(MGPOutSave mgpouthdr, List<MGPReferenceDCDetails> mgprefdcdetails, ref string pMsg)
+        {
+            return _MGPEntities.setMGPOutDetails(mgpouthdr, mgprefdcdetails, ref pMsg);
+        }
+
+        public bool spUpdateOutDetailsflag(string NoteNumber, long ID, ref string pMsg)
+        {
+            return _MGPEntities.spUpdateOutDetailsflag(NoteNumber, ID, ref pMsg);
+        }
+
     }
 }

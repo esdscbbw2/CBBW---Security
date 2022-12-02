@@ -13,32 +13,41 @@ namespace CBBW.Areas.Security.Controllers
 {
     public class TADARulesController : Controller
     {
+        IUserRepository _iUser;
         ITADARulesRepository _iTADARules;
         string pMsg;
-        public TADARulesController(ITADARulesRepository iTADARule)
+        public TADARulesController(ITADARulesRepository iTADARule, IUserRepository iUser)
         {
             _iTADARules = iTADARule;
+            _iUser = iUser;
             pMsg = "";
+        }
+        public JsonResult BackButtonClicked()
+        {
+            string url = _iUser.GetCallBackUrl();
+            if (string.IsNullOrEmpty(url)) { url = "/Security/TADARules/Index"; }
+            return Json(url, JsonRequestBehavior.AllowGet);
         }
         public ActionResult ViewRedirection(int CBUID, string NoteNumber = "") 
         {
             //string callbackurl = "";
-            if (CBUID == 1)
-            {
-                TempData["Tadacallbackurl"] = "/Security/CTV/Create";
-            }
-            else if (CBUID == 2) 
-            {
-                TempData["Tadacallbackurl"] = "/Security/CTV/ViewNote?CBUID=2&NoteNumber=" + NoteNumber;
-            }
-            else if (CBUID == 3)
-            {
-                TempData["Tadacallbackurl"] = "/Security/CTV/Approval?NoteNumber=" + NoteNumber;
-            }
-            else if (CBUID == 5)
-            {
-                TempData["Tadacallbackurl"] = "/Security/CTV/EditNote?NoteNumber=" + NoteNumber;
-            }
+            //if (CBUID == 1)
+            //{
+            //    TempData["Tadacallbackurl"] = "/Security/CTV/Create";
+            //}
+            //else if (CBUID == 2) 
+            //{
+            //    TempData["Tadacallbackurl"] = "/Security/CTV/ViewNote?CBUID=2&NoteNumber=" + NoteNumber;
+            //}
+            //else if (CBUID == 3)
+            //{
+            //    TempData["Tadacallbackurl"] = "/Security/CTV/Approval?NoteNumber=" + NoteNumber;
+            //}
+            //else if (CBUID == 5)
+            //{
+            //    TempData["Tadacallbackurl"] = "/Security/CTV/EditNote?NoteNumber=" + NoteNumber;
+            //}
+
             int RuleID = _iTADARules.GetAffectedRuleID(ref pMsg);
 
             return RedirectToAction("ViewRule", new { id = RuleID, isDelete = false });

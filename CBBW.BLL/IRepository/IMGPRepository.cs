@@ -10,7 +10,20 @@ namespace CBBW.BLL.IRepository
     public interface IMGPRepository
     {
         IEnumerable<MGPNotes> getApprovedNoteNumbers(int Centercode, ref string pMsg);
-        List<MGPMatOut> getMGPOutDetails(string NoteNumber, ref string pMsg);
+        List<MGPOutInDetails> getMGPOutDetails(string NoteNumber, ref string pMsg);
         List<RFID> getRFIDCards(ref string pMsg);
+
+        // Getting data for Out details in Item Wise Details using NoteNo(For New Data insert)
+        List<MGPItemWiseDetails> getItemWiseDetails(string NoteNumber, ref string pMsg);
+
+        // Getting data for Out details in Reference DC Details using NoteNo(For New Data insert)
+        List<MGPReferenceDCDetails> getReferenceDCDetails(string VehicleNo, DateTime FromDT, DateTime ToDT, ref string pMsg);
+
+        List<MGPVehicleOutDetails> getSchDtlsForMGP(string NoteNumber, ref string pMsg);
+
+        List<MGPHistoryDCDetails> getMGPHistoryDCDetails(long ID, ref string pMsg);
+
+        bool setMGPOutDetails(MGPOutSave mgpouthdr, List<MGPReferenceDCDetails> mgprefdcdetails, ref string pMsg);
+        bool spUpdateOutDetailsflag(string NoteNumber, long ID, ref string pMsg);
     }
 }

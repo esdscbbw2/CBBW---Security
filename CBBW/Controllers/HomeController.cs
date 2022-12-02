@@ -33,6 +33,7 @@ namespace CBBW.Controllers
         {
             _iUser = iuserrepo;
             pMsg = "";
+            _iUser.ClearCallBackRecording();
         }
         public ActionResult LogIn() 
         {
