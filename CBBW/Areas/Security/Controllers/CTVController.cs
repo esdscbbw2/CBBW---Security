@@ -445,9 +445,8 @@ namespace CBBW.Areas.Security.Controllers
                 model = TempData["mLVTSData"] as LocalVehicleTripScheduleVM;
             }
             string note = obj.NoteNo == null ? "Temp" : obj.NoteNo;
-            _iCTV.setLocalTripSchDtls(note, model.LVSchDtl, ref pMsg);
-            string callbackurl = _iUser.GetCallBackUrl();
-            return Redirect(callbackurl);
+            _iCTV.setLocalTripSchDtls(note, model.LVSchDtl, ref pMsg);           
+            return Redirect(_iUser.GetCallBackUrl());
         }
         public ActionResult Index()
         {

@@ -45,10 +45,11 @@
                 }
                 
                 $("#" + index + "_NotNos").val(item.NoteNumber);
-                $("#" + index + "_DrivernNo").html(item.Drivername + "/" + item.DriverNo);//Display Only
+                $("#" + index + "_DrivernNo").html(item.DriverNo + "/" + item.Drivername);//Display Only
                 $("#" + index + "_DriverName").val(item.Drivername);
                 $("#" + index + "_DriverNo").val(item.DriverNo);
                 $("#" + index + "_VehicleNo").val(item.VehicleNumber);
+               
                 $("#" + index + "_DesgCodeName").html(item.DesignationCode + "/" + item.DesignationName);//Display only          
                 $("#" + index + "_DesgCode").val(item.DesignationCode);
                 $("#" + index + "_DesgName").val(item.DesignationName);
@@ -65,7 +66,7 @@
                 }
 
                 $("#" + index + "_CarryOut").val(item.CarryingOutMat);
-                $("#" + index + "_LoadM").html(item.LoadPercentage);//Display only
+                $("#" + index + "_LoadM").html(item.LoadPercentage+" %");//Display only
                 $("#" + index + "_LoadMat").val(item.LoadPercentage);
 
                 $("#" + index + "_RFIDs").val(item.RFIDCard).html('<select id="' + index + '_RFID" class="form-select pointer is-invalid" onchange="SelectedRFIDValid();ValidateControl()"  aria-label="Default select example"></select>');
@@ -78,14 +79,43 @@
                 $("#" + index + "_KM").html(item.KMOUT);//Display Only
                 $("#" + index + "_KMOut").val(item.KMOUT);
                 $("#" + index + "_OutRemarks").val(item.OutRemarks).html('<input id="' + index + '_OutRemark" type="text" class="form-control">');
-                $("#" + index + "_Action").html('<span class="actionBtn d-block"><button type="button" onclick="OnclickNewDCDetails(this)"  id="' + item.VehicleNumber + '" data-value="' + item.SchFromDatestr + '"   class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Details" data-placement="top" title="" data-bs-original-title="Pending"> <svg xmlns=http://www.w3.org/2000/svg width=24 height=24 viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round class="feather feather-alert-triangle"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1=12 y1=9 x2=12 y2=13></line><line x1=12 y1=17 x2=12.01 y2=17></line></svg></button>');
-               
+               // $("#" + index + "_ActionDCNew").html('<span class="actionBtn d-block"><button type="button" onclick="OnclickNewDCDetails(this)"  id="' + item.VehicleNumber + '" data-value="' + item.SchFromDatestr + '"   class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Details" data-placement="top" title="" data-bs-original-title="Pending"> <svg xmlns=http://www.w3.org/2000/svg width=24 height=24 viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round class="feather feather-alert-triangle"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1=12 y1=9 x2=12 y2=13></line><line x1=12 y1=17 x2=12.01 y2=17></line></svg></button>');
+                if (item.CarryingOutMat == true) {
+                   
+                    $("#" + index + "_ActionDCNew").html('<span class="actionBtn d-block"><button type="button" onclick="OnclickNewDCDetails(this)"  id="' + item.VehicleNumber + '" data-value="' + item.SchFromDatestr + '"   class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Details" data-placement="top" title="" data-bs-original-title="Pending"> <svg xmlns=http://www.w3.org/2000/svg width=24 height=24 viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round class="feather feather-alert-triangle"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1=12 y1=9 x2=12 y2=13></line><line x1=12 y1=17 x2=12.01 y2=17></line></svg></button>');
+                } else
+                {
+                  
+                    $("#" + index + "_ActionDCNew").html('<span class="actionBtn d-block"><button type="button" onclick="DataNotAvailble(this)"  id="' + item.VehicleNumber + '" data-value="' + item.SchFromDatestr + '"   class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Details" data-placement="top" title="" data-bs-original-title="Pending"> <svg xmlns=http://www.w3.org/2000/svg width=24 height=24 viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round class="feather feather-alert-triangle"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1=12 y1=9 x2=12 y2=13></line><line x1=12 y1=17 x2=12.01 y2=17></line></svg></button>');
+                }
+                
             })
+           
             GetRFIDCardNos();
         }
     });
 
 });
+
+function DataNotAvailble(ctrl) {
+    $('#tbody2').empty();
+    
+    $("#savebtndisable").removeClass('is-invalid').addClass('is-valid');
+   // var target = DataNotAvailble.caller.arguments[0].target;
+    //var targetval = target.attr('data-value');
+    Swal.fire({
+        title: 'Confirmation',
+        text: 'DC Details Not availble for this Note Number.',
+        icon: 'success',
+        customClass: 'swal-wide',
+        buttons: {
+            confirm: 'Ok'
+        },
+        confirmButtonColor: '#2527a2',
+    })
+    $('#tbody1').addClass('inVisible');
+    ValidateControl();
+};
 function GetRFIDCardNos() {
     
     //var targets = ChangeRFID.caller.arguments[0].target;
@@ -115,6 +145,12 @@ function GetRFIDCardNos() {
 
 //for new Dc details
 function OnclickNewDCDetails(ctrl) {
+    $("#savebtndisable").removeClass('is-valid').addClass('is-invalid');
+    $("#savebtndisable").removeClass('is-invalid').addClass('is-valid');
+    
+
+    $('#tbody1').removeClass('inVisible');
+
     $('#tbody2').empty();
     var targetid = $(ctrl).attr("id");
     var targetval = $(ctrl).attr('data-value');
@@ -125,63 +161,85 @@ function OnclickNewDCDetails(ctrl) {
         // data: { VehicleNo: targetid, FromDT: targetval },
         dataType: 'json',
         success: function (data) {
+         
+            $('#tbody2').empty();
             $(data).each(function (index, item) {
                 if (index > 0) {
                     var cloneready = $('#tbody1').find('tr').clone();
                     cloneready.attr("id", index);
                     cloneready.find('td').find('#0_NotNo').attr('id', index + '_NotNo');
-                    cloneready.find('td').find('#0_Date').attr('id', index + '_Date');
-                    cloneready.find('td').find('#0_Frmloc').attr('id', index + '_Frmloc');
-                    cloneready.find('td').find('#0_Tolocation').attr('id', index + '_Tolocation');
-                    cloneready.find('td').find('#0_fok').attr('id', index + '_fok');
-                    cloneready.find('td').find('#0_Actions').attr('id', index + '_Actions');
+                    cloneready.find('td').find('#0_NotNumber').attr('id', index + '_NotNumber');
+                    cloneready.find('td').find('#0_NotesDate').attr('id', index + '_NotesDate');
+                    cloneready.find('td').find('#0_fromloc').attr('id', index + '_fromloc');
+                    cloneready.find('td').find('#0_tonloc').attr('id', index + '_tonloc');
+                    cloneready.find('td').find('#0_fokdiv').attr('id', index + '_fokdiv');
+                   // cloneready.find('td').find('#0_Actions').attr('id', index + '_Actions');
                     $('#tbody2').append(cloneready);
                 }
-                $("#" + index + "_NotNo").val(item.NoteNumber);
-                $("#" + index + "_Date").val(item.NoteDatestr);
-                $("#" + index + "_Frmloc").val(item.FromLocationText);
-                $("#" + index + "_Tolocation").val(item.ToLocationText);
-                $("#" + index + "_fok").val(item.FindOk).html('<option value="NA">-</option><option value="Yes">Yes</option><option value="No">No</option>');
-
+                $("#" + index + "_NotNumber").val(item.NoteNumber).html('<input id="' + index + '_NotNo" value="' + item.NoteNumber+'" type="text" disabled="disabled"class="form-control">');
+                $("#" + index + "_NotesDate").val(item.NoteDatestr).html('<input id="' + index + '_Date" value="' + item.NoteDatestr +'" type="text" disabled="disabled" class="form-control">');
+                $("#" + index + "_fromloc").val(item.FromLocationText).html('<input id="' + index + '_Frmloc" value="' + item.FromLocationText +'" type="text" disabled="disabled" class="form-control">');
+                $("#" + index + "_tonloc").val(item.ToLocationText).html('<input id="' + index + '_Tolocation" value="' + item.ToLocationText +'" type="text" disabled="disabled"  class="form-control">');
+                $("#" + index + "_fokdiv").val(item.FindOk).html('<select id="' + index + '_fok"  value="' + item.FindOk +'" class="form-select pointer is-invalid" onchange="ValidateControl()" aria-label="Default select example"><option value="NA">-</option><option value="Yes">Yes</option><option value="No">No</option></select>');
+                
                 //$("#" + index + "_Action").html('<button type="button" onclick="Detailsclick()"  id="' + index + '_btn" value="' + item.NoteNumber + '"  class="btn primaryLink" data-toggle="tooltip" data-placement="top"title="Details">Details</button>');
-                $("#" + index + "_Actions").html('<button type="button" onclick="Detailsclick(this)"  id="' + index + '_btn" data-value="' + item.NoteNumber + '"   class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Details"> <svg xmlns=http://www.w3.org/2000/svg width=24 height=24 viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx=12 cy=12 r=3></circle></svg></button>');
+                $("#" + index + "_ActionItem").html('<button type="button" onclick="Detailsclick(this)"  id="' + index + '_btn" data-value="' + item.NoteNumber + '"   class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Details"> <svg xmlns=http://www.w3.org/2000/svg width=24 height=24 viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx=12 cy=12 r=3></circle></svg></button>');
             })
+            ValidateControl();
         }
     });
 }
 //for Existing Dc details
 function OnclickHistoryDCDetails(ctrl) {
+    $("#savebtndisable").removeClass('is-invalid').addClass('is-valid');
+    $("#savebtndisable").removeClass('is-valid').addClass('is-invalid');
+    $('#tbody1').removeClass('inVisible');
+    $('#tbody2').empty();
     var target = OnclickHistoryDCDetails.caller.arguments[0].target;
     var targetval = $(ctrl).attr('data-value');
-
-
     $.ajax({
         url: '/MaterialGatePass/GetHistoryDCDetails',
         method: 'GET',
         data: { ID: targetval },
         dataType: 'json',
         success: function (data) {
-            $(data).each(function (index, item) {
+            if (data != "") {
+                $(data).each(function (index, item) {
 
-                if (index > 0) {
-                    var cloneready = $('#tbody1').find('tr').clone();
-                    cloneready.find('td').find('#0_NotNo').attr('id', index + '_NotNo');
-                    cloneready.find('td').find('#0_Date').attr('id', index + '_Date');
-                    cloneready.find('td').find('#0_Frmloc').attr('id', index + '_Frmloc');
-                    cloneready.find('td').find('#0_Toloc').attr('id', index + '_Toloc');
-                    cloneready.find('td').find('#0_fok').attr('id', index + '_fok');
-                    cloneready.find('td').find('#0_Action').attr('id', index + '_Action');
-                    $('#tbody2').append(cloneready);
-                }
-                $("#" + index + "_NotNo").val(item.NoteNumber);
-                $("#" + index + "_Date").val(item.NoteDatestr);
-                $("#" + index + "_Frmloc").val(item.FromLocationText);
-                $("#" + index + "_Toloc").val(item.ToLocationText);
-                $("#" + index + "_fok").val(item.CheckFound);
+                    if (index > 0) {
+                        var cloneready = $('#tbody1').find('tr').clone();
+                        cloneready.find('td').find('#0_NotNumber').attr('id', index + '_NotNumber');
+                        cloneready.find('td').find('#0_NotesDate').attr('id', index + '_NotesDate');
+                        cloneready.find('td').find('#0_fromloc').attr('id', index + '_fromloc');
+                        cloneready.find('td').find('#0_tonloc').attr('id', index + '_tonloc');
+                        cloneready.find('td').find('#0_fokdiv').attr('id', index + '_fokdiv');
+                        //cloneready.find('td').find('#0_Action').attr('id', index + '_Action');
+                        $('#tbody2').append(cloneready);
+                    }
+                    $("#" + index + "_NotNumber").html(item.NoteNumber);
+                    $("#" + index + "_NotesDate").html(item.NoteDatestr);
+                    $("#" + index + "_fromloc").html(item.FromLocationText);
+                    $("#" + index + "_tonloc").html(item.ToLocationText);
+                    $("#" + index + "_fokdiv").html(item.CheckFound);
 
-                //$("#" + index + "_Action").html('<button type="button" onclick="Detailsclick()"  id="' + index + '_btn" value="' + item.NoteNumber + '"  class="btn primaryLink" data-toggle="tooltip" data-placement="top"title="Details">Details</button>');
-                $("#" + index + "_Action").html('<button type="button" onclick="Detailsclick()"  id="' + index + '_btn" value="' + item.NoteNumber + '"   class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Details"><i data-feather="eye"></i></button>');
-            })
+                    //$("#" + index + "_Action").html('<button type="button" onclick="Detailsclick()"  id="' + index + '_btn" value="' + item.NoteNumber + '"  class="btn primaryLink" data-toggle="tooltip" data-placement="top"title="Details">Details</button>');
+                    $("#" + index + "_ActionItem").html('<button type="button" onclick="Detailsclick()"  id="' + index + '_btn" value="' + item.NoteNumber + '"   class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Details"><svg xmlns=http://www.w3.org/2000/svg width=24 height=24 viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx=12 cy=12 r=3></circle></svg></button>');
+                })
+            } else {
+                Swal.fire({
+                    title: 'Confirmation',
+                    text: 'DC Details Not availble for this Note Number.',
+                    icon: 'success',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        confirm: 'Ok'
+                    },
+                    confirmButtonColor: '#2527a2',
+
+                })
+                $('#tbody1').addClass('inVisible');
+            }
+            ValidateControl();
         }
     });
 
@@ -267,7 +325,7 @@ function getVechCurrentOutRecords() {
 };
 //Get DC details on save click
 function SaveData() {
-    
+    //if()
      var dcrecords = getDCRecords();
     var currentOutrecord = getVechCurrentOutRecords();
    //alert(JSON.stringify(currentOutrecord));
@@ -343,7 +401,7 @@ function ValidateControl() {
     var targetid = $(target).attr('id');
     //alert(targetid);
     var isvalid = true;//validatectrl(targetid, $(target).val());
-   
+
     if (isvalid) {
         $(target).removeClass('is-invalid').addClass('is-valid');
     } else {
@@ -352,6 +410,3 @@ function ValidateControl() {
     activateSubmitBtn();
 
 };
-
-
-

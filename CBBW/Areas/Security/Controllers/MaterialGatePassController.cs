@@ -25,22 +25,12 @@ namespace CBBW.Areas.Security.Controllers
             _IMGP = IMGP;
             _ICTV = ICTV;
             pMsg = "";
-            //mNoteNumber = "200001-CTV-20221125-00014";
+            mNoteNumber = "200001-CTV-20221125-00014";
             btnactive = false;
-            //iUser.LogIn("praveen", ref pMsg);
+            iUser.LogIn("praveen", ref pMsg);
             user = iUser.getLoggedInUser();
-            ViewBag.LogInUser = user.UserName;
         }
-        //private UserInfo getLogInUserInfo()
-        //{
-        //    UserInfo user = new UserInfo(true);
-        //    if (TempData["LogInUser"] != null)
-        //    {
-        //        user = TempData["LogInUser"] as UserInfo;
-        //    }
-        //    TempData["LogInUser"] = user;
-        //    return user;
-        //}
+        
         // GET: Security/MaterialGatePass
         public ActionResult Index()
         {
@@ -56,10 +46,7 @@ namespace CBBW.Areas.Security.Controllers
                 {
                     model = TempData["MGPVM"] as MGPNotes;
                 }
-                else {
-                    
-                    
-                }
+                
                 model.ListofNotes = _IMGP.getApprovedNoteNumbers(user.CentreCode, ref pMsg);
                 if (TempData["btnactivetrue"] != null)
                 {
@@ -122,6 +109,7 @@ namespace CBBW.Areas.Security.Controllers
             
                 if (_IMGP.spUpdateOutDetailsflag(noteno, mID, ref pMsg))
                 {
+                    model.ISSubmitActive = 0;
                     ViewBag.Msg = "Note Updated Successfully.";
                 }
                 else 
@@ -199,8 +187,15 @@ namespace CBBW.Areas.Security.Controllers
                 mgpoutsave.RFIDCard = item.RFIDCard;
                 mgpoutsave.ActualTripOutDate = item.ActualTripOutDate;
                 mgpoutsave.ActualTripOutTime = item.ActualTripOutTime;
-                mgpoutsave.OutRemarks = item.OutRemarks;
-             }
+                if (item.OutRemarks == null) {
+                    mgpoutsave.OutRemarks = "NA";
+                }
+                else
+                {
+                    mgpoutsave.OutRemarks = item.OutRemarks;
+
+                }
+            }
             
            // string msg = "";
             CustomAjaxResponse result = new CustomAjaxResponse();
