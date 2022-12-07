@@ -1,0 +1,504 @@
+﻿
+@{
+
+}
+<div class="row newTable">
+    <div class="fixedElement">
+        <div class="col-md-12">
+            <div class="heading_text_btn mb-3 mt-4">
+                <div class="leftButton">
+                    <button type="submit" class="btn btn-primary me-2" onclick="window.location.href='emp_travelling_detail_vehicle_allotment_by_HG_list.html';">
+                        <i data-feather="arrow-left-circle"></i>
+                        Back
+                    </button>
+                    <button type="submit" class="btn btn-secondary me-2" onclick="window.location.href='emp_travelling_detail_vehicle_allotment_by_HG_list.html';">
+                        <i data-feather="upload"></i>
+                        Submit
+                    </button>
+                    <button type="submit" class="btn btn-white">
+                        <i data-feather="x-circle"></i>
+                        Clear
+                    </button>
+                </div>
+                <h2>Employee’s Travelling Details & Vehicle Allotment (By HG) – ENTRY </h2>
+
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-12">
+        <div class="text-center pt-2 pb-2">
+            <button type="submit" class="btn btn-light-green" onclick="fireSweetAlert()">
+                Scan & Attach
+                “Travelling Request Form”
+            </button>
+        </div>
+    </div>
+
+    <div class="col-md-12 mb-4">
+        <div class="card mb-4 mt-4">
+            <div class="card-body approvalForm">
+                <form class="form-sample form-inline row ms-auto">
+                    <div class="row d-flex align-items-center mb-4">
+                        <label class="col-form-label col-md-3">
+                            Note No. :
+                        </label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" value="200001-CTV-20220930-00001" disabled>
+                        </div>
+                        <label class="col-form-label col-md-1">
+                            Date  :
+                        </label>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" value="10-09-2022" disabled>
+                        </div>
+                        <label class="col-form-label col-md-1">
+                            Time  :
+                        </label>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" value="03:00  PM" disabled>
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center mb-4">
+                        <label class="col-form-label col-md-3">
+                            Center Code & Name  :
+                        </label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" value="01 / Nizamabad" disabled>
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center mb-4">
+                        <label class="col-form-label col-md-3">
+                            Vehicle Type To Be Allotted   :
+                        </label>
+                        <div class="col-md-6">
+                            <select class="form-select" aria-label="Default select example" onchange="showDiv(this)">
+                                <option selected="">Select Vehicle Type To Be Allotted</option>
+                                <option value="1">LV</option>
+                                <option value="2">2 Wheeler  </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="for_LV" style="display:none;">
+                        <div class="row d-flex  align-items-center mb-4 mr-15">
+                            <label class="col-form-label col-md-3">
+                                Tour “Purpose Of Allotment"  :
+                            </label>
+                            <div class="col-md-6">
+                                <select class="form-select" aria-label="Default select example" onchange="showDivManage(this)">
+                                    <option selected="">Select Purpose Of Allotment</option>
+                                    <option value="1">For Management </option>
+                                    <option value="2">
+                                        For Office Work
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="for_2_wheeler" style="display:none;">
+                        <div class="row d-flex  align-items-center mb-4 mr-15">
+                            <label class="col-form-label col-md-3">
+                                Tour “Purpose Of Allotment"  :
+                            </label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" value="NA" disabled>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row d-flex  align-items-center mb-4">
+                        <label class="col-form-label col-md-3">
+                            Carrying Out Any Material  :
+                        </label>
+                        <div class="col-md-6">
+                            <select class="form-select" aria-label="Default select example">
+                                <option selected="">-</option>
+                                <option value="1">Yes </option>
+                                <option value="2">
+                                    No
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row d-flex  align-items-center mb-4">
+                        <label class="col-form-label col-md-3">
+                            Initiated This Doc. On The Instruction Of  :
+                        </label>
+                        <div class="col-md-6">
+                            <select class="form-select" aria-label="Default select example">
+                                <option selected="">1001 / Md Aitf</option>
+                                <option value="1">1002 / Md Abdul </option>
+                                <option value="2">
+                                    1003 / Md Imraan
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row d-flex  align-items-center mb-4">
+                        <label class="col-form-label col-md-3">
+                            Informed & Received Verbal Permission From DIC – Admin, T&S  :
+                        </label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" value="2005 / Praveen" disabled>
+
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <div class="card mt-4 mb-4">
+            <div class="card-body">
+                <div class="row d-flex align-items-center">
+                    <div class="col-md-2 col-form-label">
+                        <label>Approved :</label>
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-select" aria-label="Default select example" disabled="">
+                            <option selected=""> -</option>
+                            <option value="1">Yes</option>
+                            <option value="1">No</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 col-form-label">
+                        <label>Date &amp; Time Of Approval :</label>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control" value="" disabled="">
+                    </div>
+                    <div class="col-md-2 col-form-label">
+                        <label>Reason If Not Approved :</label>
+                    </div>
+
+                    <div class="col-md-2">
+                        <textarea name="" id="" cols="10" rows="2" class="form-control" disabled></textarea>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 mt-4 pt-3" id="for_manage" style="display:none;">
+            <div class="heading_text_btn2 d-block mb-4">
+                <h2>
+                    Travelling Person Details: For Management
+                </h2>
+            </div>
+
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive max-content">
+                        <table class="table table-bordered w-100" id="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                        Person Type
+                                    </th>
+                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">Employee No. & Name</th>
+                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                        Designation Code & Name
+                                    </th>
+                                    <th scope="col" colspan="2" style="text-align: center; vertical-align: middle;">
+                                        Scheduled Tour From
+                                    </th>
+                                    <th scope="col" colspan="2" style="text-align: center; vertical-align: middle;"> Actual Tour OUT </th>
+                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">Scheduled Tour To Date </th>
+                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                        Purpose Of Visit
+                                    </th>
+                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">T.A & D.A Denied </th>
+                                    <th scope="col" colspan="2" style="text-align: center; vertical-align: middle;">
+                                        Required Tour IN
+                                    </th>
+                                    <th scope="col" colspan="2" style="text-align: center; vertical-align: middle;"> Actual Tour IN </th>
+                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                        Status
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">Date</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="9%">Time</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">Date</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">Time</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">Date</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">Time</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">Date</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row" class="text-center">Driver</th>
+                                    <td class="text-center">
+                                        <select class="form-select" aria-label="Default select example">
+                                            <option selected="">4001 / Md. Ismail</option>
+                                            <option value="1">1002 / Md Abdul </option>
+                                            <option value="2">
+                                                1003 / Md Imraan
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td class="text-center">01 / Sr Driver </td>
+                                    <td class="text-center">
+                                        <div class="position-relative pointer">
+                                            <input type="date" class="form-control pointer" id="customDate">
+                                            <label id="customDatelbl" class="datelabel pointer">Select Date</label>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="input-group date pointer position-static placeholder-dark">
+                                            <input id="" type="text" class="form-control timePicker" placeholder="Select Time">
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        05-11-2022
+                                    </td>
+                                    <td class="text-center">
+                                        09:00 AM
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="position-relative pointer">
+                                            <input type="date" class="form-control pointer" id="customDate1">
+                                            <label id="customDate1lbl" class="datelabel pointer">Select Date</label>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <textarea name="" id="" cols="20" class="form-control" rows="3">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Harum, eos sint inventore exercitationem incidunt id ipsum at nihil!</textarea>
+                                    </td>
+                                    <td class="text-center">
+                                        <select class="form-select" aria-label="Default select example">
+                                            <option selected="">-</option>
+                                            <option value="1">  Yes</option>
+                                            <option value="2">
+                                                No
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td class="text-center">
+                                        05-11-2022
+                                    </td>
+                                    <td class="text-center">
+                                        09:00 AM
+                                    </td>
+                                    <td class="text-center">
+                                        05-11-2022
+                                    </td>
+                                    <td class="text-center">
+                                        09:00 AM
+                                    </td>
+                                    <td class="text-center">
+                                        Continue
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card mt-4 mb-3">
+                <div class="card-body approvalForm">
+                    <form class="form-sample form-inline row ms-auto">
+                        <div class="row d-flex align-items-center">
+                            <div class="col-form-label col-md-3">
+                                <label>Authorized Employee No. & Name :</label>
+                            </div>
+                            <div class="col-md-5">
+                                <select class="form-select" aria-label="Default select example">
+                                    <option selected="">3023 / Md. Ikbal</option>
+                                    <option value="1">1256 / Md. Abdul</option>
+                                    <option value="2">5266 / Md. Imraan</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 mt-4 pt-3" id="for_office" style="display:none;">
+            <div class="heading_text_btn2 d-block mb-4">
+                <h2> Travelling Person Details: For Office Work </h2>
+            </div>
+
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive max-content">
+                        <table class="table table-bordered w-100 btnalign" id="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                        SL.No.
+                                    </th>
+                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                        Person Type
+                                    </th>
+                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">Employee No. & Name</th>
+                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                        Designation Code & Name
+                                    </th>
+                                    <th scope="col" colspan="2" style="text-align: center; vertical-align: middle;">
+                                        Scheduled Tour From
+                                    </th>
+                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">Scheduled Tour To Date </th>
+
+                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                        Purpose Of Visit
+                                    </th>
+                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">T.A & D.A Denied </th>
+                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;background-color: pink;color: #000;">
+                                        Actions
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">Date</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="9%">Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <th class="text-center">
+                                        <select class="form-select w-200" aria-label="Default select example" id="pageSelector">
+                                            <option selected="">Staff</option>
+                                            <option value="1">Driver </option>
+                                            <option value="custom">Others</option>
+                                            <option value="3">Management</option>
+                                        </select>
+
+                                    </th>
+                                    <td class="text-center">
+                                        <select class="form-select" aria-label="Default select example" id="customSelect">
+                                            <option selected="">4001 / Md. Ismail</option>
+                                            <option value="1">1002 / Md Abdul </option>
+                                            <option value="2">
+                                                1003 / Md Imraan
+                                            </option>
+                                        </select>
+                                        <input type="text" class="hide  form-control w-200" placeholder="" name="custom" id="customInput">
+                                    </td>
+                                    <td class="text-center">D05 / Sr Driver </td>
+                                    <td class="text-center">
+                                        <div class="position-relative pointer">
+                                            <input type="date" class="form-control pointer" id="customDate2">
+                                            <label id="customDate2lbl" class="datelabel pointer">Select Date</label>
+                                        </div>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <div class="input-group date pointer position-static placeholder-dark">
+                                            <input id="" type="text" class="form-control timePicker" placeholder="Select Time">
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="position-relative pointer">
+                                            <input type="date" class="form-control pointer" id="customDate3">
+                                            <label id="customDate3lbl" class="datelabel pointer">Select Date</label>
+                                        </div>
+                                    </td>
+
+
+                                    <td class="text-center">
+                                        <textarea name="" id="" cols="20" class="form-control" rows="3">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Harum, eos sint inventore exercitationem incidunt id ipsum at nihil!</textarea>
+                                    </td>
+                                    <td class="text-center">
+                                        <select class="form-select" aria-label="Default select example">
+                                            <option selected="">-</option>
+                                            <option value="1">  Yes</option>
+                                            <option value="2">
+                                                No
+                                            </option>
+                                        </select>
+                                    </td>
+
+                                    <td>
+                                        <span class="actionBtn">
+                                            <button type="button" class="btn primaryLink"
+                                                    data-toggle="tooltip"
+                                                    data-placement="top" title="Add">
+                                                <i data-feather="plus"></i>
+                                            </button>
+
+                                            <button type="button" class="btn secondaryLink inVisible"
+                                                    data-toggle="tooltip"
+                                                    data-placement="top" title="Delete">
+                                                <i data-feather="x"></i>
+                                            </button>
+                                        </span>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card mt-4 mb-3">
+                <div class="card-body approvalForm">
+                    <form class="form-sample form-inline row ms-auto">
+                        <div class="row d-flex align-items-center">
+                            <div class="col-form-label col-md-3">
+                                <label>Authorized Employee No. & Name :</label>
+                            </div>
+                            <div class="col-md-5">
+                                <select class="form-select" aria-label="Default select example">
+                                    <option selected="">3023 / Md. Ikbal</option>
+                                    <option value="1">1256 / Md. Abdul</option>
+                                    <option value="2">5266 / Md. Imraan</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="d-flex justify-content-center mt-2">
+                <button type="button" class="btn btn-primary me-2" onclick="window.location.href='date_wise_tour_details_entry.html';" id="disabled-btn-1">
+                    Date Wise Tour Details - Entry
+
+                </button>
+                <button type="button" class="btn btn-primary" onclick="window.location.href='vehicle_allotment_details.html';" id="disabled-btn-2">
+                    Vehicle Allotment Details
+                </button>
+            </div>
+        </div>
+        <div class="bgColor mt-4 bg-transparent text-center">
+
+            <ul style="list-style:none;">
+                <li style="font-size: 16px;">
+                    The Entry Is Done As Per Policy & As Required:
+                    <select class="form-select" aria-label="Default select example">
+                        <option selected="">-</option>
+                        <option value="1">Yes</option>
+                        <option value="1">No</option>
+                    </select>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@section headers
+    {
+    <style>
+        .inVisible {
+            display: none;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
+}
+@section scripts{
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/EHGCreateNote.js"></script>
+
+
+
+}

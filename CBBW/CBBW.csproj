@@ -134,6 +134,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="Areas\Security\Controllers\CTVController.cs" />
+    <Compile Include="Areas\Security\Controllers\EHGController.cs" />
     <Compile Include="Areas\Security\Controllers\HomeController.cs" />
     <Compile Include="Areas\Security\Controllers\MaterialGatePassController.cs" />
     <Compile Include="Areas\Security\Controllers\TADARulesController.cs" />
@@ -293,9 +294,11 @@
     <Content Include="UIContent\JS\bootstrap-datetimepicker.min.js" />
     <Content Include="UIContent\JS\bootstrap-multiselect.js" />
     <Content Include="UIContent\JS\bootstrap.bundle.min.js" />
+    <Content Include="UIContent\JS\CustomePage\CommonReusable.js" />
     <Content Include="UIContent\JS\CustomePage\CreateRuleTADA.js" />
     <Content Include="UIContent\JS\CustomePage\CTVApproval.js" />
     <Content Include="UIContent\JS\CustomePage\CTVHdrEntry.js" />
+    <Content Include="UIContent\JS\CustomePage\EHGCreateNote.js" />
     <Content Include="UIContent\JS\CustomePage\LocVehTripSchEdit.js" />
     <Content Include="UIContent\JS\CustomePage\MGPass.js" />
     <Content Include="UIContent\JS\CustomePage\MGPOutDetails.js" />
@@ -352,6 +355,10 @@
     <Content Include="Areas\Security\Views\MaterialGatePass\Details.cshtml" />
     <Content Include="Areas\Security\Views\MaterialGatePass\VehicleMaterialInDetails.cshtml" />
     <Content Include="Areas\Security\Views\MaterialGatePass\VehicleMaterialOutDetails.cshtml" />
+    <Content Include="Areas\Security\Views\TourRule\ViewRedirection.cshtml" />
+    <Content Include="Areas\Security\Views\TADARules\ViewRedirection.cshtml" />
+    <Content Include="Areas\Security\Views\EHG\Create.cshtml" />
+    <Content Include="Areas\Security\Views\EHG\DateWiseTourDetails.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />

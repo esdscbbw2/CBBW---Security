@@ -56,6 +56,7 @@
     <Compile Include="CustomModels\CustomComboOptions.cs" />
     <Compile Include="CustomModels\CustomDateRange.cs" />
     <Compile Include="CustomModels\RowDisplayInfo.cs" />
+    <Compile Include="EHG\EHGMaster.cs" />
     <Compile Include="Master\PublicTransportType.cs" />
     <Compile Include="Master\ServiceType.cs" />
     <Compile Include="MGP\MGPHistoryDCDetails.cs" />

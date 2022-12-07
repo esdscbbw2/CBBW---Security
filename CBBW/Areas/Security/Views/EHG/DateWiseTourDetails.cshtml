@@ -1,0 +1,184 @@
+﻿
+@{
+
+}
+
+<div class="row newTable">
+    <div class="fixedElement">
+        <div class="col-md-12">
+            <div class="heading_text_btn mb-3 mt-4">
+                <div class="leftButton">
+                    <button type="submit" class="btn btn-primary me-2" onclick="window.location.href='emp_travelling_detail_vehicle_allotment_by_HG_add.html';">
+                        <i data-feather="arrow-left-circle"></i>
+                        Back
+                    </button>
+                    <button type="button" class="btn btn-secondary me-2" 
+                            onclick="trialBtnClick()"
+                            @*onclick="window.location.href='abc.html';"*@>
+                        <i data-feather="check-circle"></i>
+                        Save
+                    </button>
+                    <button type="submit" class="btn btn-white">
+                        <i data-feather="x-circle"></i>
+                        Clear
+                    </button>
+                </div>
+                <h2>Employee’s Travelling Details & Vehicle Allotment (By HG) – ENTRY </h2>
+
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-12">
+        <div class="heading_text_btn2 d-block mb-2 pt-2">
+            <h2 class="text-center"> Date Wise Tour Details Entry: </h2>
+        </div>
+    </div>
+
+    <div class="col-md-12 mb-4">
+        <div class="col-md-12 pt-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered w-100 btnalign" id="table1">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">Sl.No. </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">
+                                        Scheduled Tour From Date
+                                    </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">Scheduled Tour To Date </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">Tour Category</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">
+                                        Center Code & Name
+                                    </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;background-color: pink;color:#000;">
+                                        Actions
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody1">
+                                <tr id="0" class="add-row">
+                                    <th scope="row">1</th>
+                                    <td id="FromDateLbl" data-name="Fromdate" 
+                                        class="text-center alterID htmlVal">17-11-2022 </td>
+                                    <td class="text-center">
+                                        <div class="position-relative pointer">
+                                            <input id="ToDate" type="date" data-name="ToDate"    
+                                                   class="form-control pointer alterID CustomDateFormatCloneRow" >
+                                            <label id="lblToDate" style="width:150px"
+                                                   class="datelabel pointer alterID">Select Date</label>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="form-group">
+                                            <select id="TourCategory" data-name="TourCategory"   
+                                                    onchange="ChangeCashCadingSourceInCloaning('CenterCode','/CTV/GetToLocationsFromType?TypeIDs=')"
+                                                    class="form-select alterID clonemultiselect" 
+                                                    aria-label="Default select example">                                                
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="form-group">
+                                            <select id="CenterCode" data-name="CenterCodes"     
+                                                    class="form-select alterID clonemultiselect" 
+                                                    aria-label="Default select example">
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="actionBtn">
+                                            <button id="AddBtn" type="button" 
+                                                    class="btn primaryLink alterID cloneBtn addBtn"
+                                                    data-toggle="tooltip"
+                                                    onclick="addCloneBtnClick()"
+                                                    data-placement="top" title="Add">
+                                                <i data-feather="plus"></i>
+                                            </button>
+
+                                            <button id="DeleteBtn" type="button" 
+                                                    class="btn secondaryLink inVisible alterID cloneBtn removeBtn"
+                                                    data-toggle="tooltip"
+                                                    data-placement="top" title="Delete">
+                                                <i data-feather="x"></i>
+                                            </button>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tbody id="tbody2">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+@section headers
+    {
+    
+}
+@section scripts{
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script>
+        function addCloneBtnClick() {
+            var insrow = addCloneBtnClick.caller.arguments[0].target.closest('.add-row');
+            CloneRow('tbody1','tbody2',$(insrow).attr('id')*1,true,false);
+        };
+        function trialBtnClick() {
+            var schrecords = getRecordsFromTable('table1');
+            var x = '{"triallist":' + schrecords + '}';
+            $.ajax({
+                method: 'POST',
+                url: '/EHG/TrialPick',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: x,
+                success: function (data) {
+                    $(data).each(function (index, item) {
+                        if (item.bResponseBool == true) {                            
+                            Swal.fire({
+                                title: 'Confirmation',
+                                text: 'Data saved successfully.',
+                                icon: 'success',
+                                customClass: 'swal-wide',
+                                buttons: {
+                                    confirm: 'Ok'
+                                },
+                                confirmButtonColor: '#2527a2',
+                            }).then(callback);
+                            function callback(result) {
+                                if (result.value) {
+                                    //var url = "/Security/CTV/Create";
+                                    //window.location.href = url;
+                                }
+                            }
+                        } else {
+                            Swal.fire({
+                                title: 'Confirmation',
+                                text: 'Failed to save data.',
+                                icon: 'question',
+                                customClass: 'swal-wide',
+                                buttons: {
+                                    confirm: 'Ok'
+                                },
+                                confirmButtonColor: '#2527a2',
+                            });
+                        }
+                    });
+                },
+            });
+        };
+    </script>
+    <script>
+        $(document).ready(function () {
+            (async function () {
+                const r1 = await getMultiselectData('TourCategory','/CTV/GetLocationTypes');
+            })();
+        });
+    </script>
+
+}

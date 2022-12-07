@@ -29,28 +29,12 @@ namespace CBBW.Areas.Security.Controllers
             return Json(url, JsonRequestBehavior.AllowGet);
         }
         public ActionResult ViewRedirection(int CBUID, string NoteNumber = "") 
-        {
-            //string callbackurl = "";
-            //if (CBUID == 1)
-            //{
-            //    TempData["Tadacallbackurl"] = "/Security/CTV/Create";
-            //}
-            //else if (CBUID == 2) 
-            //{
-            //    TempData["Tadacallbackurl"] = "/Security/CTV/ViewNote?CBUID=2&NoteNumber=" + NoteNumber;
-            //}
-            //else if (CBUID == 3)
-            //{
-            //    TempData["Tadacallbackurl"] = "/Security/CTV/Approval?NoteNumber=" + NoteNumber;
-            //}
-            //else if (CBUID == 5)
-            //{
-            //    TempData["Tadacallbackurl"] = "/Security/CTV/EditNote?NoteNumber=" + NoteNumber;
-            //}
-
+        {            
             int RuleID = _iTADARules.GetAffectedRuleID(ref pMsg);
-
-            return RedirectToAction("ViewRule", new { id = RuleID, isDelete = false });
+            if (RuleID > 0)
+                return RedirectToAction("ViewRule", new { id = RuleID, isDelete = false });
+            else
+                return View();
         }
         public ActionResult ViewRule(int id, bool isDelete)
         {
