@@ -11,6 +11,20 @@ namespace CBBW.DAL.DataSync
 {
     public class MGPDataSync
     {
+        #region For Listing Page (Index page)
+        public DataTable getMGPDetailsforListPage(ref string pMsg)
+        {
+            try
+            {
+               using (SQLHelper sql = new SQLHelper("[MGP].[getMGPDetailsforListPage]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        #endregion
+        #region For Out Details
         public DataTable getNoteNumbersForMatGatePass(int CenterCode, ref string pMsg)
         {
             try
@@ -105,14 +119,17 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-        public DataSet getMGPHistoryDCDetails(long ID, ref string pMsg)
+        public DataSet getMGPHistoryDCDetails(long ID,int status, ref string pMsg)
         {
             try
             {
                 int paracount = 0;
-                SqlParameter[] para = new SqlParameter[1];
+                SqlParameter[] para = new SqlParameter[2];
                 para[paracount] = new SqlParameter("@ID", SqlDbType.BigInt);
                 para[paracount++].Value = @ID;
+                para[paracount] = new SqlParameter("@status", SqlDbType.BigInt);
+                para[paracount++].Value = status;
+
 
                 using (SQLHelper sql = new SQLHelper("[MGP].[getMGPHistoryDCDetails]", CommandType.StoredProcedure))
                 {
@@ -163,6 +180,7 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = mgpouthdr.ActualTripOutTime;
                 para[paracount] = new SqlParameter("@OutRemarks", SqlDbType.NVarChar,300);
                 para[paracount++].Value = mgpouthdr.OutRemarks;
+                
                 para[paracount] = new SqlParameter("@DCDetails", SqlDbType.Structured);
                 para[paracount++].Value = schdtlData.UDTable;
                
@@ -174,17 +192,19 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-
-        public DataTable spUpdateOutDetailsflag(string NoteNumber, long ID, ref string pMsg)
+        public DataTable spUpdateOutDetailsflag(string NoteNumber, long ID,int status, ref string pMsg)
         {
             try
             {
                 int paracount = 0;
-                SqlParameter[] para = new SqlParameter[2];
+                SqlParameter[] para = new SqlParameter[3];
                 para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.VarChar, 25);
                 para[paracount++].Value = NoteNumber;
                 para[paracount] = new SqlParameter("@ID", SqlDbType.BigInt);
                 para[paracount++].Value = ID;
+                para[paracount] = new SqlParameter("@status", SqlDbType.BigInt);
+                para[paracount++].Value = status; 
+                
 
                 using (SQLHelper sql = new SQLHelper("[MGP].[spUpdateOutDetailsflag]", CommandType.StoredProcedure))
                 {
@@ -193,5 +213,108 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+        #endregion
+        #region For In Details
+        public DataSet getMGPCurrentOutDetailsForIn(string NoteNumber, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[1];
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
+                para[paracount++].Value = NoteNumber;
+
+                using (SQLHelper sql = new SQLHelper("[MGP].[getMGPCurrentOutDetailsForIn]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataSet(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataSet getReferenceInDCDetails(string VehicleNo, DateTime FromDT, DateTime ToDT, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[3];
+                para[paracount] = new SqlParameter("@VehicleNo", SqlDbType.VarChar, 20);
+                para[paracount++].Value = VehicleNo;
+                para[paracount] = new SqlParameter("@FromDT", SqlDbType.Date);
+                para[paracount++].Value = FromDT;
+                para[paracount] = new SqlParameter("@ToDT", SqlDbType.Date);
+                para[paracount++].Value = ToDT;
+
+                using (SQLHelper sql = new SQLHelper("[MGP].[getMGPINDCDetails]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataSet(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataSet getItemWiseInDetails(string NoteNumber, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[1];
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
+                para[paracount++].Value = NoteNumber;
+
+                using (SQLHelper sql = new SQLHelper("[MGP].[getItemWiseInDetails]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataSet(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable setMGPInDetails(MGPInSave mgpouthdr, List<MGPReferenceDCDetails> mgprefdcdetails, ref string pMsg)
+        {
+            try
+            {
+                CommonTable schdtlData = new CommonTable(mgprefdcdetails);
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[15];
+                para[paracount] = new SqlParameter("@ID", SqlDbType.BigInt);
+                para[paracount++].Value = mgpouthdr.ID;
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NVarChar, 25);
+                para[paracount++].Value = mgpouthdr.NoteNumber;
+                para[paracount] = new SqlParameter("@RFIDCardIn", SqlDbType.NVarChar,50);
+                para[paracount++].Value = mgpouthdr.RFIDCardIn;
+                para[paracount] = new SqlParameter("@FromLocationType", SqlDbType.Int);
+                para[paracount++].Value = mgpouthdr.FromLocationType;
+                para[paracount] = new SqlParameter("@FromLocationCode", SqlDbType.Int);
+                para[paracount++].Value = mgpouthdr.FromLocationCode;
+                para[paracount] = new SqlParameter("@FromLocationName", SqlDbType.NVarChar, 100);
+                para[paracount++].Value = mgpouthdr.FromLocationName;
+                para[paracount] = new SqlParameter("@CarryingInMaterial", SqlDbType.Bit);
+                para[paracount++].Value = mgpouthdr.CarryingInMaterial;
+                para[paracount] = new SqlParameter("@LoadPercentageIn", SqlDbType.Float);
+                para[paracount++].Value = mgpouthdr.LoadPercentageIn;
+                para[paracount] = new SqlParameter("@ActualTripInDate", SqlDbType.Date);
+                para[paracount++].Value = mgpouthdr.ActualTripInDate;
+                para[paracount] = new SqlParameter("@ActualTripInTime", SqlDbType.NVarChar,15);
+                para[paracount++].Value = mgpouthdr.ActualTripInTime;
+                para[paracount] = new SqlParameter("@RequiredKmIn", SqlDbType.BigInt);
+                para[paracount++].Value = mgpouthdr.RequiredKmIn;
+                para[paracount] = new SqlParameter("@ActualKmIn", SqlDbType.BigInt);
+                para[paracount++].Value = mgpouthdr.ActualKmIn;
+                para[paracount] = new SqlParameter("@KMRunInTrip", SqlDbType.BigInt);
+                para[paracount++].Value = mgpouthdr.KMRunInTrip;
+                para[paracount] = new SqlParameter("@RemarkIn", SqlDbType.NVarChar,300);
+                para[paracount++].Value = mgpouthdr.RemarkIn;
+                para[paracount] = new SqlParameter("@DCDetails", SqlDbType.Structured);
+                para[paracount++].Value = schdtlData.UDTable;
+
+
+                using (SQLHelper sql = new SQLHelper("[MGP].[SetMGPInDetails]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        #endregion
+
+
     }
 }

@@ -17,12 +17,16 @@ namespace CBBW.DAL.Entities
         MGPDataSync _datasync;
         DBResponseMapper _DBResponseMapper;
         MGPMapper _datamapper;
+
+
         public MGPEntities()
         {
             _datasync = new MGPDataSync();
             _datamapper = new MGPMapper();
             _DBResponseMapper = new DBResponseMapper();
         }
+
+        #region For Out Details
         public List<MGPNotes> getApprovedNoteNumbers(int Centercode, ref string pMsg) 
         {
             List<MGPNotes> result = new List<MGPNotes>();
@@ -78,7 +82,6 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
-
         // Getting data for Out details in Item Wise Details using NoteNo(For New Data insert)
         public List<MGPItemWiseDetails> getItemWiseDetails(string NoteNumber, ref string pMsg)
         {
@@ -102,9 +105,6 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
-
-
-
         // Getting data for Out details in Reference DC Details using NoteNo(For New Data insert)
         public List<MGPReferenceDCDetails> getReferenceDCDetails(string VehicleNo, DateTime FromDT, DateTime ToDT, ref string pMsg)
         {
@@ -128,7 +128,6 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
-
         public List<MGPVehicleOutDetails> getSchDtlsForMGP(string NoteNumber, ref string pMsg)
         {
             List<MGPVehicleOutDetails> result = new List<MGPVehicleOutDetails>();
@@ -151,15 +150,12 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
-
-
-
-        public List<MGPHistoryDCDetails> getMGPHistoryDCDetails(long ID, ref string pMsg)
+        public List<MGPHistoryDCDetails> getMGPHistoryDCDetails(long ID, int status, ref string pMsg)
         {
             List< MGPHistoryDCDetails> result = new List<MGPHistoryDCDetails> ();
             try
             {
-                ds = _datasync.getMGPHistoryDCDetails(ID, ref pMsg);
+                ds = _datasync.getMGPHistoryDCDetails(ID, status, ref pMsg);
                 if (ds != null)
                 {
                     DataTable dtl = null;
@@ -176,20 +172,120 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
-
         public bool setMGPOutDetails(MGPOutSave mgpouthdr, List<MGPReferenceDCDetails> mgprefdcdetails, ref string pMsg)
         {
             bool result = false;
             _DBResponseMapper.Map_DBResponse(_datasync.setMGPOutDetails(mgpouthdr, mgprefdcdetails, ref pMsg), ref pMsg, ref result);
             return result;
         }
-
-        public bool spUpdateOutDetailsflag(string NoteNumber, long ID, ref string pMsg)
+        public bool spUpdateOutDetailsflag(string NoteNumber, long ID,int status, ref string pMsg)
         {
             bool result = false;
-            _DBResponseMapper.Map_DBResponse(_datasync.spUpdateOutDetailsflag(NoteNumber, ID, ref pMsg), ref pMsg, ref result);
+            _DBResponseMapper.Map_DBResponse(_datasync.spUpdateOutDetailsflag(NoteNumber, ID, status, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
+        #endregion
+
+        #region For In Details
+
+        public List<MGPCurrentInDetails> getMGPCurrentOutDetailsForIn(string NoteNumber, ref string pMsg)
+        {
+            List<MGPCurrentInDetails> result = new List<MGPCurrentInDetails>();
+            try
+            {
+                ds = _datasync.getMGPCurrentOutDetailsForIn(NoteNumber, ref pMsg);
+                if (ds != null)
+                {
+                    DataTable dtl = null;
+                    if (ds.Tables[0] != null && ds.Tables[0].Rows.Count > 0)
+                    {
+                        dtl = ds.Tables[0];
+                        for (int i = 0; i < dtl.Rows.Count; i++)
+                        {
+                            result.Add(_datamapper.Map_MGPCurrentInDetails(dtl.Rows[i]));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
 
+
+        public List<MGPReferenceDCDetails> getReferenceInDCDetails(string VehicleNo, DateTime FromDT, DateTime ToDT, ref string pMsg)
+        {
+            List<MGPReferenceDCDetails> result = new List<MGPReferenceDCDetails>();
+            try
+            {
+                ds = _datasync.getReferenceInDCDetails(VehicleNo, FromDT, ToDT, ref pMsg);
+                if (ds != null)
+                {
+                    DataTable dtl = null;
+                    if (ds.Tables[0] != null && ds.Tables[0].Rows.Count > 0)
+                    {
+                        dtl = ds.Tables[0];
+                        for (int i = 0; i < dtl.Rows.Count; i++)
+                        {
+                            result.Add(_datamapper.Map_MGPReferenceDCDetails(dtl.Rows[i]));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
+
+        public List<MGPItemWiseDetails> getItemWiseInDetails(string NoteNumber, ref string pMsg)
+        {
+            List<MGPItemWiseDetails> result = new List<MGPItemWiseDetails>();
+            try
+            {
+                ds = _datasync.getItemWiseInDetails(NoteNumber, ref pMsg);
+                if (ds != null)
+                {
+                    DataTable dtl = null;
+                    if (ds.Tables[0] != null && ds.Tables[0].Rows.Count > 0)
+                    {
+                        dtl = ds.Tables[0];
+                        for (int i = 0; i < dtl.Rows.Count; i++)
+                        {
+                            result.Add(_datamapper.Map_MGPItemWiseDetails(dtl.Rows[i]));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
+
+        public bool setMGPInDetails(MGPInSave mgpouthdr, List<MGPReferenceDCDetails> mgprefdcdetails, ref string pMsg)
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_datasync.setMGPInDetails(mgpouthdr, mgprefdcdetails, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
+        #endregion
+
+
+        #region For List Page (Index page)
+        
+        public IEnumerable<MGPListDetails> getMGPDetailsforListPage(ref string pMsg)
+        {
+            List<MGPListDetails> mgp = new List<MGPListDetails>();
+            try
+            {
+                dt = _datasync.getMGPDetailsforListPage(ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        mgp.Add(_datamapper.Map_MGPListDetails(dt.Rows[i]));
+                    }
+                }
+            }
+            catch { }
+            return mgp;
+        }
+        #endregion
     }
 }

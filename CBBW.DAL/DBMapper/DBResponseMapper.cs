@@ -33,6 +33,18 @@ namespace CBBW.DAL.DBMapper
             }
             return result;
         }
+        public CustomComboOptions Map_CustomComboOptionsForEmployees(DataRow dr)
+        {
+            CustomComboOptions result = new CustomComboOptions();
+            if (dr != null)
+            {
+                if (!DBNull.Value.Equals(dr["EmployeeNumber"]))
+                    result.ID = int.Parse(dr["EmployeeNumber"].ToString());
+                if (!DBNull.Value.Equals(dr["EmployeeName"]))
+                    result.DisplayText = result.ID + " / " + dr["EmployeeName"].ToString();
+            }
+            return result;
+        }
         public CustomCheckBoxOption Map_CustomCheckBoxOption(DataRow dr) 
         {
             CustomCheckBoxOption result = new CustomCheckBoxOption();

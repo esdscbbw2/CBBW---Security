@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CBBW.BOL.CustomModels;
 using CBBW.BOL.Master;
 
 namespace CBBW.BLL.IRepository
@@ -11,5 +12,7 @@ namespace CBBW.BLL.IRepository
     {
         IEnumerable<ServiceType> getAllServiceTypes(ref string pMsg);
         ServiceType getServiceType(int ID,ref string pMsg);
+        IEnumerable<CustomComboOptions> getEmployeeList(int centreCode, int functionalDesg, int isOtherStaff, ref string pMsg);
+        IEnumerable<CustomComboOptions> getDriverList(ref string pMsg);
     }
 }

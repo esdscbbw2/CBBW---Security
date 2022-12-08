@@ -8,7 +8,7 @@ using CBBW.BOL.CustomModels;
 namespace CBBW.BOL.EHG
 {
     public sealed class EHGMaster
-    {
+    {        
         private static readonly Lazy<EHGMaster> instance = new Lazy<EHGMaster>();
         public static EHGMaster GetInstance 
         {
@@ -20,7 +20,7 @@ namespace CBBW.BOL.EHG
             getPurposeOfAllotment();
             getPersonType();
             getTourCategory();
-            getVehicleBelongsTo();
+            getVehicleBelongsTo();            
         }
         private void getVehicleBelongsTo()
         {
@@ -44,7 +44,7 @@ namespace CBBW.BOL.EHG
             PersonType = new List<CustomComboOptions>()
             {
                 new CustomComboOptions{ ID = 1, DisplayText = "Staff" },
-                new CustomComboOptions{ ID = 2, DisplayText = "Driver " },
+                new CustomComboOptions{ ID = 2, DisplayText = "Driver " },                                
                 new CustomComboOptions{ ID = 3, DisplayText = "Others " },
                 new CustomComboOptions{ ID = 4, DisplayText = "Management " }
             };
@@ -70,6 +70,7 @@ namespace CBBW.BOL.EHG
         public List<CustomComboOptions> PersonType { get; set; }
         public List<CustomComboOptions> TourCategory { get; set; }
         public List<CustomComboOptions> VehicleBelongsTo { get; set; }
+        
     }
 
 }

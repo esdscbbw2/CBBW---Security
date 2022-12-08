@@ -46,23 +46,24 @@ function ActivateOutbtn(notenumber) {
            
             if (data.length > 0) {
                 $(data).each(function (index, item) {
-                    btnOut.removeAttr('disabled');
-                    btnIn.attr('disabled', 'disabled');
+                    //btnOut.removeAttr('disabled');
+                    //btnIn.removeAttr('disabled');
                     //Comment for Testing out details only 
-                    //if (item.OutActive == false && item.InActive == false) {
-                    //    btnOut.removeAttr('disabled');
-                    //    btnIn.attr('disabled', 'disabled');
-                    //} else if (item.OutActive == true && item.InActive == false) {
-                    //    btnIn.removeAttr('disabled');
-                    //    btnOut.attr('disabled', 'disabled');       
-                    //} else if (item.OutActive == true && item.InActive == true) {
-                    //    btnOut.removeAttr('disabled');
-                    //    btnIn.attr('disabled', 'disabled');
-                    //}
-                    //else {
-                    //    btnOut.removeAttr('disabled');
-                    //    btnIn.attr('disabled', 'disabled');
-                    //}
+                    if (item.OutActive == false && item.InActive == false) {
+                        btnOut.removeAttr('disabled');
+                        btnIn.attr('disabled', 'disabled');
+                    } else if (item.OutActive == true && item.InActive == false) {
+                        btnIn.removeAttr('disabled');
+                        btnOut.attr('disabled', 'disabled');       
+                    } else if (item.OutActive == true && item.InActive == true) {
+                       // btnOut.removeAttr('disabled');
+                        btnOut.attr('disabled', 'disabled');
+                        btnIn.attr('disabled', 'disabled');
+                    }
+                    else {
+                        btnOut.removeAttr('disabled');
+                        btnIn.attr('disabled', 'disabled');
+                    }
                 });
             } else {
                       btnOut.removeAttr('disabled');

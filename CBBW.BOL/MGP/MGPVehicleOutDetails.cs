@@ -65,5 +65,25 @@ namespace CBBW.BOL.MGP
         public string ActualTripOutTime { get; set; }
         public string OutRemarks { get; set; }
     }
+
+
+    public class MGPInSave
+    {
+        public long ID { get; set; }
+        public string NoteNumber { get; set; }
+        public string RFIDCardIn { get; set; }
+        public int FromLocationType { get; set; }
+        public int FromLocationCode { get; set; }
+        public string FromLocationName { get; set; }
+        public bool CarryingInMaterial { get; set; }
+        public float LoadPercentageIn { get; set; }
+        public DateTime ActualTripInDate { get; set; }
+        public string ActualTripInTime { get; set; }
+        public long RequiredKmIn { get; set; }
+        public long ActualKmIn { get; set; }
+        public long KMRunInTrip { get; set; }
+
+        public string RemarkIn { get; set; }
+    }
    
 }

@@ -133,6 +133,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
+    <Compile Include="Areas\Security\Controllers\CommonController.cs" />
     <Compile Include="Areas\Security\Controllers\CTVController.cs" />
     <Compile Include="Areas\Security\Controllers\EHGController.cs" />
     <Compile Include="Areas\Security\Controllers\HomeController.cs" />
@@ -142,6 +143,7 @@
     <Compile Include="Areas\Security\SecurityAreaRegistration.cs" />
     <Compile Include="Areas\Security\ViewModel\CTVApprovalVM.cs" />
     <Compile Include="Areas\Security\ViewModel\CTVHdrEntryVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\EHG\EHGHeaderEntryVM.cs" />
     <Compile Include="Areas\Security\ViewModel\LocalVehicleTripScheduleVM.cs" />
     <Compile Include="Areas\Security\ViewModel\LVTSFromMatVM.cs" />
     <Compile Include="Areas\Security\ViewModel\MGPCreateVM.cs" />
@@ -301,6 +303,7 @@
     <Content Include="UIContent\JS\CustomePage\EHGCreateNote.js" />
     <Content Include="UIContent\JS\CustomePage\LocVehTripSchEdit.js" />
     <Content Include="UIContent\JS\CustomePage\MGPass.js" />
+    <Content Include="UIContent\JS\CustomePage\MGPInDetails.js" />
     <Content Include="UIContent\JS\CustomePage\MGPOutDetails.js" />
     <Content Include="UIContent\JS\CustomePage\OtherTripSchEdit.js" />
     <Content Include="UIContent\JS\CustomePage\OtherTripSchedule.js" />
@@ -392,6 +395,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Security\Data\" />
+    <Folder Include="Areas\Security\Views\Common\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

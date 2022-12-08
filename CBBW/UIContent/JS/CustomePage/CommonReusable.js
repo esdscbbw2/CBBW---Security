@@ -37,8 +37,10 @@ function CloneRow(sourceTBody, destinationTBody, rowid,IsRemoveBtn,IsAddBtnEnabl
     //The controlls should have a class named "alterID";
     // buttons should have class "cloneBtn" - For tooltip functionalities
     //"addBtn" and removeBtn are also used for corrosponding buttons of a row
+    //"CustomDateFormatCloneRow" - This class is used for customdatepicker. 
    //If multiselects are in a row then use the class "clonemultiselect" and remove multiple attribute and the classes which are responsible for multiselect creations.
     //Use "htmlVal" class for a controll if the value will be picked from innerhtml.
+    //There should be "th" tag which may exclusively used for Serial Number Purpose.
     var maxrows = 0, r = 0;
     var sourcebody = $('#' + sourceTBody);
     var destinationbody = $('#' + destinationTBody);
@@ -55,7 +57,6 @@ function CloneRow(sourceTBody, destinationTBody, rowid,IsRemoveBtn,IsAddBtnEnabl
         var newID = mID[0] + '_' + r;
         that.attr('id', newID);
     });
-
     cloneready.find('.btn-group').remove();
     cloneready.find('.clonemultiselect').each(function () {
         that = $(this);
@@ -67,13 +68,28 @@ function CloneRow(sourceTBody, destinationTBody, rowid,IsRemoveBtn,IsAddBtnEnabl
         that.multiselect('clearSelection');
         that.multiselect('refresh');
     });
-
     cloneready.find('.CustomDateFormatCloneRow').each(function () {
         $(this).change(function () {
             $(this).CustomDateFormatCloneRow();
         });
     });
+    cloneready.find('.CustomTimeFormatCloneRow').each(function () {
+        var firstOpen = true;
+        var time;
+        $(this).datetimepicker({
+            useCurrent: false,
+            format: "hh:mm A"
+        }).on('dp.show', function () {
+            if (firstOpen) {
+                time = moment().startOf('day');
+                firstOpen = false;
+            } else {
+                time = "01:00 PM"
+            }
 
+            $(this).data('DateTimePicker').date(time);
+        });
+    });
     cloneready.find('.cloneBtn').each(function () {
         that = $(this);
         that.on('mouseenter', function () {
@@ -95,7 +111,6 @@ function CloneRow(sourceTBody, destinationTBody, rowid,IsRemoveBtn,IsAddBtnEnabl
     else {
         cloneready.find('.removeBtn').addClass('inVisible');
     }
-
     sourcebody.find('.btn').each(function () {
         that = $(this);
         that.on('mouseleave click', function () {
@@ -111,6 +126,11 @@ function CloneRow(sourceTBody, destinationTBody, rowid,IsRemoveBtn,IsAddBtnEnabl
     } else {
         $(cloneready).insertAfter('#' + rowid);
     }
+    var sl = 2;
+    $('#' + destinationTBody+' th').each(function () {
+        $(this).html(sl);
+        sl += 1;
+    });
 };
 async function getMultiselectData(multiselectID,dataSourceURL) {
     var multiselectCtrl = $('#' + multiselectID);
@@ -182,6 +202,37 @@ function ChangeCashCadingSourceInCloaning(destinationCtrlID,datasourceURL) {
     })();
 
 };
+async function getDropDownData(DropDownID,defaultText, dataSourceURL) {
+    var DropdownCtrl = $('#' + DropDownID);
+    $.ajax({
+        url: dataSourceURL,
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            DropdownCtrl.empty();
+            DropdownCtrl.append($('<option/>', { value: "-1", text: defaultText }));
+            $(data).each(function (index, item) {
+                DropdownCtrl.append($('<option/>', { value: item.ID, text: item.DisplayText }));
+            });            
+        }
+    });
+};
+async function getDropDownDataWithSelectedValue(DropDownID, defaultText, dataSourceURL,selectedValue) {
+    var DropdownCtrl = $('#' + DropDownID);
+    $.ajax({
+        url: dataSourceURL,
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            DropdownCtrl.empty();
+            DropdownCtrl.append($('<option/>', { value: "-1", text: defaultText }));
+            $(data).each(function (index, item) {
+                DropdownCtrl.append($('<option/>', { value: item.ID, text: item.DisplayText }));
+            });
+            DropdownCtrl.val(selectedValue);
+        }
+    });
+};
 function getRecordsFromTable(tableName) {
     //The fields should have an attribute "data-name", Which is the property name of the MVC object
     var schrecords='';
@@ -207,5 +258,24 @@ function getRecordsFromTable(tableName) {
     schrecords = '[' + schrecords + ']';
     return schrecords;
 };
+function removeBtnClickFromCloneRow(destinationTBody) {
+    var r = removeBtnClickFromCloneRow.caller.arguments[0].target.closest('.add-row');
+    if ($(r).attr("id") == 0) {
+    } else {
+        r.remove();
+    };
+    var sl = 2;
+    $('#' + destinationTBody+' th').each(function () {
+        $(this).html(sl);
+        sl += 1;
+    });
+}
+function BackButtonClicked() {
+    $.ajax({
+        url: "/Security/Common/BackButtonClicked",
+        success: function (result) { window.location.href = result; }
+    });
+};
+
 
 

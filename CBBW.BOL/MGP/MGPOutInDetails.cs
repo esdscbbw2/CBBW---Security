@@ -31,19 +31,24 @@ namespace CBBW.BOL.MGP
         public IEnumerable<RFID> ListofRFID { get; set; }
         public string FromDate { get; set; }
         public string ATripOutDate { get; set; }
-
         public bool OutActive { get; set; }
         public bool InActive { get; set; }
-        //public DateTime EntryInDate { get; set; }
-        //public string EntryInTime { get; set; }
-        //public string RFIDCardIn { get; set; }
-        //public DateTime ActualTripInDate { get; set; }
-        //public string ActualTripInTime { get; set; }
-        //public int RequiredKmIn { get; set; }
-        //public int ActualKmIn { get; set; }
-        //public int KMRunInTrip { get; set; }
-        //public string RemarkIn { get; set; }
-
+       
+        /// <summary>
+        /// for Existing In details display
+        /// </summary>
+        public string RFIDCardIn { get; set; }
+        public int FromLocationType { get; set; }
+        public int FromLocationCode { get; set; }
+        public string FromLocationName { get; set; }
+        public bool CarryingInMaterial { get; set; }
+        public float LoadPercentageIn { get; set; }
+        public DateTime ActualTripInDate { get; set; }
+        public string ActualTripInTime { get; set; }
+        public long RequiredKmIn { get; set; }
+        public long ActualKmIn { get; set; }
+        public long KMRunInTrip { get; set; }
+        public string RemarkIn { get; set; }
 
     }
 }

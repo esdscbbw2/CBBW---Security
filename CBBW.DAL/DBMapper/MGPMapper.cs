@@ -10,7 +10,8 @@ namespace CBBW.DAL.DBMapper
 {
     public class MGPMapper
     {
-        public MGPNotes Map_MGPNotes(DataRow dr) 
+        #region For Out Details
+        public MGPNotes Map_MGPNotes(DataRow dr)
         {
             MGPNotes result = new MGPNotes();
             try
@@ -35,7 +36,7 @@ namespace CBBW.DAL.DBMapper
             {
                 if (dr != null)
                 {
-                  
+
                     if (!DBNull.Value.Equals(dr["ID"]))
                         result.ID = long.Parse(dr["ID"].ToString());
                     if (!DBNull.Value.Equals(dr["NoteNo"]))
@@ -47,32 +48,32 @@ namespace CBBW.DAL.DBMapper
                     if (!DBNull.Value.Equals(dr["VehicleNo"]))
                         result.VehicleNo = dr["VehicleNo"].ToString();
                     if (!DBNull.Value.Equals(dr["DriverNo"]))
-                        result.DriverNo =long.Parse(dr["DriverNo"].ToString());
+                        result.DriverNo = long.Parse(dr["DriverNo"].ToString());
                     if (!DBNull.Value.Equals(dr["DriverName"]))
                         result.DriverName = dr["DriverName"].ToString();
-                   
+
                     if (!DBNull.Value.Equals(dr["DesignationCode"]))
-                        result.DesignationCode =int.Parse(dr["DesignationCode"].ToString());
+                        result.DesignationCode = int.Parse(dr["DesignationCode"].ToString());
                     if (!DBNull.Value.Equals(dr["DesignationText"]))
                         result.DesignationText = dr["DesignationText"].ToString();
                     if (!DBNull.Value.Equals(dr["TripType"]))
-                        result.TripType =int.Parse(dr["TripType"].ToString());
+                        result.TripType = int.Parse(dr["TripType"].ToString());
                     if (!DBNull.Value.Equals(dr["ToLocationCodenName"]))
                         result.ToLocationCodenName = dr["ToLocationCodenName"].ToString();
                     if (!DBNull.Value.Equals(dr["CarryingOutMaterial"]))
-                        result.CarryingOutMaterial =bool.Parse( dr["CarryingOutMaterial"].ToString());
+                        result.CarryingOutMaterial = bool.Parse(dr["CarryingOutMaterial"].ToString());
                     if (!DBNull.Value.Equals(dr["LoadPercentage"]))
-                        result.LoadPercentage =float.Parse(dr["LoadPercentage"].ToString());
+                        result.LoadPercentage = float.Parse(dr["LoadPercentage"].ToString());
                     if (!DBNull.Value.Equals(dr["RFIDOut"]))
                         result.RFIDOut = dr["RFIDOut"].ToString();
                     if (!DBNull.Value.Equals(dr["SchFromDate"]))
-                        result.SchFromDate =DateTime.Parse(dr["SchFromDate"].ToString());
+                        result.SchFromDate = DateTime.Parse(dr["SchFromDate"].ToString());
                     if (!DBNull.Value.Equals(dr["ActualTripOutDate"]))
-                        result.ActualTripOutDate =DateTime.Parse(dr["ActualTripOutDate"].ToString());
+                        result.ActualTripOutDate = DateTime.Parse(dr["ActualTripOutDate"].ToString());
                     if (!DBNull.Value.Equals(dr["ActualTripOutTime"]))
-                        result.ActualTripOutTime =dr["ActualTripOutTime"].ToString();
+                        result.ActualTripOutTime = dr["ActualTripOutTime"].ToString();
                     if (!DBNull.Value.Equals(dr["KMSOut"]))
-                        result.KMSOut =long.Parse(dr["KMSOut"].ToString());
+                        result.KMSOut = long.Parse(dr["KMSOut"].ToString());
                     if (!DBNull.Value.Equals(dr["OutRemarks"]))
                         result.OutRemarks = dr["OutRemarks"].ToString();
                     if (!DBNull.Value.Equals(dr["OutActive"]))
@@ -82,33 +83,38 @@ namespace CBBW.DAL.DBMapper
 
                     result.FromDate = result.SchFromDate.ToString("dd-MM-yyyy");
                     result.ATripOutDate = result.ActualTripOutDate.ToString("dd-MM-yyyy");
-                    //if (!DBNull.Value.Equals(dr["CreateID"]))
-                    //    result.CreateID =int.Parse(dr["CreateID"].ToString());
-                    //if (!DBNull.Value.Equals(dr["EntryInDate"]))
-                    //    result.EntryInDate =DateTime.Parse(dr["EntryInDate"].ToString());
-                    //if (!DBNull.Value.Equals(dr["EntryInTime"]))
-                    //    result.EntryInTime = dr["EntryInTime"].ToString();
-                    //if (!DBNull.Value.Equals(dr["RFIDCardIn"]))
-                    //    result.RFIDCardIn = dr["RFIDCardIn"].ToString();
-                    //if (!DBNull.Value.Equals(dr["ActualTripInDate"]))
-                    //    result.ActualTripInDate = DateTime.Parse(dr["ActualTripInDate"].ToString());
-                    //if (!DBNull.Value.Equals(dr["ActualTripInTime"]))
-                    //    result.ActualTripInTime = dr["ActualTripInTime"].ToString();
-                    //if (!DBNull.Value.Equals(dr["RequiredKmIn"]))
-                    //    result.RequiredKmIn =int.Parse(dr["RequiredKmIn"].ToString());
-                    //if (!DBNull.Value.Equals(dr["ActualKmIn"]))
-                    //    result.ActualKmIn = int.Parse(dr["ActualKmIn"].ToString());
-                    //if (!DBNull.Value.Equals(dr["KMRunInTrip"]))
-                    //    result.KMRunInTrip = int.Parse(dr["KMRunInTrip"].ToString());
-                    //if (!DBNull.Value.Equals(dr["RemarkIn"]))
-                    //    result.RemarkIn = dr["RemarkIn"].ToString();
+                    //For Existing In details
+                    if (!DBNull.Value.Equals(dr["RFIDCardIn"]))
+                        result.RFIDCardIn = dr["RFIDCardIn"].ToString();
+                    if (!DBNull.Value.Equals(dr["FromLocationType"]))
+                        result.FromLocationType = int.Parse(dr["FromLocationType"].ToString());
+                    if (!DBNull.Value.Equals(dr["FromLocationCode"]))
+                        result.FromLocationCode = int.Parse(dr["FromLocationCode"].ToString());
+                    if (!DBNull.Value.Equals(dr["FromLocationName"]))
+                        result.FromLocationName = dr["FromLocationName"].ToString();
+
+                    if (!DBNull.Value.Equals(dr["CarryingInMaterial"]))
+                        result.CarryingInMaterial = bool.Parse(dr["CarryingInMaterial"].ToString());
+                    if (!DBNull.Value.Equals(dr["LoadPercentageIn"]))
+                        result.LoadPercentageIn = float.Parse(dr["LoadPercentageIn"].ToString());
+                    if (!DBNull.Value.Equals(dr["ActualTripInDate"]))
+                        result.ActualTripInDate = DateTime.Parse(dr["ActualTripInDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["ActualTripInTime"]))
+                        result.ActualTripInTime = dr["ActualTripInTime"].ToString();
+                    if (!DBNull.Value.Equals(dr["RequiredKmIn"]))
+                        result.RequiredKmIn = int.Parse(dr["RequiredKmIn"].ToString());
+                    if (!DBNull.Value.Equals(dr["ActualKmIn"]))
+                        result.ActualKmIn = int.Parse(dr["ActualKmIn"].ToString());
+                    if (!DBNull.Value.Equals(dr["KMRunInTrip"]))
+                        result.KMRunInTrip = int.Parse(dr["KMRunInTrip"].ToString());
+                    if (!DBNull.Value.Equals(dr["RemarkIn"]))
+                        result.RemarkIn = dr["RemarkIn"].ToString();
 
                 }
             }
             catch { }
             return result;
         }
-
         // Getting data for Out details in Item Wise Details using NoteNo(For New Data insert)
         public MGPItemWiseDetails Map_MGPItemWiseDetails(DataRow dr)
         {
@@ -141,7 +147,6 @@ namespace CBBW.DAL.DBMapper
             catch { }
             return result;
         }
-
         // Getting data for Out details in Reference DC Details using NoteNo(For New Data insert)
         public MGPReferenceDCDetails Map_MGPReferenceDCDetails(DataRow dr)
         {
@@ -155,7 +160,7 @@ namespace CBBW.DAL.DBMapper
                     if (!DBNull.Value.Equals(dr["RefNoteNumber"]))
                         result.RefNoteNumber = dr["RefNoteNumber"].ToString();
                     if (!DBNull.Value.Equals(dr["NoteDate"]))
-                        result.NoteDate =DateTime.Parse(dr["NoteDate"].ToString());
+                        result.NoteDate = DateTime.Parse(dr["NoteDate"].ToString());
                     if (!DBNull.Value.Equals(dr["FromLocationCode"]))
                         result.FromLocationCode = int.Parse(dr["FromLocationCode"].ToString());
                     if (!DBNull.Value.Equals(dr["FromLocationText"]))
@@ -165,14 +170,12 @@ namespace CBBW.DAL.DBMapper
                     if (!DBNull.Value.Equals(dr["ToLocationText"]))
                         result.ToLocationText = dr["ToLocationText"].ToString();
                     result.NoteDatestr = result.NoteDate.ToString("dd-MM-yyyy");
-                    
+
                 }
             }
             catch { }
             return result;
         }
-
-
         public MGPVehicleOutDetails Map_MGPVehicleOutDetails(DataRow dr)
         {
             MGPVehicleOutDetails result = new MGPVehicleOutDetails();
@@ -199,16 +202,16 @@ namespace CBBW.DAL.DBMapper
                     //if (!DBNull.Value.Equals(dr["ToLocationCode"]))
                     //    result.ToLocationCode =int.Parse(dr["ToLocationCode"].ToString());
                     if (!DBNull.Value.Equals(dr["CarryingOutMat"]))
-                        result.CarryingOutMat =bool.Parse(dr["CarryingOutMat"].ToString());
+                        result.CarryingOutMat = bool.Parse(dr["CarryingOutMat"].ToString());
                     if (!DBNull.Value.Equals(dr["LoadPercentage"]))
                         result.LoadPercentage = int.Parse(dr["LoadPercentage"].ToString());
                     if (!DBNull.Value.Equals(dr["SchFromDate"]))
-                        result.SchFromDate =DateTime.Parse(dr["SchFromDate"].ToString());
+                        result.SchFromDate = DateTime.Parse(dr["SchFromDate"].ToString());
                     if (!DBNull.Value.Equals(dr["KMOUT"]))
                         result.KMOUT = int.Parse(dr["KMOUT"].ToString());
                     if (!DBNull.Value.Equals(dr["VehicleNumber"]))
                         result.VehicleNumber = dr["VehicleNumber"].ToString();
-                    
+
 
                     result.SchFromDatestr = result.SchFromDate.ToString("dd-MM-yyyy");
                     //if (!DBNull.Value.Equals(dr["FromCentreCode"]))
@@ -239,8 +242,6 @@ namespace CBBW.DAL.DBMapper
             catch { }
             return result;
         }
-
-
         public MGPHistoryDCDetails Map_MGPHistoryDCDetails(DataRow dr)
         {
             MGPHistoryDCDetails result = new MGPHistoryDCDetails();
@@ -272,5 +273,95 @@ namespace CBBW.DAL.DBMapper
             catch { }
             return result;
         }
+        #endregion
+
+        #region For In Details
+        public MGPCurrentInDetails Map_MGPCurrentInDetails(DataRow dr)
+        {
+            MGPCurrentInDetails result = new MGPCurrentInDetails();
+            try
+            {
+                if (dr != null)
+                {
+
+                    if (!DBNull.Value.Equals(dr["ID"]))
+                        result.ID = long.Parse(dr["ID"].ToString());
+                    if (!DBNull.Value.Equals(dr["NoteNo"]))
+                        result.NoteNo = dr["NoteNo"].ToString();
+                    if (!DBNull.Value.Equals(dr["VehicleNo"]))
+                        result.VehicleNo = dr["VehicleNo"].ToString();
+                    if (!DBNull.Value.Equals(dr["DriverNo"]))
+                        result.DriverNo = long.Parse(dr["DriverNo"].ToString());
+                    if (!DBNull.Value.Equals(dr["DriverName"]))
+                        result.DriverName = dr["DriverName"].ToString();
+                    if (!DBNull.Value.Equals(dr["DesignationCode"]))
+                        result.DesignationCode = int.Parse(dr["DesignationCode"].ToString());
+                    if (!DBNull.Value.Equals(dr["DesignationText"]))
+                        result.DesignationText = dr["DesignationText"].ToString();
+                    if (!DBNull.Value.Equals(dr["TripType"]))
+                        result.TripType = int.Parse(dr["TripType"].ToString());
+                    if (!DBNull.Value.Equals(dr["TripTypeStr"]))
+                        result.TripTypeStr = dr["TripTypeStr"].ToString();
+                    if (!DBNull.Value.Equals(dr["FromLocationType"]))
+                        result.FromLocationType = int.Parse(dr["FromLocationType"].ToString());
+                    if (!DBNull.Value.Equals(dr["FromLocationCode"]))
+                        result.FromLocationCode = int.Parse(dr["FromLocationCode"].ToString());
+                    if (!DBNull.Value.Equals(dr["FromLocationName"]))
+                        result.FromLocationName = dr["FromLocationName"].ToString();
+                    if (!DBNull.Value.Equals(dr["CarryingInMaterial"]))
+                        result.CarryingInMaterial = bool.Parse(dr["CarryingInMaterial"].ToString());
+                    if (!DBNull.Value.Equals(dr["LoadPercentageIn"]))
+                        result.LoadPercentageIn = int.Parse(dr["LoadPercentageIn"].ToString());
+                    if (!DBNull.Value.Equals(dr["SchFromDate"]))
+                        result.SchFromDate = DateTime.Parse(dr["SchFromDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["KMSOut"]))
+                        result.KMSOut = int.Parse(dr["KMSOut"].ToString());
+                    if (!DBNull.Value.Equals(dr["OutActive"]))
+                        result.OutActive = bool.Parse(dr["OutActive"].ToString());
+                    if (!DBNull.Value.Equals(dr["InActive"]))
+                        result.InActive = bool.Parse(dr["InActive"].ToString());
+                    if (!DBNull.Value.Equals(dr["RequiredKmIn"]))
+                        result.RequiredKmIn = int.Parse(dr["RequiredKmIn"].ToString());
+                    if (!DBNull.Value.Equals(dr["ActKmIn"]))
+                        result.ActKmIn = int.Parse(dr["ActKmIn"].ToString());
+                    if (!DBNull.Value.Equals(dr["RunningKm"]))
+                        result.RunningKm = int.Parse(dr["RunningKm"].ToString());
+                    result.FromschDates = result.SchFromDate.ToString("dd-MM-yyyy");
+
+
+
+                }
+            }
+            catch (Exception ex) { ex.ToString(); }
+            return result;
+        }
+
+        #endregion
+
+        #region For List Page(Index page)
+        public MGPListDetails Map_MGPListDetails(DataRow dr)
+        {
+            MGPListDetails result = new MGPListDetails();
+            try
+            {
+                if (dr != null)
+                {
+                    if (!DBNull.Value.Equals(dr["NoteNumber"]))
+                        result.NoteNumber = dr["NoteNumber"].ToString();
+                    if (!DBNull.Value.Equals(dr["CenterCode"]))
+                        result.CenterCode = int.Parse(dr["CenterCode"].ToString());
+                    if (!DBNull.Value.Equals(dr["CenterName"]))
+                        result.CenterName = dr["CenterName"].ToString();
+                    if (!DBNull.Value.Equals(dr["VehicleNo"]))
+                        result.VehicleNo = dr["VehicleNo"].ToString();
+                    if (!DBNull.Value.Equals(dr["MonthYear"]))
+                        result.MonthYear = dr["MonthYear"].ToString();
+                }
+            }
+            catch { }
+            return result;
+        }
+        #endregion
     }
 }
+

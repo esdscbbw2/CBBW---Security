@@ -53,8 +53,7 @@ namespace CBBW.DAL.DataSync
                 }
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
-        }
-        //penfing
+        }        
         public DataTable getLocationsFromType(string LocationTypeID, ref string pMsg)
         {
             try
@@ -167,6 +166,44 @@ namespace CBBW.DAL.DataSync
                 }
             }
             catch (Exception ex) { pMsg = ex.Message; return 0; }
+        }
+        public DataTable getNewNoteNumber(string CTVPattern, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[1];
+                para[paracount] = new SqlParameter("@NoteNoPattern", SqlDbType.NChar, 20);
+                para[paracount++].Value = CTVPattern;
+
+                using (SQLHelper sql = new SQLHelper("[MTR].[NewNoteNumber]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable getEmployeeList(int centreCode,int functionalDesg,int isOtherStaff,ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("select * from [EHG].[getEmployees]("+functionalDesg+","+centreCode+","+ isOtherStaff + ")", CommandType.Text))
+                {
+                    return sql.GetDataTable();
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable getDriverList(ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("select * from [MTR].[getDriverList]('#')", CommandType.Text))
+                {
+                    return sql.GetDataTable();
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
         }
     }
 }

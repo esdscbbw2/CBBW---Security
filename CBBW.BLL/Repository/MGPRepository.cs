@@ -16,16 +16,16 @@ namespace CBBW.BLL.Repository
         {
             _MGPEntities = new MGPEntities();
         }
+
+        #region For Out Details
         public IEnumerable<MGPNotes> getApprovedNoteNumbers(int Centercode, ref string pMsg)
         {
             return _MGPEntities.getApprovedNoteNumbers(Centercode, ref pMsg);
         }
-
         public List<MGPOutInDetails> getMGPOutDetails(string NoteNumber, ref string pMsg)
         {
            return _MGPEntities.getMGPOutDetails(NoteNumber, ref pMsg);
         }
-
         public List<RFID> getRFIDCards(ref string pMsg)
         {
             return _MGPEntities.getRFIDCards(ref pMsg);
@@ -45,22 +45,43 @@ namespace CBBW.BLL.Repository
         {
             return _MGPEntities.getSchDtlsForMGP( NoteNumber, ref  pMsg);
         }
-
-
-        public List<MGPHistoryDCDetails> getMGPHistoryDCDetails(long ID, ref string pMsg)
+        public List<MGPHistoryDCDetails> getMGPHistoryDCDetails(long ID,int status, ref string pMsg)
         {
-            return _MGPEntities.getMGPHistoryDCDetails(ID, ref pMsg);
+            return _MGPEntities.getMGPHistoryDCDetails(ID, status, ref pMsg);
         }
-
         public bool setMGPOutDetails(MGPOutSave mgpouthdr, List<MGPReferenceDCDetails> mgprefdcdetails, ref string pMsg)
         {
             return _MGPEntities.setMGPOutDetails(mgpouthdr, mgprefdcdetails, ref pMsg);
         }
-
-        public bool spUpdateOutDetailsflag(string NoteNumber, long ID, ref string pMsg)
+        public bool spUpdateOutDetailsflag(string NoteNumber, long ID,int status, ref string pMsg)
         {
-            return _MGPEntities.spUpdateOutDetailsflag(NoteNumber, ID, ref pMsg);
+            return _MGPEntities.spUpdateOutDetailsflag(NoteNumber, ID,status, ref pMsg);
         }
+        #endregion
+        #region For In Details
+        public List<MGPCurrentInDetails> getMGPCurrentOutDetailsForIn(string NoteNumber, ref string pMsg)
+        {
+            return _MGPEntities.getMGPCurrentOutDetailsForIn(NoteNumber, ref pMsg);
+        }
+        public List<MGPReferenceDCDetails> getReferenceInDCDetails(string VehicleNo, DateTime FromDT, DateTime ToDT, ref string pMsg)
+        {
+            return _MGPEntities.getReferenceInDCDetails(VehicleNo, FromDT, ToDT, ref pMsg);
+        }
+        public List<MGPItemWiseDetails> getItemWiseInDetails(string NoteNumber, ref string pMsg)
+        {
+            return _MGPEntities.getItemWiseInDetails(NoteNumber, ref pMsg);
+        }
+        public bool setMGPInDetails(MGPInSave mgpouthdr, List<MGPReferenceDCDetails> mgprefdcdetails, ref string pMsg)
+        {
+            return _MGPEntities.setMGPInDetails(mgpouthdr, mgprefdcdetails, ref pMsg);
+        }
+        #endregion
 
+        #region For List Page (Index Page)
+        public IEnumerable<MGPListDetails> getMGPDetailsforListPage(ref string pMsg)
+        {
+            return _MGPEntities.getMGPDetailsforListPage(ref pMsg);
+        }
+        #endregion
     }
 }

@@ -25,16 +25,17 @@ namespace CBBW.Areas.Security.Controllers
             _IMGP = IMGP;
             _ICTV = ICTV;
             pMsg = "";
-            mNoteNumber = "200001-CTV-20221125-00014";
+            mNoteNumber = "200001-CTV-20221201-00009";
             btnactive = false;
             iUser.LogIn("praveen", ref pMsg);
             user = iUser.getLoggedInUser();
         }
-        
         // GET: Security/MaterialGatePass
+        #region For Out Details
         public ActionResult Index()
         {
-            return View();
+            IEnumerable<MGPListDetails> model = _IMGP.getMGPDetailsforListPage(ref pMsg);
+            return View(model);
         }
         public ActionResult Create()
         {
@@ -75,8 +76,6 @@ namespace CBBW.Areas.Security.Controllers
             TempData["MGPVM"] = model;
             return View(model);
         }
-
-
         [HttpPost]
         public ActionResult Create(MGPNotes model, string Submit)
         {
@@ -98,6 +97,20 @@ namespace CBBW.Areas.Security.Controllers
                     new { Area = "Security", CBUID = 1, NoteNumber = model.NoteNo });
             }
 
+            if (TempData["OUTorIN"] as string == "In") {
+                string noteno=TempData["notenumber"] as string;
+                var mID = TempData["IDs"];
+                if (_IMGP.spUpdateOutDetailsflag(noteno, Convert.ToInt32(mID), 2, ref pMsg))
+                {
+                    model.ISSubmitActive = 0;
+                    ViewBag.Msg = "Note Updated Successfully.";
+                }
+                else
+                {
+                    ViewBag.ErrMsg = "Note Updation Failed.";
+                }
+            }
+            else { 
             if (TempData["notenumber"] != null) { 
             string noteno = TempData["notenumber"] as string;
             List<MGPOutInDetails> outinmodel = new List<MGPOutInDetails>();
@@ -107,7 +120,7 @@ namespace CBBW.Areas.Security.Controllers
                 if (outinmodel != null && outinmodel.Count > 0) 
                 { mID = outinmodel.OrderByDescending(x => x.ID).FirstOrDefault().ID; }
             
-                if (_IMGP.spUpdateOutDetailsflag(noteno, mID, ref pMsg))
+                if (_IMGP.spUpdateOutDetailsflag(noteno, mID,1, ref pMsg))
                 {
                     model.ISSubmitActive = 0;
                     ViewBag.Msg = "Note Updated Successfully.";
@@ -118,24 +131,24 @@ namespace CBBW.Areas.Security.Controllers
                 }
                 
             }
-
+            }
             model.EntryDate = DateTime.Today;
             model.EntryTime = DateTime.Now.ToString("hh:mm:ss tt");
             model.IsActive = true;
-            TempData["MGPVM"] = model;
+
+            //TempData["MGPVM"] = model;
 
             //return RedirectToAction("Index",
             //    new { Area = "Security" });
             return View(model);
         }
-
         public ActionResult Details()
         {
             return View();
         }
-
         public ActionResult VehicleMaterialOutDetails(string NoteNumber, int CBUID)
         {
+           
             MGPOutInVM model = new MGPOutInVM();
             
             if (CBUID == 1)
@@ -148,34 +161,18 @@ namespace CBBW.Areas.Security.Controllers
             //model.ListCurrentOutDetails = _IMGP.getSchDtlsForMGP(mNoteNumber, ref pMsg);
             return View(model);
         }
-
         [HttpPost]
         public JsonResult SaveVehicleMaterialOutDCDetails(MGPSaveOutDetailsVM model)
         {
+
             MGPOutSave mgpoutsave = new MGPOutSave();
             foreach (var item in model.ListCurrentOutData)
             {
                 mgpoutsave.NoteNumber=item.NoteNumber;
                 mgpoutsave.DriverNo = item.DriverNo;
-                if (item.Drivername == null || item.Drivername == "")
-                {
-                    mgpoutsave.Drivername = "NA";
-                }
-                else
-                {
-                    mgpoutsave.Drivername = item.Drivername;
-                }
-             
+                mgpoutsave.Drivername = (item.Drivername == null || item.Drivername == "") ? "NA" : item.Drivername;
                 mgpoutsave.DesignationCode = item.DesignationCode;
-                if(item.DesignationName==null || item.DesignationName == "")
-                {
-                    mgpoutsave.DesignationName = "NA";
-                }
-                else
-                {
-                    mgpoutsave.DesignationName = item.DesignationName;
-                }
-                
+                mgpoutsave.DesignationName=(item.DesignationName == null || item.DesignationName == "") ? "NA": item.DesignationName;
                 mgpoutsave.TripType = item.TripType;
                 mgpoutsave.TripTypeStr = item.TripTypeStr;
                 mgpoutsave.ToLocationCodeName = item.ToLocationCodeName;
@@ -187,24 +184,19 @@ namespace CBBW.Areas.Security.Controllers
                 mgpoutsave.RFIDCard = item.RFIDCard;
                 mgpoutsave.ActualTripOutDate = item.ActualTripOutDate;
                 mgpoutsave.ActualTripOutTime = item.ActualTripOutTime;
-                if (item.OutRemarks == null) {
-                    mgpoutsave.OutRemarks = "NA";
-                }
-                else
-                {
-                    mgpoutsave.OutRemarks = item.OutRemarks;
-
-                }
+                mgpoutsave.OutRemarks = item.OutRemarks == null?"NA": item.OutRemarks;
+              
             }
-            
            // string msg = "";
             CustomAjaxResponse result = new CustomAjaxResponse();
             if (_IMGP.setMGPOutDetails(mgpoutsave, model.ListofMGPReferenceDCData, ref pMsg))
             {
                 TempData["btnactivetrue"] = 1;
                 TempData["notenumber"] = mgpoutsave.NoteNumber;
+                TempData["OUTorIN"] = "out";
                 result.bResponseBool = true;
                 result.sResponseString = "Data successfully updated.";
+              
             }
             else
             {
@@ -225,16 +217,14 @@ namespace CBBW.Areas.Security.Controllers
             model.ListofMGPReferenceDCDetails = _IMGP.getReferenceDCDetails(VehicleNo, FromDTs, ToDT, ref pMsg);
             return Json(model.ListofMGPReferenceDCDetails, JsonRequestBehavior.AllowGet) ;
         }
-
         public JsonResult GetHistoryDCDetails(long ID)
         {
         
             //UserInfo user = getLogInUserInfo();
             MGPOutInVM model = new MGPOutInVM();
-            model.ListMGPHistoryDCDetails = _IMGP.getMGPHistoryDCDetails(ID, ref pMsg);
+            model.ListMGPHistoryDCDetails = _IMGP.getMGPHistoryDCDetails(ID,1, ref pMsg);
             return Json(model.ListMGPHistoryDCDetails, JsonRequestBehavior.AllowGet);
         }
-
         public JsonResult GetItemWiseDetails(string NoteNumber)
         {
             //NoteNumber = "200001-MIB-20110119-00015";
@@ -243,20 +233,12 @@ namespace CBBW.Areas.Security.Controllers
             model.ListofMGPItemWiseDetails = _IMGP.getItemWiseDetails(NoteNumber, ref pMsg);
             return Json(model.ListofMGPItemWiseDetails, JsonRequestBehavior.AllowGet);
         }
-
-
         public JsonResult GetRFIdCards()
         {
             //UserInfo user = getLogInUserInfo();
             IEnumerable<RFID> result = _IMGP.getRFIDCards(ref pMsg);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
-        public ActionResult VehicleMaterialInDetails()
-        {
-            return View();
-        }
-
         public JsonResult GetcurentOutDetails(string NoteNumber)
         {
             
@@ -264,7 +246,6 @@ namespace CBBW.Areas.Security.Controllers
             model = _IMGP.getSchDtlsForMGP(NoteNumber, ref pMsg);
             return Json(model, JsonRequestBehavior.AllowGet);
         }
-
         public JsonResult CheckAvailableNoteNoforOut(string NoteNumber)
         {
 
@@ -274,7 +255,117 @@ namespace CBBW.Areas.Security.Controllers
             TempData["OutData"] = data;
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+
+        #endregion
+
+        //Start Material In Details
+        #region Create New In details 
+        [HttpPost]
+        public ActionResult SaveVehicleMaterialInDCDetails(MGPSaveInDetailsVM model)
+        {
+            MGPInSave mgpinsave = new MGPInSave();
+            foreach(var item in model.ListCurrentInData)
+            {
+                mgpinsave.ID= item.ID;
+                mgpinsave.NoteNumber = item.NoteNumber;
+                mgpinsave.RFIDCardIn = item.RFIDCardIn;
+                mgpinsave.FromLocationType = item.FromLocationType;
+                mgpinsave.FromLocationCode = item.FromLocationCode;
+                mgpinsave.FromLocationName = item.FromLocationName;
+                mgpinsave.CarryingInMaterial = item.CarryingInMaterial;
+                mgpinsave.LoadPercentageIn = item.LoadPercentageIn;
+                mgpinsave.ActualTripInDate = item.ActualTripInDate;
+                mgpinsave.ActualTripInTime = item.ActualTripInTime;
+                mgpinsave.RequiredKmIn = item.RequiredKmIn>0? item.RequiredKmIn:0;
+                mgpinsave.ActualKmIn = item.ActualKmIn>0? item.ActualKmIn:0;
+                mgpinsave.KMRunInTrip = item.KMRunInTrip;
+                mgpinsave.RemarkIn = item.RemarkIn==""?"NA": item.RemarkIn;
+
+             }
+
+            CustomAjaxResponse result = new CustomAjaxResponse();
+            if (_IMGP.setMGPInDetails(mgpinsave, model.ListofMGPReferenceInDCData, ref pMsg))
+            {
+                TempData["btnactivetrue"] = 1;
+                TempData["notenumber"] = mgpinsave.NoteNumber;
+                TempData["IDs"] = mgpinsave.ID;
+                TempData["OUTorIN"] = "In";
+                result.bResponseBool = true;
+                result.sResponseString = "Data successfully updated.";
+
+            }
+            else
+            {
+                result.bResponseBool = false;
+                // result.sResponseString = msg;
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
+           
+        }
         
+        public ActionResult VehicleMaterialInDetails(string NoteNumber)
+        {
+            MGPInDetailsVM model = new MGPInDetailsVM();
+            try
+            {
+               
+                model.ListInDetails = _IMGP.getMGPOutDetails(NoteNumber, ref pMsg);
+            }
+            catch (Exception ex) { ex.ToString(); }
+            return View(model);
+        }
+
+        public JsonResult GetcurentInDetails(string NoteNumber)
+        {
+            try
+            {
+                List<MGPCurrentInDetails> model = new List<MGPCurrentInDetails>();
+                model = _IMGP.getMGPCurrentOutDetailsForIn(mNoteNumber, ref pMsg);
+                return Json(model, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex) {
+                return Json(ex.ToString());
+            }
+            
+        }
+
+
+        public JsonResult GetRefInDCDetails(string VehicleNo, string FromDT)
+        {
+            try
+            {
+                DateTime FromDTs = DateTime.Parse(FromDT);
+                DateTime ToDT = new DateTime(2022, 8, 15);
+                MGPInDetailsVM model = new MGPInDetailsVM();
+                model.ListofMGPReferenceInDCDetails = _IMGP.getReferenceInDCDetails(VehicleNo, FromDTs, ToDT, ref pMsg);
+                return Json(model.ListofMGPReferenceInDCDetails, JsonRequestBehavior.AllowGet);
+            }
+            catch(Exception ex)
+            {
+                return Json(ex.ToString());
+            }
+        }
+
+        public JsonResult GetItemWiseInDetails(string NoteNumber)
+        {
+
+            MGPInDetailsVM model = new MGPInDetailsVM();
+            model.ListofMGPItemWiseInDetails = _IMGP.getItemWiseDetails(NoteNumber, ref pMsg);
+            return Json(model.ListofMGPItemWiseInDetails, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetHistoryInDCDetails(long ID)
+        {
+
+            //UserInfo user = getLogInUserInfo();
+            MGPOutInVM model = new MGPOutInVM();
+            model.ListMGPHistoryDCDetails = _IMGP.getMGPHistoryDCDetails(ID,2, ref pMsg);
+            return Json(model.ListMGPHistoryDCDetails, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
+
+
 
     }
 }

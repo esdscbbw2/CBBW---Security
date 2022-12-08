@@ -96,7 +96,6 @@
     });
 
 });
-
 function DataNotAvailble(ctrl) {
     $('#tbody2').empty();
     
@@ -105,7 +104,7 @@ function DataNotAvailble(ctrl) {
     //var targetval = target.attr('data-value');
     Swal.fire({
         title: 'Confirmation',
-        text: 'DC Details Not availble for this Note Number.',
+        text: 'DC Details Not Availble For This Note Number.',
         icon: 'success',
         customClass: 'swal-wide',
         buttons: {
@@ -141,8 +140,6 @@ function GetRFIDCardNos() {
     });
 
 };
-
-
 //for new Dc details
 function OnclickNewDCDetails(ctrl) {
     $("#savebtndisable").removeClass('is-valid').addClass('is-invalid');
@@ -340,22 +337,22 @@ function SaveData() {
            ListofMGPReferenceDCData: dcrecords
         }),
         success: function (data) {
+            //var statusobj=false;
             $(data).each(function (index, item) {
-               // alert(item.bResponseBool);
+               // statusobj = item.bResponseBool;
                 if (item.bResponseBool == true) {
                     var url = "/Security/MaterialGatePass/Create";
                     window.location.href = url;
-                   
-                    Swal.fire({
-                        title: 'Confirmation',
-                        text: 'Data saved successfully.',
-                        icon: 'success',
-                        customClass: 'swal-wide',
-                        buttons: {
-                            confirm: 'Ok'
-                        },
-                        confirmButtonColor: '#2527a2',
-                    }).then(callback);
+                    //Swal.fire({
+                    //    title: 'Confirmation',
+                    //    text: 'Data saved successfully.',
+                    //    icon: 'success',
+                    //    customClass: 'swal-wide',
+                    //    buttons: {
+                    //        confirm: 'Ok'
+                    //    },
+                    //    confirmButtonColor: '#2527a2',
+                    //}).then(callback);
                     function callback(result) {
                         if (result.value) {
                             var url = "/Security/MaterialGatePass/Create";
@@ -363,22 +360,23 @@ function SaveData() {
                         }
                     }
                 } else {
-                    Swal.fire({
-                        title: 'Confirmation',
-                        text: 'Failed to save data.',
-                        icon: 'question',
-                        customClass: 'swal-wide',
-                        buttons: {
-                            confirm: 'Ok'
-                        },
-                        confirmButtonColor: '#2527a2',
-                    });
+                    //Swal.fire({
+                    //    title: 'Confirmation',
+                    //    text: 'Failed to save data.',
+                    //    icon: 'question',
+                    //    customClass: 'swal-wide',
+                    //    buttons: {
+                    //        confirm: 'Ok'
+                    //    },
+                    //    confirmButtonColor: '#2527a2',
+                    //});
                 }
             });
+
+            
         },
     });
 };
-
 function SelectedRFIDValid() {
     var target = SelectedRFIDValid.caller.arguments[0].target;
     var rowid = $(target.closest('.add-row')).attr("id");
@@ -386,7 +384,6 @@ function SelectedRFIDValid() {
     //alert(_val);
    
 };
-
 function activateSubmitBtn() {
 
     var btnSubmit = $('#btnSubmit');
@@ -399,8 +396,7 @@ function activateSubmitBtn() {
 function ValidateControl() {
     var target = ValidateControl.caller.arguments[0].target;
     var targetid = $(target).attr('id');
-    //alert(targetid);
-    var isvalid = true;//validatectrl(targetid, $(target).val());
+    var isvalid = validatectrl(targetid, $(target).val());
 
     if (isvalid) {
         $(target).removeClass('is-invalid').addClass('is-valid');
@@ -408,5 +404,12 @@ function ValidateControl() {
         $(target).removeClass('is-valid').addClass('is-invalid');
     }
     activateSubmitBtn();
+
+};
+function validatectrl(targetid, value) {
+    var isvalid = false;
+    if (value == "" || value == null) { isvalid = false; } else { isvalid = true }
+    activateSubmitBtn();
+    return isvalid;
 
 };

@@ -248,8 +248,6 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
-
-
         public List<TripScheduleHdr> getCtvSchedule(int PageSize, int PageNumber, int SortCol, string SortDirection,
             string SearchText, int centercode, ref string pMsg)
         {

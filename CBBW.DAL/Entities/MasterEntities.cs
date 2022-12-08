@@ -148,5 +148,55 @@ namespace CBBW.DAL.Entities
         {
             return _datasync.GetEffectedRuleID(RuleType, ref pMsg);
         }
+        public string getNewNoteNumber(string numberPattern, ref string pMsg)
+        {
+            string noteno = string.Empty;
+            try
+            {
+                dt = _datasync.getNewNoteNumber(numberPattern, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    if (!DBNull.Value.Equals(dt.Rows[0]["NewNoteNo"]))
+                        noteno = dt.Rows[0]["NewNoteNo"].ToString();
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return noteno;
+        }
+        public IEnumerable<CustomComboOptions> getEmployeeList(int centreCode, int functionalDesg,int isOtherStaff, ref string pMsg) 
+        {
+            List<CustomComboOptions> result = new List<CustomComboOptions>();
+            try
+            {
+                dt = _datasync.getEmployeeList(centreCode,functionalDesg, isOtherStaff, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        result.Add(_dbresmapper.Map_CustomComboOptionsForEmployees(dt.Rows[i]));
+                    }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
+        public IEnumerable<CustomComboOptions> getDriverList(ref string pMsg)
+        {
+            List<CustomComboOptions> result = new List<CustomComboOptions>();
+            try
+            {
+                dt = _datasync.getDriverList(ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        result.Add(_dbresmapper.Map_CustomComboOptions(dt.Rows[i]));
+                    }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
+
     }
 }

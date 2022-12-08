@@ -1,24 +1,32 @@
-﻿@using CBBW.BOL.CTV;
+﻿@model CBBW.Areas.Security.ViewModel.MGPInDetailsVM
 @{
     ViewBag.Title = "Material Gate Pass (For Company Transport)–ENTRY";
+    int sl = 1;
 }
 
-    <div class="container">
-        <div class="row newTable">
 
+
+<div class="container">
+
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(model => model.NoteNumber);
+
+        <div class="row newTable">
+            <input id="savebtndisables" type="hidden" class="form-control pointer is-invalid">
             <div class="fixedElement">
                 <div class="col-md-12" style="position: relative;">
-
                     <div class="heading_text_btn mb-4 mt-4">
                         <div class="leftButton">
                             <button type="submit" class="btn btn-primary me-2" onclick="window.location.href='@Url.Action("Create", "MaterialGatePass",
-                                    new { Area = "Security"})'">
+new { Area = "Security" })'">
                                 <i data-feather="arrow-left-circle"></i>
                                 Back
                             </button>
 
-                            <button type="submit" class="btn btn-secondary me-2" onclick="window.location.href='material_gate_pass_entry_add.html';">
-                                <i data-feather="check-circle"></i>
+                            <button id="btnSubmit" type="button" name="Submit" value="Increate"
+                                    class="btn btn-secondary me-2" disabled="disabled" onclick="SaveData()">
+                                <i data-feather="upload"></i>
                                 Save
                             </button>
                             <button type="submit" class="btn btn-white">
@@ -36,7 +44,7 @@
             <div class="col-md-12 text-center">
                 <div class=" upper-tab-buttons">
                     <button type="button" class="btn btn-primary" onclick="window.location.href='@Url.Action("VehicleMaterialOutDetails", "MaterialGatePass",
-                                    new { Area = "Security"})'">
+new { Area = "Security" })'">
 
                         "To Check  “Vehicle & Material Out Details” Click Here"
                     </button>
@@ -108,108 +116,171 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td class="text-center">
-                                            01 / Abdul
-                                        </td>
-                                        <td class="text-center">01 / Sr Driver </td>
-                                        <td class="text-center">Local Vehicle Schedule </td>
-                                        <td class="text-center">06 / Koratla, 07 / Jaipur </td>
-                                        <td class="text-center">Yes</td>
-                                        <td class="text-center">70%</td>
-                                        <td class="text-center">RFID010</td>
-                                        <td class="text-center">03/11/2022 </td>
-                                        <td class="text-center">03/11/2022 </td>
-                                        <td class="text-center">09:00AM</td>
-                                        <td class="text-center">25000</td>
-                                        <td class="text-center">25010</td>
-                                        <td class="text-center">1010</td>
-                                        <td class="text-center">
-                                            <input type="text" class="form-control w-200" value="lorem ipsum dummy text" readonly>
-                                        </td>
-                                        <td class="text-center">
-                                            <span class="actionBtn d-block">
-                                                <a href="#div_B">
-                                                    <button type="button" class="btn primaryLink" onclick="Content_B(); Hide_Content_A();" data-toggle="tooltip" data-placement="top"
-                                                            title="Details">
-                                                        <i data-feather="eye"></i>
-                                                    </button>
-                                                </a>
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">2</th>
-                                        <td class="text-center">
-                                            01 / Abdul
-                                        </td>
-                                        <td class="text-center">01 / Sr Driver </td>
-                                        <td class="text-center">Local Vehicle Schedule </td>
-                                        <td class="text-center">09 / Raipur </td>
-                                        <td class="text-center">Yes</td>
-                                        <td class="text-center">70%</td>
-                                        <td class="text-center">RFID016</td>
-                                        <td class="text-center">08/11/2022 </td>
-                                        <td class="text-center">08/11/2022 </td>
-                                        <td class="text-center">09:00AM</td>
-                                        <td class="text-center">28000</td>
-                                        <td class="text-center">28060</td>
-                                        <td class="text-center">2060</td>
-                                        <td class="text-center">
-                                            <input type="text" class="form-control w-200" value="lorem ipsum dummy text" readonly>
-                                        </td>
-                                        <td class="text-center">
-                                            <span class="actionBtn d-block">
-                                                <a href="#div_B">
-                                                    <button type="button" class="btn primaryLink" onclick="Content_B(); Hide_Content_A();" data-toggle="tooltip" data-placement="top"
-                                                            title="Details">
-                                                        <i data-feather="eye"></i>
-                                                    </button>
-                                                </a>
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">3</th>
-                                        <td class="text-center">
-                                            01 / Abdul
-                                        </td>
-                                        <td class="text-center">01 / Sr Driver </td>
-                                        <td class="text-center">Other Vehicle Schedule </td>
-                                        <td class="text-center">06 / Koratla, 09 / Raipur </td>
-                                        <td class="text-center">Yes</td>
-                                        <td class="text-center">80%</td>
-                                        <td class="text-center">
-                                            <select class="form-select wid-100" aria-label="Default select example">
+                                    @if (Model != null)
+                                    {
+
+                                       foreach (var item in Model.ListInDetails)
+                                        {
+                                            if (item.InActive)
+                                            {
+                                                <tr>
+
+                                                    <td class="text-center">
+                                                        @sl
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.DriverNo/ @item.DriverName
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.DesignationCode / @item.DesignationText
+                                                    </td>
+                                                    @if (item.TripType == 1)
+                                                    {
+                                                        <td class="text-center"> @item.TripType / Local</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td class="text-center"> @item.TripType / Other</td>
+                                                    }
+                                                    <td class="text-center">
+                                                        @item.FromLocationCode /@item.FromLocationName
+                                                    </td>
+                                                   
+                                                    @if (item.CarryingInMaterial == true)
+                                                    {
+                                                        <td class="text-center">Yes</td>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <td class="text-center">NO</td>
+                                                    }
+                                                    <td class="text-center">
+                                                        @item.LoadPercentageIn
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.RFIDCardIn
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.FromDate
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.ActualTripInDate
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.ActualTripInTime
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.RequiredKmIn
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.ActualKmIn
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.KMRunInTrip
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.RemarkIn
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span class="actionBtn d-block">
+
+                                                            <button type="button" onclick="OnclickHistoryDCDetails(this)" id="btn_@(sl)" data-value="@(item.ID)" class="btn primaryLink" data-toggle="tooltip" data-placement="top"
+                                                                    title="Details">
+                                                                <i data-feather="eye"></i>
+                                                            </button>
 
 
-                                                <option selected="" value="1">RFID019</option>
-                                                <option value="1">NA</option>
-                                            </select>
-                                        </td>
-                                        <td class="text-center">14/11/2022 </td>
-                                        <td class="text-center">14/11/2022 </td>
+                                                        </span>
+                                                    </td>
 
-                                        <td class="text-center">09:00AM </td>
-                                        <td class="text-center">30200</td>
-                                        <td class="text-center">28060</td>
-                                        <td class="text-center">2060</td>
+                                                </tr>
+                                                sl++;
+                                            }
+
+                                        }
+                                    }
+                                </tbody>
+
+                                <tbody id="tbody1">
+                                    <tr id="0" class="add-row">
+
                                         <td class="text-center">
-                                            <input type="text" class="form-control w-200" placeholder="lorem ipsum dummy text">
+                                            @sl
                                         </td>
                                         <td class="text-center">
-                                            <span class="actionBtn d-block">
-                                                <a href="#div_A">
-                                                    <button type="button" class="btn primaryLink" onclick="Content_A(); Hide_Content_B();" data-toggle="tooltip" data-placement="top"
-                                                            title="Pending">
-                                                        <i data-feather="alert-triangle"></i>
-                                                    </button>
-                                                </a>
-                                            </span>
+                                            <div id="0_DriverName" class="form-group"></div>
+                                            <input id="0_NoteNumber" type="hidden"
+                                                   class="form-control ">
+                                            <input id="0_VehicleNo" type="hidden"
+                                                   class="form-control ">
+
                                         </td>
+                                        <td class="text-center">
+                                            <div id="0_DesigCN" class="form-group"></div>
+                                        </td>
+                                        <td class="text-center">
+                                            <div id="0_TripType" class="form-group"></div>
+                                        </td>
+                                        <td class="text-center">
+                                            <div id="0_LocationCN" class="form-group"></div>
+                                            <input id="0_ID" type="hidden"
+                                                   class="form-control ">
+                                            <input id="0_locname" type="hidden"
+                                                   class="form-control ">
+                                            <input id="0_loccode" type="hidden"
+                                                   class="form-control ">
+                                            <input id="0_locatype" type="hidden"
+                                                   class="form-control ">
+                                        </td>
+                                        <td class="text-center">
+                                            <div id="0_CarryIn" class="form-group"></div>
+                                            <input id="0_carrmat" type="hidden"
+                                                   class="form-control ">
+                                        </td>
+                                        <td class="text-center">
+                                            <div id="0_LoadedIn" class="form-group"></div>
+                                            <input id="0_Loaded" type="hidden"
+                                                   class="form-control ">
+                                        </td>
+                                        <td class="text-center">
+                                            <div id="0_RFIDNo" class="form-group"></div>
+                                        </td>
+                                        <td class="text-center">
+                                            <div id="0_Schdate" class="form-group"></div>
+                                        </td>
+                                        <td class="text-center">
+                                            <div id="0_ActualDate" class="form-group"></div>
+                                        </td>
+                                        <td class="text-center">
+                                            @*<div id="0_ActualTime" class="form-group"></div>*@
+                                            <input id="0_ActualTime" type="text" style="width: 154px;" class="form-control timePicker pointer is-invalid" onblur="ValidateControls()" placeholder="08:00PM">
+
+                                        </td>
+                                        <td class="text-center">
+                                            <div id="0_ReqKMIn" class="form-group"></div>
+                                            <input id="0_RKMIn" type="hidden"
+                                                   class="form-control">
+                                            <input id="0_KMout" type="hidden"
+                                                   class="form-control">
+                                        </td>
+                                        <td class="text-center">
+                                            <div id="0_ActualKMIns" class="form-group"></div>
+                                        </td>
+                                        <td class="text-center">
+                                            <div id="0_RunInTrip" class="form-group"></div>
+                                        </td>
+                                        <td class="text-center">
+                                            <div id="0_InRemark" class="form-group"></div>
+                                        </td>
+                                        <td class="text-center">
+                                            <div id="0_ActionIn" class="form-group"></div>
+                                        </td>
+
                                     </tr>
                                 </tbody>
+                                <tbody id="tbody2"></tbody>
+
                             </table>
                         </div>
                     </div>
@@ -225,7 +296,7 @@
             </div>
             <div class="card mb-4">
                 <div class="card-body">
-                    <div id="div_A">
+                    <div>
                         <div class="col-md-12">
                             <div id="item-wise-table">
                                 <div class="heading_text_btn2 d-block mb-3">
@@ -233,7 +304,7 @@
                                 </div>
                                 <div class="table-responsive newTable">
 
-                                    <table class="table table-bordered btnalign" id="table1">
+                                    <table class="table table-bordered btnalign">
                                         <thead>
                                             <tr>
                                                 <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
@@ -257,106 +328,52 @@
                                                 </th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr>
-                                                <th scope="row" class="text-center">
-                                                    MM11
 
-                                                </th>
-                                                <th scope="row" class="text-center"> 14/11/2022 </th>
+                                        <tbody id="tbody3">
+
+                                            <tr id="0" class="add-rows">
                                                 <td class="text-center">
-                                                    06 / Koratla
+                                                    <div id="0_NotNumber" class="form-group">No Data</div>
+
                                                 </td>
                                                 <td class="text-center">
-                                                    01 / Nizamabad
+                                                    <div id="0_NotesDate" class="form-group"></div>
                                                 </td>
                                                 <td class="text-center">
-                                                    <select class="form-select" aria-label="Default select example">
-                                                        <option selected="">-</option>
-                                                        <option value="1">Yes</option>
-                                                        <option value="1">No</option>
-                                                    </select>
+                                                    <div id="0_fromloc" class="form-group"> </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div id="0_tonloc" class="form-group"> </div>
+
+                                                </td>
+                                                <td class="text-center">
+                                                    <div id="0_fokdiv" class="form-group">
+                                                    </div>
+
                                                 </td>
                                                 <td class="text-center">
                                                     <span class="actionBtn d-block">
-
-                                                        <button type="button" onclick='changeTextMM01()' class="btn primaryLink" data-toggle="tooltip" data-placement="top"
-                                                                title="Details">
-                                                            <i data-feather="eye"></i>
-                                                        </button>
-
+                                                        <div class="form-group" id="0_ActionItem"></div>
                                                     </span>
                                                 </td>
+
                                             </tr>
-                                            <tr>
-                                                <th scope="row" class="text-center">
-                                                    MM16
-                                                </th>
-                                                <th scope="row" class="text-center"> 14/11/2022 </th>
-                                                <td class="text-center">
-                                                    09 / Raipur
-                                                </td>
-
-                                                <td class="text-center">
-                                                    01 / Nizamabad
-                                                </td>
-                                                <td class="text-center">
-                                                    <select class="form-select" aria-label="Default select example">
-                                                        <option selected="">-</option>
-                                                        <option value="1">Yes</option>
-                                                        <option value="1">No</option>
-                                                    </select>
-                                                </td>
-                                                <td class="text-center">
-                                                    <span class="actionBtn d-block">
-                                                        <button type="button" onclick='changeTextMM06()' class="btn primaryLink" data-toggle="tooltip" data-placement="top"
-                                                                title="Details">
-                                                            <i data-feather="eye"></i>
-                                                        </button>
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                            <!-- <tr>
-                                                <th scope="row" class="text-center"> MM08 </th>
-                                                <th scope="row" class="text-center"> 05/11/2022 </th>
-                                                <td class="text-center">
-                                                    01 / Nizamabad
-                                                </td>
-
-                                                <td class="text-center">
-                                                    09 / Raipur
-                                                </td>
-                                                <td class="text-center">
-                                                    <select class="form-select" aria-label="Default select example">
-                                                        <option selected="">-</option>
-                                                        <option value="1">Yes</option>
-                                                        <option value="1">No</option>
-                                                    </select>
-                                                </td>
-                                                <td class="text-center">
-                                                    <span class="actionBtn d-block">
-                                                            <button type="button"  onclick='changeTextMM08()' class="btn primaryLink" data-toggle="tooltip" data-placement="top"
-                                                            title="Details">
-                                                            <i data-feather="eye"></i>
-                                                        </button>
-                                                    </span>
-                                                </td>
-                                            </tr> -->
                                         </tbody>
+                                        <tbody id="tbody4"></tbody>
                                     </table>
 
 
 
                                 </div>
                             </div>
-                            <div id="reference-DC-table2">
+                            <div>
                                 <div class="heading_text_btn2 d-block mb-3 pt-3">
                                     <h2 class="text-center"> Item wise Details</h2>
 
                                 </div>
                                 <div class="table-responsive newTable">
 
-                                    <table class="table table-bordered btnalign" disabled>
+                                    <table class="table table-bordered btnalign">
                                         <thead>
                                             <tr>
                                                 <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
@@ -381,40 +398,33 @@
                                                 <th scope="col" style="text-align: center; vertical-align: middle; ">KGs</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr>
-                                                <th scope="row" class="text-center">Bidi</th>
-                                                <td class="text-center">
-                                                    CB01 / CBK
-                                                </td>
 
+                                        <tbody id="tbody5">
+
+                                            <tr id="0">
                                                 <td class="text-center">
-                                                    KG
+                                                    <div id="0_itemtype">No Data</div>
+
                                                 </td>
                                                 <td class="text-center">
-                                                    100
+                                                    <div id="0_itemcodename"></div>
+
                                                 </td>
                                                 <td class="text-center">
-                                                    10000
+                                                    <div id="0_uom"></div>
+
+                                                </td>
+                                                <td class="text-center">
+                                                    <div id="0_bags"></div>
+
+                                                </td>
+                                                <td class="text-center">
+                                                    <div id="0_kgs"></div>
+
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <th scope="row" class="text-center">Bidi</th>
-                                                <td class="text-center">
-                                                    CB03 / CBS
-                                                </td>
-                                                <td class="text-center">
-                                                    KG
-                                                </td>
-                                                <td class="text-center">
-                                                    50
-                                                </td>
-                                                <td class="text-center">
-                                                    10000
-                                                </td>
-                                            </tr>
-
                                         </tbody>
+                                        <tbody id="tbody6"></tbody>
                                     </table>
 
                                 </div>
@@ -422,422 +432,56 @@
 
                         </div>
                     </div>
-                    <div id="div_B">
-                        <div class="col-md-12">
-                            <div id="item-wise-table">
-                                <div class="heading_text_btn2 d-block mb-3">
-                                    <h2 class="text-center">
-                                        Reference DC Details
-                                    </h2>
-                                </div>
-                                <div class="table-responsive newTable">
 
-                                    <table class="table table-bordered btnalign" id="table2">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
-                                                    Ref. Note No.
-                                                </th>
-
-                                                <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
-                                                    Date
-                                                </th>
-                                                <th style="text-align: center; vertical-align: middle;" scope="col">
-                                                    From Location Code & Name
-                                                </th>
-                                                <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
-                                                    To Location Code & Name
-                                                </th>
-                                                <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2" width="15%">
-                                                    Checked Material In & Found OK?
-                                                </th>
-                                                <th scope="col" style="text-align: center; vertical-align: middle;background: pink;color: #000;" rowspan="2" width="15%">
-                                                    Action
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <th scope="row" class="text-center">
-                                                    MM11
-                                                </th>
-                                                <th scope="row" class="text-center"> 03/11/2022 </th>
-                                                <td class="text-center">
-                                                    06 / Koratla
-                                                </td>
-                                                <td class="text-center">
-                                                    01 / Nizamabad
-                                                </td>
-                                                <td class="text-center">
-                                                    Yes
-                                                </td>
-                                                <td class="text-center">
-                                                    <span class="actionBtn d-block">
-                                                        <button type="button" onclick='changeTextMM011()' class="btn primaryLink" data-toggle="tooltip" data-placement="top"
-                                                                title="Details">
-                                                            <i data-feather="eye"></i>
-                                                        </button>
-                                                    </span>
-                                                </td>
-
-                                            </tr>
-                                            <tr>
-                                                <th scope="row" class="text-center">
-                                                    MM16
-                                                </th>
-                                                <th scope="row" class="text-center"> 03/11/2022 </th>
-                                                <td class="text-center">
-                                                    07 / Jaipur
-                                                </td>
-                                                <td class="text-center">
-                                                    01 / Nizamabad
-                                                </td>
-                                                <td class="text-center">
-                                                    Yes
-                                                </td>
-                                                <td class="text-center">
-                                                    <span class="actionBtn d-block">
-                                                        <button type="button" onclick='changeTextMM066()' class="btn primaryLink" data-toggle="tooltip" data-placement="top"
-                                                                title="Details">
-                                                            <i data-feather="eye"></i>
-                                                        </button>
-                                                    </span>
-                                                </td>
-
-                                            </tr>
-                                        </tbody>
-                                    </table>
-
-
-
-                                </div>
-                            </div>
-                            <div id="reference-DC-table1">
-                                <div class="heading_text_btn2 d-block mb-3 pt-3">
-                                    <h2 class="text-center"> Item wise Details</h2>
-
-                                </div>
-                                <div class="table-responsive newTable">
-
-                                    <table class="table table-bordered btnalign" disabled>
-                                        <thead>
-                                            <tr>
-                                                <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
-                                                    Item Type
-
-                                                </th>
-
-                                                <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
-                                                    Item Code & Name
-
-                                                </th>
-                                                <th style="text-align: center; vertical-align: middle;" scope="col" rowspan="2">
-                                                    UOM
-                                                </th>
-                                                <th scope="col" style="text-align: center; vertical-align: middle;" colspan="2">
-                                                    DC Quantity
-                                                </th>
-
-                                            </tr>
-                                            <tr>
-                                                <th scope="col" style="text-align: center; vertical-align: middle;">BAGs</th>
-                                                <th scope="col" style="text-align: center; vertical-align: middle; ">KGs</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <th scope="row" class="text-center">Bidi</th>
-                                                <td class="text-center">
-                                                    CB01 / CBK
-                                                </td>
-
-                                                <td class="text-center">
-                                                    KG
-                                                </td>
-                                                <td class="text-center">
-                                                    100
-                                                </td>
-                                                <td class="text-center">
-                                                    10000
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row" class="text-center">Bidi</th>
-                                                <td class="text-center">
-                                                    CB03 / CBS
-                                                </td>
-                                                <td class="text-center">
-                                                    KG
-                                                </td>
-                                                <td class="text-center">
-                                                    50
-                                                </td>
-                                                <td class="text-center">
-                                                    10000
-                                                </td>
-                                            </tr>
-
-                                        </tbody>
-                                    </table>
-
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
 
                 </div>
             </div>
 
-
-
-
-
         </div>
 
+    }
+</div>
+<!-- Optional JavaScript; choose one of the two! -->
+@section headers
+    {
+    <style>
+        .inVisible {
+            display: none;
+        }
 
-        </div>
-        <!-- Optional JavaScript; choose one of the two! -->
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
+}
+@section scripts{
 
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.bundle.min.js"></script>
-        <script src="js/popper.min.js"></script>
-        <script src="js/jquery.dataTables.min.js"></script>
-        <script src="js/dataTables.bootstrap5.min.js"></script>
-        <script src="js/feather.min.js"></script>
-        <script>
-            let time = 0;
-            const paragraphs = ["MM"];
+    <script src="js/moment.min.js"></script>
+    <script src="js/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/UIContent/JS/CustomePage/MGPInDetails.js"></script>
+    <script>
 
-            function changeTextMM01() {
-                let text = `${paragraphs[time]}11`;
+        $(document).ready(function () {
+            var today = new Date();
+            var minDate = today.setDate(today.getDate() + 1);
+            var firstOpen = true;
+            var time;
 
-                document.getElementById('name').innerHTML = text;
-
-            }
-
-            function changeTextMM06() {
-                let text = `${paragraphs[time]}16`;
-
-                document.getElementById('name').innerHTML = text;
-
-            }
-
-            function changeTextMM08() {
-                let text = `${paragraphs[time]}18`;
-
-                document.getElementById('name').innerHTML = text;
-
-            }
-
-            function changeTextMM066() {
-                let text = `${paragraphs[time]}16`;
-
-                document.getElementById('name1').innerHTML = text;
-
-            }
-
-            function changeTextMM011() {
-                let text = `${paragraphs[time]}11`;
-
-                document.getElementById('name1').innerHTML = text;
-
-            }
-        </script>
-        <script>
-            // $(function() {
-            //     $('.showSingle').click(function() {
-            //         $('.targetDiv').not('#div' + $(this).attr('target')).hide();
-            //         $('#div' + $(this).attr('target')).toggle();
-            //     });
-            // });
-
-            function Content_A() {
-                var x = document.getElementById("div_A");
-                if (x.style.display === "none") {
-                    x.style.display = "block";
+            $('.timePicker').datetimepicker({
+                useCurrent: false,
+                format: "hh:mm A"
+            }).on('dp.show', function () {
+                if (firstOpen) {
+                    time = moment().startOf('day');
+                    firstOpen = false;
                 } else {
-                    x.style.display = "none";
+                    time = "01:00 PM"
                 }
-            }
 
-            function Hide_Content_B() {
-                var x = document.getElementById("div_B");
-                if (x.style.display === "block") {
-                    x.style.display = "none";
-                } else {
-                    x.style.display = "none";
-                }
-            }
-
-            function Content_B() {
-                var x = document.getElementById("div_B");
-                if (x.style.display === "none") {
-                    x.style.display = "block";
-                } else {
-                    x.style.display = "none";
-                }
-            }
-
-            function Hide_Content_A() {
-                var x = document.getElementById("div_A");
-                if (x.style.display === "block") {
-                    x.style.display = "none";
-                } else {
-                    x.style.display = "none";
-                }
-            }
-            Hide_Content_B();
-        </script>
-        <script>
-            feather.replace()
-        </script>
-        <script>
-            $(window).scroll(function(e) {
-                var $el = $('.fixedElement');
-                var isPositionFixed = ($el.css('position') == 'fixed');
-                if ($(this).scrollTop() > 200 && !isPositionFixed) {
-                    $el.css({
-                        'position': 'sticky',
-                        'top': '0px'
-                    });
-                }
-                if ($(this).scrollTop() < 200 && isPositionFixed) {
-                    $el.css({
-                        'position': 'static',
-                        'top': '0px'
-                    });
-                }
+                $(this).data('DateTimePicker').date(time);
             });
-        </script>
-        <script>
-            $(document).ready(function() {
-                $('#example').DataTable();
-            });
-        </script>
-        <script>
-            $(function() {
-                $('[data-toggle="tooltip"]').tooltip()
-            })
-        </script>
-        <script>
-            function selectedRow() {
-                var index,
-                    table = document.getElementById("table");
+        });
+    </script>
 
-                for (var i = 1; i < table.rows.length; i++)
-
-                {
-
-                    table.rows[i].onclick = function()
-
-                    {
-
-                        // remove the background from the previous selected row
-
-                        if (typeof index !== "undefined") {
-
-                            table.rows[index].classList.toggle("selected-row");
-
-                        }
-
-                        console.log(typeof index);
-
-                        // get the selected row index
-
-                        index = this.rowIndex;
-
-                        // add class selected to the row
-
-                        this.classList.toggle("selected-row");
-
-                        console.log(typeof index);
-
-                    };
-                }
-
-            }
-
-            selectedRow();
-        </script>
-        <script>
-            function selectedRow() {
-                var index,
-                    table = document.getElementById("table1");
-
-                for (var i = 1; i < table.rows.length; i++)
-
-                {
-
-                    table.rows[i].onclick = function()
-
-                    {
-
-                        // remove the background from the previous selected row
-
-                        if (typeof index !== "undefined") {
-
-                            table.rows[index].classList.toggle("selected-row");
-
-                        }
-
-                        console.log(typeof index);
-
-                        // get the selected row index
-
-                        index = this.rowIndex;
-
-                        // add class selected to the row
-
-                        this.classList.toggle("selected-row");
-
-                        console.log(typeof index);
-
-                    };
-                }
-
-            }
-
-            selectedRow();
-        </script>
-        <script>
-            function selectedRow() {
-                var index,
-                    table = document.getElementById("table2");
-
-                for (var i = 1; i < table.rows.length; i++)
-
-                {
-
-                    table.rows[i].onclick = function()
-
-                    {
-
-                        // remove the background from the previous selected row
-
-                        if (typeof index !== "undefined") {
-
-                            table.rows[index].classList.toggle("selected-row");
-
-                        }
-
-                        console.log(typeof index);
-
-                        // get the selected row index
-
-                        index = this.rowIndex;
-
-                        // add class selected to the row
-
-                        this.classList.toggle("selected-row");
-
-                        console.log(typeof index);
-
-                    };
-                }
-
-            }
-
-            selectedRow();
-        </script>
+}
 
