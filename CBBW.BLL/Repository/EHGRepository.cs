@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +29,7 @@ namespace CBBW.BLL.Repository
             EHGHeader obj= new EHGHeader();
             obj.NoteNumber= _MasterEntities.getNewNoteNumber(NotePattern, ref pMsg);
             obj.EntryDate = DateTime.Today;
+            //obj.EntryDateStr = DateTime.Today.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
             obj.EntryTime = DateTime.Now.ToString("hh:mm tt");
             obj.CenterCode = user.CentreCode;
             obj.CenterName = user.CentreName;

@@ -12,6 +12,7 @@ namespace CBBW.Areas.Security.ViewModel.EHG
     public class EHGHeaderEntryVM
     {
         MasterEntities _master;
+        string pMsg;
         public EHGHeaderEntryVM(int centerCode)
         {
             EHGMaster master = EHGMaster.GetInstance;
@@ -20,13 +21,40 @@ namespace CBBW.Areas.Security.ViewModel.EHG
             this.PersonType = master.PersonType;
             this.TourCategory = master.TourCategory;
             this.VehicleBelongsTo = master.VehicleBelongsTo;
-            string pMsg = "";
+            pMsg = "";
             _master = new MasterEntities();
-            this.DriverList = _master.getDriverList(ref pMsg);
+            this.DriverList = _master.getCenterWiseDriverList(centerCode,ref pMsg);
             this.StaffList = _master.getEmployeeList(centerCode, 99, 0, ref pMsg);
             this.MDDICList = _master.getEmployeeList(centerCode, 0, 0, ref pMsg);
             this.OtherStaffList = _master.getEmployeeList(centerCode, 99, 1, ref pMsg);
-        }        
+        }
+        public EHGHeaderEntryVM()
+        {
+            EHGMaster master = EHGMaster.GetInstance;
+            this.VehicleTypes = master.VehicleTypes;
+            this.PurposeOfAllotment = master.PurposeOfAllotment;
+            this.PersonType = master.PersonType;
+            this.TourCategory = master.TourCategory;
+            this.VehicleBelongsTo = master.VehicleBelongsTo;
+            pMsg = "";
+            _master = new MasterEntities();
+        }
+        public IEnumerable<CustomComboOptions> getDriverList(int centerCode) 
+        {
+            return _master.getCenterWiseDriverList(centerCode, ref pMsg);
+        }
+        public IEnumerable<CustomComboOptions> getStaffList(int centerCode)
+        {
+            return _master.getEmployeeList(centerCode, 99, 0, ref pMsg);
+        }
+        public IEnumerable<CustomComboOptions> getMDDICList(int centerCode)
+        {           
+            return _master.getEmployeeList(centerCode, 0, 0, ref pMsg);
+        }
+        public IEnumerable<CustomComboOptions> getOtherStaffList(int centerCode)
+        {
+            return _master.getEmployeeList(centerCode, 99, 1, ref pMsg);
+        }
         public EHGHeader ehgHeader { get; set; }
         public List<CustomComboOptions> VehicleTypes { get; set; }
         public List<CustomComboOptions> PurposeOfAllotment { get; set; }
@@ -36,6 +64,14 @@ namespace CBBW.Areas.Security.ViewModel.EHG
         public IEnumerable<CustomComboOptions> DriverList { get; set; }
         public IEnumerable<CustomComboOptions> StaffList { get; set; }
         public IEnumerable<CustomComboOptions> MDDICList { get; set; }
-        public IEnumerable<CustomComboOptions> OtherStaffList { get; set; }        
+        public IEnumerable<CustomComboOptions> OtherStaffList { get; set; }
+
+        public int AuthorisedEmpNoForManagement { get; set; }
+        public int DriverNoForManagement { get; set; }
+        public DateTime FromdateForMang { get; set; }
+        public string FromTimeForMang { get; set; }
+        public DateTime ToDateForMang { get; set; }
+        public string PurposeOfVisitFoeMang { get; set; }
+        public int TADADeniedForManagement { get; set; }
     }
 }

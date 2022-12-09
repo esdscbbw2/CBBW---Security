@@ -32,19 +32,20 @@ $.fn.CustomDateFormat = function () {
     $('#' + lblid).html(e);
     //that.addClass('is-valid').removeClass('is-invalid')
 };
-function CloneRow(sourceTBody, destinationTBody, rowid,IsRemoveBtn,IsAddBtnEnable) {
+function CloneRow_Backup(sourceTBody, destinationTBody, rowid, IsRemoveBtn, IsAddBtnEnable) {
     // Source table Body must have a row having (id="0" class="add-row")
     //The controlls should have a class named "alterID";
     // buttons should have class "cloneBtn" - For tooltip functionalities
     //"addBtn" and removeBtn are also used for corrosponding buttons of a row
     //"CustomDateFormatCloneRow" - This class is used for customdatepicker. 
-   //If multiselects are in a row then use the class "clonemultiselect" and remove multiple attribute and the classes which are responsible for multiselect creations.
+    //If multiselects are in a row then use the class "clonemultiselect" and remove multiple attribute and the classes which are responsible for multiselect creations.
     //Use "htmlVal" class for a controll if the value will be picked from innerhtml.
     //There should be "th" tag which may exclusively used for Serial Number Purpose.
+    //alert('CloneRow');
     var maxrows = 0, r = 0;
     var sourcebody = $('#' + sourceTBody);
     var destinationbody = $('#' + destinationTBody);
-    $('#' + destinationTBody+' tr').each(function () {
+    $('#' + destinationTBody + ' tr').each(function () {
         var maxr = $(this).attr('id') * 1;
         if (maxr > maxrows) { maxrows = maxr; }
     });
@@ -98,6 +99,114 @@ function CloneRow(sourceTBody, destinationTBody, rowid,IsRemoveBtn,IsAddBtnEnabl
         that.on('mouseleave click', function () {
             $(this).tooltip('hide');
         });
+    });
+    if (IsAddBtnEnable) {
+        cloneready.find('.addBtn').makeEnabled();
+    }
+    else {
+        cloneready.find('.addBtn').makeDisable();
+    };
+    if (IsRemoveBtn) {
+        cloneready.find('.removeBtn').removeClass('inVisible');
+    }
+    else {
+        cloneready.find('.removeBtn').addClass('inVisible');
+    }
+    sourcebody.find('.btn').each(function () {
+        that = $(this);
+        that.on('mouseleave click', function () {
+            $(this).tooltip('hide');
+        });
+    });
+    if (rowid == 0) {
+        if (maxrows == 0) {
+            destinationbody.append(cloneready);
+        } else {
+            $(cloneready).insertBefore('#' + destinationTBody + ' tr:first');
+        }
+    } else {
+        $(cloneready).insertAfter('#' + rowid);
+    }
+    var sl = 2;
+    $('#' + destinationTBody + ' th').each(function () {
+        $(this).html(sl);
+        sl += 1;
+    });
+};
+function CloneRow(sourceTBody, destinationTBody, rowid,IsRemoveBtn,IsAddBtnEnable) {
+    // Source table Body must have a row having (id="0" class="add-row")
+    //The controlls should have a class named "alterID";
+    // buttons should have class "cloneBtn" - For tooltip functionalities
+    //"addBtn" and removeBtn are also used for corrosponding buttons of a row
+    //"CustomDateFormatCloneRow" - This class is used for customdatepicker. 
+   //If multiselects are in a row then use the class "clonemultiselect" and remove multiple attribute and the classes which are responsible for multiselect creations.
+    //Use "htmlVal" class for a controll if the value will be picked from innerhtml.
+    //There should be "th" tag which may exclusively used for Serial Number Purpose.
+    //alert('CloneRow');
+    var maxrows = 0, r = 0;
+    var sourcebody = $('#' + sourceTBody);
+    var destinationbody = $('#' + destinationTBody);
+    $('#' + destinationTBody+' tr').each(function () {
+        var maxr = $(this).attr('id') * 1;
+        if (maxr > maxrows) { maxrows = maxr; }
+    });
+    if (maxrows >= 1) { r = maxrows + 1; } else { r = 1; }//Geting maximum row
+    var cloneready = sourcebody.find('tr').clone();
+    cloneready.attr("id", r);
+    cloneready.find('.alterID').each(function () {
+        that = $(this);
+        var mID = that.attr('id').split('_');
+        var newID = mID[0] + '_' + r;
+        that.attr('id', newID);
+        that.val('').isInvalid();
+    });
+    cloneready.find('.btn-group').remove();
+    cloneready.find('.clonemultiselect').each(function () {
+        that = $(this);
+        that.multiselect({
+            templates: {
+                button: '<button type="button" class="multiselect dropdown-toggle btn btn-primary w-100 selectBox" data-bs-toggle="dropdown" aria-expanded="false"><span class="multiselect-selected-text"></span></button>',
+            },
+        });
+        that.multiselect('clearSelection');
+        that.multiselect('refresh');
+    });
+    cloneready.find('.CustomDateFormatCloneRow').each(function () {
+        $(this).change(function () {
+            $(this).CustomDateFormatCloneRow();
+        });
+    });
+    cloneready.find('.CustomTimeFormatCloneRow').each(function () {
+        var firstOpen = true;
+        var time;
+        $(this).datetimepicker({
+            useCurrent: false,
+            format: "hh:mm A"
+        }).on('dp.show', function () {
+            if (firstOpen) {
+                time = moment().startOf('day');
+                firstOpen = false;
+            } else {
+                time = "01:00 PM"
+            }
+
+            $(this).data('DateTimePicker').date(time);
+        });
+    });
+    cloneready.find('.cloneBtn').each(function () {
+        that = $(this);
+        that.on('mouseenter', function () {
+            $(this).tooltip('show');
+        });
+        that.on('mouseleave click', function () {
+            $(this).tooltip('hide');
+        });
+    });
+    cloneready.find('.datelabel').each(function () {
+        $(this).html('Select Date');
+    });
+    cloneready.find('.htmlVal').each(function () {
+        $(this).html('');
     });
     if (IsAddBtnEnable) {
         cloneready.find('.addBtn').makeEnabled();
@@ -258,8 +367,8 @@ function getRecordsFromTable(tableName) {
     schrecords = '[' + schrecords + ']';
     return schrecords;
 };
-function removeBtnClickFromCloneRow(destinationTBody) {
-    var r = removeBtnClickFromCloneRow.caller.arguments[0].target.closest('.add-row');
+function removeBtnClickFromCloneRow(r,destinationTBody) {
+    //var r = removeBtnClickFromCloneRow.caller.arguments[0].target.closest('.add-row');
     if ($(r).attr("id") == 0) {
     } else {
         r.remove();
@@ -276,6 +385,7 @@ function BackButtonClicked() {
         success: function (result) { window.location.href = result; }
     });
 };
+
 
 
 

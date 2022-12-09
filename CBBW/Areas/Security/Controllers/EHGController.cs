@@ -38,8 +38,9 @@ namespace CBBW.Areas.Security.Controllers
                 model = new EHGHeaderEntryVM(user.CentreCode);
                 model.ehgHeader = _iEHG.getNewEHGHeader(ref pMsg);
             }
-            else { model = CastEHGTempData(); }
+            else { model = TempData["EHG"] as EHGHeaderEntryVM; }
 
+            TempData["EHG"] = model;
             return View(model);
         }
         [HttpPost]
@@ -58,7 +59,7 @@ namespace CBBW.Areas.Security.Controllers
         {
             List<CustomComboOptions> result = new List<CustomComboOptions>();
             model = CastEHGTempData();
-            if (model == null || model.PersonType == null)
+            if (model.PersonType == null)
             {
                 EHGMaster master = EHGMaster.GetInstance;
                 result = master.PersonType;
@@ -66,15 +67,43 @@ namespace CBBW.Areas.Security.Controllers
             else { result = model.PersonType;}
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
+        public JsonResult GetDriverList()
+        {
+            IEnumerable<CustomComboOptions> result;
+            model = CastEHGTempData();
+            if (model.DriverList == null)
+                result = model.getDriverList(user.CentreCode);
+            else  
+                result = model.DriverList; 
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetStaffList()
+        {
+            IEnumerable<CustomComboOptions> result;
+            model = CastEHGTempData();
+            if (model.StaffList == null)
+                result = model.getStaffList(user.CentreCode);
+            else
+                result = model.StaffList;
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetDesgCodenName(int empID,int empType)
+        {
+            string result= "4 / DIC";
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
         //Private Functions
         private EHGHeaderEntryVM CastEHGTempData() 
-        {            
+        {
             if (TempData["EHG"] != null)
             {
                 model = TempData["EHG"] as EHGHeaderEntryVM;
-                TempData["EHG"] = model;
             }
+            else 
+            {
+                model = new EHGHeaderEntryVM();
+            }
+            TempData["EHG"] = model;
             return model;
         }
         

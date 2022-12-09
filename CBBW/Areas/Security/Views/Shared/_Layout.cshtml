@@ -70,6 +70,7 @@
     <!-- Time Picker -->
     <script src="~/UIContent/JS/moment.min.js"></script>
     <script src="~/UIContent/JS/bootstrap-datetimepicker.min.js"></script>
+    @RenderSection("scripts", required: false)
     <script>
         $.fn.CustomDateFormat = function () {
             var that = this;
@@ -78,10 +79,10 @@
             var dt = this.val();
             var e = dt;
             if (dt.indexOf('/') != -1) {
-                var e = dt.split('/').reverse().join('-');
+                var e = dt.split('/').reverse().join('/');
             }
             else {
-                var e = dt.split('-').reverse().join('-');
+                var e = dt.split('-').reverse().join('/');
             }
             $('#' + lblid).html(e);
             //that.addClass('is-valid').removeClass('is-invalid')
@@ -89,14 +90,14 @@
         $.fn.CustomDateFormatCloneRow = function () {
             var that = this;
             var parentid = that.attr('id');
-            var lblid ='lbl'+ parentid;
+            var lblid = 'lbl' + parentid;
             var dt = this.val();
             var e = dt;
             if (dt.indexOf('/') != -1) {
-                var e = dt.split('/').reverse().join('-');
+                var e = dt.split('/').reverse().join('/');
             }
             else {
-                var e = dt.split('-').reverse().join('-');
+                var e = dt.split('-').reverse().join('/');
             }
             $('#' + lblid).html(e);
             //that.addClass('is-valid').removeClass('is-invalid')
@@ -136,6 +137,6 @@
 
 
     </script>
-    @RenderSection("scripts", required: false)
+
 </body>
 </html>

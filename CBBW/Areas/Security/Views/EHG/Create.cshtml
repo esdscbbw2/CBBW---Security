@@ -1,4 +1,5 @@
-﻿@using CBBW.Areas.Security.ViewModel.EHG;
+﻿@using System.Globalization;
+@using CBBW.Areas.Security.ViewModel.EHG;
 @model EHGHeaderEntryVM
 @{
     ViewBag.Title = "EHG Entry";
@@ -13,6 +14,7 @@
         @Html.HiddenFor(m => m.ehgHeader.Initiator)
         @Html.HiddenFor(m => m.ehgHeader.InitiatorName)
         @Html.HiddenFor(m => m.ehgHeader.InitiatorCodenName)
+        
 
         <div class="fixedElement">
             <div class="col-md-12">
@@ -65,8 +67,8 @@
                         <label class="col-form-label col-md-1">
                             Date  :
                         </label>
-                        <div class="col-md-2">                             
-                            <input type="text" class="form-control" value="@DateTime.Today.ToString("dd/MM/yyyy")" disabled>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" value="@DateTime.Today.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)" disabled>
                         </div>
                         <label class="col-form-label col-md-1">
                             Time  :
@@ -94,17 +96,17 @@
                         </label>
                         <div class="col-md-6">
                             @Html.DropDownListFor(m => m.ehgHeader.VehicleType,
-                                       new SelectList(Model.VehicleTypes,"ID", "DisplayText"),
+                                       new SelectList(Model.VehicleTypes, "ID", "DisplayText"),
                                        "Select Vehicle Type To Be Allotted",
                                        htmlAttributes: new
                                        {
                                            @class = "form-select pointer is-invalid"
                                        })
                             @*<select class="form-select" aria-label="Default select example" onchange="showDiv(this)">
-                                <option selected="">Select Vehicle Type To Be Allotted</option>
-                                <option value="1">LV</option>
-                                <option value="2">2 Wheeler  </option>
-                            </select>*@
+                                    <option selected="">Select Vehicle Type To Be Allotted</option>
+                                    <option value="1">LV</option>
+                                    <option value="2">2 Wheeler  </option>
+                                </select>*@
                         </div>
                     </div>
                     <div id="for_LV" class="inVisible">
@@ -121,12 +123,12 @@
                                            @class = "form-select pointer is-invalid "
                                        })
                                 @*<select class="form-select" aria-label="Default select example" onchange="showDivManage(this)">
-                                    <option selected="">Select Purpose Of Allotment</option>
-                                    <option value="1">For Management </option>
-                                    <option value="2">
-                                        For Office Work
-                                    </option>
-                                </select>*@
+                                        <option selected="">Select Purpose Of Allotment</option>
+                                        <option value="1">For Management </option>
+                                        <option value="2">
+                                            For Office Work
+                                        </option>
+                                    </select>*@
                             </div>
                         </div>
                     </div>
@@ -136,8 +138,8 @@
                                 Tour “Purpose Of Allotment"  :
                             </label>
                             <div class="col-md-6">
-                                <input id="POA2Wheeler" type="text" 
-                                       class="form-control " 
+                                <input id="POA2Wheeler" type="text"
+                                       class="form-control "
                                        value="NA" disabled>
                             </div>
                         </div>
@@ -160,12 +162,12 @@
                            @onchange = "ValidateControl()"
                        })
                             @*<select class="form-select" aria-label="Default select example">
-                                <option selected="">-</option>
-                                <option value="1">Yes </option>
-                                <option value="2">
-                                    No
-                                </option>
-                            </select>*@
+                                    <option selected="">-</option>
+                                    <option value="1">Yes </option>
+                                    <option value="2">
+                                        No
+                                    </option>
+                                </select>*@
                         </div>
                     </div>
                     <div class="row d-flex  align-items-center mb-4">
@@ -182,12 +184,12 @@
                                            @onchange = "ValidateControl()"
                                        })
                             @*<select class="form-select" aria-label="Default select example">
-                                <option selected="">1001 / Md Aitf</option>
-                                <option value="1">1002 / Md Abdul </option>
-                                <option value="2">
-                                    1003 / Md Imraan
-                                </option>
-                            </select>*@
+                                    <option selected="">1001 / Md Aitf</option>
+                                    <option value="1">1002 / Md Abdul </option>
+                                    <option value="2">
+                                        1003 / Md Imraan
+                                    </option>
+                                </select>*@
                         </div>
                     </div>
                     <div class="row d-flex  align-items-center mb-4">
@@ -238,7 +240,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12 mt-4 pt-3 inVisible" id="for_Management" >
+            <div class="col-md-12 mt-4 pt-3 inVisible" id="for_Management">
                 <div class="heading_text_btn2 d-block mb-4">
                     <h2>
                         Travelling Person Details: For Management
@@ -291,25 +293,28 @@
                                     <tr>
                                         <th scope="row" class="text-center">Driver</th>
                                         <td class="text-center">
-                                            <select class="form-select" aria-label="Default select example">
-                                                <option selected="">4001 / Md. Ismail</option>
-                                                <option value="1">1002 / Md Abdul </option>
-                                                <option value="2">
-                                                    1003 / Md Imraan
-                                                </option>
-                                            </select>
+                                            @Html.DropDownListFor(m => m.DriverNoForManagement,
+                                       new SelectList(Model.DriverList, "ID", "DisplayText"),
+                                       "Select Driver",
+                                       htmlAttributes: new
+                                       {
+                                           @class = "form-select pointer is-invalid",
+                                           @onchange = "DriverNoForManagementChanged()"
+                                       })
                                         </td>
-                                        <td class="text-center">01 / Sr Driver </td>
+                                        <td id="tbl1Designation" class="text-center">01 / Sr Driver </td>
                                         <td class="text-center">
                                             <div class="position-relative pointer">
-                                                <input type="date" class="form-control pointer" id="customDate">
+                                                <input type="date" class="form-control pointer">
                                                 <label id="customDatelbl" class="datelabel pointer">Select Date</label>
                                             </div>
                                         </td>
 
                                         <td class="text-center">
                                             <div class="input-group date pointer position-static placeholder-dark">
-                                                <input id="" type="text" class="form-control timePicker" placeholder="Select Time">
+                                                <input id="" type="text" 
+                                                       class="form-control timePicker" 
+                                                       placeholder="Select Time">
                                             </div>
                                         </td>
                                         <td class="text-center">
@@ -366,11 +371,14 @@
                                 <label>Authorized Employee No. & Name :</label>
                             </div>
                             <div class="col-md-5">
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected="">3023 / Md. Ikbal</option>
-                                    <option value="1">1256 / Md. Abdul</option>
-                                    <option value="2">5266 / Md. Imraan</option>
-                                </select>
+                                @Html.DropDownListFor(m => m.AuthorisedEmpNoForManagement,
+                                       new SelectList(Model.OtherStaffList, "ID", "DisplayText"),
+                                       "Select Employee Number",
+                                       htmlAttributes: new
+                                       {
+                                           @class = "form-select pointer is-invalid",
+                                           @onchange = "ValidateControl()"
+                                       })
                             </div>
                         </div>
                         @*</form>*@
@@ -382,8 +390,6 @@
                 <div class="heading_text_btn2 d-block mb-4">
                     <h2> Travelling Person Details: For Office Work </h2>
                 </div>
-
-
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive max-content">
@@ -418,69 +424,81 @@
                                         <th scope="col" style="text-align: center; vertical-align: middle;" width="9%">Time</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
+                                <tbody id="tbody3">
+                                    <tr id="0" class="add-row">
                                         <th scope="row">1</th>
-                                        <th class="text-center">
-                                            <select class="form-select w-200" 
-                                                    aria-label="Default select example" 
-                                                    id="DDPersonType">
-                                            </select>
-
-                                        </th>
                                         <td class="text-center">
-                                            <select class="form-select" aria-label="Default select example" id="customSelect">
-                                                <option selected="">4001 / Md. Ismail</option>
-                                                <option value="1">1002 / Md Abdul </option>
-                                                <option value="2">
-                                                    1003 / Md Imraan
-                                                </option>
+                                            <select class="form-select w-200 is-invalid alterID"
+                                                    aria-label="Default select example"
+                                                    id="DDPersonType" onchange="DDPersonTypeChanged()">
                                             </select>
-                                            <input type="text" class="hide  form-control w-200" placeholder="" name="custom" id="customInput">
                                         </td>
-                                        <td class="text-center">D05 / Sr Driver </td>
+                                        <td class="text-center">
+                                            <select class="form-select alterID pickPersonName" 
+                                                    aria-label="Default select example"
+                                                    onchange="DDPickPersonChanged(0)"
+                                                    id="cmbDDPersonType">
+                                            </select>
+                                            <input type="text" 
+                                                   class="form-control w-200 inVisible alterID pickPersonNametxt"
+                                                   onblur="DDPickPersonChanged(1)"
+                                                   id="txtDDPersonType">
+                                        </td>
+                                        <td id="DesgCodenName" class="text-center alterID htmlVal"> </td>
                                         <td class="text-center">
                                             <div class="position-relative pointer">
-                                                <input type="date" class="form-control pointer" id="customDate2">
-                                                <label id="customDate2lbl" class="datelabel pointer">Select Date</label>
+                                                <input id="FromDate" type="date" onchange="ValidateCloneRowCtrl()"
+                                                       class="form-control pointer is-invalid alterID CustomDateFormatCloneRow">
+                                                <label id="lblFromDate" style="width:110px"
+                                                       class="datelabel pointer alterID">Select Date</label>
                                             </div>
                                         </td>
 
                                         <td class="text-center">
-                                            <div class="input-group date pointer position-static placeholder-dark">
-                                                <input id="" type="text" class="form-control timePicker" placeholder="Select Time">
+                                            <div class="input-group date pointer position-static">
+                                                <input id="FromTime" type="text" onblur="ValidateCloneRowCtrl()"
+                                                       class="form-control is-invalid timePicker CustomTimeFormatCloneRow alterID"
+                                                       placeholder="Select Time">
                                             </div>
                                         </td>
                                         <td class="text-center">
                                             <div class="position-relative pointer">
-                                                <input type="date" class="form-control pointer" id="customDate3">
-                                                <label id="customDate3lbl" class="datelabel pointer">Select Date</label>
+                                                <input id="ToDate" type="date"
+                                                       onchange="ValidateCloneRowCtrl()"
+                                                       class="form-control pointer is-invalid alterID CustomDateFormatCloneRow">
+                                                <label id="lblToDate" style="width:110px"
+                                                       class="datelabel pointer alterID">Select Date</label>
                                             </div>
                                         </td>
 
 
                                         <td class="text-center">
-                                            <textarea name="" id="" cols="20" class="form-control" rows="3">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Harum, eos sint inventore exercitationem incidunt id ipsum at nihil!</textarea>
+                                            <textarea name="" id="PurposeOfVisit" cols="20"
+                                                      onchange="ValidateCloneRowCtrl()"
+                                                      class="form-control is-invalid alterID" rows="3">
+                                            </textarea>
                                         </td>
                                         <td class="text-center">
-                                            <select class="form-select" aria-label="Default select example">
-                                                <option selected="">-</option>
+                                            <select id="TaDaDenied" class="form-select is-invalid alterID"
+                                                    onchange="ValidateCloneRowCtrl()"
+                                                    aria-label="Default select example">
+                                                <option selected value="-1">-</option>
                                                 <option value="1">  Yes</option>
-                                                <option value="2">
-                                                    No
-                                                </option>
+                                                <option value="0"> No </option>
                                             </select>
                                         </td>
-
                                         <td>
                                             <span class="actionBtn">
-                                                <button type="button" class="btn primaryLink"
+                                                <button id="AddBtn" type="button" disabled
+                                                        class="btn primaryLink alterID cloneBtn addBtn"
+                                                        onclick="addOfficeWorkCloneBtnClick()"
                                                         data-toggle="tooltip"
                                                         data-placement="top" title="Add">
                                                     <i data-feather="plus"></i>
                                                 </button>
-
-                                                <button type="button" class="btn secondaryLink inVisible"
+                                                <button id="DeleteBtn" type="button"
+                                                        class="btn secondaryLink inVisible alterID cloneBtn removeBtn"
+                                                        onclick="removeOfficeWorkCloneBtnClick()"
                                                         data-toggle="tooltip"
                                                         data-placement="top" title="Delete">
                                                     <i data-feather="x"></i>
@@ -490,6 +508,7 @@
                                     </tr>
 
                                 </tbody>
+                                <tbody id="tbody4"></tbody>
                             </table>
                         </div>
                     </div>
@@ -502,10 +521,8 @@
                                 <label>Authorized Employee No. & Name :</label>
                             </div>
                             <div class="col-md-5">
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected="">3023 / Md. Ikbal</option>
-                                    <option value="1">1256 / Md. Abdul</option>
-                                    <option value="2">5266 / Md. Imraan</option>
+                                <select id="DDAuthorisedEmpForWork" class="form-select" 
+                                        aria-label="Default select example">
                                 </select>
                             </div>
                         </div>
@@ -516,17 +533,19 @@
             </div>
             <div class="col-md-12">
                 <div class="d-flex justify-content-center mt-2">
-                    <button type="button" class="btn btn-primary me-2" onclick="window.location.href='date_wise_tour_details_entry.html';" id="disabled-btn-1">
+                    <button type="button" class="btn btn-primary me-2" 
+                            onclick="window.location.href='date_wise_tour_details_entry.html';" 
+                            id="DateWiseTourBtn">
                         Date Wise Tour Details - Entry
-
                     </button>
-                    <button type="button" class="btn btn-primary" onclick="window.location.href='vehicle_allotment_details.html';" id="disabled-btn-2">
+                    <button type="button" class="btn btn-primary"
+                            onclick="window.location.href='vehicle_allotment_details.html';" 
+                            id="VehicleAllotBtn">
                         Vehicle Allotment Details
                     </button>
                 </div>
             </div>
             <div class="bgColor mt-4 bg-transparent text-center">
-
                 <ul style="list-style:none;">
                     <li style="font-size: 16px;">
                         The Entry Is Done As Per Policy & As Required:
@@ -547,18 +566,21 @@
 }
 @section scripts{
     <script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
+    <script src="~/UIContent/JS/bootstrap-datetimepicker.min.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
     <script src="~/UIContent/JS/CustomePage/EHGCreateNote.js"></script>
+
     <script>
         $(document).ready(function () {
-            getDropDownData('DDPersonType', 'Select Type','/EHG/GetPersonTypes')
+
         });
     </script>
     <script>
-        function addCloneBtnClick() {
-            var insrow = addCloneBtnClick.caller.arguments[0].target.closest('.add-row');
-            CloneRow('tbody1', 'tbody2', $(insrow).attr('id') * 1, true, false);
-        };
+        //function addCloneBtnClick() {
+        //    //alert('addCloneBtnClick');
+        //    var insrow = addCloneBtnClick.caller.arguments[0].target.closest('.add-row');
+        //    CloneRow('tbody3', 'tbody4', $(insrow).attr('id') * 1, true, false);
+        //};
         function trialBtnClick() {
             var schrecords = getRecordsFromTable('table1');
             var x = '{"triallist":' + schrecords + '}';
@@ -612,11 +634,11 @@
                 icon: 'success',
                 html: `<div style="text-align:left;">
 
-                                        <div class="form-group">
-                                            <label class="swal-label">Attach File</label>
-                                            <input type="file" id="" class="form-control" placeholder="">
-                                        </div>
-                                    </div>`,
+                                                <div class="form-group">
+                                                    <label class="swal-label">Attach File</label>
+                                                    <input type="file" id="" class="form-control" placeholder="">
+                                                </div>
+                                            </div>`,
 
                 cancelButtonClass: 'btn-cancel',
                 cancelButtonText: 'Cancel',
@@ -626,7 +648,7 @@
 
             })
         }
-    </script>    
+    </script>
     <script>
         var firstOpen = true;
         var time;

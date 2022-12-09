@@ -197,6 +197,23 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
+        public IEnumerable<CustomComboOptions> getCenterWiseDriverList(int CentreCode, ref string pMsg) 
+        {
+            List<CustomComboOptions> result = new List<CustomComboOptions>();
+            try
+            {
+                dt = _datasync.getCenterWiseDriverList(CentreCode,ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        result.Add(_dbresmapper.Map_CustomComboOptions(dt.Rows[i]));
+                    }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
 
     }
 }

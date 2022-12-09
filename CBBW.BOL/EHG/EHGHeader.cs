@@ -26,6 +26,7 @@ namespace CBBW.BOL.EHG
         public int Initiator { get; set; }
         public int Instructor { get; set; }
         public int AuthorisedEmpNo { get; set; }
+        public string AuthorisedEmployeeName { get; set; }
         public string InitiatorName { get; set; }
         public string InitiatorCodenName { get; set; }
     }
