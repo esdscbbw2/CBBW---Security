@@ -14,7 +14,9 @@
         @Html.HiddenFor(m => m.ehgHeader.Initiator)
         @Html.HiddenFor(m => m.ehgHeader.InitiatorName)
         @Html.HiddenFor(m => m.ehgHeader.InitiatorCodenName)
-        
+        @Html.HiddenFor(m => m.AuthorisedEmpNameForManagement)
+        @Html.HiddenFor(m => m.DriverNameForManagement)
+        @Html.HiddenFor(m => m.DesgCodeNNameForManagement)
 
         <div class="fixedElement">
             <div class="col-md-12">
@@ -24,7 +26,9 @@
                             <i data-feather="arrow-left-circle"></i>
                             Back
                         </button>
-                        <button type="submit" class="btn btn-secondary me-2" onclick="window.location.href='emp_travelling_detail_vehicle_allotment_by_HG_list.html';">
+                        <button id="btnSubmit" type="submit" name="Submit" value="create"
+                                class="btn btn-secondary me-2"
+                                @*onclick="window.location.href='emp_travelling_detail_vehicle_allotment_by_HG_list.html';"*@>
                             <i data-feather="upload"></i>
                             Submit
                         </button>
@@ -48,7 +52,7 @@
             </div>
         </div>
         <div class="col-md-12 mb-4">
-            <div class="card mb-4 mt-4">
+            <div id="HdrDiv" class="card mb-4 mt-4">
                 <div class="card-body approvalForm">
                     @*<form class="form-sample form-inline row ms-auto">*@
                     <div class="row d-flex align-items-center mb-4">
@@ -246,8 +250,6 @@
                         Travelling Person Details: For Management
                     </h2>
                 </div>
-
-
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive max-content">
@@ -302,56 +304,96 @@
                                            @onchange = "DriverNoForManagementChanged()"
                                        })
                                         </td>
-                                        <td id="tbl1Designation" class="text-center">01 / Sr Driver </td>
+                                        <td id="tbl1Designation" class="text-center"> </td>
                                         <td class="text-center">
                                             <div class="position-relative pointer">
-                                                <input type="date" class="form-control pointer">
-                                                <label id="customDatelbl" class="datelabel pointer">Select Date</label>
+                                                @Html.TextBoxFor(m => m.FromdateForMang, "{0:yyyy-MM-dd}",
+                                                   htmlAttributes: new
+                                                        {
+                                                       @class = "form-control pointer is-invalid CustomDateFormatCloneRow",
+                                                       type = "date",
+                                                       onchange = "ValidateControl()",
+                                                       max = Model.MaxFromDate,
+                                                       min = Model.MinFromDate
+                                                   })
+                                                <label id="lblFromdateForMang" style="width:100px"
+                                                       class="datelabel pointer">Select Date</label>
                                             </div>
                                         </td>
 
                                         <td class="text-center">
                                             <div class="input-group date pointer position-static placeholder-dark">
-                                                <input id="" type="text" 
-                                                       class="form-control timePicker" 
-                                                       placeholder="Select Time">
+                                                @Html.TextBoxFor(m => m.FromTimeForMang,
+                                                   htmlAttributes: new
+                                                   {
+                                                       @class = "form-control timePicker pointer is-invalid",
+                                                       type = "text",
+                                                       onblur = "ValidateControl()",
+                                                       placeholder = "Select Time"
+                                                   })
+                                                @*<input id="" type="text"
+                                                    class="form-control timePicker"
+                                                    placeholder="Select Time">*@
                                             </div>
                                         </td>
                                         <td class="text-center">
-                                            05-11-2022
                                         </td>
                                         <td class="text-center">
-                                            09:00 AM
                                         </td>
                                         <td class="text-center">
                                             <div class="position-relative pointer">
-                                                <input type="date" class="form-control pointer" id="customDate1">
-                                                <label id="customDate1lbl" class="datelabel pointer">Select Date</label>
+                                                @Html.TextBoxFor(m => m.ToDateForMang, "{0:yyyy-MM-dd}",
+                                                   htmlAttributes: new
+                                                        {
+                                                       @class = "form-control pointer is-invalid CustomDateFormatCloneRow",
+                                                       type = "date",
+                                                       onchange = "ValidateControl()",
+                                                       min = Model.MinFromDate
+                                                   })
+                                                @*<input type="date"
+                                                    class="form-control pointer CustomDateFormatCloneRow"
+                                                    id="tblToDate">*@
+                                                <label id="lblToDateForMang" style="width:110px"
+                                                       class="datelabel pointer">Select Date</label>
                                             </div>
                                         </td>
                                         <td class="text-center">
-                                            <textarea name="" id="" cols="20" class="form-control" rows="3">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Harum, eos sint inventore exercitationem incidunt id ipsum at nihil!</textarea>
+                                            @Html.TextAreaFor(m => m.PurposeOfVisitFoeMang,
+                                                   htmlAttributes: new
+                                                   {
+                                                       @class = "form-control pointer is-invalid",
+                                                       rows = "3",
+                                                       type = "text",
+                                                       onblur = "ValidateControl()"
+                                                   })
+                                            @*<textarea name="" id="" cols="20" class="form-control" rows="3"></textarea>*@
                                         </td>
                                         <td class="text-center">
-                                            <select class="form-select" aria-label="Default select example">
-                                                <option selected="">-</option>
-                                                <option value="1">  Yes</option>
-                                                <option value="2">
-                                                    No
-                                                </option>
-                                            </select>
+                                            @Html.DropDownListFor(m => m.TADADeniedForManagement,
+                                               new[] {
+                                                   new SelectListItem { Text = "-", Value = "-1" },
+                                                   new SelectListItem { Text = "Yes", Value = "1" },
+                                                   new SelectListItem { Text = "No", Value = "0" } },
+                                               htmlAttributes: new
+                                               {
+                                                   @class = "form-select pointer is-invalid",
+                                                   @onchange = "ValidateControl()"
+                                               })
+                                            @*<select class="form-select" aria-label="Default select example">
+                                                    <option selected="">-</option>
+                                                    <option value="1">  Yes</option>
+                                                    <option value="2">
+                                                        No
+                                                    </option>
+                                                </select>*@
                                         </td>
                                         <td class="text-center">
-                                            05-11-2022
                                         </td>
                                         <td class="text-center">
-                                            09:00 AM
                                         </td>
                                         <td class="text-center">
-                                            05-11-2022
                                         </td>
                                         <td class="text-center">
-                                            09:00 AM
                                         </td>
                                         <td class="text-center">
                                             Continue
@@ -393,7 +435,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive max-content">
-                            <table class="table table-bordered w-100 btnalign" id="table">
+                            <table class="table table-bordered w-100 btnalign" id="OficeWorkTbl">
                                 <thead>
                                     <tr>
                                         <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
@@ -429,25 +471,29 @@
                                         <th scope="row">1</th>
                                         <td class="text-center">
                                             <select class="form-select w-200 is-invalid alterID"
+                                                    data-name="PersonType"
                                                     aria-label="Default select example"
                                                     id="DDPersonType" onchange="DDPersonTypeChanged()">
                                             </select>
                                         </td>
                                         <td class="text-center">
-                                            <select class="form-select alterID pickPersonName" 
+                                            <select class="form-select alterID pickPersonName"
+                                                    data-name="EmployeeNo"
                                                     aria-label="Default select example"
                                                     onchange="DDPickPersonChanged(0)"
                                                     id="cmbDDPersonType">
                                             </select>
-                                            <input type="text" 
+                                            <input type="text" data-name="EmployeeNonName"
                                                    class="form-control w-200 inVisible alterID pickPersonNametxt"
                                                    onblur="DDPickPersonChanged(1)"
                                                    id="txtDDPersonType">
                                         </td>
-                                        <td id="DesgCodenName" class="text-center alterID htmlVal"> </td>
+                                        <td id="DesgCodenName" data-name="DesignationCodenName" class="text-center alterID htmlVal"> </td>
                                         <td class="text-center">
                                             <div class="position-relative pointer">
-                                                <input id="FromDate" type="date" onchange="ValidateCloneRowCtrl()"
+                                                <input id="FromDate" type="date" 
+                                                       data-name="FromDate"
+                                                       onchange="ValidateCloneRowCtrl()"
                                                        class="form-control pointer is-invalid alterID CustomDateFormatCloneRow">
                                                 <label id="lblFromDate" style="width:110px"
                                                        class="datelabel pointer alterID">Select Date</label>
@@ -456,7 +502,9 @@
 
                                         <td class="text-center">
                                             <div class="input-group date pointer position-static">
-                                                <input id="FromTime" type="text" onblur="ValidateCloneRowCtrl()"
+                                                <input id="FromTime" type="text" 
+                                                       data-name="FromTime"
+                                                       onblur="ValidateCloneRowCtrl()"
                                                        class="form-control is-invalid timePicker CustomTimeFormatCloneRow alterID"
                                                        placeholder="Select Time">
                                             </div>
@@ -464,6 +512,7 @@
                                         <td class="text-center">
                                             <div class="position-relative pointer">
                                                 <input id="ToDate" type="date"
+                                                       data-name="ToDate"
                                                        onchange="ValidateCloneRowCtrl()"
                                                        class="form-control pointer is-invalid alterID CustomDateFormatCloneRow">
                                                 <label id="lblToDate" style="width:110px"
@@ -474,12 +523,13 @@
 
                                         <td class="text-center">
                                             <textarea name="" id="PurposeOfVisit" cols="20"
+                                                      data-name="PurposeOfVisit"
                                                       onchange="ValidateCloneRowCtrl()"
-                                                      class="form-control is-invalid alterID" rows="3">
-                                            </textarea>
+                                                      class="form-control is-invalid alterID" rows="3"></textarea>
                                         </td>
                                         <td class="text-center">
                                             <select id="TaDaDenied" class="form-select is-invalid alterID"
+                                                    data-name="TADADenied"
                                                     onchange="ValidateCloneRowCtrl()"
                                                     aria-label="Default select example">
                                                 <option selected value="-1">-</option>
@@ -521,7 +571,9 @@
                                 <label>Authorized Employee No. & Name :</label>
                             </div>
                             <div class="col-md-5">
-                                <select id="DDAuthorisedEmpForWork" class="form-select" 
+                                <select id="DDAuthorisedEmpForWork"
+                                        onchange="DDAuthorisedEmpForWorkChanged()"
+                                        class="form-select is-invalid"
                                         aria-label="Default select example">
                                 </select>
                             </div>
@@ -533,13 +585,13 @@
             </div>
             <div class="col-md-12">
                 <div class="d-flex justify-content-center mt-2">
-                    <button type="button" class="btn btn-primary me-2" 
-                            onclick="window.location.href='date_wise_tour_details_entry.html';" 
+                    <button type="button" class="btn btn-primary me-2" disabled
+                            onclick="DateWiseTourDtlClicked()"
                             id="DateWiseTourBtn">
                         Date Wise Tour Details - Entry
                     </button>
-                    <button type="button" class="btn btn-primary"
-                            onclick="window.location.href='vehicle_allotment_details.html';" 
+                    <button type="button" class="btn btn-primary" disabled
+                            onclick="window.location.href='vehicle_allotment_details.html';"
                             id="VehicleAllotBtn">
                         Vehicle Allotment Details
                     </button>
@@ -567,9 +619,46 @@
 @section scripts{
     <script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
     <script src="~/UIContent/JS/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/UIContent/JS/sweetalert2.all.min.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
     <script src="~/UIContent/JS/CustomePage/EHGCreateNote.js"></script>
-
+    <script>
+        $(document).ready(function () {
+            //var mymsg = '@ViewBag.ErrMsg';
+            if ('@ViewBag.ErrMsg' != '') {
+                Swal.fire({
+                    title: 'Failed to submit',
+                    text: "@ViewBag.ErrMsg",
+                    icon: 'warning',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        //cancel: 'Cancel',
+                        confirm: 'Ok'
+                    },
+                    //cancelButtonClass: 'btn-cancel',
+                    confirmButtonColor: '#2527a2',
+                });
+            };
+            if ('@ViewBag.Msg' != '') {
+                Swal.fire({
+                    title: 'Confirmation',
+                    text: "@ViewBag.Msg",
+                    icon: 'success',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        confirm: 'Ok'
+                    },
+                    confirmButtonColor: '#2527a2',
+                }).then(callback);
+                function callback(result) {
+                    if (result.value) {
+                        var url = "/Security/EHG/Index";
+                        window.location.href = url;
+                    }
+                }
+            };
+        });
+    </script>
     <script>
         $(document).ready(function () {
 
@@ -634,11 +723,11 @@
                 icon: 'success',
                 html: `<div style="text-align:left;">
 
-                                                <div class="form-group">
-                                                    <label class="swal-label">Attach File</label>
-                                                    <input type="file" id="" class="form-control" placeholder="">
-                                                </div>
-                                            </div>`,
+                                                        <div class="form-group">
+                                                            <label class="swal-label">Attach File</label>
+                                                            <input type="file" id="" class="form-control" placeholder="">
+                                                        </div>
+                                                    </div>`,
 
                 cancelButtonClass: 'btn-cancel',
                 cancelButtonText: 'Cancel',

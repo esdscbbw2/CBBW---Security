@@ -10,5 +10,7 @@ namespace CBBW.BLL.IRepository
     public interface IEHGRepository
     {
         EHGHeader getNewEHGHeader(ref string pMsg);
+        bool SetEHGHdrForManagement(EHGHeader header, EHGTravelingPersondtls dtl, ref string pMsg);
+        bool SetEHGTravellingPersonDetails(string NoteNumber, List<EHGTravelingPersondtls> dtldata, ref string pMsg);
     }
 }

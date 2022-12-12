@@ -17,13 +17,14 @@ namespace CBBW.BLL.Repository
         MasterEntities _MasterEntities;
         UserRepository _user;
         UserInfo user;
+        EHGEntities _EHGEntities;
         public EHGRepository()
         {
             _MasterEntities = new MasterEntities();
+            _EHGEntities = new EHGEntities();
             _user = new UserRepository();
             user = _user.getLoggedInUser();
         }
-
         public EHGHeader getNewEHGHeader(ref string pMsg)
         {
             EHGHeader obj= new EHGHeader();
@@ -40,6 +41,21 @@ namespace CBBW.BLL.Repository
             obj.MaterialStatus = -1;
             return obj;
         }
-        
+
+        public bool SetEHGHdrForManagement(EHGHeader header, EHGTravelingPersondtls dtl, ref string pMsg)
+        {
+            header.CenterCode = user.CentreCode;
+            header.CenterName = user.CentreName;
+            header.Initiator = user.EmployeeNumber;
+            header.InitiatorName = user.EmployeeName;
+            header.EntryDate = DateTime.Today;
+            header.EntryTime = DateTime.Now.ToString("hh:mm tt");
+            return _EHGEntities.SetEHGHdrForManagement(header, dtl, ref pMsg);
+        }
+
+        public bool SetEHGTravellingPersonDetails(string NoteNumber, List<EHGTravelingPersondtls> dtldata, ref string pMsg)
+        {
+           return _EHGEntities.SetEHGTravellingPersonDetails(NoteNumber, dtldata, ref pMsg);
+        }
     }
 }

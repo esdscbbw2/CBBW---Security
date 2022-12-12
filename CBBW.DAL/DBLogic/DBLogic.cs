@@ -24,5 +24,15 @@ namespace CBBW.DAL.DBLogic
             if (mdays > 0) mdays -= 1;
             return mdays;
         }
+        public static int getFirstIntegerFromString(string mString, char separator)
+        {
+            int result = 0;
+            if (!string.IsNullOrEmpty(mString))
+            {
+                if (mString.IndexOf(separator) > 0)
+                { result = int.Parse(mString.Split(separator)[0].Trim()); }
+            }
+            return result;
+        }
     }
 }

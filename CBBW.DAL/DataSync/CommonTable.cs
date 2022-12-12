@@ -6,9 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
+using CBBW.BOL.EHG;
 using CBBW.BOL.Master;
 using CBBW.BOL.MGP;
 using CBBW.BOL.TADA;
+using CBBW.DAL.DBLogic;
 
 namespace CBBW.DAL.DataSync
 {
@@ -249,5 +251,39 @@ namespace CBBW.DAL.DataSync
                 }
             }
         }
+        public CommonTable(List<EHGTravelingPersondtls> customoptions)
+        {
+            UDTable = new DataTable();
+            UDTable.Columns.Add("iPersonType", typeof(int));
+            UDTable.Columns.Add("iEmployeeNo", typeof(int));
+            UDTable.Columns.Add("sDesignationCodenName", typeof(string));
+            UDTable.Columns.Add("dFromDate", typeof(DateTime));
+            UDTable.Columns.Add("sFromTime", typeof(string));
+            UDTable.Columns.Add("dToDate", typeof(DateTime));
+            UDTable.Columns.Add("sPurposeOfVisit", typeof(string));
+            UDTable.Columns.Add("bTADADenied", typeof(bool));
+            UDTable.Columns.Add("sEmployeeName", typeof(string));
+            UDTable.Columns.Add("iDesignationCode", typeof(int));
+            if (customoptions != null && customoptions.Count > 0)
+            {
+                foreach (EHGTravelingPersondtls obj in customoptions)
+                {
+                    DataRow dr = UDTable.NewRow();
+                    dr["iPersonType"] = obj.PersonType;
+                    dr["iEmployeeNo"] = obj.EmployeeNo;
+                    dr["sDesignationCodenName"] = obj.DesignationCodenName;
+                    dr["dFromDate"] = obj.FromDate;
+                    dr["sFromTime"] = obj.FromTime;
+                    dr["dToDate"] = obj.ToDate;
+                    dr["sPurposeOfVisit"] = obj.PurposeOfVisit;
+                    dr["bTADADenied"] = obj.TADADenied;
+                    dr["sEmployeeName"] = obj.EmployeeNonName;
+                    dr["iDesignationCode"] = MyDBLogic.getFirstIntegerFromString(obj.DesignationCodenName,'/');
+                    UDTable.Rows.Add(dr);
+                }
+            }
+        }
+
+        
     }
 }

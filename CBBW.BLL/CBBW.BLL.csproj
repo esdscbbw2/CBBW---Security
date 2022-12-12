@@ -49,6 +49,7 @@
     <Compile Include="IRepository\IEHGRepository.cs" />
     <Compile Include="IRepository\IMasterRepository.cs" />
     <Compile Include="IRepository\IMGPRepository.cs" />
+    <Compile Include="IRepository\IMyHelperRepository.cs" />
     <Compile Include="IRepository\ITADARulesRepository.cs" />
     <Compile Include="IRepository\IToursRuleRepository.cs" />
     <Compile Include="IRepository\IUserRepository.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="Repository\EHGRepository.cs" />
     <Compile Include="Repository\MasterRepository.cs" />
     <Compile Include="Repository\MGPRepository.cs" />
+    <Compile Include="Repository\MyHelperRepository.cs" />
     <Compile Include="Repository\TADARulesRepository.cs" />
     <Compile Include="Repository\ToursRuleRepository.cs" />
     <Compile Include="Repository\UserRepository.cs" />

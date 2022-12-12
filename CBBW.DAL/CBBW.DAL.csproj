@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="DataSync\CommonTable.cs" />
     <Compile Include="DataSync\CTVDataSync.cs" />
+    <Compile Include="DataSync\EHGDataSync.cs" />
     <Compile Include="DataSync\MasterDataSync.cs" />
     <Compile Include="DataSync\MGPDataSync.cs" />
     <Compile Include="DataSync\RulesDataSync.cs" />
@@ -51,10 +52,12 @@
     <Compile Include="DBLogic\DBLogic.cs" />
     <Compile Include="DBMapper\CTVDBMapper.cs" />
     <Compile Include="DBMapper\DBResponseMapper.cs" />
+    <Compile Include="DBMapper\EHGDBMapper.cs" />
     <Compile Include="DBMapper\MasterDBMapper.cs" />
     <Compile Include="DBMapper\MGPMapper.cs" />
     <Compile Include="DBMapper\RulesDBMapper.cs" />
     <Compile Include="Entities\CTVEntities.cs" />
+    <Compile Include="Entities\EHGEntities.cs" />
     <Compile Include="Entities\MasterEntities.cs" />
     <Compile Include="Entities\MGPEntities.cs" />
     <Compile Include="Entities\TADAEntities.cs" />

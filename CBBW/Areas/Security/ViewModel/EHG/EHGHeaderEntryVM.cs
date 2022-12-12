@@ -67,11 +67,16 @@ namespace CBBW.Areas.Security.ViewModel.EHG
         public IEnumerable<CustomComboOptions> OtherStaffList { get; set; }
 
         public int AuthorisedEmpNoForManagement { get; set; }
+        public string AuthorisedEmpNameForManagement { get; set; }
         public int DriverNoForManagement { get; set; }
         public DateTime FromdateForMang { get; set; }
         public string FromTimeForMang { get; set; }
         public DateTime ToDateForMang { get; set; }
         public string PurposeOfVisitFoeMang { get; set; }
         public int TADADeniedForManagement { get; set; }
+        public string MaxFromDate { get; set; }
+        public string MinFromDate { get; set; }
+        public string DriverNameForManagement { get; set; }
+        public string DesgCodeNNameForManagement { get; set; }
     }
 }

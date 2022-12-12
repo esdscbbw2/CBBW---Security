@@ -297,6 +297,13 @@ function SaveData() {
     var vehicleno = $('#VehicleNo').val();
     var notenumber = $('#NoteNumber').val();
     var schrecords = getSchRecords();
+    //var mjson=JSON.stringify({
+    //    VehicleNumber: vehicleno,
+    //    TripPurpose: trippurpose,
+    //    NoteNumber: notenumber,
+    //    OTSchList: schrecords
+    //})
+    //alert(mjson);
     $.ajax({
         method: 'POST',
         url: '/CTV/setOTVSchData',

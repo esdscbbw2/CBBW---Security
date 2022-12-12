@@ -144,6 +144,7 @@
     <Compile Include="Areas\Security\ViewModel\CTVApprovalVM.cs" />
     <Compile Include="Areas\Security\ViewModel\CTVHdrEntryVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EHG\EHGHeaderEntryVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\EHG\EHGTravellingPersonsVM.cs" />
     <Compile Include="Areas\Security\ViewModel\LocalVehicleTripScheduleVM.cs" />
     <Compile Include="Areas\Security\ViewModel\LVTSFromMatVM.cs" />
     <Compile Include="Areas\Security\ViewModel\MGPCreateVM.cs" />

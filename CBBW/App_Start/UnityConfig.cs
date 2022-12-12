@@ -23,6 +23,7 @@ namespace CBBW
             container.RegisterType<ICTVRepository, CTVRepository>();
             container.RegisterType<IMGPRepository, MGPRepository>(); 
             container.RegisterType<IEHGRepository, EHGRepository>();
+            container.RegisterType<IMyHelperRepository, MyHelperRepository>();
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }
     }
