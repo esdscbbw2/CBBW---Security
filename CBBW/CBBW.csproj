@@ -143,6 +143,7 @@
     <Compile Include="Areas\Security\SecurityAreaRegistration.cs" />
     <Compile Include="Areas\Security\ViewModel\CTVApprovalVM.cs" />
     <Compile Include="Areas\Security\ViewModel\CTVHdrEntryVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\EHG\DateWiseTourDtlVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EHG\EHGHeaderEntryVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EHG\EHGTravellingPersonsVM.cs" />
     <Compile Include="Areas\Security\ViewModel\LocalVehicleTripScheduleVM.cs" />
@@ -302,6 +303,8 @@
     <Content Include="UIContent\JS\CustomePage\CTVApproval.js" />
     <Content Include="UIContent\JS\CustomePage\CTVHdrEntry.js" />
     <Content Include="UIContent\JS\CustomePage\EHGCreateNote.js" />
+    <Content Include="UIContent\JS\CustomePage\EHGDateWiseTourDtl.js" />
+    <Content Include="UIContent\JS\CustomePage\EHGVehicleAllotment.js" />
     <Content Include="UIContent\JS\CustomePage\LocVehTripSchEdit.js" />
     <Content Include="UIContent\JS\CustomePage\MGPass.js" />
     <Content Include="UIContent\JS\CustomePage\MGPInDetails.js" />
@@ -363,6 +366,8 @@
     <Content Include="Areas\Security\Views\TADARules\ViewRedirection.cshtml" />
     <Content Include="Areas\Security\Views\EHG\Create.cshtml" />
     <Content Include="Areas\Security\Views\EHG\DateWiseTourDetails.cshtml" />
+    <Content Include="Areas\Security\Views\EHG\Index.cshtml" />
+    <Content Include="Areas\Security\Views\EHG\VehicleAllotment.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />

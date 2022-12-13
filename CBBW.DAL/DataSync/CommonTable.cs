@@ -283,7 +283,30 @@ namespace CBBW.DAL.DataSync
                 }
             }
         }
+        public CommonTable(List<DateWiseTourDetails> customoptions)
+        {
+            UDTable = new DataTable();
+            UDTable.Columns.Add("dFromDate", typeof(DateTime));
+            UDTable.Columns.Add("dToDate", typeof(DateTime));
+            UDTable.Columns.Add("sTourCatCodes", typeof(string));
+            UDTable.Columns.Add("sTourCatText", typeof(string));
+            UDTable.Columns.Add("sCenterCodes", typeof(string));
+            UDTable.Columns.Add("sCenterNames", typeof(string));
+            if (customoptions != null && customoptions.Count > 0)
+            {
+                foreach (DateWiseTourDetails obj in customoptions)
+                {
+                    DataRow dr = UDTable.NewRow();
+                    dr["dFromDate"] = obj.FromDate;
+                    dr["dToDate"] = obj.ToDate;
+                    dr["sTourCatCodes"] = MyDBLogic.Change_ToComma(obj.TourCatCodes);
+                    dr["sTourCatText"] = MyDBLogic.Change_ToComma(obj.TourCatText);
+                    dr["sCenterCodes"] = MyDBLogic.Change_ToComma(obj.CenterCodes);
+                    dr["sCenterNames"] = MyDBLogic.Change_ToComma(obj.CenterNames);
+                    UDTable.Rows.Add(dr);
+                }
+            }
+        }
 
-        
     }
 }

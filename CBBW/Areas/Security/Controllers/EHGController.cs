@@ -15,15 +15,18 @@ namespace CBBW.Areas.Security.Controllers
     {
         IUserRepository _iUser;
         IMyHelperRepository _myHelper;
+        IMasterRepository _master;
         string pMsg;
         UserInfo user;
         IEHGRepository _iEHG;
         EHGHeaderEntryVM model;         
-        public EHGController(IUserRepository iUser, IEHGRepository iEHG, IMyHelperRepository myHelper)
+        public EHGController(IUserRepository iUser, IEHGRepository iEHG, 
+            IMyHelperRepository myHelper, IMasterRepository master)
         {
             _iUser = iUser;
             _iEHG = iEHG;
             _myHelper = myHelper;
+            _master = master;
             pMsg = "";
             user = iUser.getLoggedInUser();
             ViewBag.LogInUser = user.UserName;
@@ -53,6 +56,7 @@ namespace CBBW.Areas.Security.Controllers
         [HttpPost]
         public ActionResult Create(EHGHeaderEntryVM model, string Submit) 
         {
+            TempData["EHG"] = model;
             if (Submit == "create")
             {
                 if (model.ehgHeader.VehicleType == 1 && model.ehgHeader.PurposeOfAllotment == 1)
@@ -78,16 +82,61 @@ namespace CBBW.Areas.Security.Controllers
                     else { ViewBag.ErrMsg = "Updation failed for Note number " + model.ehgHeader.NoteNumber; }
                 }                
             }
-            TempData["EHG"] = model;
+            if (Submit == "VAD") 
+            {
+                return RedirectToAction("VehicleAllotment");
+            }            
             return View(model);
         }
         public ActionResult DateWiseTourDetails() 
         {
+            model = CastEHGTempData();
 
             return View();
         }
-
-        //Actions for AJAX Calling
+        public ActionResult VehicleAllotment() 
+        {
+            model = CastEHGTempData();
+            model.VehicleList = _master.getVehicleList("L.C.V", ref pMsg);
+            if (model.VADetails == null) 
+            {
+                model.VADetails = new VehicleAllotmentDetails();
+                model.VADetails.NoteNumber = model.ehgHeader.NoteNumber;
+                model.VADetails.AuthorisedEmpName = model.ehgHeader.AuthorisedEmployeeName;
+                model.VADetails.AuthorisedEmpNumber = _myHelper.getFirstIntegerFromString(model.ehgHeader.AuthorisedEmployeeName, '/');
+                model.VADetails.DesignationText = _master.GetDesgCodenName(model.VADetails.AuthorisedEmpNumber, 1);
+                model.VADetails.DesignationCode = _myHelper.getFirstIntegerFromString(model.VADetails.DesignationText, '/');
+                model.VADetails.MaterialStatus = -1;
+                model.VADetails.VehicleType = model.ehgHeader.VehicleType==1?"LV": "2 Wheeler";
+                if (model.DriverList == null) { model.DriverList = model.getDriverList(user.CentreCode); }
+            }            
+            return View(model);
+        }
+        #region AjaxCalling
+        public JsonResult GetTourLocations(string CategoryID)
+        {
+            List<CustomComboOptions> result = new List<CustomComboOptions>();
+            model = CastEHGTempData();
+            if (model.PersonType == null)
+            {
+                EHGMaster master = EHGMaster.GetInstance;
+                result = master.TourCategory;
+            }
+            else { result = model.TourCategory; }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetTourCategories()
+        {
+            List<CustomComboOptions> result = new List<CustomComboOptions>();
+            model = CastEHGTempData();
+            if (model.PersonType == null)
+            {
+                EHGMaster master = EHGMaster.GetInstance;
+                result = master.TourCategory;
+            }
+            else { result = model.TourCategory; }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
         public JsonResult GetPersonTypes()
         {
             List<CustomComboOptions> result = new List<CustomComboOptions>();
@@ -120,20 +169,37 @@ namespace CBBW.Areas.Security.Controllers
                 result = model.StaffList;
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult GetDesgCodenName(int empID,int empType)
+        public JsonResult GetVehicleBasicInfo(string VehicleNumber)
         {
-            string result= "4 / DIC";
+            VehicleBasicInfo result=_master.getVehicleBasicInfo(VehicleNumber,ref pMsg);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult GetDesgCodenName(int empID,int empType)
+        {//empType : 2-driver, 1-Others
+            return Json(_master.GetDesgCodenName(empID, empType), JsonRequestBehavior.AllowGet);
+        }
         [HttpPost]
-        public ActionResult GetTravelingPersonDetails(EHGTravellingPersonsVM model) 
+        public ActionResult GetTravelingPersonDetails(EHGTravellingPersonsVM modelobj) 
         {
-            if (model != null) 
+            if (modelobj != null) 
             {
-                _iEHG.SetEHGTravellingPersonDetails(model.NoteNumber, model.PersonDtls, ref pMsg);
+                _iEHG.SetEHGTravellingPersonDetails(modelobj.NoteNumber, modelobj.PersonDtls, ref pMsg);
+            }
+            //TempData["EHG"] = model;
+            return RedirectToAction("DateWiseTourDetails");
+        }
+        [HttpPost]
+        public ActionResult SetDateWiseTourDtls(DateWiseTourDtlVM modelobj)
+        {
+            if (modelobj != null)
+            {
+                modelobj.NoteNumber = "trialnote";
+                _iEHG.SetDateWiseTourDetails(modelobj.NoteNumber, modelobj.DateWiseList, ref pMsg);
             }
             return RedirectToAction("index");
         }
+        #endregion
+        #region Private Functions
         //Private Functions
         private EHGHeaderEntryVM CastEHGTempData() 
         {
@@ -148,6 +214,6 @@ namespace CBBW.Areas.Security.Controllers
             TempData["EHG"] = model;
             return model;
         }
-        
+        #endregion
     }
 }

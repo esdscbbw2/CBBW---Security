@@ -320,7 +320,7 @@ namespace CBBW.Areas.Security.Controllers
             try
             {
                 List<MGPCurrentInDetails> model = new List<MGPCurrentInDetails>();
-                model = _IMGP.getMGPCurrentOutDetailsForIn(mNoteNumber, ref pMsg);
+                model = _IMGP.getMGPCurrentOutDetailsForIn(NoteNumber, ref pMsg);
                 return Json(model, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex) {

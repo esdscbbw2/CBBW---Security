@@ -35,7 +35,12 @@ namespace CBBW.DAL.Entities
             _DBResponseMapper.Map_DBResponse(_datasync.SetEHGTravellingPersonDetails(NoteNumber, dtldata, ref pMsg), ref pMsg, ref result);
             return result;
         }
-    
-    
+        public bool SetDateWiseTourDetails(string NoteNumber, List<DateWiseTourDetails> dtldata, ref string pMsg)
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_datasync.SetDateWiseTourDetails(NoteNumber, dtldata, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
+
     }
 }

@@ -12,5 +12,6 @@ namespace CBBW.BLL.IRepository
         EHGHeader getNewEHGHeader(ref string pMsg);
         bool SetEHGHdrForManagement(EHGHeader header, EHGTravelingPersondtls dtl, ref string pMsg);
         bool SetEHGTravellingPersonDetails(string NoteNumber, List<EHGTravelingPersondtls> dtldata, ref string pMsg);
+        bool SetDateWiseTourDetails(string NoteNumber, List<DateWiseTourDetails> dtldata, ref string pMsg);
     }
 }

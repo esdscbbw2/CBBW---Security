@@ -42,6 +42,11 @@ namespace CBBW.BLL.Repository
             return obj;
         }
 
+        public bool SetDateWiseTourDetails(string NoteNumber, List<DateWiseTourDetails> dtldata, ref string pMsg)
+        {
+            return _EHGEntities.SetDateWiseTourDetails(NoteNumber, dtldata, ref pMsg);
+        }
+
         public bool SetEHGHdrForManagement(EHGHeader header, EHGTravelingPersondtls dtl, ref string pMsg)
         {
             header.CenterCode = user.CentreCode;

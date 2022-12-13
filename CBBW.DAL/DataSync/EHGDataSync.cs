@@ -85,5 +85,23 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+        public DataTable SetDateWiseTourDetails(string NoteNumber, List<DateWiseTourDetails> dtldata, ref string pMsg)
+        {
+            try
+            {
+                CommonTable dtl = new CommonTable(dtldata);
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[2];
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
+                para[paracount++].Value = NoteNumber;
+                para[paracount] = new SqlParameter("@DateWiseTourDtl", SqlDbType.Structured);
+                para[paracount++].Value = dtl.UDTable;
+                using (SQLHelper sql = new SQLHelper("[EHG].[SetDateWiseTourDetails]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
     }
 }

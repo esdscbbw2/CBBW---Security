@@ -271,7 +271,10 @@ function UpdateAuthorisedPersonForOfficeWork(defaultText) {
 };
 function DDAuthorisedEmpForWorkChanged() {
     var targetCtrl = $(DDAuthorisedEmpForWorkChanged.caller.arguments[0].target);
-    if (targetCtrl.val().length > 0) { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
+    if (targetCtrl.val().length > 0) {
+        $('#ehgHeader_AuthorisedEmployeeName').val(targetCtrl.val());
+        targetCtrl.isValid();
+    } else { targetCtrl.isInvalid(); }
     EnableDateWiseTourBtn();
 };
 function addOfficeWorkCloneBtnClick() {

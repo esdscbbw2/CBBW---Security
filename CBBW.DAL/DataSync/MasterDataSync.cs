@@ -216,5 +216,27 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+        public DataTable getVehicleList(string VehicleType, ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("select * from [MTR].[getListofVehicles]('"+ VehicleType + "')", CommandType.Text))
+                {
+                    return sql.GetDataTable();
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable getVehicleBasicInfo(string VehicleNumber, ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("select * from [MTR].[getVehicleInfo]('" + VehicleNumber + "')", CommandType.Text))
+                {
+                    return sql.GetDataTable();
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
     }
 }

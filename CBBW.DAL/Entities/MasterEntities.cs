@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.Master;
 using CBBW.BOL.TADA;
@@ -209,6 +210,43 @@ namespace CBBW.DAL.Entities
                     {
                         result.Add(_dbresmapper.Map_CustomComboOptions(dt.Rows[i]));
                     }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
+        public List<VehicleNo> getVehicleList(string VehicleType,ref string pMsg)
+        {
+            List<VehicleNo> result = new List<VehicleNo>();
+            try
+            {
+                dt = _datasync.getVehicleList(VehicleType,ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        VehicleNo x = new VehicleNo();
+                        if (!DBNull.Value.Equals(dt.Rows[i]["VehicleNumber"]))
+                        {
+                            x.VehicleNumber = dt.Rows[i]["VehicleNumber"].ToString();
+                            //x.VehicleID = dt.Rows[i]["VehicleNumber"].ToString();
+                        }
+                        result.Add(x);
+                    }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
+        public VehicleBasicInfo getVehicleBasicInfo(string VehicleNumber, ref string pMsg) 
+        {
+            VehicleBasicInfo result = new VehicleBasicInfo();
+            try
+            {
+                dt = _datasync.getVehicleBasicInfo(VehicleNumber, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    result=_mapper.Map_VehicleBasicInfo(dt.Rows[0]);                    
                 }
             }
             catch (Exception ex) { pMsg = ex.Message; }

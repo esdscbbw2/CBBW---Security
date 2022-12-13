@@ -17,6 +17,7 @@
         @Html.HiddenFor(m => m.AuthorisedEmpNameForManagement)
         @Html.HiddenFor(m => m.DriverNameForManagement)
         @Html.HiddenFor(m => m.DesgCodeNNameForManagement)
+        @Html.HiddenFor(m=>m.ehgHeader.AuthorisedEmployeeName)
 
         <div class="fixedElement">
             <div class="col-md-12">
@@ -54,7 +55,7 @@
         <div class="col-md-12 mb-4">
             <div id="HdrDiv" class="card mb-4 mt-4">
                 <div class="card-body approvalForm">
-                    @*<form class="form-sample form-inline row ms-auto">*@
+                    
                     <div class="row d-flex align-items-center mb-4">
                         <label class="col-form-label col-md-3">
                             Note No. :
@@ -209,8 +210,6 @@
                                 })
                         </div>
                     </div>
-
-                    @*</form>*@
                 </div>
             </div>
             <div class="card mt-4 mb-4">
@@ -300,7 +299,7 @@
                                        "Select Driver",
                                        htmlAttributes: new
                                        {
-                                           @class = "form-select pointer is-invalid",
+                                           @class = "form-select pointer",
                                            @onchange = "DriverNoForManagementChanged()"
                                        })
                                         </td>
@@ -310,7 +309,7 @@
                                                 @Html.TextBoxFor(m => m.FromdateForMang, "{0:yyyy-MM-dd}",
                                                    htmlAttributes: new
                                                         {
-                                                       @class = "form-control pointer is-invalid CustomDateFormatCloneRow",
+                                                       @class = "form-control pointer CustomDateFormatCloneRow",
                                                        type = "date",
                                                        onchange = "ValidateControl()",
                                                        max = Model.MaxFromDate,
@@ -326,7 +325,7 @@
                                                 @Html.TextBoxFor(m => m.FromTimeForMang,
                                                    htmlAttributes: new
                                                    {
-                                                       @class = "form-control timePicker pointer is-invalid",
+                                                       @class = "form-control timePicker pointer",
                                                        type = "text",
                                                        onblur = "ValidateControl()",
                                                        placeholder = "Select Time"
@@ -345,7 +344,7 @@
                                                 @Html.TextBoxFor(m => m.ToDateForMang, "{0:yyyy-MM-dd}",
                                                    htmlAttributes: new
                                                         {
-                                                       @class = "form-control pointer is-invalid CustomDateFormatCloneRow",
+                                                       @class = "form-control pointer CustomDateFormatCloneRow",
                                                        type = "date",
                                                        onchange = "ValidateControl()",
                                                        min = Model.MinFromDate
@@ -361,7 +360,7 @@
                                             @Html.TextAreaFor(m => m.PurposeOfVisitFoeMang,
                                                    htmlAttributes: new
                                                    {
-                                                       @class = "form-control pointer is-invalid",
+                                                       @class = "form-control pointer",
                                                        rows = "3",
                                                        type = "text",
                                                        onblur = "ValidateControl()"
@@ -376,7 +375,7 @@
                                                    new SelectListItem { Text = "No", Value = "0" } },
                                                htmlAttributes: new
                                                {
-                                                   @class = "form-select pointer is-invalid",
+                                                   @class = "form-select pointer",
                                                    @onchange = "ValidateControl()"
                                                })
                                             @*<select class="form-select" aria-label="Default select example">
@@ -407,7 +406,7 @@
                 </div>
                 <div class="card mt-4 mb-3">
                     <div class="card-body approvalForm">
-                        @*<form class="form-sample form-inline row ms-auto">*@
+                       
                         <div class="row d-flex align-items-center">
                             <div class="col-form-label col-md-3">
                                 <label>Authorized Employee No. & Name :</label>
@@ -418,13 +417,11 @@
                                        "Select Employee Number",
                                        htmlAttributes: new
                                        {
-                                           @class = "form-select pointer is-invalid",
+                                           @class = "form-select pointer",
                                            @onchange = "ValidateControl()"
                                        })
                             </div>
                         </div>
-                        @*</form>*@
-
                     </div>
                 </div>
             </div>
@@ -565,7 +562,7 @@
                 </div>
                 <div class="card mt-4 mb-3">
                     <div class="card-body approvalForm">
-                        @*<form class="form-sample form-inline row ms-auto">*@
+                       
                         <div class="row d-flex align-items-center">
                             <div class="col-form-label col-md-3">
                                 <label>Authorized Employee No. & Name :</label>
@@ -578,21 +575,18 @@
                                 </select>
                             </div>
                         </div>
-                        @*</form>*@
-
                     </div>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="d-flex justify-content-center mt-2">
-                    <button type="button" class="btn btn-primary me-2" disabled
+                    <button type="button" class="btn btn-primary me-2" 
                             onclick="DateWiseTourDtlClicked()"
-                            id="DateWiseTourBtn">
+                            id="DateWiseTourBtn2">
                         Date Wise Tour Details - Entry
                     </button>
-                    <button type="button" class="btn btn-primary" disabled
-                            onclick="window.location.href='vehicle_allotment_details.html';"
-                            id="VehicleAllotBtn">
+                    <button type="submit" class="btn btn-primary"
+                            name="Submit" value="VAD">
                         Vehicle Allotment Details
                     </button>
                 </div>

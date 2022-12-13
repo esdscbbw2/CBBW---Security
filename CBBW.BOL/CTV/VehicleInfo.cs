@@ -6,15 +6,19 @@ using System.Threading.Tasks;
 
 namespace CBBW.BOL.CTV
 {
-    public class VehicleInfo : VehicleNo
+    public class VehicleBasicInfo : VehicleNo
     {
+        public string VehicleNature { get; set; }
         public string VehicleType { get; set; }
         public string ModelName { get; set; }
-        public int DriverNo { get; set; }
-        public string DriverName { get; set; }
         public string VehicleStatus { get; set; }
         public int ServiceDuaration { get; set; }
         public bool IsActive { get; set; }
+    }
+    public class VehicleInfo : VehicleBasicInfo
+    {        
+        public int DriverNo { get; set; }
+        public string DriverName { get; set; }        
         public bool IsSuccess { get; set; }
         public string Msg { get; set; }
         public int LocalTripRecords { get; set; }        

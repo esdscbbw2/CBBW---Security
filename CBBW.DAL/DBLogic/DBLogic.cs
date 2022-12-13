@@ -34,5 +34,11 @@ namespace CBBW.DAL.DBLogic
             }
             return result;
         }
+        public static string Change_ToComma(string mString) 
+        {
+            if (mString.Substring(0, 1) == "_")
+                mString = mString.Substring(1, mString.Length - 1);
+            return mString.Replace('_', ',');
+        }
     }
 }

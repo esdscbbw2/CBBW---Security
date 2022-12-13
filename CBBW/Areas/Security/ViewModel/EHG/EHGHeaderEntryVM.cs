@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using CBBW.BLL.IRepository;
+using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.EHG;
 using CBBW.DAL.Entities;
@@ -56,6 +57,7 @@ namespace CBBW.Areas.Security.ViewModel.EHG
             return _master.getEmployeeList(centerCode, 99, 1, ref pMsg);
         }
         public EHGHeader ehgHeader { get; set; }
+        public VehicleAllotmentDetails VADetails { get; set; }
         public List<CustomComboOptions> VehicleTypes { get; set; }
         public List<CustomComboOptions> PurposeOfAllotment { get; set; }
         public List<CustomComboOptions> PersonType { get; set; }
@@ -65,6 +67,7 @@ namespace CBBW.Areas.Security.ViewModel.EHG
         public IEnumerable<CustomComboOptions> StaffList { get; set; }
         public IEnumerable<CustomComboOptions> MDDICList { get; set; }
         public IEnumerable<CustomComboOptions> OtherStaffList { get; set; }
+        public List<VehicleNo> VehicleList { get; set; }
 
         public int AuthorisedEmpNoForManagement { get; set; }
         public string AuthorisedEmpNameForManagement { get; set; }
