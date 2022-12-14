@@ -46,9 +46,9 @@ namespace CBBW.BLL.Repository
         {
             return _entities.getVehicleBasicInfo(VehicleNumber, ref pMsg);
         }
-        public List<VehicleNo> getVehicleList(string VehicleType, ref string pMsg)
+        public List<VehicleNo> getVehicleList(string VehicleType, int wheeltype, ref string pMsg)
         {
-            return _entities.getVehicleList(VehicleType, ref pMsg);
+            return _entities.getVehicleList(VehicleType, wheeltype, ref pMsg);
         }
     }
 }

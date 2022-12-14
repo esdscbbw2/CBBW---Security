@@ -62,5 +62,10 @@ namespace CBBW.BLL.Repository
         {
            return _EHGEntities.SetEHGTravellingPersonDetails(NoteNumber, dtldata, ref pMsg);
         }
+
+        public bool SetEHGVehicleAllotmentDetails(VehicleAllotmentDetails mData, ref string pMsg)
+        {
+            return _EHGEntities.SetEHGVehicleAllotmentDetails(mData, ref pMsg);
+        }
     }
 }

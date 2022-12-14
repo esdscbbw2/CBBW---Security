@@ -248,10 +248,9 @@ namespace CBBW.Areas.Security.Controllers
         }
         public JsonResult CheckAvailableNoteNoforOut(string NoteNumber)
         {
-
             List<MGPOutInDetails> model = new List<MGPOutInDetails>();
             model = _IMGP.getMGPOutDetails(NoteNumber, ref pMsg);
-           var data= model.OrderByDescending(x => x.ID).Take(1);
+            var data= model.OrderByDescending(x => x.ID).Take(1);
             TempData["OutData"] = data;
             return Json(data, JsonRequestBehavior.AllowGet);
         }

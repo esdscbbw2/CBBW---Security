@@ -68,6 +68,7 @@ namespace CBBW.BLL.Repository
             {
                 cookie.Expires = DateTime.Now.AddMonths(-1);
                 HttpContext.Current.Response.Cookies.Add(cookie);
+                ClearCallBackRecording();
             }
         }
 

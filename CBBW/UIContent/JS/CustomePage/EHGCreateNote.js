@@ -101,7 +101,25 @@ function DateWiseTourDtlClicked() {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         data: x,
-        success: function (data) {            
+        success: function (data) {
+            $(data).each(function (index, item) {
+                if (item.bResponseBool == true) {
+                    var url = "/Security/EHG/DateWiseTourDetails";
+                    window.location.href = url;                  
+                }
+                else {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Failed To Update Traveling Person Details.',
+                        icon: 'question',
+                        customClass: 'swal-wide',
+                        buttons: {
+                            confirm: 'Ok'
+                        },
+                        confirmButtonColor: '#2527a2',
+                    });
+                }
+            });
         },
     });
 };

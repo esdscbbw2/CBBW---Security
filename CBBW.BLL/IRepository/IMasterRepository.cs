@@ -16,7 +16,7 @@ namespace CBBW.BLL.IRepository
         IEnumerable<CustomComboOptions> getEmployeeList(int centreCode, int functionalDesg, int isOtherStaff, ref string pMsg);
         IEnumerable<CustomComboOptions> getDriverList(ref string pMsg);
         string GetDesgCodenName(int empID, int empType);
-        List<VehicleNo> getVehicleList(string VehicleType, ref string pMsg);
+        List<VehicleNo> getVehicleList(string VehicleType,int wheeltype, ref string pMsg);
         VehicleBasicInfo getVehicleBasicInfo(string VehicleNumber, ref string pMsg);
     }
 }

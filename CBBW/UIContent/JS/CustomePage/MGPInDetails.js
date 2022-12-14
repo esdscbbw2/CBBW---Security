@@ -49,7 +49,7 @@
                 $("#" + index + "_DriverName").html(item.DriverNo + "/" + item.DriverName);//Display Only
                 $("#" + index + "_DesigCN").html(item.DesignationCode + "/" + item.DesignationText);//Display only
                 $("#" + index + "_TripType").html(item.TripType + "/" + item.TripTypeStr);//Display only
-                $("#" + index + "_LocationCN").html(item.FromLocationCode+ "/" + item.FromLocationName);
+                $("#" + index + "_LocationCN").html(item.FromLocationName);
                 $("#" + index + "_locname").val(item.FromLocationName);
                 $("#" + index + "_loccode").val(item.FromLocationCode);
                 $("#" + index + "_locatype").val(item.FromLocationType);

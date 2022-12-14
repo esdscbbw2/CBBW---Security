@@ -337,7 +337,8 @@ function SaveData() {
                     //        window.location.href = url;
                     //    }
                     //}
-                } else {
+                }
+                else {
                     Swal.fire({
                         title: 'Confirmation',
                         text: 'Failed to save data.',

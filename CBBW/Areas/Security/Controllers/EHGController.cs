@@ -91,13 +91,13 @@ namespace CBBW.Areas.Security.Controllers
         public ActionResult DateWiseTourDetails() 
         {
             model = CastEHGTempData();
-
-            return View();
+            
+            return View(model);
         }
         public ActionResult VehicleAllotment() 
         {
             model = CastEHGTempData();
-            model.VehicleList = _master.getVehicleList("L.C.V", ref pMsg);
+            model.VehicleList = _master.getVehicleList("L.C.V",model.ehgHeader.VehicleType==1?4:2, ref pMsg);
             if (model.VADetails == null) 
             {
                 model.VADetails = new VehicleAllotmentDetails();
@@ -110,6 +110,21 @@ namespace CBBW.Areas.Security.Controllers
                 model.VADetails.VehicleType = model.ehgHeader.VehicleType==1?"LV": "2 Wheeler";
                 if (model.DriverList == null) { model.DriverList = model.getDriverList(user.CentreCode); }
             }            
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult VehicleAllotment(EHGHeaderEntryVM model, string Submit) 
+        {
+            TempData["EHG"] = model;
+            if (Submit == "Save") 
+            {
+                if (_iEHG.SetEHGVehicleAllotmentDetails(model.VADetails, ref pMsg))
+                {
+                    return RedirectToAction("Create");
+                }
+                else { }
+            }
+                       
             return View(model);
         }
         #region AjaxCalling
@@ -181,22 +196,47 @@ namespace CBBW.Areas.Security.Controllers
         [HttpPost]
         public ActionResult GetTravelingPersonDetails(EHGTravellingPersonsVM modelobj) 
         {
+            model = CastEHGTempData();
+            model.PersonDtls = modelobj.PersonDtls;
+            TempData["EHG"] = model;
+            CustomAjaxResponse result = new CustomAjaxResponse();
             if (modelobj != null) 
             {
-                _iEHG.SetEHGTravellingPersonDetails(modelobj.NoteNumber, modelobj.PersonDtls, ref pMsg);
+                if (_iEHG.SetEHGTravellingPersonDetails(modelobj.NoteNumber,
+                    modelobj.PersonDtls, ref pMsg)) 
+                {
+                    result.bResponseBool = true;
+                    result.sResponseString = "Data successfully updated.";
+                }
+                else
+                {
+                    result.bResponseBool = false;
+                    result.sResponseString = pMsg;
+                }                
             }
             //TempData["EHG"] = model;
-            return RedirectToAction("DateWiseTourDetails");
+            //return RedirectToActionPermanent("DateWiseTourDetails");
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public ActionResult SetDateWiseTourDtls(DateWiseTourDtlVM modelobj)
         {
+            CustomAjaxResponse result = new CustomAjaxResponse();
             if (modelobj != null)
             {
-                modelobj.NoteNumber = "trialnote";
-                _iEHG.SetDateWiseTourDetails(modelobj.NoteNumber, modelobj.DateWiseList, ref pMsg);
+                if (_iEHG.SetDateWiseTourDetails(modelobj.NoteNumber, modelobj.DateWiseList, ref pMsg))
+                {
+                    result.bResponseBool = true;
+                    result.sResponseString = "Data successfully updated.";
+                }
+                else
+                {
+                    result.bResponseBool = false;
+                    result.sResponseString = pMsg;
+                }
             }
-            return RedirectToAction("index");
+            //return RedirectToAction("index");
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
         #endregion
         #region Private Functions

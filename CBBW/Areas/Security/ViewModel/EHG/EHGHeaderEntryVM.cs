@@ -58,6 +58,7 @@ namespace CBBW.Areas.Security.ViewModel.EHG
         }
         public EHGHeader ehgHeader { get; set; }
         public VehicleAllotmentDetails VADetails { get; set; }
+        public List<EHGTravelingPersondtls> PersonDtls { get; set; }
         public List<CustomComboOptions> VehicleTypes { get; set; }
         public List<CustomComboOptions> PurposeOfAllotment { get; set; }
         public List<CustomComboOptions> PersonType { get; set; }

@@ -215,12 +215,12 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
-        public List<VehicleNo> getVehicleList(string VehicleType,ref string pMsg)
+        public List<VehicleNo> getVehicleList(string VehicleType,int wheeltype,ref string pMsg)
         {
             List<VehicleNo> result = new List<VehicleNo>();
             try
             {
-                dt = _datasync.getVehicleList(VehicleType,ref pMsg);
+                dt = _datasync.getVehicleList(VehicleType, wheeltype,ref pMsg);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     for (int i = 0; i < dt.Rows.Count; i++)

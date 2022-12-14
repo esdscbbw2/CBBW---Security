@@ -7,15 +7,24 @@
     @using (Html.BeginForm())
     {
         @Html.HiddenFor(m => m.VADetails.ModelName)
+        @Html.HiddenFor(m => m.VADetails.NoteNumber)
+        @Html.HiddenFor(m => m.VADetails.AuthorisedEmpName)
+        @Html.HiddenFor(m => m.VADetails.AuthorisedEmpNumber)
+        @Html.HiddenFor(m => m.VADetails.DesignationText)
+        @Html.HiddenFor(m => m.VADetails.DesignationCode)
+        @Html.HiddenFor(m => m.VADetails.VehicleType)
+        @Html.HiddenFor(m => m.VADetails.DriverName)
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
                     <div class="leftButton">
-                        <button type="submit" class="btn btn-primary me-2" onclick="window.location.href='emp_travelling_detail_vehicle_allotment_by_HG_add.html';">
+                        <button id="btnBack" type="submit" class="btn btn-primary me-2"
+                                @*onclick="window.location.href='emp_travelling_detail_vehicle_allotment_by_HG_add.html';"*@>
                             <i data-feather="arrow-left-circle"></i>
                             Back
                         </button>
-                        <button type="submit" class="btn btn-secondary me-2" onclick="window.location.href='emp_travelling_detail_vehicle_allotment_by_HG_add.html';">
+                        <button id="btnSubmit" type="submit" name="Submit" value="Save"
+                                class="btn btn-secondary me-2">
                             <i data-feather="check-circle"></i>
                             Save
                         </button>
@@ -107,7 +116,7 @@
                 </div>
                 <div class="card mb-4">
                     <div class="card-body approvalForm">
-                        <div id="for_company_vehicle">
+                        <div id="for_company_vehicle" class="inVisible">
                             <div class="row d-flex  align-items-center mb-4 mr-15 ">
                                 <label class="col-form-label col-md-3">
                                     Vehicle No. :
@@ -119,22 +128,23 @@
                                        htmlAttributes: new
                                        {
                                            @class = "form-select pointer ",
-                                           onchange="VehicleNoChanged()"
+                                           onchange = "VehicleNoChanged()"
                                        })
                                 </div>
                             </div>
                         </div>
-                        <div id="for_other_vehicle">
+                        <div id="for_other_vehicle" class="inVisible">
                             <div class="row d-flex  align-items-center mb-4 mr-15 ">
                                 <label class="col-form-label col-md-3">
                                     Vehicle No. :
                                 </label>
                                 <div class="col-md-4">
                                     @Html.TextBoxFor(m => m.VADetails.OtherVehicleNumber,
-                           htmlAttributes: new
-                                {
-                               @class = "form-control",
-                                })
+                                       htmlAttributes: new
+                                       {
+                                           @class = "form-control is-invalid",
+                                           onchange = "ValidateControl()"
+                                       })
                                 </div>
                             </div>
                         </div>
@@ -151,27 +161,29 @@
                                 })
                             </div>
                         </div>
-                        <div id="for_company_vehicle_model_name" >
+                        <div id="for_company_vehicle_model_name">
                             <div class="row d-flex  align-items-center mb-4 mr-15 ">
                                 <label class="col-form-label col-md-3">
                                     Model Name  :
                                 </label>
                                 <div class="col-md-4">
-                                    <input id="ModelName" type="text" value="" class="form-control" disabled>
+                                    <input id="ModelName" type="text" value=""
+                                           class="form-control" disabled>
                                 </div>
                             </div>
                         </div>
-                        <div id="for_other_vehicle_model_name" >
+                        <div id="for_other_vehicle_model_name">
                             <div class="row d-flex  align-items-center mb-4 mr-15 ">
                                 <label class="col-form-label col-md-3">
                                     Model Name  :
                                 </label>
                                 <div class="col-md-4">
                                     @Html.TextBoxFor(m => m.VADetails.OtherVehicleModelName,
-                            htmlAttributes: new
-                                 {
-                                @class = "form-control"
-                                 })
+                                    htmlAttributes: new
+                                    {
+                                        @class = "form-control is-invalid",
+                                        onchange = "ValidateControl()"
+                                    })
                                 </div>
                             </div>
                         </div>
@@ -187,7 +199,8 @@
                                        "Select Driver",
                                        htmlAttributes: new
                                        {
-                                           @class = "form-select pointer is-invalid "
+                                           @class = "form-select pointer is-invalid ",
+                                           onchange = "ValidateControl()"
                                        })
                             </div>
                         </div>

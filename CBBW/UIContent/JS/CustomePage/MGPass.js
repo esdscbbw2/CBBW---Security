@@ -56,8 +56,8 @@ function ActivateOutbtn(notenumber) {
                         btnIn.removeAttr('disabled');
                         btnOut.attr('disabled', 'disabled');       
                     } else if (item.OutActive == true && item.InActive == true) {
-                       // btnOut.removeAttr('disabled');
-                        btnOut.attr('disabled', 'disabled');
+                       btnOut.removeAttr('disabled');
+                        //btnOut.attr('disabled', 'disabled');
                         btnIn.attr('disabled', 'disabled');
                     }
                     else {
@@ -66,7 +66,8 @@ function ActivateOutbtn(notenumber) {
                     }
                 });
             } else {
-                      btnOut.removeAttr('disabled');
+                      //btnOut.removeAttr('disabled');
+                btnOut.attr('disabled', 'disabled');
                       btnIn.attr('disabled', 'disabled');
                  }
 

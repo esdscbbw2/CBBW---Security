@@ -103,5 +103,47 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+        public DataTable SetEHGVehicleAllotmentDetails(VehicleAllotmentDetails mData, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[14];
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
+                para[paracount++].Value = mData.NoteNumber;
+                para[paracount] = new SqlParameter("@AuthorisedEmpNumber", SqlDbType.Int);
+                para[paracount++].Value =mData.AuthorisedEmpNumber;
+                para[paracount] = new SqlParameter("@AuthorisedEmpName", SqlDbType.NVarChar,50);
+                para[paracount++].Value = mData.AuthorisedEmpName;
+                para[paracount] = new SqlParameter("@DesignationCode", SqlDbType.Int);
+                para[paracount++].Value = mData.DesignationCode;
+                para[paracount] = new SqlParameter("@DesignationText", SqlDbType.NVarChar,50);
+                para[paracount++].Value = mData.DesignationText;
+                para[paracount] = new SqlParameter("@MaterialStatus", SqlDbType.Bit);
+                para[paracount++].Value = mData.MaterialStatus;
+                para[paracount] = new SqlParameter("@VehicleBelongsTo", SqlDbType.Int);
+                para[paracount++].Value = mData.VehicleBelongsTo;
+                para[paracount] = new SqlParameter("@VehicleType", SqlDbType.NVarChar,50);
+                para[paracount++].Value = mData.VehicleType;
+                para[paracount] = new SqlParameter("@VehicleNumber", SqlDbType.NVarChar,20);
+                para[paracount++].Value = mData.VehicleNumber;
+                para[paracount] = new SqlParameter("@ModelName", SqlDbType.NVarChar,50);
+                para[paracount++].Value = mData.ModelName;
+                para[paracount] = new SqlParameter("@DriverNumber", SqlDbType.Int);
+                para[paracount++].Value = mData.DriverNumber;
+                para[paracount] = new SqlParameter("@DriverName", SqlDbType.NVarChar,50);
+                para[paracount++].Value = mData.DriverName;
+                para[paracount] = new SqlParameter("@KMOut", SqlDbType.Int);
+                para[paracount++].Value = mData.KMOut;
+                para[paracount] = new SqlParameter("@KMIn", SqlDbType.Int);
+                para[paracount++].Value = mData.KMIn;
+                using (SQLHelper sql = new SQLHelper("[EHG].[SetEHGVehicleAllotmentDetails]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+
     }
 }

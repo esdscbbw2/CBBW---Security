@@ -14,6 +14,14 @@ $.fn.isValid = function () {
     var that = this;
     that.addClass('is-valid').removeClass('is-invalid');
 };
+$.fn.makeVisible = function () {
+    var that = this;
+    that.removeClass('inVisible');
+};
+$.fn.makeInVisible = function () {
+    var that = this;
+    that.AddClass('inVisible');
+};
 $.fn.clearValidateClass = function () {
     var that = this;
     that.removeClass('is-valid').removeClass('is-invalid');
