@@ -240,8 +240,7 @@ namespace CBBW.Areas.Security.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetcurentOutDetails(string NoteNumber)
-        {
-            
+        { 
             List<MGPVehicleOutDetails> model = new List<MGPVehicleOutDetails>();
             model = _IMGP.getSchDtlsForMGP(NoteNumber, ref pMsg);
             return Json(model, JsonRequestBehavior.AllowGet);
@@ -363,6 +362,23 @@ namespace CBBW.Areas.Security.Controllers
         }
         #endregion
 
+
+        #region In/ Out Button Active
+        public JsonResult getMGPButtonStatus(string NoteNumber)
+        {
+            try
+            {
+                ButtonActive model = new ButtonActive();
+                model = _IMGP.getMGPButtonStatus(NoteNumber, ref pMsg);
+                return Json(model, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.ToString());
+            }
+
+        }
+        #endregion
 
 
 

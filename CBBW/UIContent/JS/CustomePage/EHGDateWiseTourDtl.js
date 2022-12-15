@@ -39,3 +39,6 @@ $(document).ready(function () {
         const r1 = await getMultiselectData('TourCategory', '/EHG/GetTourCategories');
     })();
 });
+$(document).ready(function () {
+    $('#FromDateLbl').html($('#FromdateStrForDisplay').val());
+});

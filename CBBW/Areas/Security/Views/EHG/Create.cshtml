@@ -18,7 +18,6 @@
         @Html.HiddenFor(m => m.DriverNameForManagement)
         @Html.HiddenFor(m => m.DesgCodeNNameForManagement)
         @Html.HiddenFor(m=>m.ehgHeader.AuthorisedEmployeeName)
-
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
@@ -42,7 +41,6 @@
 
                 </div>
             </div>
-
         </div>
         <div class="col-md-12">
             <div class="text-center pt-2 pb-2">
@@ -561,8 +559,7 @@
                     </div>
                 </div>
                 <div class="card mt-4 mb-3">
-                    <div class="card-body approvalForm">
-                       
+                    <div class="card-body approvalForm">                       
                         <div class="row d-flex align-items-center">
                             <div class="col-form-label col-md-3">
                                 <label>Authorized Employee No. & Name :</label>
@@ -664,50 +661,50 @@
         //    var insrow = addCloneBtnClick.caller.arguments[0].target.closest('.add-row');
         //    CloneRow('tbody3', 'tbody4', $(insrow).attr('id') * 1, true, false);
         //};
-        function trialBtnClick() {
-            var schrecords = getRecordsFromTable('table1');
-            var x = '{"triallist":' + schrecords + '}';
-            $.ajax({
-                method: 'POST',
-                url: '/EHG/TrialPick',
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                data: x,
-                success: function (data) {
-                    $(data).each(function (index, item) {
-                        if (item.bResponseBool == true) {
-                            Swal.fire({
-                                title: 'Confirmation',
-                                text: 'Data saved successfully.',
-                                icon: 'success',
-                                customClass: 'swal-wide',
-                                buttons: {
-                                    confirm: 'Ok'
-                                },
-                                confirmButtonColor: '#2527a2',
-                            }).then(callback);
-                            function callback(result) {
-                                if (result.value) {
-                                    //var url = "/Security/CTV/Create";
-                                    //window.location.href = url;
-                                }
-                            }
-                        } else {
-                            Swal.fire({
-                                title: 'Confirmation',
-                                text: 'Failed to save data.',
-                                icon: 'question',
-                                customClass: 'swal-wide',
-                                buttons: {
-                                    confirm: 'Ok'
-                                },
-                                confirmButtonColor: '#2527a2',
-                            });
-                        }
-                    });
-                },
-            });
-        };
+        //function trialBtnClick() {
+        //    var schrecords = getRecordsFromTable('table1');
+        //    var x = '{"triallist":' + schrecords + '}';
+        //    $.ajax({
+        //        method: 'POST',
+        //        url: '/EHG/TrialPick',
+        //        contentType: "application/json; charset=utf-8",
+        //        dataType: "json",
+        //        data: x,
+        //        success: function (data) {
+        //            $(data).each(function (index, item) {
+        //                if (item.bResponseBool == true) {
+        //                    Swal.fire({
+        //                        title: 'Confirmation',
+        //                        text: 'Data saved successfully.',
+        //                        icon: 'success',
+        //                        customClass: 'swal-wide',
+        //                        buttons: {
+        //                            confirm: 'Ok'
+        //                        },
+        //                        confirmButtonColor: '#2527a2',
+        //                    }).then(callback);
+        //                    function callback(result) {
+        //                        if (result.value) {
+        //                            //var url = "/Security/CTV/Create";
+        //                            //window.location.href = url;
+        //                        }
+        //                    }
+        //                } else {
+        //                    Swal.fire({
+        //                        title: 'Confirmation',
+        //                        text: 'Failed to save data.',
+        //                        icon: 'question',
+        //                        customClass: 'swal-wide',
+        //                        buttons: {
+        //                            confirm: 'Ok'
+        //                        },
+        //                        confirmButtonColor: '#2527a2',
+        //                    });
+        //                }
+        //            });
+        //        },
+        //    });
+        //};
     </script>
     <script>
         function fireSweetAlert() {

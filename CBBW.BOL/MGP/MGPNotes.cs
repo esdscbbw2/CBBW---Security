@@ -24,5 +24,14 @@ namespace CBBW.BOL.MGP
 
         public string CallBackUrl { get; set; }
         public int ISSubmitActive { get; set; }
+
+
+
+    }
+
+    public class ButtonActive
+    {
+       public bool OutButtonActive { get; set; } 
+       public bool InButtonActive { get; set; }
     }
 }

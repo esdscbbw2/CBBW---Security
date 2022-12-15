@@ -8,6 +8,7 @@ using CBBW.BLL.IRepository;
 using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.EHG;
+using System.Globalization;
 
 namespace CBBW.Areas.Security.Controllers
 {
@@ -19,7 +20,7 @@ namespace CBBW.Areas.Security.Controllers
         string pMsg;
         UserInfo user;
         IEHGRepository _iEHG;
-        EHGHeaderEntryVM model;         
+        EHGHeaderEntryVM model;        
         public EHGController(IUserRepository iUser, IEHGRepository iEHG, 
             IMyHelperRepository myHelper, IMasterRepository master)
         {
@@ -91,7 +92,11 @@ namespace CBBW.Areas.Security.Controllers
         public ActionResult DateWiseTourDetails() 
         {
             model = CastEHGTempData();
-            
+            model.FromdateForMang= model.PersonDtls.Select(o => o.FromDate).Min();
+            model.ToDateForMang = model.PersonDtls.Select(o => o.ToDate).Max();
+            model.FromdateStrForDisplay = model.FromdateForMang.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+            model.FromdateStr = model.FromdateForMang.ToString("yyyy-MM-dd");
+            model.TodateStr = model.ToDateForMang.ToString("yyyy-MM-dd");
             return View(model);
         }
         public ActionResult VehicleAllotment() 
@@ -131,57 +136,67 @@ namespace CBBW.Areas.Security.Controllers
         public JsonResult GetTourLocations(string CategoryID)
         {
             List<CustomComboOptions> result = new List<CustomComboOptions>();
-            model = CastEHGTempData();
-            if (model.PersonType == null)
-            {
-                EHGMaster master = EHGMaster.GetInstance;
-                result = master.TourCategory;
-            }
-            else { result = model.TourCategory; }
+            //model = CastEHGTempData();
+            //if (model.PersonType == null)
+            //{
+            //    EHGMaster master = EHGMaster.GetInstance;
+            //    result = master.TourCategory;
+            //}
+            //else { result = model.TourCategory; }
+            EHGMaster master = EHGMaster.GetInstance;
+            result = master.TourCategory;
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetTourCategories()
         {
             List<CustomComboOptions> result = new List<CustomComboOptions>();
-            model = CastEHGTempData();
-            if (model.PersonType == null)
-            {
-                EHGMaster master = EHGMaster.GetInstance;
-                result = master.TourCategory;
-            }
-            else { result = model.TourCategory; }
+            //model = CastEHGTempData();
+            //if (model.PersonType == null)
+            //{
+            //    EHGMaster master = EHGMaster.GetInstance;
+            //    result = master.TourCategory;
+            //}
+            //else { result = model.TourCategory; }
+            EHGMaster master = EHGMaster.GetInstance;
+            result = master.TourCategory;
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetPersonTypes()
         {
             List<CustomComboOptions> result = new List<CustomComboOptions>();
-            model = CastEHGTempData();
-            if (model.PersonType == null)
-            {
-                EHGMaster master = EHGMaster.GetInstance;
-                result = master.PersonType;
-            }
-            else { result = model.PersonType;}
+            //model = CastEHGTempData();
+            //if (model.PersonType == null)
+            //{
+            //    EHGMaster master = EHGMaster.GetInstance;
+            //    result = master.PersonType;
+            //}
+            //else { result = model.PersonType;}
+            EHGMaster master = EHGMaster.GetInstance;
+            result = master.PersonType;
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetDriverList()
         {
             IEnumerable<CustomComboOptions> result;
-            model = CastEHGTempData();
-            if (model.DriverList == null)
-                result = model.getDriverList(user.CentreCode);
-            else  
-                result = model.DriverList; 
+            //model = CastEHGTempData();
+            //if (model.DriverList == null)
+            //    result = model.getDriverList(user.CentreCode);
+            //else  
+            //    result = model.DriverList; 
+            EHGHeaderEntryVM tempobj = new EHGHeaderEntryVM(true);
+            result = tempobj.getDriverList(user.CentreCode);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetStaffList()
         {
             IEnumerable<CustomComboOptions> result;
-            model = CastEHGTempData();
-            if (model.StaffList == null)
-                result = model.getStaffList(user.CentreCode);
-            else
-                result = model.StaffList;
+            //model = CastEHGTempData();
+            //if (model.StaffList == null)
+            //    result = model.getStaffList(user.CentreCode);
+            //else
+            //    result = model.StaffList;
+            EHGHeaderEntryVM tempobj = new EHGHeaderEntryVM(true);
+            result = tempobj.getStaffList(user.CentreCode);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetVehicleBasicInfo(string VehicleNumber)
@@ -197,6 +212,11 @@ namespace CBBW.Areas.Security.Controllers
         public ActionResult GetTravelingPersonDetails(EHGTravellingPersonsVM modelobj) 
         {
             model = CastEHGTempData();
+            model.ehgHeader.VehicleType = modelobj.VehicleType;
+            model.ehgHeader.PurposeOfAllotment = modelobj.PurposeOfAllotment;
+            model.ehgHeader.MaterialStatus = modelobj.MaterialStatus;
+            model.ehgHeader.Instructor = modelobj.Instructor;
+            model.ehgHeader.AuthorisedEmployeeName = modelobj.AuthorisedEmployeeName;
             model.PersonDtls = modelobj.PersonDtls;
             TempData["EHG"] = model;
             CustomAjaxResponse result = new CustomAjaxResponse();

@@ -23,6 +23,6 @@ namespace CBBW.BOL.EHG
         public int KMIn { get; set; }
         public string OtherVehicleNumber { get; set; }
         public string OtherVehicleModelName { get; set; }
-
+        public bool IsActive { get; set; }
     }
 }

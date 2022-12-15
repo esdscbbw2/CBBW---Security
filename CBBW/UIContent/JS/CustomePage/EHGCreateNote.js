@@ -90,11 +90,18 @@ function validatectrl_YesNoCombo(value) {
 
 function DateWiseTourDtlClicked() {
     var notenumber = $('#ehgHeader_NoteNumber').val();
-    //var authorisedemp = $('#DDAuthorisedEmpForWork').val();
+    var vehicletype = $('#ehgHeader_VehicleType').val();
+    var poallotment = $('#ehgHeader_PurposeOfAllotment').val();
+    var matstat = $('#ehgHeader_MaterialStatus').val();
+    var instructor = $('#ehgHeader_Instructor').val();
+    var authEMpname = $('#DDAuthorisedEmpForWork option:selected').text();
     //OficeWorkTbl    
     var schrecords = getRecordsFromTable('OficeWorkTbl');
     //var x = '{"NoteNumber":"' + notenumber + '","AuthorisedEmpName":"' + authorisedemp + '","PersonDtls":' + schrecords + '}';
-    var x = '{"NoteNumber":"' + notenumber + '","PersonDtls":' + schrecords + '}';
+    var x = '{"NoteNumber":"' + notenumber
+        + '","VehicleType":"' + vehicletype + '","PurposeOfAllotment":"' + poallotment
+        + '","MaterialStatus":"' + matstat + '","Instructor":"' + instructor
+        + '","AuthorisedEmployeeName":"' + authEMpname+'","PersonDtls":' + schrecords + '}';
     $.ajax({
         method: 'POST',
         url: '/EHG/GetTravelingPersonDetails',
@@ -306,43 +313,50 @@ function removeOfficeWorkCloneBtnClick() {
     UpdateAuthorisedPersonForOfficeWork('Select Authorized Person');
     EnableDateWiseTourBtn();
 };
-$(document).ready(function () {
-    var VehicletypeCtrl = $('#ehgHeader_VehicleType');
+function VehicleTypeChanged() {
     var POACtrl = $('#for_LV');
     var POA2WhCtrl = $('#for_2_wheeler');
+    var ForManagementDiv = $('#for_Management');
+    var ForOfficeWorkDiv = $('#for_OfficeWork');
+    var POADropdown = $('#ehgHeader_PurposeOfAllotment');
+    var VehicletypeCtrl = $('#ehgHeader_VehicleType');
+    var selectedvt = VehicletypeCtrl.val();
+    if (selectedvt == 1) {
+        POACtrl.removeClass('inVisible');
+        POA2WhCtrl.addClass('inVisible');
+        ForOfficeWorkDiv.addClass('inVisible');
+        ForManagementDiv.addClass('inVisible');
+        POADropdown.val('').isInalid();
+    }
+    else if (selectedvt == 2) {
+        POADropdown.clearValidateClass();
+        POACtrl.addClass('inVisible');
+        POA2WhCtrl.removeClass('inVisible');
+        ForOfficeWorkDiv.removeClass('inVisible');
+        ForManagementDiv.addClass('inVisible');
+    }
+    else {
+        POACtrl.addClass('inVisible');
+        POA2WhCtrl.addClass('inVisible');
+        ForOfficeWorkDiv.addClass('inVisible');
+        ForManagementDiv.addClass('inVisible');
+        POADropdown.val('').isInalid();
+    };
+    if (selectedvt > 0) {
+        VehicletypeCtrl.isValid();
+    }
+    else { VehicletypeCtrl.isInvalid() }
+};
+$(document).ready(function () {
+    var VehicletypeCtrl = $('#ehgHeader_VehicleType');    
     var ForManagementDiv = $('#for_Management');
     var ForOfficeWorkDiv = $('#for_OfficeWork');
     var POADropdown = $('#ehgHeader_PurposeOfAllotment');
     //var DWTBtn = $('#DateWiseTourBtn');
     //var VABtn = $('#VehicleAllotBtn');
     VehicletypeCtrl.change(function () {
-        var selectedvt = $(this).val();        
-        if (selectedvt == 1) {
-            POACtrl.removeClass('inVisible');
-            POA2WhCtrl.addClass('inVisible');
-            ForOfficeWorkDiv.addClass('inVisible');
-            ForManagementDiv.addClass('inVisible');
-            POADropdown.val('').isInalid();
-        }
-        else if (selectedvt == 2) {
-            POADropdown.clearValidateClass();
-            POACtrl.addClass('inVisible');
-            POA2WhCtrl.removeClass('inVisible');
-            ForOfficeWorkDiv.removeClass('inVisible');
-            ForManagementDiv.addClass('inVisible');            
-        }
-        else {
-            POACtrl.addClass('inVisible');
-            POA2WhCtrl.addClass('inVisible');
-            ForOfficeWorkDiv.addClass('inVisible');
-            ForManagementDiv.addClass('inVisible');
-            POADropdown.val('').isInalid();
-        };
-        if (selectedvt > 0) {
-            VehicletypeCtrl.isValid();
-            //POADropdown.val('').isInvalid();
-        }
-        else { VehicletypeCtrl.isInvalid() }
+        //var selectedvt = $(this).val();        
+        VehicleTypeChanged();
         //EnableDateWiseTourBtn();
     });
     POADropdown.change(function () {
@@ -371,4 +385,7 @@ $(document).ready(function () {
 });
 $(document).ready(function () {
     getDropDownData('DDPersonType', 'Select Type', '/EHG/GetPersonTypes');
+});
+$(document).ready(function () {
+    VehicleTypeChanged();
 });

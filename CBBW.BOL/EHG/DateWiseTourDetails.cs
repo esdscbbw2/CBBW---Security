@@ -15,5 +15,6 @@ namespace CBBW.BOL.EHG
         public string TourCatText { get; set; }
         public string CenterCodes { get; set; }
         public string CenterNames { get; set; }
+        public bool IsActive { get; set; }
     }
 }

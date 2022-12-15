@@ -38,5 +38,9 @@ namespace CBBW.BLL.IRepository
         #region For List Page (Index page)
         IEnumerable<MGPListDetails> getMGPDetailsforListPage(ref string pMsg);
         #endregion
+
+        #region IN/Out Button Active
+        ButtonActive getMGPButtonStatus(string NoteNumber, ref string pMsg);
+        #endregion
     }
 }

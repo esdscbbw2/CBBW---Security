@@ -83,5 +83,12 @@ namespace CBBW.BLL.Repository
             return _MGPEntities.getMGPDetailsforListPage(ref pMsg);
         }
         #endregion
+
+        #region In/Out Button Active
+        public ButtonActive getMGPButtonStatus(string NoteNumber, ref string pMsg)
+        {
+            return _MGPEntities.getMGPButtonStatus(NoteNumber,ref pMsg);
+        }
+        #endregion
     }
 }

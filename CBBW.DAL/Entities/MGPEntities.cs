@@ -287,5 +287,23 @@ namespace CBBW.DAL.Entities
             return mgp;
         }
         #endregion
+
+
+        #region In/Out Button Active
+        public ButtonActive getMGPButtonStatus(string NoteNumber, ref string pMsg)
+        {
+            ButtonActive result = new ButtonActive();
+            try
+            {
+                dt = _datasync.getMGPButtonStatus(NoteNumber, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    result = _datamapper.Map_ButtonActive(dt.Rows[0]);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
+        #endregion
     }
 }

@@ -362,6 +362,27 @@ namespace CBBW.DAL.DBMapper
             return result;
         }
         #endregion
+
+
+        #region In/Out Button Active
+        public ButtonActive Map_ButtonActive(DataRow dr)
+        {
+            ButtonActive result = new ButtonActive();
+            try
+            {
+                if (dr != null)
+                {
+                    if (!DBNull.Value.Equals(dr["OutButtonActive"]))
+                        result.OutButtonActive = bool.Parse(dr["OutButtonActive"].ToString());
+                    if (!DBNull.Value.Equals(dr["InButtonActive"]))
+                        result.InButtonActive = bool.Parse(dr["InButtonActive"].ToString());
+
+                }
+            }
+            catch { }
+            return result;
+        }
+        #endregion
     }
 }
 

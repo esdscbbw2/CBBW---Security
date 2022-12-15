@@ -216,7 +216,6 @@ namespace CBBW.DAL.Entities
                 }
             }
             catch (Exception ex) { pMsg = ex.Message; }
-
             return result;
         }
         public List<NoteNumber> getNotenumbersTobeApproved(int EmpNo,int CenterCode,ref string pMsg) 

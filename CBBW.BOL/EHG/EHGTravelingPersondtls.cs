@@ -19,6 +19,7 @@ namespace CBBW.BOL.EHG
         public DateTime ToDate { get; set; }
         public string PurposeOfVisit { get; set; }
         public bool TADADenied { get; set; }
+        public bool IsActive { get; set; }
 
     }
     public class EHGTravelingPersondtlsForManagement : EHGTravelingPersondtls 

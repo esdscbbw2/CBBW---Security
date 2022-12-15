@@ -40,6 +40,11 @@ namespace CBBW.Areas.Security.ViewModel.EHG
             pMsg = "";
             _master = new MasterEntities();
         }
+        public EHGHeaderEntryVM(bool IsForList)
+        {
+            pMsg = "";
+            _master = new MasterEntities();
+        }
         public IEnumerable<CustomComboOptions> getDriverList(int centerCode) 
         {
             return _master.getCenterWiseDriverList(centerCode, ref pMsg);
@@ -82,5 +87,8 @@ namespace CBBW.Areas.Security.ViewModel.EHG
         public string MinFromDate { get; set; }
         public string DriverNameForManagement { get; set; }
         public string DesgCodeNNameForManagement { get; set; }
+        public string FromdateStrForDisplay { get; set; }
+        public string FromdateStr { get; set; }
+        public string TodateStr { get; set; }
     }
 }

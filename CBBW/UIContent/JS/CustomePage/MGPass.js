@@ -38,38 +38,49 @@ function ActivateOutbtn(notenumber) {
     var btnOut = $('#btnCMOD');
     var btnIn = $('#btnCMID'); 
     $.ajax({
-        url: '/MaterialGatePass/CheckAvailableNoteNoforOut',
+        
+       // url: '/MaterialGatePass/CheckAvailableNoteNoforOut',
+        url: '/MaterialGatePass/getMGPButtonStatus',
         method: 'GET',
         data: { Notenumber: notenumber },
         dataType: 'json',
         success: function (data) {
-           
-            if (data.length > 0) {
-                $(data).each(function (index, item) {
+           if (data.OutButtonActive == true) {
+                btnOut.removeAttr('disabled');
+                btnIn.attr('disabled', 'disabled');
+            } else if (data.InButtonActive == true) {
+                btnIn.removeAttr('disabled');
+                btnOut.attr('disabled', 'disabled');
+            } else {
+                btnOut.attr('disabled', 'disabled');
+                btnIn.attr('disabled', 'disabled');
+            }
+            //if (data.length > 0) {
+              //  $(data).each(function (index, item) {
+               //     alert(item.OutButtonActive + '/' + item.InButtonActive)
                     //btnOut.removeAttr('disabled');
                     //btnIn.removeAttr('disabled');
                     //Comment for Testing out details only 
-                    if (item.OutActive == false && item.InActive == false) {
-                        btnOut.removeAttr('disabled');
-                        btnIn.attr('disabled', 'disabled');
-                    } else if (item.OutActive == true && item.InActive == false) {
-                        btnIn.removeAttr('disabled');
-                        btnOut.attr('disabled', 'disabled');       
-                    } else if (item.OutActive == true && item.InActive == true) {
-                       btnOut.removeAttr('disabled');
-                        //btnOut.attr('disabled', 'disabled');
-                        btnIn.attr('disabled', 'disabled');
-                    }
-                    else {
-                        btnOut.removeAttr('disabled');
-                        btnIn.attr('disabled', 'disabled');
-                    }
-                });
-            } else {
-                      //btnOut.removeAttr('disabled');
-                btnOut.attr('disabled', 'disabled');
-                      btnIn.attr('disabled', 'disabled');
-                 }
+                    //if (item.OutActive == false && item.InActive == false) {
+                    //    btnOut.removeAttr('disabled');
+                    //    btnIn.attr('disabled', 'disabled');
+                    //} else if (item.OutActive == true && item.InActive == false) {
+                    //    btnIn.removeAttr('disabled');
+                    //    btnOut.attr('disabled', 'disabled');       
+                    //} else if (item.OutActive == true && item.InActive == true) {
+                    //   // btnOut.removeAttr('disabled');
+                    //    btnOut.attr('disabled', 'disabled');
+                    //    btnIn.attr('disabled', 'disabled');
+                    //}
+                    //else {
+                    //    btnOut.removeAttr('disabled');
+                    //    btnIn.attr('disabled', 'disabled');
+                    //}
+               // });
+            //} else {
+            //          btnOut.attr('disabled', 'disabled');
+            //          btnIn.attr('disabled', 'disabled');
+            //     }
 
             }
         
@@ -136,7 +147,7 @@ function ValidateControl() {
 function validatectrl(targetid, mvalue) {
     var isvalid = false;
     if (targetid == 'vehicledriver' || targetid == 'driversame') {
-        if (mvalue.length > 0) { isvalid = true; }
+        if (mvalue == 'Yes') { isvalid = true; }
     }
     return isvalid;
 };

@@ -25,6 +25,17 @@ namespace CBBW.BLL.Repository
             _user = new UserRepository();
             user = _user.getLoggedInUser();
         }
+
+        public List<DateWiseTourDetails> getDateWiseTourDetails(string Notenumber, int IsActive, ref string pMsg)
+        {
+            return _EHGEntities.getDateWiseTourDetails(Notenumber, IsActive, ref pMsg);
+        }
+
+        public EHGHeader getEHGNoteHdr(string Notenumber, ref string pMsg)
+        {
+            return _EHGEntities.getEHGNoteHdr(Notenumber, ref pMsg);
+        }
+
         public EHGHeader getNewEHGHeader(ref string pMsg)
         {
             EHGHeader obj= new EHGHeader();
@@ -40,6 +51,16 @@ namespace CBBW.BLL.Repository
             obj.InitiatorCodenName = user.EmployeeNumber + " / " + user.EmployeeName;
             obj.MaterialStatus = -1;
             return obj;
+        }
+
+        public List<EHGTravelingPersondtlsForManagement> getTravelingPersonDetails(string Notenumber, int IsActive, ref string pMsg)
+        {
+            return _EHGEntities.getTravelingPersonDetails(Notenumber,IsActive, ref pMsg);
+        }
+
+        public VehicleAllotmentDetails getVehicleAllotmentDetails(string Notenumber, int IsActive, ref string pMsg)
+        {
+            return _EHGEntities.getVehicleAllotmentDetails(Notenumber,IsActive, ref pMsg);
         }
 
         public bool SetDateWiseTourDetails(string NoteNumber, List<DateWiseTourDetails> dtldata, ref string pMsg)
@@ -66,6 +87,11 @@ namespace CBBW.BLL.Repository
         public bool SetEHGVehicleAllotmentDetails(VehicleAllotmentDetails mData, ref string pMsg)
         {
             return _EHGEntities.SetEHGVehicleAllotmentDetails(mData, ref pMsg);
+        }
+
+        public bool UpdateEHGHdr(string NoteNumber, ref string pMsg)
+        {
+            return _EHGEntities.UpdateEHGHdr(NoteNumber, ref pMsg);
         }
     }
 }
