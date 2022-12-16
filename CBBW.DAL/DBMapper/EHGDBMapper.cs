@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CBBW.BOL.EHG;
+using System.Globalization;
 
 namespace CBBW.DAL.DBMapper
 {
@@ -57,9 +58,15 @@ namespace CBBW.DAL.DBMapper
                         result.TourStatus = int.Parse(dr["TourStatus"].ToString());
                     if (!DBNull.Value.Equals(dr["IsActive"]))
                         result.IsActive = bool.Parse(dr["IsActive"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsAuthorised"]))
+                        result.IsAuthorised = bool.Parse(dr["IsAuthorised"].ToString());
+                    result.FromDateStr = result.FromDate.ToString("yyyy-MM-dd");
+                    result.ToDateStr = result.ToDate.ToString("yyyy-MM-dd");
+                    result.FromDateStrDisplay=result.FromDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    result.ToDateStrDisplay = result.ToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
                 }
             }
-            catch { }
+            catch(Exception ex) { }
             return result;
         }
         public VehicleAllotmentDetails Map_VehicleAllotmentDetails(DataRow dr)
@@ -80,7 +87,7 @@ namespace CBBW.DAL.DBMapper
                     if (!DBNull.Value.Equals(dr["DesignationText"]))
                         result.DesignationText = dr["DesignationText"].ToString();
                     if (!DBNull.Value.Equals(dr["MaterialStatus"]))
-                        result.MaterialStatus = int.Parse(dr["MaterialStatus"].ToString());
+                        result.MaterialStatus = bool.Parse(dr["MaterialStatus"].ToString())?1:0;
                     if (!DBNull.Value.Equals(dr["VehicleBelongsTo"]))
                         result.VehicleBelongsTo = int.Parse(dr["VehicleBelongsTo"].ToString());
                     if (!DBNull.Value.Equals(dr["VehicleType"]))
@@ -166,7 +173,10 @@ namespace CBBW.DAL.DBMapper
                     if (!DBNull.Value.Equals(dr["ID"]))
                         result.ID = int.Parse(dr["ID"].ToString());
                     if (!DBNull.Value.Equals(dr["IsActive"]))
-                        result.IsActive = bool.Parse(dr["IsActive"].ToString());                    
+                        result.IsActive = bool.Parse(dr["IsActive"].ToString());
+                    result.FromDateStrDisplay = result.FromDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture);
+                    result.ToDateStrDisplay = result.ToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    result.ToDateStr = result.ToDate.ToString("yyyy-MM-dd");
                 }
             }
             catch { }

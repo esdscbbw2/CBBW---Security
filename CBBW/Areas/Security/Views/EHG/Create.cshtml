@@ -17,7 +17,9 @@
         @Html.HiddenFor(m => m.AuthorisedEmpNameForManagement)
         @Html.HiddenFor(m => m.DriverNameForManagement)
         @Html.HiddenFor(m => m.DesgCodeNNameForManagement)
-        @Html.HiddenFor(m=>m.ehgHeader.AuthorisedEmployeeName)
+        @Html.HiddenFor(m => m.ehgHeader.AuthorisedEmployeeName)
+        @Html.HiddenFor(m => m.ehgHeader.POA2)
+        @*@Html.HiddenFor(m => m.ehgHeader.PurposeOfAllotment)*@
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
@@ -53,7 +55,6 @@
         <div class="col-md-12 mb-4">
             <div id="HdrDiv" class="card mb-4 mt-4">
                 <div class="card-body approvalForm">
-                    
                     <div class="row d-flex align-items-center mb-4">
                         <label class="col-form-label col-md-3">
                             Note No. :
@@ -147,8 +148,6 @@
                             </div>
                         </div>
                     </div>
-
-
                     <div class="row d-flex  align-items-center mb-4">
                         <label class="col-form-label col-md-3">
                             Carrying Out Any Material  :
@@ -164,13 +163,6 @@
                            @class = "form-select pointer",
                            @onchange = "ValidateControl()"
                        })
-                            @*<select class="form-select" aria-label="Default select example">
-                                    <option selected="">-</option>
-                                    <option value="1">Yes </option>
-                                    <option value="2">
-                                        No
-                                    </option>
-                                </select>*@
                         </div>
                     </div>
                     <div class="row d-flex  align-items-center mb-4">
@@ -186,13 +178,6 @@
                                            @class = "form-select pointer",
                                            @onchange = "ValidateControl()"
                                        })
-                            @*<select class="form-select" aria-label="Default select example">
-                                    <option selected="">1001 / Md Aitf</option>
-                                    <option value="1">1002 / Md Abdul </option>
-                                    <option value="2">
-                                        1003 / Md Imraan
-                                    </option>
-                                </select>*@
                         </div>
                     </div>
                     <div class="row d-flex  align-items-center mb-4">
@@ -232,7 +217,6 @@
                         <div class="col-md-2 col-form-label">
                             <label>Reason If Not Approved :</label>
                         </div>
-
                         <div class="col-md-2">
                             <textarea name="" id="" cols="10" rows="2" class="form-control" disabled></textarea>
 
@@ -396,7 +380,6 @@
                                             Continue
                                         </td>
                                     </tr>
-
                                 </tbody>
                             </table>
                         </div>
@@ -404,7 +387,7 @@
                 </div>
                 <div class="card mt-4 mb-3">
                     <div class="card-body approvalForm">
-                       
+
                         <div class="row d-flex align-items-center">
                             <div class="col-form-label col-md-3">
                                 <label>Authorized Employee No. & Name :</label>
@@ -465,15 +448,15 @@
                                     <tr id="0" class="add-row">
                                         <th scope="row">1</th>
                                         <td class="text-center">
-                                            <select class="form-select w-200 is-invalid alterID"
+                                            <select class="form-select w-200 is-invalid alterID inValidTag"
                                                     data-name="PersonType"
                                                     aria-label="Default select example"
                                                     id="DDPersonType" onchange="DDPersonTypeChanged()">
                                             </select>
                                         </td>
                                         <td class="text-center">
-                                            <select class="form-select alterID pickPersonName"
-                                                    data-name="EmployeeNo"
+                                            <select class="form-select alterID inValidTag pickPersonName"
+                                                    data-name="EmployeeNo" data-name-text="EmployeeNonNamecmb"
                                                     aria-label="Default select example"
                                                     onchange="DDPickPersonChanged(0)"
                                                     id="cmbDDPersonType">
@@ -486,10 +469,10 @@
                                         <td id="DesgCodenName" data-name="DesignationCodenName" class="text-center alterID htmlVal"> </td>
                                         <td class="text-center">
                                             <div class="position-relative pointer">
-                                                <input id="FromDate" type="date" 
+                                                <input id="FromDate" type="date"
                                                        data-name="FromDate"
                                                        onchange="ValidateCloneRowCtrl()"
-                                                       class="form-control pointer is-invalid alterID CustomDateFormatCloneRow">
+                                                       class="form-control pointer is-invalid alterID inValidTag CustomDateFormatCloneRow">
                                                 <label id="lblFromDate" style="width:110px"
                                                        class="datelabel pointer alterID">Select Date</label>
                                             </div>
@@ -497,10 +480,10 @@
 
                                         <td class="text-center">
                                             <div class="input-group date pointer position-static">
-                                                <input id="FromTime" type="text" 
+                                                <input id="FromTime" type="text"
                                                        data-name="FromTime"
                                                        onblur="ValidateCloneRowCtrl()"
-                                                       class="form-control is-invalid timePicker CustomTimeFormatCloneRow alterID"
+                                                       class="form-control is-invalid timePicker CustomTimeFormatCloneRow alterID inValidTag"
                                                        placeholder="Select Time">
                                             </div>
                                         </td>
@@ -509,7 +492,7 @@
                                                 <input id="ToDate" type="date"
                                                        data-name="ToDate"
                                                        onchange="ValidateCloneRowCtrl()"
-                                                       class="form-control pointer is-invalid alterID CustomDateFormatCloneRow">
+                                                       class="form-control pointer is-invalid alterID inValidTag CustomDateFormatCloneRow">
                                                 <label id="lblToDate" style="width:110px"
                                                        class="datelabel pointer alterID">Select Date</label>
                                             </div>
@@ -520,10 +503,10 @@
                                             <textarea name="" id="PurposeOfVisit" cols="20"
                                                       data-name="PurposeOfVisit"
                                                       onchange="ValidateCloneRowCtrl()"
-                                                      class="form-control is-invalid alterID" rows="3"></textarea>
+                                                      class="form-control is-invalid alterID inValidTag" rows="3"></textarea>
                                         </td>
                                         <td class="text-center">
-                                            <select id="TaDaDenied" class="form-select is-invalid alterID"
+                                            <select id="TaDaDenied" class="form-select is-invalid alterID inValidTag"
                                                     data-name="TADADenied"
                                                     onchange="ValidateCloneRowCtrl()"
                                                     aria-label="Default select example">
@@ -559,7 +542,7 @@
                     </div>
                 </div>
                 <div class="card mt-4 mb-3">
-                    <div class="card-body approvalForm">                       
+                    <div class="card-body approvalForm">
                         <div class="row d-flex align-items-center">
                             <div class="col-form-label col-md-3">
                                 <label>Authorized Employee No. & Name :</label>
@@ -577,7 +560,7 @@
             </div>
             <div class="col-md-12">
                 <div class="d-flex justify-content-center mt-2">
-                    <button type="button" class="btn btn-primary me-2" 
+                    <button type="button" class="btn btn-primary me-2"
                             onclick="DateWiseTourDtlClicked()"
                             id="DateWiseTourBtn2">
                         Date Wise Tour Details - Entry

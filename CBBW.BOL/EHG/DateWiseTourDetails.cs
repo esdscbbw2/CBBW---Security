@@ -16,5 +16,8 @@ namespace CBBW.BOL.EHG
         public string CenterCodes { get; set; }
         public string CenterNames { get; set; }
         public bool IsActive { get; set; }
+        public string FromDateStrDisplay { get; set; }
+        public string ToDateStrDisplay { get; set; }
+        public string ToDateStr { get; set; }
     }
 }

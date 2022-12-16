@@ -29,5 +29,6 @@ namespace CBBW.BOL.EHG
         public string InitiatorName { get; set; }
         public string InitiatorCodenName { get; set; }
         public bool IsActive { get; set; }
+        public string POA2 { get; set; }
     }
 }

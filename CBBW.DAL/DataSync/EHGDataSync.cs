@@ -67,11 +67,11 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-        public DataTable SetEHGTravellingPersonDetails(string NoteNumber, List<EHGTravelingPersondtls> dtldata, ref string pMsg)
+        public DataTable SetEHGTravellingPersonDetails(string NoteNumber,string AuthEmp, List<EHGTravelingPersondtls> dtldata, ref string pMsg)
         {
             try
             {
-                CommonTable dtl = new CommonTable(dtldata);
+                CommonTable dtl = new CommonTable(dtldata, AuthEmp);
                 int paracount = 0;
                 SqlParameter[] para = new SqlParameter[2];
                 para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);

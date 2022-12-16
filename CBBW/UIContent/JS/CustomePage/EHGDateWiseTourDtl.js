@@ -34,6 +34,50 @@ function validatectrl(targetid, value) {
     }
     return isvalid;
 };
+async function getInitialData() {
+    var notenumber = $('#ehgHeader_NoteNumber').val();
+    var rowid;    
+    var fromdateCtrl = $('#FromDateLbl');
+    var todateCtrl = $('#ToDate');
+    var lbltodateCtrl = $('#lblToDate');
+    var tourcatCtrl = $('#TourCategory');
+    var centrecodeCtrl = $('#CenterCode');
+    var addbtnCtrl = $('#AddBtn');
+    $.ajax({
+        url: '/EHG/GetDWTDetails',
+        method: 'GET',
+        data: { NoteNumber: notenumber, isActive:0 },
+        dataType: 'json',
+        success: function (data) {
+            $(data).each(function (index, item) {
+                if (index > 0) {
+                    rowid = CloneRowReturningID('tbody1', 'tbody2', index - 1, true, true);
+                    fromdateCtrl = $('#FromDateLbl_' + rowid);
+                    todateCtrl = $('#ToDate_' + rowid);
+                    lbltodateCtrl = $('#lblToDate_' + rowid);
+                    tourcatCtrl = $('#TourCategory_' + rowid);
+                    centrecodeCtrl = $('#CenterCode_' + rowid);
+                    addbtnCtrl = $('#AddBtn_') + rowid;
+                }
+                fromdateCtrl.html(item.FromDateStrDisplay);
+                todateCtrl.val(item.ToDateStr).isValid();
+                lbltodateCtrl.html(item.ToDateStrDisplay);
+                if (item.TourCatCodes.indexOf(',') > 0) {
+                    tourcatCtrl.val(item.TourCatCodes.split(',')).multiselect('refresh');
+                }
+                else {
+                    tourcatCtrl.val(item.TourCatCodes).multiselect('refresh');
+                }
+                tourcatCtrl.isValid();
+                //alert(centrecodeCtrl.attr('id'));
+                (async function () {
+                    const r1 = await getMultiselectDataWithSelectedValues(centrecodeCtrl.attr('id'), '/Security/EHG/GetTourLocations?CategoryID=' + item.TourCatCodes, item.CenterCodes);
+                })();
+                addbtnCtrl.makeEnabled();
+            });
+        }
+    });
+};
 $(document).ready(function () {
     (async function () {
         const r1 = await getMultiselectData('TourCategory', '/EHG/GetTourCategories');
@@ -41,4 +85,8 @@ $(document).ready(function () {
 });
 $(document).ready(function () {
     $('#FromDateLbl').html($('#FromdateStrForDisplay').val());
+    (async function () {
+        const r1 = await getInitialData();
+    })();
+    
 });

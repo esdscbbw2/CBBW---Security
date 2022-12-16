@@ -53,7 +53,7 @@ namespace CBBW.BLL.Repository
             return obj;
         }
 
-        public List<EHGTravelingPersondtlsForManagement> getTravelingPersonDetails(string Notenumber, int IsActive, ref string pMsg)
+        public List<EHGTravelingPersondtlsForManagement> getTravelingPersonDetails(string Notenumber,  int IsActive, ref string pMsg)
         {
             return _EHGEntities.getTravelingPersonDetails(Notenumber,IsActive, ref pMsg);
         }
@@ -79,9 +79,9 @@ namespace CBBW.BLL.Repository
             return _EHGEntities.SetEHGHdrForManagement(header, dtl, ref pMsg);
         }
 
-        public bool SetEHGTravellingPersonDetails(string NoteNumber, List<EHGTravelingPersondtls> dtldata, ref string pMsg)
+        public bool SetEHGTravellingPersonDetails(string NoteNumber, string AuthEmp, List<EHGTravelingPersondtls> dtldata, ref string pMsg)
         {
-           return _EHGEntities.SetEHGTravellingPersonDetails(NoteNumber, dtldata, ref pMsg);
+           return _EHGEntities.SetEHGTravellingPersonDetails(NoteNumber,AuthEmp, dtldata, ref pMsg);
         }
 
         public bool SetEHGVehicleAllotmentDetails(VehicleAllotmentDetails mData, ref string pMsg)

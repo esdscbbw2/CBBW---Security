@@ -29,10 +29,10 @@ namespace CBBW.DAL.Entities
             _DBResponseMapper.Map_DBResponse(_datasync.SetEHGHdrForManagement(header, dtl, ref pMsg), ref pMsg, ref result);
             return result;
         }
-        public bool SetEHGTravellingPersonDetails(string NoteNumber, List<EHGTravelingPersondtls> dtldata, ref string pMsg)
+        public bool SetEHGTravellingPersonDetails(string NoteNumber, string AuthEmp, List<EHGTravelingPersondtls> dtldata, ref string pMsg)
         {
             bool result = false;
-            _DBResponseMapper.Map_DBResponse(_datasync.SetEHGTravellingPersonDetails(NoteNumber, dtldata, ref pMsg), ref pMsg, ref result);
+            _DBResponseMapper.Map_DBResponse(_datasync.SetEHGTravellingPersonDetails(NoteNumber,AuthEmp, dtldata, ref pMsg), ref pMsg, ref result);
             return result;
         }
         public bool SetDateWiseTourDetails(string NoteNumber, List<DateWiseTourDetails> dtldata, ref string pMsg)

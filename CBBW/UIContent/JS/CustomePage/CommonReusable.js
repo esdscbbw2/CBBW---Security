@@ -150,6 +150,7 @@ function CloneRow(sourceTBody, destinationTBody, rowid,IsRemoveBtn,IsAddBtnEnabl
    //If multiselects are in a row then use the class "clonemultiselect" and remove multiple attribute and the classes which are responsible for multiselect creations.
     //Use "htmlVal" class for a controll if the value will be picked from innerhtml.
     //There should be "th" tag which may exclusively used for Serial Number Purpose.
+    //"inValidTag" class can be used to apply boot strap invalid class to the control.
     //alert('CloneRow');
     var maxrows = 0, r = 0;
     var sourcebody = $('#' + sourceTBody);
@@ -166,6 +167,9 @@ function CloneRow(sourceTBody, destinationTBody, rowid,IsRemoveBtn,IsAddBtnEnabl
         var mID = that.attr('id').split('_');
         var newID = mID[0] + '_' + r;
         that.attr('id', newID);
+    });
+    cloneready.find('.inValidTag').each(function () {
+        that = $(this);
         that.val('').isInvalid();
     });
     cloneready.find('.btn-group').remove();
@@ -274,7 +278,12 @@ function CloneRowReturningID(sourceTBody, destinationTBody, rowid, IsRemoveBtn, 
         var mID = that.attr('id').split('_');
         var newID = mID[0] + '_' + r;
         that.attr('id', newID);
-        that.val('').isInvalid();
+        //that.val('').isInvalid();
+    });
+    cloneready.find('.inValidTag').each(function () {
+        that = $(this);
+        //that.val('');
+        that.isInvalid();
     });
     cloneready.find('.btn-group').remove();
     cloneready.find('.clonemultiselect').each(function () {
@@ -404,9 +413,9 @@ async function getMultiselectDataWithSelectedValues(multiselectID, dataSourceURL
             });
             multiselectCtrl.multiselect('clearSelection');
             if (i > 0) {
-                locationcombo.val(locationid.split(','));
+                multiselectCtrl.val(commaSeparatedSelectedValues.split(','));
             } else {
-                locationcombo.val(locationid);
+                multiselectCtrl.val(commaSeparatedSelectedValues);
             }
             multiselectCtrl.multiselect('refresh');
         }
@@ -448,6 +457,7 @@ async function getDropDownData(DropDownID,defaultText, dataSourceURL) {
 };
 async function getDropDownDataWithSelectedValue(DropDownID, defaultText, dataSourceURL,selectedValue) {
     var DropdownCtrl = $('#' + DropDownID);
+    //alert(DropDownID + ' - ' + dataSourceURL);
     $.ajax({
         url: dataSourceURL,
         method: 'GET',
@@ -459,6 +469,7 @@ async function getDropDownDataWithSelectedValue(DropDownID, defaultText, dataSou
                 DropdownCtrl.append($('<option/>', { value: item.ID, text: item.DisplayText }));
             });
             DropdownCtrl.val(selectedValue);
+            //if (selectedValue.length > 0) { DropdownCtrl.isValid(); } else { DropdownCtrl.isInvalid(); }
         }
     });
 };
@@ -517,6 +528,7 @@ function getRecordsFromTableV2(tableName) {
     });
     schrecords = schrecords.replace(/,\s*$/, "");
     schrecords = '[' + schrecords + ']';
+    //alert(schrecords);
     return schrecords;
 };
 function removeBtnClickFromCloneRow(r,destinationTBody) {

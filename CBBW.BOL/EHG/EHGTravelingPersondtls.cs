@@ -13,14 +13,19 @@ namespace CBBW.BOL.EHG
         public int EmployeeNo { get; set; }
         public int DesignationCode { get; set; }
         public string EmployeeNonName { get; set; }
+        public string EmployeeNonNamecmb { get; set; }
         public string DesignationCodenName { get; set; }
         public DateTime FromDate { get; set; }
+        public string FromDateStr { get; set; }
+        public string FromDateStrDisplay { get; set; }
         public string FromTime { get; set; }
         public DateTime ToDate { get; set; }
+        public string ToDateStr { get; set; }
+        public string ToDateStrDisplay { get; set; }
         public string PurposeOfVisit { get; set; }
         public bool TADADenied { get; set; }
         public bool IsActive { get; set; }
-
+        public bool IsAuthorised { get; set; }
     }
     public class EHGTravelingPersondtlsForManagement : EHGTravelingPersondtls 
     {

@@ -49,7 +49,14 @@ namespace CBBW.Areas.Security.Controllers
                 model.MinFromDate = DateTime.Today.ToString("yyyy-MM-dd");
                 model.TADADeniedForManagement = -1;
             }
-            else { model = TempData["EHG"] as EHGHeaderEntryVM; }
+            else 
+            { 
+                model = TempData["EHG"] as EHGHeaderEntryVM;
+                if (model.MDDICList == null) { model.MDDICList = model.getMDDICList(user.CentreCode); }
+                if (model.DriverList == null) { model.DriverList = model.getDriverList(user.CentreCode); }
+                if (model.StaffList == null) { model.StaffList = model.getStaffList(user.CentreCode); }
+                if (model.OtherStaffList == null) { model.OtherStaffList = model.getOtherStaffList(user.CentreCode); }
+            }
 
             TempData["EHG"] = model;
             return View(model);
@@ -102,8 +109,11 @@ namespace CBBW.Areas.Security.Controllers
         public ActionResult VehicleAllotment() 
         {
             model = CastEHGTempData();
+            VehicleAllotmentDetails obj= _iEHG.getVehicleAllotmentDetails(model.ehgHeader.NoteNumber, 0, ref pMsg);
+            model.VADetails = obj;
             model.VehicleList = _master.getVehicleList("L.C.V",model.ehgHeader.VehicleType==1?4:2, ref pMsg);
-            if (model.VADetails == null) 
+            if (model.DriverList == null) { model.DriverList = model.getDriverList(user.CentreCode); }
+            if (model.VADetails == null || string.IsNullOrEmpty(model.VADetails.VehicleNumber)) 
             {
                 model.VADetails = new VehicleAllotmentDetails();
                 model.VADetails.NoteNumber = model.ehgHeader.NoteNumber;
@@ -112,14 +122,15 @@ namespace CBBW.Areas.Security.Controllers
                 model.VADetails.DesignationText = _master.GetDesgCodenName(model.VADetails.AuthorisedEmpNumber, 1);
                 model.VADetails.DesignationCode = _myHelper.getFirstIntegerFromString(model.VADetails.DesignationText, '/');
                 model.VADetails.MaterialStatus = -1;
-                model.VADetails.VehicleType = model.ehgHeader.VehicleType==1?"LV": "2 Wheeler";
-                if (model.DriverList == null) { model.DriverList = model.getDriverList(user.CentreCode); }
+                model.VADetails.VehicleType = model.ehgHeader.VehicleType==1?"LV": "2 Wheeler";                
             }            
             return View(model);
         }
         [HttpPost]
-        public ActionResult VehicleAllotment(EHGHeaderEntryVM model, string Submit) 
+        public ActionResult VehicleAllotment(EHGHeaderEntryVM modelobj, string Submit) 
         {
+            model = CastEHGTempData();
+            model.VADetails = modelobj.VADetails;
             TempData["EHG"] = model;
             if (Submit == "Save") 
             {
@@ -199,6 +210,16 @@ namespace CBBW.Areas.Security.Controllers
             result = tempobj.getStaffList(user.CentreCode);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult GetTPDetails(string NoteNumber)
+        {
+            List<EHGTravelingPersondtlsForManagement> result=_iEHG.getTravelingPersonDetails(NoteNumber, 0, ref pMsg);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetDWTDetails(string NoteNumber,int isActive)
+        {
+            List<DateWiseTourDetails> result = _iEHG.getDateWiseTourDetails(NoteNumber, isActive, ref pMsg);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }        
         public JsonResult GetVehicleBasicInfo(string VehicleNumber)
         {
             VehicleBasicInfo result=_master.getVehicleBasicInfo(VehicleNumber,ref pMsg);
@@ -222,7 +243,7 @@ namespace CBBW.Areas.Security.Controllers
             CustomAjaxResponse result = new CustomAjaxResponse();
             if (modelobj != null) 
             {
-                if (_iEHG.SetEHGTravellingPersonDetails(modelobj.NoteNumber,
+                if (_iEHG.SetEHGTravellingPersonDetails(modelobj.NoteNumber, modelobj.AuthorisedEmployeeName,
                     modelobj.PersonDtls, ref pMsg)) 
                 {
                     result.bResponseBool = true;

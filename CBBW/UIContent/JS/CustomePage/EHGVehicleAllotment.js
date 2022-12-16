@@ -17,7 +17,6 @@ function validatectrl(targetid, value) {
         case "VADetails_DriverNumber":
             if (value >= 0) {
                 var x = $('#VADetails_DriverNumber option:selected').text();
-                alert(x);
                 $('#VADetails_DriverName').val(x);
                 isvalid = true;
             }

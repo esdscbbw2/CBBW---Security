@@ -251,7 +251,7 @@ namespace CBBW.DAL.DataSync
                 }
             }
         }
-        public CommonTable(List<EHGTravelingPersondtls> customoptions)
+        public CommonTable(List<EHGTravelingPersondtls> customoptions,string AuthEmp)
         {
             UDTable = new DataTable();
             UDTable.Columns.Add("iPersonType", typeof(int));
@@ -264,10 +264,13 @@ namespace CBBW.DAL.DataSync
             UDTable.Columns.Add("bTADADenied", typeof(bool));
             UDTable.Columns.Add("sEmployeeName", typeof(string));
             UDTable.Columns.Add("iDesignationCode", typeof(int));
+            UDTable.Columns.Add("bIsAuthorised", typeof(bool));
             if (customoptions != null && customoptions.Count > 0)
             {
                 foreach (EHGTravelingPersondtls obj in customoptions)
                 {
+                    if (obj.PersonType == 1 || obj.PersonType == 2)
+                    { obj.EmployeeNonName = obj.EmployeeNonNamecmb; }
                     DataRow dr = UDTable.NewRow();
                     dr["iPersonType"] = obj.PersonType;
                     dr["iEmployeeNo"] = obj.EmployeeNo;
@@ -279,6 +282,7 @@ namespace CBBW.DAL.DataSync
                     dr["bTADADenied"] = obj.TADADenied;
                     dr["sEmployeeName"] = obj.EmployeeNonName;
                     dr["iDesignationCode"] = MyDBLogic.getFirstIntegerFromString(obj.DesignationCodenName,'/');
+                    dr["bIsAuthorised"] = obj.EmployeeNonName == AuthEmp ? true : false;                    
                     UDTable.Rows.Add(dr);
                 }
             }
