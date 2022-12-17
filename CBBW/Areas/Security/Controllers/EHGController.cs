@@ -48,6 +48,10 @@ namespace CBBW.Areas.Security.Controllers
                 model.MaxFromDate = DateTime.Today.AddDays(1).ToString("yyyy-MM-dd");
                 model.MinFromDate = DateTime.Today.ToString("yyyy-MM-dd");
                 model.TADADeniedForManagement = -1;
+                if (TempData["BackBtn"] != null) 
+                {
+                    model.BackBtnActive = int.Parse(TempData["BackBtn"].ToString());
+                }
             }
             else 
             { 
@@ -89,17 +93,17 @@ namespace CBBW.Areas.Security.Controllers
                     { ViewBag.Msg = "Note number " + model.ehgHeader.NoteNumber + " submited successfully."; }
                     else { ViewBag.ErrMsg = "Updation failed for Note number " + model.ehgHeader.NoteNumber; }
                 }
+                else 
+                {
+                    if (_iEHG.UpdateEHGHdr(model.ehgHeader,ref pMsg))
+                    { ViewBag.Msg = "Note number " + model.ehgHeader.NoteNumber + " submited successfully."; }
+                    else { ViewBag.ErrMsg = "Updation failed for Note number " + model.ehgHeader.NoteNumber; }
+                }
             }
             else if (Submit == "VAD")
             {
-                //_iUser.RecordCallBack("/Security/EHG/Create");
                 return RedirectToAction("VehicleAllotment");
-            }
-            //else if (Submit == "Clear") 
-            //{
-            //    TempData["EHG"] = null;
-            //    return RedirectToAction("Create");
-            //}
+            }            
             return View(model);
         }
         public ActionResult DateWiseTourDetails() 
@@ -155,16 +159,21 @@ namespace CBBW.Areas.Security.Controllers
             model = CastEHGTempData();
             if (PageID == 1)
             {
+                model.DWBackBtnActive = 1;
+                TempData["EHG"] = model;
                 _iEHG.RemoveEHGNote(model.ehgHeader.NoteNumber, 2, 0,ref pMsg);
                 return RedirectToAction("DateWiseTourDetails");
             }
             else if (PageID == 2)
             {
+                model.VABackBtnActive = 1;
+                TempData["EHG"] = model;
                 _iEHG.RemoveEHGNote(model.ehgHeader.NoteNumber, 3, 0, ref pMsg);
                 return RedirectToAction("VehicleAllotment");
             }
             else
             {
+                TempData["BackBtn"] = 1;
                 _iEHG.RemoveEHGNote(model.ehgHeader.NoteNumber, 1, 0, ref pMsg);
                 TempData["EHG"] = null;
                 return RedirectToAction("Create");
