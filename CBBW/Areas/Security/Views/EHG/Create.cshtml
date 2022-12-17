@@ -19,28 +19,30 @@
         @Html.HiddenFor(m => m.DesgCodeNNameForManagement)
         @Html.HiddenFor(m => m.ehgHeader.AuthorisedEmployeeName)
         @Html.HiddenFor(m => m.ehgHeader.POA2)
+        @Html.HiddenFor(m => m.BackBtnActive)
+        @Html.HiddenFor(m => m.SubmitBtnActive)
         @*@Html.HiddenFor(m => m.ehgHeader.PurposeOfAllotment)*@
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
                     <div class="leftButton">
-                        <button type="submit" class="btn btn-primary me-2" onclick="window.location.href='emp_travelling_detail_vehicle_allotment_by_HG_list.html';">
+                        <button id="btnBack" type="button" class="btn btn-primary me-2">
                             <i data-feather="arrow-left-circle"></i>
                             Back
                         </button>
                         <button id="btnSubmit" type="submit" name="Submit" value="create"
-                                class="btn btn-secondary me-2"
-                                @*onclick="window.location.href='emp_travelling_detail_vehicle_allotment_by_HG_list.html';"*@>
+                                class="btn btn-secondary me-2">
                             <i data-feather="upload"></i>
                             Submit
                         </button>
-                        <button type="submit" class="btn btn-white">
+                        <button type="button"
+                                onclick="window.location.href='/Security/EHG/ClearBtnClicked';"
+                                class="btn btn-white">
                             <i data-feather="x-circle"></i>
                             Clear
                         </button>
                     </div>
                     <h2>Employee’s Travelling Details & Vehicle Allotment (By HG) – ENTRY </h2>
-
                 </div>
             </div>
         </div>
@@ -106,11 +108,6 @@
                                        {
                                            @class = "form-select pointer"
                                        })
-                            @*<select class="form-select" aria-label="Default select example" onchange="showDiv(this)">
-                                    <option selected="">Select Vehicle Type To Be Allotted</option>
-                                    <option value="1">LV</option>
-                                    <option value="2">2 Wheeler  </option>
-                                </select>*@
                         </div>
                     </div>
                     <div id="for_LV" class="inVisible">
@@ -125,14 +122,7 @@
                                        htmlAttributes: new
                                        {
                                            @class = "form-select pointer "
-                                       })
-                                @*<select class="form-select" aria-label="Default select example" onchange="showDivManage(this)">
-                                        <option selected="">Select Purpose Of Allotment</option>
-                                        <option value="1">For Management </option>
-                                        <option value="2">
-                                            For Office Work
-                                        </option>
-                                    </select>*@
+                                       })                                
                             </div>
                         </div>
                     </div>

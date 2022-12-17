@@ -18,6 +18,7 @@ function ValidateCloneRowCtrl() {
     var isvalid = validatectrl(targetid, targetCtrl.val());
     if (isvalid) { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
     EnableAddBtnInCloneRow(tblRow, 'AddBtn');
+    $('#DWBackBtnActive').val(1);
 };
 function validatectrl(targetid, value) {
     var isvalid = false;
@@ -78,6 +79,33 @@ async function getInitialData() {
         }
     });
 };
+$(document).ready(function () {
+    $('#btnBack').click(function () {
+        var backbtnactive = $('#DWBackBtnActive').val();
+        var backurl = "/Security/EHG/Create";
+        if (backbtnactive == 1) {
+            Swal.fire({
+                title: 'Confirmation',
+                text: "Are You Sure Want to Go Back?",
+                icon: 'question',
+                customClass: 'swal-wide',
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                cancelButtonClass: 'btn-cancel',
+                confirmButtonColor: '#2527a2',
+                showCancelButton: true,
+            }).then(callback);
+            function callback(result) {
+                if (result.value) {
+                    window.location.href = backurl;
+                }
+            }
+        }
+        else {
+            window.location.href = backurl;
+        }
+    });
+});
 $(document).ready(function () {
     (async function () {
         const r1 = await getMultiselectData('TourCategory', '/EHG/GetTourCategories');

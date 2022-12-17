@@ -90,5 +90,11 @@ namespace CBBW.Areas.Security.ViewModel.EHG
         public string FromdateStrForDisplay { get; set; }
         public string FromdateStr { get; set; }
         public string TodateStr { get; set; }
+        public int BackBtnActive { get; set; }
+        public int SubmitBtnActive { get; set; }
+        public int VABackBtnActive { get; set; }
+        public int VASubmitBtnActive { get; set; }
+        public int DWBackBtnActive { get; set; }
+        public int DWSubmitBtnActive { get; set; }
     }
 }

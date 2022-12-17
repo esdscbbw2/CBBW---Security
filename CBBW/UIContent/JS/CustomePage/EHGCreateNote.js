@@ -25,8 +25,9 @@ function ValidateControl() {
     if (isvalid) {
         $(target).removeClass('is-invalid').addClass('is-valid');
     } else {
-        $(target).removeClass('is-valid').addClass('is-invalid');
+        $(target).removeClass('is-valid').addClass('is-invalid');        
     }
+    $('#BackBtnActive').val(1);
 };
 function validatectrl(targetid, value) {
     var isvalid = false;
@@ -220,6 +221,7 @@ function DriverNoForManagementChanged() {
     else {
         targetCtrl.isInvalid();
     }
+    $('#BackBtnActive').val(1);
 };
 function ValidateCloneRowCtrl() {
     var target = ValidateCloneRowCtrl.caller.arguments[0].target;
@@ -364,10 +366,9 @@ function VehicleTypeChanged() {
         POADropdown.val(''); POADropdown.isInvalid();
     };
     if (selectedvt > 0) {
-        VehicletypeCtrl.isValid(); 
+        VehicletypeCtrl.isValid();
     }
-    else { VehicletypeCtrl.isInvalid() }
-    
+    else { VehicletypeCtrl.isInvalid(); }
 };
 function POADropdownChanged() {
     var ForManagementDiv = $('#for_Management');
@@ -485,14 +486,47 @@ async function getInitialDataForTravelingPerson() {
 };
 $(document).ready(function () {
     var VehicletypeCtrl = $('#ehgHeader_VehicleType');
-    var POADropdown = $('#ehgHeader_PurposeOfAllotment');
+    var POADropdown = $('#ehgHeader_PurposeOfAllotment');    
     VehicletypeCtrl.change(function () {       
         VehicleTypeChanged();
+        $('#BackBtnActive').val(1);
     });
     POADropdown.change(function () {
-        POADropdownChanged();        
+        POADropdownChanged();
+        $('#BackBtnActive').val(1);
     });
-    
+    $('#btnBack').click(function () {
+        var backbtnactive = $('#BackBtnActive').val();
+        var backurl = "/Security/EHG/Index";
+        if (backbtnactive == 1) {
+            Swal.fire({
+                title: 'Confirmation',
+                text: "Are You Sure Want to Go Back?",
+                icon: 'question',
+                customClass: 'swal-wide',                
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                cancelButtonClass: 'btn-cancel',
+                confirmButtonColor: '#2527a2',
+                showCancelButton: true,
+            }).then(callback);
+            function callback(result) {
+                if (result.value) {
+                    window.location.href = backurl;
+                }
+            }
+        }
+        else {
+            window.location.href = backurl;
+        }
+    });
+    //$('#btnClear').click(function () {
+    //    alert('OK');
+    //    $.ajax({
+    //        url: '/Security/EHG/ClearBtnClicked',
+    //        success: function (result) { window.location.href = result; }
+    //    });        
+    //});
 });
 $(document).ready(function () {
     getDropDownData('DDPersonType', 'Select Type', '/EHG/GetPersonTypes');

@@ -12,12 +12,16 @@
         @Html.HiddenFor(m => m.FromdateStr)
         @Html.HiddenFor(m => m.TodateStr)
         @Html.HiddenFor(m => m.FromdateStrForDisplay)
+        @Html.HiddenFor(m => m.DWBackBtnActive)
+        @Html.HiddenFor(m => m.DWSubmitBtnActive)
 
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
                     <div class="leftButton">
-                        <button type="submit" class="btn btn-primary me-2" onclick="window.location.href='emp_travelling_detail_vehicle_allotment_by_HG_add.html';">
+                        <button id="btnBack" type="button" 
+                                @*onclick="window.location.href='.html';"*@ 
+                                class="btn btn-primary me-2" >
                             <i data-feather="arrow-left-circle"></i>
                             Back
                         </button>
@@ -27,7 +31,9 @@
                             <i data-feather="check-circle"></i>
                             Save
                         </button>
-                        <button type="submit" class="btn btn-white">
+                        <button type="button"
+                                onclick="window.location.href='/Security/EHG/ClearBtnClicked?PageID=1';"
+                                class="btn btn-white">
                             <i data-feather="x-circle"></i>
                             Clear
                         </button>

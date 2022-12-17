@@ -32,7 +32,7 @@ namespace CBBW.Areas.Security.Controllers
             user = iUser.getLoggedInUser();
             ViewBag.LogInUser = user.UserName;
         }
-        // GET: Security/EHG
+        // GET: Security/EHG        
         public ActionResult Index()
         {
             return View();
@@ -75,25 +75,31 @@ namespace CBBW.Areas.Security.Controllers
                     dtl.NoteNumber = model.ehgHeader.NoteNumber;
                     dtl.EmployeeNo = model.DriverNoForManagement;
                     dtl.EmployeeNonName = model.DriverNameForManagement;
-                    dtl.DesignationCode = _myHelper.getFirstIntegerFromString(model.DesgCodeNNameForManagement, '/'); 
+                    dtl.DesignationCode = _myHelper.getFirstIntegerFromString(model.DesgCodeNNameForManagement, '/');
                     dtl.DesignationCodenName = model.DesgCodeNNameForManagement;
                     dtl.FromDate = model.FromdateForMang;
                     dtl.FromTime = model.FromTimeForMang;
                     dtl.ToDate = model.ToDateForMang;
                     dtl.PurposeOfVisit = model.PurposeOfVisitFoeMang;
-                    if(model.TADADeniedForManagement==1)
+                    if (model.TADADeniedForManagement == 1)
                         dtl.TADADenied = true;
                     else
                         dtl.TADADenied = false;
                     if (_iEHG.SetEHGHdrForManagement(model.ehgHeader, dtl, ref pMsg))
                     { ViewBag.Msg = "Note number " + model.ehgHeader.NoteNumber + " submited successfully."; }
                     else { ViewBag.ErrMsg = "Updation failed for Note number " + model.ehgHeader.NoteNumber; }
-                }                
+                }
             }
-            if (Submit == "VAD") 
+            else if (Submit == "VAD")
             {
+                //_iUser.RecordCallBack("/Security/EHG/Create");
                 return RedirectToAction("VehicleAllotment");
-            }            
+            }
+            //else if (Submit == "Clear") 
+            //{
+            //    TempData["EHG"] = null;
+            //    return RedirectToAction("Create");
+            //}
             return View(model);
         }
         public ActionResult DateWiseTourDetails() 
@@ -144,6 +150,34 @@ namespace CBBW.Areas.Security.Controllers
             return View(model);
         }
         #region AjaxCalling
+        public ActionResult ClearBtnClicked(int PageID=0) 
+        {
+            model = CastEHGTempData();
+            if (PageID == 1)
+            {
+                _iEHG.RemoveEHGNote(model.ehgHeader.NoteNumber, 2, 0,ref pMsg);
+                return RedirectToAction("DateWiseTourDetails");
+            }
+            else if (PageID == 2)
+            {
+                _iEHG.RemoveEHGNote(model.ehgHeader.NoteNumber, 3, 0, ref pMsg);
+                return RedirectToAction("VehicleAllotment");
+            }
+            else
+            {
+                _iEHG.RemoveEHGNote(model.ehgHeader.NoteNumber, 1, 0, ref pMsg);
+                TempData["EHG"] = null;
+                return RedirectToAction("Create");
+            }
+            //string url = "/Security/EHG/Create";
+            //return Json(url, JsonRequestBehavior.AllowGet);
+            
+        }
+        public JsonResult BackButtonClicked()
+        {
+            string url = _iUser.GetCallBackUrl();
+            return Json(url, JsonRequestBehavior.AllowGet);
+        }
         public JsonResult GetTourLocations(string CategoryID)
         {
             List<CustomComboOptions> result = new List<CustomComboOptions>();
@@ -248,6 +282,7 @@ namespace CBBW.Areas.Security.Controllers
                 {
                     result.bResponseBool = true;
                     result.sResponseString = "Data successfully updated.";
+                   // _iUser.RecordCallBack("/Security/EHG/Create");
                 }
                 else
                 {

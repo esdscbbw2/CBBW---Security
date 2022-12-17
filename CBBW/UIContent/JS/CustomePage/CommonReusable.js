@@ -543,9 +543,9 @@ function removeBtnClickFromCloneRow(r,destinationTBody) {
         sl += 1;
     });
 }
-function BackButtonClicked() {
+function BackButtonClicked(backFunUrl) {
     $.ajax({
-        url: "/Security/Common/BackButtonClicked",
+        url: backFunUrl,
         success: function (result) { window.location.href = result; }
     });
 };

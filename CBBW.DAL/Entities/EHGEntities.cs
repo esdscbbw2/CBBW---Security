@@ -47,10 +47,10 @@ namespace CBBW.DAL.Entities
             _DBResponseMapper.Map_DBResponse(_datasync.SetEHGVehicleAllotmentDetails(mData, ref pMsg), ref pMsg, ref result);
             return result;
         }
-        public bool UpdateEHGHdr(string NoteNumber, ref string pMsg)
+        public bool UpdateEHGHdr(EHGHeader header, ref string pMsg)
         {
             bool result = false;
-            _DBResponseMapper.Map_DBResponse(_datasync.UpdateEHGHdr(NoteNumber, ref pMsg), ref pMsg, ref result);
+            _DBResponseMapper.Map_DBResponse(_datasync.UpdateEHGHdr(header, ref pMsg), ref pMsg, ref result);
             return result;
         }
         public List<DateWiseTourDetails> getDateWiseTourDetails(string Notenumber, int IsActive, ref string pMsg) 
@@ -119,6 +119,12 @@ namespace CBBW.DAL.Entities
                 }
             }
             catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
+        public bool RemoveEHGNote(string NoteNumber, int RemoveTag, int ActiveTag, ref string pMsg)
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_datasync.RemoveEHGNote(NoteNumber, RemoveTag, ActiveTag, ref pMsg), ref pMsg, ref result);
             return result;
         }
     }

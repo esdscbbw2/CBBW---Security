@@ -144,15 +144,56 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-        public DataTable UpdateEHGHdr(string NoteNumber, ref string pMsg)
+        public DataTable UpdateEHGHdr(EHGHeader header, ref string pMsg)
         {
             try
             {
                 int paracount = 0;
-                SqlParameter[] para = new SqlParameter[1];
+                SqlParameter[] para = new SqlParameter[12];
                 para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
-                para[paracount++].Value = NoteNumber;                
+                para[paracount++].Value =header.NoteNumber;
+                para[paracount] = new SqlParameter("@EntryDate", SqlDbType.Date);
+                para[paracount++].Value = header.EntryDate;
+                para[paracount] = new SqlParameter("@EntryTime", SqlDbType.NVarChar, 15);
+                para[paracount++].Value = header.EntryTime;
+                para[paracount] = new SqlParameter("@CenterCode", SqlDbType.Int);
+                para[paracount++].Value = header.CenterCode;
+                para[paracount] = new SqlParameter("@CenterName", SqlDbType.NVarChar, 50);
+                para[paracount++].Value = header.CenterName;
+                para[paracount] = new SqlParameter("@VehicleType", SqlDbType.Int);
+                para[paracount++].Value = header.VehicleType;
+                para[paracount] = new SqlParameter("@MaterialStatus", SqlDbType.Bit);
+                para[paracount++].Value = header.MaterialStatus;
+                para[paracount] = new SqlParameter("@Initiator", SqlDbType.Int);
+                para[paracount++].Value = header.Initiator;
+                para[paracount] = new SqlParameter("@Instructor", SqlDbType.Int);
+                para[paracount++].Value = header.Instructor;
+                para[paracount] = new SqlParameter("@AuthorisedEmpNo", SqlDbType.Int);
+                para[paracount++].Value = header.AuthorisedEmpNo;
+                para[paracount] = new SqlParameter("@PurposeOfAllotment", SqlDbType.Int);
+                para[paracount++].Value = header.PurposeOfAllotment;
+                para[paracount] = new SqlParameter("@AuthorisedEmpName", SqlDbType.NVarChar, 50);
+                para[paracount++].Value = header.AuthorisedEmployeeName;
                 using (SQLHelper sql = new SQLHelper("[EHG].[UpdateEHGHdr]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable RemoveEHGNote(string NoteNumber,int RemoveTag,int ActiveTag, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[3];
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
+                para[paracount++].Value = NoteNumber;
+                para[paracount] = new SqlParameter("@RemoveTag", SqlDbType.Int);
+                para[paracount++].Value = RemoveTag;
+                para[paracount] = new SqlParameter("@ActiveTag", SqlDbType.Int);
+                para[paracount++].Value = ActiveTag;
+                using (SQLHelper sql = new SQLHelper("[EHG].[RemoveEHGNote]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataTable(para, ref pMsg);
                 }
