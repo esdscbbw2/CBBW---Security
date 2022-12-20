@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
+using CBBW.BOL.EHG;
 using CBBW.DAL.DataSync;
 using CBBW.DAL.DBMapper;
 
@@ -283,6 +284,6 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
-
+        
     }
 }

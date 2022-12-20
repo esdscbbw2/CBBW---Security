@@ -32,7 +32,13 @@ namespace CBBW.Areas.Security.Controllers
             user = iUser.getLoggedInUser();
             ViewBag.LogInUser = user.UserName;
         }
-        // GET: Security/EHG        
+        // GET: Security/EHG
+        public ActionResult ViewNote(string NoteNumber,int CanDelete=0,int CBUID=0) 
+        {
+            if (CBUID == 0) { _iUser.RecordCallBack("/Security/EHG/Index"); }
+            if (CBUID == 1) { _iUser.RecordCallBack("/Security/EHG/NoteApproveList"); }
+            return View();
+        }
         public ActionResult Index()
         {
             return View();
@@ -90,20 +96,29 @@ namespace CBBW.Areas.Security.Controllers
                     else
                         dtl.TADADenied = false;
                     if (_iEHG.SetEHGHdrForManagement(model.ehgHeader, dtl, ref pMsg))
-                    { ViewBag.Msg = "Note number " + model.ehgHeader.NoteNumber + " submited successfully."; }
+                    { 
+                        ViewBag.Msg = "Note number " + model.ehgHeader.NoteNumber + " submited successfully.";
+                        //TempData["EHG"] = null;
+                    }
                     else { ViewBag.ErrMsg = "Updation failed for Note number " + model.ehgHeader.NoteNumber; }
                 }
                 else 
                 {
                     if (_iEHG.UpdateEHGHdr(model.ehgHeader,ref pMsg))
-                    { ViewBag.Msg = "Note number " + model.ehgHeader.NoteNumber + " submited successfully."; }
+                    { 
+                        ViewBag.Msg = "Note number " + model.ehgHeader.NoteNumber + " submited successfully.";
+                        TempData["EHG"] = null;
+                    }
                     else { ViewBag.ErrMsg = "Updation failed for Note number " + model.ehgHeader.NoteNumber; }
                 }
             }
             else if (Submit == "VAD")
             {
                 return RedirectToAction("VehicleAllotment");
-            }            
+            }
+            if (model.MDDICList == null) { model.MDDICList = model.getMDDICList(user.CentreCode); }
+            if (model.DriverList == null) { model.DriverList=model.getDriverList(user.CentreCode);}
+            if (model.OtherStaffList == null) { model.OtherStaffList = model.getOtherStaffList(user.CentreCode); }
             return View(model);
         }
         public ActionResult DateWiseTourDetails() 
@@ -140,20 +155,27 @@ namespace CBBW.Areas.Security.Controllers
         public ActionResult VehicleAllotment(EHGHeaderEntryVM modelobj, string Submit) 
         {
             model = CastEHGTempData();
-            model.VADetails = modelobj.VADetails;
-            TempData["EHG"] = model;
+            model.VADetails = modelobj.VADetails;            
             if (Submit == "Save") 
             {
                 if (_iEHG.SetEHGVehicleAllotmentDetails(model.VADetails, ref pMsg))
                 {
+                    model.VASubmitBtnActive = 1;
+                    TempData["EHG"] = model;
                     return RedirectToAction("Create");
                 }
                 else { }
             }
-                       
+            TempData["EHG"] = model;
             return View(model);
         }
-        #region AjaxCalling
+        public ActionResult AddNote() 
+        {
+            TempData["EHG"] = null;
+            return RedirectToAction("Create");
+        }
+
+        #region AjaxCalling        
         public ActionResult ClearBtnClicked(int PageID=0) 
         {
             model = CastEHGTempData();
@@ -272,6 +294,18 @@ namespace CBBW.Areas.Security.Controllers
         {//empType : 2-driver, 1-Others
             return Json(_master.GetDesgCodenName(empID, empType), JsonRequestBehavior.AllowGet);
         }
+        public JsonResult getNoteList(int iDisplayLength,int iDisplayStart,int iSortCol_0,
+            string sSortDir_0,string sSearch) 
+        {
+            List<EHGNoteList> noteList = _iEHG.GetEHGNoteList(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch,user.CentreCode, ref pMsg);
+            var result = new
+            {
+                iTotalRecords = noteList.FirstOrDefault().TotalCount,
+                iTotalDisplayRecords = noteList.Count(),
+                aaData = noteList
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
         [HttpPost]
         public ActionResult GetTravelingPersonDetails(EHGTravellingPersonsVM modelobj) 
         {
@@ -313,6 +347,9 @@ namespace CBBW.Areas.Security.Controllers
                 {
                     result.bResponseBool = true;
                     result.sResponseString = "Data successfully updated.";
+                    model = CastEHGTempData();
+                    model.DWSubmitBtnActive = 1;
+                    TempData["EHG"] = model;
                 }
                 else
                 {

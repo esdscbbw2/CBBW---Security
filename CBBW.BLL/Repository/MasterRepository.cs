@@ -22,14 +22,14 @@ namespace CBBW.BLL.Repository
         {
             return _entities.getServiceTypes(0,ref pMsg);
         }
-
         public string GetDesgCodenName(int empID, int empType)
         {
             //empType : 2-driver, 1-Others
             string result = "4 / DIC";
+            if (empType == 2)
+                result = "0 / Senior Driver";            
             return result;
         }
-
         public IEnumerable<CustomComboOptions> getDriverList(ref string pMsg)
         {
            return _entities.getDriverList(ref pMsg);

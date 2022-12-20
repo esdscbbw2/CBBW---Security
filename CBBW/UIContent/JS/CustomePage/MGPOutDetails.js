@@ -45,15 +45,15 @@
                 }
                 
                 $("#" + index + "_NotNos").val(item.NoteNumber);
-                $("#" + index + "_DrivernNo").html(item.DriverNo + "/" + item.Drivername);//Display Only
+                $("#" + index + "_DrivernNo").html(item.DriverNo + " / " + item.Drivername);//Display Only
                 $("#" + index + "_DriverName").val(item.Drivername);
                 $("#" + index + "_DriverNo").val(item.DriverNo);
                 $("#" + index + "_VehicleNo").val(item.VehicleNumber);
                
-                $("#" + index + "_DesgCodeName").html(item.DesignationCode + "/" + item.DesignationName);//Display only          
+                $("#" + index + "_DesgCodeName").html(item.DesignationCode + " / " + item.DesignationName);//Display only          
                 $("#" + index + "_DesgCode").val(item.DesignationCode);
                 $("#" + index + "_DesgName").val(item.DesignationName);
-                $("#" + index + "_TripTC").html(item.TripType + "/" + item.TripTypeStr);//Display only
+                $("#" + index + "_TripTC").html(item.TripType + " / " + item.TripTypeStr);//Display only
                 $("#" + index + "_TripType").val(item.TripType);
                 $("#" + index + "_TripCode").val(item.TripTypeStr);
                 $("#" + index + "_Toloc").html(item.ToLocationCodeName);//Display Only
@@ -74,7 +74,7 @@
                 
                 $("#" + index + "_SchTripdatetext").val(item.SchFromDatestr);
                 $("#" + index + "_SchTrip").val(item.SchFromDate);
-                $("#" + index + "_ActualTripDates").val(item.ActualTripOutDate).html('<input id="' + index + '_ActualTripDate" type="date" placeholder="11/11/2022" class="form-control pointer is-invalid" onchange="ValidateControl()">');
+                $("#" + index + "_ActualTripDates").val(item.ActualTripOutDate).html('<input id="' + index + '_ActualTripDate" type="text" placeholder="dd/mm/yyyy" class="form-control pointer is-invalid ActualTripDates" onchange="ValidateControl()">');
                 $("#" + index + "_ActualTripTime").val(item.ActualTripOutTime);//.html('<input id="' + index + '_ActualTripTime"  type="text" class="form-control pointer is-invalid" onblur="ValidateControl()" placeholder="08:00PM">').addClass('timePicker');
                 $("#" + index + "_KM").html(item.KMOUT);//Display Only
                 $("#" + index + "_KMOut").val(item.KMOUT);
@@ -116,15 +116,10 @@ function DataNotAvailble(ctrl) {
     ValidateControl();
 };
 function GetRFIDCardNos() {
-    
     //var targets = ChangeRFID.caller.arguments[0].target;
     //var targetids = $(targets).attr('id');
     // targetid = targetid.slice(0, - 1);
     var FRIDData = $('#0_RFID');
-   // alert(FRIDData);
-    
-    //var rfidlists = $('#' + targetids);
-
     $.ajax({
         url: '/MaterialGatePass/GetRFIdCards',
         method: 'GET',
@@ -371,9 +366,7 @@ function SaveData() {
                     //    confirmButtonColor: '#2527a2',
                     //});
                 }
-            });
-
-            
+            });  
         },
     });
 };
@@ -381,8 +374,8 @@ function SelectedRFIDValid() {
     var target = SelectedRFIDValid.caller.arguments[0].target;
     var rowid = $(target.closest('.add-row')).attr("id");
     var _val = $('#' + rowid + '_RFID option:selected').val();
-    //alert(_val);
-   
+
+    DatePicker(_val);
 };
 function activateSubmitBtn() {
 
@@ -413,3 +406,15 @@ function validatectrl(targetid, value) {
     return isvalid;
 
 };
+function DatePicker(val) {
+        var minDate = new Date();
+        var maxDate = new Date();
+    $('.ActualTripDates').datepicker({
+        dateFormat: 'dd/mm/yy',
+        autoclose: true,
+        todayHighlight: true,
+        minDate: minDate,
+        maxDate: maxDate
+    });
+   
+}

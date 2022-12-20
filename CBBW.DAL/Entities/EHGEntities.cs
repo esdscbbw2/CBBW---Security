@@ -127,5 +127,22 @@ namespace CBBW.DAL.Entities
             _DBResponseMapper.Map_DBResponse(_datasync.RemoveEHGNote(NoteNumber, RemoveTag, ActiveTag, ref pMsg), ref pMsg, ref result);
             return result;
         }
+        public List<EHGNoteList> GetEHGNoteList(int DisplayLength, int DisplayStart, int SortColumn, string SortDirection, string SearchText, int CentreCode, ref string pMsg)
+        {
+            List<EHGNoteList> result = new List<EHGNoteList>();
+            try
+            {
+                dt = _datasync.GetEHGNoteList(DisplayLength, DisplayStart, SortColumn, SortDirection, SearchText,CentreCode,ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        result.Add(_DBMapper.Map_EHGNoteList(dt.Rows[i]));
+                    }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
     }
 }

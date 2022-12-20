@@ -25,8 +25,8 @@
                             <i data-feather="arrow-left-circle"></i>
                             Back
                         </button>
-                        <button type="button" class="btn btn-secondary me-2"
-                                onclick="trialBtnClick()"
+                        <button id="btnSubmit" type="button" class="btn btn-secondary me-2"
+                                onclick="trialBtnClick()" disabled
                                 @*onclick="window.location.href='abc.html';"*@>
                             <i data-feather="check-circle"></i>
                             Save
@@ -48,7 +48,7 @@
                 <h2 class="text-center"> Date Wise Tour Details Entry: </h2>
             </div>
         </div>
-        <div class="col-md-12 mb-4">
+        <div class="col-md-12 mb-4" id="HdrDiv">
             <div class="col-md-12 pt-3">
                 <div class="card">
                     <div class="card-body">
@@ -92,7 +92,7 @@
                                             <div class="form-group">
                                                 <select id="TourCategory" data-name="TourCatCodes" data-name-text="TourCatText"
                                                         onchange="ChangeCashCadingSourceInCloaning('CenterCode', '/Security/EHG/GetTourLocations?CategoryID=')"
-                                                        class="form-select alterID clonemultiselect"
+                                                        class="form-select is-invalid alterID clonemultiselect"
                                                         aria-label="Default select example">
                                                 </select>
                                             </div>
@@ -101,7 +101,7 @@
                                             <div class="form-group">
                                                 <select id="CenterCode" data-name="CenterCodes" data-name-text="CenterNames"
                                                         onchange="ValidateCloneRowCtrl()"
-                                                        class="form-select alterID clonemultiselect"
+                                                        class="form-select alterID is-invalid clonemultiselect"
                                                         aria-label="Default select example">
                                                 </select>
                                             </div>

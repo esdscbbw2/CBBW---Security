@@ -60,6 +60,7 @@
     <Compile Include="EHG\DateWiseTourDetails.cs" />
     <Compile Include="EHG\EHGHeader.cs" />
     <Compile Include="EHG\EHGMaster.cs" />
+    <Compile Include="EHG\EHGNoteList.cs" />
     <Compile Include="EHG\EHGTravelingPersondtls.cs" />
     <Compile Include="EHG\VehicleAllotmentDetails.cs" />
     <Compile Include="Master\PublicTransportType.cs" />

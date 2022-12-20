@@ -18,7 +18,7 @@
                 <div class="col-md-12" style="position: relative;">
                     <div class="heading_text_btn mb-4 mt-4">
                         <div class="leftButton">
-                            <button type="submit" class="btn btn-primary me-2" onclick="window.location.href='@Url.Action("Create", "MaterialGatePass",
+                            <button type="button" class="btn btn-primary me-2" onclick="window.location.href='@Url.Action("Create", "MaterialGatePass",
 new { Area = "Security" })'">
                                 <i data-feather="arrow-left-circle"></i>
                                 Back
@@ -129,22 +129,22 @@ new { Area = "Security" })'">
                                                         @sl
                                                     </td>
                                                     <td class="text-center">
-                                                        @item.DriverNo/ @item.DriverName
+                                                        @item.DriverNo / @item.DriverName
                                                     </td>
                                                     <td class="text-center">
                                                         @item.DesignationCode / @item.DesignationText
                                                     </td>
                                                     @if (item.TripType == 1)
                                                     {
-                                                        <td class="text-center"> @item.TripType / Local</td>
+                                                <td class="text-center"> @item.TripType / Local Vehicle Schedule</td>
                                                     }
                                                     else
                                                     {
-                                                        <td class="text-center"> @item.TripType / Other</td>
+                                                <td class="text-center"> @item.TripType / Other Trip Schedule</td>
                                                     }
-                                                    <td class="text-center">
-                                                        @item.FromLocationCode /@item.FromLocationName
-                                                    </td>
+                                                <td class="text-center">
+                                                    @item.FromLocationCode / @item.FromLocationName
+                                                </td>
                                                    
                                                     @if (item.CarryingInMaterial == true)
                                                     {
@@ -153,7 +153,7 @@ new { Area = "Security" })'">
                                                     }
                                                     else
                                                     {
-                                                        <td class="text-center">NO</td>
+                                                        <td class="text-center">No</td>
                                                     }
                                                     <td class="text-center">
                                                         @item.LoadPercentageIn
@@ -165,7 +165,7 @@ new { Area = "Security" })'">
                                                         @item.FromDate
                                                     </td>
                                                     <td class="text-center">
-                                                        @item.ActualTripInDate
+                                                        @item.ActualTripInD
                                                     </td>
                                                     <td class="text-center">
                                                         @item.ActualTripInTime
@@ -271,7 +271,7 @@ new { Area = "Security" })'">
                                             <div id="0_RunInTrip" class="form-group"></div>
                                         </td>
                                         <td class="text-center">
-                                            <div id="0_InRemark" class="form-group"></div>
+                                            <div id="0_Remark" class="form-group"></div>
                                         </td>
                                         <td class="text-center">
                                             <div id="0_ActionIn" class="form-group"></div>

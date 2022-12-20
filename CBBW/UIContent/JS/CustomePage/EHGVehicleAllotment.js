@@ -8,6 +8,7 @@
         $(target).removeClass('is-valid').addClass('is-invalid');
     }
     $('#VABackBtnActive').val(1);
+    EnableSubmitBtn();
 };
 function validatectrl(targetid, value) {
     var isvalid = false;
@@ -23,10 +24,10 @@ function validatectrl(targetid, value) {
             }
             break;
         case "VADetails_OtherVehicleModelName":
-            if (value.length > 4) { isvalid = true; }
+            if (value.length > 0) { isvalid = true; }
             break;
-        case "VADetails_OtherVehicleNumber":
-            if (value.length > 4) { isvalid = true; }
+        case "VADetails_OtherVehicleNumber":           
+            if (value.length > 0) { isvalid = true; }
             break;
     }
     return isvalid;
@@ -52,6 +53,7 @@ function VehicleNoChanged() {
         });
         targetCtrl.isValid();
     } else { targetCtrl.isInvalid(); }
+    EnableSubmitBtn();
 };
 function VehicleBelongsToChanged(mVal) {
     var vbtoCtrl = $('#VADetails_VehicleBelongsTo');
@@ -61,12 +63,14 @@ function VehicleBelongsToChanged(mVal) {
     var OVModelCtrl = $('#for_other_vehicle_model_name');
     var vnCtrl = $('#VADetails_VehicleNumber');
     var vnoCtrl = $('#VADetails_OtherVehicleNumber');
+    var modelNameCtrl = $('#VADetails_OtherVehicleModelName');
     var vehicleBelongsTo = vbtoCtrl.val() * 1;
     if (vehicleBelongsTo == 1) {
         ForCVCtrl.removeClass('inVisible');
         vnCtrl.isInvalid();
         //vnCtrl.val('');
         vnoCtrl.clearValidateClass();
+        modelNameCtrl.clearValidateClass();
         ForOVCtrl.addClass('inVisible');
         CVModelCtrl.removeClass('inVisible');
         OVModelCtrl.addClass('inVisible');
@@ -77,6 +81,7 @@ function VehicleBelongsToChanged(mVal) {
         vnCtrl.clearValidateClass();
         ForOVCtrl.removeClass('inVisible');
         vnoCtrl.isInvalid();
+        modelNameCtrl.isInvalid();
         //vnoCtrl.val('')
         CVModelCtrl.addClass('inVisible');
         OVModelCtrl.removeClass('inVisible');
@@ -93,13 +98,20 @@ function VehicleBelongsToChanged(mVal) {
     }    
     if (mVal == '1') {
         VehicleNoChanged();
-    }
+    } else { validatectrl('VADetails_OtherVehicleNumber', vnoCtrl.val()); }
+    //EnableSubmitBtn();
+};
+function EnableSubmitBtn() {
+    var x = getDivInvalidCount('HdrDiv');
+    var SubmitBtn = $('#btnSubmit');    
+    if (x<=0) { SubmitBtn.makeEnabled(); } else { SubmitBtn.makeDisable(); }
 };
 $(document).ready(function () {
     var vbtoCtrl = $('#VADetails_VehicleBelongsTo');    
     vbtoCtrl.change(function () {
         VehicleBelongsToChanged(0);        
         $('#VABackBtnActive').val(1);
+        EnableSubmitBtn();
     });
     $('#btnBack').click(function () {
         var backbtnactive = $('#VABackBtnActive').val();

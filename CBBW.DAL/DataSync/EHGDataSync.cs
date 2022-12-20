@@ -244,5 +244,32 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+        public DataTable GetEHGNoteList(int DisplayLength,int DisplayStart,int SortColumn,
+            string SortDirection,string SearchText,int CentreCode,ref string pMsg) 
+        {
+            try
+            {
+                SortDirection = SortDirection.Substring(0, 1).ToUpper();
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[6];
+                para[paracount] = new SqlParameter("@DisplayLength", SqlDbType.Int);
+                para[paracount++].Value = DisplayLength;
+                para[paracount] = new SqlParameter("@DisplayStart", SqlDbType.Int);
+                para[paracount++].Value = DisplayStart;
+                para[paracount] = new SqlParameter("@sortCol", SqlDbType.Int);
+                para[paracount++].Value = SortColumn;
+                para[paracount] = new SqlParameter("@SortDir", SqlDbType.NVarChar,1);
+                para[paracount++].Value = SortDirection;
+                para[paracount] = new SqlParameter("@Search", SqlDbType.NVarChar,250);
+                para[paracount++].Value = SearchText;
+                para[paracount] = new SqlParameter("@CentreCode", SqlDbType.Int);
+                para[paracount++].Value = CentreCode;
+                using (SQLHelper sql = new SQLHelper("[EHG].[GetEHGNoteList]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
     }
 }

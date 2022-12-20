@@ -36,7 +36,7 @@
                     
                     cloneready.find('td').find('#0_ActualKMIns').attr('id', index + '_ActualKMIns');
                     cloneready.find('td').find('#0_RunInTrip').attr('id', index + '_RunInTrip')
-                    cloneready.find('td').find('#0_InRemark').attr('id', index + '_InRemark');//Display only
+                    cloneready.find('td').find('#0_Remark').attr('id', index + '_Remark');
                     cloneready.find('td').find('#0_ActionIn').attr('id', index + '_ActionIn');
 
                     $('#tbody2').append(cloneready);
@@ -46,10 +46,10 @@
                 $("#" + index + "_NoteNumber").val(_val);
                 $("#" + index + "_ID").val(item.ID);
                 $("#" + index + "_VehicleNo").val(item.VehicleNo);
-                $("#" + index + "_DriverName").html(item.DriverNo + "/" + item.DriverName);//Display Only
-                $("#" + index + "_DesigCN").html(item.DesignationCode + "/" + item.DesignationText);//Display only
-                $("#" + index + "_TripType").html(item.TripType + "/" + item.TripTypeStr);//Display only
-                $("#" + index + "_LocationCN").html(item.FromLocationCode+ "/" + item.FromLocationName);
+                $("#" + index + "_DriverName").html(item.DriverNo + " / " + item.DriverName);//Display Only
+                $("#" + index + "_DesigCN").html(item.DesignationCode + " / " + item.DesignationText);//Display only
+                $("#" + index + "_TripType").html(item.TripType + " / " + item.TripTypeStr);//Display only
+                $("#" + index + "_LocationCN").html(item.FromLocationCode+ " / " + item.FromLocationName);
                 $("#" + index + "_locname").val(item.FromLocationName);
                 $("#" + index + "_loccode").val(item.FromLocationCode);
                 $("#" + index + "_locatype").val(item.FromLocationType);
@@ -61,16 +61,16 @@
                 }
                 $("#" + index + "_LoadedIn").html(item.LoadPercentageIn + " %");
                 $("#" + index + "_Loaded").val(item.LoadPercentageIn);
-                $("#" + index + "_RFIDNo").val(item.RFIDCard).html('<select id="' + index + '_RFID" class="form-select pointer is-invalid" style="width: 154px;" onchange="ValidateControls();"  aria-label="Default select example"></select>');
+                $("#" + index + "_RFIDNo").val(item.RFIDCard).html('<select id="' + index + '_RFID" class="form-select pointer is-invalid" style="width: 154px;" onchange="SelectedRFIDValid();ValidateControls();"  aria-label="Default select example"></select>');
                 $("#" + index + "_Schdate").html(item.FromschDates);
-                $("#" + index + "_ActualDate").val(item.ActualTripInDate).html('<input id="' + index + '_ActualTripDate" type="date" style="width: 154px;" placeholder="11/11/2022" class="form-control pointer is-invalid" onchange="ValidateControls()">');
+                $("#" + index + "_ActualDate").val(item.ActualTripInDate).html('<input id="' + index + '_ActualTripDate" type="text" style="width: 154px;" placeholder="dd/mm/yyyy" class="form-control pointer is-invalid ActualTripDates" onchange="ValidateControls()">');
                 $("#" + index + "_ActualTime").val(item.ActualTripInTime);//.html('<input id="' + index + '_ActualTripTime"  type="text" style="width: 154px;" class="form-control pointer is-invalid" onchange="ValidateControls()" placeholder="08:00PM">').addClass('timePicker');
                 $("#" + index + "_ReqKMIn").html(item.RequiredKmIn);//Display Only
                 $("#" + index + "_RKMIn").val(item.RequiredKmIn);
                 $("#" + index + "_KMout").val(item.KMSOut);
-                $("#" + index + "_ActualKMIns").val(item.ActualKmIn).html('<input id="' + index + '_ActualKmIn" value="' + item.ActKmIn+'" type="number" style="width: 154px;" min="1" onchange="ValidateControls();" class="form-control pointer is-invalid">');
+                $("#" + index + "_ActualKMIns").val(item.ActualKmIn).html('<input id="' + index + '_ActualKmIn" value="' + item.ActKmIn+'" type="number" style="width: 154px;" min="0" onchange="ValidateControls();" class="form-control pointer is-invalid">');
                 $("#" + index + "_RunInTrip").val(item.KMRunInTrip).html('<input id="' + index + '_KMRunInTrip" value="' + item.RunningKm +'"  type="text" style="width: 154px;" class="form-control" readonly="readonly">');
-                $("#" + index + "_InRemark").val(item.InRemark).html('<input id="' + index + '_InRemarks" type="text" style="width: 154px;" class="form-control">');
+                $("#" + index + "_Remark").val(item.InRemark).html('<input id="' + index + '_InRemarks" type="text" style="width: 154px;" class="form-control">');
                // $("#" + index + "_ActionIn").html('<span class="actionBtn d-block"><button type="button" onclick="OnclickNewDCDetails(this)"  id="' + item.VehicleNo + '" data-value="' + item.FromschDates + '"   class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Details" data-placement="top" title="" data-bs-original-title="Pending"> <svg xmlns=http://www.w3.org/2000/svg width=24 height=24 viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round class="feather feather-alert-triangle"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1=12 y1=9 x2=12 y2=13></line><line x1=12 y1=17 x2=12.01 y2=17></line></svg></button>');
 
                 if (item.CarryingInMaterial == true) {
@@ -231,7 +231,7 @@ function getVechCurrentInRecords() {
                 'RequiredKmIn': $('#' + rowid + '_RKMIn').val(),
                 'ActualKmIn': $('#' + rowid + '_ActualKmIn').val(),
                 'KMRunInTrip': $('#' + rowid + '_KMRunInTrip').val(),
-                'RemarkIn': $('#' + rowid + '_InRemarks').val(),
+                'RemarkIn': $('#' + rowid + '_InRemarks').val()
                 
             });
         }
@@ -254,6 +254,7 @@ function SaveData() {
             ListofMGPReferenceInDCData: dcrecords
         }),
         success: function (data) {
+           // alert("data");
             //var statusobj=false;
             $(data).each(function (index, item) {
                 // statusobj = item.bResponseBool;
@@ -312,7 +313,9 @@ function ValidateControls() {
     if (targetid==xx) {
         var rk = $('#' + index + '_RKMIn').val();
         var kmintrip = $('#' + index + '_KMRunInTrip');
-        var actualkm = $(target).val();
+        var kmout = $('#' + index + '_KMout').val()*1;
+        var actualkm = $(target).val()*1;
+        kmintrip.val(actualkm - kmout);
         var rkp = rk * 1.15;
         var rkwithp = rkp + rk;
         var cal;
@@ -322,10 +325,13 @@ function ValidateControls() {
         else { cal = actualkm; }
 
         //if (actualkm > rk * 1.15 || actualkm < rk) { isvalid = false; kmintrip.val(0) }
-        if (actualkm > rkwithp || actualkm < rk) { isvalid = false; kmintrip.val(0) }
+        if (actualkm > rkwithp || actualkm < rk) {
+            isvalid = false;
+            //kmintrip.val(0);
+        }
         else {
                 isvalid = true;
-                kmintrip.val(cal);
+                //kmintrip.val(cal);
         }
     }   
 
@@ -397,6 +403,26 @@ function OnclickHistoryDCDetails(ctrl) {
             }
             ValidateControl();
         }
+    });
+
+}
+
+function SelectedRFIDValid() {
+    var target = SelectedRFIDValid.caller.arguments[0].target;
+    var rowid = $(target.closest('.add-row')).attr("id");
+    var _val = $('#' + rowid + '_RFID option:selected').val();
+
+    DatePicker(_val);
+};
+function DatePicker(val) {
+    var minDate = new Date();
+    var maxDate = new Date();
+    $('.ActualTripDates').datepicker({
+        dateFormat: 'dd/mm/yy',
+        autoclose: true,
+        todayHighlight: true,
+        minDate: minDate,
+        maxDate: maxDate
     });
 
 }

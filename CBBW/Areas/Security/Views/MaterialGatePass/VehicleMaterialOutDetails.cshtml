@@ -114,17 +114,17 @@
                                                 <tr class="add-row">
                                                     <td class="text-center">@sl</td>
                                                     <td class="text-center">
-                                                        @item.DriverNo/ @item.DriverName
+                                                        @item.DriverNo / @item.DriverName
                                                     </td>
                                                     <td class="text-center">@item.DesignationCode / @item.DesignationText </td>
 
                                                     @if (item.TripType == 1)
                                                     {
-                                                        <td class="text-center"> @item.TripType / Local</td>
+                                                <td class="text-center"> @item.TripType / Local Vehicle Schedule</td>
                                                     }
                                                     else
                                                     {
-                                                        <td class="text-center"> @item.TripType / Other</td>
+                                                <td class="text-center"> @item.TripType / Other Trip Schedule</td>
                                                     }
                                                     <td class="text-center">@item.ToLocationCodenName</td>
                                                     @if (item.CarryingOutMaterial == true)
@@ -134,7 +134,7 @@
                                                     }
                                                     else
                                                     {
-                                                        <td class="text-center">NO</td>
+                                                        <td class="text-center">No</td>
                                                     }
 
                                                     <td class="text-center">@item.LoadPercentage %</td>

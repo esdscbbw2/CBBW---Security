@@ -49,6 +49,7 @@ namespace CBBW.BOL.MGP
         public long ActualKmIn { get; set; }
         public long KMRunInTrip { get; set; }
         public string RemarkIn { get; set; }
+        public string ActualTripInD { get; set; }
 
     }
 }

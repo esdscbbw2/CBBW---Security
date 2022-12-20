@@ -25,7 +25,8 @@
                             <i data-feather="arrow-left-circle"></i>
                             Back
                         </button>
-                        <button id="btnSubmit" type="submit" name="Submit" value="Save"
+                        <button id="btnSubmit" type="submit" name="Submit" 
+                                value="Save" disabled
                                 class="btn btn-secondary me-2">
                             <i data-feather="check-circle"></i>
                             Save
@@ -47,7 +48,7 @@
             </div>
         </div>
         <div class="col-md-12 mb-4">
-            <div class="col-md-12 pt-3">
+            <div class="col-md-12 pt-3" id="HdrDiv">
                 <div class="card mb-4">
                     <div class="card-body approvalForm">
                         @*<form class="form-sample form-inline row ms-auto">*@
@@ -146,7 +147,7 @@
                                     @Html.TextBoxFor(m => m.VADetails.OtherVehicleNumber,
                                        htmlAttributes: new
                                        {
-                                           @class = "form-control is-invalid",
+                                           @class = "form-control",
                                            onchange = "ValidateControl()"
                                        })
                                 </div>
@@ -185,7 +186,7 @@
                                     @Html.TextBoxFor(m => m.VADetails.OtherVehicleModelName,
                                     htmlAttributes: new
                                     {
-                                        @class = "form-control is-invalid",
+                                        @class = "form-control",
                                         onchange = "ValidateControl()"
                                     })
                                 </div>

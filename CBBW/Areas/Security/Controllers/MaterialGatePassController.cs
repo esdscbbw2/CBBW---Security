@@ -277,7 +277,7 @@ namespace CBBW.Areas.Security.Controllers
                 mgpinsave.RequiredKmIn = item.RequiredKmIn>0? item.RequiredKmIn:0;
                 mgpinsave.ActualKmIn = item.ActualKmIn>0? item.ActualKmIn:0;
                 mgpinsave.KMRunInTrip = item.KMRunInTrip;
-                mgpinsave.RemarkIn = item.RemarkIn==""?"NA": item.RemarkIn;
+                mgpinsave.RemarkIn = item.RemarkIn==null?"NA": item.RemarkIn;
 
              }
 
@@ -299,8 +299,7 @@ namespace CBBW.Areas.Security.Controllers
             }
             return Json(result, JsonRequestBehavior.AllowGet);
            
-        }
-        
+        }        
         public ActionResult VehicleMaterialInDetails(string NoteNumber)
         {
             MGPInDetailsVM model = new MGPInDetailsVM();

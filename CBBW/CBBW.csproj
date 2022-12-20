@@ -368,6 +368,7 @@
     <Content Include="Areas\Security\Views\EHG\DateWiseTourDetails.cshtml" />
     <Content Include="Areas\Security\Views\EHG\Index.cshtml" />
     <Content Include="Areas\Security\Views\EHG\VehicleAllotment.cshtml" />
+    <Content Include="Areas\Security\Views\EHG\ViewNote.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />
@@ -444,7 +445,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>56411</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44391/</IISUrl>
+          <IISUrl>https://localhost:44392/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -33,6 +33,11 @@ namespace CBBW.BLL.Repository
         {
             return _EHGEntities.getEHGNoteHdr(Notenumber, ref pMsg);
         }
+        public List<EHGNoteList> GetEHGNoteList(int DisplayLength, int DisplayStart, int SortColumn, 
+            string SortDirection,  string SearchText, int CentreCode, ref string pMsg)
+        {
+            return _EHGEntities.GetEHGNoteList(DisplayLength, DisplayStart, SortColumn, SortDirection, SearchText,CentreCode, ref pMsg);
+        }
         public EHGHeader getNewEHGHeader(ref string pMsg)
         {
             EHGHeader obj= new EHGHeader();
@@ -81,10 +86,17 @@ namespace CBBW.BLL.Repository
         }
         public bool SetEHGVehicleAllotmentDetails(VehicleAllotmentDetails mData, ref string pMsg)
         {
+            if (mData.VehicleBelongsTo == 2) 
+            { 
+                mData.VehicleNumber = mData.OtherVehicleNumber;
+                mData.ModelName = mData.OtherVehicleModelName;
+            }
             return _EHGEntities.SetEHGVehicleAllotmentDetails(mData, ref pMsg);
         }
         public bool UpdateEHGHdr(EHGHeader header, ref string pMsg)
         {
+            header.EntryDate = DateTime.Today;
+            header.EntryTime = DateTime.Now.ToString("hh:mm tt");
             return _EHGEntities.UpdateEHGHdr(header, ref pMsg);
         }
     }

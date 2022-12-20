@@ -33,9 +33,9 @@ $.fn.CustomDateFormat = function () {
     var dt = this.val();
     var e = dt;
     if (dt.indexOf('/') != -1) {
-        var e = dt.split('/').reverse().join('-');
+        var e = dt.split('/').reverse().join('/');
     } else {
-        var e = dt.split('-').reverse().join('-');
+        var e = dt.split('-').reverse().join('/');
     }
     $('#' + lblid).html(e);
     //that.addClass('is-valid').removeClass('is-invalid')
@@ -571,6 +571,13 @@ function EnableAddBtnInCloneRow(tblRow, addBtnBaseID) {
     var addBtnctrl = $('#' + addBtnBaseID);
     if (tblrow.find('.is-invalid').length > 0) { addBtnctrl.makeDisable(); } else { addBtnctrl.makeEnabled(); }
     
+};
+function getDivInvalidCount(mdivID) {
+    var x = 0;
+    var mDiv = $('#' + mdivID);
+    x = mDiv.find('.is-invalid').length;
+    //alert(mdivID + ' - ' + x);
+    return x;
 };
 
 

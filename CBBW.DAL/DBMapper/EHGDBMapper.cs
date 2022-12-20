@@ -182,5 +182,40 @@ namespace CBBW.DAL.DBMapper
             catch { }
             return result;
         }
+        public EHGNoteList Map_EHGNoteList(DataRow dr)
+        {
+            EHGNoteList result = new EHGNoteList();
+            try
+            {
+                if (dr != null)
+                {
+                    if (!DBNull.Value.Equals(dr["RowNum"]))
+                        result.RowNumber =int.Parse(dr["RowNum"].ToString());
+                    if (!DBNull.Value.Equals(dr["TotalCount"]))
+                        result.TotalCount = int.Parse(dr["TotalCount"].ToString());
+                    if (!DBNull.Value.Equals(dr["NoteNumber"]))
+                        result.NoteNumber = dr["NoteNumber"].ToString();
+                    if (!DBNull.Value.Equals(dr["EntryDate"]))
+                        result.EntryDate =DateTime.Parse(dr["EntryDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["CenterName"]))
+                        result.CenterName = dr["CenterName"].ToString();
+                    if (!DBNull.Value.Equals(dr["PurposeOfAllotment"]))
+                        result.PurposeOfAllotment = dr["PurposeOfAllotment"].ToString();
+                    if (!DBNull.Value.Equals(dr["Instructor"]))
+                        result.Instructor =int.Parse(dr["Instructor"].ToString());
+                    if (!DBNull.Value.Equals(dr["VehicleNumber"]))
+                        result.VehicleNumber = dr["VehicleNumber"].ToString();
+                    if (!DBNull.Value.Equals(dr["IsApproved"]))
+                        result.IsApproved =bool.Parse(dr["IsApproved"].ToString());
+                    result.EntryDateDisplay = result.EntryDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    result.NoteNumber2 = result.NoteNumber;
+                    //if (!result.IsApproved && result.EntryDate == DateTime.Today) 
+                    //{ result.CanDelete = true; }
+                    result.CanDelete = true;
+                }
+            }
+            catch { }
+            return result;
+        }
     }
 }

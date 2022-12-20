@@ -28,6 +28,7 @@ function ValidateControl() {
         $(target).removeClass('is-valid').addClass('is-invalid');        
     }
     $('#BackBtnActive').val(1);
+    EnableSubmitBtn();
 };
 function validatectrl(targetid, value) {
     var isvalid = false;
@@ -231,7 +232,9 @@ function ValidateCloneRowCtrl() {
     if (targetid.indexOf('_') >= 0) { targetid = targetid.split('_')[0] }
     var isvalid = validatectrl(targetid, targetCtrl.val());
     if (isvalid) { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
-    EnableAddBtn(tblRow,'AddBtn');
+    EnableAddBtn(tblRow, 'AddBtn');
+    EnableDateWiseTourBtn();
+    EnableSubmitBtn();
 };
 function EnableAddBtn(tblRow,addBtnBaseID) {
     var tblrow = $(tblRow);
@@ -252,31 +255,49 @@ function getDivInvalidCount(mdivID) {
 };
 function EnableDateWiseTourBtn() {
     var x = getDivInvalidCount('HdrDiv');
-    var POA = $('#ehgHeader_PurposeOfAllotment').val();
-    var Vehicletype = $('#ehgHeader_VehicleType').val();
-    var DWTBtn = $('#DateWiseTourBtn');    
-    if (x > 0) {
+    var y = getDivInvalidCount('for_OfficeWork');
+    var DWTBtn = $('#DateWiseTourBtn2');
+    //alert((x + y) * 1);
+    if ((x+y)*1 > 0) {
         DWTBtn.makeDisable();
-        return;
     }
     else {
-        if (Vehicletype == 1) {
-            if (POA == 1) { DWTBtn.makeDisable(); return; }
-            else if (POA == 2) {
-                x = getDivInvalidCount('for_OfficeWork');
-                if (x > 0) { DWTBtn.makeDisable(); return; }
-                else { DWTBtn.makeEnabled(); return; }
+        DWTBtn.makeEnabled();
+    }
+};
+function EnableSubmitBtn() {
+    var x = getDivInvalidCount('HdrDiv');
+    var y = getDivInvalidCount('for_OfficeWork');
+    var z = getDivInvalidCount('for_Management');
+    var a = $('#AcceptCmb').val();
+    var b = $('#DWSubmitBtnActive').val();
+    var c = $('#VASubmitBtnActive').val();
+    var p = $('#ehgHeader_VehicleType').val();
+    var q = $('#ehgHeader_PurposeOfAllotment').val();
+    var IsSubmitActive = false;
+    var SubmitBtn = $('#btnSubmit');
+    //alert(x + ' - ' + y + ' - ' + z);
+    if (a == 1) { IsSubmitActive = true; } else { IsSubmitActive = false; }
+    if (IsSubmitActive) {
+        IsSubmitActive = false;
+        if (x <= 0) {
+            if (p == 2) {
+                if (y <= 0) {
+                    if (b == 1 && c == 1) {
+                        IsSubmitActive = true;
+                    }                    
+                }
+            }
+            else if (p == 1) {
+                if (q == 1) {
+                    if (z <= 0) { IsSubmitActive = true; }
+                }
+                else if (y <= 0) { IsSubmitActive = true; }
             }
         }
-        else if (Vehicletype == 2) {
-            x = getDivInvalidCount('for_OfficeWork');
-            if (x > 0) { DWTBtn.makeDisable(); return; }
-            else { DWTBtn.makeEnabled(); return; }
-        } else {
-            DWTBtn.makeDisable();
-            return;
-        }
-    }
+    }    
+    if (IsSubmitActive) { SubmitBtn.makeEnabled(); } else { SubmitBtn.makeDisable(); }
+    
 };
 function UpdateAuthorisedPersonForOfficeWork(defaultText) {
     var DDCtrl = $('#DDAuthorisedEmpForWork');
@@ -342,6 +363,8 @@ function VehicleTypeChanged() {
     var ForOfficeWorkDiv = $('#for_OfficeWork');
     var POADropdown = $('#ehgHeader_PurposeOfAllotment');
     var VehicletypeCtrl = $('#ehgHeader_VehicleType');
+    var dwtBtnCtrl = $('#DateWiseTourBtn2');
+    var vadBtnCtrl = $('#VADBtn');
     var selectedvt = VehicletypeCtrl.val();
     if (selectedvt == 1) {
         POACtrl.removeClass('inVisible');
@@ -350,13 +373,17 @@ function VehicleTypeChanged() {
         ForManagementDiv.addClass('inVisible');
         //POADropdown.val('');
         POADropdown.isInvalid();
+        //dwtBtnCtrl.makeDisable();
+        //vadBtnCtrl.makeDisable();
     }
-    else if (selectedvt == 2) {
-        POADropdown.clearValidateClass();
+    else if (selectedvt == 2) {        
         POACtrl.addClass('inVisible');
         POA2WhCtrl.removeClass('inVisible');
         ForOfficeWorkDiv.removeClass('inVisible');
         ForManagementDiv.addClass('inVisible');
+        POADropdown.clearValidateClass();
+        //dwtBtnCtrl.makeEnabled();
+        //vadBtnCtrl.makeDisable();
     }
     else {
         POACtrl.addClass('inVisible');
@@ -364,6 +391,8 @@ function VehicleTypeChanged() {
         ForOfficeWorkDiv.addClass('inVisible');
         ForManagementDiv.addClass('inVisible');
         POADropdown.val(''); POADropdown.isInvalid();
+        //dwtBtnCtrl.makeDisable();
+        //vadBtnCtrl.makeDisable();
     };
     if (selectedvt > 0) {
         VehicletypeCtrl.isValid();
@@ -374,6 +403,8 @@ function POADropdownChanged() {
     var ForManagementDiv = $('#for_Management');
     var ForOfficeWorkDiv = $('#for_OfficeWork');
     var POADropdown = $('#ehgHeader_PurposeOfAllotment');
+    var DWTBtn = $('#DateWiseTourBtn2');
+    var VABtn = $('#VADBtn');
     var selectedvt = POADropdown.val();
     $('#ehgHeader_POA2').val(selectedvt);
     if (selectedvt == 1) {
@@ -486,14 +517,17 @@ async function getInitialDataForTravelingPerson() {
 };
 $(document).ready(function () {
     var VehicletypeCtrl = $('#ehgHeader_VehicleType');
-    var POADropdown = $('#ehgHeader_PurposeOfAllotment');    
+    var POADropdown = $('#ehgHeader_PurposeOfAllotment');
+    var acCtrl = $('#AcceptCmb');
     VehicletypeCtrl.change(function () {       
         VehicleTypeChanged();
         $('#BackBtnActive').val(1);
+        EnableSubmitBtn();
     });
     POADropdown.change(function () {
         POADropdownChanged();
         $('#BackBtnActive').val(1);
+        EnableSubmitBtn();
     });
     $('#btnBack').click(function () {
         var backbtnactive = $('#BackBtnActive').val();
@@ -520,13 +554,10 @@ $(document).ready(function () {
             window.location.href = backurl;
         }
     });
-    //$('#btnClear').click(function () {
-    //    alert('OK');
-    //    $.ajax({
-    //        url: '/Security/EHG/ClearBtnClicked',
-    //        success: function (result) { window.location.href = result; }
-    //    });        
-    //});
+    acCtrl.change(function () {
+        if (acCtrl.val() == 1) { acCtrl.isValid(); } else { acCtrl.isInvalid(); }
+        EnableSubmitBtn();
+    });
 });
 $(document).ready(function () {
     getDropDownData('DDPersonType', 'Select Type', '/EHG/GetPersonTypes');
@@ -537,5 +568,20 @@ $(document).ready(function () {
     (async function () {
         const r1 = await getInitialDataForTravelingPerson();
     })();
-    
+    var dwtFilled = $('#DWSubmitBtnActive').val();
+    var vaFilled = $('#VASubmitBtnActive').val();
+    var dwtBtnCtrl = $('#DateWiseTourBtn2');
+    var vadBtnCtrl = $('#VADBtn');
+    var hdrDiv = $('#HdrDiv');
+    var managementDiv = $('#for_Management');
+    var officeworkDiv = $('#for_OfficeWork');
+    if (dwtFilled == 1) {
+        dwtBtnCtrl.makeEnabled(); vadBtnCtrl.makeEnabled();
+    } else { dwtBtnCtrl.makeDisable(); vadBtnCtrl.makeDisable(); }    
+    if (dwtFilled == 1 || vaFilled == 1) {
+        hdrDiv.addClass('sectionB');
+        managementDiv.addClass('sectionB');
+        officeworkDiv.addClass('sectionB');
+    }
+    EnableSubmitBtn();
 });

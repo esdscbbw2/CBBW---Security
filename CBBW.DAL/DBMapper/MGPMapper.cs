@@ -109,6 +109,7 @@ namespace CBBW.DAL.DBMapper
                         result.KMRunInTrip = int.Parse(dr["KMRunInTrip"].ToString());
                     if (!DBNull.Value.Equals(dr["RemarkIn"]))
                         result.RemarkIn = dr["RemarkIn"].ToString();
+                    result.ActualTripInD = result.ActualTripInDate.ToString("dd-MM-yyyy");
 
                 }
             }

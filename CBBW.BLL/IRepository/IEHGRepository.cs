@@ -20,5 +20,7 @@ namespace CBBW.BLL.IRepository
         VehicleAllotmentDetails getVehicleAllotmentDetails(string Notenumber, int IsActive, ref string pMsg);
         EHGHeader getEHGNoteHdr(string Notenumber, ref string pMsg);
         bool RemoveEHGNote(string NoteNumber, int RemoveTag, int ActiveTag, ref string pMsg);
+        List<EHGNoteList> GetEHGNoteList(int DisplayLength, int DisplayStart, int SortColumn, 
+            string SortDirection, string SearchText, int CentreCode, ref string pMsg);
     }
 }
