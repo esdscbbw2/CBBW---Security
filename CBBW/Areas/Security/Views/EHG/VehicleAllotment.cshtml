@@ -1,0 +1,250 @@
+﻿@using CBBW.Areas.Security.ViewModel.EHG;
+@model EHGHeaderEntryVM
+@{
+
+}
+<div class="row newTable">
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(m => m.VADetails.ModelName)
+        @Html.HiddenFor(m => m.VADetails.NoteNumber)
+        @Html.HiddenFor(m => m.VADetails.AuthorisedEmpName)
+        @Html.HiddenFor(m => m.VADetails.AuthorisedEmpNumber)
+        @Html.HiddenFor(m => m.VADetails.DesignationText)
+        @Html.HiddenFor(m => m.VADetails.DesignationCode)
+        @Html.HiddenFor(m => m.VADetails.VehicleType)
+        @Html.HiddenFor(m => m.VADetails.DriverName)
+        @Html.HiddenFor(m => m.VABackBtnActive)
+        @Html.HiddenFor(m => m.VASubmitBtnActive)
+        <div class="fixedElement">
+            <div class="col-md-12">
+                <div class="heading_text_btn mb-3 mt-4">
+                    <div class="leftButton">
+                        <button id="btnBack" type="button" class="btn btn-primary me-2"
+                                @*onclick="window.location.href='emp_travelling_detail_vehicle_allotment_by_HG_add.html';"*@>
+                            <i data-feather="arrow-left-circle"></i>
+                            Back
+                        </button>
+                        <button id="btnSubmit" type="submit" name="Submit" 
+                                value="Save" disabled
+                                class="btn btn-secondary me-2">
+                            <i data-feather="check-circle"></i>
+                            Save
+                        </button>
+                        <button type="button"
+                                onclick="window.location.href='/Security/EHG/ClearBtnClicked?PageID=2';"
+                                class="btn btn-white">
+                            <i data-feather="x-circle"></i>
+                            Clear
+                        </button>
+                    </div>
+                    <h2>Employee’s Travelling Details & Vehicle Allotment (By HG) – ENTRY </h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="heading_text_btn2 d-block mb-2 pt-2">
+                <h2 class="text-center"> Vehicle Allotment – Details:</h2>
+            </div>
+        </div>
+        <div class="col-md-12 mb-4">
+            <div class="col-md-12 pt-3" id="HdrDiv">
+                <div class="card mb-4">
+                    <div class="card-body approvalForm">
+                        @*<form class="form-sample form-inline row ms-auto">*@
+                        <div class="row d-flex align-items-center mb-4">
+                            <label class="col-form-label col-md-3">
+                                Authorized Employee No. &nbsp; & Name :
+                            </label>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(m => m.VADetails.AuthorisedEmpName,
+                           htmlAttributes: new
+                                {
+                               @class = "form-control",
+                               disabled = "disabled",
+                               id = "Noteno2"
+                                })
+                            </div>
+                            <label class="col-form-label col-md-3">
+                                Designation Code & Name  :
+                            </label>
+                            <div class="col-md-3">
+                                @Html.TextBoxFor(m => m.VADetails.DesignationText,
+                           htmlAttributes: new
+                                {
+                               @class = "form-control",
+                               disabled = "disabled",
+                               id = "Noteno2"
+                                })
+                            </div>
+                        </div>
+                        <div class="row d-flex  align-items-center">
+                            <label class="col-form-label col-md-3">
+                                Carrying Out Any Material  :
+                            </label>
+                            <div class="col-md-4">
+                                @Html.DropDownListFor(m => m.VADetails.MaterialStatus,
+                       new[] {
+                           new SelectListItem { Text = "-", Value = "-1" },
+                           new SelectListItem { Text = "Yes", Value = "1" },
+                           new SelectListItem { Text = "No", Value = "0" }},
+                       htmlAttributes: new
+                       {
+                           @class = "form-select pointer is-invalid",
+                           @onchange = "ValidateControl()"
+                       })
+                            </div>
+                        </div>
+                        @*</form>*@
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body approvalForm">
+                        @*<form class="form-sample form-inline row ms-auto">*@
+
+                        <div class="row d-flex  align-items-center ">
+                            <label class="col-form-label col-md-3">
+                                Vehicle Belongs To  :
+                            </label>
+                            <div class="col-md-4">
+                                @Html.DropDownListFor(m => m.VADetails.VehicleBelongsTo,
+                                       new SelectList(Model.VehicleBelongsTo, "ID", "DisplayText"),
+                                       "Select Vehicle Belongs To",
+                                       htmlAttributes: new
+                                       {
+                                           @class = "form-select pointer is-invalid "
+                                       })
+                            </div>
+                        </div>
+                        @*</form>*@
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body approvalForm">
+                        <div id="for_company_vehicle" class="inVisible">
+                            <div class="row d-flex  align-items-center mb-4 mr-15 ">
+                                <label class="col-form-label col-md-3">
+                                    Vehicle No. :
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DropDownListFor(m => m.VADetails.VehicleNumber,
+                                       new SelectList(Model.VehicleList, "VehicleNumber", "VehicleNumber"),
+                                       "Select Vehicle",
+                                       htmlAttributes: new
+                                       {
+                                           @class = "form-select pointer ",
+                                           onchange = "VehicleNoChanged()"
+                                       })
+                                </div>
+                            </div>
+                        </div>
+                        <div id="for_other_vehicle" class="inVisible">
+                            <div class="row d-flex  align-items-center mb-4 mr-15 ">
+                                <label class="col-form-label col-md-3">
+                                    Vehicle No. :
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.TextBoxFor(m => m.VADetails.OtherVehicleNumber,
+                                       htmlAttributes: new
+                                       {
+                                           @class = "form-control",
+                                           onchange = "ValidateControl()"
+                                       })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex  align-items-center mb-4 ">
+                            <label class="col-form-label col-md-3">
+                                Vehicle Type :
+                            </label>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(m => m.VADetails.VehicleType,
+                           htmlAttributes: new
+                                {
+                               @class = "form-control",
+                               disabled = "disabled"
+                                })
+                            </div>
+                        </div>
+                        <div id="for_company_vehicle_model_name">
+                            <div class="row d-flex  align-items-center mb-4 mr-15 ">
+                                <label class="col-form-label col-md-3">
+                                    Model Name  :
+                                </label>
+                                <div class="col-md-4">
+                                    <input id="ModelName" type="text" value=""
+                                           class="form-control" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="for_other_vehicle_model_name">
+                            <div class="row d-flex  align-items-center mb-4 mr-15 ">
+                                <label class="col-form-label col-md-3">
+                                    Model Name  :
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.TextBoxFor(m => m.VADetails.OtherVehicleModelName,
+                                    htmlAttributes: new
+                                    {
+                                        @class = "form-control",
+                                        onchange = "ValidateControl()"
+                                    })
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row d-flex  align-items-center mb-4">
+                            <label class="col-form-label col-md-3">
+                                Driver No. & Name :
+                            </label>
+                            <div class="col-md-4">
+                                @Html.DropDownListFor(m => m.VADetails.DriverNumber,
+                                       new SelectList(Model.DriverList, "ID", "DisplayText"),
+                                       "Select Driver",
+                                       htmlAttributes: new
+                                       {
+                                           @class = "form-select pointer is-invalid ",
+                                           onchange = "ValidateControl()"
+                                       })
+                            </div>
+                        </div>
+                        <div class="row d-flex  align-items-center mb-4">
+                            <label class="col-form-label col-md-3">
+                                K.M Out
+                            </label>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(m => m.VADetails.KMOut,
+                            htmlAttributes: new
+                            {
+                                @class = "form-control",
+                                disabled = "disabled"
+                            })
+                            </div>
+                            <label class="col-form-label col-md-3">
+                                K.M In
+                            </label>
+                            <div class="col-md-3">
+                                @Html.TextBoxFor(m => m.VADetails.KMIn,
+                            htmlAttributes: new
+                            {
+                                @class = "form-control",
+                                disabled = "disabled"
+                            })
+                            </div>
+                        </div>
+                        @*</form>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@section headers
+    {
+
+}
+@section scripts{
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/EHGVehicleAllotment.js"></script>
+}

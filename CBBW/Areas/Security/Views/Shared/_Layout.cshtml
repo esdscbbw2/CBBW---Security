@@ -1,0 +1,142 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Charbhai Bidi Works - A Bidi Manufacturing Company</title>
+    @*<title>@ViewBag.Title</title>*@
+    <!-- Bootstrap CSS -->
+    <link href="~/UIContent/CSS/bootstrap.min.css" rel="stylesheet" />
+    @*<link href="~/UIContent/CSS/jquery.dataTables.min.css" rel="stylesheet" />*@
+    <link href="~/UIContent/CSS/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap"
+          rel="stylesheet">
+    <link href="~/UIContent/CSS/bootstrap-multiselect.css" rel="stylesheet" />
+    <link href="~/UIContent/CSS/themes/base/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/UIContent/CSS/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/UIContent/CSS/style.css" rel="stylesheet" />
+    <!-- Time Picker CSS -->
+    <link rel='stylesheet' href='~/UIContent/CSS/font-awesome.min.css'>
+    <link rel='stylesheet' href='~/UIContent/CSS/bootstrap-datetimepicker.min.css'>
+    <style>
+        .inVisible {
+            display: none;
+        }
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
+    @RenderSection("headers", required: false)
+</head>
+<body>
+    <div class="container">
+        <div class="bgTop">
+            <div class="row">
+                <div class="col-md-4">
+                    <img src="~/UIContent/CSS/img/charbhai-logo.png" alt="logo" class="img-fluid">
+                </div>
+                <div class="col-md-8 topLoginText">
+                    <ul>
+                        <li>Page loaded : @DateTime.Now.ToString("dd.MM.yyyy hh:mm:ss tt")</li>
+                        <li>Welcome : <strong>@ViewBag.LogInUser</strong></li>
+                    </ul>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+    @{Html.RenderPartial("_PartialNavBar");}
+    <div class="container">
+        @RenderBody()
+    </div>
+    <script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
+    <script src="~/UIContent/JS/jquery-ui-1.13.2.min.js"></script>
+    <script src="~/UIContent/JS/bootstrap.bundle.min.js"></script>
+    <script src="~/UIContent/JS/feather.min.js"></script>
+    <script src="~/UIContent/JS/multiselect.js"></script>
+    <script src="~/UIContent/JS/popper.min.js"></script>
+
+    <script src="~/UIContent/JS/jquery.dataTables.min.js"></script>
+    <script src="~/UIContent/JS/dataTables.bootstrap5.min.js"></script>
+    <script src="~/UIContent/JS/dataTables.js"></script>
+
+    <script src="~/UIContent/JS/jquery.validate.min.js"></script>
+    <script src="~/UIContent/JS/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/UIContent/JS/CustomLayout.js"></script>
+    <script src="~/UIContent/JS/sweetalert2.all.min.js"></script>
+    <!-- Time Picker -->
+    <script src="~/UIContent/JS/moment.min.js"></script>
+    <script src="~/UIContent/JS/bootstrap-datetimepicker.min.js"></script>
+    @RenderSection("scripts", required: false)
+    <script>
+        $.fn.CustomDateFormat = function () {
+            var that = this;
+            var parentid = that.attr('id');
+            var lblid = parentid + 'lbl';
+            var dt = this.val();
+            var e = dt;
+            if (dt.indexOf('/') != -1) {
+                var e = dt.split('/').reverse().join('/');
+            }
+            else {
+                var e = dt.split('-').reverse().join('/');
+            }
+            $('#' + lblid).html(e);
+            //that.addClass('is-valid').removeClass('is-invalid')
+        };
+        $.fn.CustomDateFormatCloneRow = function () {
+            var that = this;
+            var parentid = that.attr('id');
+            var lblid = 'lbl' + parentid;
+            var dt = this.val();
+            var e = dt;
+            if (dt.indexOf('/') != -1) {
+                var e = dt.split('/').reverse().join('/');
+            }
+            else {
+                var e = dt.split('-').reverse().join('/');
+            }
+            $('#' + lblid).html(e);
+            //that.addClass('is-valid').removeClass('is-invalid')
+        };
+        $(document).ready(function () {
+            $('.CustomDateFormat').each(function () {
+                $(this).change(function () {
+                    $(this).CustomDateFormat();
+                });
+            });
+            $('.CustomDateFormatCloneRow').each(function () {
+                $(this).change(function () {
+                    $(this).CustomDateFormatCloneRow();
+                });
+            });
+        });
+    </script>
+    <script>
+        feather.replace()
+    </script>
+    <script>
+        var today = new Date();
+
+        var minDate = today.setDate(today.getDate() + 1);
+
+
+
+        $('.datePicker').datetimepicker({
+
+            useCurrent: false,
+
+            format: "DD/MM/YYYY",
+
+            minDate: minDate
+
+        });
+
+
+    </script>
+
+</body>
+</html>

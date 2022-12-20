@@ -1,0 +1,147 @@
+﻿@using CBBW.BOL.EHG;
+@model List<EHGNoteList>
+@{
+
+}
+<div class="row newTable">
+    <div class="fixedElement">
+        <div class="col-md-12" style="position: relative;">
+            <div class="heading_text_btn mb-4 mt-4">
+                <div class="leftButton">
+                    <button type="submit" class="btn btn-primary me-2" onclick="window.location.href='/Security/EHG/AddNote';">
+                        <i data-feather="plus-circle"></i>
+                        Add
+                    </button>
+                </div>
+                <h2>Employee’s Travelling Details & Vehicle Allotment (By HG) – ENTRY </h2>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive mb-4 max-content">
+        <table class="table table-bordered btnalign" id="NoteListTbl">
+            <thead>
+                <tr>
+                    <th scope="col" rowspan="2"> SL.No.</th>
+                    <th scope="col"> Note No.</th>
+                    <th scope="col"> Date </th>
+                    <th scope="col">Center Code & Name</th>
+                    <th scope="col">Purpose Of Allotment</th>
+                    <th scope="col"> Employee No. </th>
+                    <th scope="col">Vehicle No.</th>
+                    <th scope="col" rowspan="2">Action</th>
+                </tr>
+                <tr>
+                    <th scope="col">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search...">
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search...">
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search...">
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search...">
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search...">
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div class="form-group">
+                            <input id="filterMonthnYear" type="text" class="form-control" placeholder="Search...">
+                        </div>
+                    </th>                    
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Count > 0)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.RowNumber</td>
+                            <td>@item.NoteNumber</td>
+                            <td>@item.EntryDateDisplay</td>
+                            <td>@item.CenterName</td>
+                            <td>@item.PurposeOfAllotment </td>
+                            <td>@item.Instructor</td>
+                            <td>@item.VehicleNumber</td>                            
+                            <td>
+                                @*<span class="actionBtn">
+                                    <button type="button" class="btn primaryLink" data-toggle="tooltip" data-placement="top" onclick="window.location.href='emp_travelling_detail_vehicle_allotment_by_HG_details_for_office.html';"
+                                            title="Details">
+                                        <i data-feather="eye"></i>
+                                    </button>
+                                    <button type="button" class="btn secondaryLink" data-toggle="tooltip" data-placement="top" onclick="window.location.href='emp_travelling_detail_vehicle_allotment_by_HG_delete_for_office.html';"
+                                            title="Delete">
+                                        <i data-feather="trash-2"></i>
+                                    </button>
+                                </span>*@
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@section headers
+    {
+
+}
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#NoteListTbl').DataTable({
+                columns: [
+                    { 'data': 'RowNumber' },
+                    { 'data': 'NoteNumber' },
+                    { 'data': 'EntryDateDisplay' },
+                    { 'data': 'CenterName' },
+                    { 'data': 'PurposeOfAllotment' },
+                    { 'data': 'Instructor' },
+                    { 'data': 'VehicleNumber' },
+                    {
+                        'data': 'NoteNumber', render: function (data, type, row, meta) {
+                            //var viewBtn = '<button type="button" class="btn primaryLink" data-toggle="tooltip" data-placement="top"> <i data-feather="eye"></i></button>';
+                            var viewBtn = '<button type="button" id="'+row.NoteNumber+'" data-btn="V" onclick="FnViewNote(this)" class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Details"> <svg xmlns=http://www.w3.org/2000/svg width=24 height=24 viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx=12 cy=12 r=3></circle></svg></button>';
+                            var deleteBtn = '<button type="button" id="' + row.NoteNumber +'" data-btn="D" onclick="FnViewNote(this)" class="btn secondaryLink" data-toggle="tooltip" data-placement="top" title="Remove" data-placement="top" title="" data-bs-original-title="Pending"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>';
+                            var mbtns = '<span class="actionBtn d-block">';
+                            mbtns = mbtns + viewBtn;
+                            if (row.CanDelete) { mbtns = mbtns + deleteBtn; }
+                            mbtns = mbtns + '</span>';
+                            return type === 'display' ? mbtns : data;
+                        }
+                    },
+                ],
+                bServerSide: true,
+                sAjaxSource: '/Security/EHG/getNoteList',
+                "pagingType": "input"
+            });
+        });
+        function FnViewNote(ctrl) {
+            var notenumber = $(ctrl).attr('id');
+            var btnType = $(ctrl).attr('data-btn');
+            var destinationurl = '/Security/EHG/ViewNote?NoteNumber=' + notenumber+'&CBUID=0' ;
+            if (btnType == 'D') { destinationurl = destinationurl + '&CanDelete=1'; }
+            window.location.href = destinationurl;
+            //$.ajax({
+            //    url: mUrl,
+            //    success: function (result) {
+            //        window.location.href =destinationurl;;
+            //    }
+            //});
+        };
+    </script>
+    
+}

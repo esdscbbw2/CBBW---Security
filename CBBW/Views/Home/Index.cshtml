@@ -1,0 +1,156 @@
+﻿@model CBBW.BOL.CTV.UserInfo
+@{
+    ViewBag.Title = "Home Page";
+}
+<table style="width:100%">
+    <tr>
+        <td><h1>Home Page</h1></td>
+        <td width="20%"></td>
+        <td>
+            <table style="width:100%">
+                <tr>
+                    <td width="150px">Name :</td>
+                    <td>@Model.EmployeeName</td>
+                </tr>
+                <tr>
+                    <td> Employee Number :</td>
+                    <td>@Model.EmployeeNumber</td>
+                </tr>
+                <tr>
+                    <td> Centre :</td>
+                    <td>@Model.CentreCode / @Model.CentreName</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<table style="width:100%">
+    <tr style="vertical-align:top">
+        <td style="width:30%">
+            <div style="padding:20px">
+
+                <br />
+                <table style="border:1px solid black" cellpadding="10">
+                    <tr>
+                        <td colspan="2" style="text-align:center;font-size:large;font-weight:bold">
+                            Modules
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black">
+                            Tours Rules
+                        </td>
+                        <td style="border:1px solid black">
+                            @Html.ActionLink("Rules - Tours Rules", "Index", "TourRule", new { area = "Security" }, null)
+
+                        </td>
+                    </tr>
+                    <tr>
+                        @*  *@
+                        <td style="border:1px solid black">
+                            TA DA Rules
+                        </td>
+                        <td style="border:1px solid black">
+                            @Html.ActionLink("Rules - TA DA Rules", "Index", "TADARules", new { area = "Security" }, null)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black">
+                            CTV Trip Schedule - Entry
+                        </td>
+                        <td style="border:1px solid black">
+                            @Html.ActionLink("CTV - Entry", "ScheduleLists", "CTV", new { area = "Security" }, null)
+                        </td>
+                    </tr>
+                    @*<tr>
+            <td style="border:1px solid black">
+                CTV Trip Schedule - Add
+            </td>
+            <td style="border:1px solid black">
+                @Html.ActionLink("CTV Trip Schedule", "Create", "CTV", new { area = "Security" }, null)
+            </td>
+        </tr>*@
+                    <tr>
+                        <td style="border:1px solid black">
+                            CTV Trip Schedule - Approval
+                        </td>
+                        <td style="border:1px solid black">
+                            @Html.ActionLink("CTV - Approval", "ApprovalLists", "CTV", new { area = "Security" }, null)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black">
+                            Material Gatepass
+                        </td>
+                        <td style="border:1px solid black">
+                            @Html.ActionLink("Material GatePass", "Index", "MaterialGatePass", new { area = "Security" }, null)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black">
+                            EHG
+                        </td>
+                        <td style="border:1px solid black">
+                            @Html.ActionLink("EHG - Entry", "Index", "EHG", new { area = "Security" }, null)
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </td>
+        <!--<td style="width:30%">
+            <div style="padding:20px">
+                <br />
+                <table style="border:1px solid black" cellpadding="10">
+                    <tr>
+                        <td colspan="2" style="text-align:center;font-size:large;font-weight:bold">
+                            UAT - Environment
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black">
+                            Tours Rules
+                        </td>
+                        <td style="border:1px solid black">
+                            @Html.ActionLink("Rules - Tours Rules", "Index", "TourRule", new { area = "Security" }, null)
+                        </td>
+                    </tr>
+                    <tr>-->
+                        @*  *@
+                        <!--<td style="border:1px solid black">
+                            TA DA Rules
+                        </td>
+                        <td style="border:1px solid black">
+                            @Html.ActionLink("Rules - TA DA Rules", "Index", "TADARules", new { area = "Security" }, null)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black">
+                            CTV Trip Schedule - Entry
+                        </td>
+                        <td style="border:1px solid black">
+                            @Html.ActionLink("CTV - Entry", "ScheduleLists", "CTV", new { area = "Security" }, null)
+                        </td>
+                    </tr>-->
+                    @*<tr>
+                    <td style="border:1px solid black">
+                        CTV Trip Schedule - Add
+                    </td>
+                    <td style="border:1px solid black">
+                        @Html.ActionLink("CTV Trip Schedule", "Create", "CTV", new { area = "Security" }, null)
+                    </td>
+                </tr>*@
+                    <!--<tr>
+                        <td style="border:1px solid black">
+                            CTV Trip Schedule - Approval
+                        </td>
+                        <td style="border:1px solid black">
+                            @Html.ActionLink("CTV - Approval", "ApprovalLists", "CTV", new { area = "Security" }, null)
+                        </td>
+                    </tr>
+                    
+                </table>
+            </div>
+        </td>-->
+        <td></td>
+    </tr>
+</table>

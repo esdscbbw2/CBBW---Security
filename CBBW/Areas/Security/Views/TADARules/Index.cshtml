@@ -1,0 +1,131 @@
+﻿@using CBBW.BOL.TADA;
+@model IEnumerable<TADARule>
+@{
+    ViewBag.Title = "TA & DA Rules";
+}
+<div class="row newTable">
+    <div class="col-md-12">
+        <div class="heading_text_btn mb-3 mt-4">
+            <div class="leftButton">
+                <button type="submit" class="btn btn-primary"
+                        onclick="window.location.href='@Url.Action("CreateRule","TADARules",new { area = "Security" })';">
+                    <i data-feather="plus-circle"></i>
+                    Add
+                </button>
+            </div>
+            <h2>TA & DA - RULES</h2>
+        </div>
+    </div>
+    <div class="col-md-12 mb-4">
+        <div class="table-responsive">
+
+            <table id="tblTADARules" class="table table-bordered btnalign">
+                <thead>
+                    <tr>
+                        <th scope="col">SL.No.</th>
+                        <th scope="col">Entry Date</th>
+                        <th scope="col">Effective From Date</th>
+                        <th scope="col" style="background-color: pink; color: black; border: none; text-align: center;">Actions</th>
+                    </tr>
+                </thead>
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">
+                            <div class="form-group">
+                                <input id="sEntryDate" type="text" class="form-control pointer" placeholder="Search...">
+                            </div>
+                        </th>
+                        <th scope="col">
+                            <div class="form-group">
+                                <input id="sEffectiveDate" type="text" class="form-control pointer" placeholder="Search...">
+                            </div>
+                        </th>
+                        <th style="background-color:pink;color:black;border:none" scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <th scope="row">@item.SL</th>
+                                <td>@item.EntryDate.ToString("dd-MM-yyyy")</td>
+                                <td>@item.EffectiveDate.ToString("dd-MM-yyyy")</td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <span class="actionBtn">
+                                                <button type="button" class="btn primaryLink" data-toggle="tooltip"
+                                                        onclick="window.location.href='@Url.Action("ViewRule","TADARules",new { area = "Security",id = item.ID,isDelete=false })';"
+                                                        data-placement="top" title="Details">
+                                                    <i data-feather="eye"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <span class="actionBtn">
+                                                @if (!item.IsApplied)
+                                                {
+                                                    <button type="button" class="btn secondaryLink" data-toggle="tooltip"
+                                                            onclick="window.location.href='@Url.Action("ViewRule","TADARules",new { area = "Security",id = item.ID,isDelete=true })';"
+                                                            data-placement="top" title="Delete">
+                                                        <i data-feather="trash-2"></i>
+                                                    </button>
+                                                }
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+                <tfoot></tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+@section headers{
+    
+    <style>
+        .paginate_input {
+            width: 50px;
+            border-radius: 4px;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
+}
+@*<script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>*@
+@section scripts{
+
+    <script>
+        $(document).ready(function () {
+            //$('#tblTADARules').DataTable();
+            var dtinstance = $('#tblTADARules').DataTable({
+            });
+            
+            var sentrydate = $('#sEntryDate');
+            var seffectivedate = $('#sEffectiveDate');
+
+            sentrydate.on('keyup change', function () {
+                dtinstance.columns(1).search(this.value).draw();
+            });
+            sentrydate.on('click', function (e) {
+                e.stopPropagation();
+            });
+
+            seffectivedate.on('keyup change', function () {
+                dtinstance.columns(2).search(this.value).draw();
+            });
+            seffectivedate.on('click', function (e) {
+                e.stopPropagation();
+            });
+        });
+    </script>
+}
+

@@ -1,0 +1,483 @@
+﻿@model CBBW.Areas.Security.ViewModel.MGPOutInVM
+
+@{
+    ViewBag.Title = "Material Gate Pass (For Company Transport)–ENTRY";
+    int sl = 1;
+}
+
+
+<div class="container">
+
+    @using (Html.BeginForm())
+    {
+
+        @Html.HiddenFor(model => model.NoteNumber);
+        <div class="row newTable">
+            <input id="savebtndisable" type="hidden" class="form-control is-invalid">
+            <div class="fixedElement">
+                <div class="col-md-12" style="position: relative;">
+
+                    <div class="heading_text_btn mb-4 mt-4">
+                        <div class="leftButton">
+                            <button type="button" name="Submit" value="Back"
+                                    class="btn btn-primary me-2"
+                                    onclick="window.location.href='@ViewBag.CallBackUrl';">
+                                <i data-feather="arrow-left-circle"></i>
+                                Back
+                            </button>
+
+                            <button id="btnSubmit" type="button" name="Submit" value="create"
+                                    class="btn btn-secondary me-2" disabled="disabled" onclick="SaveData()">
+                                <i data-feather="upload"></i>
+                                Save
+                            </button>
+                            <button type="submit" class="btn btn-white">
+                                <i data-feather="x-circle"></i>
+                                Clear
+                            </button>
+
+                        </div>
+                        <h2>@ViewBag.Title </h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+
+                <div class="heading_text_btn2 d-block mb-2">
+                    <h2> Vehicle & Material Out Details:</h2>
+                </div>
+
+                <div class="heading_text_btn2 d-block mb-4">
+                    <h2 class="text-center">A. Vehicle Out Details:</h2>
+                </div>
+
+
+
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive max-content">
+                            <table class="table table-bordered w-100" id="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">SL.No.</th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                            Driver No. & Name
+                                        </th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                            Designation Code & Name
+                                        </th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                            Trip Type
+                                        </th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">To Location Code & Name</th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                            Carrying Out Material?
+                                        </th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                            Loaded Material Out %
+                                        </th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                            RFID Card No.
+                                        </th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                            Schedule Trip From Date
+                                        </th>
+
+                                        <th colspan="2" style="text-align: center; vertical-align: middle;" scope="col">
+                                            Actual Trip OUT
+                                        </th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">KM Out</th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                            Remarks
+
+                                        </th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;background: pink;color: #000;">
+                                            Action
+
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">Date</th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+
+                                        foreach (var item in ViewBag.ListofMatOut)
+                                        {
+                                            if (item.OutActive)
+                                            {
+
+                                                <tr class="add-row">
+                                                    <td class="text-center">@sl</td>
+                                                    <td class="text-center">
+                                                        @item.DriverNo / @item.DriverName
+                                                    </td>
+                                                    <td class="text-center">@item.DesignationCode / @item.DesignationText </td>
+
+                                                    @if (item.TripType == 1)
+                                                    {
+                                                <td class="text-center"> @item.TripType / Local Vehicle Schedule</td>
+                                                    }
+                                                    else
+                                                    {
+                                                <td class="text-center"> @item.TripType / Other Trip Schedule</td>
+                                                    }
+                                                    <td class="text-center">@item.ToLocationCodenName</td>
+                                                    @if (item.CarryingOutMaterial == true)
+                                                    {
+                                                        <td class="text-center">Yes</td>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <td class="text-center">No</td>
+                                                    }
+
+                                                    <td class="text-center">@item.LoadPercentage %</td>
+                                                    <td class="text-center">
+                                                        @item.RFIDOut
+                                                    </td>
+                                                    <td class="text-center">@item.FromDate </td>
+                                                    <td class="text-center">@item.ATripOutDate </td>
+                                                    <td class="text-center">@item.ActualTripOutTime </td>
+                                                    <td class="text-center">@item.KMSOut</td>
+                                                    <td class="text-center">
+                                                        <input type="text" class="form-control w-200" value="@item.OutRemarks" readonly>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span class="actionBtn d-block">
+
+                                                            <button type="button" onclick="OnclickHistoryDCDetails(this)" id="btn_@(sl)" data-value="@(item.ID)" class="btn primaryLink" data-toggle="tooltip" data-placement="top"
+                                                                    title="Details">
+                                                                <i data-feather="eye"></i>
+                                                            </button>
+
+
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                sl++;
+                                            }
+
+                                        }
+                                    }
+
+                                </tbody>
+
+                                <tbody id="tbody5">
+
+                                    <tr id="0" class="add-row">
+                                        <td class="text-center">
+                                            @sl
+                                        </td>
+                                        <td class="text-center">
+
+                                            <div id="0_DrivernNo"> </div>
+                                            <input id="0_NotNos" type="hidden"
+                                                   class="form-control ">
+                                            <input id="0_DriverName" type="hidden"
+                                                   class="form-control ">
+                                            <input id="0_DriverNo" type="hidden"
+                                                   class="form-control ">
+                                            <input id="0_VehicleNo" type="hidden"
+                                                   class="form-control ">
+
+
+                                        </td>
+                                        <td class="text-center">
+
+                                            <div id="0_DesgCodeName"> </div>
+
+                                            <input id="0_DesgCode" type="hidden"
+                                                   class="form-control ">
+                                            <input id="0_DesgName" type="hidden"
+                                                   class="form-control ">
+
+
+                                        </td>
+                                        <td class="text-center">
+                                            <div id="0_TripTC" class="form-group"></div>
+
+                                            <input id="0_TripType" type="hidden"
+                                                   class="form-control ">
+                                            <input id="0_TripCode" type="hidden"
+                                                   class="form-control ">
+
+
+                                        </td>
+                                        <td class="text-center">
+                                            <div id="0_Toloc" class="form-group"></div>
+                                            <input id="0_TolocName" type="hidden"
+                                                   class="form-control ">
+                                            <input id="0_TolocCode" type="hidden"
+                                                   class="form-control ">
+
+
+
+                                        </td>
+                                        <td class="text-center">
+                                            <div id="0_CarOut" class="form-group"> </div>
+                                            <input id="0_CarryOut" type="hidden"
+                                                   class="form-control ">
+
+
+
+                                        </td>
+                                        <td class="text-center">
+                                            <div id="0_LoadM" class="form-group"> </div>
+                                            <input id="0_LoadMat" type="hidden"
+                                                   class="form-control ">
+                                        </td>
+                                        <td class="text-center">
+                                            <div id="0_RFIDs"></div>
+                                            @*<select id="0_RFID"class="form-select pointer is-invalid" onchange="SelectedRFIDValid();ValidateControl()"  aria-label="Default select example">
+                                                </select>*@
+                                        </td>
+                                        <td class="text-center">
+                                            <div id="0_SchTripDate" class="form-group"> </div>
+                                            <input id="0_SchTrip" type="hidden"
+                                                   class="form-control ">
+                                            <input id="0_SchTripdatetext" type="hidden"
+                                                   class="form-control ">
+                                        </td>
+                                        <td class="text-center">
+                                            <div id="0_ActualTripDates"></div>
+                                            @*<input id="0_ActualTripDate" type="date" placeholder="11/11/2022"
+                                                class="form-control pointer is-invalid" onblur="ValidateControl()">*@
+                                        </td>
+                                        <td class="text-center">
+                                            @*<div id="0_ActualTripTimes"></div>*@
+                                            <input id="0_ActualTripTime" type="text" class="form-control timePicker pointer is-invalid" onblur="ValidateControl()" placeholder="08:00PM">
+                                        </td>
+                                        <td class="text-center">
+                                            <div id="0_KM" class="form-group"> </div>
+                                            <input id="0_KMOut" type="hidden"
+                                                   class="form-control ">
+                                        </td>
+                                        <td class="text-center">
+
+                                            <div id="0_OutRemarks"></div>
+                                            @*<input id="0_OutRemark" type="text" class="form-control">*@
+                                        </td>
+
+                                        <td class="text-center">
+
+                                            <div class="form-group" id="0_ActionDCNew"></div>
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tbody id="tbody6"></tbody>
+
+
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="mt-4">
+            <div class="heading_text_btn2 d-block mb-3">
+                <h2 class="text-center">
+                    B. Material Out Details:
+
+                </h2>
+            </div>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div>
+                        <div class="col-md-12">
+                            <div id="item-wise-table">
+                                <div class="heading_text_btn2 d-block mb-3">
+                                    <h2 class="text-center"> Reference DC Details </h2>
+                                </div>
+                                <div class="table-responsive newTable">
+
+                                    <table class="table table-bordered btnalign" id="table1">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                                    Ref. Note No.
+                                                </th>
+
+                                                <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                                    Date
+                                                </th>
+                                                <th style="text-align: center; vertical-align: middle;" scope="col">
+                                                    From Location Code & Name
+                                                </th>
+                                                <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                                    To Location Code & Name
+                                                </th>
+                                                <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2" width="15%">
+                                                    Checked Material Out & Found OK?
+                                                </th>
+                                                <th scope="col" style="text-align: center; vertical-align: middle;background: pink;color: #000;" rowspan="2" width="15%">
+                                                    Action
+                                                </th>
+                                            </tr>
+                                        </thead>
+
+
+                                        <tbody id="tbody1">
+
+                                            <tr id="0" class="add-rows">
+                                                <td class="text-center">
+                                                    <div id="0_NotNumber" class="form-group"> No Data</div>
+
+                                                </td>
+                                                <td class="text-center">
+                                                    <div id="0_NotesDate" class="form-group"></div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div id="0_fromloc" class="form-group"> </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div id="0_tonloc" class="form-group"> </div>
+
+                                                </td>
+                                                <td class="text-center">
+                                                    <div id="0_fokdiv" class="form-group">
+                                                    </div>
+
+                                                </td>
+                                                <td class="text-center">
+                                                    <span class="actionBtn d-block">
+                                                        <div class="form-group" id="0_ActionItem"></div>
+                                                    </span>
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                        <tbody id="tbody2"></tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+                            <div id="reference-DC-table2">
+                                <div class="heading_text_btn2 d-block mb-3 pt-3">
+                                    <h2 class="text-center"> Item wise Details</h2>
+
+                                </div>
+                                <div class="table-responsive newTable">
+
+                                    <table class="table table-bordered btnalign" disabled>
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                                    Item Type
+
+                                                </th>
+
+                                                <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                                    Item Code & Name
+
+                                                </th>
+                                                <th style="text-align: center; vertical-align: middle;" scope="col" rowspan="2">
+                                                    UOM
+                                                </th>
+                                                <th scope="col" style="text-align: center; vertical-align: middle;" colspan="2">
+                                                    DC Quantity
+                                                </th>
+
+                                            </tr>
+                                            <tr>
+                                                <th scope="col" style="text-align: center; vertical-align: middle;">BAGs</th>
+                                                <th scope="col" style="text-align: center; vertical-align: middle; ">KGs</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbody3">
+
+                                            <tr id="0">
+                                                <td class="text-center">
+                                                    <div id="0_itemtype">No Data</div>
+
+                                                </td>
+                                                <td class="text-center">
+                                                    <div id="0_itemcodename"></div>
+
+                                                </td>
+                                                <td class="text-center">
+                                                    <div id="0_uom"></div>
+
+                                                </td>
+                                                <td class="text-center">
+                                                    <div id="0_bags"></div>
+
+                                                </td>
+                                                <td class="text-center">
+                                                    <div id="0_kgs"></div>
+
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody id="tbody4"></tbody>
+
+                                    </table>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+
+    }
+</div>
+@section headers
+    {
+    <style>
+        .inVisible {
+            display: none;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
+}
+@section scripts{
+
+    <script src="js/moment.min.js"></script>
+    <script src="js/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/UIContent/JS/CustomePage/MGPOutDetails.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            var today = new Date();
+            var minDate = today.setDate(today.getDate() + 1);
+            var firstOpen = true;
+            var time;
+
+            $('.timePicker').datetimepicker({
+                useCurrent: false,
+                format: "hh:mm A"
+            }).on('dp.show', function () {
+                if (firstOpen) {
+                    time = moment().startOf('day');
+                    firstOpen = false;
+                } else {
+                    time = "01:00 PM"
+                }
+
+                $(this).data('DateTimePicker').date(time);
+            });
+        });
+    </script>
+
+}

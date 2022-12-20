@@ -1,0 +1,9 @@
+﻿@model CBBW.BOL.CustomModels.CustomCheckBoxOption
+@{string mid = Guid.NewGuid().ToString();}
+    @Html.CheckBoxFor(m => m.IsSelected, htmlAttributes: new { @class = "mychkbox pointer form-check-input", id = "CB_" + mid })
+&nbsp;<label class="form-check-label">@Model.DisplayText</label>    
+@*@Html.DisplayFor(m => m.DisplayText)*@
+    @Html.HiddenFor(m => m.ID)
+    @Html.HiddenFor(m => m.DisplayText, htmlAttributes: new { id = "TCB_" + mid })
+<br/>
+

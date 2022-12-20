@@ -1,0 +1,78 @@
+﻿.body {
+    background-size: cover;
+}
+
+.main-section {
+    margin: 0 auto;
+    margin-top: 60px;
+    padding: 0;
+    width: 350px;
+}
+
+.modal-content {
+    background-color: white;
+    /* opacity: 0.8;*/
+    padding: 0 0px;
+    border-radius: 10px;
+}
+
+.user-img img {
+    height: 60px;
+    width: 60px;
+}
+
+.user-img {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.form-group {
+    margin-bottom: 5px;
+}
+
+    .form-group input {
+        height: 42px;
+        border-radius: 3px;
+        border: 0;
+        font-size: 18px;
+        /* letter-spacing: 2px;*/
+        padding-left: 10px;
+        /* background-color:white;*/
+        border: 1px solid #48D1CC;
+        outline-color: #48D1CC;
+        /*width: 100%;*/
+    }
+
+    .form-group::before {
+        font-family: 'Source san', Arial, serif;
+        /*content: "\fasfa-cloud";*/
+        position: absolute;
+        font-size: 22px;
+        left: 28px;
+        padding-top: 4px;
+        color: white;
+    }
+
+    .form-group input:hover {
+        /*background-color: #48D1CC;*/
+        border: 2px solid #48D1CC;
+    }
+
+.form-input button {
+    width: 70%;
+    margin: 5px 0 25px;
+    background-color: #13445e;
+    color: #13445e;
+    /*border: 3px solid blue;*/
+    opacity: .3;
+    font-size: 19px;
+    border-radius: 5px;
+}
+
+.forgot {
+    padding: 5px 0 25px;
+}
+
+    .forgot a {
+        color: blue;
+    }

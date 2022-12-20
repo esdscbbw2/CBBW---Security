@@ -1,0 +1,232 @@
+﻿/*Style elements*/
+i {
+    font-weight: 600;
+}
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    background-image: url('../Images/cool-background (1).png');
+}
+h6 {
+    margin-bottom: .2rem;
+}
+th {
+    font-weight: 500;
+}
+label {
+    display: inline-block;
+}
+div.dataTables_wrapper div.dataTables_length label {
+    font-weight: 700 !important;
+    text-align: left !important;
+    white-space: nowrap !important;
+}
+div.dataTables_wrapper div.dataTables_length select {
+    width: auto;
+    display: inline-block;
+    border: 1px solid black;
+}
+div.dataTables_wrapper div.dataTables_filter label {
+    font-weight: 700 !important;
+    white-space: nowrap !important;
+    text-align: left !important;
+}
+div.dataTables_wrapper div.dataTables_filter input {
+    margin-left: .5em;
+    display: inline-block;
+    width: auto;
+    border: 1px solid black;
+}
+div.dataTables_wrapper div.dataTables_info {
+    padding-top: .45em;
+    font-weight: 700;
+}
+div.dataTables_wrapper div.dataTables_length select {
+    width: 60px !important;
+}
+table.table-bordered.dataTable thead tr:first-child th, table.table-bordered.dataTable thead tr:first-child td {
+    padding: .5rem .5rem;
+    padding-top: 0.5rem;
+    padding-right: 0.5rem;
+    padding-bottom: -.5rem;
+    padding-left: 0.5rem;
+}
+table.dataTable thead th, table.dataTable thead td {
+    border-bottom: 1px solid #dcdcdc;
+}
+table.dataTable tbody th, table.dataTable tbody td {
+    padding: 0.5px 0.5px !important;
+    padding-top: 0.5px !important;
+    padding-right: 0.5px !important;
+    padding-bottom: 0.5px !important;
+    padding-left: 0.5px !important;
+    vertical-align: middle !important
+}
+
+/*Style classes*/
+.navbar {
+    background-color: #0091d2;
+}
+.nav-link:hover {
+    background-color: black;
+    border-width: 2px;
+}
+.navbar .nav-item:hover .dropdown-menu {
+    display: block;
+    margin-top: 2px;
+    background-color: #0054A4;
+}
+.dropdown:hover .row {
+    color: white;
+}
+.dropdown-item {
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -moz-osx-font-smoothing: grayscale;
+    position: relative;
+    background-color: #0054A4;
+    -webkit-transition-property: color;
+    transition-property: color;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    padding: 1px;
+}
+.dropdown-item:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: black /*#2098d1*/;
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
+    -webkit-transform-origin: 50%;
+    transform-origin: 50%;
+    -webkit-transition-property: transform;
+    transition-property: transform;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-timing-function: ease-out;
+    transition-timing-function: ease-out;
+}
+.dropdown-item:hover:before, .dropdown-item:focus:before, .dropdown-item:active:before {
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+}
+.alert-message {
+    font-weight: 700;
+    font-family: "Open Sans", sans-serif;
+    color: black;
+}
+.ssrs {
+    margin-left: -1247px;
+}
+.itemssrs {
+    padding-right: 50px !important;
+}
+.h6 {
+    margin-bottom: .2rem;
+}
+.table > :not(caption) > * > * {
+    padding: .2rem .2rem !important;
+    padding-top: 0.2rem;
+    padding-right: 0.2rem;
+    padding-bottom: 0.2rem;
+    padding-left: 0.2rem;
+}
+/*right side popup button style*/
+#CEO {
+    top: 200px;
+    background-color: #ff8080;
+    background-repeat: repeat-y;
+    background-image: -moz-image-rect(top, #bf3333,#0d409c);
+    background-image: linear-gradient( #bf3333,#0d409c);
+    border-color: #0d409c #0d409c hsl(0, 21%, 35%);
+    color: #fff !important;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.62);
+}
+#Production {
+    top: 250px;
+    background-color: #2196F3;
+}
+#Material {
+    top: 300px;
+    background-color: black;
+}
+#Security {
+    top: 350px;
+    background-color: hsl(351, 68%, 11%) !important;
+    background-repeat: repeat-x;
+    background-image: -moz-linear-gradient(top, #d12741, #2f080e);
+    background-image: linear-gradient(#d12741, #2f080e);
+    border-color: #2f080e #2f080e hsl(351, 68%, 1.5%);
+    color: #fff !important;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.62);
+}
+#Personnel {
+    top: 400px;
+    background-color: hsl(360, 68%, 60%) !important;
+    background-repeat: repeat-x;
+    background-image: linear-gradient(#fbeded, #de5353);
+    border-color: #de5353 #de5353 hsl(360, 68%, 51%);
+    color: #333 !important;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.59);
+}
+/*Style IDS*/
+#NDC {
+    padding-left: 25px;
+}
+#mySidenav a {
+    position: fixed;
+    right: -85px;
+    transition: 0.5s;
+    padding: 12px;
+    width: 117px;
+    text-decoration: none;
+    font-size: 15px;
+    color: white;
+    border-radius: 5px 0px 0px 5px;
+}
+#mySidenav a:hover {
+    right: 0;
+}
+#Logout {
+    background-color: hsl(351, 68%, 11%) !important;
+    background-repeat: repeat-x;
+    background-image: -moz-linear-gradient(top, #d12741, #2f080e);
+    background-image: linear-gradient(#d12741, #2f080e);
+    border-color: #2f080e #2f080e hsl(351, 68%, 1.5%);
+    color: #fff !important;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.62);
+    margin-right: 5px;
+}
+#operations {
+    padding-top: 3px;
+}
+#Header {
+    background-color: rgb(47,117,181);
+}
+#buttonCreateNew {
+    background-color: hsl(351, 68%, 11%) !important;
+    background-repeat: repeat-x;
+    background-image: -moz-linear-gradient(top, #d12741, #2f080e);
+    background-image: linear-gradient(#d12741, #2f080e);
+    border-color: #2f080e #2f080e hsl(351, 68%, 1.5%);
+    color: #fff !important;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.62);
+}
+#tbody:nth-child(2n+1) {
+    background-color: rgb(217,226,243) !important;
+    color: black !important;
+}
+#tbody:nth-child(2n) {
+    background-color: white !important;
+    color: black !important;
+}

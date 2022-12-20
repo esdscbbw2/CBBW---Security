@@ -1,0 +1,193 @@
+﻿@using CBBW.BOL.CTV
+@model IEnumerable<TripScheduleHdr>
+@{
+
+}
+<div class="container">
+    <div class="row newTable">
+        @*@Html.HiddenFor(m => m.ID)*@
+        @using (Html.BeginForm()) 
+        {
+        <div class="fixedElement">
+            <div class="col-md-12" style="position: relative;">
+                <div class="heading_text_btn mb-4 mt-4">
+                    <div class="leftButton">
+                        <button type="submit" name="Submit" value="Add" class="btn btn-primary me-2"
+                                @*onclick="window.location.href='@Url.Action("Create", "CTV",
+                                    new { Area = "Security"})'"*@>
+                            <i data-feather="plus-circle"></i>
+                            Add
+                        </button>
+                    </div>
+
+                    @*<button type="button" class="btn primaryLink" data-toggle="tooltip" data-placement="top"
+                onclick="window.location.href='@Url.Action("Details", "CTVTripSchedule",
+                        new { Area = "Security", noteno = item.NoteNo})'">*@
+                    <h2>“Company Transport” Vehicle Trip Schedule – ENTRY</h2>
+                </div>
+            </div>
+
+        </div>
+        }
+            
+
+        <div class="table-responsive mb-4">
+
+            <table class="table table-bordered btnalign " id="example">
+                <thead>
+                    <tr>
+                        <th scope="col" rowspan="2">SL.No.</th>
+                        <th scope="col">Note No.</th>
+                        <th scope="col">Center Code & Name</th>
+                        <th scope="col">Vehicle No.</th>
+                        <th scope="col">For The Month & Year </th>
+                        <th scope="col" rowspan="2" style="background-color: pink; color: #000">Actions</th>
+                    </tr>
+                    <tr>
+                        <th scope="col">
+                            <div class="form-group">
+                                <input id="filterNoteNo" type="text" class="form-control" placeholder="Search...">
+                            </div>
+                        </th>
+                        <th scope="col">
+                            <div class="form-group">
+                                <input id="filtercentrCode" type="text" class="form-control" placeholder="Search...">
+                            </div>
+                        </th>
+                        <th scope="col">
+                            <div class="form-group">
+                                <input id="filterVehicleNo" type="text" class="form-control" placeholder="Search...">
+                            </div>
+                        </th>
+                        <th scope="col">
+                            <div class="form-group">
+                                <input id="filterMonthnYear" type="text" class="form-control" placeholder="Search...">
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                    <tr>
+                        <th scope="row">@item.SL</th>
+                        <td>@item.NoteNo</td>
+                        <td>@item.CenterCode / @item.CenterName</td>
+                        <td>@item.Vehicleno</td>
+                        <td>@item.FortheMonthnYear</td>
+                        <td>
+                            <span class="actionBtn">
+                                <button type="button" class="btn primaryLink" data-toggle="tooltip" data-placement="top"
+                                        onclick="window.location.href='@Url.Action("ViewRedirection", "CTV",
+                                                new { Area = "Security", NoteNumber = item.NoteNo})'">
+                                    <i data-feather="eye"></i>
+                                </button>
+                                @if (item.mResult == 1)
+                                {
+                                    <button type="button" class="btn primaryLink" data-toggle="tooltip"
+                                            data-placement="top"
+                                            title="Edit" onclick="window.location.href='@Url.Action("EditNote", "CTV",
+                                                new { Area = "Security", NoteNumber = item.NoteNo})';">
+                                        <i data-feather="edit"></i>
+                                    </button>
+                                }
+                                @if (item.EntryDate == DateTime.Today && item.IsDeleteBtn==0)
+                                {
+                                    <button id="deleteBtn" onclick="window.location.href='@Url.Action("ViewRedirection", "CTV",
+                                                new { Area = "Security", NoteNumber = item.NoteNo,CBUID=1})'" type="button"
+                                            class="btn secondaryLink" data-toggle="tooltip"
+                                            data-placement="top" title="Delete">
+                                        <i data-feather="trash-2"></i>
+                                    </button>
+                                }
+
+                            </span>
+                        </td>
+
+                    </tr>
+
+                        }
+
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+</div>
+@section headers
+    {
+    <style>
+        .inVisible {
+            display: none;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
+}
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                "pagingType": "input"
+            });
+
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            var tbl = $('#example').DataTable();
+            var filter1 = $('#filterNoteNo');
+
+            var filter2 = $('#filtercentrCode');
+            var filter3 = $('#filterVehicleNo');
+            filter1.on('keyup change', function () {
+                tbl.columns(1).search(this.value).draw();
+
+            });
+            filter2.on('keyup change', function () {
+                tbl.columns(2).search(this.value).draw();
+
+            });
+            filter3.on('keyup change', function () {
+                tbl.columns(3).search(this.value).draw();
+
+            });
+        });
+    </script>
+
+    <script>
+        function deleteFunction(e) {
+            var noteno = $(e).attr('data-id');
+
+            Swal.fire({
+                title: 'Delete Confirmation',
+                text: "Are You Sure Want to Delete This?",
+                icon: 'question',
+                customClass: 'swal-wide',
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                cancelButtonClass: 'btn-cancel',
+                confirmButtonColor: '#2527a2',
+                showCancelButton: true,
+            }).then(callback);
+            function callback(result) {
+                if (result.value) {
+                    /* var mid = $('#ID').val();*/
+                    var url = "/Security/CTV/DeleteTripSchedule?NoteNumber=" + noteno;
+                    window.location.href = url;
+                } else {
+                    // second variant
+                }
+            }
+        };
+
+
+    </script>
+
+}

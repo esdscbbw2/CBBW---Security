@@ -1,0 +1,226 @@
+﻿@model CBBW.Areas.Security.ViewModel.OtherTripSchDisplayVM
+@{
+
+}
+<div class="container">
+    <div class="row newTable">
+
+        <div class="fixedElement">
+            <div class="col-md-12" style="position: relative;">
+
+                <div class="heading_text_btn mb-4 mt-4">
+                    <div class="leftButton">
+                        <button id="btnBack" type="submit" class="btn btn-primary me-2"
+                                @*onclick="window.location.href='@Model.CallBackUrl';"*@>
+                            <i data-feather="arrow-left-circle"></i>
+                            Back
+                        </button>
+
+                    </div>
+                    <h2>"Company Transport” Vehicle Trip Schedule – VIEW</h2>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-12">
+            <div class="heading_text_btn2 d-block mb-4">
+                <h2 class="text-center">A. Other Trip Schedule - Date Wise Vehicle Trip Details Entry:</h2>
+            </div>
+        </div>
+
+
+        <div class="col-md-12 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <form class="form-sample form-inline ms-auto row">
+                        <div class="row d-flex align-items-center">
+                            <label class="col-form-label col-md-2">
+                                Trip Purpose  :
+                            </label>
+                            <div class="col-md-10">
+                                @Html.TextAreaFor(m => m.TripPurpose,
+                               htmlAttributes: new
+                               {
+                                   @class = "form-control",
+                                        @disabled = "disabled"
+                               })
+                                @*<input type="text" class="form-control" value="Inspection" disabled>*@
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="table-responsive newTable mt-4">
+                <table class="table table-bordered btnalign" id="example">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                SL.No
+                            </th>
+
+                            <th colspan="2" style="text-align: center; vertical-align: middle;
+                                    width: 14%;
+                                " scope="col">
+                                Scheduled Trip From
+                            </th>
+                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">From Location Type Code & Name</th>
+                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                From Location Code & Name
+                            </th>
+                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">To Location Type Code & Name</th>
+                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                To Location Code & Name
+                            </th>
+                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                Scheduled Trip To Date
+                            </th>
+                        </tr>
+                        <tr>
+                            <th scope="col" style="text-align: center; vertical-align: middle;">Date</th>
+                            <th scope="col" style="text-align: center; vertical-align: middle;">Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.SchDetailList != null)
+                        {
+                            int i = 1;
+                            foreach (var item in Model.SchDetailList)
+                            {
+                                <tr>
+                                    <th scope="row">@i</th>
+                                    <td>
+                                        @item.FromDate.ToString("dd/MM/yyyy")
+                                    </td>
+                                    <td>@item.FromTime</td>
+                                    <td>@item.FromCenterTypeCode / @item.FromCenterTypeName </td>
+                                    <td>@item.FromCentreCode / @item.FromCenterName</td>
+                                    <td>@item.ToCenterTypeName</td>
+                                    <td>@item.ToCenterName</td>
+                                    <td>@item.ToDate.ToString("dd/MM/yyyy")</td>
+                                </tr>
+                                i += 1;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="sectionB">
+        <div class="col-md-12">
+            <div class="heading_text_btn2 d-block mb-4">
+                <h2 class="text-center">
+                    B. Updated Other Trip Schedule - Date Wise Vehicle Trip Details Entry:
+
+                </h2>
+            </div>
+        </div>
+        <div class="col-md-12 newTable">
+            <div class="table-responsive">
+
+                <table class="table table-bordered btnalign">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                SL.No
+                            </th>
+                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2"> Driver No. & Name</th>
+                            <th colspan="2" style="text-align: center; vertical-align: middle;" scope="col">
+                                Scheduled Trip From
+                            </th>
+                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">From Location Type Code & Name</th>
+                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                From Location Code & Name
+                            </th>
+                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">To Location Type Code & Name</th>
+                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                To Location Code & Name
+                            </th>
+                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                Scheduled Trip To Date
+                            </th>
+
+                        </tr>
+                        <tr>
+                            <th scope="col" style="text-align: center; vertical-align: middle;">Date</th>
+                            <th scope="col" style="text-align: center; vertical-align: middle;">Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.SchDetailList != null)
+                        {
+                            int i = 1;
+                            foreach (var item in Model.SchDetailList)
+                            {
+                                <tr>
+                                    <th scope="row">@i</th>
+                                    <td class="text-center">@item.CurrentDriverName</td>
+                                    <td class="text-center">@item.FromDate.ToString("dd/MM/yyyy") </td>
+                                    <td class="text-center">@item.FromTime </td>
+                                    <td class="text-center">
+                                        @item.FromCenterTypeCode / @item.FromCenterTypeName
+                                    </td>
+                                    <td class="text-center">
+                                        @item.FromCentreCode / @item.FromCenterName
+                                    </td>
+                                    <td class="text-center">
+                                        @item.ToCenterTypeName
+                                    </td>
+                                    <td class="text-center">
+                                        @item.ToCenterName
+                                    </td>
+                                    <td class="text-center">@item.ToDate.ToString("dd/MM/yyyy")</td>
+                                </tr>
+                                i += 1;
+                            }
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="bgColor mb-4 mt-3">
+            <ul style="list-style:none; margin: 0; padding: 0;">
+                <li style="font-size: 16px;">
+                    It Is Ensured That This Trip Is Prepared As Center Code & Name “Other Place” & In Factual It Is Taking Place The Same Way As It Is selected:
+                    <select class="form-select" aria-label="Default select example" disabled>
+                        <option selected value="-1">-</option>
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                </li>
+
+                <li style="font-size: 16px;">
+                    The Other Trip Schedule Is Taken Up With The Knowledge Of DIC P&A That Transpired Through Mail:
+                    <select class="form-select" aria-label="Default select example" disabled>
+                        <option value="-1">-</option>
+                        <option selected value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#btnBack').click(function () {
+                $.ajax({
+                    url: "/Security/CTV/BackButtonClicked",
+                    success: function (result) { window.location.href = result; }
+                });
+
+            });
+        });
+    </script>
+    
+    
+    }
+
