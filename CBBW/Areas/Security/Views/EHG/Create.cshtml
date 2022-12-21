@@ -23,6 +23,7 @@
         @Html.HiddenFor(m => m.SubmitBtnActive)
         @Html.HiddenFor(m => m.DWSubmitBtnActive)
         @Html.HiddenFor(m => m.VASubmitBtnActive)
+        @Html.HiddenFor(m=>m.ehgHeader.InstructorName)
         @*@Html.HiddenFor(m => m.ehgHeader.PurposeOfAllotment)*@
         <div class="fixedElement">
             <div class="col-md-12">
@@ -567,7 +568,8 @@
                 <ul style="list-style:none;">
                     <li style="font-size: 16px;">
                         The Entry Is Done As Per Policy & As Required:
-                        <select id="AcceptCmb" class="form-select" aria-label="Default select example">
+                        <select id="AcceptCmb" style="width:110px" class="form-select" 
+                                aria-label="Default select example">
                             <option selected="">-</option>
                             <option value="1">Yes</option>
                             <option value="0">No</option>

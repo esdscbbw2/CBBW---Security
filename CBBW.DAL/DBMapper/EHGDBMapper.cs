@@ -66,7 +66,7 @@ namespace CBBW.DAL.DBMapper
                     result.ToDateStrDisplay = result.ToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
                 }
             }
-            catch(Exception ex) { }
+            catch { }
             return result;
         }
         public VehicleAllotmentDetails Map_VehicleAllotmentDetails(DataRow dr)
@@ -127,11 +127,14 @@ namespace CBBW.DAL.DBMapper
                     if (!DBNull.Value.Equals(dr["CenterCode"]))
                         result.CenterCode = int.Parse(dr["CenterCode"].ToString());
                     if (!DBNull.Value.Equals(dr["CenterName"]))
+                    {
                         result.CenterName = dr["CenterName"].ToString();
+                        result.CenterCodenName = result.CenterCode + " / " + result.CenterName;
+                    }                        
                     if (!DBNull.Value.Equals(dr["VehicleType"]))
                         result.VehicleType = int.Parse(dr["VehicleType"].ToString());
                     if (!DBNull.Value.Equals(dr["MaterialStatus"]))
-                        result.MaterialStatus = int.Parse(dr["MaterialStatus"].ToString());
+                        result.MaterialStatus = bool.Parse(dr["MaterialStatus"].ToString())?1:0;
                     if (!DBNull.Value.Equals(dr["Initiator"]))
                         result.Initiator =int.Parse(dr["Initiator"].ToString());
                     if (!DBNull.Value.Equals(dr["Instructor"]))
@@ -143,7 +146,17 @@ namespace CBBW.DAL.DBMapper
                     if (!DBNull.Value.Equals(dr["AuthorisedEmpName"]))
                         result.AuthorisedEmployeeName = dr["AuthorisedEmpName"].ToString();
                     if (!DBNull.Value.Equals(dr["IsActive"]))
-                        result.IsActive = bool.Parse(dr["IsActive"].ToString());                    
+                        result.IsActive = int.Parse(dr["IsActive"].ToString())==1?true:false;
+                    if (!DBNull.Value.Equals(dr["IsApproved"]))
+                        result.IsApproved = bool.Parse(dr["IsApproved"].ToString());
+                    if (!DBNull.Value.Equals(dr["AppDateTime"]))
+                        result.AppDateTime = DateTime.Parse(dr["AppDateTime"].ToString());
+                    if (!DBNull.Value.Equals(dr["ReasonForDisApproval"]))
+                        result.ReasonForDisApproval = dr["ReasonForDisApproval"].ToString();
+                    if (!DBNull.Value.Equals(dr["InitiatorName"]))
+                        result.InitiatorCodenName = dr["InitiatorName"].ToString();
+                    if (!DBNull.Value.Equals(dr["InstructorName"]))
+                        result.InstructorName = dr["InstructorName"].ToString();
                 }
             }
             catch { }

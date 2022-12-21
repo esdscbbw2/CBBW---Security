@@ -14,6 +14,7 @@ namespace CBBW.Areas.Security.ViewModel.EHG
         public int MaterialStatus { get; set; }
         public int Instructor { get; set; }
         public string AuthorisedEmployeeName { get; set; }
+        public string InstructorName { get; set; }
         public List<EHGTravelingPersondtls> PersonDtls { get; set; }
     }
 }

@@ -1,17 +1,12 @@
 ﻿@using System.Globalization;
 @using CBBW.Areas.Security.ViewModel.EHG;
-@model EHGHeaderDisplayVM
+@model EHGNotApprovalVM
 @{
-    ViewBag.Title = "EHG View";
+
 }
 <div class="row newTable">
     @using (Html.BeginForm())
-    {
-        @Html.HiddenFor(m => m.NoteNumber)
-        @Html.HiddenFor(m => m.CanDelete)
-        @Html.HiddenFor(m => m.CBUID)
-        @Html.HiddenFor(m => m.HeaderData.VehicleType)
-        @Html.HiddenFor(m => m.HeaderData.PurposeOfAllotment)
+    {        
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
@@ -19,17 +14,9 @@
                         <button id="btnBack" type="submit" class="btn btn-primary me-2">
                             <i data-feather="arrow-left-circle"></i>
                             Back
-                        </button>
-                        @if(Model.CanDelete)
-                        {
-                            <button id="btnDelete" type="button" name="Submit" value="Delete"
-                                    class="btn btn-primary me-2">
-                                <i data-feather="trash-2"></i>
-                                Delete
-                            </button>
-                        }
+                        </button>                        
                     </div>
-                    <h2>Employee’s Travelling Details & Vehicle Allotment (By HG) – @Model.HeaderText </h2>
+                    <h2>Employee’s Travelling Details & Vehicle Allotment (By HG) – APPROVAL </h2>
                 </div>
             </div>
         </div>
@@ -50,19 +37,25 @@
                             Note No. :
                         </label>
                         <div class="col-md-3">
-                            <input type="text" class="form-control" value="@Model.NoteNumber" disabled>
+                            @Html.DropDownListFor(m => m.NoteList,
+                                new SelectList(Model.NoteNumber, "NoteNumber", "NoteNumber"),
+                                "Select Vehicle Type To Be Allotted",
+                                htmlAttributes: new
+                                {
+                                    @class = "form-select pointer"
+                                })
                         </div>
                         <label class="col-form-label col-md-1">
                             Date  :
                         </label>
                         <div class="col-md-2">
-                            <input type="text" class="form-control" value="@Model.HeaderData.EntryDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)" disabled>
+                            <input type="text" class="form-control" value="@DateTime.Today.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)" disabled>
                         </div>
                         <label class="col-form-label col-md-1">
                             Time  :
                         </label>
                         <div class="col-md-2">
-                            <input type="text" class="form-control" value="@Model.HeaderData.EntryTime" disabled>
+                            <input type="text" class="form-control" value="@DateTime.Now.ToString("hh:mm tt")" disabled>
                         </div>
                     </div>
                     <div class="row d-flex align-items-center mb-4">
@@ -70,7 +63,7 @@
                             Center Code & Name  :
                         </label>
                         <div class="col-md-6">
-                            <input type="text" class="form-control" value="@Model.HeaderData.CenterCodenName" disabled>
+                            <input id="CentreCodenNameInput" type="text" class="form-control" value="" disabled>
                         </div>
                     </div>
                     <div class="row d-flex align-items-center mb-4">
@@ -78,7 +71,7 @@
                             Vehicle Type To Be Allotted   :
                         </label>
                         <div class="col-md-6">
-                            <input type="text" class="form-control" value="@Model.HeaderData.VehicleTypeText" disabled>
+                            <input id="VehicleTypeInput" type="text" class="form-control" value="" disabled>
                         </div>
                     </div>
                     <div id="for_LV" style="display:block;">
@@ -383,7 +376,7 @@
                     <li style="font-size: 16px;">
                         The Entry Is Done As Per Policy & As Required:
                         <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
-                    </li>                    
+                    </li>
                 </ul>
             </div>
             <div id="ApprovDiv" class="card mt-4 mb-4">
@@ -414,94 +407,3 @@
 
     }
 </div>
-@section headers
-{
-
-}
-@section scripts{
-    <script>
-        $(document).ready(function () {
-            var isFromApproval = $('#CBUID').val();
-            var appOptionli = $('#ApprovalOptionLi');
-            var viewoptionLi = $('#ViewOptionLi');
-            var appDiv = $('#ApprovDiv');
-            var viewappDiv = $('#ViewApprovDiv');
-            if (isFromApproval == 1) {
-                //appOptionli.removeClass('inVisible');
-                //appDiv.removeClass('inVisible');
-                viewappDiv.addClass('inVisible');
-                viewoptionLi.addClass('inVisible');
-            } else {
-                appOptionli.addClass('inVisible');
-                appDiv.addClass('inVisible');
-                //viewappDiv.removeClass('inVisible');
-                //viewoptionLi.removeClass('inVisible');
-            }
-        });
-    </script>
-    <script>
-        $(document).ready(function () {
-            var vehicletype = $('#HeaderData_VehicleType').val();
-            var poa = $('#HeaderData_PurposeOfAllotment').val();
-            var forManagementDiv = $('#for_management');
-            var forOfficeDiv = $('#for_office');
-            //alert(vehicletype + ' - ' + poa)
-            if (vehicletype == 1 && poa == 1) {
-                forManagementDiv.removeClass('inVisible');
-                forOfficeDiv.addClass('inVisible');
-            }
-            else {
-                forManagementDiv.addClass('inVisible');
-                forOfficeDiv.removeClass('inVisible');
-            }
-
-            $('#btnBack').click(function () {
-                $.ajax({
-                    url: "/Security/EHG/BackButtonClicked",
-                    success: function (result) { window.location.href = result; }
-                });
-            });
-        });
-    </script>
-    <script>
-        $(document).ready(function () {
-            //var mymsg = '@ViewBag.ErrMsg';
-            if ('@ViewBag.ErrMsg' != '') {
-                Swal.fire({
-                    title: 'Failed To Submit',
-                    text: "@ViewBag.ErrMsg",
-                    icon: 'warning',
-                    customClass: 'swal-wide',
-                    buttons: {
-                        //cancel: 'Cancel',
-                        confirm: 'Ok'
-                    },
-                    //cancelButtonClass: 'btn-cancel',
-                    confirmButtonColor: '#2527a2',
-                });
-            };
-            if ('@ViewBag.Msg' != '') {
-                Swal.fire({
-                    title: 'Confirmation',
-                    text: "@ViewBag.Msg",
-                    icon: 'success',
-                    customClass: 'swal-wide',
-                    buttons: {
-                        confirm: 'Ok'
-                    },
-                    confirmButtonColor: '#2527a2',
-                }).then(callback);
-                function callback(result) {
-                    if (result.value) {
-                        var url = "/Security/EHG/Index";
-                        window.location.href = url;
-                    }
-                }
-            };
-            @*if ('@ViewBag.BtnActive' != '') {
-                $('#BackBtnActive').val(1);
-            };
-            alert('@ViewBag.BtnActive');*@
-        });
-    </script>
-}

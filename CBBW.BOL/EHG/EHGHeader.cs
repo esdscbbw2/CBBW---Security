@@ -24,11 +24,17 @@ namespace CBBW.BOL.EHG
         public int MaterialStatus { get; set; }
         public int Initiator { get; set; }
         public int Instructor { get; set; }
+        public string InstructorName { get; set; }
         public int AuthorisedEmpNo { get; set; }
         public string AuthorisedEmployeeName { get; set; }
         public string InitiatorName { get; set; }
         public string InitiatorCodenName { get; set; }
         public bool IsActive { get; set; }
         public string POA2 { get; set; }
+        public bool IsApproved { get; set; }
+        public DateTime AppDateTime { get; set; }
+        public string ReasonForDisApproval { get; set; }
+        public string POAText { get; set; }
+        public string VehicleTypeText { get; set; }
     }
 }

@@ -24,5 +24,6 @@ namespace CBBW.BOL.EHG
         public string OtherVehicleNumber { get; set; }
         public string OtherVehicleModelName { get; set; }
         public bool IsActive { get; set; }
+        public string VehicleBelongsToText { get; set; }
     }
 }

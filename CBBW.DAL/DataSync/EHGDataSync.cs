@@ -16,7 +16,7 @@ namespace CBBW.DAL.DataSync
             try
             {
                 int paracount = 0;
-                SqlParameter[] para = new SqlParameter[21];
+                SqlParameter[] para = new SqlParameter[23];
                 para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
                 para[paracount++].Value = header.NoteNumber;
                 para[paracount] = new SqlParameter("@EntryDate", SqlDbType.Date);
@@ -60,6 +60,11 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = dtl.PurposeOfVisit;
                 para[paracount] = new SqlParameter("@TADADenied", SqlDbType.Bit);
                 para[paracount++].Value = dtl.TADADenied;
+
+                para[paracount] = new SqlParameter("@InstructorName", SqlDbType.NVarChar, 100);
+                para[paracount++].Value = header.InstructorName;
+                para[paracount] = new SqlParameter("@InitiatorName", SqlDbType.NVarChar, 100);
+                para[paracount++].Value = header.InitiatorCodenName;
                 using (SQLHelper sql = new SQLHelper("[EHG].[SetEHGHdrForManagement]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataTable(para, ref pMsg);
@@ -149,7 +154,7 @@ namespace CBBW.DAL.DataSync
             try
             {
                 int paracount = 0;
-                SqlParameter[] para = new SqlParameter[12];
+                SqlParameter[] para = new SqlParameter[14];
                 para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
                 para[paracount++].Value =header.NoteNumber;
                 para[paracount] = new SqlParameter("@EntryDate", SqlDbType.Date);
@@ -174,6 +179,10 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = header.PurposeOfAllotment;
                 para[paracount] = new SqlParameter("@AuthorisedEmpName", SqlDbType.NVarChar, 50);
                 para[paracount++].Value = header.AuthorisedEmployeeName;
+                para[paracount] = new SqlParameter("@InstructorName", SqlDbType.NVarChar, 100);
+                para[paracount++].Value = header.InstructorName;
+                para[paracount] = new SqlParameter("@InitiatorName", SqlDbType.NVarChar, 100);
+                para[paracount++].Value = header.InitiatorCodenName;
                 using (SQLHelper sql = new SQLHelper("[EHG].[UpdateEHGHdr]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataTable(para, ref pMsg);
@@ -245,13 +254,13 @@ namespace CBBW.DAL.DataSync
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
         public DataTable GetEHGNoteList(int DisplayLength,int DisplayStart,int SortColumn,
-            string SortDirection,string SearchText,int CentreCode,ref string pMsg) 
+            string SortDirection,string SearchText,int CentreCode,bool IsApprovedList, ref string pMsg) 
         {
             try
             {
                 SortDirection = SortDirection.Substring(0, 1).ToUpper();
                 int paracount = 0;
-                SqlParameter[] para = new SqlParameter[6];
+                SqlParameter[] para = new SqlParameter[7];
                 para[paracount] = new SqlParameter("@DisplayLength", SqlDbType.Int);
                 para[paracount++].Value = DisplayLength;
                 para[paracount] = new SqlParameter("@DisplayStart", SqlDbType.Int);
@@ -264,7 +273,44 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = SearchText;
                 para[paracount] = new SqlParameter("@CentreCode", SqlDbType.Int);
                 para[paracount++].Value = CentreCode;
+                para[paracount] = new SqlParameter("@IsApprovedList", SqlDbType.Bit);
+                para[paracount++].Value = IsApprovedList;
                 using (SQLHelper sql = new SQLHelper("[EHG].[GetEHGNoteList]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable getNoteListToBeApproved(ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("select * from [EHG].[getNoteListToBeApproved]()", CommandType.Text))
+                {
+                    return sql.GetDataTable();
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable SetEHGHdrAppStatus(string NoteNumber,bool IsApproved,string ReasonForDisApproval,
+            int ApproverID, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[5];
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
+                para[paracount++].Value = NoteNumber;
+                para[paracount] = new SqlParameter("@EntryDateTime", SqlDbType.DateTime);
+                para[paracount++].Value = DateTime.Now;
+                para[paracount] = new SqlParameter("@IsApproved", SqlDbType.Bit);
+                para[paracount++].Value = IsApproved;
+                para[paracount] = new SqlParameter("@ReasonForDisApproval", SqlDbType.NVarChar);
+                para[paracount++].Value = ReasonForDisApproval;
+                para[paracount] = new SqlParameter("@ApproverID", SqlDbType.Int);
+                para[paracount++].Value = ApproverID;
+                using (SQLHelper sql = new SQLHelper("[EHG].[SetEHGHdrAppStatus]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataTable(para, ref pMsg);
                 }

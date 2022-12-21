@@ -144,7 +144,9 @@
     <Compile Include="Areas\Security\ViewModel\CTVApprovalVM.cs" />
     <Compile Include="Areas\Security\ViewModel\CTVHdrEntryVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EHG\DateWiseTourDtlVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\EHG\EHGHeaderDisplayVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EHG\EHGHeaderEntryVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\EHG\EHGNotApprovalVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EHG\EHGTravellingPersonsVM.cs" />
     <Compile Include="Areas\Security\ViewModel\LocalVehicleTripScheduleVM.cs" />
     <Compile Include="Areas\Security\ViewModel\LVTSFromMatVM.cs" />
@@ -369,6 +371,10 @@
     <Content Include="Areas\Security\Views\EHG\Index.cshtml" />
     <Content Include="Areas\Security\Views\EHG\VehicleAllotment.cshtml" />
     <Content Include="Areas\Security\Views\EHG\ViewNote.cshtml" />
+    <Content Include="Areas\Security\Views\EHG\ViewVADetails.cshtml" />
+    <Content Include="Areas\Security\Views\EHG\ViewDWTDetails.cshtml" />
+    <Content Include="Areas\Security\Views\EHG\NoteApproveList.cshtml" />
+    <Content Include="Areas\Security\Views\EHG\ApproveNote.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />

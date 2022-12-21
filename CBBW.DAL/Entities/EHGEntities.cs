@@ -127,12 +127,14 @@ namespace CBBW.DAL.Entities
             _DBResponseMapper.Map_DBResponse(_datasync.RemoveEHGNote(NoteNumber, RemoveTag, ActiveTag, ref pMsg), ref pMsg, ref result);
             return result;
         }
-        public List<EHGNoteList> GetEHGNoteList(int DisplayLength, int DisplayStart, int SortColumn, string SortDirection, string SearchText, int CentreCode, ref string pMsg)
+        public List<EHGNoteList> GetEHGNoteList(int DisplayLength, int DisplayStart, 
+            int SortColumn, string SortDirection, string SearchText, int CentreCode,
+            bool IsApprovedList,ref string pMsg)
         {
             List<EHGNoteList> result = new List<EHGNoteList>();
             try
             {
-                dt = _datasync.GetEHGNoteList(DisplayLength, DisplayStart, SortColumn, SortDirection, SearchText,CentreCode,ref pMsg);
+                dt = _datasync.GetEHGNoteList(DisplayLength, DisplayStart, SortColumn, SortDirection, SearchText,CentreCode, IsApprovedList,ref pMsg);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     for (int i = 0; i < dt.Rows.Count; i++)
@@ -142,6 +144,35 @@ namespace CBBW.DAL.Entities
                 }
             }
             catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
+        public List<EHGNote> getNoteListToBeApproved(ref string pMsg)
+        {
+            List<EHGNote> result = new List<EHGNote>();
+            try
+            {
+                dt = _datasync.getNoteListToBeApproved(ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        EHGNote x = new EHGNote();
+                        if (!DBNull.Value.Equals(dt.Rows[i]["NoteNumber"]))
+                        {
+                            x.NoteNumber = dt.Rows[i]["NoteNumber"].ToString();
+                        }
+                        result.Add(x);
+                    }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
+        public bool SetEHGHdrAppStatus(string NoteNumber, bool IsApproved, string ReasonForDisApproval,
+            int ApproverID, ref string pMsg)
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_datasync.SetEHGHdrAppStatus(NoteNumber,IsApproved,ReasonForDisApproval,ApproverID, ref pMsg), ref pMsg, ref result);
             return result;
         }
     }

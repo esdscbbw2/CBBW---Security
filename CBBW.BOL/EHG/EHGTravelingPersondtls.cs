@@ -26,6 +26,7 @@ namespace CBBW.BOL.EHG
         public bool TADADenied { get; set; }
         public bool IsActive { get; set; }
         public bool IsAuthorised { get; set; }
+        public string PersonTypeText { get; set; }
     }
     public class EHGTravelingPersondtlsForManagement : EHGTravelingPersondtls 
     {

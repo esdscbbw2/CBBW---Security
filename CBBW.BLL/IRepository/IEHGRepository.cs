@@ -21,6 +21,9 @@ namespace CBBW.BLL.IRepository
         EHGHeader getEHGNoteHdr(string Notenumber, ref string pMsg);
         bool RemoveEHGNote(string NoteNumber, int RemoveTag, int ActiveTag, ref string pMsg);
         List<EHGNoteList> GetEHGNoteList(int DisplayLength, int DisplayStart, int SortColumn, 
-            string SortDirection, string SearchText, int CentreCode, ref string pMsg);
+            string SortDirection, string SearchText, int CentreCode,bool IsApprovedList, ref string pMsg);
+        List<EHGNote> getNoteListToBeApproved(ref string pMsg);
+        bool SetEHGHdrAppStatus(string NoteNumber, bool IsApproved, string ReasonForDisApproval,
+            int ApproverID, ref string pMsg);
     }
 }

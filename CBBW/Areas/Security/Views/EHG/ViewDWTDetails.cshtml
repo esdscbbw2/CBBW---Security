@@ -1,0 +1,84 @@
+﻿@using System.Globalization;
+@using CBBW.BOL.EHG;
+@model List<DateWiseTourDetails>
+@{
+
+}
+<div class="row newTable">
+    <div class="fixedElement">
+        <div class="col-md-12">
+            <div class="heading_text_btn mb-3 mt-4">
+                <div class="leftButton">
+                    <button id="btnBack" type="button" class="btn btn-primary me-2">
+                        <i data-feather="arrow-left-circle"></i>
+                        Back
+                    </button>
+                </div>
+                <h2>Employee’s Travelling Details & Vehicle Allotment (By HG) – @ViewBag.HeaderText </h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="heading_text_btn2 d-block mb-2 pt-2">
+            <h2 class="text-center"> Date Wise Tour Details: </h2>
+        </div>
+    </div>
+    <div class="col-md-12 mb-4">
+        <div class="col-md-12 pt-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered w-100 btnalign" id="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">Sl.No. </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">
+                                        Scheduled Tour From Date
+                                    </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">Scheduled Tour To Date </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">Tour Category</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">
+                                        Center Code & Name
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null && Model.Count > 0)
+                                {
+                                    int slno = 1;
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <th scope="row">@slno</th>
+                                            <td class="text-center">@item.FromDateStrDisplay </td>
+                                            <td class="text-center">@item.ToDateStrDisplay</td>
+                                            <td class="text-center">@item.TourCatText</td>
+                                            <td class="text-center">@item.CenterNames</td>
+                                        </tr>
+                                        slno += 1;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section headers
+{
+
+}
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#btnBack').click(function () {
+                $.ajax({
+                    url: "/Security/EHG/BackButtonClicked",
+                    success: function (result) { window.location.href = result; }
+                });
+            });
+        });
+    </script>    
+}

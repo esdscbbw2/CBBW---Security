@@ -33,13 +33,71 @@ namespace CBBW.Areas.Security.Controllers
             ViewBag.LogInUser = user.UserName;
         }
         // GET: Security/EHG
+        public ActionResult ApproveNote() 
+        {
+            EHGNotApprovalVM modelobj = new EHGNotApprovalVM();
+            modelobj.NoteList = _iEHG.getNoteListToBeApproved(ref pMsg);
+
+            return View(modelobj);
+        }
+        public ActionResult ViewVADetails(string NoteNumber,int CBUID=0) 
+        {
+            VehicleAllotmentDetails modelobject = _iEHG.getVehicleAllotmentDetails(NoteNumber, 1, ref pMsg);
+            ViewBag.HeaderText= CBUID == 1 ? "APPROVAL" : "ENTRY";
+            return View(modelobject);
+        }
+        public ActionResult ViewDWTDetails(string NoteNumber,int CBUID=0) 
+        {
+            List<DateWiseTourDetails> modelobject = _iEHG.getDateWiseTourDetails(NoteNumber, 1, ref pMsg);
+            ViewBag.HeaderText = CBUID == 1 ? "APPROVAL" : "ENTRY";
+            return View(modelobject);
+        }
         public ActionResult ViewNote(string NoteNumber,int CanDelete=0,int CBUID=0) 
         {
             if (CBUID == 0) { _iUser.RecordCallBack("/Security/EHG/Index"); }
             if (CBUID == 1) { _iUser.RecordCallBack("/Security/EHG/NoteApproveList"); }
-            return View();
+            EHGHeaderDisplayVM modelobj = new EHGHeaderDisplayVM();
+            modelobj.NoteNumber = NoteNumber;
+            modelobj.HeaderData = _iEHG.getEHGNoteHdr(NoteNumber, ref pMsg);
+            modelobj.TPDetails = _iEHG.getTravelingPersonDetails(NoteNumber, 1, ref pMsg);
+            modelobj.CanDelete = CanDelete == 1 ? true : false;
+            modelobj.CBUID = CBUID;
+            modelobj.HeaderText = CBUID == 1 ? "APPROVAL" : "ENTRY";
+            return View(modelobj);
+        }
+        [HttpPost]
+        public ActionResult ViewNote(EHGHeaderDisplayVM modelobj, string Submit) 
+        {
+            string baseUrl="/Security/EHG/ViewNote?NoteNumber=" + modelobj.NoteNumber + "&CanDelete=" + modelobj.CanDelete+"&CBUID="+modelobj.CBUID;
+            if (Submit == "Delete")
+            {
+                if (_iEHG.RemoveEHGNote(modelobj.NoteNumber, 0, 1, ref pMsg))
+                {
+                    ViewBag.Msg = "Note Number " + model.ehgHeader.NoteNumber + " Deleted Successfully.";
+                    TempData["EHG"] = null;
+                }
+                else { ViewBag.ErrMsg = "Updation Failed For Note Number " + model.ehgHeader.NoteNumber; }
+
+            }
+            else if (Submit == "DWT") 
+            {
+                _iUser.RecordCallBack(baseUrl);
+                return RedirectToAction("ViewDWTDetails","EHG",new { NoteNumber=modelobj.NoteNumber, CBUID=modelobj.CBUID });
+            } 
+            else if (Submit == "VAD") 
+            {
+                _iUser.RecordCallBack(baseUrl);
+                return RedirectToAction("ViewVADetails","EHG", new { NoteNumber = modelobj.NoteNumber, CBUID = modelobj.CBUID });
+            }
+            modelobj.HeaderData = _iEHG.getEHGNoteHdr(modelobj.NoteNumber, ref pMsg);
+            modelobj.TPDetails = _iEHG.getTravelingPersonDetails(modelobj.NoteNumber, 1, ref pMsg);
+            return View(modelobj);
         }
         public ActionResult Index()
+        {
+            return View();
+        }
+        public ActionResult NoteApproveList() 
         {
             return View();
         }
@@ -67,14 +125,12 @@ namespace CBBW.Areas.Security.Controllers
                 if (model.StaffList == null) { model.StaffList = model.getStaffList(user.CentreCode); }
                 if (model.OtherStaffList == null) { model.OtherStaffList = model.getOtherStaffList(user.CentreCode); }
             }
-
             TempData["EHG"] = model;
             return View(model);
         }
         [HttpPost]
         public ActionResult Create(EHGHeaderEntryVM model, string Submit) 
-        {
-            TempData["EHG"] = model;
+        {            
             if (Submit == "create")
             {
                 if (model.ehgHeader.VehicleType == 1 && model.ehgHeader.PurposeOfAllotment == 1)
@@ -97,23 +153,24 @@ namespace CBBW.Areas.Security.Controllers
                         dtl.TADADenied = false;
                     if (_iEHG.SetEHGHdrForManagement(model.ehgHeader, dtl, ref pMsg))
                     { 
-                        ViewBag.Msg = "Note number " + model.ehgHeader.NoteNumber + " submited successfully.";
-                        //TempData["EHG"] = null;
+                        ViewBag.Msg = "Note Number " + model.ehgHeader.NoteNumber + " Submited Successfully.";
+                        TempData["EHG"] = null;
                     }
-                    else { ViewBag.ErrMsg = "Updation failed for Note number " + model.ehgHeader.NoteNumber; }
+                    else { ViewBag.ErrMsg = "Updation Failed For Note Number " + model.ehgHeader.NoteNumber; }
                 }
                 else 
                 {
                     if (_iEHG.UpdateEHGHdr(model.ehgHeader,ref pMsg))
                     { 
-                        ViewBag.Msg = "Note number " + model.ehgHeader.NoteNumber + " submited successfully.";
+                        ViewBag.Msg = "Note Number " + model.ehgHeader.NoteNumber + " Submited Successfully.";
                         TempData["EHG"] = null;
                     }
-                    else { ViewBag.ErrMsg = "Updation failed for Note number " + model.ehgHeader.NoteNumber; }
+                    else { ViewBag.ErrMsg = "Updation Failed For Note Number " + model.ehgHeader.NoteNumber; }
                 }
             }
             else if (Submit == "VAD")
             {
+                model = CastEHGTempData();
                 return RedirectToAction("VehicleAllotment");
             }
             if (model.MDDICList == null) { model.MDDICList = model.getMDDICList(user.CentreCode); }
@@ -169,10 +226,11 @@ namespace CBBW.Areas.Security.Controllers
             TempData["EHG"] = model;
             return View(model);
         }
-        public ActionResult AddNote() 
+        public ActionResult AddNote(int ID) 
         {
             TempData["EHG"] = null;
-            return RedirectToAction("Create");
+            if (ID == 0) { return RedirectToAction("Create"); }
+            else { return RedirectToAction("ApproveNote"); }
         }
 
         #region AjaxCalling        
@@ -297,11 +355,31 @@ namespace CBBW.Areas.Security.Controllers
         public JsonResult getNoteList(int iDisplayLength,int iDisplayStart,int iSortCol_0,
             string sSortDir_0,string sSearch) 
         {
-            List<EHGNoteList> noteList = _iEHG.GetEHGNoteList(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch,user.CentreCode, ref pMsg);
+            List<EHGNoteList> noteList = _iEHG.GetEHGNoteList(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch,user.CentreCode,false,ref pMsg);
             var result = new
             {
                 iTotalRecords = noteList.FirstOrDefault().TotalCount,
+                //iPages=10,
+                //iCurrentPage=1,
                 iTotalDisplayRecords = noteList.Count(),
+                iDisplayLength= iDisplayLength,
+                iDisplayStart= iDisplayStart,
+                aaData = noteList
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getApprovedNoteList(int iDisplayLength, int iDisplayStart, int iSortCol_0,
+            string sSortDir_0, string sSearch)
+        {
+            List<EHGNoteList> noteList = _iEHG.GetEHGNoteList(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, user.CentreCode, true, ref pMsg);
+            var result = new
+            {
+                iTotalRecords = noteList.FirstOrDefault().TotalCount,
+                //iPages=10,
+                //iCurrentPage=1,
+                iTotalDisplayRecords = noteList.Count(),
+                iDisplayLength = iDisplayLength,
+                iDisplayStart = iDisplayStart,
                 aaData = noteList
             };
             return Json(result, JsonRequestBehavior.AllowGet);
@@ -315,6 +393,7 @@ namespace CBBW.Areas.Security.Controllers
             model.ehgHeader.MaterialStatus = modelobj.MaterialStatus;
             model.ehgHeader.Instructor = modelobj.Instructor;
             model.ehgHeader.AuthorisedEmployeeName = modelobj.AuthorisedEmployeeName;
+            model.ehgHeader.InstructorName = modelobj.InstructorName;
             model.PersonDtls = modelobj.PersonDtls;
             TempData["EHG"] = model;
             CustomAjaxResponse result = new CustomAjaxResponse();

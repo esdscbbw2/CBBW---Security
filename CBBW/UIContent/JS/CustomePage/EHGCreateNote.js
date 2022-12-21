@@ -37,7 +37,11 @@ function validatectrl(targetid, value) {
             if (value >=0) { isvalid = true; }
             break;
         case "ehgHeader_Instructor":
-            if (value >0) { isvalid = true; }
+            if (value > 0) {
+                var insname = $('#ehgHeader_Instructor option:selected').text();
+                $('#ehgHeader_InstructorName').val(insname);
+                isvalid = true;
+            }
             break;
         case "FromDate":
             isvalid = validatectrl_ValidateLength(value);
@@ -96,13 +100,15 @@ function DateWiseTourDtlClicked() {
     var matstat = $('#ehgHeader_MaterialStatus').val();
     var instructor = $('#ehgHeader_Instructor').val();
     var authEMpname = $('#DDAuthorisedEmpForWork option:selected').text();
+    var InstructorName = $('#ehgHeader_Instructor option:selected').text();
     //OficeWorkTbl    
     var schrecords = getRecordsFromTableV2('OficeWorkTbl');
     //var x = '{"NoteNumber":"' + notenumber + '","AuthorisedEmpName":"' + authorisedemp + '","PersonDtls":' + schrecords + '}';
     var x = '{"NoteNumber":"' + notenumber
         + '","VehicleType":"' + vehicletype + '","PurposeOfAllotment":"' + poallotment
         + '","MaterialStatus":"' + matstat + '","Instructor":"' + instructor
-        + '","AuthorisedEmployeeName":"' + authEMpname+'","PersonDtls":' + schrecords + '}';
+        + '","AuthorisedEmployeeName":"' + authEMpname
+        + '","InstructorName":"' + InstructorName+'","PersonDtls":' + schrecords + '}';
     $.ajax({
         method: 'POST',
         url: '/EHG/GetTravelingPersonDetails',
