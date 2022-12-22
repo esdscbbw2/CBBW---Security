@@ -141,7 +141,39 @@ function CloneRow_Backup(sourceTBody, destinationTBody, rowid, IsRemoveBtn, IsAd
         sl += 1;
     });
 };
-function CloneRow(sourceTBody, destinationTBody, rowid,IsRemoveBtn,IsAddBtnEnable) {
+function CloneRowWithNoControls(sourceTBody, destinationTBody, rowid) {
+    // Source table Body must have a row having (id="0" class="add-row")
+    //The controlls should have a class named "alterID";
+   //Use "htmlVal" class for a controll if the value will be picked from innerhtml.
+    //There should be "th" tag which may exclusively used for Serial Number Purpose.
+    //alert('CloneRow : ' + sourceTBody + " - " + destinationTBody + " - "+rowid);
+    var maxrows = 0, r = 0;
+    var sourcebody = $('#' + sourceTBody);
+    var destinationbody = $('#' + destinationTBody);
+    $('#' + destinationTBody + ' tr').each(function () {
+        var maxr = $(this).attr('id') * 1;
+        if (maxr > maxrows) { maxrows = maxr; }
+    });
+    if (maxrows >= 1) { r = maxrows + 1; } else { r = 1; }//Geting maximum row
+    var cloneready = sourcebody.find('tr').clone();
+    cloneready.attr("id", r);
+    cloneready.find('.alterID').each(function () {
+        that = $(this);
+        var mID = that.attr('id').split('_');
+        var newID = mID[0] + '_' + r;
+        that.attr('id', newID);
+    });    
+    cloneready.find('.htmlVal').each(function () {
+        $(this).html('');
+    });
+    destinationbody.append(cloneready);    
+    var sl = 2;
+    $('#' + destinationTBody + ' th').each(function () {
+        $(this).html(sl);
+        sl += 1;
+    });
+};
+function CloneRow(sourceTBody, destinationTBody, rowid, IsRemoveBtn, IsAddBtnEnable) {
     // Source table Body must have a row having (id="0" class="add-row")
     //The controlls should have a class named "alterID";
     // buttons should have class "cloneBtn" - For tooltip functionalities

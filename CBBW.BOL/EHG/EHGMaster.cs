@@ -26,6 +26,7 @@ namespace CBBW.BOL.EHG
         {
             VehicleBelongsTo = new List<CustomComboOptions>()
             {
+                new CustomComboOptions{ ID = 0, DisplayText = "Select Vehicle Belongs To" },
                 new CustomComboOptions{ ID = 1, DisplayText = "Company Vehicle" },
                 new CustomComboOptions{ ID = 2, DisplayText = "Other Vehicle" }
             };

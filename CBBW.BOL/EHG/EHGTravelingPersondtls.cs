@@ -31,10 +31,13 @@ namespace CBBW.BOL.EHG
     public class EHGTravelingPersondtlsForManagement : EHGTravelingPersondtls 
     {
         public DateTime ActualTourOutDate { get; set; }
+        public string ActualTourOutDateDisplay { get; set; }
         public string ActualTourOutTime { get; set; }
         public DateTime RequiredTourInDate { get; set; }
+        public string RequiredTourInDateDisplay { get; set; }
         public string RequiredTourInTime { get; set; }
         public DateTime ActualTourInDate { get; set; }
+        public string ActualTourInDateDisplay { get; set; }
         public string ActualTourInTime { get; set; }
         public int TourStatus { get; set; }
         public string TourStatusText { get; set; }

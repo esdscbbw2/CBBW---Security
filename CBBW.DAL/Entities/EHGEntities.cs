@@ -146,12 +146,12 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
-        public List<EHGNote> getNoteListToBeApproved(ref string pMsg)
+        public List<EHGNote> getNoteListToBeApproved(int CentreCode,ref string pMsg)
         {
             List<EHGNote> result = new List<EHGNote>();
             try
             {
-                dt = _datasync.getNoteListToBeApproved(ref pMsg);
+                dt = _datasync.getNoteListToBeApproved(CentreCode,ref pMsg);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     for (int i = 0; i < dt.Rows.Count; i++)

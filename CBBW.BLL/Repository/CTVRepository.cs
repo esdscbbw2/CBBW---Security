@@ -19,7 +19,6 @@ namespace CBBW.BLL.Repository
             _CTVEntities = new CTVEntities();
             _MasterEntities = new MasterEntities();
         }
-
         public bool CheckScheduleDateAvailibility(string VehicleNo, DateTime ScheduleDate, ref string pMsg)
         {
             bool result = false;
@@ -36,12 +35,10 @@ namespace CBBW.BLL.Repository
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
-
         public bool CreateNewCTVHdr(TripScheduleHdr model, ref string pMsg)
         {
             return _CTVEntities.CreateCTVHdr(model, ref pMsg);
         }
-
         public List<VehicleNo> getLCVMCVVehicleList(ref string pMsg)
         {
             return _CTVEntities.getLCVMCVVehicleList(ref pMsg);
@@ -66,12 +63,10 @@ namespace CBBW.BLL.Repository
         {
            return _CTVEntities.getNewCTVNoteNo(SchPattern, ref pMsg);
         }
-
         public List<NoteNumber> GetNoteNumbersTobeApproved(int EmpNo, int CenterCode,ref string pMsg)
         {
             return _CTVEntities.getNotenumbersTobeApproved(EmpNo, CenterCode,ref pMsg);
         }
-
         public CTVHdrDtl getSchDetailsFromNote(string NoteNumber, ref string pMsg)
         {
             return _CTVEntities.getCTVSchDetailsFromNote(NoteNumber, ref pMsg);
@@ -102,24 +97,20 @@ namespace CBBW.BLL.Repository
             }
             return result;
         }
-
         public UserInfo getUserInfo(string UserName, ref string pMsg)
         {
             return _CTVEntities.getLogInUserInfo(UserName, ref pMsg);
         }
-
         public VehicleAvblInfo getVehicleDateSlots(string VehicleNo, int IncludeOTVSch, ref string pMsg)
         {
             return _CTVEntities.getVehicleSlot(VehicleNo, IncludeOTVSch, ref pMsg);
         }
-
         public VehicleInfo getVehicleInfo(string VehicleNo, ref string pMsg)
         {
             VehicleInfo result = _CTVEntities.getVehicleInfo(VehicleNo, ref pMsg);
             result.IsSlotAvbl = _CTVEntities.getVehicleSlot(VehicleNo, 0,ref pMsg).IsSlotAvbl;
             return result;
         }
-
         public TripScheduleHdr NewTripScheduleNo(string SchPattern, ref string pMsg)
         {
             TripScheduleHdr result = new TripScheduleHdr();
@@ -149,12 +140,10 @@ namespace CBBW.BLL.Repository
             catch { }
             return result;
         }
-
         public bool RemoveNote(string NoteNumber,int OnlyDtl, ref string pMsg)
         {
             return _CTVEntities.RemoveNote(NoteNumber, OnlyDtl, ref pMsg);
         }
-
         public bool UpdateOthTripSchDtl(string Notenumber,string TripPurpose, List<OthTripTemp> dtldata, ref string pMsg)
         {
             return _CTVEntities.InsertOthTripSchDtl(Notenumber, TripPurpose, dtldata, ref pMsg);
@@ -187,22 +176,18 @@ namespace CBBW.BLL.Repository
             return _CTVEntities.setCTVApproval(Notenumber,EmployeeNumber,Isapproved,
                 ApprovalDatetime,DisApprovalReason,ref pMsg);
         }
-
         public IEnumerable<CustomComboOptions> getDriverList(string ExpDriverName, ref string pMsg)
         {
             return _CTVEntities.getDriverList(ExpDriverName, ref pMsg);
         }
-
         public bool setLocalTripSchDriver(string Notenumber, List<LTSDriVerChange> dtldata, ref string pMsg)
         {
            return _CTVEntities.setLocalTripSchDriver(Notenumber, dtldata, ref pMsg);
         }
-
         public bool setLocalTripSchDtls(string Notenumber, List<LocVehSchFromMat> dtldata, ref string pMsg)
         {
            return _CTVEntities.setLocalTripSchDtls(Notenumber, dtldata, ref pMsg);
         }
-
         public bool SetCTVEditHdr(string Notenumber, int EmployeeNumber, int ApprovalFor, ref string pMsg)
         {
             return _CTVEntities.SetCTVEditHdr(Notenumber, EmployeeNumber, ApprovalFor, ref pMsg);

@@ -12,6 +12,10 @@ namespace CBBW.Areas.Security.ViewModel.EHG
         public List<EHGNote> NoteList { get; set; }
         public int AppStatus { get; set; }
         public string ReasonForDisApproval { get; set; }
-
+        public EHGHeader Header { get; set; }
+        public List<EHGTravelingPersondtlsForManagement> TPDetails { get; set; }
+        public int BackBtnActive { get; set; }
+        public int DWTActive { get; set; }
+        public int VAActive { get; set; }
     }
 }

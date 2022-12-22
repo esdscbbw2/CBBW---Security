@@ -282,11 +282,11 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-        public DataTable getNoteListToBeApproved(ref string pMsg)
+        public DataTable getNoteListToBeApproved(int CentreCode,ref string pMsg)
         {
             try
             {
-                using (SQLHelper sql = new SQLHelper("select * from [EHG].[getNoteListToBeApproved]()", CommandType.Text))
+                using (SQLHelper sql = new SQLHelper("select * from [EHG].[getNoteListToBeApproved]("+ CentreCode + ")", CommandType.Text))
                 {
                     return sql.GetDataTable();
                 }

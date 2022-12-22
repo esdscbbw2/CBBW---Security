@@ -6,15 +6,29 @@
 }
 <div class="row newTable">
     @using (Html.BeginForm())
-    {        
+    {
+        @Html.HiddenFor(m => m.BackBtnActive)
+        @Html.HiddenFor(m => m.DWTActive)
+        @Html.HiddenFor(m => m.VAActive)
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
                     <div class="leftButton">
-                        <button id="btnBack" type="submit" class="btn btn-primary me-2">
+                        <button id="btnBack" type="button" class="btn btn-primary me-2">
                             <i data-feather="arrow-left-circle"></i>
                             Back
-                        </button>                        
+                        </button>
+                        <button id="btnSubmit" type="submit" name="Submit" value="create" disabled
+                                class="btn btn-secondary me-2">
+                            <i data-feather="upload"></i>
+                            Submit
+                        </button>
+                        <button type="button"
+                                onclick="window.location.href='/Security/EHG/ClearBtnClicked?PageID=3';"
+                                class="btn btn-white">
+                            <i data-feather="x-circle"></i>
+                            Clear
+                        </button>
                     </div>
                     <h2>Employee’s Travelling Details & Vehicle Allotment (By HG) – APPROVAL </h2>
                 </div>
@@ -37,9 +51,9 @@
                             Note No. :
                         </label>
                         <div class="col-md-3">
-                            @Html.DropDownListFor(m => m.NoteList,
-                                new SelectList(Model.NoteNumber, "NoteNumber", "NoteNumber"),
-                                "Select Vehicle Type To Be Allotted",
+                            @Html.DropDownListFor(m => m.NoteNumber,
+                                new SelectList(Model.NoteList, "NoteNumber", "NoteNumber"),
+                                "Select Note Number",
                                 htmlAttributes: new
                                 {
                                     @class = "form-select pointer"
@@ -80,7 +94,7 @@
                                 Tour “Purpose Of Allotment"  :
                             </label>
                             <div class="col-md-6">
-                                <input type="text" class="form-control" value="@Model.HeaderData.POAText" disabled>
+                                <input id="POAInput" type="text" class="form-control" value="" disabled>
                             </div>
                         </div>
                     </div>
@@ -90,7 +104,7 @@
                             Carrying Out Any Material  :
                         </label>
                         <div class="col-md-6">
-                            <input type="text" class="form-control" value="@(Model.HeaderData.MaterialStatus==1?"Yes":"No")" disabled>
+                            <input id="MaterialStatInput" type="text" class="form-control" value="" disabled>
                         </div>
                     </div>
                     <div class="row d-flex  align-items-center mb-4">
@@ -98,7 +112,7 @@
                             Initiated This Doc. On The Instruction Of  :
                         </label>
                         <div class="col-md-6">
-                            <input type="text" class="form-control" value="@Model.HeaderData.InstructorName" disabled>
+                            <input id="InstructorInput" type="text" class="form-control" value="" disabled>
                         </div>
                     </div>
                     <div class="row d-flex  align-items-center mb-4">
@@ -106,40 +120,15 @@
                             Informed & Received Verbal Permission From DIC – Admin, T&S  :
                         </label>
                         <div class="col-md-6">
-                            <input type="text" class="form-control" value="@Model.HeaderData.InitiatorCodenName" disabled>
-
+                            <input id="InitiatorInput" type="text" class="form-control" value="" disabled>
                         </div>
                     </div>
                     @*</form>*@
                 </div>
             </div>
-            <div id="ViewApprovDiv" class="card mt-4 mb-4">
-                <div class="card-body">
-                    <div class="row d-flex align-items-center">
-                        <div class="col-md-2 col-form-label">
-                            <label>Approved :</label>
-                        </div>
-                        <div class="col-md-2">
-                            <input type="text" class="form-control" value="@Model.HeaderData.IsApproved" disabled>
-                        </div>
-                        <div class="col-md-2 col-form-label">
-                            <label>Date &amp; Time Of Approval :</label>
-                        </div>
-                        <div class="col-md-2">
-                            <input type="text" class="form-control" value="@(Model.HeaderData.AppDateTime.ToString("dd/MM/yyyy hh:mm tt",CultureInfo.InvariantCulture).Substring(0,10)=="01/01/0001"?"":Model.HeaderData.AppDateTime.ToString("dd/MM/yyyy hh:mm tt",CultureInfo.InvariantCulture))" disabled="">
-                        </div>
-                        <div class="col-md-2 col-form-label">
-                            <label>Reason If Not Approved :</label>
-                        </div>
-                        <div class="col-md-2">
-                            <textarea name="" id="" cols="10" rows="2" class="form-control" disabled>@(@Model.HeaderData.IsApproved?"":Model.HeaderData.ReasonForDisApproval)</textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="col-md-12 mt-4 pt-3" id="for_management">
                 <div class="heading_text_btn2 d-block mb-4">
-                    <h2>
+                    <h2 id="TPDHeader">
                         Travelling Person Details: For Management
                     </h2>
                 </div>
@@ -149,6 +138,9 @@
                             <table class="table table-bordered w-100" id="table">
                                 <thead>
                                     <tr>
+                                        <th class="OffSpecial" scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                            SL.No.
+                                        </th>
                                         <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
                                             Person Type
                                         </th>
@@ -159,251 +151,207 @@
                                         <th scope="col" colspan="2" style="text-align: center; vertical-align: middle;">
                                             Scheduled Tour From
                                         </th>
-                                        <th scope="col" colspan="2" style="text-align: center; vertical-align: middle;"> Actual Tour OUT </th>
+                                        <th class="mngSpecial" scope="col" colspan="2" style="text-align: center; vertical-align: middle;"> Actual Tour OUT </th>
                                         <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">Scheduled Tour To Date </th>
                                         <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="12%">
                                             Purpose Of Visit
                                         </th>
                                         <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">T.A & D.A Denied </th>
-                                        <th scope="col" colspan="2" style="text-align: center; vertical-align: middle;">
+                                        <th class="mngSpecial" scope="col" colspan="2" style="text-align: center; vertical-align: middle;">
                                             Required Tour IN
                                         </th>
-                                        <th scope="col" colspan="2" style="text-align: center; vertical-align: middle;"> Actual Tour IN </th>
-                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                        <th class="mngSpecial" scope="col" colspan="2" style="text-align: center; vertical-align: middle;"> Actual Tour IN </th>
+                                        <th class="mngSpecial" scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
                                             Status
                                         </th>
                                     </tr>
                                     <tr>
                                         <th scope="col" style="text-align: center; vertical-align: middle;" width="6%">Date</th>
                                         <th scope="col" style="text-align: center; vertical-align: middle;" width="9%">Time</th>
-                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="6%">Date</th>
-                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="6%">Time</th>
-                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="6%">Date</th>
-                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="6%">Time</th>
-                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="6%">Date</th>
-                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="6%">Time</th>
+                                        <th class="mngSpecial" scope="col" style="text-align: center; vertical-align: middle;" width="6%">Date</th>
+                                        <th class="mngSpecial" scope="col" style="text-align: center; vertical-align: middle;" width="6%">Time</th>
+                                        <th class="mngSpecial" scope="col" style="text-align: center; vertical-align: middle;" width="6%">Date</th>
+                                        <th class="mngSpecial" scope="col" style="text-align: center; vertical-align: middle;" width="6%">Time</th>
+                                        <th class="mngSpecial" scope="col" style="text-align: center; vertical-align: middle;" width="6%">Date</th>
+                                        <th class="mngSpecial" scope="col" style="text-align: center; vertical-align: middle;" width="6%">Time</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    @if (Model.TPDetails != null && Model.TPDetails.Count > 0)
-                                    {
-                                        foreach (var item in Model.TPDetails)
-                                        {
-                                            <tr>
-                                                <th scope="row" class="text-center">Driver</th>
-                                                <td class="text-center">
-                                                    @item.EmployeeNonName
-                                                </td>
-                                                <td class="text-center">@item.DesignationCodenName </td>
-                                                <td class="text-center">
-                                                    @item.FromDateStrDisplay
-                                                </td>
-
-                                                <td class="text-center">
-                                                    @item.FromTime
-                                                </td>
-                                                <td class="text-center">
-                                                    @(item.ActualTourOutDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)=="01/01/0001"?"": item.ActualTourOutDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture))
-                                                </td>
-                                                <td class="text-center">
-                                                    @item.ActualTourOutTime
-                                                </td>
-                                                <td class="text-center">
-                                                    @item.ToDateStrDisplay
-                                                </td>
-                                                <td class="text-center">
-                                                    <textarea name="" class="form-control pointer" cols="20" rows="2" data-toggle="tooltip" data-placement="bottom" title="" data-bs-original-title="@item.PurposeOfVisit">@item.PurposeOfVisit</textarea>
-                                                </td>
-                                                <td class="text-center">
-                                                    @(item.TADADenied?"Yes":"No")
-                                                </td>
-                                                <td class="text-center">
-                                                    @(item.RequiredTourInDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)=="01/01/0001"?"": item.RequiredTourInDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture))
-                                                </td>
-                                                <td class="text-center">
-                                                    @item.RequiredTourInTime
-                                                </td>
-                                                <td class="text-center">
-                                                    @(item.ActualTourInDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)=="01/01/0001"?"": item.ActualTourInDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture))
-                                                </td>
-                                                <td class="text-center">
-                                                    @item.ActualTourInTime
-                                                </td>
-                                                <td class="text-center">
-                                                    Continue
-                                                </td>
-                                            </tr>
-                                        }
-                                    }
+                                <tbody id="tbody1">
+                                    <tr id="0" class="add-row">
+                                        <th scope="row" class="text-center OffSpecial">1</th>
+                                        <td id="PersonTypeTD" scope="row"
+                                            class="text-center alterID htmlVal">
+                                        </td>
+                                        <td id="ENoTD" class="text-center alterID htmlVal">
+                                        </td>
+                                        <td id="DesgTD" class="text-center alterID htmlVal"> </td>
+                                        <td id="schFromDateTD" class="text-center alterID htmlVal">
+                                        </td>
+                                        <td id="schFromTimeTD" class="text-center alterID htmlVal">
+                                        </td>
+                                        <td id="ActTourOutdtTD" class="text-center mngSpecial alterID htmlVal">
+                                        </td>
+                                        <td id="ActTourOutTimeTD" class="text-center mngSpecial alterID htmlVal">
+                                        </td>
+                                        <td id="schToDateTD" class="text-center alterID htmlVal">
+                                        </td>
+                                        <td id="povCtrl" class="text-center">
+                                            @*<textarea id="povCtrl" name="" class="form-control pointer alterID htmlVal" cols="20" rows="2" data-toggle="tooltip" data-placement="bottom" title="" data-bs-original-title=""></textarea>*@
+                                        </td>
+                                        <td id="TADADeniedTD" class="text-center alterID htmlVal">
+                                        </td>
+                                        <td id="RTInDateTD" class="text-center mngSpecial alterID htmlVal">
+                                        </td>
+                                        <td id="RTITimeTD" class="text-center mngSpecial alterID htmlVal">
+                                        </td>
+                                        <td id="ATInDateTD" class="text-center mngSpecial alterID htmlVal">
+                                        </td>
+                                        <td id="ATITimeTD" class="text-center mngSpecial alterID htmlVal">
+                                        </td>
+                                        <td id="StatusTD" class="text-center mngSpecial alterID htmlVal">
+                                        </td>
+                                    </tr>
                                 </tbody>
+                                <tbody id="tbody2"></tbody>
                             </table>
                         </div>
                     </div>
                 </div>
                 <div class="card mt-4 mb-3">
                     <div class="card-body approvalForm">
-                        <form class="form-sample form-inline row ms-auto">
-                            <div class="row d-flex align-items-center">
-                                <div class="col-form-label col-md-3">
-                                    <label>Authorized Employee No. & Name :</label>
-                                </div>
-                                <div class="col-md-5">
-                                    <input type="text" class="form-control" value="@Model.HeaderData.AuthorisedEmployeeName" disabled="">
-                                </div>
+                        <div class="row d-flex align-items-center">
+                            <div class="col-form-label col-md-3">
+                                <label>Authorized Employee No. & Name :</label>
                             </div>
-                        </form>
-
+                            <div class="col-md-5">
+                                <input id="AuthorizeEmpInput" type="text" class="form-control" value="" disabled>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div id="for_office">
-                <div class="col-md-12 mt-4 pt-3">
-                    <div class="heading_text_btn2 d-block mb-4">
-                        <h2> Travelling Person Details: For Office Work </h2>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered w-100 btnalign" id="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
-                                                SL.No.
-                                            </th>
-                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
-                                                Person Type
-                                            </th>
-                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">Employee No. & Name</th>
-                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
-                                                Designation Code & Name
-                                            </th>
-                                            <th scope="col" colspan="2" style="text-align: center; vertical-align: middle;">
-                                                Scheduled Tour From
-                                            </th>
-                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">Scheduled Tour To Date </th>
-
-                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="12%">
-                                                Purpose Of Visit
-                                            </th>
-                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">T.A & D.A Denied </th>
-
-                                        </tr>
-                                        <tr>
-                                            <th scope="col" style="text-align: center; vertical-align: middle;">Date</th>
-                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="9%">Time</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if (Model.TPDetails != null && Model.TPDetails.Count > 0)
-                                        {
-                                            int slno = 1;
-                                            foreach (var item in Model.TPDetails)
-                                            {
-                                                <tr>
-                                                    <th scope="row">@slno</th>
-                                                    <th class="text-center">
-                                                        @item.PersonTypeText
-                                                    </th>
-                                                    <td class="text-center">
-                                                        @item.EmployeeNonName
-                                                    </td>
-                                                    <td class="text-center">@item.DesignationCodenName </td>
-                                                    <td class="text-center">
-                                                        @item.FromDateStrDisplay
-                                                    </td>
-
-                                                    <td class="text-center">
-                                                        @item.FromTime
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @item.ToDateStrDisplay
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <textarea name="" class="form-control pointer" cols="20" rows="2" data-toggle="tooltip" data-placement="bottom" title="" data-bs-original-title="@item.PurposeOfVisit" aria-describedby="tooltip996206">@item.PurposeOfVisit</textarea>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @(item.TADADenied?"Yes":"No")
-                                                    </td>
-                                                </tr>
-                                                slno += 1;
-                                            }
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card mt-4 mb-3">
-                        <div class="card-body approvalForm">
-                            <div class="row d-flex align-items-center">
-                                <div class="col-form-label col-md-3">
-                                    <label>Authorized Employee No. & Name :</label>
-                                </div>
-                                <div class="col-md-5">
-                                    <input type="text" class="form-control" value="@Model.HeaderData.AuthorisedEmployeeName" disabled="">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="d-flex justify-content-center mt-2">
-                        <button type="submit" name="Submit" value="DWT"
-                                class="btn btn-primary me-2">
-                            Date Wise Tour Details - Entry
-                        </button>
-                        <button type="submit" name="Submit" value="VAD"
-                                class="btn btn-primary">
-                            Vehicle Allotment Details
-                        </button>
-                    </div>
+            <div id="btnsDiv" class="col-md-12">
+                <div class="d-flex justify-content-center mt-2">
+                    <button type="submit" name="Submit" value="DWT"
+                            class="btn btn-primary me-2">
+                        Date Wise Tour Details - Entry
+                    </button>
+                    <button type="submit" name="Submit" value="VAD"
+                            class="btn btn-primary">
+                        Vehicle Allotment Details
+                    </button>
                 </div>
             </div>
             <div id="ApprovalOptionLi" class="bgColor mt-4 bg-transparent text-left">
                 <ul style="list-style:none;">
                     <li style="font-size: 16px;">
                         The Entry Is Done As Per Policy & As Required:
-                        <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                        <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled />
                     </li>
                     <li style="font-size: 16px;">
                         Checked Tour Details & Vehicle Allotment With The “Initiated This Doc. With The Instruction Of” Person. Hence Satisfied & Approved:
-                        <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                        <select id="AppOption2" style="width:110px" class="form-select is-invalid"
+                                onchange="ValidateControl()"
+                                aria-label="Default select example" disabled>
+                            <option selected="">-</option>
+                            <option value="1">Yes</option>
+                            <option value="1">No</option>
+                        </select>
                     </li>
                 </ul>
             </div>
-            <div id="ViewOptionLi" class="bgColor mt-4 bg-transparent text-center">
-                <ul style="list-style:none;">
-                    <li style="font-size: 16px;">
-                        The Entry Is Done As Per Policy & As Required:
-                        <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
-                    </li>
-                </ul>
-            </div>
-            <div id="ApprovDiv" class="card mt-4 mb-4">
+            <div class="card mt-4 mb-4">
                 <div class="card-body">
                     <div class="row d-flex align-items-center">
                         <div class="col-md-2 col-form-label">
                             <label>Approved :</label>
                         </div>
                         <div class="col-md-2">
-                            <input type="text" class="form-control" value="@Model.HeaderData.IsApproved" disabled>
+                            @Html.DropDownListFor(m => m.AppStatus,
+                       new[] {
+                           new SelectListItem { Text = "-", Value = "-1" },
+                           new SelectListItem { Text = "Yes", Value = "1" },
+                           new SelectListItem { Text = "No", Value = "0" }},
+                       htmlAttributes: new
+                       {
+                           @class = "form-select pointer is-invalid",
+                           @onchange = "ValidateControl()",
+                           disabled = "disabled"
+                       })
                         </div>
                         <div class="col-md-2 col-form-label">
                             <label>Date &amp; Time Of Approval :</label>
                         </div>
                         <div class="col-md-2">
-                            <input type="text" class="form-control" value="@(Model.HeaderData.AppDateTime.ToString("dd/MM/yyyy hh:mm tt",CultureInfo.InvariantCulture).Substring(0,10)=="01/01/0001"?"":Model.HeaderData.AppDateTime.ToString("dd/MM/yyyy hh:mm tt",CultureInfo.InvariantCulture))" disabled="">
+                            <input type="text" class="form-control" value="@DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss tt",CultureInfo.InvariantCulture)" disabled="">
                         </div>
                         <div class="col-md-2 col-form-label">
                             <label>Reason If Not Approved :</label>
                         </div>
                         <div class="col-md-2">
-                            <textarea name="" id="" cols="10" rows="2" class="form-control" disabled>@(@Model.HeaderData.IsApproved?"":Model.HeaderData.ReasonForDisApproval)</textarea>
+                            @Html.TextAreaFor(m => m.ReasonForDisApproval,
+                            htmlAttributes: new
+                            {
+                                @class = "form-control",
+                                rows = "3",
+                                type = "text",
+                                onblur = "ValidateControl()",
+                                disabled = "disabled"
+                            })
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
     }
 </div>
+@section headers
+{
+
+}
+@section scripts{
+    <script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/EHGNoteApproval.js"></script>>
+    <script>
+        $(document).ready(function () {
+            //var mymsg = '@ViewBag.ErrMsg';
+            if ('@ViewBag.ErrMsg' != '') {
+                Swal.fire({
+                    title: 'Failed to submit',
+                    text: "@ViewBag.ErrMsg",
+                    icon: 'warning',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        //cancel: 'Cancel',
+                        confirm: 'Ok'
+                    },
+                    //cancelButtonClass: 'btn-cancel',
+                    confirmButtonColor: '#2527a2',
+                });
+            };
+            if ('@ViewBag.Msg' != '') {
+                Swal.fire({
+                    title: 'Confirmation',
+                    text: "@ViewBag.Msg",
+                    icon: 'success',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        confirm: 'Ok'
+                    },
+                    confirmButtonColor: '#2527a2',
+                }).then(callback);
+                function callback(result) {
+                    if (result.value) {
+                        var url = "/Security/EHG/NoteApproveList";
+                        window.location.href = url;
+                    }
+                }
+            };
+            @*if ('@ViewBag.BtnActive' != '') {
+                $('#BackBtnActive').val(1);
+            };
+            alert('@ViewBag.BtnActive');*@
+        });
+    </script>
+}

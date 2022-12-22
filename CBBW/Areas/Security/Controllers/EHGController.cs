@@ -20,7 +20,8 @@ namespace CBBW.Areas.Security.Controllers
         string pMsg;
         UserInfo user;
         IEHGRepository _iEHG;
-        EHGHeaderEntryVM model;        
+        EHGHeaderEntryVM model;
+        EHGNotApprovalVM appmodel;
         public EHGController(IUserRepository iUser, IEHGRepository iEHG, 
             IMyHelperRepository myHelper, IMasterRepository master)
         {
@@ -33,12 +34,41 @@ namespace CBBW.Areas.Security.Controllers
             ViewBag.LogInUser = user.UserName;
         }
         // GET: Security/EHG
+        [HttpPost]
+        public ActionResult ApproveNote(EHGNotApprovalVM modelobj, string Submit)
+        {
+            string baseUrl = "/Security/EHG/ApproveNote";
+            if (Submit == "create")
+            {
+                if (_iEHG.SetEHGHdrAppStatus(modelobj.NoteNumber,modelobj.AppStatus==1?true:false,
+                    modelobj.ReasonForDisApproval,user.EmployeeNumber,ref pMsg))
+                {
+                    ViewBag.Msg = "Approval Status Of Note Number " + modelobj.NoteNumber + " Updated Successfully.";
+                    TempData["EHGApp"] = null;
+                }
+                else { ViewBag.ErrMsg = "Approval Status Updation Failed For Note Number " + modelobj.NoteNumber; }
+            }        
+            else if (Submit == "VAD")
+            {
+                modelobj.VAActive = 1;
+                TempData["EHGApp"] = modelobj;
+                _iUser.RecordCallBack(baseUrl);
+                return RedirectToAction("ViewVADetails", "EHG", new { NoteNumber = modelobj.NoteNumber, CBUID = 1 });
+            }
+            else if (Submit == "DWT")
+            {
+                modelobj.DWTActive = 1;
+                TempData["EHGApp"] = modelobj;
+                _iUser.RecordCallBack(baseUrl);
+                return RedirectToAction("ViewDWTDetails", "EHG", new { NoteNumber = modelobj.NoteNumber, CBUID = 1 });
+            }
+            appmodel = CastEHGAppTempData();
+            return View(appmodel);
+        }
         public ActionResult ApproveNote() 
         {
-            EHGNotApprovalVM modelobj = new EHGNotApprovalVM();
-            modelobj.NoteList = _iEHG.getNoteListToBeApproved(ref pMsg);
-
-            return View(modelobj);
+            appmodel = CastEHGAppTempData();            
+            return View(appmodel);
         }
         public ActionResult ViewVADetails(string NoteNumber,int CBUID=0) 
         {
@@ -229,11 +259,20 @@ namespace CBBW.Areas.Security.Controllers
         public ActionResult AddNote(int ID) 
         {
             TempData["EHG"] = null;
+            TempData["EHGApp"] = null;
             if (ID == 0) { return RedirectToAction("Create"); }
             else { return RedirectToAction("ApproveNote"); }
         }
 
-        #region AjaxCalling        
+        #region AjaxCalling 
+        public JsonResult GetNoteHdrTPD(string NoteNumber)
+        {
+            EHGNotApprovalVM result = new EHGNotApprovalVM();
+            result.NoteNumber = NoteNumber;
+            result.Header = _iEHG.getEHGNoteHdr(NoteNumber, ref pMsg);
+            result.TPDetails = _iEHG.getTravelingPersonDetails(NoteNumber, 1, ref pMsg);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult ClearBtnClicked(int PageID=0) 
         {
             model = CastEHGTempData();
@@ -250,6 +289,11 @@ namespace CBBW.Areas.Security.Controllers
                 TempData["EHG"] = model;
                 _iEHG.RemoveEHGNote(model.ehgHeader.NoteNumber, 3, 0, ref pMsg);
                 return RedirectToAction("VehicleAllotment");
+            }
+            else if (PageID == 3)
+            {
+                TempData["EHGApp"] = null;
+                return RedirectToAction("ApproveNote");
             }
             else
             {
@@ -358,7 +402,7 @@ namespace CBBW.Areas.Security.Controllers
             List<EHGNoteList> noteList = _iEHG.GetEHGNoteList(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch,user.CentreCode,false,ref pMsg);
             var result = new
             {
-                iTotalRecords = noteList.FirstOrDefault().TotalCount,
+                iTotalRecords = noteList.Count==0?0:noteList.FirstOrDefault().TotalCount,
                 //iPages=10,
                 //iCurrentPage=1,
                 iTotalDisplayRecords = noteList.Count(),
@@ -374,7 +418,7 @@ namespace CBBW.Areas.Security.Controllers
             List<EHGNoteList> noteList = _iEHG.GetEHGNoteList(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, user.CentreCode, true, ref pMsg);
             var result = new
             {
-                iTotalRecords = noteList.FirstOrDefault().TotalCount,
+                iTotalRecords = noteList.Count==0?0:noteList.FirstOrDefault().TotalCount,
                 //iPages=10,
                 //iCurrentPage=1,
                 iTotalDisplayRecords = noteList.Count(),
@@ -454,6 +498,24 @@ namespace CBBW.Areas.Security.Controllers
             }
             TempData["EHG"] = model;
             return model;
+        }
+        private EHGNotApprovalVM CastEHGAppTempData()
+        {
+            if (TempData["EHGApp"] != null)
+            {
+                appmodel = TempData["EHGApp"] as EHGNotApprovalVM;
+            }
+            else
+            {
+                appmodel = new EHGNotApprovalVM();
+                appmodel.AppStatus = -1;
+            }
+            if (appmodel.NoteList == null)
+            {
+                appmodel.NoteList = _iEHG.getNoteListToBeApproved(user.CentreCode, ref pMsg);
+            }
+            TempData["EHGApp"] = appmodel;
+            return appmodel;
         }
         #endregion
     }

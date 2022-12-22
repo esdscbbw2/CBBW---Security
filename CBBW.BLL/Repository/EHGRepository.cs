@@ -32,9 +32,13 @@ namespace CBBW.BLL.Repository
         public EHGHeader getEHGNoteHdr(string Notenumber, ref string pMsg)
         {
             EHGHeader result= _EHGEntities.getEHGNoteHdr(Notenumber, ref pMsg);
-            EHGMaster m = EHGMaster.GetInstance;
-            result.POAText = m.PurposeOfAllotment.Where(o => o.ID == result.PurposeOfAllotment).FirstOrDefault().DisplayText;
-            result.VehicleTypeText = m.VehicleTypes.Where(o => o.ID == result.VehicleType).FirstOrDefault().DisplayText;
+            try
+            {
+                EHGMaster m = EHGMaster.GetInstance;
+                result.POAText = m.PurposeOfAllotment.Where(o => o.ID == result.PurposeOfAllotment).FirstOrDefault().DisplayText;
+                result.VehicleTypeText = m.VehicleTypes.Where(o => o.ID == result.VehicleType).FirstOrDefault().DisplayText;
+            }
+            catch { }
             return result;
         }
         public List<EHGNoteList> GetEHGNoteList(int DisplayLength, int DisplayStart, int SortColumn, 
@@ -58,9 +62,9 @@ namespace CBBW.BLL.Repository
             obj.MaterialStatus = -1;
             return obj;
         }
-        public List<EHGNote> getNoteListToBeApproved(ref string pMsg)
+        public List<EHGNote> getNoteListToBeApproved(int CentreCode,ref string pMsg)
         {
-            return _EHGEntities.getNoteListToBeApproved(ref pMsg);
+            return _EHGEntities.getNoteListToBeApproved(CentreCode, ref pMsg);
         }
         public List<EHGTravelingPersondtlsForManagement> getTravelingPersonDetails(string Notenumber,  int IsActive, ref string pMsg)
         {
@@ -78,8 +82,13 @@ namespace CBBW.BLL.Repository
         public VehicleAllotmentDetails getVehicleAllotmentDetails(string Notenumber, int IsActive, ref string pMsg)
         {
             VehicleAllotmentDetails result = _EHGEntities.getVehicleAllotmentDetails(Notenumber,IsActive, ref pMsg);
-            EHGMaster m = EHGMaster.GetInstance;
-            result.VehicleBelongsToText = m.VehicleBelongsTo.Where(o => o.ID == result.VehicleBelongsTo).FirstOrDefault().DisplayText;
+            try
+            {
+                EHGMaster m = EHGMaster.GetInstance;
+                result.VehicleBelongsToText = m.VehicleBelongsTo.Where(o => o.ID == result.VehicleBelongsTo).FirstOrDefault().DisplayText;
+
+            }
+            catch { }
             return result;
         }
         public bool RemoveEHGNote(string NoteNumber, int RemoveTag, int ActiveTag, ref string pMsg)
@@ -92,6 +101,7 @@ namespace CBBW.BLL.Repository
         }
         public bool SetEHGHdrAppStatus(string NoteNumber, bool IsApproved, string ReasonForDisApproval, int ApproverID, ref string pMsg)
         {
+            if (ReasonForDisApproval == null) { ReasonForDisApproval = " "; }
             return _EHGEntities.SetEHGHdrAppStatus(NoteNumber, IsApproved, ReasonForDisApproval, ApproverID, ref pMsg);
         }
         public bool SetEHGHdrForManagement(EHGHeader header, EHGTravelingPersondtls dtl, ref string pMsg)

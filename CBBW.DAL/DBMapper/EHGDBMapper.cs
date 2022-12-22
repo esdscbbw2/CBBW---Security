@@ -64,6 +64,13 @@ namespace CBBW.DAL.DBMapper
                     result.ToDateStr = result.ToDate.ToString("yyyy-MM-dd");
                     result.FromDateStrDisplay=result.FromDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
                     result.ToDateStrDisplay = result.ToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    result.ActualTourOutDateDisplay= result.ActualTourOutDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    result.RequiredTourInDateDisplay = result.RequiredTourInDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    result.ActualTourInDateDisplay = result.ActualTourInDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    result.ActualTourOutDateDisplay = result.ActualTourOutDateDisplay == "01/01/0001" ? "" : result.ActualTourOutDateDisplay;
+                    result.RequiredTourInDateDisplay = result.RequiredTourInDateDisplay == "01/01/0001" ? "" : result.RequiredTourInDateDisplay;
+                    result.ActualTourInDateDisplay = result.ActualTourInDateDisplay == "01/01/0001" ? "" : result.ActualTourInDateDisplay;
+                    result.TourStatusText = result.TourStatus == 0 ? "Continue" : "Completed";
                 }
             }
             catch { }

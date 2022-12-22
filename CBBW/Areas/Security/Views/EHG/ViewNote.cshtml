@@ -127,7 +127,7 @@
                             <label>Approved :</label>
                         </div>
                         <div class="col-md-2">
-                            <input type="text" class="form-control" value="@Model.HeaderData.IsApproved" disabled>
+                            <input type="text" class="form-control" value="@(Model.HeaderData.IsApproved?"Yes":"No")" disabled>
                         </div>
                         <div class="col-md-2 col-form-label">
                             <label>Date &amp; Time Of Approval :</label>
@@ -393,7 +393,7 @@
                             <label>Approved :</label>
                         </div>
                         <div class="col-md-2">
-                            <input type="text" class="form-control" value="@Model.HeaderData.IsApproved" disabled>
+                            <input type="text" class="form-control" value="@(Model.HeaderData.IsApproved?"Yes":"No")" disabled>
                         </div>
                         <div class="col-md-2 col-form-label">
                             <label>Date &amp; Time Of Approval :</label>
