@@ -70,6 +70,7 @@
     <Compile Include="MGP\MGPItemWiseDetails.cs" />
     <Compile Include="MGP\MGPListDetails.cs" />
     <Compile Include="MGP\MGPMatOut.cs" />
+    <Compile Include="MGP\MGPNoteList.cs" />
     <Compile Include="MGP\MGPNotes.cs" />
     <Compile Include="MGP\MGPOutInDetails.cs" />
     <Compile Include="MGP\MGPReferenceDCDetails.cs" />

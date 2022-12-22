@@ -18,22 +18,11 @@
                 <div class="col-md-12" style="position: relative;">
                     <div class="heading_text_btn mb-4 mt-4">
                         <div class="leftButton">
-                            <button type="button" class="btn btn-primary me-2" onclick="buttondisable();window.location.href='@Url.Action("Create", "MaterialGatePass",
-new { Area = "Security" })'">
+                            <button type="button" class="btn btn-primary me-2" 
+                                     onclick="window.location.href='@ViewBag.CallBackUrl';">
                                 <i data-feather="arrow-left-circle"></i>
                                 Back
                             </button>
-
-                            <button id="btnSubmit" type="button" name="Submit" value="Increate"
-                                    class="btn btn-secondary me-2" disabled="disabled" onclick="SaveData()">
-                                <i data-feather="upload"></i>
-                                Save
-                            </button>
-                            <button type="button" class="btn btn-white">
-                                <i data-feather="x-circle"></i>
-                                Clear
-                            </button>
-
                         </div>
                         <h2>@ViewBag.Title</h2>
                     </div>
@@ -41,16 +30,15 @@ new { Area = "Security" })'">
             </div>
 
 
-            <div class="col-md-12 text-center">
+            @*<div class="col-md-12 text-center">
                 <div class=" upper-tab-buttons">
-                   
-                    <button type="button" class="btn btn-primary" onclick="GetoutDetailsPage(this)">
+                    <button type="button" class="btn btn-primary" >
 
                         "To Check  “Vehicle & Material Out Details” Click Here"
                     </button>
 
                 </div>
-            </div>
+            </div>*@
 
 
             <div class="col-md-12">
@@ -201,85 +189,6 @@ new { Area = "Security" })'">
                                         }
                                     }
                                 </tbody>
-
-                                <tbody id="tbody1">
-                                    <tr id="0" class="add-row">
-
-                                        <td class="text-center">
-                                            @sl
-                                        </td>
-                                        <td class="text-center">
-                                            <div id="0_DriverName" class="form-group"></div>
-                                            <input id="0_NoteNumber" type="hidden"
-                                                   class="form-control ">
-                                            <input id="0_VehicleNo" type="hidden"
-                                                   class="form-control ">
-
-                                        </td>
-                                        <td class="text-center">
-                                            <div id="0_DesigCN" class="form-group"></div>
-                                        </td>
-                                        <td class="text-center">
-                                            <div id="0_TripType" class="form-group"></div>
-                                        </td>
-                                        <td class="text-center">
-                                            <div id="0_LocationCN" class="form-group"></div>
-                                            <input id="0_ID" type="hidden"
-                                                   class="form-control ">
-                                            <input id="0_locname" type="hidden"
-                                                   class="form-control ">
-                                            <input id="0_loccode" type="hidden"
-                                                   class="form-control ">
-                                            <input id="0_locatype" type="hidden"
-                                                   class="form-control ">
-                                        </td>
-                                        <td class="text-center">
-                                            <div id="0_CarryIn" class="form-group"></div>
-                                            <input id="0_carrmat" type="hidden"
-                                                   class="form-control ">
-                                        </td>
-                                        <td class="text-center">
-                                            <div id="0_LoadedIn" class="form-group"></div>
-                                            <input id="0_Loaded" type="hidden"
-                                                   class="form-control ">
-                                        </td>
-                                        <td class="text-center">
-                                            <div id="0_RFIDNo" class="form-group"></div>
-                                        </td>
-                                        <td class="text-center">
-                                            <div id="0_Schdate" class="form-group"></div>
-                                        </td>
-                                        <td class="text-center">
-                                            <div id="0_ActualDate" class="form-group"></div>
-                                        </td>
-                                        <td class="text-center">
-                                            @*<div id="0_ActualTime" class="form-group"></div>*@
-                                            <input id="0_ActualTime" type="text" style="width: 154px;" class="form-control timePicker pointer is-invalid" onblur="ValidateControls()" placeholder="08:00PM">
-
-                                        </td>
-                                        <td class="text-center">
-                                            <div id="0_ReqKMIn" class="form-group"></div>
-                                            <input id="0_RKMIn" type="hidden"
-                                                   class="form-control">
-                                            <input id="0_KMout" type="hidden"
-                                                   class="form-control">
-                                        </td>
-                                        <td class="text-center">
-                                            <div id="0_ActualKMIns" class="form-group"></div>
-                                        </td>
-                                        <td class="text-center">
-                                            <div id="0_RunInTrip" class="form-group"></div>
-                                        </td>
-                                        <td class="text-center">
-                                            <div id="0_Remark" class="form-group"></div>
-                                        </td>
-                                        <td class="text-center">
-                                            <div id="0_ActionIn" class="form-group"></div>
-                                        </td>
-
-                                    </tr>
-                                </tbody>
-                                <tbody id="tbody2"></tbody>
 
                             </table>
                         </div>
@@ -461,10 +370,6 @@ new { Area = "Security" })'">
     <script src="~/UIContent/JS/CustomePage/MGPInDetails.js"></script>
     <script>
 
-        function buttondisable() {
-            $("#savebtndisable").removeClass('is-valid').addClass('is-invalid');
-        };
-
         $(document).ready(function () {
             var today = new Date();
             var minDate = today.setDate(today.getDate() + 1);
@@ -485,14 +390,6 @@ new { Area = "Security" })'">
                 $(this).data('DateTimePicker').date(time);
             });
         });
-
-        function GetoutDetailsPage(ctrl) {
-            //var targetid = $(ctrl).attr("id");
-            //var targetval = $(ctrl).attr('data-value');
-            var notenumber = $("#NoteNumber").val();
-            var url = '/Security/MaterialGatePass/VehicleMaterialOutView?NoteNumber=' + notenumber +'&CBUID=2';
-            window.location.href = url;
-        };
     </script>
 
 }

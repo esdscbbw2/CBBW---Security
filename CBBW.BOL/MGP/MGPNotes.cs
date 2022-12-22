@@ -9,6 +9,7 @@ namespace CBBW.BOL.MGP
     public class MGPNote
     {
         public string NoteNo { get; set; }
+        public string NoteNumber { get; set; }
     }
     public class MGPNotes : MGPNote
     {
@@ -24,6 +25,7 @@ namespace CBBW.BOL.MGP
 
         public string CallBackUrl { get; set; }
         public int ISSubmitActive { get; set; }
+       
 
 
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CBBW.BOL.MGP
 {
-    public class MGPOutInDetails: MGPNote
+    public class MGPOutInDetails : MGPNote
     {
         public long ID { get; set; }
         public DateTime EntryDate { get; set; }
@@ -33,7 +33,7 @@ namespace CBBW.BOL.MGP
         public string ATripOutDate { get; set; }
         public bool OutActive { get; set; }
         public bool InActive { get; set; }
-       
+
         /// <summary>
         /// for Existing In details display
         /// </summary>

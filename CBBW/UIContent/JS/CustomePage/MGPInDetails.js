@@ -48,8 +48,8 @@
                 $("#" + index + "_VehicleNo").val(item.VehicleNo);
                 $("#" + index + "_DriverName").html(item.DriverNo + " / " + item.DriverName);//Display Only
                 $("#" + index + "_DesigCN").html(item.DesignationCode + " / " + item.DesignationText);//Display only
-                $("#" + index + "_TripType").html(item.TripType + " / " + item.TripTypeStr);//Display only
-                $("#" + index + "_LocationCN").html(item.FromLocationCode+ " / " + item.FromLocationName);
+                $("#" + index + "_TripType").html(item.TripTypeStr);//Display only
+                $("#" + index + "_LocationCN").html(item.FromLocationName);
                 $("#" + index + "_locname").val(item.FromLocationName);
                 $("#" + index + "_loccode").val(item.FromLocationCode);
                 $("#" + index + "_locatype").val(item.FromLocationType);
@@ -148,13 +148,13 @@ function OnclickNewDCDetails(ctrl) {
                     cloneready.find('td').find('#0_fromloc').attr('id', index + '_fromloc');
                     cloneready.find('td').find('#0_tonloc').attr('id', index + '_tonloc');
                     cloneready.find('td').find('#0_fokdiv').attr('id', index + '_fokdiv');
-                    // cloneready.find('td').find('#0_Actions').attr('id', index + '_Actions');
+                    cloneready.find('td').find('#0_ActionItem').attr('id', index + '_ActionItem');
                     $('#tbody4').append(cloneready);
                 }
                 $("#" + index + "_NotNumber").val(item.NoteNumber).html('<input id="' + index + '_NotNo" value="' + item.NoteNumber + '" type="text" disabled="disabled"class="form-control">');
                 $("#" + index + "_NotesDate").val(item.NoteDatestr).html('<input id="' + index + '_Date" value="' + item.NoteDatestr + '" type="text" disabled="disabled" class="form-control">');
-                $("#" + index + "_fromloc").val(item.FromLocationText).html('<input id="' + index + '_Frmloc" value="' + item.FromLocationText + '" type="text" disabled="disabled" class="form-control">');
-                $("#" + index + "_tonloc").val(item.ToLocationText).html('<input id="' + index + '_Tolocation" value="' + item.ToLocationText + '" type="text" disabled="disabled"  class="form-control">');
+                $("#" + index + "_fromloc").val(item.ToLocationText).html('<input id="' + index + '_Frmloc" value="' + item.ToLocationText + '" type="text" disabled="disabled" class="form-control">');
+                $("#" + index + "_tonloc").val(item.FromLocationText).html('<input id="' + index + '_Tolocation" value="' + item.FromLocationText + '" type="text" disabled="disabled"  class="form-control">');
                 $("#" + index + "_fokdiv").val(item.FindOk).html('<select id="' + index + '_fok"  value="' + item.FindOk + '" class="form-select pointer is-invalid" onchange="ValidateControls()" aria-label="Default select example"><option value="NA">-</option><option value="Yes">Yes</option><option value="No">No</option></select>');
 
                 //$("#" + index + "_Action").html('<button type="button" onclick="Detailsclick()"  id="' + index + '_btn" value="' + item.NoteNumber + '"  class="btn primaryLink" data-toggle="tooltip" data-placement="top"title="Details">Details</button>');
@@ -307,33 +307,34 @@ function activateSubmitBtn() {
 function ValidateControls() {
     var target = ValidateControls.caller.arguments[0].target;
     var targetid = $(target).attr('id');
-    var isvalid=validatectrl(targetid, $(target).val());
+    var isvalid = validatectrl(targetid, $(target).val());
     var index = targetid.split('_')[0];
-    var xx = index + '_ActualKmIn';   
-    if (targetid==xx) {
+    var xx = index + '_ActualKmIn';
+    
+    if (targetid == xx) {
         var rk = $('#' + index + '_RKMIn').val();
         var kmintrip = $('#' + index + '_KMRunInTrip');
-        var kmout = $('#' + index + '_KMout').val()*1;
-        var actualkm = $(target).val()*1;
+        var kmout = $('#' + index + '_KMout').val() * 1;
+        var actualkm = $(target).val() * 1;
         kmintrip.val(actualkm - kmout);
-        var rkp = rk * 1.15;
-        var rkwithp = rkp + rk;
-        var cal;
-        if (actualkm > rkwithp) {
-            cal = actualkm - rkwithp;
-        } else if (rk <= actualkm) { cal = actualkm - rk; }
-        else { cal = actualkm; }
+        //var rkp = rk * 1.15;
+        //var rkwithp = rkp + rk;
+        //var cal;
+        //if (actualkm > rkwithp) {
+        //    cal = actualkm - rkwithp;
+        //} else if (rk <= actualkm) { cal = actualkm - rk; }
+        //else { cal = actualkm; }
 
-        //if (actualkm > rk * 1.15 || actualkm < rk) { isvalid = false; kmintrip.val(0) }
-        if (actualkm > rkwithp || actualkm < rk) {
-            isvalid = false;
-            //kmintrip.val(0);
-        }
-        else {
-                isvalid = true;
-                //kmintrip.val(cal);
-        }
-    }   
+        ////if (actualkm > rk * 1.15 || actualkm < rk) { isvalid = false; kmintrip.val(0) }
+        //if (actualkm > rkwithp || actualkm < rk) {
+        //    isvalid = false;
+        //    //kmintrip.val(0);
+        //}
+        //else {
+        //    isvalid = true;
+        //    //kmintrip.val(cal);
+        //}
+    }
 
     if (isvalid) {
         $(target).removeClass('is-invalid').addClass('is-valid');
@@ -341,11 +342,10 @@ function ValidateControls() {
         $(target).removeClass('is-valid').addClass('is-invalid');
     }
     
-
+    activateSubmitBtn();
 };
 function validatectrl(targetid, value) {
-    var isvalid = false;
-    
+    var isvalid = false; 
     if (value == "" || value == null) { isvalid = false; } else { isvalid = true }
     activateSubmitBtn();
     return isvalid;
@@ -369,14 +369,14 @@ function OnclickHistoryDCDetails(ctrl) {
                 $(data).each(function (index, item) {
 
                     if (index > 0) {
-                        var cloneready = $('#tbody1').find('tr').clone();
+                        var cloneready = $('#tbody3').find('tr').clone();
                         cloneready.find('td').find('#0_NotNumber').attr('id', index + '_NotNumber');
                         cloneready.find('td').find('#0_NotesDate').attr('id', index + '_NotesDate');
                         cloneready.find('td').find('#0_fromloc').attr('id', index + '_fromloc');
                         cloneready.find('td').find('#0_tonloc').attr('id', index + '_tonloc');
                         cloneready.find('td').find('#0_fokdiv').attr('id', index + '_fokdiv');
-                        //cloneready.find('td').find('#0_Action').attr('id', index + '_Action');
-                        $('#tbody2').append(cloneready);
+                        cloneready.find('td').find('#0_ActionItem').attr('id', index + '_ActionItem');
+                        $('#tbody4').append(cloneready);
                     }
                     $("#" + index + "_NotNumber").html(item.NoteNumber);
                     $("#" + index + "_NotesDate").html(item.NoteDatestr);
@@ -385,7 +385,7 @@ function OnclickHistoryDCDetails(ctrl) {
                     $("#" + index + "_fokdiv").html(item.CheckFound);
 
                     //$("#" + index + "_Action").html('<button type="button" onclick="Detailsclick()"  id="' + index + '_btn" value="' + item.NoteNumber + '"  class="btn primaryLink" data-toggle="tooltip" data-placement="top"title="Details">Details</button>');
-                    $("#" + index + "_ActionItem").html('<button type="button" onclick="GetItemWiseInDetails()"  id="' + index + '_btn" value="' + item.NoteNumber + '"   class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Details"><svg xmlns=http://www.w3.org/2000/svg width=24 height=24 viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx=12 cy=12 r=3></circle></svg></button>');
+                    $("#" + index + "_ActionItem").html('<button type="button" onclick="GetItemWiseInDetails(this)"  id="' + index + '_btn" data-value="' + item.NoteNumber + '"   class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Details"><svg xmlns=http://www.w3.org/2000/svg width=24 height=24 viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx=12 cy=12 r=3></circle></svg></button>');
                 })
             } else {
                 Swal.fire({

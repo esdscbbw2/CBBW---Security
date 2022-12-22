@@ -36,7 +36,8 @@ namespace CBBW.BLL.IRepository
         #endregion
 
         #region For List Page (Index page)
-        IEnumerable<MGPListDetails> getMGPDetailsforListPage(ref string pMsg);
+        List<MGPNoteList> getMGPDetailsforListPage(int DisplayLength, int DisplayStart, int SortColumn, string SortDirection, string SearchText, ref string pMsg);
+       
         #endregion
 
         #region IN/Out Button Active

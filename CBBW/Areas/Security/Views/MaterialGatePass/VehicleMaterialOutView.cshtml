@@ -1,68 +1,51 @@
-﻿@model CBBW.Areas.Security.ViewModel.MGPInDetailsVM
+﻿@model CBBW.Areas.Security.ViewModel.MGPOutInVM
+
 @{
     ViewBag.Title = "Material Gate Pass (For Company Transport)–ENTRY";
     int sl = 1;
 }
 
 
-
 <div class="container">
 
     @using (Html.BeginForm())
     {
-        @Html.HiddenFor(model => model.NoteNumber);
 
+        @Html.HiddenFor(model => model.NoteNumber);
         <div class="row newTable">
-            <input id="savebtndisables" type="hidden" class="form-control pointer is-invalid">
+            <input id="savebtndisable" type="hidden" class="form-control is-invalid">
             <div class="fixedElement">
                 <div class="col-md-12" style="position: relative;">
+
                     <div class="heading_text_btn mb-4 mt-4">
                         <div class="leftButton">
-                            <button type="button" class="btn btn-primary me-2" onclick="buttondisable();window.location.href='@Url.Action("Create", "MaterialGatePass",
-new { Area = "Security" })'">
+                            <button type="button" name="Submit" value="Back"
+                                    class="btn btn-primary me-2"
+                                    onclick="window.location.href='@ViewBag.CallBackUrl';">
                                 <i data-feather="arrow-left-circle"></i>
                                 Back
                             </button>
-
-                            <button id="btnSubmit" type="button" name="Submit" value="Increate"
-                                    class="btn btn-secondary me-2" disabled="disabled" onclick="SaveData()">
-                                <i data-feather="upload"></i>
-                                Save
-                            </button>
-                            <button type="button" class="btn btn-white">
-                                <i data-feather="x-circle"></i>
-                                Clear
-                            </button>
-
                         </div>
-                        <h2>@ViewBag.Title</h2>
+                        <h2>@ViewBag.Title </h2>
                     </div>
                 </div>
             </div>
-
-
-            <div class="col-md-12 text-center">
-                <div class=" upper-tab-buttons">
-                   
-                    <button type="button" class="btn btn-primary" onclick="GetoutDetailsPage(this)">
-
-                        "To Check  “Vehicle & Material Out Details” Click Here"
-                    </button>
-
-                </div>
-            </div>
-
-
             <div class="col-md-12">
+
                 <div class="heading_text_btn2 d-block mb-2">
-                    <h2> Vehicle & Material In Details:</h2>
+                    <h2> Vehicle & Material Out Details:</h2>
                 </div>
+
                 <div class="heading_text_btn2 d-block mb-4">
-                    <h2 class="text-center">A. Vehicle In Details:</h2>
+                    <h2 class="text-center">A. Vehicle Out Details:</h2>
                 </div>
+
+
+
+
                 <div class="card">
                     <div class="card-body">
-                        <div class="table-responsive">
+                        <div class="table-responsive max-content">
                             <table class="table table-bordered w-100" id="table">
                                 <thead>
                                     <tr>
@@ -76,77 +59,64 @@ new { Area = "Security" })'">
                                         <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
                                             Trip Type
                                         </th>
-                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">From Location Code & Name</th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">To Location Code & Name</th>
                                         <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
-                                            Carrying In Material?
+                                            Carrying Out Material?
                                         </th>
                                         <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
-                                            Loaded Material In %
+                                            Loaded Material Out %
                                         </th>
                                         <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
                                             RFID Card No.
                                         </th>
                                         <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
-                                            Scheduled Trip To Date
+                                            Schedule Trip From Date
                                         </th>
+
                                         <th colspan="2" style="text-align: center; vertical-align: middle;" scope="col">
-                                            Actual Trip IN
+                                            Actual Trip OUT
                                         </th>
-                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
-                                            Required KM IN
-                                        </th>
-                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
-                                            Actual KM IN
-                                        </th>
-                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
-                                            K.M Run In The Trip
-                                        </th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">KM Out</th>
                                         <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
                                             Remarks
 
                                         </th>
-                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;background: pink;color: #000;" width="15%">
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;background: pink;color: #000;">
                                             Action
 
                                         </th>
                                     </tr>
                                     <tr>
-                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="15%">Date</th>
-                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">Time</th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">Date</th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">Time</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @if (Model != null)
                                     {
 
-                                       foreach (var item in Model.ListInDetails)
+                                        foreach (var item in ViewBag.ListofMatOut)
                                         {
-                                            if (item.InActive)
+                                            if (item.OutActive)
                                             {
-                                                <tr>
 
-                                                    <td class="text-center">
-                                                        @sl
-                                                    </td>
+                                                <tr class="add-row">
+                                                    <td class="text-center">@sl</td>
                                                     <td class="text-center">
                                                         @item.DriverNo / @item.DriverName
                                                     </td>
-                                                    <td class="text-center">
-                                                        @item.DesignationCode / @item.DesignationText
-                                                    </td>
+                                                    <td class="text-center">@item.DesignationCode / @item.DesignationText </td>
+
                                                     @if (item.TripType == 1)
                                                     {
-                                                <td class="text-center">ocal Vehicle Schedule</td>
+                                                <td class="text-center">Local Vehicle Schedule</td>
                                                     }
                                                     else
                                                     {
-                                                <td class="text-center">Other Trip Schedule</td>
+                                                <td class="text-center"> Other Trip Schedule</td>
                                                     }
-                                                <td class="text-center">
-                                                     @item.FromLocationName
-                                                </td>
-                                                   
-                                                    @if (item.CarryingInMaterial == true)
+                                                    <td class="text-center">@item.ToLocationCodenName</td>
+                                                    @if (item.CarryingOutMaterial == true)
                                                     {
                                                         <td class="text-center">Yes</td>
 
@@ -155,32 +125,17 @@ new { Area = "Security" })'">
                                                     {
                                                         <td class="text-center">No</td>
                                                     }
+
+                                                    <td class="text-center">@item.LoadPercentage %</td>
                                                     <td class="text-center">
-                                                        @item.LoadPercentageIn
+                                                        @item.RFIDOut
                                                     </td>
+                                                    <td class="text-center">@item.FromDate </td>
+                                                    <td class="text-center">@item.ATripOutDate </td>
+                                                    <td class="text-center">@item.ActualTripOutTime </td>
+                                                    <td class="text-center">@item.KMSOut</td>
                                                     <td class="text-center">
-                                                        @item.RFIDCardIn
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @item.FromDate
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @item.ActualTripInD
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @item.ActualTripInTime
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @item.RequiredKmIn
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @item.ActualKmIn
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @item.KMRunInTrip
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @item.RemarkIn
+                                                        <input type="text" class="form-control w-200" value="@item.OutRemarks" readonly>
                                                     </td>
                                                     <td class="text-center">
                                                         <span class="actionBtn d-block">
@@ -193,94 +148,14 @@ new { Area = "Security" })'">
 
                                                         </span>
                                                     </td>
-
                                                 </tr>
                                                 sl++;
                                             }
 
                                         }
                                     }
+
                                 </tbody>
-
-                                <tbody id="tbody1">
-                                    <tr id="0" class="add-row">
-
-                                        <td class="text-center">
-                                            @sl
-                                        </td>
-                                        <td class="text-center">
-                                            <div id="0_DriverName" class="form-group"></div>
-                                            <input id="0_NoteNumber" type="hidden"
-                                                   class="form-control ">
-                                            <input id="0_VehicleNo" type="hidden"
-                                                   class="form-control ">
-
-                                        </td>
-                                        <td class="text-center">
-                                            <div id="0_DesigCN" class="form-group"></div>
-                                        </td>
-                                        <td class="text-center">
-                                            <div id="0_TripType" class="form-group"></div>
-                                        </td>
-                                        <td class="text-center">
-                                            <div id="0_LocationCN" class="form-group"></div>
-                                            <input id="0_ID" type="hidden"
-                                                   class="form-control ">
-                                            <input id="0_locname" type="hidden"
-                                                   class="form-control ">
-                                            <input id="0_loccode" type="hidden"
-                                                   class="form-control ">
-                                            <input id="0_locatype" type="hidden"
-                                                   class="form-control ">
-                                        </td>
-                                        <td class="text-center">
-                                            <div id="0_CarryIn" class="form-group"></div>
-                                            <input id="0_carrmat" type="hidden"
-                                                   class="form-control ">
-                                        </td>
-                                        <td class="text-center">
-                                            <div id="0_LoadedIn" class="form-group"></div>
-                                            <input id="0_Loaded" type="hidden"
-                                                   class="form-control ">
-                                        </td>
-                                        <td class="text-center">
-                                            <div id="0_RFIDNo" class="form-group"></div>
-                                        </td>
-                                        <td class="text-center">
-                                            <div id="0_Schdate" class="form-group"></div>
-                                        </td>
-                                        <td class="text-center">
-                                            <div id="0_ActualDate" class="form-group"></div>
-                                        </td>
-                                        <td class="text-center">
-                                            @*<div id="0_ActualTime" class="form-group"></div>*@
-                                            <input id="0_ActualTime" type="text" style="width: 154px;" class="form-control timePicker pointer is-invalid" onblur="ValidateControls()" placeholder="08:00PM">
-
-                                        </td>
-                                        <td class="text-center">
-                                            <div id="0_ReqKMIn" class="form-group"></div>
-                                            <input id="0_RKMIn" type="hidden"
-                                                   class="form-control">
-                                            <input id="0_KMout" type="hidden"
-                                                   class="form-control">
-                                        </td>
-                                        <td class="text-center">
-                                            <div id="0_ActualKMIns" class="form-group"></div>
-                                        </td>
-                                        <td class="text-center">
-                                            <div id="0_RunInTrip" class="form-group"></div>
-                                        </td>
-                                        <td class="text-center">
-                                            <div id="0_Remark" class="form-group"></div>
-                                        </td>
-                                        <td class="text-center">
-                                            <div id="0_ActionIn" class="form-group"></div>
-                                        </td>
-
-                                    </tr>
-                                </tbody>
-                                <tbody id="tbody2"></tbody>
-
                             </table>
                         </div>
                     </div>
@@ -291,7 +166,8 @@ new { Area = "Security" })'">
         <div class="mt-4">
             <div class="heading_text_btn2 d-block mb-3">
                 <h2 class="text-center">
-                    B. Material In Details:
+                    B. Material Out Details:
+
                 </h2>
             </div>
             <div class="card mb-4">
@@ -304,7 +180,7 @@ new { Area = "Security" })'">
                                 </div>
                                 <div class="table-responsive newTable">
 
-                                    <table class="table table-bordered btnalign">
+                                    <table class="table table-bordered btnalign" id="table1">
                                         <thead>
                                             <tr>
                                                 <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
@@ -321,7 +197,7 @@ new { Area = "Security" })'">
                                                     To Location Code & Name
                                                 </th>
                                                 <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2" width="15%">
-                                                    Checked Material In & Found OK?
+                                                    Checked Material Out & Found OK?
                                                 </th>
                                                 <th scope="col" style="text-align: center; vertical-align: middle;background: pink;color: #000;" rowspan="2" width="15%">
                                                     Action
@@ -329,11 +205,12 @@ new { Area = "Security" })'">
                                             </tr>
                                         </thead>
 
-                                        <tbody id="tbody3">
+
+                                        <tbody id="tbody1">
 
                                             <tr id="0" class="add-rows">
                                                 <td class="text-center">
-                                                    <div id="0_NotNumber" class="form-group">No Data</div>
+                                                    <div id="0_NotNumber" class="form-group"> No Data</div>
 
                                                 </td>
                                                 <td class="text-center">
@@ -359,21 +236,19 @@ new { Area = "Security" })'">
 
                                             </tr>
                                         </tbody>
-                                        <tbody id="tbody4"></tbody>
+                                        <tbody id="tbody2"></tbody>
+
                                     </table>
-
-
-
                                 </div>
                             </div>
-                            <div>
+                            <div id="reference-DC-table2">
                                 <div class="heading_text_btn2 d-block mb-3 pt-3">
                                     <h2 class="text-center"> Item wise Details</h2>
 
                                 </div>
                                 <div class="table-responsive newTable">
 
-                                    <table class="table table-bordered btnalign">
+                                    <table class="table table-bordered btnalign" disabled>
                                         <thead>
                                             <tr>
                                                 <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
@@ -398,8 +273,7 @@ new { Area = "Security" })'">
                                                 <th scope="col" style="text-align: center; vertical-align: middle; ">KGs</th>
                                             </tr>
                                         </thead>
-
-                                        <tbody id="tbody5">
+                                        <tbody id="tbody3">
 
                                             <tr id="0">
                                                 <td class="text-center">
@@ -424,7 +298,8 @@ new { Area = "Security" })'">
                                                 </td>
                                             </tr>
                                         </tbody>
-                                        <tbody id="tbody6"></tbody>
+                                        <tbody id="tbody4"></tbody>
+
                                     </table>
 
                                 </div>
@@ -437,11 +312,14 @@ new { Area = "Security" })'">
                 </div>
             </div>
 
+
+
+
+
         </div>
 
     }
 </div>
-<!-- Optional JavaScript; choose one of the two! -->
 @section headers
     {
     <style>
@@ -458,12 +336,8 @@ new { Area = "Security" })'">
 
     <script src="js/moment.min.js"></script>
     <script src="js/bootstrap-datetimepicker.min.js"></script>
-    <script src="~/UIContent/JS/CustomePage/MGPInDetails.js"></script>
+    <script src="~/UIContent/JS/CustomePage/MGPOutDetails.js"></script>
     <script>
-
-        function buttondisable() {
-            $("#savebtndisable").removeClass('is-valid').addClass('is-invalid');
-        };
 
         $(document).ready(function () {
             var today = new Date();
@@ -485,15 +359,6 @@ new { Area = "Security" })'">
                 $(this).data('DateTimePicker').date(time);
             });
         });
-
-        function GetoutDetailsPage(ctrl) {
-            //var targetid = $(ctrl).attr("id");
-            //var targetval = $(ctrl).attr('data-value');
-            var notenumber = $("#NoteNumber").val();
-            var url = '/Security/MaterialGatePass/VehicleMaterialOutView?NoteNumber=' + notenumber +'&CBUID=2';
-            window.location.href = url;
-        };
     </script>
 
 }
-

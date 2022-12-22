@@ -78,9 +78,10 @@ namespace CBBW.BLL.Repository
         #endregion
 
         #region For List Page (Index Page)
-        public IEnumerable<MGPListDetails> getMGPDetailsforListPage(ref string pMsg)
+      
+        public List<MGPNoteList> getMGPDetailsforListPage(int DisplayLength, int DisplayStart, int SortColumn, string SortDirection, string SearchText, ref string pMsg)
         {
-            return _MGPEntities.getMGPDetailsforListPage(ref pMsg);
+            return _MGPEntities.getMGPDetailsforListPage(DisplayLength, DisplayStart, SortColumn, SortDirection, SearchText, ref pMsg);
         }
         #endregion
 

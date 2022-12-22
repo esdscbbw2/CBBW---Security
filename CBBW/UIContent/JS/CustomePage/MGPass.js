@@ -33,6 +33,8 @@ function Notenumberchanged(notenumber) {
     });
 };
 
+
+
 function ActivateOutbtn(notenumber) {
    
     var btnOut = $('#btnCMOD');

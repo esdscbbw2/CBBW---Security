@@ -12,13 +12,27 @@ namespace CBBW.DAL.DataSync
     public class MGPDataSync
     {
         #region For Listing Page (Index page)
-        public DataTable getMGPDetailsforListPage(ref string pMsg)
+       
+        public DataTable getMGPDetailsforListPage(int DisplayLength, int DisplayStart, int SortColumn, string SortDirection, string SearchText, ref string pMsg)
         {
             try
             {
-               using (SQLHelper sql = new SQLHelper("[MGP].[getMGPDetailsforListPage]", CommandType.StoredProcedure))
+                SortDirection = SortDirection.Substring(0, 1).ToUpper();
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[5];
+                para[paracount] = new SqlParameter("@DisplayLength", SqlDbType.Int);
+                para[paracount++].Value = DisplayLength;
+                para[paracount] = new SqlParameter("@DisplayStart", SqlDbType.Int);
+                para[paracount++].Value = DisplayStart;
+                para[paracount] = new SqlParameter("@sortCol", SqlDbType.Int);
+                para[paracount++].Value = SortColumn;
+                para[paracount] = new SqlParameter("@SortDir", SqlDbType.NVarChar, 1);
+                para[paracount++].Value = SortDirection;
+                para[paracount] = new SqlParameter("@Search", SqlDbType.NVarChar, 255);
+                para[paracount++].Value = SearchText;
+                using (SQLHelper sql = new SQLHelper("[MGP].[getMGPDetailsforListPage]", CommandType.StoredProcedure))
                 {
-                    return sql.GetDataTable(ref pMsg);
+                    return sql.GetDataTable(para, ref pMsg);
                 }
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
@@ -335,6 +349,9 @@ namespace CBBW.DAL.DataSync
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
         #endregion
+
+
+
 
 
     }

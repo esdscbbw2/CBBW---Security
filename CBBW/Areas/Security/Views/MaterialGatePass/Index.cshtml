@@ -1,8 +1,6 @@
 ﻿@using CBBW.BOL.MGP
-@model  IEnumerable<MGPListDetails>
-@{ ViewBag.Title = "Index";
-    Layout = "~/Areas/Security/Views/Shared/_Layout.cshtml";
-    int sl = 1;
+@model List<MGPNoteList>
+@{
 }
 
 
@@ -37,8 +35,8 @@
             <table id="tblmgp" class="table table-bordered btnalign mt-4">
                 <thead>
                     <tr>
-                        <th scope="col">SL.No.</th>
-                        <th scope="col">Ref. Note No.</th>
+                        <th scope="col"> SL.No.</th>
+                        <th scope="col">Note No.</th>
                         <th scope="col">Center Code & Name</th>
                         <th scope="col">Vehicle No.</th>
                         <th scope="col">For The Month & Year</th>
@@ -69,28 +67,31 @@
                                 <input id="filterMonthYear" type="text" class="form-control" placeholder="Search...">
                             </div>
                         </th>
+                        <th scope="col">&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if (Model != null)
+                    @if (Model != null && Model.Count > 0)
                     {
                         foreach (var item in Model)
                         {
                             <tr>
-                                <th scope="row">@sl</th>
+                                <td>@item.RowNumber</td>
                                 <td>@item.NoteNumber</td>
-                                <td>@item.CenterCode / @item.CenterName</td>
+                                <td>@item.CenterName</td>
                                 <td>@item.VehicleNo</td>
                                 <td>@item.MonthYear</td>
                                 <td>
                                     <span class="actionBtn">
-
-                                        <i data-feather="eye"></i>
+                                        <button type="button" class="btn primaryLink" value="btn" data-toggle="tooltip" data-placement="top"
+                                                title="Details">
+                                            <i data-feather="eye"></i>
+                                        </button>
 
                                     </span>
                                 </td>
                             </tr>
-                            sl++;
+
                         }
                     }
 
@@ -102,25 +103,64 @@
 
     </div>
 </div>
-<script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function () {
-        var tbl = $('#tblmgp').DataTable(
-            {
-                "pagingType": "input"
-            }
-        );
-        var filter1 = $('#filterentrDate');
+@*<script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>*@
+@*<script>
+    //$(document).ready(function () {
+    //    var tbl = $('#tblmgp').DataTable(
+    //        {
+    //            "pagingType": "input"
+    //        }
+    //    );
+    //    var filter1 = $('#filterentrDate');
 
-        var filter2 = $('#filterEffDate');
-        filter1.on('keyup change', function () {
-            tbl.columns(1).search(this.value).draw();
+    //    var filter2 = $('#filterEffDate');
+    //    filter1.on('keyup change', function () {
+    //        tbl.columns(1).search(this.value).draw();
 
+    //    });
+    //    filter2.on('keyup change', function () {
+    //        tbl.columns(2).search(this.value).draw();
+
+    //    });
+
+    //});
+</script>*@
+
+
+@section headers
+    {
+
+}
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#tblmgp').dataTable({
+                columns: [
+                    { 'data': 'RowNumber' },
+                    { 'data': 'NoteNumber' },
+                    { 'data': 'CenterName' },
+                    { 'data': 'VehicleNo' },
+                    { 'data': 'MonthYear' },
+                    {
+                        'data': 'NoteNumber', render: function (data, type, row, meta) {
+                            return type == 'display' ? '<span class="actionBtn"><button type="button" id="' + row.NoteNumber+'" class="btn primaryLink" value="btn"  data-toggle="tooltip" data-placement="top" onclick="GetDetailsPage(this)" title = "Details" ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></button ></span>' :
+                                data;
+                        }
+                    },
+                ],
+                
+                bServerSide: true,
+                sAjaxSource: '/Security/MaterialGatePass/getNoteList'
+            });
         });
-        filter2.on('keyup change', function () {
-            tbl.columns(2).search(this.value).draw();
 
-        });
 
-    });
-</script>
+
+        function GetDetailsPage(ctrl) {
+            var targetid = $(ctrl).attr("id");
+            var targetval = $(ctrl).attr('data-value'); 
+            var url = '/Security/MaterialGatePass/Details?NoteNumber=' + targetid;
+            window.location.href = url;
+        };
+    </script>
+    }

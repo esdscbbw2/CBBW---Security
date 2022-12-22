@@ -21,7 +21,7 @@
                         <div class="leftButton">
                             <button type="button" name="Submit" value="Back"
                                     class="btn btn-primary me-2"
-                                    onclick="window.location.href='@ViewBag.CallBackUrl';">
+                                    onclick="buttondisable();window.location.href='@ViewBag.CallBackUrl';">
                                 <i data-feather="arrow-left-circle"></i>
                                 Back
                             </button>
@@ -120,11 +120,11 @@
 
                                                     @if (item.TripType == 1)
                                                     {
-                                                <td class="text-center"> @item.TripType / Local Vehicle Schedule</td>
+                                                <td class="text-center">Local Vehicle Schedule</td>
                                                     }
                                                     else
                                                     {
-                                                <td class="text-center"> @item.TripType / Other Trip Schedule</td>
+                                                <td class="text-center"> Other Trip Schedule</td>
                                                     }
                                                     <td class="text-center">@item.ToLocationCodenName</td>
                                                     @if (item.CarryingOutMaterial == true)
@@ -350,8 +350,9 @@
                                                 <td class="text-center">
                                                     <span class="actionBtn d-block">
                                                         <div class="form-group" id="0_ActionItem"></div>
-                                                    </span>
-                                                </td>
+                                                        </span>
+
+</td>
 
                                             </tr>
                                         </tbody>
@@ -457,6 +458,11 @@
     <script src="js/bootstrap-datetimepicker.min.js"></script>
     <script src="~/UIContent/JS/CustomePage/MGPOutDetails.js"></script>
     <script>
+
+
+        function buttondisable() {
+            $("#savebtndisable").removeClass('is-valid').addClass('is-invalid');
+        };
 
         $(document).ready(function () {
             var today = new Date();

@@ -34,8 +34,8 @@ namespace CBBW.Areas.Security.Controllers
         #region For Out Details
         public ActionResult Index()
         {
-            IEnumerable<MGPListDetails> model = _IMGP.getMGPDetailsforListPage(ref pMsg);
-            return View(model);
+           // IEnumerable<MGPListDetails> model = _IMGP.getMGPDetailsforListPage(ref pMsg);
+            return View();
         }
         public ActionResult Create()
         {
@@ -142,10 +142,7 @@ namespace CBBW.Areas.Security.Controllers
             //    new { Area = "Security" });
             return View(model);
         }
-        public ActionResult Details()
-        {
-            return View();
-        }
+       
         public ActionResult VehicleMaterialOutDetails(string NoteNumber, int CBUID)
         {
            
@@ -255,7 +252,6 @@ namespace CBBW.Areas.Security.Controllers
         }
 
         #endregion
-
         //Start Material In Details
         #region Create New In details 
         [HttpPost]
@@ -299,7 +295,8 @@ namespace CBBW.Areas.Security.Controllers
             }
             return Json(result, JsonRequestBehavior.AllowGet);
            
-        }        
+        }
+        
         public ActionResult VehicleMaterialInDetails(string NoteNumber)
         {
             MGPInDetailsVM model = new MGPInDetailsVM();
@@ -325,8 +322,21 @@ namespace CBBW.Areas.Security.Controllers
             }
             
         }
+        public JsonResult GetHistoryInforView(string NoteNumber)
+        {
+            try
+            {
+                List<MGPOutInDetails> model = new List<MGPOutInDetails>();
+                model = _IMGP.getMGPOutDetails(NoteNumber, ref pMsg);
+                return Json(model, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.ToString());
+            }
 
-
+        }
+        
         public JsonResult GetRefInDCDetails(string VehicleNo, string FromDT)
         {
             try
@@ -360,8 +370,6 @@ namespace CBBW.Areas.Security.Controllers
             return Json(model.ListMGPHistoryDCDetails, JsonRequestBehavior.AllowGet);
         }
         #endregion
-
-
         #region In/ Out Button Active
         public JsonResult getMGPButtonStatus(string NoteNumber)
         {
@@ -377,6 +385,109 @@ namespace CBBW.Areas.Security.Controllers
             }
 
         }
+        #endregion
+
+        #region For View Pages
+
+        public JsonResult getNoteList(int iDisplayLength, int iDisplayStart, int iSortCol_0,
+          string sSortDir_0, string sSearch)
+        
+        {
+            List<MGPNoteList> noteList = _IMGP.getMGPDetailsforListPage(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, ref pMsg);
+
+            var result = new
+            {
+                iTotalRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
+                iTotalDisplayRecords = noteList.Count(),
+                aaData = noteList
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult Details(string NoteNumber)
+        {
+            MGPNotes model = new MGPNotes();
+            try
+            {
+                if (TempData["MGPV"] != null)
+                {
+                    model = TempData["MGPV"] as MGPNotes;
+                }
+                else { 
+
+                model.ListofNotes = _IMGP.getApprovedNoteNumbers(user.CentreCode, ref pMsg);
+                    model.ListofNotes = model.ListofNotes.Where(x=>x.NoteNo==NoteNumber);
+                   // model.NoteNo = NoteNumber;
+                }
+                TempData["MGPV"] = model;
+                return View(model);
+            }
+            catch { }
+            TempData["MGPV"] = model;
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult Details(MGPNotes model, string Submit)
+        {
+
+            if (TempData["MGPV"] != null)
+            {
+                model.ListofNotes = (TempData["MGPV"] as MGPNotes).ListofNotes;
+            }
+            else { 
+                model.ListofNotes = _IMGP.getApprovedNoteNumbers(user.CentreCode, ref pMsg);
+                model.ListofNotes = (IEnumerable<MGPNote>)model.ListofNotes.Where(x => x.NoteNo == model.NoteNo).OrderByDescending(x=>x.NoteNo).FirstOrDefault();
+            }
+            if (Submit == "CMOD")
+            {
+                return RedirectToAction("VehicleMaterialOutView",
+                 new { Area = "Security", CBUID = 1, NoteNumber = model.NoteNo });
+            }
+            else if (Submit == "CMID")
+            {
+                return RedirectToAction("VehicleMaterialInView",
+                    new { Area = "Security", CBUID = 1, NoteNumber = model.NoteNo });
+            }
+            return View(model);
+        }
+
+        public ActionResult VehicleMaterialOutView(string NoteNumber, int CBUID)
+        {
+
+            MGPOutInVM model = new MGPOutInVM();
+
+            if (CBUID == 1)
+            {
+                ViewBag.CallBackUrl = "/Security/MaterialGatePass/Details";
+            }
+            else
+            {
+                ViewBag.CallBackUrl = "/Security/MaterialGatePass/VehicleMaterialInDetails?NoteNumber="+ NoteNumber;
+            }
+            //UserInfo user = getLogInUserInfo();
+            ViewBag.ListofMatOut = _IMGP.getMGPOutDetails(NoteNumber, ref pMsg);
+            ViewBag.ListofRFID = _IMGP.getRFIDCards(ref pMsg);
+            //model.ListCurrentOutDetails = _IMGP.getSchDtlsForMGP(mNoteNumber, ref pMsg);
+            return View(model);
+        }
+
+
+        public ActionResult VehicleMaterialInView(string NoteNumber)
+        {
+            MGPInDetailsVM model = new MGPInDetailsVM();
+            try
+            {
+                
+              ViewBag.CallBackUrl = "/Security/MaterialGatePass/Details";
+                
+                model.ListInDetails = _IMGP.getMGPOutDetails(NoteNumber, ref pMsg);
+            }
+            catch (Exception ex) { ex.ToString(); }
+            return View(model);
+        }
+
+
+
+
         #endregion
 
 

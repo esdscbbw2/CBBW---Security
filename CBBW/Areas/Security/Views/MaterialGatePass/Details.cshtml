@@ -1,18 +1,29 @@
-﻿
+﻿@using CBBW.BOL.MGP
+@model MGPNotes
+@{
+    ViewBag.Title = "Material Gate Pass (For Company Transport)–ENTRY";
 
-    <div class="container">
+}
+
+
+<div class="container">
+
+    @using (Html.BeginForm("Details", "MaterialGatePass", FormMethod.Post))
+    {
         <div class="row newTable">
+
             <div class="fixedElement">
                 <div class="col-md-12">
                     <div class="heading_text_btn mb-3 mt-4">
                         <div class="leftButton">
-                            <button type="submit" class="btn btn-primary me-2" onclick="window.location.href='material_gate_pass_entry_list.html';">
+                            <button id="btnBack" type="button"
+                                    class="btn btn-primary me-2">
                                 <i data-feather="arrow-left-circle"></i>
                                 Back
                             </button>
 
                         </div>
-                        <h2>Material Gate Pass (For Company Transport) – ENTRY </h2>
+                        <h2>@ViewBag.Title</h2>
                         <div class="rightButton">
                             <button type="submit" class="btn btn-white" onclick="window.location.href='#';">
                                 <i data-feather="printer"></i>
@@ -34,25 +45,38 @@
                                     Ref. Company Transport Vehicle Trip Schedule – ENTRY Note No. :
                                 </label>
                                 <div class="col-md-3">
-                                    <select class="form-select cursor-none" aria-label="Default select example" disabled>
-                                        <option selected="">200001-CTV-20220930-00001</option>
-                                        <option value="1">200001-CTV-20220930-00002</option>
-                                        <option value="1">200001-CTV-20220930-00003</option>
-                                        <option value="1">200001-CTV-20220930-00004</option>
-                                    </select>
+                                    @Html.DropDownListFor(m => m.NoteNo,
+        new SelectList(Model.ListofNotes, "NoteNo", "NoteNo"),
+        htmlAttributes: new
+        {
+            @class = "inVisible form-select",
+            @readonly = true
+        })
+
+                                    @Html.DropDownListFor(m => m.NoteNumber,
+        new SelectList(Model.ListofNotes, "NoteNo", "NoteNo"),
+        htmlAttributes: new
+        {
+            @class = "form-select",
+            disabled = "disabled"
+        })
                                 </div>
 
                                 <label class="col-form-label col-md-1">
                                     Date  :
                                 </label>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" value="10/09/2022" disabled>
+                                     @Html.TextBox("EntryDate", DateTime.Today.ToString("dd/MM/yyyy"),
+                               htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+
+                                   
                                 </div>
                                 <label class="col-form-label col-md-1">
                                     Time  :
                                 </label>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" value="03:00: PM" disabled>
+                                    @Html.TextBox("EntryTime", DateTime.Now.ToString("hh:mm tt"),
+        htmlAttributes: new { @class = "form-control", disabled = "disabled" })
                                 </div>
 
 
@@ -63,13 +87,14 @@
                                     Center Code & Name  :
                                 </label>
                                 <div class="col-md-3">
-                                    <input type="text" class="form-control" value="01 / Nizamabad" disabled>
+                                    @Html.TextBoxFor(m => m.CenterCode, htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })
                                 </div>
                                 <label class="col-form-label col-md-1">
                                     Month & Year  :
                                 </label>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" value="Sept 2022" disabled>
+                                    @Html.TextBoxFor(m => m.FortheMonthnYear,
+     htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })
                                 </div>
                             </div>
 
@@ -78,19 +103,19 @@
                                     Vehicle No.  :
                                 </label>
                                 <div class="col-md-3">
-                                    <input type="text" class="form-control" value="Vehicle Number 1" disabled>
+                                    @Html.TextBoxFor(m => m.VehicleNo, htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })
                                 </div>
                                 <label class="col-form-label col-md-1">
                                     Vehicle Type  :
                                 </label>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" value="SUV" disabled>
+                                    @Html.TextBoxFor(m => m.VehicleType, htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })
                                 </div>
                                 <label class="col-form-label col-md-1">
                                     Model Name  :
                                 </label>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" value="Bolero" disabled>
+                                    @Html.TextBoxFor(m => m.ModelName, htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })
                                 </div>
                             </div>
                         </form>
@@ -98,37 +123,44 @@
                 </div>
                 <div class="col-md-12">
                     <div class="d-flex justify-content-center mt-2">
-                        <button type="button" class="btn btn-primary me-2" onclick="window.location.href='@Url.Action("VehicleMaterialOutDetails", "MaterialGatePass",
-                                    new { Area = "Security"})'">
+                        <button id="btnCMOD" type="submit" name="Submit" value="CMOD"
+                                class="btn btn-primary me-2">
+
                             Vehicle & Material Out Details
                         </button>
-                        <button type="button" class="btn btn-primary" onclick="window.location.href='@Url.Action("VehicleMaterialInDetails", "MaterialGatePass",
-                                    new { Area = "Security"})'">
+                        <button id="btnCMID" type="submit" name="Submit" value="CMID"
+                                class="btn btn-primary me-2" disabled>
+
                             Vehicle & Material In Details
                         </button>
                     </div>
                 </div>
                 <div class="bgColor mt-4 bg-transparent border-blue">
+
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
-                            If The Driver Name Given In The System & The Person Driving The Vehicle Are Same: <select class="form-select cursor-none" aria-label="Default select example" disabled>
-                                <option>-</option>
-                                <option selected="" value="1">Yes</option>
-                                <option value="1">No</option>
+                            If The Driver Name Given In The System & The Person Driving The Vehicle Are Same:
+                            <select id="driversame" style="width:110px"
+                                    class="form-select"
+                                    aria-label="Default select example" disabled>
+
+                                <option selected value="Yes">Yes</option>
+
                             </select>
                         </li>
-
-
                     </ul>
                 </div>
                 <div class="bgColor mt-4 bg-transparent border-blue">
-                    <ul style="list-style:none;">
 
+                    <ul style="list-style:none;">
                         <li style="font-size: 16px;">
-                            Have You Collected / Given Back The Mobile Phone To The Driver Who Is Driving The Vehicle: <select class="form-select cursor-none" aria-label="Default select example" disabled>
-                                <option>-</option>
-                                <option selected="" value="1">Yes</option>
-                                <option value="1">No</option>
+                            Have You Collected / Given Back The Mobile Phone To The Driver Who Is Driving The Vehicle:
+
+                            <select id="vehicledriver" style="width:110px"
+                                    class="form-select" aria-label="Default select example" disabled>
+
+                                <option selected value="Yes">Yes</option>
+
                             </select>
                         </li>
                     </ul>
@@ -139,80 +171,83 @@
 
 
             </div>
+
         </div>
-        </div>
-        <!-- Optional JavaScript; choose one of the two! -->
+    }
+</div>
+@section headers
+    {
+    <style>
+        .inVisible {
+            display: none;
+        }
 
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
+}
 
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.bundle.min.js"></script>
-        <script src="js/multiselect.js"></script>
-        <script src="js/popper.min.js"></script>
-        <script src="js/jquery.dataTables.min.js"></script>
-        <script src="js/dataTables.bootstrap5.min.js"></script>
-        <script src="js/feather.min.js"></script>
-        <!-- Time Picker -->
-        <script src="js/moment.min.js"></script>
-        <script src="js/bootstrap-datetimepicker.min.js"></script>
-
-        <script>
-            feather.replace()
-        </script>
-
-        <script>
-            $(document).ready(function() {
-                $('#example').DataTable();
-            });
-        </script>
-        <script>
-            $(function() {
-                $('[data-toggle="tooltip"]').tooltip()
-            })
-        </script>
-        <!-- time Picker Script -->
-        <script>
-            var today = new Date();
-            var minDate = today.setDate(today.getDate() + 1);
-
-            $('#datePicker').datetimepicker({
-                useCurrent: false,
-                format: "MM/DD/YYYY",
-                minDate: minDate
-            });
-
-            var firstOpen = true;
-            var time;
-
-            $('.timePicker').datetimepicker({
-                useCurrent: false,
-                format: "hh:mm A"
-            }).on('dp.show', function() {
-                if (firstOpen) {
-                    time = moment().startOf('day');
-                    firstOpen = false;
-                } else {
-                    time = "01:00 PM"
-                }
-
-                $(this).data('DateTimePicker').date(time);
-            });
-        </script>
-        <script>
-            $(window).scroll(function(e) {
-                var $el = $('.fixedElement');
-                var isPositionFixed = ($el.css('position') == 'fixed');
-                if ($(this).scrollTop() > 200 && !isPositionFixed) {
-                    $el.css({
-                        'position': 'sticky',
-                        'top': '0px'
+@section scripts{
+    <script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
+    @*<script src="~/UIContent/JS/CustomePage/MGPass.js"></script>*@
+    <script>
+        $(document).ready(function () {
+            NotenumberforView($('#NoteNo').val());
+        });
+        function NotenumberforView(notenumber) {
+            $.ajax({
+                url: '/CTV/getDataFromNote',
+                method: 'GET',
+                data: { Notenumber: notenumber },
+                dataType: 'json',
+                success: function (data) {
+                    $(data).each(function (index, item) {
+                   
+                        $('#CenterCode').val(item.CentreCodenName);
+                        $('#FortheMonthnYear').val(item.FortheMonthnYear);
+                        $('#VehicleNo').val(item.Vehicleno);
+                        $('#VehicleType').val(item.VehicleType);
+                        $('#ModelName').val(item.ModelName);
+                       // $('#EntryDate').val(item.EntryDate);
+                        $('#EntryTime').val(item.EntryTime);
                     });
-                }
-                if ($(this).scrollTop() < 200 && isPositionFixed) {
-                    $el.css({
-                        'position': 'static',
-                        'top': '0px'
-                    });
+                    ActivateOutbtn(notenumber);
                 }
             });
-        </script>
+        };
+
+
+        function ActivateOutbtn(notenumber) {
+            var btnOut = $('#btnCMOD');
+            var btnIn = $('#btnCMID');
+            $.ajax({
+                url: '/MaterialGatePass/GetHistoryInforView',
+                method: 'GET',
+                data: { Notenumber: notenumber },
+                dataType: 'json',
+                success: function (data) {
+                    $(data).each(function (index, item) {
+                        if (item.InActive == true) {
+                                    btnIn.removeAttr('disabled');
+                                }
+                        });
+                }
+
+            });
+        };
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#btnBack').click(function () {
+                var url = "/Security/MaterialGatePass/Index";
+                window.location.href = url;
+              
+            });
+        });
+    </script>
+    
+}
+
 

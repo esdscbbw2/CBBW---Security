@@ -340,23 +340,29 @@ namespace CBBW.DAL.DBMapper
         #endregion
 
         #region For List Page(Index page)
-        public MGPListDetails Map_MGPListDetails(DataRow dr)
+  
+
+
+        public MGPNoteList Map_MGPNoteList(DataRow dr)
         {
-            MGPListDetails result = new MGPListDetails();
+            MGPNoteList result = new MGPNoteList();
             try
             {
                 if (dr != null)
                 {
+                    if (!DBNull.Value.Equals(dr["RowNum"]))
+                        result.RowNumber = int.Parse(dr["RowNum"].ToString());
+                    if (!DBNull.Value.Equals(dr["TotalCount"]))
+                        result.TotalCount = int.Parse(dr["TotalCount"].ToString());
                     if (!DBNull.Value.Equals(dr["NoteNumber"]))
                         result.NoteNumber = dr["NoteNumber"].ToString();
-                    if (!DBNull.Value.Equals(dr["CenterCode"]))
-                        result.CenterCode = int.Parse(dr["CenterCode"].ToString());
                     if (!DBNull.Value.Equals(dr["CenterName"]))
                         result.CenterName = dr["CenterName"].ToString();
                     if (!DBNull.Value.Equals(dr["VehicleNo"]))
                         result.VehicleNo = dr["VehicleNo"].ToString();
                     if (!DBNull.Value.Equals(dr["MonthYear"]))
-                        result.MonthYear = dr["MonthYear"].ToString();
+                        result.MonthYear =dr["MonthYear"].ToString();
+                   // result.NoteNumber2 = result.NoteNumber;
                 }
             }
             catch { }

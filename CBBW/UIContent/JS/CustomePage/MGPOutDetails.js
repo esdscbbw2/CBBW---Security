@@ -39,7 +39,8 @@
                     cloneready.find('td').find('#0_ActualTripTime').attr('id', index + '_ActualTripTime');
                     cloneready.find('td').find('#0_KM').attr('id', index + '_KM');//Display Only
                     cloneready.find('td').find('#0_KMOut').attr('id', index + '_KMOut');
-                    cloneready.find('td').find('#0__OutRemarks').attr('id', index + '_OutRemarks');
+                    cloneready.find('td').find('#0_OutRemarks').attr('id', index + '_OutRemarks');
+                    cloneready.find('td').find('#0_ActionDCNew').attr('id', index + '_ActionDCNew');
                     $('#tbody6').append(cloneready);
                    
                 }
@@ -53,7 +54,7 @@
                 $("#" + index + "_DesgCodeName").html(item.DesignationCode + " / " + item.DesignationName);//Display only          
                 $("#" + index + "_DesgCode").val(item.DesignationCode);
                 $("#" + index + "_DesgName").val(item.DesignationName);
-                $("#" + index + "_TripTC").html(item.TripType + " / " + item.TripTypeStr);//Display only
+                $("#" + index + "_TripTC").html(item.TripTypeStr);//Display only
                 $("#" + index + "_TripType").val(item.TripType);
                 $("#" + index + "_TripCode").val(item.TripTypeStr);
                 $("#" + index + "_Toloc").html(item.ToLocationCodeName);//Display Only
@@ -139,14 +140,10 @@ function GetRFIDCardNos() {
 function OnclickNewDCDetails(ctrl) {
     $("#savebtndisable").removeClass('is-valid').addClass('is-invalid');
     $("#savebtndisable").removeClass('is-invalid').addClass('is-valid');
-    
-
     $('#tbody1').removeClass('inVisible');
-
     $('#tbody2').empty();
     var targetid = $(ctrl).attr("id");
     var targetval = $(ctrl).attr('data-value');
-
     $.ajax({
         url: '/Security/MaterialGatePass/GetReferenceDCDetails?VehicleNo=' + targetid + '&FromDT=' + targetval,
         method: 'GET',
@@ -159,23 +156,22 @@ function OnclickNewDCDetails(ctrl) {
                 if (index > 0) {
                     var cloneready = $('#tbody1').find('tr').clone();
                     cloneready.attr("id", index);
-                    cloneready.find('td').find('#0_NotNo').attr('id', index + '_NotNo');
+                    //cloneready.find('td').find('#0_NotNo').attr('id', index + '_NotNo');
                     cloneready.find('td').find('#0_NotNumber').attr('id', index + '_NotNumber');
                     cloneready.find('td').find('#0_NotesDate').attr('id', index + '_NotesDate');
                     cloneready.find('td').find('#0_fromloc').attr('id', index + '_fromloc');
                     cloneready.find('td').find('#0_tonloc').attr('id', index + '_tonloc');
                     cloneready.find('td').find('#0_fokdiv').attr('id', index + '_fokdiv');
-                   // cloneready.find('td').find('#0_Actions').attr('id', index + '_Actions');
+                    cloneready.find('td').find('#0_ActionItem').attr('id', index + '_ActionItem');
+                  
                     $('#tbody2').append(cloneready);
                 }
                 $("#" + index + "_NotNumber").val(item.NoteNumber).html('<input id="' + index + '_NotNo" value="' + item.NoteNumber+'" type="text" disabled="disabled"class="form-control">');
                 $("#" + index + "_NotesDate").val(item.NoteDatestr).html('<input id="' + index + '_Date" value="' + item.NoteDatestr +'" type="text" disabled="disabled" class="form-control">');
                 $("#" + index + "_fromloc").val(item.FromLocationText).html('<input id="' + index + '_Frmloc" value="' + item.FromLocationText +'" type="text" disabled="disabled" class="form-control">');
                 $("#" + index + "_tonloc").val(item.ToLocationText).html('<input id="' + index + '_Tolocation" value="' + item.ToLocationText +'" type="text" disabled="disabled"  class="form-control">');
-                $("#" + index + "_fokdiv").val(item.FindOk).html('<select id="' + index + '_fok"  value="' + item.FindOk +'" class="form-select pointer is-invalid" onchange="ValidateControl()" aria-label="Default select example"><option value="NA">-</option><option value="Yes">Yes</option><option value="No">No</option></select>');
-                
-                //$("#" + index + "_Action").html('<button type="button" onclick="Detailsclick()"  id="' + index + '_btn" value="' + item.NoteNumber + '"  class="btn primaryLink" data-toggle="tooltip" data-placement="top"title="Details">Details</button>');
-                $("#" + index + "_ActionItem").html('<button type="button" onclick="Detailsclick(this)"  id="' + index + '_btn" data-value="' + item.NoteNumber + '"   class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Details"> <svg xmlns=http://www.w3.org/2000/svg width=24 height=24 viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx=12 cy=12 r=3></circle></svg></button>');
+                $("#" + index + "_fokdiv").val(item.FindOk).html('<select id="' + index + '_fok"  value="' + item.FindOk + '" class="form-select pointer is-invalid" onchange="ValidateControl()" aria-label="Default select example"><option value="NA">-</option><option value="Yes">Yes</option><option value="No">No</option></select>');
+                $("#" + index + "_ActionItem").html('<button type="button" onclick="Detailsclick(this)"  id="' + index + '_btn" data-value="' + item.NoteNumber + '"   class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Details"><svg xmlns=http://www.w3.org/2000/svg width=24 height=24 viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx=12 cy=12 r=3></circle></svg></button>');
             })
             ValidateControl();
         }
@@ -205,7 +201,7 @@ function OnclickHistoryDCDetails(ctrl) {
                         cloneready.find('td').find('#0_fromloc').attr('id', index + '_fromloc');
                         cloneready.find('td').find('#0_tonloc').attr('id', index + '_tonloc');
                         cloneready.find('td').find('#0_fokdiv').attr('id', index + '_fokdiv');
-                        //cloneready.find('td').find('#0_Action').attr('id', index + '_Action');
+                        cloneready.find('td').find('#0_ActionItem').attr('id', index + '_ActionItem');
                         $('#tbody2').append(cloneready);
                     }
                     $("#" + index + "_NotNumber").html(item.NoteNumber);
@@ -214,8 +210,8 @@ function OnclickHistoryDCDetails(ctrl) {
                     $("#" + index + "_tonloc").html(item.ToLocationText);
                     $("#" + index + "_fokdiv").html(item.CheckFound);
 
-                    //$("#" + index + "_Action").html('<button type="button" onclick="Detailsclick()"  id="' + index + '_btn" value="' + item.NoteNumber + '"  class="btn primaryLink" data-toggle="tooltip" data-placement="top"title="Details">Details</button>');
-                    $("#" + index + "_ActionItem").html('<button type="button" onclick="Detailsclick()"  id="' + index + '_btn" value="' + item.NoteNumber + '"   class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Details"><svg xmlns=http://www.w3.org/2000/svg width=24 height=24 viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx=12 cy=12 r=3></circle></svg></button>');
+                    
+                    $("#" + index + "_ActionItem").html('<button type="button" onclick="Detailsclick(this)"  id="' + index + '_btn" data-value="' + item.NoteNumber + '"   class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Details"><svg xmlns=http://www.w3.org/2000/svg width=24 height=24 viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx=12 cy=12 r=3></circle></svg></button>');
                 })
             } else {
                 Swal.fire({
@@ -239,8 +235,9 @@ function OnclickHistoryDCDetails(ctrl) {
 //for ItemWise Data display
 function Detailsclick(ctrl) {
     var target = Detailsclick.caller.arguments[0].target;
-    //var targetval = $(target).attr("value");
+   // var targetval = $(target).attr("value");
     var targetval = $(ctrl).attr('data-value');
+   
     $.ajax({
         url: '/MaterialGatePass/GetItemWiseDetails',
         method: 'GET',

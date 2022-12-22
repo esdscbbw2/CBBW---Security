@@ -269,23 +269,26 @@ namespace CBBW.DAL.Entities
 
         #region For List Page (Index page)
         
-        public IEnumerable<MGPListDetails> getMGPDetailsforListPage(ref string pMsg)
+       
+
+        public List<MGPNoteList> getMGPDetailsforListPage(int DisplayLength, int DisplayStart, int SortColumn, string SortDirection, string SearchText, ref string pMsg)
         {
-            List<MGPListDetails> mgp = new List<MGPListDetails>();
+            List<MGPNoteList> result = new List<MGPNoteList>();
             try
             {
-                dt = _datasync.getMGPDetailsforListPage(ref pMsg);
+                dt = _datasync.getMGPDetailsforListPage(DisplayLength, DisplayStart, SortColumn, SortDirection, SearchText, ref pMsg);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
-                        mgp.Add(_datamapper.Map_MGPListDetails(dt.Rows[i]));
+                        result.Add(_datamapper.Map_MGPNoteList(dt.Rows[i]));
                     }
                 }
             }
-            catch { }
-            return mgp;
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
         }
+
         #endregion
 
 
