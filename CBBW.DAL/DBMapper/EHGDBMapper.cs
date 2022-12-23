@@ -164,6 +164,8 @@ namespace CBBW.DAL.DBMapper
                         result.InitiatorCodenName = dr["InitiatorName"].ToString();
                     if (!DBNull.Value.Equals(dr["InstructorName"]))
                         result.InstructorName = dr["InstructorName"].ToString();
+                    if (!DBNull.Value.Equals(dr["ImageFile"]))
+                        result.DocFileName = dr["ImageFile"].ToString();
                 }
             }
             catch { }
@@ -229,9 +231,9 @@ namespace CBBW.DAL.DBMapper
                         result.IsApproved =bool.Parse(dr["IsApproved"].ToString());
                     result.EntryDateDisplay = result.EntryDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
                     result.NoteNumber2 = result.NoteNumber;
-                    //if (!result.IsApproved && result.EntryDate == DateTime.Today) 
-                    //{ result.CanDelete = true; }
-                    result.CanDelete = true;
+                    if (!result.IsApproved && result.EntryDate == DateTime.Today)
+                    { result.CanDelete = true; }
+                    //result.CanDelete = true;
                 }
             }
             catch { }

@@ -35,8 +35,10 @@ namespace CBBW.BLL.Repository
             try
             {
                 EHGMaster m = EHGMaster.GetInstance;
-                result.POAText = m.PurposeOfAllotment.Where(o => o.ID == result.PurposeOfAllotment).FirstOrDefault().DisplayText;
-                result.VehicleTypeText = m.VehicleTypes.Where(o => o.ID == result.VehicleType).FirstOrDefault().DisplayText;
+                if (result.PurposeOfAllotment > 0) 
+                { result.POAText = m.PurposeOfAllotment.Where(o => o.ID == result.PurposeOfAllotment).FirstOrDefault().DisplayText; }
+                if (result.VehicleType > 0)
+                { result.VehicleTypeText = m.VehicleTypes.Where(o => o.ID == result.VehicleType).FirstOrDefault().DisplayText; }
             }
             catch { }
             return result;
@@ -133,5 +135,6 @@ namespace CBBW.BLL.Repository
             header.EntryTime = DateTime.Now.ToString("hh:mm tt");
             return _EHGEntities.UpdateEHGHdr(header, ref pMsg);
         }
+
     }
 }

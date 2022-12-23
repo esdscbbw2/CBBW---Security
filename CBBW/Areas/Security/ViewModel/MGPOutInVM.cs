@@ -36,7 +36,14 @@ namespace CBBW.Areas.Security.ViewModel
         public List<MGPReferenceDCDetails> ListofMGPReferenceInDCDetails { get; set; }
         public IEnumerable<MGPItemWiseDetails> ListofMGPItemWiseInDetails { get; set; }
         
-             public IEnumerable<MGPOutInDetails> ListInDetails { get; set; }
+       public IEnumerable<MGPOutInDetails> ListInDetails { get; set; }
+
+        public string RFIDCard { get; set; }
+        public DateTime ActualTripInDate { get; set; }
+        public int ActualKmIn { get; set; }
+        public int KMRunInTrip { get; set; }
+        public string InRemark { get; set; }
+        public string ActualTime { get; set; }
 
     }
 

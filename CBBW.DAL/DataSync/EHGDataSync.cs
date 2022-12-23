@@ -16,7 +16,7 @@ namespace CBBW.DAL.DataSync
             try
             {
                 int paracount = 0;
-                SqlParameter[] para = new SqlParameter[23];
+                SqlParameter[] para = new SqlParameter[24];
                 para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
                 para[paracount++].Value = header.NoteNumber;
                 para[paracount] = new SqlParameter("@EntryDate", SqlDbType.Date);
@@ -65,6 +65,8 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = header.InstructorName;
                 para[paracount] = new SqlParameter("@InitiatorName", SqlDbType.NVarChar, 100);
                 para[paracount++].Value = header.InitiatorCodenName;
+                para[paracount] = new SqlParameter("@ImageFile", SqlDbType.NVarChar);
+                para[paracount++].Value = string.IsNullOrEmpty(header.DocFileName)?" ": header.DocFileName;
                 using (SQLHelper sql = new SQLHelper("[EHG].[SetEHGHdrForManagement]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataTable(para, ref pMsg);
@@ -154,7 +156,7 @@ namespace CBBW.DAL.DataSync
             try
             {
                 int paracount = 0;
-                SqlParameter[] para = new SqlParameter[14];
+                SqlParameter[] para = new SqlParameter[15];
                 para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
                 para[paracount++].Value =header.NoteNumber;
                 para[paracount] = new SqlParameter("@EntryDate", SqlDbType.Date);
@@ -183,6 +185,8 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = header.InstructorName;
                 para[paracount] = new SqlParameter("@InitiatorName", SqlDbType.NVarChar, 100);
                 para[paracount++].Value = header.InitiatorCodenName;
+                para[paracount] = new SqlParameter("@ImageFile", SqlDbType.NVarChar);
+                para[paracount++].Value = string.IsNullOrEmpty(header.DocFileName) ? " " : header.DocFileName;
                 using (SQLHelper sql = new SQLHelper("[EHG].[UpdateEHGHdr]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataTable(para, ref pMsg);

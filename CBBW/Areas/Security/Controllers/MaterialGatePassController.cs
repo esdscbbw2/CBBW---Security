@@ -296,13 +296,38 @@ namespace CBBW.Areas.Security.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
            
         }
-        
+
+        [HttpPost]
+        public ActionResult VehicleMaterialInDetails(MGPInDetailsVM model)
+        {
+            //MGPInDetailsVM model = new MGPInDetailsVM();
+            try
+            {
+                if (TempData["MGPout"] != null)
+                {
+                    model = TempData["MGPout"] as MGPInDetailsVM;
+                }
+               
+                TempData["MGPout"] = model;
+
+            }
+            catch (Exception ex) { ex.ToString(); }
+            return RedirectToAction("VehicleMaterialOutView",
+                  new { Area = "Security", NoteNumber = model.NoteNumber, CBUID = 2 });
+
+        }
+
+
+        [HttpGet]
         public ActionResult VehicleMaterialInDetails(string NoteNumber)
         {
             MGPInDetailsVM model = new MGPInDetailsVM();
             try
             {
-               
+                if (TempData["MGPout"] != null) {
+                    model = TempData["MGPout"] as MGPInDetailsVM;
+                }
+                
                 model.ListInDetails = _IMGP.getMGPOutDetails(NoteNumber, ref pMsg);
             }
             catch (Exception ex) { ex.ToString(); }

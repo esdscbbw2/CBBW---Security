@@ -6,6 +6,14 @@ $.fn.makeDisable = function () {
     var that = this;
     that.attr('disabled', 'disabled');
 };
+$.fn.RemoveReadOnly = function () {
+    var that = this;
+    that.removeAttr('readonly');
+};
+$.fn.makeReadOnly = function () {
+    var that = this;
+    that.attr('readonly', 'readonly');
+};
 $.fn.isInvalid = function () {
     var that = this;
     that.addClass('is-invalid').removeClass('is-valid');
@@ -610,6 +618,12 @@ function getDivInvalidCount(mdivID) {
     x = mDiv.find('.is-invalid').length;
     //alert(mdivID + ' - ' + x);
     return x;
+};
+function OpenDocument(pathid, docName) {
+    var filepath = "/Upload/Forms/";
+    if (pathid == 1) { filepath = "/Upload/Docs/"; }
+    filepath = filepath + docName;
+    window.open(filepath);
 };
 
 

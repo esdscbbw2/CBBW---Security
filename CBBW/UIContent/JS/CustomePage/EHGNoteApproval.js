@@ -121,6 +121,7 @@ function NoteNumberChanged(notenumber) {
                 $('#InstructorInput').val(item.Header.InstructorName);
                 $('#InitiatorInput').val(item.Header.InitiatorCodenName);
                 $('#AuthorizeEmpInput').val(item.Header.AuthorisedEmployeeName);
+                $('#DocFileName').val(item.Header.DocFileName);
                 if (item.Header.PurposeOfAllotment == 1) {
                     $('#TPDHeader').html('Travelling Person Details: For Management');
                     $('.OffSpecial').each(function () {
@@ -183,4 +184,11 @@ $(document).ready(function () {
     });
     if (notenumberctrl.val() != '') { NoteNumberChanged(notenumberctrl.val()); }
     EnableBlockedControlls();
+});
+$(document).ready(function(){
+    $('#btnViewDoc').click(function () {
+        var docfilename = $('#DocFileName').val();
+        var filepath = "/Upload/Forms/" + docfilename;
+        window.open(filepath);
+    });
 });

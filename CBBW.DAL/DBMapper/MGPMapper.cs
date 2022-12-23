@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CBBW.BOL.MGP;
+using System.Globalization;
+using CBBW.DAL.DBLogic;
 
 namespace CBBW.DAL.DBMapper
 {
@@ -81,8 +83,8 @@ namespace CBBW.DAL.DBMapper
                     if (!DBNull.Value.Equals(dr["InActive"]))
                         result.InActive = bool.Parse(dr["InActive"].ToString());
 
-                    result.FromDate = result.SchFromDate.ToString("dd-MM-yyyy");
-                    result.ATripOutDate = result.ActualTripOutDate.ToString("dd-MM-yyyy");
+                    result.FromDate = MyDBLogic.ConvertDateToString(result.SchFromDate);
+                    result.ATripOutDate = MyDBLogic.ConvertDateToString(result.ActualTripOutDate);
                     //For Existing In details
                     if (!DBNull.Value.Equals(dr["RFIDCardIn"]))
                         result.RFIDCardIn = dr["RFIDCardIn"].ToString();
@@ -109,8 +111,8 @@ namespace CBBW.DAL.DBMapper
                         result.KMRunInTrip = int.Parse(dr["KMRunInTrip"].ToString());
                     if (!DBNull.Value.Equals(dr["RemarkIn"]))
                         result.RemarkIn = dr["RemarkIn"].ToString();
-                    result.ActualTripInD = result.ActualTripInDate.ToString("dd-MM-yyyy");
-
+                    result.ActualTripInD = MyDBLogic.ConvertDateToString(result.ActualTripInDate);
+                    //result.ActualTripInD = "RemarkIn";
                 }
             }
             catch { }
@@ -170,7 +172,7 @@ namespace CBBW.DAL.DBMapper
                         result.ToLocationCode = int.Parse(dr["ToLocationCode"].ToString());
                     if (!DBNull.Value.Equals(dr["ToLocationText"]))
                         result.ToLocationText = dr["ToLocationText"].ToString();
-                    result.NoteDatestr = result.NoteDate.ToString("dd-MM-yyyy");
+                    result.NoteDatestr = MyDBLogic.ConvertDateToString(result.NoteDate);
 
                 }
             }
@@ -214,7 +216,7 @@ namespace CBBW.DAL.DBMapper
                         result.VehicleNumber = dr["VehicleNumber"].ToString();
 
 
-                    result.SchFromDatestr = result.SchFromDate.ToString("dd-MM-yyyy");
+                    result.SchFromDatestr = MyDBLogic.ConvertDateToString(result.SchFromDate);
                     //if (!DBNull.Value.Equals(dr["FromCentreCode"]))
                     //    result.FromCentreCode = int.Parse(dr["FromCentreCode"].ToString());
                     //if (!DBNull.Value.Equals(dr["FromCenterName"]))
@@ -266,7 +268,7 @@ namespace CBBW.DAL.DBMapper
                         result.VehicleNo = dr["VehicleNo"].ToString();
                     if (!DBNull.Value.Equals(dr["CheckFound"]))
                         result.CheckFound = dr["CheckFound"].ToString();
-                    result.NoteDatestr = result.NoteDate.ToString("dd-MM-yyyy");
+                    result.NoteDatestr = MyDBLogic.ConvertDateToString(result.NoteDate);
 
 
                 }
@@ -327,7 +329,7 @@ namespace CBBW.DAL.DBMapper
                         result.ActKmIn = int.Parse(dr["ActKmIn"].ToString());
                     if (!DBNull.Value.Equals(dr["RunningKm"]))
                         result.RunningKm = int.Parse(dr["RunningKm"].ToString());
-                    result.FromschDates = result.SchFromDate.ToString("dd-MM-yyyy");
+                    result.FromschDates = MyDBLogic.ConvertDateToString(result.SchFromDate);
 
 
 

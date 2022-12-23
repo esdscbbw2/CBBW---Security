@@ -8,10 +8,15 @@
 
 <div class="container">
 
-    @using (Html.BeginForm())
+    @using (Html.BeginForm("VehicleMaterialInDetails", "MaterialGatePass", FormMethod.Post))
     {
         @Html.HiddenFor(model => model.NoteNumber);
-
+        @Html.HiddenFor(model => model.RFIDCard);
+        @Html.HiddenFor(model => model.ActualTripInDate);
+        @Html.HiddenFor(model => model.ActualKmIn);
+        @Html.HiddenFor(model => model.KMRunInTrip);
+        @Html.HiddenFor(model => model.InRemark);
+        @Html.HiddenFor(model => model.ActualTime);
         <div class="row newTable">
             <input id="savebtndisables" type="hidden" class="form-control pointer is-invalid">
             <div class="fixedElement">
@@ -29,7 +34,7 @@ new { Area = "Security" })'">
                                 <i data-feather="upload"></i>
                                 Save
                             </button>
-                            <button type="button" class="btn btn-white">
+                            <button type="button" class="btn btn-white" onclick="btnClearClicked()">
                                 <i data-feather="x-circle"></i>
                                 Clear
                             </button>
@@ -43,9 +48,8 @@ new { Area = "Security" })'">
 
             <div class="col-md-12 text-center">
                 <div class=" upper-tab-buttons">
-                   
-                    <button type="button" class="btn btn-primary" onclick="GetoutDetailsPage(this)">
-
+                    <button id="OutBtn" type="submit" class="btn btn-primary"
+                            name="Submit" value="OUT">
                         "To Check  “Vehicle & Material Out Details” Click Here"
                     </button>
 
@@ -119,7 +123,7 @@ new { Area = "Security" })'">
                                     @if (Model != null)
                                     {
 
-                                       foreach (var item in Model.ListInDetails)
+                                        foreach (var item in Model.ListInDetails)
                                         {
                                             if (item.InActive)
                                             {
@@ -136,16 +140,16 @@ new { Area = "Security" })'">
                                                     </td>
                                                     @if (item.TripType == 1)
                                                     {
-                                                <td class="text-center">ocal Vehicle Schedule</td>
+                                                        <td class="text-center">ocal Vehicle Schedule</td>
                                                     }
                                                     else
                                                     {
-                                                <td class="text-center">Other Trip Schedule</td>
+                                                        <td class="text-center">Other Trip Schedule</td>
                                                     }
-                                                <td class="text-center">
-                                                     @item.FromLocationName
-                                                </td>
-                                                   
+                                                    <td class="text-center">
+                                                        @item.FromLocationName
+                                                    </td>
+
                                                     @if (item.CarryingInMaterial == true)
                                                     {
                                                         <td class="text-center">Yes</td>
@@ -254,7 +258,7 @@ new { Area = "Security" })'">
                                         </td>
                                         <td class="text-center">
                                             @*<div id="0_ActualTime" class="form-group"></div>*@
-                                            <input id="0_ActualTime" type="text" style="width: 154px;" class="form-control timePicker pointer is-invalid" onblur="ValidateControls()" placeholder="08:00PM">
+                                            <input id="0_ActualTime" type="text" style="width: 154px;" class="form-control timePicker pointer is-invalid displaytime" onblur="ValidateControls()" placeholder="08:00PM">
 
                                         </td>
                                         <td class="text-center">

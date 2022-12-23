@@ -96,5 +96,10 @@ namespace CBBW.Areas.Security.ViewModel.EHG
         public int VASubmitBtnActive { get; set; }
         public int DWBackBtnActive { get; set; }
         public int DWSubmitBtnActive { get; set; }
+        public int VehicleType { get; set; }
+        public int MaterialStatus { get; set; }
+        public int Instructor { get; set; }
+        public int AuthorisedEmpNo { get; set; }
+        public int POA { get; set; }
     }
 }

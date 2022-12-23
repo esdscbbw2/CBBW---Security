@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace CBBW.DAL.DBLogic
 {
@@ -39,6 +40,10 @@ namespace CBBW.DAL.DBLogic
             if (mString.Substring(0, 1) == "_")
                 mString = mString.Substring(1, mString.Length - 1);
             return mString.Replace('_', ',');
+        }
+        public static string ConvertDateToString(DateTime dt) 
+        {
+            return dt.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
         }
     }
 }

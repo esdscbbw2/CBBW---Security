@@ -34,12 +34,14 @@ function validatectrl(targetid, value) {
     var isvalid = false;
     switch (targetid) {
         case "ehgHeader_MaterialStatus":
+            $('#MaterialStatus').val(value);
             if (value >=0) { isvalid = true; }
             break;
         case "ehgHeader_Instructor":
             if (value > 0) {
                 var insname = $('#ehgHeader_Instructor option:selected').text();
                 $('#ehgHeader_InstructorName').val(insname);
+                $('#Instructor').val(value);
                 isvalid = true;
             }
             break;
@@ -61,7 +63,7 @@ function validatectrl(targetid, value) {
         case "AuthorisedEmpNoForManagement":            
             if (value > 0) {
                 var empname = $('#AuthorisedEmpNoForManagement option:selected').text();
-                $('#AuthorisedEmpNameForManagement').val(empname);
+                $('#AuthorisedEmpNameForManagement').val(empname);                
                 isvalid = true;
             }
             break;        
@@ -101,6 +103,7 @@ function DateWiseTourDtlClicked() {
     var instructor = $('#ehgHeader_Instructor').val();
     var authEMpname = $('#DDAuthorisedEmpForWork option:selected').text();
     var InstructorName = $('#ehgHeader_Instructor option:selected').text();
+    var DocName = $('#ehgHeader_DocFileName').val();
     //OficeWorkTbl    
     var schrecords = getRecordsFromTableV2('OficeWorkTbl');
     //var x = '{"NoteNumber":"' + notenumber + '","AuthorisedEmpName":"' + authorisedemp + '","PersonDtls":' + schrecords + '}';
@@ -108,7 +111,8 @@ function DateWiseTourDtlClicked() {
         + '","VehicleType":"' + vehicletype + '","PurposeOfAllotment":"' + poallotment
         + '","MaterialStatus":"' + matstat + '","Instructor":"' + instructor
         + '","AuthorisedEmployeeName":"' + authEMpname
-        + '","InstructorName":"' + InstructorName+'","PersonDtls":' + schrecords + '}';
+        + '","DocFileName":"' + DocName + '","InstructorName":"' + InstructorName
+        + '","PersonDtls":' + schrecords + '}';
     $.ajax({
         method: 'POST',
         url: '/EHG/GetTravelingPersonDetails',
@@ -347,6 +351,7 @@ function DDAuthorisedEmpForWorkChanged() {
     var targetCtrl = $(DDAuthorisedEmpForWorkChanged.caller.arguments[0].target);
     if (targetCtrl.val().length > 0) {
         $('#ehgHeader_AuthorisedEmployeeName').val(targetCtrl.val());
+        //$('#AuthorisedEmpNo').val(targetCtrl.val());
         targetCtrl.isValid();
     } else { targetCtrl.isInvalid(); }
     EnableDateWiseTourBtn();
@@ -370,8 +375,9 @@ function VehicleTypeChanged() {
     var POADropdown = $('#ehgHeader_PurposeOfAllotment');
     var VehicletypeCtrl = $('#ehgHeader_VehicleType');
     var dwtBtnCtrl = $('#DateWiseTourBtn2');
-    var vadBtnCtrl = $('#VADBtn');
+    var vadBtnCtrl = $('#VADBtn');    
     var selectedvt = VehicletypeCtrl.val();
+    $('#VehicleType').val(selectedvt);
     if (selectedvt == 1) {
         POACtrl.removeClass('inVisible');
         POA2WhCtrl.addClass('inVisible');        
@@ -404,32 +410,43 @@ function VehicleTypeChanged() {
         VehicletypeCtrl.isValid();
     }
     else { VehicletypeCtrl.isInvalid(); }
+    EnableDateWiseTourBtn();
 };
 function POADropdownChanged() {
     var ForManagementDiv = $('#for_Management');
     var ForOfficeWorkDiv = $('#for_OfficeWork');
     var POADropdown = $('#ehgHeader_PurposeOfAllotment');
+    var isUploaded = 0;
+    if ($('#ehgHeader_DocFileName').val().length > 1) { isUploaded = 1;}
     var DWTBtn = $('#DateWiseTourBtn2');
     var VABtn = $('#VADBtn');
     var selectedvt = POADropdown.val();
+    $('#POA').val(selectedvt);
     $('#ehgHeader_POA2').val(selectedvt);
-    if (selectedvt == 1) {
-        ForOfficeWorkDiv.addClass('inVisible');
-        ForManagementDiv.removeClass('inVisible');
-        //DWTBtn.makeDisable();
-        //VABtn.makeDisable();
-    }
-    else if (selectedvt == 2) {
-        ForOfficeWorkDiv.removeClass('inVisible');
-        ForManagementDiv.addClass('inVisible');
-        //DWTBtn.makeEnabled();
-        //VABtn.makeEnabled();
-    } else {
-        ForOfficeWorkDiv.addClass('inVisible');
-        ForManagementDiv.addClass('inVisible');
-        //DWTBtn.makeDisable();
-        //VABtn.makeDisable();
-    };
+    //if (isUploaded == 1) {
+        if (selectedvt == 1) {
+            ForOfficeWorkDiv.addClass('inVisible');
+            ForManagementDiv.removeClass('inVisible');
+            //DWTBtn.makeDisable();
+            //VABtn.makeDisable();
+        }
+        else if (selectedvt == 2) {
+            ForOfficeWorkDiv.removeClass('inVisible');
+            ForManagementDiv.addClass('inVisible');
+            //DWTBtn.makeEnabled();
+            //VABtn.makeEnabled();
+        }
+        else {
+            ForOfficeWorkDiv.addClass('inVisible');
+            ForManagementDiv.addClass('inVisible');
+            //DWTBtn.makeDisable();
+            //VABtn.makeDisable();
+        };
+    //}
+    //else {
+    //    ForOfficeWorkDiv.addClass('inVisible');
+    //    ForManagementDiv.addClass('inVisible');
+    //}
     if (selectedvt > 0) { POADropdown.isValid(); } else { POADropdown.isInvalid() }
     EnableDateWiseTourBtn();
 };
@@ -588,6 +605,24 @@ $(document).ready(function () {
         hdrDiv.addClass('sectionB');
         managementDiv.addClass('sectionB');
         officeworkDiv.addClass('sectionB');
+        hdrDiv.find('.form-control').each(function () {
+            $(this).makeDisable();
+        });
+        hdrDiv.find('.form-select').each(function () {
+            $(this).makeDisable();
+        });
+        managementDiv.find('.form-control').each(function () {
+            $(this).makeDisable();
+        });
+        managementDiv.find('.form-select').each(function () {
+            $(this).makeDisable();
+        });
+        officeworkDiv.find('.form-control').each(function () {
+            $(this).makeDisable();
+        });
+        officeworkDiv.find('.form-select').each(function () {
+            $(this).makeDisable();
+        });
     }
     EnableSubmitBtn();
 });

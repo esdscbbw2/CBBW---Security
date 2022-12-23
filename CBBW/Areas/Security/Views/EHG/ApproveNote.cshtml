@@ -10,6 +10,7 @@
         @Html.HiddenFor(m => m.BackBtnActive)
         @Html.HiddenFor(m => m.DWTActive)
         @Html.HiddenFor(m => m.VAActive)
+        @Html.HiddenFor(m => m.DocFileName)
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
@@ -36,7 +37,7 @@
         </div>
         <div class="col-md-12">
             <div class="text-center pt-2 pb-2">
-                <button type="submit" class="btn btn-light-green">
+                <button id="btnViewDoc" type="button" class="btn btn-light-green">
                     To Check Attached “Travelling Request Form”
                     Click Here
                 </button>

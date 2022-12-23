@@ -33,7 +33,7 @@ namespace CBBW.Areas.Security.Controllers
             user = iUser.getLoggedInUser();
             ViewBag.LogInUser = user.UserName;
         }
-        // GET: Security/EHG
+        
         [HttpPost]
         public ActionResult ApproveNote(EHGNotApprovalVM modelobj, string Submit)
         {
@@ -190,6 +190,11 @@ namespace CBBW.Areas.Security.Controllers
                 }
                 else 
                 {
+                    model.ehgHeader.VehicleType = model.VehicleType;
+                    model.ehgHeader.MaterialStatus = model.MaterialStatus;
+                    model.ehgHeader.Instructor = model.Instructor;
+                    //model.ehgHeader.AuthorisedEmpNo = model.AuthorisedEmpNo;
+                    model.ehgHeader.PurposeOfAllotment = model.POA;
                     if (_iEHG.UpdateEHGHdr(model.ehgHeader,ref pMsg))
                     { 
                         ViewBag.Msg = "Note Number " + model.ehgHeader.NoteNumber + " Submited Successfully.";
@@ -438,7 +443,12 @@ namespace CBBW.Areas.Security.Controllers
             model.ehgHeader.Instructor = modelobj.Instructor;
             model.ehgHeader.AuthorisedEmployeeName = modelobj.AuthorisedEmployeeName;
             model.ehgHeader.InstructorName = modelobj.InstructorName;
+            model.ehgHeader.DocFileName = modelobj.DocFileName;
             model.PersonDtls = modelobj.PersonDtls;
+            model.VehicleType= modelobj.VehicleType;
+            model.MaterialStatus = modelobj.MaterialStatus;
+            model.Instructor= modelobj.Instructor;
+            model.POA= modelobj.PurposeOfAllotment;
             TempData["EHG"] = model;
             CustomAjaxResponse result = new CustomAjaxResponse();
             if (modelobj != null) 

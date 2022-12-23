@@ -36,5 +36,6 @@ namespace CBBW.BOL.EHG
         public string ReasonForDisApproval { get; set; }
         public string POAText { get; set; }
         public string VehicleTypeText { get; set; }
+        public string DocFileName { get; set; }
     }
 }

@@ -8,6 +8,7 @@
     @using (Html.BeginForm())
     {
         @Html.HiddenFor(m => m.ehgHeader.NoteNumber)
+        @Html.HiddenFor(m => m.ehgHeader.DocFileName)
         @Html.HiddenFor(m => m.ehgHeader.CenterCode)
         @Html.HiddenFor(m => m.ehgHeader.CenterName)
         @Html.HiddenFor(m => m.ehgHeader.CenterCodenName)
@@ -23,7 +24,13 @@
         @Html.HiddenFor(m => m.SubmitBtnActive)
         @Html.HiddenFor(m => m.DWSubmitBtnActive)
         @Html.HiddenFor(m => m.VASubmitBtnActive)
-        @Html.HiddenFor(m=>m.ehgHeader.InstructorName)
+        @Html.HiddenFor(m => m.ehgHeader.InstructorName)
+
+        @Html.HiddenFor(m => m.VehicleType)
+        @Html.HiddenFor(m => m.MaterialStatus)
+        @Html.HiddenFor(m => m.Instructor)
+        @Html.HiddenFor(m => m.AuthorisedEmpNo)
+        @Html.HiddenFor(m => m.POA)
         @*@Html.HiddenFor(m => m.ehgHeader.PurposeOfAllotment)*@
         <div class="fixedElement">
             <div class="col-md-12">
@@ -51,7 +58,7 @@
         </div>
         <div class="col-md-12">
             <div class="text-center pt-2 pb-2">
-                <button type="submit" class="btn btn-light-green" onclick="fireSweetAlert()">
+                <button type="button" class="btn btn-light-green" onclick="fireSweetAlert()">
                     Scan & Attach
                     “Travelling Request Form”
                 </button>
@@ -233,7 +240,9 @@
                                         <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
                                             Person Type
                                         </th>
-                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">Employee No. & Name</th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                            Employee No. & Name
+                                        </th>
                                         <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
                                             Designation Code & Name
                                         </th>
@@ -568,7 +577,7 @@
                 <ul style="list-style:none;">
                     <li style="font-size: 16px;">
                         The Entry Is Done As Per Policy & As Required:
-                        <select id="AcceptCmb" style="width:110px" class="form-select" 
+                        <select id="AcceptCmb" style="width:110px" class="form-select"
                                 aria-label="Default select example">
                             <option selected="">-</option>
                             <option value="1">Yes</option>
@@ -638,20 +647,45 @@
                 text: "Are you sure you want to delete this?",
                 icon: 'success',
                 html: `<div style="text-align:left;">
-
-                                                        <div class="form-group">
-                                                            <label class="swal-label">Attach File</label>
-                                                            <input type="file" id="" class="form-control" placeholder="">
-                                                        </div>
-                                                    </div>`,
-
+                            <div class="form-group">
+                                <label class="swal-label">Attach File</label>
+                                <input type="file" id="uploadCtrl" name="uploadCtrl" class="form-control" placeholder="">
+                            </div>
+                        </div>`,
                 cancelButtonClass: 'btn-cancel',
                 cancelButtonText: 'Cancel',
                 confirmButtonText: 'Submit',
                 confirmButtonColor: '#2527a2',
                 showCancelButton: true,
-
-            })
+            }).then(callback);
+            function callback(result) {
+                if (result.value) {
+                    //var url = "/Security/EHG/Index";
+                    //window.location.href = url;
+                    var data = new FormData();
+                    var files = $("#uploadCtrl").get(0).files;
+                    if (files.length > 0) {
+                        data.append("MyImages", files[0]);
+                    }
+                    $.ajax({
+                        url: "/Common/UploadFile",
+                        type: "POST",
+                        processData: false,
+                        contentType: false,
+                        data: data,
+                        success: function (response) {
+                            //code after success
+                            $('#ehgHeader_DocFileName').val(response);
+                            var filepath = "/Upload/Forms/" + response;
+                            //VehicleTypeChanged();
+                            window.open(filepath);
+                        },
+                        error: function (er) {
+                            //alert(er);
+                        }
+                    });
+                }
+            }
         }
     </script>
     <script>
@@ -670,8 +704,39 @@
             $(this).data('DateTimePicker').date(time);
         });
     </script>
+    <script>
+        $(document).ready(function () {
+            $("#upload").on("change", function (evt) {
+                var tgt = evt.target || window.event.srcElement, files = tgt.files;
+                if (files.length > 0) {
+                    if (files[0].size > 20097134) {
+                        $(this).val("");
+                        $(this).next(".filename").text("No file selected");
+                        $('#img_preview').attr("src", "~/Content/img/no_image.jpg");
+                        $(this).focus();
+                        openErrorPopup("Please maintain allowed document size (20MB maximum).");
+                    }
+                    else {
+                        readURL(this, $('#img_preview'));
+                    }
+                }
+                else {
+                    $('#img_preview').attr("src", "~/Content/img/no_image.jpg");
+                }
+            });
 
+            function readURL(input, id) {
 
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
 
+                    reader.onload = function (e) {
+                        $(id).attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+        });
+    </script>
 
 }
