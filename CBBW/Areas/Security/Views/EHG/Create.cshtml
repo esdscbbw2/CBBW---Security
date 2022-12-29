@@ -25,7 +25,8 @@
         @Html.HiddenFor(m => m.DWSubmitBtnActive)
         @Html.HiddenFor(m => m.VASubmitBtnActive)
         @Html.HiddenFor(m => m.ehgHeader.InstructorName)
-
+        @Html.HiddenFor(m => m.MaxFromDate)
+        @Html.HiddenFor(m => m.MinFromDate)
         @Html.HiddenFor(m => m.VehicleType)
         @Html.HiddenFor(m => m.MaterialStatus)
         @Html.HiddenFor(m => m.Instructor)
@@ -319,9 +320,9 @@
                                                     placeholder="Select Time">*@
                                             </div>
                                         </td>
-                                        <td class="text-center">
+                                        <td id="ActualTOutDtForMang" class="text-center">
                                         </td>
-                                        <td class="text-center">
+                                        <td id="ActualTOutTimeForMang" class="text-center">
                                         </td>
                                         <td class="text-center">
                                             <div class="position-relative pointer">
@@ -370,13 +371,13 @@
                                                     </option>
                                                 </select>*@
                                         </td>
-                                        <td class="text-center">
+                                        <td id="ReTInDtForMang" class="text-center">
                                         </td>
-                                        <td class="text-center">
+                                        <td id="ReTInTimeForMang" class="text-center">
                                         </td>
-                                        <td class="text-center">
+                                        <td id="ActualTInDtForMang" class="text-center">
                                         </td>
-                                        <td class="text-center">
+                                        <td id="ActualTInTimeForMang" class="text-center">
                                         </td>
                                         <td class="text-center">
                                             Continue
@@ -450,7 +451,7 @@
                                     <tr id="0" class="add-row">
                                         <th scope="row">1</th>
                                         <td class="text-center">
-                                            <select class="form-select w-200 is-invalid alterID inValidTag"
+                                            <select style="width:200px"  class="form-select w-200 is-invalid alterID inValidTag"
                                                     data-name="PersonType"
                                                     aria-label="Default select example"
                                                     id="DDPersonType" onchange="DDPersonTypeChanged()">
@@ -463,7 +464,7 @@
                                                     onchange="DDPickPersonChanged(0)"
                                                     id="cmbDDPersonType">
                                             </select>
-                                            <input type="text" data-name="EmployeeNonName"
+                                            <input type="text" style="width:300px" data-name="EmployeeNonName"
                                                    class="form-control w-200 inVisible alterID pickPersonNametxt"
                                                    onblur="DDPickPersonChanged(1)"
                                                    id="txtDDPersonType">
@@ -475,7 +476,7 @@
                                                        data-name="FromDate"
                                                        onchange="ValidateCloneRowCtrl()"
                                                        class="form-control pointer is-invalid alterID inValidTag CustomDateFormatCloneRow">
-                                                <label id="lblFromDate" style="width:110px"
+                                                <label id="lblFromDate" style="width:100px"
                                                        class="datelabel pointer alterID">Select Date</label>
                                             </div>
                                         </td>
@@ -666,24 +667,55 @@
                     var files = $("#uploadCtrl").get(0).files;
                     if (files.length > 0) {
                         data.append("MyImages", files[0]);
+                        $.ajax({
+                            url: "/Common/UploadFile",
+                            type: "POST",
+                            processData: false,
+                            contentType: false,
+                            data: data,
+                            success: function (response) {
+                                $(response).each(function (index, item) {
+                                    if (item.ResponseStat == 1) {
+                                        $('#ehgHeader_DocFileName').val(item.FileName);
+                                        var filepath = "/Upload/Forms/" + item.FileName;
+                                        window.open(filepath);
+                                    }
+                                    else {
+                                        Swal.fire({
+                                            title: 'Failed To Upload File.',
+                                            text: item.ResponseMsg,
+                                            icon: 'error',
+                                            customClass: 'swal-wide',
+                                            buttons: {
+                                                confirm: 'Ok'
+                                            },
+                                            confirmButtonColor: '#2527a2',
+                                        });
+                                    }
+                                });
+                                //code after success
+                                //$('#ehgHeader_DocFileName').val(response);
+                                //var filepath = "/Upload/Forms/" + response;
+                                //VehicleTypeChanged();
+                                //window.open(filepath);
+                            },
+                            error: function (er) {
+                                //alert(er);
+                            }
+                        });
                     }
-                    $.ajax({
-                        url: "/Common/UploadFile",
-                        type: "POST",
-                        processData: false,
-                        contentType: false,
-                        data: data,
-                        success: function (response) {
-                            //code after success
-                            $('#ehgHeader_DocFileName').val(response);
-                            var filepath = "/Upload/Forms/" + response;
-                            //VehicleTypeChanged();
-                            window.open(filepath);
-                        },
-                        error: function (er) {
-                            //alert(er);
-                        }
-                    });
+                    else {
+                        Swal.fire({
+                            title: 'No Files Selected.',
+                            text: 'Select Only Pdf,Png & Jpg Files.',
+                            icon: 'error',
+                            customClass: 'swal-wide',
+                            buttons: {
+                                confirm: 'Ok'
+                            },
+                            confirmButtonColor: '#2527a2',
+                        });
+                    }
                 }
             }
         }

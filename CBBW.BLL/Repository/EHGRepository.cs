@@ -106,7 +106,7 @@ namespace CBBW.BLL.Repository
             if (ReasonForDisApproval == null) { ReasonForDisApproval = " "; }
             return _EHGEntities.SetEHGHdrAppStatus(NoteNumber, IsApproved, ReasonForDisApproval, ApproverID, ref pMsg);
         }
-        public bool SetEHGHdrForManagement(EHGHeader header, EHGTravelingPersondtls dtl, ref string pMsg)
+        public bool SetEHGHdrForManagement(EHGHeader header, EHGTravelingPersondtlsForManagement dtl, ref string pMsg)
         {
             header.CenterCode = user.CentreCode;
             header.CenterName = user.CentreName;

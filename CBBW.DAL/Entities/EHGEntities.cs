@@ -23,7 +23,7 @@ namespace CBBW.DAL.Entities
             _DBMapper = new EHGDBMapper();
             _DBResponseMapper = new DBResponseMapper();
         }
-        public bool SetEHGHdrForManagement(EHGHeader header, EHGTravelingPersondtls dtl, ref string pMsg)
+        public bool SetEHGHdrForManagement(EHGHeader header, EHGTravelingPersondtlsForManagement dtl, ref string pMsg)
         {
             bool result = false;
             _DBResponseMapper.Map_DBResponse(_datasync.SetEHGHdrForManagement(header, dtl, ref pMsg), ref pMsg, ref result);

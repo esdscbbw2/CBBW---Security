@@ -103,10 +103,10 @@ namespace CBBW.Areas.Security.Controllers
             {
                 if (_iEHG.RemoveEHGNote(modelobj.NoteNumber, 0, 1, ref pMsg))
                 {
-                    ViewBag.Msg = "Note Number " + model.ehgHeader.NoteNumber + " Deleted Successfully.";
+                    ViewBag.Msg = "Note Number " + modelobj.NoteNumber + " Deleted Successfully.";
                     TempData["EHG"] = null;
                 }
-                else { ViewBag.ErrMsg = "Updation Failed For Note Number " + model.ehgHeader.NoteNumber; }
+                else { ViewBag.ErrMsg = "Updation Failed For Note Number " + modelobj.NoteNumber; }
 
             }
             else if (Submit == "DWT") 
@@ -167,7 +167,7 @@ namespace CBBW.Areas.Security.Controllers
                 {
                     model.ehgHeader.AuthorisedEmployeeName = model.AuthorisedEmpNameForManagement;
                     model.ehgHeader.AuthorisedEmpNo = model.AuthorisedEmpNoForManagement;
-                    EHGTravelingPersondtls dtl = new EHGTravelingPersondtls();
+                    EHGTravelingPersondtlsForManagement dtl = new EHGTravelingPersondtlsForManagement();
                     dtl.NoteNumber = model.ehgHeader.NoteNumber;
                     dtl.EmployeeNo = model.DriverNoForManagement;
                     dtl.EmployeeNonName = model.DriverNameForManagement;
@@ -177,6 +177,15 @@ namespace CBBW.Areas.Security.Controllers
                     dtl.FromTime = model.FromTimeForMang;
                     dtl.ToDate = model.ToDateForMang;
                     dtl.PurposeOfVisit = model.PurposeOfVisitFoeMang;
+                    //To be changed after rfid implementation
+                    dtl.ActualTourOutDate= model.FromdateForMang;
+                    dtl.ActualTourOutTime= model.FromTimeForMang;
+                    dtl.RequiredTourInDate= model.ToDateForMang;
+                    dtl.RequiredTourInTime = " ";
+                    dtl.ActualTourInDate= model.ToDateForMang;
+                    dtl.ActualTourInTime = " ";
+                    dtl.TourStatus = 0;
+
                     if (model.TADADeniedForManagement == 1)
                         dtl.TADADenied = true;
                     else

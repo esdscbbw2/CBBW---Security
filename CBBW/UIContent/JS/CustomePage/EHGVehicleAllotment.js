@@ -26,12 +26,21 @@ function validatectrl(targetid, value) {
         case "VADetails_OtherVehicleModelName":
             if (value.length > 0) { isvalid = true; }
             break;
-        case "VADetails_OtherVehicleNumber":           
-            if (value.length > 0) { isvalid = true; }
+        case "VADetails_OtherVehicleNumber":
+            if (IsAlphaNumeric(value)) {
+                if (value.length == 10) {
+                    isvalid = true;
+                    var modelnameCtrl = $('#VADetails_OtherVehicleModelName');
+                    modelnameCtrl.val('NA')
+                    //modelnameCtrl.clearValidateClass()
+                    //modelnameCtrl.makeDisable();
+                }
+            }            
             break;
     }
     return isvalid;
 };
+
 function VehicleNoChanged() {
     var targetCtrl = $('#VADetails_VehicleNumber');
     var Modelnamectrl = $('#ModelName');

@@ -11,12 +11,12 @@ namespace CBBW.DAL.DataSync
 {
     public class EHGDataSync
     {
-        public DataTable SetEHGHdrForManagement(EHGHeader header, EHGTravelingPersondtls dtl, ref string pMsg)
+        public DataTable SetEHGHdrForManagement(EHGHeader header, EHGTravelingPersondtlsForManagement dtl, ref string pMsg)
         {
             try
             {
                 int paracount = 0;
-                SqlParameter[] para = new SqlParameter[24];
+                SqlParameter[] para = new SqlParameter[31];
                 para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
                 para[paracount++].Value = header.NoteNumber;
                 para[paracount] = new SqlParameter("@EntryDate", SqlDbType.Date);
@@ -67,6 +67,21 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = header.InitiatorCodenName;
                 para[paracount] = new SqlParameter("@ImageFile", SqlDbType.NVarChar);
                 para[paracount++].Value = string.IsNullOrEmpty(header.DocFileName)?" ": header.DocFileName;
+
+                para[paracount] = new SqlParameter("@ActualTourOutDate", SqlDbType.Date);
+                para[paracount++].Value = dtl.ActualTourOutDate;
+                para[paracount] = new SqlParameter("@ActualTourOutTime", SqlDbType.NVarChar,20);
+                para[paracount++].Value = dtl.ActualTourOutTime;
+                para[paracount] = new SqlParameter("@RequiredTourInDate", SqlDbType.Date);
+                para[paracount++].Value = dtl.RequiredTourInDate;
+                para[paracount] = new SqlParameter("@RequiredTourInTime", SqlDbType.NVarChar,20);
+                para[paracount++].Value = dtl.RequiredTourInTime;
+                para[paracount] = new SqlParameter("@ActualTourInDate", SqlDbType.Date);
+                para[paracount++].Value = dtl.ActualTourInDate;
+                para[paracount] = new SqlParameter("@ActualTourInTime", SqlDbType.NVarChar,20);
+                para[paracount++].Value = dtl.ActualTourInTime;
+                para[paracount] = new SqlParameter("@TourStatus", SqlDbType.Int);
+                para[paracount++].Value = dtl.TourStatus;
                 using (SQLHelper sql = new SQLHelper("[EHG].[SetEHGHdrForManagement]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataTable(para, ref pMsg);

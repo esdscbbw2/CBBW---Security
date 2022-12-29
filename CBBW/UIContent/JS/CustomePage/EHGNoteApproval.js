@@ -189,6 +189,20 @@ $(document).ready(function(){
     $('#btnViewDoc').click(function () {
         var docfilename = $('#DocFileName').val();
         var filepath = "/Upload/Forms/" + docfilename;
-        window.open(filepath);
+        if (docfilename.length > 2) { window.open(filepath); }
+        else {
+            Swal.fire({
+                title: 'Information',
+                text: "No Document Found For This Note",
+                icon: 'warning',
+                customClass: 'swal-wide',
+                buttons: {
+                    //cancel: 'Cancel',
+                    confirm: 'Ok'
+                },
+                //cancelButtonClass: 'btn-cancel',
+                confirmButtonColor: '#2527a2',
+            });
+        }
     });
 });

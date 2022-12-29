@@ -55,6 +55,7 @@
     <Compile Include="CustomModels\CustomCheckBoxOption.cs" />
     <Compile Include="CustomModels\CustomComboOptions.cs" />
     <Compile Include="CustomModels\CustomDateRange.cs" />
+    <Compile Include="CustomModels\FileUploadResponse.cs" />
     <Compile Include="CustomModels\RowDisplayInfo.cs" />
     <Compile Include="EHG\ApprovalStatus.cs" />
     <Compile Include="EHG\DateWiseTourDetails.cs" />

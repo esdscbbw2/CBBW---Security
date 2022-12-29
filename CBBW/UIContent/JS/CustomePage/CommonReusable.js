@@ -48,6 +48,22 @@ $.fn.CustomDateFormat = function () {
     $('#' + lblid).html(e);
     //that.addClass('is-valid').removeClass('is-invalid')
 };
+function ChangeDateFormat(dt) {
+    //dt must be a string not a date
+    var e = '';
+    if (dt.indexOf('/') != -1) {
+        e = dt.split('/').reverse().join('/');
+    } else {
+        e = dt.split('-').reverse().join('/');
+    }
+    return e;
+};
+function WordCount(value) {
+    return $.trim(value).split(" ").length;
+};
+function IsAlphaNumeric(value) {
+    return /^[a-zA-Z0-9]+$/.test(value);
+};
 function CloneRow_Backup(sourceTBody, destinationTBody, rowid, IsRemoveBtn, IsAddBtnEnable) {
     // Source table Body must have a row having (id="0" class="add-row")
     //The controlls should have a class named "alterID";
