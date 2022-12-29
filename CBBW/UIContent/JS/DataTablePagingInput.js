@@ -45,7 +45,7 @@
 	}
 
 	function calcPages(oSettings) {
-		return Math.ceil(oSettings.fnRecordsDisplay() / oSettings._iDisplayLength);
+		return Math.ceil(oSettings.fnRecordsDisplay() / oSettings._iDisplayLength);		
 	}
 
 	var firstClassName = 'first';

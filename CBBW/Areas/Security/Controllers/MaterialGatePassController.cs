@@ -9,7 +9,6 @@ using CBBW.BLL.IRepository;
 using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.MGP;
-
 namespace CBBW.Areas.Security.Controllers
 {
     public class MaterialGatePassController : Controller
@@ -27,8 +26,9 @@ namespace CBBW.Areas.Security.Controllers
             pMsg = "";
             mNoteNumber = "200001-CTV-20221201-00009";
             btnactive = false;
-            iUser.LogIn("praveen", ref pMsg);
+            //iUser.LogIn("praveen", ref pMsg);
             user = iUser.getLoggedInUser();
+            ViewBag.LogInUser = user.UserName;
         }
         // GET: Security/MaterialGatePass
         #region For Out Details
@@ -104,6 +104,7 @@ namespace CBBW.Areas.Security.Controllers
                 {
                     model.ISSubmitActive = 0;
                     ViewBag.Msg = "Note Updated Successfully.";
+                    TempData["MGPVM"]=null;
                 }
                 else
                 {

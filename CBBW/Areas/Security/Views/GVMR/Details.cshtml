@@ -1,0 +1,243 @@
+﻿@using System.Globalization;
+@using CBBW.Areas.Security.ViewModel;
+@model GVMRDetailsVM
+@{
+    ViewBag.Title = "Goods Vehicle Movement Recording (For Company Transport) – ENTRY";
+
+}
+
+<div class="container">
+    <div class="row newTable">
+        <div class="fixedElement">
+            <div class="col-md-12">
+                <div class="heading_text_btn mb-3 mt-4">
+                    <div class="leftButton">
+                        <button id="btnBack" type="button" class="btn btn-primary me-2">
+                            <i data-feather="arrow-left-circle"></i>
+                            Back
+                        </button>
+                    </div>
+                    <h2>@ViewBag.Title</h2>
+
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="col-md-12 mb-4">
+            <div class="card mb-4 mt-4">
+                <div class="card-body approvalForm">
+                    <form class="form-sample form-inline row ms-auto">
+                        <div class="row d-flex align-items-center mb-4">
+                            <label class="col-form-label col-md-3">
+                                Ref. Company Transport Vehicle Trip Schedule – ENTRY Note No. :
+                            </label>
+                            <div class="col-md-3">
+                                @Html.TextBoxFor(m => m.NoteNo, htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })
+                            </div>
+
+                            <label class="col-form-label col-md-1">
+                                Date  :
+                            </label>
+                            <div class="col-md-2">
+                                @Html.TextBox("EntryDate", DateTime.Today.ToString("dd/MM/yyyy"),
+                              htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                            </div>
+                            <label class="col-form-label col-md-1">
+                                Time  :
+                            </label>
+                            <div class="col-md-2">
+                                @Html.TextBox("EntryTime", DateTime.Now.ToString("hh:mm tt"),
+                              htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                            </div>
+
+
+
+                        </div>
+                        <div class="row d-flex align-items-center mb-4">
+                            <label class="col-form-label col-md-3">
+                                Center Code & Name  :
+                            </label>
+                            <div class="col-md-3">
+                                @Html.TextBoxFor(m => m.CenterName, htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })
+                            </div>
+                            <label class="col-form-label col-md-1">
+                                Month & Year  :
+                            </label>
+                            <div class="col-md-2">
+                                @Html.TextBox("MonthYear", DateTime.Now.ToString("MMMM-yyyy"),
+                             htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+
+                            </div>
+                        </div>
+
+                        <div class="row d-flex align-items-center mb-4">
+                            <label class="col-form-label col-md-3">
+                                Vehicle No.  :
+                            </label>
+                            <div class="col-md-3">
+                                @Html.TextBoxFor(m => m.VehicleNo, htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })
+                            </div>
+                            <label class="col-form-label col-md-1">
+                                Vehicle Type  :
+                            </label>
+                            <div class="col-md-2">
+                                @Html.TextBoxFor(m => m.VehicleType, htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })
+                            </div>
+                            <label class="col-form-label col-md-1">
+                                Model Name  :
+                            </label>
+                            <div class="col-md-2">
+                                @Html.TextBoxFor(m => m.ModelName, htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="heading_text_btn2 d-block mb-4">
+                <h2> Location Wise Goods Vehicle IN & OUT Details:</h2>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-body approvalForm">
+                    <form class="form-sample form-inline row ms-auto">
+                        <div class="row d-flex align-items-center">
+                            <label class="col-form-label col-md-3">
+                                Driver No. & Name :
+                            </label>
+                            <div class="col-md-3">
+                                @Html.TextBoxFor(m => m.DriverName, htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="heading_text_btn2 d-block mb-4">
+                <h2 class="text-center">
+                    Date wise Goods Vehicle IN & OUT Details
+                </h2>
+            </div>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered w-100" id="table">
+                            <thead>
+                                <tr>
+
+                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">Location Code & Name </th>
+                                    <th colspan="4" style="text-align: center; vertical-align: middle;" scope="col">
+                                        Actual Trip IN
+                                    </th>
+                                    <th colspan="4" style="text-align: center; vertical-align: middle;" scope="col">
+                                        Actual Trip OUT
+                                    </th>
+                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="12%">
+                                        Remarks
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">
+                                        RFID Card No.
+                                    </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">Date</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="12%">Time</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="5%">
+                                        KM IN
+                                    </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">
+                                        RFID Card No.
+                                    </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">Date</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="12%">Time</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="6%">
+                                        KM OUT
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+
+                                    foreach (var item in Model.gvmrdetailsview)
+                                    {
+                                        <tr>
+                                            <td scope="row" class="text-center">@item.LocationName</td>
+                                            <td class="text-center">@item.ActualInRFIDCard</td>
+                                            <td class="text-center">@item.ActualTripInDateDisplay</td>
+                                            <td class="text-center">@item.ActualTripInTime</td>
+                                            <td class="text-center">@item.ActualTripInKM</td>
+                                            <td class="text-center">@item.ActualOutRFIDCard</td>
+                                            <td class="text-center">@item.ActualTripOutDateDisplay</td>
+                                            <td class="text-center">@item.ActualTripOutTime</td>
+                                            <td class="text-center">@item.ActualTripOutKM</td>
+                                            <td class="text-center">@item.Remark</td>
+                                        </tr>
+
+
+                                    }
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section headers
+    {
+    <style>
+        .inVisible {
+            display: none;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
+
+}
+@section scripts{
+
+    <script>
+        $(document).ready(function () {
+            $('#btnBack').click(function () {
+                var url = "/Security/GVMR/Index";
+                if ($('#VehicleNo').val() != "") {
+                    Swal.fire({
+                        title: 'Confirmation Message',
+                        text: "Are You Sure Want to Go Back?",
+                        icon: 'question',
+                        customClass: 'swal-wide',
+                        //buttons: {
+                        //    cancel: 'No',
+                        //    confirm: 'Yes'
+                        //},
+                        confirmButtonText: "Yes",
+                        cancelButtonText: "No",
+                        cancelButtonClass: 'btn-cancel',
+                        confirmButtonColor: '#2527a2',
+                        showCancelButton: true,
+                    }).then(callback);
+                    function callback(result) {
+                        if (result.value) {
+                            window.location.href = url;
+                        } else {
+                            // second variant
+                        }
+                    }
+                } else {
+                    window.location.href = url;
+                };
+            });
+        });
+    </script>
+}
+
+
+

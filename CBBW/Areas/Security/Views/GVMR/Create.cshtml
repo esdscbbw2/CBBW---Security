@@ -1,0 +1,404 @@
+﻿@using System.Globalization;
+@using CBBW.Areas.Security.ViewModel;
+@model GVMRDetailsVM
+@{
+    ViewBag.Title = "Goods Vehicle Movement Recording (For Company Transport) – ENTRY";
+
+}
+
+<div class="container">
+    <div class="row newTable">
+        <div class="fixedElement">
+            <div class="col-md-12">
+                <div class="heading_text_btn mb-3 mt-4">
+                    <div class="leftButton">
+                        <button id="btnBack" type="button" class="btn btn-primary me-2">
+                            <i data-feather="arrow-left-circle"></i>
+                            Back
+                        </button>
+                        <button id="btnSubmit" type="button" onclick="SaveData()" class="btn btn-secondary me-2" onclick="" disabled>
+                            <i data-feather="upload"></i>
+                            Submit
+                        </button>
+                        <button type="button" id="btnClear" onclick="btnClearClicked()"
+                                class="btn btn-white">
+                            <i data-feather="x-circle"></i>
+                            Clear
+                        </button>
+                    </div>
+                    <h2>@ViewBag.Title</h2>
+
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="col-md-12 mb-4">
+            <div class="card mb-4 mt-4">
+                <div class="card-body approvalForm">
+                    <form class="form-sample form-inline row ms-auto">
+                        <div class="row d-flex align-items-center mb-4">
+                            <label class="col-form-label col-md-3">
+                                Ref. Company Transport Vehicle Trip Schedule – ENTRY Note No. :
+                            </label>
+                            <div class="col-md-3">
+                                @Html.DropDownListFor(m => m.NoteNo,
+                                     new SelectList(Model.listnotenumber, "NoteNo", "NoteNo"), "Select a Note Number",
+                                     htmlAttributes: new
+                                     {
+                                         @class = "form-select canclear pointer is-invalid",
+                                              onchange = "ValidateControl()"
+                                     })
+                            </div>
+
+                            <label class="col-form-label col-md-1">
+                                Date  :
+                            </label>
+                            <div class="col-md-2">
+                                @Html.TextBox("EntryDate", DateTime.Today.ToString("dd/MM/yyyy"),
+                              htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                            </div>
+                            <label class="col-form-label col-md-1">
+                                Time  :
+                            </label>
+                            <div class="col-md-2">
+                                @Html.TextBox("EntryTime", DateTime.Now.ToString("hh:mm tt"),
+                              htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                            </div>
+
+
+
+                        </div>
+                        <div class="row d-flex align-items-center mb-4">
+                            <label class="col-form-label col-md-3">
+                                Center Code & Name  :
+                            </label>
+                            <div class="col-md-3">
+                                <input type="text" data-name="CenterCode"
+                                       class="form-control" id="CenterCode" disabled>
+                               
+                            </div>
+                            <label class="col-form-label col-md-1">
+                                Month & Year  :
+                            </label>
+                            <div class="col-md-2">
+                                @Html.TextBox("MonthYear", DateTime.Now.ToString("MMMM-yyyy"),
+                             htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+
+                            </div>
+                        </div>
+
+                        <div class="row d-flex align-items-center mb-4">
+                            <label class="col-form-label col-md-3">
+                                Vehicle No.  :
+                            </label>
+                            <div class="col-md-3">
+                                <input type="text" data-name="VehicleNo"
+                                       class="form-control" id="VehicleNo" disabled>
+                                
+                            </div>
+                            <label class="col-form-label col-md-1">
+                                Vehicle Type  :
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" data-name="VehicleType"
+                                       class="form-control" id="VehicleType" disabled>
+                               
+                            </div>
+                            <label class="col-form-label col-md-1">
+                                Model Name  :
+                            </label>
+                            <div class="col-md-2">
+                                <input type="text" data-name="ModelName"
+                                       class="form-control" id="ModelName" disabled>
+                                
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 invisible" id="in_out_details">
+            <div class="heading_text_btn2 d-block mb-4">
+                <h2> Location Wise Goods Vehicle IN & OUT Details:</h2>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-body approvalForm">
+                    <form class="form-sample form-inline row ms-auto">
+                        <div class="row d-flex align-items-center">
+                            <label class="col-form-label col-md-3">
+                                Driver No. & Name :
+                            </label>
+                            <div class="col-md-3">
+                                <input type="text" data-name="DriverName"
+                                       class="form-control" id="DriverName" disabled>
+                               
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="heading_text_btn2 d-block mb-4">
+                <h2 class="text-center">
+                    Date wise Goods Vehicle IN & OUT Details
+                </h2>
+            </div>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered w-100" id="table">
+                            <thead>
+                                <tr>
+
+                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">Location Code & Name </th>
+                                    <th colspan="4" style="text-align: center; vertical-align: middle;" scope="col">
+                                        Actual Trip IN
+                                    </th>
+                                    <th colspan="4" style="text-align: center; vertical-align: middle;" scope="col">
+                                        Actual Trip OUT
+                                    </th>
+                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="12%">
+                                        Remarks
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">
+                                        RFID Card No.
+                                    </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">Date</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="12%">Time</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="5%">
+                                        KM IN
+                                    </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">
+                                        RFID Card No.
+                                    </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">Date</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="12%">Time</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="6%">
+                                        KM OUT
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="tbody3" class="inVisible">
+                                <tr id="0" class="add-rows">
+                                    <td scope="row" class="text-center">
+                                        <div id="0_LocationNameD" class="form-group"></div>
+                                    </td>
+                                    <td class="text-center">
+                                       <div id="0_ActualInRFIDCardD" class="form-group"></div>
+                                    </td>
+                                    <td class="text-center">
+                                       <div id="0_ActualTripInDateD" class="form-group"></div>
+                                    </td>
+                                    <td class="text-center">
+                                    <div id="0_ActualTripInTimeD" class="form-group"></div>
+
+                                    </td>
+                                    <td class="text-center">
+                                       <div  id="0_ActualTripInKMD" class="form-group"></div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div id="0_ActualOutRFIDCardD" class="form-group"></div>
+                                    </td>
+                                    <td class="text-center">
+                                       <div id="0_ActualTripOutDateD" class="form-group"></div>
+                                    </td>
+                                    <td class="text-center">
+                                     <div id="0_ActualTripOutTimeD" class="form-group"></div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div id="0_ActualTripOutKMD" class="form-group"></div>
+                                    </td>
+                                    <td class="text-center">
+                                      <div id="0_RemarkD" class="form-group"></div> 
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                            <tbody id="tbody4"></tbody>
+
+
+
+                            <tbody id="tbody1">
+                                <tr id="0" class="add-row">
+
+                                    <td scope="row" class="text-center">
+                                        <input type="text" data-name="LocationName"
+                                               class="form-control w-200" id="0_LocationName" disabled>
+
+                                        <input type="hidden" data-name="Gvmrid"
+                                               class="form-control w-200" id="0_Gvmrid">
+                                    </td>
+                                    <td class="text-center">
+                                        <select data-name="ActualInRFIDCard" onchange="GetActualDate();ValidateControls();" id="0_ActualInRFIDCard" class="form-select wid-130 canclear is-invalid" aria-label="Default select example">
+                                        </select>
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="text" data-name="ActualTripInDate"
+                                               class="form-control w-200 canclear is-invalid" onchange="ValidateControls();" id="0_ActualTripInDate" readonly>
+                                       
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="text" data-name="ActualTripInTime"
+                                               class="form-control w-200 timePicker canclear is-invalid" onblur="ValidateControls();" id="0_ActualTripInTime">
+
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="text" data-name="ActualTripInKM"
+                                               class="form-control w-200" id="0_ActualTripInKM" disabled>
+                                    </td>
+                                    <td class="text-center">
+                                        <select data-name="ActualOutRFIDCard" id="0_ActualOutRFIDCard" onchange="GetDateUsingRFID();ValidateControls();" class="form-select wid-130 canclear is-invalid" aria-label="Default select example">
+                                        </select>
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="hidden" data-name="FromDateVal"
+                                               class="form-control w-200" id="0_FromDateVal">
+                                        <input type="hidden" data-name="ToDateVal"
+                                               class="form-control w-200" id="0_ToDateVal">
+                                        <input type="text" class="form-control w-200 canclear is-invalid" id="0_ActualTripOutDate" onchange="ValidateControls();" readonly>
+                                        @*<input type="date" max="@Model.gvmrdetails.FirstOrDefault().ToDateVal" min="@Model.gvmrdetails.FirstOrDefault().FromDateVal"
+        class="form-control w-200 canclear is-invalid" id="0_ActualTripOutDate2" onchange="ValidateControls();" readonly>*@
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="text" data-name="ActualTripOutTime"
+                                               class="form-control w-200 timePicker canclear is-invalid" onblur="ValidateControls();" id="0_ActualTripOutTime">
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="text" data-name="ActualTripOutKM"
+                                               class="form-control w-200" id="0_ActualTripOutKM" disabled>
+                                    </td>
+                                    <td class="text-center">
+                                        <textarea data-name="Remark" id="0_Remark" class="form-control canclear pointer" cols="20" rows="2" data-toggle="tooltip" data-placement="bottom" title="Remark"></textarea>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                            <tbody id="tbody2"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section headers
+    {
+    <style>
+        .inVisible {
+            display: none;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
+
+}
+@section scripts{
+    <script src="js/moment.min.js"></script>
+    <script src="js/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/GVMR/GVMR.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#btnBack').click(function () {
+                var url = "/Security/GVMR/Index";
+                if ($('#VehicleNo').val() != "") {
+                    Swal.fire({
+                        title: 'Confirmation Message',
+                        text: "Are You Sure Want to Go Back?",
+                        icon: 'question',
+                        customClass: 'swal-wide',
+                        //buttons: {
+                        //    cancel: 'No',
+                        //    confirm: 'Yes'
+                        //},
+                        confirmButtonText: "Yes",
+                        cancelButtonText: "No",
+                        cancelButtonClass: 'btn-cancel',
+                        confirmButtonColor: '#2527a2',
+                        showCancelButton: true,
+                    }).then(callback);
+                    function callback(result) {
+                        if (result.value) {
+                            window.location.href = url;
+                        } else {
+                            // second variant
+                        }
+                    }
+                } else {
+                    window.location.href = url;
+                };
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            //var mymsg = '@ViewBag.ErrMsg';
+            if ('@ViewBag.ErrMsg' != '') {
+                Swal.fire({
+                    title: 'Failed to submit',
+                    text: "@ViewBag.ErrMsg",
+                    icon: 'warning',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        //cancel: 'Cancel',
+                        confirm: 'Ok'
+                    },
+                    //cancelButtonClass: 'btn-cancel',
+                    confirmButtonColor: '#2527a2',
+                });
+            };
+            if ('@ViewBag.Msg' != '') {
+                Swal.fire({
+                    title: 'Confirmation',
+                    text: "@ViewBag.Msg",
+                    icon: 'success',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        confirm: 'Ok'
+                    },
+                    confirmButtonColor: '#2527a2',
+                }).then(callback);
+                function callback(result) {
+                    if (result.value) {
+                        var url = "/Security/GVMR/Index";
+                        window.location.href = url;
+                    }
+                }
+            };
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            var today = new Date();
+            var minDate = today.setDate(today.getDate() + 1);
+            var firstOpen = true;
+            var time;
+
+            $('.timePicker').datetimepicker({
+                useCurrent: false,
+                format: "hh:mm A"
+            }).on('dp.show', function () {
+                if (firstOpen) {
+                    time = moment().startOf('day');
+                    firstOpen = false;
+                } else {
+                    time = "01:00 PM"
+                }
+
+                $(this).data('DateTimePicker').date(time);
+            });
+        });
+    </script>
+}
+
+
+

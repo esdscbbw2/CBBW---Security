@@ -8,11 +8,39 @@ using CBBW.BOL.CustomModels;
 using CBBW.BOL.Master;
 using CBBW.BOL.TADA;
 using CBBW.BOL.Tour;
+using System.Globalization;
 
 namespace CBBW.DAL.DBMapper
 {
     public class RulesDBMapper
     {
+        public TourRuleListData Map_TourRuleListData(DataRow dr)
+        {
+            TourRuleListData result = new TourRuleListData();
+            try
+            {
+                if (dr != null)
+                {
+                    if (!DBNull.Value.Equals(dr["RowNum"]))
+                        result.SL = int.Parse(dr["RowNum"].ToString());
+                    if (!DBNull.Value.Equals(dr["TotalCount"]))
+                        result.TotalCount = int.Parse(dr["TotalCount"].ToString());
+                    if (!DBNull.Value.Equals(dr["EntryDate"]))
+                        result.EntryDate = DateTime.Parse(dr["EntryDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["EffectiveDate"]))
+                        result.EffectiveDate = DateTime.Parse(dr["EffectiveDate"].ToString());
+                    if (result.EffectiveDate <= DateTime.Now)
+                        result.IsApplied = true;
+                    if (!DBNull.Value.Equals(dr["EffectiveDateSTR"]))
+                        result.EffectiveDateDisplay =dr["EffectiveDateSTR"].ToString();
+                    if (!DBNull.Value.Equals(dr["EntryDateSTR"]))
+                        result.EntryDateDisplay = dr["EntryDateSTR"].ToString();
+                }
+            }
+            catch { }
+            return result;
+        }
+
         public TourRule Map_TourRule(DataRow dr, int SL)
         {
             TourRule result = new TourRule();

@@ -8,16 +8,21 @@ using CBBW.BOL.Master;
 
 namespace CBBW.BOL.Tour
 {
-    public class TourRule
+    public class TourRuleListData 
+    {
+        public int TotalCount { get; set; }
+        public int SL { get; set; }
+        public DateTime EntryDate { get; set; }
+        public string EntryDateDisplay { get; set; }
+        public DateTime EffectiveDate { get; set; }
+        public string EffectiveDateDisplay { get; set; }
+        public bool IsApplied { get; set; }
+    }
+    public class TourRule: TourRuleListData
     {
         public int ID { get; set; }
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
-        public DateTime EntryDate { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]        
         public string EntryTime { get; set; }
-        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
-        public DateTime EffectiveDate { get; set; }
-        public bool IsApplied { get; set; }
-        public int SL { get; set; }
         public int isBtn { get; set; }
     }
     

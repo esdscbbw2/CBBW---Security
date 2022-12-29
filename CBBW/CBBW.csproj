@@ -136,6 +136,7 @@
     <Compile Include="Areas\Security\Controllers\CommonController.cs" />
     <Compile Include="Areas\Security\Controllers\CTVController.cs" />
     <Compile Include="Areas\Security\Controllers\EHGController.cs" />
+    <Compile Include="Areas\Security\Controllers\GVMRController.cs" />
     <Compile Include="Areas\Security\Controllers\HomeController.cs" />
     <Compile Include="Areas\Security\Controllers\MaterialGatePassController.cs" />
     <Compile Include="Areas\Security\Controllers\TADARulesController.cs" />
@@ -148,6 +149,7 @@
     <Compile Include="Areas\Security\ViewModel\EHG\EHGHeaderEntryVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EHG\EHGNotApprovalVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EHG\EHGTravellingPersonsVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\GVMR\GVMRDetailsVM.cs" />
     <Compile Include="Areas\Security\ViewModel\LocalVehicleTripScheduleVM.cs" />
     <Compile Include="Areas\Security\ViewModel\LVTSFromMatVM.cs" />
     <Compile Include="Areas\Security\ViewModel\MGPCreateVM.cs" />
@@ -308,6 +310,7 @@
     <Content Include="UIContent\JS\CustomePage\EHGDateWiseTourDtl.js" />
     <Content Include="UIContent\JS\CustomePage\EHGNoteApproval.js" />
     <Content Include="UIContent\JS\CustomePage\EHGVehicleAllotment.js" />
+    <Content Include="UIContent\JS\CustomePage\GVMR\GVMR.js" />
     <Content Include="UIContent\JS\CustomePage\LocVehTripSchEdit.js" />
     <Content Include="UIContent\JS\CustomePage\MGPass.js" />
     <Content Include="UIContent\JS\CustomePage\MGPInDetails.js" />
@@ -378,6 +381,9 @@
     <Content Include="Areas\Security\Views\EHG\ApproveNote.cshtml" />
     <Content Include="Areas\Security\Views\MaterialGatePass\VehicleMaterialInView.cshtml" />
     <Content Include="Areas\Security\Views\MaterialGatePass\VehicleMaterialOutView.cshtml" />
+    <Content Include="Areas\Security\Views\GVMR\Create.cshtml" />
+    <Content Include="Areas\Security\Views\GVMR\Details.cshtml" />
+    <Content Include="Areas\Security\Views\GVMR\Index.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />

@@ -23,13 +23,11 @@ namespace CBBW.BLL.Repository
         {
             return _tourEntities.CreateNewTourRule(trd, ref pMsg);
         }
-
         public int GetAffectedRuleID(ref string pMsg)
         {
             //return 0;
             return _masterentities.getEffectedRuleID(1, ref pMsg);
         }
-
         public TourRuleDetails GetLastToursRule(ref string pMsg)
         {
             TourRuleDetails result= _tourEntities.GetLastTourRule(ref pMsg);
@@ -43,10 +41,13 @@ namespace CBBW.BLL.Repository
             }
             return result;
         }
-
         public IEnumerable<TourRule> GetTourRules(ref string pMsg)
         {
             return _tourEntities.GetTourRules(ref pMsg);
+        }
+        public List<TourRuleListData> GetTourRules(int DisplayLength, int DisplayStart, int SortColumn, string SortDirection, string SearchText, ref string pMsg)
+        {
+            return _tourEntities.GetTourRules(DisplayLength, DisplayStart, SortColumn, SortDirection, SearchText, ref pMsg);
         }
 
         public TourRuleDetails GetToursRuleByID(int ID, ref string pMsg)

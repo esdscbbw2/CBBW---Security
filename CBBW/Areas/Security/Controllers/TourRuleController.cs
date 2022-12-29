@@ -40,7 +40,6 @@ namespace CBBW.Areas.Security.Controllers
             IEnumerable<TourRule> model = _toursRule.GetTourRules(ref pMsg);
             return View(model);
         }
-
         public ActionResult CreateRule()
         {
             TourRuleDetails model = _toursRule.GetLastToursRule(ref pMsg);
@@ -74,17 +73,14 @@ namespace CBBW.Areas.Security.Controllers
             return View(model);
 
         }
-
         public ActionResult DeleteRule(int id)
         {
             _toursRule.RemoveTourRule(id ,ref pMsg);
            // return View();
             return RedirectToAction("Index");
-        }
-        
+        }        
         public ActionResult ViewRule(int id ,bool isDelete)
-        {
-            
+        {          
          
            TourRuleDetails model= _toursRule.GetToursRuleByID(id,ref pMsg);
             model.ReadRule5 = true;
@@ -97,6 +93,29 @@ namespace CBBW.Areas.Security.Controllers
 
 
            
+        }
+        public ActionResult ViewRuleV2(string EffectiveDate,string EntryDate, bool isDelete=false)
+        {
+            
+            return View();
+        }
+        public JsonResult getListOfRules(int iDisplayLength, int iDisplayStart, int iSortCol_0,
+            string sSortDir_0, string sSearch)
+        {
+            List<TourRuleListData> ruleList = _toursRule.GetTourRules(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch,ref pMsg);
+            var result = new
+            {
+                //iTotalRecords = ruleList.Count == 0 ? 0 : ruleList.FirstOrDefault().TotalCount,
+                iTotalRecords = 100,
+                //iPages=10,
+                //iCurrentPage=1,
+                //iTotalDisplayRecords = ruleList.Count(),
+                iTotalDisplayRecords=50,
+                iDisplayLength = iDisplayLength,
+                iDisplayStart = iDisplayStart,
+                aaData = ruleList
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
     }
 }

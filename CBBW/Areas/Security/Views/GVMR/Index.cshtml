@@ -1,0 +1,143 @@
+﻿@using System.Globalization;
+@using CBBW.BOL.GVMR
+@model List<GVMRNoteList>
+@{
+    ViewBag.Title = "Goods Vehicle Movement Recording (For Company Transport) – ENTRY";
+}
+
+
+<div class="container">
+    <div class="row newTable">
+        <div class="fixedElement">
+            <div class="col-md-12" style="position: relative;">
+                <div class="heading_text_btn mb-4 mt-4">
+                    <div class="leftButton">
+                        <button type="submit" class="btn btn-primary me-2" onclick="window.location.href='/Security/GVMR/Create';">
+                            <i data-feather="plus-circle"></i>
+                            Add
+                        </button>
+                    </div>
+                    <h2>@ViewBag.Title </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+
+            <table id="tblmgp" class="table table-bordered btnalign mt-4">
+                <thead>
+                    <tr>
+                        <th scope="col"> SL.No.</th>
+                        <th scope="col">Note No.</th>
+                        <th scope="col">Center Code & Name</th>
+                        <th scope="col">Vehicle No.</th>
+                        <th scope="col">For The Month & Year</th>
+                        <th scope="col" style="background: pink;color: #000;">Action</th>
+                    </tr>
+                </thead>
+
+                <thead>
+                    <tr>
+                        <th scope="col">&nbsp;</th>
+                        <th scope="col">
+                            <div class="form-group">
+                                <input id="filterNoteno" type="text" class="form-control" placeholder="Search...">
+                            </div>
+                        </th>
+                        <th scope="col">
+                            <div class="form-group">
+                                <input id="filterCenterCN" type="text" class="form-control" placeholder="Search...">
+                            </div>
+                        </th>
+                        <th scope="col">
+                            <div class="form-group">
+                                <input id="filterVehicleNo" type="text" class="form-control" placeholder="Search...">
+                            </div>
+                        </th>
+                        <th scope="col">
+                            <div class="form-group">
+                                <input id="filterMonthYear" type="text" class="form-control" placeholder="Search...">
+                            </div>
+                        </th>
+                        <th scope="col">&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Count > 0)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.RowNumber</td>
+                                <td>@item.NoteNo</td>
+                                <td>@item.LocationName</td>
+                                <td>@item.VehicleNo</td>
+                                <td>@item.MonthYear</td>
+                                <td>
+                                    <span class="actionBtn">
+                                        <button type="button" class="btn primaryLink" value="btn" data-toggle="tooltip" data-placement="top"
+                                                title="Details">
+                                            <i data-feather="eye"></i>
+                                        </button>
+
+                                    </span>
+                                </td>
+                            </tr>
+
+                        }
+                    }
+
+                </tbody>
+            </table>
+
+
+        </div>
+
+
+
+
+
+
+    </div>
+</div>
+
+
+
+
+@section headers
+    {
+
+}
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#tblmgp').dataTable({
+                columns: [
+                    { 'data': 'RowNumber' },
+                    { 'data': 'NoteNo' },
+                    { 'data': 'LocationName' },
+                    { 'data': 'VehicleNo' },
+                    { 'data': 'MonthYear' },
+                    {
+                        'data': 'NoteNo', render: function (data, type, row, meta) {
+                            return type == 'display' ? '<span class="actionBtn"><button type="button" id="' + row.NoteNo + '" class="btn primaryLink" value="btn"  data-toggle="tooltip" data-placement="top" onclick="GetDetailsPage(this)" title = "Details" ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></button ></span>' :
+                                data;
+                        }
+                    },
+                ],
+
+                bServerSide: true,
+                sAjaxSource: '/Security/GVMR/getNoteList'
+            });
+        });
+
+
+
+        function GetDetailsPage(ctrl) {
+            var targetid = $(ctrl).attr("id");
+            var targetval = $(ctrl).attr('data-value');
+            var url = '/Security/GVMR/Details?NoteNumber=' + targetid;
+            window.location.href = url;
+        };
+    </script>
+    }

@@ -1,17 +1,10 @@
-﻿
-@model CBBW.BOL.Tour.TourRuleDetails
-
+﻿@model CBBW.BOL.Tour.TourRuleDetails
 @{
     ViewBag.Title = "CreateRule";
 }
 @section headers{
-    <style>
-        .pointer {
-            cursor: pointer;
-        }        
-    </style>
-}
 
+}
 <div class="row newTable">
     @using (Html.BeginForm("CreateRule", "TourRule", FormMethod.Post))
     {

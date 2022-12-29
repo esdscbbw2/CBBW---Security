@@ -23,7 +23,26 @@ namespace CBBW.DAL.Entities
             _datasync = new RulesDataSync();
             _dbResponseMapper = new DBResponseMapper();
         }
-
+        #region Version 2 Changes
+        public List<TourRuleListData> GetTourRules(int DisplayLength, int DisplayStart, int SortColumn,
+            string SortDirection, string SearchText, ref string pMsg)
+        {
+            List<TourRuleListData> TourRules = new List<TourRuleListData>();
+            try
+            {
+                dt = _datasync.getTourRules(DisplayLength,DisplayStart,SortColumn,SortDirection,SearchText,ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        TourRules.Add(_mapper.Map_TourRuleListData(dt.Rows[i]));
+                    }
+                }
+            }
+            catch { }
+            return TourRules;
+        }
+        #endregion
         public IEnumerable<TourRule> GetTourRules(ref string pMsg) 
         {
             List<TourRule> TourRules = new List<TourRule>();
