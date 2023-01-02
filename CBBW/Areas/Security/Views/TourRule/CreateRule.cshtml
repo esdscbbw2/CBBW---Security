@@ -1,4 +1,5 @@
-﻿@model CBBW.BOL.Tour.TourRuleDetails
+﻿@using System.Globalization;
+@model CBBW.BOL.Tour.TourRuleDetails
 @{
     ViewBag.Title = "CreateRule";
 }
@@ -12,19 +13,7 @@
         @Html.HiddenFor(m => m.MaxDate)
         @Html.HiddenFor(m => m.MinDate)
         <div class="fixedElement">
-            @*@if (ViewBag.Message != null)
-                {
-                    <script type="text/javascript">
-
-                window.onload = function () {
-                    alert("@ViewBag.Message");
-
-                };
-                    </script>
-
-                }*@
             <div class="col-md-12" style="position: relative;">
-
                 <div class="heading_text_btn mb-4 mt-4">
                     <div class="leftButton">
                         <button id="btnBack" type="button" class="btn btn-primary me-2">
@@ -33,7 +22,6 @@
                             Back
                         </button>
                         <button type="submit" name="Submit" value="create" class="btn btn-secondary me-2" id="btnSubmit">
-
                             <i data-feather="upload"></i>
                             Submit
                         </button>
@@ -47,7 +35,6 @@
             </div>
         </div>
         <div class="col-12">
-
             <div class="card mb-4">
                 <div class="card-body">
                     <div class="form-sample form-inline row ms-auto ">
@@ -57,52 +44,34 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="position-relative">
-                                    @Html.TextBoxFor(m => m.EffectiveDate, "{0:yyyy-MM-dd}",
-                               new
-                                    {
-                                   @class = "form-control pointer isvalidate CustomDateFormat",
-                                   @type = "date",
-                                   onchange = "validatecontrol()",
-                                   max = Model.MaxDate,
-                                   min = Model.MinDate
-                               })
-                                    <label id="EffectiveDatelbl" class="datelabel">Select a date</label>
-                                </div>                                
+                                    <input id="mEffectiveDate" type="date"
+                                           data-name="FromDate"
+                                           min="@DateTime.Today.ToString("yyyy-MM-dd")"
+                                           max="@DateTime.Today.AddMonths(1).ToString("yyyy-MM-dd")"
+                                           class="form-control pointer is-invalid">
+                                    <label id="lblmEffectiveDate" style="width:100px"
+                                           class="datelabel pointer">Select Date</label>
+                                </div>
                             </div>
                         </div>
-                        @Html.HiddenFor(m => m.EntryDate)
                         <div class="row d-flex align-items-center mb-3">
                             <div class="col-form-label col-md-2">
                                 <label>Entry Date :</label>
                             </div>
                             <div class="col-md-4">
-                                @Html.TextBox("EntryDate2", DateTime.Today.ToString("dd-MM-yyyy"),
-                               htmlAttributes: new { @class = "form-control", disabled = "disabled" })
-                                @*@Html.TextBoxFor(m => m.EntryDate, "{0:dd-MMM-yyyy}",
-                                    htmlAttributes: new { @class = "form-control", disabled = "disabled" })*@
+                                <input type="text" disabled class="form-control" value="@DateTime.Today.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)" />
                             </div>
                             <div class="col-form-label col-md-2">
                                 <label>Time : </label>
                             </div>
-
                             <div class="col-md-4">
-
-                                @Html.HiddenFor(m => m.EntryTime)
-                                @Html.TextBoxFor(m => m.EntryTime, "{0:hh-mm-ss}", htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                                <input type="text" disabled class="form-control" value="@DateTime.Now.ToString("hh:mm tt")" />
                             </div>
-
                         </div>
-
-
-
-
-
-
                     </div>
-
                 </div>
             </div>
-            <div class="card mb-4">
+            <div id="ServiceTypeDiv" class="card mb-4 sectionB">
                 <div class="card-body">
                     <div class="form-sample form-inline row ms-auto ">
                         <div class="row d-flex align-items-center mb-3">
@@ -111,31 +80,22 @@
                                     <label>Service Type :</label>
                                 </div>
                                 <div class="col-md-6">
-
-
-                                    @Html.ListBoxFor(m => m.SelectedServiceTypeIds, new MultiSelectList(Model.ServiceTypes, "ID", "DisplayText", Model.SelectedServiceTypeIds),
-
-                                   htmlAttributes: new
-                                   {
-                                       @multiple = "multiple",
-                                     @class = "form-select pointer example-getting-started isvalidate2 is-valid"
-                                   })
-
-
+                                    <select id="ServiceTypeDD" disabled
+                                            class="form-select is-invalid"
+                                            aria-label="Default select example">
+                                    </select>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
-
-        <div class="col-12">
+        <div id="BodyDiv" class="col-12 sectionB">
             <div class="bgColor mb-4 wid-100">
                 <ul>
                     <li>
-                        An Employee Scheduled For Tour And He Attended Late Or Returned Late From Tour. The
+                        1. An Employee Scheduled For Tour And He Attended Late Or Returned Late From Tour. The
                         Following Are The Rules.
                         <ol style="list-style-type: lower-latin;">
                             <li>
@@ -186,9 +146,8 @@
                             </li>
                         </ol>
                     </li>
-
                     <li>
-                        Night Stay Punches Required During Continues Tour At Same Location. This Condition Is Only
+                        2. Night Stay Punches Required During Continues Tour At Same Location. This Condition Is Only
                         For “Driver” As Mentioned
                         In “ENTRY – I”. And The Following Are The Rules.
                         <ol style="list-style-type: lower-latin;">
@@ -196,17 +155,6 @@
                                 Mark Half Day Absent & Deduct Half Day DA If ‘Night Stay Late Night Punch’ Required
                                 But Not Done Between The Time:
                                 <div class="form-group">
-                                    @*@Html.TextBoxFor(m => m.NightPunch_From,
-                                                       htmlAttributes: new
-                                           {
-
-
-                                            @class = "form-control timepicker isvalidate is-valid",
-
-                                            @placeholder = "",
-                                            onkeyup = "validatecontrol()"
-                                        })
-                                    *@
                                     <div class="date position-relative">
                                         @Html.TextBoxFor(m => m.NightPunch_From,
                                        new
@@ -219,17 +167,10 @@
                                            onkeyup = "validatecontrol()"
                                        })
                                         <span class=" date-ico "><i class="fa fa-clock-o" aria-hidden="true"></i></span>
-                                        @*<input type="time" class="form-control">*@
+
                                     </div>
                                 </div> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To: &nbsp;&nbsp;&nbsp;
                                 <div class="form-group">
-                                    @*@Html.TextBoxFor(m => m.NightPunch_To,
-                                        htmlAttributes: new
-                                             {
-                                                 @class = "form-control isvalidate is-valid",
-                                            @placeholder = "",
-                                            onkeyup = "validatecontrol()"
-                                        })*@
                                     <div class="date position-relative">
                                         @Html.TextBoxFor(m => m.NightPunch_To, new
                                         {
@@ -247,26 +188,12 @@
                                 Mark Half Day Absent & Deduct Half Day DA If ‘Night Stay Early Morning Punch’
                                 Required But Not Done Between The Time:
                                 <div class="form-group" id="timepic">
-                                    @*@Html.TextBoxFor(m => m.EarlyMorningPunch_From,
-                                        htmlAttributes: new
-                                             {
-                                                 @class = "form-control isvalidate is-valid",
-                                            @placeholder = "",
-                                            onkeyup = "validatecontrol()"
-                                        })*@
                                     <div class="date position-relative">
                                         @Html.TextBoxFor(m => m.EarlyMorningPunch_From, new { @type = "text", @class = "form-control timePicker isvalidate is-valid", required = "", @placeholder = "12:00 AM", onkeyup = "validatecontrol()" })
                                         <span class=" date-ico "><i class="fa fa-clock-o" aria-hidden="true"></i></span>
                                     </div>
                                 </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To: &nbsp;&nbsp;&nbsp;
                                 <div class="form-group">
-                                    @*@Html.TextBoxFor(m => m.EarlyMorningPunch_To,
-                                        htmlAttributes: new
-                                             {
-                                                 @class = "form-control isvalidate is-valid",
-                                            @placeholder = "",
-                                            onkeyup = "validatecontrol()"
-                                        })*@
                                     <div class="date position-relative">
                                         @Html.TextBoxFor(m => m.EarlyMorningPunch_To, new { @type = "text", @class = "form-control timePicker isvalidate is-valid", required = "", @placeholder = "12:00 AM", onkeyup = "validatecontrol()" })
                                         <span class=" date-ico "><i class="fa fa-clock-o" aria-hidden="true"></i></span>
@@ -275,9 +202,8 @@
                             </li>
                         </ol>
                     </li>
-
                     <li>
-                        When An Employee Tour Scheduled For A Location & Continuing At The Same Location Then That
+                        3. When An Employee Tour Scheduled For A Location & Continuing At The Same Location Then That
                         Day “Actual Tour IN Time”
                         Should Be As Follows:
                         @Html.DropDownListFor(m => m.ReadRule1,
@@ -325,10 +251,8 @@
 
                         </ol>
                     </li>
-
-
                     <li>
-                        When An Employee Tour Scheduled For A Location & Continuing At The Same Location Then That
+                        4. When An Employee Tour Scheduled For A Location & Continuing At The Same Location Then That
                         Day “Actual Tour OUT Time”
                         Should Be As Follows:
                         @Html.DropDownListFor(m => m.ReadRule2,
@@ -369,10 +293,8 @@
                             <li>Mark Full Day Absent & Deduct Full Day DA If “Actual Tour OUT Time” Not Found.</li>
                         </ol>
                     </li>
-
-
                     <li>
-                        When “Main Location” Time IN Is With In Office Hours Then The Person Should Be Present Till
+                        5. When “Main Location” Time IN Is With In Office Hours Then The Person Should Be Present Till
                         Completion Of Second
                         Session. Other Wise Rule Is As Follows:
                         @Html.DropDownListFor(m => m.ReadRule3,
@@ -396,10 +318,8 @@
                             <li>Mark Full Day Absent If Last Punch Found Within 1<sup>st</sup> Session Time.</li>
                         </ol>
                     </li>
-
-
                     <li>
-                        An Employee Is Allowed To Go On Tour, For A Maximum Number Of Days:
+                        6. An Employee Is Allowed To Go On Tour, For A Maximum Number Of Days:
                         <div class="form-group">
                             @Html.TextBoxFor(m => m.MaxDayAllowed,
                            htmlAttributes: new
@@ -410,9 +330,8 @@
                            })
                         </div>
                     </li>
-
                     <li>
-                        Company Or Other Vehicles (4 & 2 Wheel), Maximum Travel Time Is
+                        7. Company Or Other Vehicles (4 & 2 Wheel), Maximum Travel Time Is
                         <div class="form-group">
                             @Html.TextBoxFor(m => m.MaxTraveltime_ComVeh_50km,
                           htmlAttributes: new
@@ -424,9 +343,8 @@
                         </div> Minutes For Covering A
                         Distance Of 50 KM.
                     </li>
-
                     <li>
-                        Public Transport, Maximum Travel Time Is
+                        8. Public Transport, Maximum Travel Time Is
                         <div class="form-group">
                             @Html.TextBoxFor(m => m.MaxTraveltime_PubTran_50km,
                           htmlAttributes: new
@@ -437,9 +355,8 @@
                           })
                         </div>Minutes For Covering A Distance Of 50 KM.
                     </li>
-
                     <li>
-                        For Visiting Place More Then 200 km
+                        9. For Visiting Place More Then 200 km
                         <div class="form-group">
                             @Html.TextBoxFor(m => m.GracePeriod_200km,
                          htmlAttributes: new
@@ -466,7 +383,7 @@
                             </select>*@
                     </li>
                     <li>
-                        Leave In Charge Employee Not Allowed To Go On Tour:
+                        10. Leave In Charge Employee Not Allowed To Go On Tour:
                         @Html.DropDownListFor(m => m.ReadRule4,
                       new[] {
                           new SelectListItem { Text = "No", Value = "false" },
@@ -485,18 +402,28 @@
                             </select>*@
                     </li>
                 </ul>
-
-
             </div>
-
         </div>
-
+        <div class="col-md-12 mb-4">
+            <div class="d-flex justify-content-center mt-3">
+                <button id="btnSubmit" type="button" disabled="disabled"
+                        class="btn btn-secondary me-2" onclick="SaveData()">
+                    <i data-feather="check-circle"></i>
+                    Save
+                </button>
+            </div>
+        </div>
 
     }
 
 </div>
-<script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
+@*<script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>*@
 @section scripts{
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/TourRule.js"></script>
+    <script>
+        
+    </script>
     <script type="text/javascript">
 
     $(document).ready(function () {
@@ -960,7 +887,7 @@
             });
         });
 
-    </script>    
+    </script>
 
 }
 

@@ -161,7 +161,7 @@
                            new SelectListItem { Text = "No", Value = "0" }},
                        htmlAttributes: new
                        {
-                           @class = "form-select pointer",
+                           @class = "form-select pointer is-invalid",
                            @onchange = "ValidateControl()"
                        })
                         </div>
@@ -176,7 +176,7 @@
                                        "Select Employee Number",
                                        htmlAttributes: new
                                        {
-                                           @class = "form-select pointer",
+                                           @class = "form-select pointer is-invalid",
                                            @onchange = "ValidateControl()"
                                        })
                         </div>
@@ -469,7 +469,8 @@
                                                    onblur="DDPickPersonChanged(1)"
                                                    id="txtDDPersonType">
                                         </td>
-                                        <td id="DesgCodenName" data-name="DesignationCodenName" class="text-center alterID htmlVal"> </td>
+                                        <td id="DesgCodenName" data-name="DesignationCodenName" 
+                                            class="text-center alterID htmlVal"> </td>
                                         <td class="text-center">
                                             <div class="position-relative pointer">
                                                 <input id="FromDate" type="date"

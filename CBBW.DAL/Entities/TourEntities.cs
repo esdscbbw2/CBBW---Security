@@ -39,8 +39,61 @@ namespace CBBW.DAL.Entities
                     }
                 }
             }
-            catch { }
+            catch(Exception ex) { pMsg = ex.Message; }
             return TourRules;
+        }
+        public bool CreateNewTourRuleV2(TourRuleSaveInfo trd, ref string pMsg)
+        {
+            bool result = false;
+            _dbResponseMapper.Map_DBResponse(_datasync.createNewTourRuleV2(trd, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
+        public TourRuleServiceTypes getServiceTypesFromEffectiveDate(DateTime EffectiveDate, ref string pMsg) 
+        {
+            try
+            {
+                ds = _datasync.getServiceTypesFromEffectiveDate(EffectiveDate, ref pMsg);
+                if (ds != null)
+                {
+                    DataTable dt0 = null; DataTable dt1 = null;
+                    if (ds.Tables[0] != null && ds.Tables[0].Rows.Count > 0) { dt0 = ds.Tables[0]; }
+                    if (ds.Tables[1] != null && ds.Tables[1].Rows.Count > 0) { dt1 = ds.Tables[1]; }
+                    return _mapper.Map_TourRuleServiceTypes(dt0, dt1);
+                }
+                else { return null; }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public TourRuleSaveInfo getLastTourInfoFromServiceTypeCodes(string serviceTypeCodes, ref string pMsg) 
+        {
+            TourRuleSaveInfo result = new TourRuleSaveInfo();
+            try
+            {
+                dt = _datasync.getLastTourInfoFromServiceTypeCodes(serviceTypeCodes, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    result = _mapper.Map_TourRuleSaveInfo(dt.Rows[0]);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
+        public List<TourRuleSaveInfo> getTourInfoFromEffectiveDate(DateTime EffectiveDate, ref string pMsg) 
+        {
+            List<TourRuleSaveInfo> Result = new List<TourRuleSaveInfo>();
+            try
+            {
+                dt = _datasync.getTourInfoFromEffectiveDate(EffectiveDate, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        Result.Add(_mapper.Map_TourRuleSaveInfo(dt.Rows[i]));
+                    }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return Result;
         }
         #endregion
         public IEnumerable<TourRule> GetTourRules(ref string pMsg) 
@@ -117,5 +170,6 @@ namespace CBBW.DAL.Entities
             _dbResponseMapper.Map_DBResponse(_datasync.IsValidTourRule(trd, ref pMsg), ref pMsg, ref result);
             return result;
         }
+        
     }
 }

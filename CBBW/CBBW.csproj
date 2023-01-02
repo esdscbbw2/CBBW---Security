@@ -318,6 +318,7 @@
     <Content Include="UIContent\JS\CustomePage\OtherTripSchEdit.js" />
     <Content Include="UIContent\JS\CustomePage\OtherTripSchedule.js" />
     <Content Include="UIContent\JS\CustomePage\SecurityRuleValidation.js" />
+    <Content Include="UIContent\JS\CustomePage\TourRule.js" />
     <Content Include="UIContent\JS\CustomLayout.js" />
     <Content Include="UIContent\JS\DataTablePagingInput.js" />
     <Content Include="UIContent\JS\dataTables.bootstrap5.min.js" />
@@ -338,6 +339,7 @@
     <Content Include="UIContent\JS\multiselect_0711.js" />
     <Content Include="UIContent\JS\popper.min.js" />
     <Content Include="UIContent\JS\sweetalert2.all.min.js" />
+    <Content Include="Upload\Forms\2936cfde-c229-4348-ada0-63e94a2459fc.jpg" />
     <Content Include="Views\Shared\EditorTemplates\CustomCheckBoxOption.cshtml" />
     <Content Include="Areas\Security\Views\Shared\_PartialNavBar.cshtml" />
     <Content Include="Areas\Security\Views\TADARules\CreateRule.cshtml" />
@@ -418,7 +420,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Security\Data\" />
     <Folder Include="Areas\Security\Views\Common\" />
-    <Folder Include="Upload\Forms\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

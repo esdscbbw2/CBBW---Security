@@ -11,6 +11,7 @@ namespace CBBW.BOL.Tour
     public class TourRuleListData 
     {
         public int TotalCount { get; set; }
+        public int FilteredCount { get; set; }
         public int SL { get; set; }
         public DateTime EntryDate { get; set; }
         public string EntryDateDisplay { get; set; }
@@ -20,11 +21,10 @@ namespace CBBW.BOL.Tour
     }
     public class TourRule: TourRuleListData
     {
-        public int ID { get; set; }
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]        
+        public int ID { get; set; }       
         public string EntryTime { get; set; }
         public int isBtn { get; set; }
     }
     
-    
+
 }

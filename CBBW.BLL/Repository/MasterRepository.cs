@@ -25,9 +25,15 @@ namespace CBBW.BLL.Repository
         public string GetDesgCodenName(int empID, int empType)
         {
             //empType : 2-driver, 1-Others
-            string result = "4 / DIC";
+            string result = "";
+            if (empType == 1)
+                result = "4 / DIC";
             if (empType == 2)
-                result = "0 / Senior Driver";            
+                result = "0 / Senior Driver"; 
+            else if (empType == 3)
+                result = "0 / Others";
+            else if (empType == 4)
+                result = "0 / Management";
             return result;
         }
         public IEnumerable<CustomComboOptions> getDriverList(ref string pMsg)

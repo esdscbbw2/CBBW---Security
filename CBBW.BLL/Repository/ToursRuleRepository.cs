@@ -18,7 +18,12 @@ namespace CBBW.BLL.Repository
             _tourEntities = new TourEntities();
             _masterentities = new MasterEntities();
         }
-
+        public bool CreateNewTourRuleV2(TourRuleSaveInfo trd, ref string pMsg) 
+        {
+            trd.EntryDate = DateTime.Today;
+            trd.EntryTime = DateTime.Now.ToString("hh:mm tt");
+            return _tourEntities.CreateNewTourRuleV2(trd, ref pMsg);
+        }
         public bool CreateNewTourRule(TourRuleDetails trd, ref string pMsg)
         {
             return _tourEntities.CreateNewTourRule(trd, ref pMsg);
@@ -49,7 +54,6 @@ namespace CBBW.BLL.Repository
         {
             return _tourEntities.GetTourRules(DisplayLength, DisplayStart, SortColumn, SortDirection, SearchText, ref pMsg);
         }
-
         public TourRuleDetails GetToursRuleByID(int ID, ref string pMsg)
         {
             TourRuleDetails result= _tourEntities.GetTourRuleByID(ID, ref pMsg);
@@ -59,15 +63,17 @@ namespace CBBW.BLL.Repository
             }
             return result;
         }
-
         public bool IsValidRule(TourRuleDetails trd, ref string pMsg)
         {
             return _tourEntities.IsValidTourRule(trd, ref pMsg);
         }
-
         public bool RemoveTourRule(int ID, ref string pMsg)
         {            
             return _tourEntities.RemoveTourRule(ID, ref pMsg);
+        }
+        public TourRuleServiceTypes getServiceTypesFromEffectiveDate(DateTime EffectiveDate, ref string pMsg)
+        {
+           return _tourEntities.getServiceTypesFromEffectiveDate(EffectiveDate, ref pMsg);
         }
     }
 }

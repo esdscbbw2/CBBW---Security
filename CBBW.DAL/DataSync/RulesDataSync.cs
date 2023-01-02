@@ -38,6 +38,104 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+        public DataTable createNewTourRuleV2(TourRuleSaveInfo trd, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[20];
+                para[paracount] = new SqlParameter("@EntryDate", SqlDbType.Date);
+                para[paracount++].Value = trd.EntryDate;
+                para[paracount] = new SqlParameter("@EntryTime", SqlDbType.NVarChar, 15);
+                para[paracount++].Value = trd.EntryTime;
+                para[paracount] = new SqlParameter("@EffectiveDate", SqlDbType.Date);
+                para[paracount++].Value = trd.EffectiveDate;
+                para[paracount] = new SqlParameter("@PublicTranDelay_HalfDA", SqlDbType.Float);
+                para[paracount++].Value = trd.PublicTranDelay_HalfDA;
+                para[paracount] = new SqlParameter("@OtherTranDelay_HalfDA", SqlDbType.Float);
+                para[paracount++].Value = trd.OtherTranDelay_HalfDA;
+                para[paracount] = new SqlParameter("@PublicTranDelay_FullDA", SqlDbType.Float);
+                para[paracount++].Value = trd.PublicTranDelay_FullDA;
+                para[paracount] = new SqlParameter("@OtherTranDelay_FullDA", SqlDbType.Float);
+                para[paracount++].Value = trd.OtherTranDelay_FullDA;
+                para[paracount] = new SqlParameter("@NightPunch_From", SqlDbType.NVarChar, 15);
+                para[paracount++].Value = trd.NightPunch_From;
+                para[paracount] = new SqlParameter("@NightPunch_To", SqlDbType.NVarChar, 15);
+                para[paracount++].Value = trd.NightPunch_To;
+                para[paracount] = new SqlParameter("@EarlyMorningPunch_From", SqlDbType.NVarChar, 15);
+                para[paracount++].Value = trd.EarlyMorningPunch_From;
+                para[paracount] = new SqlParameter("@EarlyMorningPunch_To", SqlDbType.NVarChar, 15);
+                para[paracount++].Value = trd.EarlyMorningPunch_To;
+                para[paracount] = new SqlParameter("@MaxDayAllowed", SqlDbType.Int);
+                para[paracount++].Value = trd.MaxDayAllowed;
+                para[paracount] = new SqlParameter("@MaxTraveltime_ComVeh_50km", SqlDbType.Float);
+                para[paracount++].Value = trd.MaxTraveltime_ComVeh_50km;
+                para[paracount] = new SqlParameter("@MaxTraveltime_PubTran_50km", SqlDbType.Float);
+                para[paracount++].Value = trd.MaxTraveltime_PubTran_50km;
+                para[paracount] = new SqlParameter("@GracePeriod_200km", SqlDbType.Float);
+                para[paracount++].Value = trd.GracePeriod_200km;
+                para[paracount] = new SqlParameter("@MinutesGracePeriodAllowed", SqlDbType.Bit);
+                para[paracount++].Value = trd.MinutesGracePeriodAllowed;
+                para[paracount] = new SqlParameter("@LICAllowTour", SqlDbType.Bit);
+                para[paracount++].Value = trd.LICAllowTour;
+                para[paracount] = new SqlParameter("@ServiceTypeCodes", SqlDbType.NVarChar, 50);
+                para[paracount++].Value = trd.ServiceTypeCodes;
+                para[paracount] = new SqlParameter("@ServiceTypeTexts", SqlDbType.NVarChar);
+                para[paracount++].Value = trd.ServiceTypeTexts;
+                para[paracount] = new SqlParameter("@CreatedBy", SqlDbType.Int);
+                para[paracount++].Value = trd.CreatedBy;
+                using (SQLHelper sql = new SQLHelper("[RUL].[SetToursRuleV2]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataSet getServiceTypesFromEffectiveDate(DateTime EffectiveDate, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[1];                
+                para[paracount] = new SqlParameter("@EffectiveDate", SqlDbType.Date);
+                para[paracount++].Value = EffectiveDate;                
+                using (SQLHelper sql = new SQLHelper("[RUL].[getServiceTypesFromEffectiveDate]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataSet(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable getLastTourInfoFromServiceTypeCodes(string serviceTypeCodes, ref string pMsg) 
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[1];
+                para[paracount] = new SqlParameter("@ServiceTypeCodes", SqlDbType.NVarChar,50);
+                para[paracount++].Value = serviceTypeCodes;
+                using (SQLHelper sql = new SQLHelper("[RUL].[getLastTourInfoFromServiceTypeCodes]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable getTourInfoFromEffectiveDate(DateTime EffectiveDate, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[1];
+                para[paracount] = new SqlParameter("@EffectiveDate", SqlDbType.Date);
+                para[paracount++].Value = EffectiveDate;
+                using (SQLHelper sql = new SQLHelper("[RUL].[getTourInfoFromEffectiveDate]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
         #endregion
         public DataTable getToursRules(ref string pMsg)
         {
@@ -92,6 +190,7 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+        
         public DataTable createNewTourRule(TourRuleDetails trd,ref string pMsg)
         {
             try

@@ -32,7 +32,8 @@ $.fn.makeInVisible = function () {
 };
 $.fn.clearValidateClass = function () {
     var that = this;
-    that.removeClass('is-valid').removeClass('is-invalid');
+    if (that.hasClass('is-valid')) { that.removeClass('is-valid'); }
+    if (that.hasClass('is-invalid')) { that.removeClass('is-invalid'); }
 };
 $.fn.CustomDateFormat = function () {
     var that = this;

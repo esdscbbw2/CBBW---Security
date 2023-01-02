@@ -92,7 +92,7 @@ function DisplayTPDetails(data) {
         ActTourOutTimeTD.html(rowdata.ActualTourOutTime);
         schToDateTD.html(rowdata.ToDateStrDisplay);
         povCtrl.html(rowdata.PurposeOfVisit);
-        TADADeniedTD.html(rowdata.TADADenied);
+        if (rowdata.TADADenied) { TADADeniedTD.html('Yes'); } else { TADADeniedTD.html('No'); }
         RTInDateTD.html(rowdata.RequiredTourInDateDisplay);
         RTITimeTD.html(rowdata.RequiredTourInTime);
         ATInDateTD.html(rowdata.ActualTourInDateDisplay);

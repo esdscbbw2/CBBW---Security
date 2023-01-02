@@ -128,7 +128,7 @@
                             <label>Approved :</label>
                         </div>
                         <div class="col-md-2">
-                            <input type="text" class="form-control" value="@(Model.HeaderData.IsApproved?"Yes":"No")" disabled>
+                            <input type="text" class="form-control" value="@(Model.HeaderData.AppDateTime.ToString("dd/MM/yyyy hh:mm tt",CultureInfo.InvariantCulture).Substring(0,10)=="01/01/0001"?"":Model.HeaderData.IsApproved?"Yes":"No")" disabled>
                         </div>
                         <div class="col-md-2 col-form-label">
                             <label>Date &amp; Time Of Approval :</label>
@@ -220,7 +220,7 @@
                                                     @item.ToDateStrDisplay
                                                 </td>
                                                 <td class="text-center">
-                                                    <textarea name="" class="form-control pointer" cols="20" rows="2" data-toggle="tooltip" data-placement="bottom" title="" data-bs-original-title="@item.PurposeOfVisit">@item.PurposeOfVisit</textarea>
+                                                    <textarea disabled name="" class="form-control pointer" cols="20" rows="2" data-toggle="tooltip" data-placement="bottom" title="" data-bs-original-title="@item.PurposeOfVisit">@item.PurposeOfVisit</textarea>
                                                 </td>
                                                 <td class="text-center">
                                                     @(item.TADADenied?"Yes":"No")
@@ -327,7 +327,7 @@
                                                         @item.ToDateStrDisplay
                                                     </td>
                                                     <td class="text-center">
-                                                        <textarea name="" class="form-control pointer" cols="20" rows="2" data-toggle="tooltip" data-placement="bottom" title="" data-bs-original-title="@item.PurposeOfVisit" aria-describedby="tooltip996206">@item.PurposeOfVisit</textarea>
+                                                        <textarea disabled name="" class="form-control pointer" cols="20" rows="2" data-toggle="tooltip" data-placement="bottom" title="" data-bs-original-title="@item.PurposeOfVisit" aria-describedby="tooltip996206">@item.PurposeOfVisit</textarea>
                                                     </td>
                                                     <td class="text-center">
                                                         @(item.TADADenied?"Yes":"No")

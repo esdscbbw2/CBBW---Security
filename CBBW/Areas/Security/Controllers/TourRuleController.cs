@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using CBBW.Areas.Security.ViewModel;
 using CBBW.BLL.IRepository;
+using CBBW.BOL.CTV;
 using CBBW.BOL.Tour;
 
 namespace CBBW.Areas.Security.Controllers
@@ -14,11 +15,14 @@ namespace CBBW.Areas.Security.Controllers
         IUserRepository _iUser;
         IToursRuleRepository _toursRule;
         string pMsg;
+        UserInfo user;
         public TourRuleController(IToursRuleRepository toursRule, IUserRepository iUser)
         {
             _toursRule = toursRule;
             _iUser = iUser;
             pMsg = "";
+            user = iUser.getLoggedInUser();
+            ViewBag.LogInUser = user.UserName;
         }
         public JsonResult BackButtonClicked()
         {
@@ -106,16 +110,17 @@ namespace CBBW.Areas.Security.Controllers
             var result = new
             {
                 //iTotalRecords = ruleList.Count == 0 ? 0 : ruleList.FirstOrDefault().TotalCount,
-                iTotalRecords = 100,
-                //iPages=10,
-                //iCurrentPage=1,
-                //iTotalDisplayRecords = ruleList.Count(),
-                iTotalDisplayRecords=50,
+                iTotalRecords = ruleList.Count == 0 ? 0 : ruleList.FirstOrDefault().FilteredCount,
+                iTotalDisplayRecords = ruleList.Count == 0 ? 0 : ruleList.FirstOrDefault().FilteredCount,
                 iDisplayLength = iDisplayLength,
                 iDisplayStart = iDisplayStart,
                 aaData = ruleList
             };
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getServiceTypeList(string EffectiveDate) 
+        {
+            return Json(_toursRule.getServiceTypesFromEffectiveDate(DateTime.Parse(EffectiveDate), ref pMsg).MasterServiceTypeList, JsonRequestBehavior.AllowGet);
         }
     }
 }

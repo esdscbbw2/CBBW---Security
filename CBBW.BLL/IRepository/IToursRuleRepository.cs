@@ -11,6 +11,7 @@ namespace CBBW.BLL.IRepository
     {
         List<TourRuleListData> GetTourRules(int DisplayLength, int DisplayStart, int SortColumn,
             string SortDirection, string SearchText, ref string pMsg);
+        TourRuleServiceTypes getServiceTypesFromEffectiveDate(DateTime EffectiveDate, ref string pMsg);
         IEnumerable<TourRule> GetTourRules(ref string pMsg);
         TourRuleDetails GetToursRuleByID(int ID, ref string pMsg);
         TourRuleDetails GetLastToursRule(ref string pMsg);
@@ -18,5 +19,6 @@ namespace CBBW.BLL.IRepository
         bool CreateNewTourRule(TourRuleDetails trd, ref string pMsg);
         bool IsValidRule(TourRuleDetails trd, ref string pMsg);
         int GetAffectedRuleID(ref string pMsg);
+        bool CreateNewTourRuleV2(TourRuleSaveInfo trd, ref string pMsg);
     }
 }

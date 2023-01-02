@@ -29,6 +29,7 @@ function ValidateControl() {
     }
     $('#BackBtnActive').val(1);
     EnableSubmitBtn();
+    EnableDateWiseTourBtn();
 };
 function validatectrl(targetid, value) {
     var isvalid = false;
@@ -132,7 +133,7 @@ function DateWiseTourDtlClicked() {
             $(data).each(function (index, item) {
                 if (item.bResponseBool == true) {
                     var url = "/Security/EHG/DateWiseTourDetails";
-                    window.location.href = url;                  
+                    window.location.href = url;
                 }
                 else {
                     Swal.fire({
@@ -149,22 +150,26 @@ function DateWiseTourDtlClicked() {
             });
         },
     });
+    
 };
-function getDesgnCode(rowid,empCode) {
+function getDesgnCode(rowid, empCode) {
+    var actualempcode=0
+    if ($.isNumeric(empCode)) { actualempcode = empCode; }
+    //alert(rowid + ' - ' + empCode + ' - ' + actualempcode);
     var desgCtrl = $('#DesgCodenName');
     var persontypeCtrl = $('#DDPersonType');
     if (rowid != 0) {
         desgCtrl = $('#DesgCodenName_' + rowid);
         persontypeCtrl = $('#DDPersonType_' + rowid);
     }    
-    var mValue = persontypeCtrl.val();
-    if (mValue == 1 || mValue == 2) {
-        var mUrl = "/EHG/GetDesgCodenName?empID=" + empCode + "&empType=" + mValue;
+    var mValue = persontypeCtrl.val()*1;
+    if (mValue<=4 && mValue>0) {
+        var mUrl = "/EHG/GetDesgCodenName?empID=" + actualempcode + "&empType=" + mValue;
         $.ajax({
             url: mUrl,
             success: function (result) { desgCtrl.html(result); }
         });
-        desgCtrl.html('qwe');
+        //desgCtrl.html('qwe');
     }
     else {
         desgCtrl.html('');
@@ -174,38 +179,53 @@ function DDPersonTypeChanged() {
     var target = DDPersonTypeChanged.caller.arguments[0].target;
     var tblRow = target.closest('.add-row');
     var targetCtrl = $(target);
-    //var targetindexid = target.closest('.add-row');
-    var targetid = targetCtrl.attr('id');
-    var mValue = targetCtrl.val();
-    var cmbCtrl = $('#cmb' + targetid);
-    var txtCtrl = $('#txt' + targetid);    
-    switch (mValue) {
-        case '1':
-            cmbCtrl.removeClass('inVisible').addClass('pickPersonName').isInvalid();
-            txtCtrl.addClass('inVisible').removeClass('pickPersonNametxt').clearValidateClass();
-            getDropDownData('cmb' + targetid, 'Select Employee', '/EHG/GetStaffList');
-            break;
-        case '2':
-            cmbCtrl.removeClass('inVisible').addClass('pickPersonName').isInvalid();
-            txtCtrl.addClass('inVisible').removeClass('pickPersonNametxt').clearValidateClass();
-            getDropDownData('cmb' + targetid, 'Select Driver', '/EHG/GetDriverList');
-            break;
-        case '3':
-            txtCtrl.removeClass('inVisible').addClass('pickPersonNametxt').isInvalid();
-            cmbCtrl.addClass('inVisible').removeClass('pickPersonName').clearValidateClass();
-            
-            break;
-        case '4':
-            txtCtrl.removeClass('inVisible').addClass('pickPersonNametxt').isInvalid();
-            cmbCtrl.addClass('inVisible').removeClass('pickPersonName').clearValidateClass();
-            break;
-        default:
-            txtCtrl.addClass('inVisible').removeClass('pickPersonNametxt').clearValidateClass();
-            cmbCtrl.addClass('inVisible').removeClass('pickPersonName').clearValidateClass();
-            break;
+    var docname = $('#ehgHeader_DocFileName').val();
+    if (docname != '') {        
+        var targetid = targetCtrl.attr('id');
+        var mValue = targetCtrl.val();
+        var cmbCtrl = $('#cmb' + targetid);
+        var txtCtrl = $('#txt' + targetid);
+        switch (mValue) {
+            case '1':
+                cmbCtrl.removeClass('inVisible').addClass('pickPersonName').isInvalid();
+                txtCtrl.addClass('inVisible').removeClass('pickPersonNametxt').clearValidateClass();
+                getDropDownData('cmb' + targetid, 'Select Employee', '/EHG/GetStaffList');
+                break;
+            case '2':
+                cmbCtrl.removeClass('inVisible').addClass('pickPersonName').isInvalid();
+                txtCtrl.addClass('inVisible').removeClass('pickPersonNametxt').clearValidateClass();
+                getDropDownData('cmb' + targetid, 'Select Driver', '/EHG/GetDriverList');
+                break;
+            case '3':
+                txtCtrl.removeClass('inVisible').addClass('pickPersonNametxt').isInvalid();
+                cmbCtrl.addClass('inVisible').removeClass('pickPersonName').clearValidateClass();
+                break;
+            case '4':
+                txtCtrl.removeClass('inVisible').addClass('pickPersonNametxt').isInvalid();
+                cmbCtrl.addClass('inVisible').removeClass('pickPersonName').clearValidateClass();
+                break;
+            default:
+                txtCtrl.addClass('inVisible').removeClass('pickPersonNametxt').clearValidateClass();
+                cmbCtrl.addClass('inVisible').removeClass('pickPersonName').clearValidateClass();
+                break;
+        }
+        if (mValue > 0) { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
+        EnableAddBtn(tblRow, 'AddBtn');
+    } else {
+        targetCtrl.val('').isInvalid();
+        Swal.fire({
+            title: 'Error',
+            text: 'No Documents Uploaded Yet.So Can Not Proceed Further.',
+            icon: 'question',
+            customClass: 'swal-wide',
+            buttons: {
+                confirm: 'Ok'
+            },
+            confirmButtonColor: '#2527a2',
+        });
     }
-    if (mValue > 0) { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
-    EnableAddBtn(tblRow, 'AddBtn');
+
+    
 };
 function DDPickPersonChanged(x) {
     UpdateAuthorisedPersonForOfficeWork('Select Authorized Person');
@@ -225,24 +245,40 @@ function DDPickPersonChanged(x) {
 function DriverNoForManagementChanged() {
     var target = DriverNoForManagementChanged.caller.arguments[0].target;
     var targetCtrl = $(target);
-    var driverno = targetCtrl.val();
-    if (driverno > 0) {
-        var drivername = $('#DriverNoForManagement option:selected').text();
-        $('#DriverNameForManagement').val(drivername);
-        var mUrl = "/EHG/GetDesgCodenName?empID=" + driverno + "&empType=2";
-        $.ajax({
-            url: mUrl,
-            success: function (result) {
-                $('#tbl1Designation').html(result);
-                $('#DesgCodeNNameForManagement').val(result);
-            }
+    var docname = $('#ehgHeader_DocFileName').val();
+    if (docname != '') {        
+        var driverno = targetCtrl.val();
+        if (driverno > 0) {
+            var drivername = $('#DriverNoForManagement option:selected').text();
+            $('#DriverNameForManagement').val(drivername);
+            var mUrl = "/EHG/GetDesgCodenName?empID=" + driverno + "&empType=2";
+            $.ajax({
+                url: mUrl,
+                success: function (result) {
+                    $('#tbl1Designation').html(result);
+                    $('#DesgCodeNNameForManagement').val(result);
+                }
+            });
+            targetCtrl.isValid();
+        }
+        else {
+            targetCtrl.isInvalid();
+        }
+        $('#BackBtnActive').val(1);
+    } else {
+        targetCtrl.val('').isInvalid();
+        Swal.fire({
+            title: 'Error',
+            text: 'No Documents Uploaded Yet.So Can Not Proceed Further.',
+            icon: 'question',
+            customClass: 'swal-wide',
+            buttons: {
+                confirm: 'Ok'
+            },
+            confirmButtonColor: '#2527a2',
         });
-        targetCtrl.isValid();
     }
-    else {
-        targetCtrl.isInvalid();
-    }
-    $('#BackBtnActive').val(1);
+    
 };
 function ValidateCloneRowCtrl() {
     var target = ValidateCloneRowCtrl.caller.arguments[0].target;
@@ -312,7 +348,12 @@ function EnableSubmitBtn() {
                 if (q == 1) {
                     if (z <= 0) { IsSubmitActive = true; }
                 }
-                else if (y <= 0) { IsSubmitActive = true; }
+                else if (y <= 0) {
+                    if (b == 1 && c == 1) {
+                        IsSubmitActive = true;
+                    }
+                    //IsSubmitActive = true;
+                }
             }
         }
     }    
@@ -373,7 +414,8 @@ function addOfficeWorkCloneBtnClick() {
     $('#cmbDDPersonType_' + rowid).empty();
     $('#ToDate_' + rowid).val('');
     $('#FromDate_' + rowid).val('');
-    $('#FromTime' + rowid).val('');
+    $('#FromTime_' + rowid).val('');
+    $('#txtDDPersonType_' + rowid).val('');
     EnableDateWiseTourBtn();
 };
 function removeOfficeWorkCloneBtnClick() {
@@ -610,6 +652,10 @@ $(document).ready(function () {
     (async function () {
         const r1 = await getInitialDataForTravelingPerson();
     })();
+    var matstat = $('#ehgHeader_MaterialStatus');
+    if (matstat.val() >= 0) { matstat.isValid(); } else { matstat.isInvalid(); }
+    var instCtrl = $('#ehgHeader_Instructor');
+    if (instCtrl.val() > 0) { instCtrl.isValid(); } else { instCtrl.isInvalid(); }
     var dwtFilled = $('#DWSubmitBtnActive').val();
     var vaFilled = $('#VASubmitBtnActive').val();
     var dwtBtnCtrl = $('#DateWiseTourBtn2');

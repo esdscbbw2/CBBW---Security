@@ -6,7 +6,7 @@
 function addCloneBtnClick() {
     var insrow = addCloneBtnClick.caller.arguments[0].target.closest('.add-row');
     var clonerowid = CloneRowReturningID('tbody1', 'tbody2', $(insrow).attr('id') * 1, true, false);
-    var preToDate = $(insrow).find('#ToDate').val();
+    var preToDate = $(insrow).find('.todt').val();
     var curFromDate = CustomDateChange(preToDate, 1, '/');
     $('#FromDateLbl_' + clonerowid).html(curFromDate);
     $('#btnSubmit').makeDisable();
@@ -22,6 +22,17 @@ function ValidateCloneRowCtrl() {
     EnableAddBtnInCloneRow(tblRow, 'AddBtn');
     $('#DWBackBtnActive').val(1);
     EnableSubmitBtn();
+    
+    var todate = new Date($('#TodateStr').val());
+    var preToDate = $(tblRow).find('.todt').val();
+    var calculatedFromdate =new Date(ChangeDateFormat(CustomDateChange(preToDate, 1, '-')));
+    //alert(todate+' - '+calculatedFromdate + ' - ' + todate);
+    //var rowid = $('#tblRow').attr('id');
+    //if (rowid > 0) { addbtn = $('#AddBtn_' + rowid); }
+    if (todate <= calculatedFromdate) {
+        $(tblRow).find('.addBtn').makeDisable();
+    }
+    
 };
 function validatectrl(targetid, value) {
     var isvalid = false;

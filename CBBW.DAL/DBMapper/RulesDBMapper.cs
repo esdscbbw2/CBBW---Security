@@ -14,6 +14,101 @@ namespace CBBW.DAL.DBMapper
 {
     public class RulesDBMapper
     {
+        public TourRuleSaveInfo Map_TourRuleSaveInfo(DataRow dr) 
+        {
+            TourRuleSaveInfo result = new TourRuleSaveInfo();
+            try
+            {
+                if (dr != null)
+                {
+                    if (!DBNull.Value.Equals(dr["ID"]))
+                        result.ID = int.Parse(dr["ID"].ToString());
+                    if (!DBNull.Value.Equals(dr["EntryDate"]))
+                        result.EntryDate = DateTime.Parse(dr["EntryDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["EntryTime"]))
+                        result.EntryTime = dr["EntryTime"].ToString();
+                    if (!DBNull.Value.Equals(dr["EffectiveDate"]))
+                        result.EffectiveDate = DateTime.Parse(dr["EffectiveDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["PublicTranDelay_HalfDA"]))
+                        result.PublicTranDelay_HalfDA = float.Parse(dr["PublicTranDelay_HalfDA"].ToString());
+                    if (!DBNull.Value.Equals(dr["OtherTranDelay_HalfDA"]))
+                        result.OtherTranDelay_HalfDA = float.Parse(dr["OtherTranDelay_HalfDA"].ToString());
+                    if (!DBNull.Value.Equals(dr["PublicTranDelay_FullDA"]))
+                        result.PublicTranDelay_FullDA = float.Parse(dr["PublicTranDelay_FullDA"].ToString());
+                    if (!DBNull.Value.Equals(dr["OtherTranDelay_FullDA"]))
+                        result.OtherTranDelay_FullDA = float.Parse(dr["OtherTranDelay_FullDA"].ToString());
+                    if (!DBNull.Value.Equals(dr["NightPunch_From"]))
+                        result.NightPunch_From = dr["NightPunch_From"].ToString();
+                    if (!DBNull.Value.Equals(dr["NightPunch_To"]))
+                        result.NightPunch_To = dr["NightPunch_To"].ToString();
+                    if (!DBNull.Value.Equals(dr["EarlyMorningPunch_From"]))
+                        result.EarlyMorningPunch_From = dr["EarlyMorningPunch_From"].ToString();
+                    if (!DBNull.Value.Equals(dr["EarlyMorningPunch_To"]))
+                        result.EarlyMorningPunch_To = dr["EarlyMorningPunch_To"].ToString();
+                    if (!DBNull.Value.Equals(dr["MaxDayAllowed"]))
+                        result.MaxDayAllowed = int.Parse(dr["MaxDayAllowed"].ToString());
+                    if (!DBNull.Value.Equals(dr["MaxTraveltime_ComVeh_50km"]))
+                        result.MaxTraveltime_ComVeh_50km = float.Parse(dr["MaxTraveltime_ComVeh_50km"].ToString());
+                    if (!DBNull.Value.Equals(dr["MaxTraveltime_PubTran_50km"]))
+                        result.MaxTraveltime_PubTran_50km = float.Parse(dr["MaxTraveltime_PubTran_50km"].ToString());
+                    if (!DBNull.Value.Equals(dr["GracePeriod_200km"]))
+                        result.GracePeriod_200km = float.Parse(dr["GracePeriod_200km"].ToString());
+                    if (!DBNull.Value.Equals(dr["MinutesGracePeriodAllowed"]))
+                        result.MinutesGracePeriodAllowed = bool.Parse(dr["MinutesGracePeriodAllowed"].ToString());
+                    if (!DBNull.Value.Equals(dr["LICAllowTour"]))
+                        result.LICAllowTour = bool.Parse(dr["LICAllowTour"].ToString());
+                    if (!DBNull.Value.Equals(dr["ServiceTypeCodes"]))
+                        result.ServiceTypeCodes = dr["ServiceTypeCodes"].ToString();
+                    if (!DBNull.Value.Equals(dr["ServiceTypeTexts"]))
+                        result.ServiceTypeTexts = dr["ServiceTypeTexts"].ToString();
+                    if (!DBNull.Value.Equals(dr["CreatedBy"]))
+                        result.CreatedBy = int.Parse(dr["CreatedBy"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsActive"]))
+                        result.IsActive = bool.Parse(dr["IsActive"].ToString());
+                }
+            }
+            catch { }
+            return result;
+        }
+        public TourRuleServiceTypes Map_TourRuleServiceTypes(DataTable sts,DataTable cco) 
+        {
+            TourRuleServiceTypes result = new TourRuleServiceTypes();
+            try
+            {
+                List<ServiceTypeSelector> objlist1 = new List<ServiceTypeSelector>();
+                List<CustomCheckBoxOption> objlist2 = new List<CustomCheckBoxOption>();
+                if (sts != null && sts.Rows.Count > 0)
+                {
+                    for (int i = 0; i < sts.Rows.Count; i++)
+                    {
+                        ServiceTypeSelector obj1 = new ServiceTypeSelector();
+                        if (!DBNull.Value.Equals(sts.Rows[i]["ServiceTypeCodes"]))
+                            obj1.ServiceTypeCodes = sts.Rows[i]["ServiceTypeCodes"].ToString();
+                        if (!DBNull.Value.Equals(sts.Rows[i]["ServiceTypeTexts"]))
+                            obj1.ServiceTypeTexts = sts.Rows[i]["ServiceTypeTexts"].ToString();
+                        objlist1.Add(obj1);
+                    }
+                }
+                if (cco != null && cco.Rows.Count > 0)
+                {
+                    for (int i = 0; i < cco.Rows.Count; i++)
+                    {
+                        CustomCheckBoxOption obj2 = new CustomCheckBoxOption();
+                        if (!DBNull.Value.Equals(cco.Rows[i]["ID"]))
+                            obj2.ID = int.Parse(cco.Rows[i]["ID"].ToString());
+                        if (!DBNull.Value.Equals(cco.Rows[i]["DisplayText"]))
+                            obj2.DisplayText = cco.Rows[i]["DisplayText"].ToString();
+                        if (!DBNull.Value.Equals(cco.Rows[i]["IsSelected"]))
+                            obj2.IsSelected = bool.Parse(cco.Rows[i]["IsSelected"].ToString());
+                        objlist2.Add(obj2);
+                    }
+                }
+                result.RuleServiceTypeList = objlist1;
+                result.MasterServiceTypeList = objlist2;
+            }
+            catch { }
+            return result;
+        }
         public TourRuleListData Map_TourRuleListData(DataRow dr)
         {
             TourRuleListData result = new TourRuleListData();
@@ -24,7 +119,9 @@ namespace CBBW.DAL.DBMapper
                     if (!DBNull.Value.Equals(dr["RowNum"]))
                         result.SL = int.Parse(dr["RowNum"].ToString());
                     if (!DBNull.Value.Equals(dr["TotalCount"]))
-                        result.TotalCount = int.Parse(dr["TotalCount"].ToString());
+                        result.FilteredCount = int.Parse(dr["TotalCount"].ToString());
+                    if (!DBNull.Value.Equals(dr["TotalRecords"]))
+                        result.TotalCount = int.Parse(dr["TotalRecords"].ToString());
                     if (!DBNull.Value.Equals(dr["EntryDate"]))
                         result.EntryDate = DateTime.Parse(dr["EntryDate"].ToString());
                     if (!DBNull.Value.Equals(dr["EffectiveDate"]))
