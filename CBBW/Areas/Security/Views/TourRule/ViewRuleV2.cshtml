@@ -1,35 +1,29 @@
 ﻿@using System.Globalization;
-@model CBBW.BOL.Tour.TourRuleDetails
+@using CBBW.BOL.Tour;
+@model TourRuleDetails
 @{
-    ViewBag.Title = "CreateRule";
-}
-@section headers{
+    ViewBag.Title = "View Tour Rule";
 }
 <div class="row newTable">
-    @using (Html.BeginForm("CreateRule", "TourRule", FormMethod.Post))
-    {
-        @Html.HiddenFor(m => m.isBtn)
+    @using (Html.BeginForm("DeleteRule", "TourRule", new { Area = "Security", id = Model.ID }))
+    {        
         @Html.HiddenFor(m => m.EffectiveDate)
-        @Html.HiddenFor(m => m.ServiceTypeCodes)
-        @Html.HiddenFor(m => m.ServiceTypeTexts)
+        @Html.HiddenFor(m=>m.IsbtnDeleteActive)
         <div class="fixedElement">
             <div class="col-md-12" style="position: relative;">
                 <div class="heading_text_btn mb-4 mt-4">
                     <div class="leftButton">
-                        <button id="btnBack" type="button" class="btn btn-primary me-2">
+                        <button id="btnBackOnView" type="button" class="btn btn-primary me-2">
                             @*onclick="window.location.href='@Url.Action("Index", "TourRule", new { Area = "Security" })';">*@
                             <i data-feather="arrow-left-circle"></i>
                             Back
                         </button>
-                        <button type="submit" name="Submit" value="create" 
-                                class="btn btn-secondary me-2" id="btnSubmit">
-                            <i data-feather="upload"></i>
-                            Submit
-                        </button>
-                        <button type="button" id="btnClear" class="btn btn-white">
-                            <i data-feather="x-circle"></i>
-                            Clear
-                        </button>
+                        <button id="deleteBtn" type="button"
+                                onclick="DeleteBtnClicked()"
+                            class="btn btn-primary me-2 inVisible">
+                        <i data-feather="trash-2"></i>
+                        Delete
+                    </button>
                     </div>
                     <h2>Tour - RULES</h2>
                 </div>
@@ -45,13 +39,12 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="position-relative">
-                                    <input id="mEffectiveDate" type="date"
-                                           min="@DateTime.Today.ToString("yyyy-MM-dd")"
-                                           max="@DateTime.Today.AddMonths(1).ToString("yyyy-MM-dd")"
-                                           class="form-control pointer is-invalid"
-                                           title="Accept Today Or Future One Month">
-                                    <label id="lblmEffectiveDate" style="width:100px"
-                                           class="datelabel">Select Date</label>
+                                    @Html.TextBoxFor(m => m.EffectiveDateDisplay,
+                               new
+                                    {
+                                   @class = "form-control",
+                                   disabled="disabled"
+                               })
                                 </div>
                             </div>
                         </div>
@@ -60,19 +53,21 @@
                                 <label>Entry Date :</label>
                             </div>
                             <div class="col-md-4">
-                                <input type="text" disabled class="form-control" value="@DateTime.Today.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)" />
+                                <input id="mEntryDate" type="text" disabled class="form-control" 
+                                       value="@DateTime.Today.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)" />
                             </div>
                             <div class="col-form-label col-md-2">
                                 <label>Time : </label>
                             </div>
                             <div class="col-md-4">
-                                <input type="text" disabled class="form-control" value="@DateTime.Now.ToString("hh:mm tt")" />
+                                <input id="mEntryTime" type="text" disabled class="form-control" 
+                                       value="@DateTime.Now.ToString("hh:mm tt")" />
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="ServiceTypeDiv" class="card mb-4 sectionB">
+            <div id="ServiceTypeDiv" class="card mb-4">
                 <div class="card-body">
                     <div class="form-sample form-inline row ms-auto ">
                         <div class="row d-flex align-items-center mb-3">
@@ -81,10 +76,14 @@
                                     <label>Service Type :</label>
                                 </div>
                                 <div class="col-md-6">
-                                    <select id="ServiceTypeDD" disabled
-                                            class="form-select is-invalid"
-                                            aria-label="Default select example">
-                                    </select>
+                                    @Html.DropDownListFor(m => m.ServiceTypeCodes,
+                                       new SelectList(Model.RuleServiceTypeList, "ServiceTypeCodes", "ServiceTypeTexts"),
+                                       "Select Service Type",
+                                       htmlAttributes: new
+                                       {
+                                           @class = "form-select pointer",
+                                           onchange="ServiceTypeChanged()"
+                                       })
                                 </div>
                             </div>
                         </div>
@@ -92,7 +91,7 @@
                 </div>
             </div>
         </div>
-        <div id="BodyDiv" class="col-12 sectionB">
+        <div id="BodyDiv" class="col-12">
             <div class="bgColor mb-4 wid-100">
                 <ul>
                     <li>
@@ -319,7 +318,7 @@
                         @Html.DropDownListFor(m => m.ReadRule3,
                    new[] {
                        new SelectListItem { Text = "Yes", Value = "1" },
-                       new SelectListItem { Text = "No", Value = "0" },                       
+                       new SelectListItem { Text = "No", Value = "0" },
                        new SelectListItem { Text = "-", Value = "-1" }
                         },
                    htmlAttributes: new
@@ -370,7 +369,7 @@
                                   @placeholder = "Minutes",
                                   onkeyup = "validatecontrol()",
                                   title = "Value Must Be 1-99"
-                              })    
+                              })
                         </div>Minutes For Covering A Distance Of 50 KM.
                     </li>
                     <li>
@@ -414,165 +413,17 @@
                 </ul>
             </div>
         </div>
-        <div class="col-md-12 mb-4">
-            <div class="d-flex justify-content-center mt-3">
-                <button id="btnSave" type="submit" name="Submit" value="save" 
-                        disabled="disabled"
-                        class="btn btn-secondary me-2">
-                    <i data-feather="check-circle"></i>
-                    Save
-                </button>
-            </div>
-        </div>
-
+        
     }
 
 </div>
-@*<script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>*@
 @section scripts{
-    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
-    <script src="~/UIContent/JS/CustomePage/TourRule.js"></script>
-    <script>
-        
-    </script>
-    <script type="text/javascript">
-
-    
-
-    </script>
+<script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+<script src="~/UIContent/JS/CustomePage/TourRule.js"></script>
     <script>
         $(document).ready(function () {
-            $('.datepicker5').datepicker({
-                changeMonth: true,
-                changeYear: true,
-                dateFormat: 'dd-m-yy',
-                minDate: new Date(),
-                maxDate: "+1m",
-                autoclose: true
-            });
+            var deletebtn = $('#deleteBtn');
+            if ($('#IsbtnDeleteActive').val() == 1) { deletebtn.removeClass('inVisible'); } else { deletebtn.addClass('inVisible'); }
         });
     </script>
-    <script>
-        $(document).ready(function () {
-            var today = new Date();
-            var firstOpen = true;
-            var time;
-
-            $('.timePicker').datetimepicker({
-                useCurrent: false,
-                format: "hh:mm A"
-            }).on('dp.show', function () {
-                if (firstOpen) {
-                    time = moment().startOf('day');
-                    firstOpen = false;
-                } else {
-                    time = "01:00 PM"
-                }
-
-                $(this).data('DateTimePicker').date(time);
-                validatecontrol();
-            });
-
-        });
-    </script>
-    <script>
-        $(window).scroll(function (e) {
-            var $el = $('.fixedElement');
-            var isPositionFixed = ($el.css('position') == 'fixed');
-            if ($(this).scrollTop() > 200 && !isPositionFixed) {
-                $el.css({ 'position': 'sticky', 'top': '0px' });
-            }
-            if ($(this).scrollTop() < 200 && isPositionFixed) {
-                $el.css({ 'position': 'static', 'top': '0px' });
-            }
-        });
-    </script>
-    
-    <script>
-        $(document).ready(function () {
-            var mymsg = '@ViewBag.ErrorMsg';
-            if (mymsg != '') {
-                Swal.fire({
-                    title: 'Failed To Save Rule',
-                    text: "@ViewBag.ErrorMsg",
-                    icon: 'Error',
-                    customClass: 'swal-wide',
-                    buttons: {
-                        confirm: 'Ok'
-                    },
-                    confirmButtonColor: '#2527a2',
-                });
-            };
-            if ('@ViewBag.SaveMessage' != '') {
-                Swal.fire({
-                    title: 'Success',
-                    text: "@ViewBag.SaveMessage",
-                    icon: 'success',
-                    customClass: 'swal-wide',
-                    buttons: {
-                        confirm: 'Ok'
-                    },
-                    confirmButtonColor: '#2527a2',
-                }).then(callback);
-                function callback(result) {
-                    if (result.value) {
-                        var effDt = $('#EffectiveDate').val();
-                        $('#mEffectiveDate').val(effDt);
-                        ChangeEffectiveDate();
-                    }
-                }
-            };
-            if ('@ViewBag.Message' != '') {
-                Swal.fire({
-                    title: 'Success',
-                    text: "@ViewBag.Message",
-                    icon: 'success',
-                    customClass: 'swal-wide',
-                    buttons: {
-                        confirm: 'Ok'
-                    },
-                    confirmButtonColor: '#2527a2',
-                }).then(callback);
-                function callback(result) {
-                    if (result.value) {
-                        var url = "/Security/TourRule/Index";
-                        window.location.href = url;
-                    }
-                }
-            };
-        });
-    </script>
-    <script>
-        $(document).ready(function () {
-            $('#btnBack').click(function () {
-                var url = "/Security/TourRule/Index";
-                if ($('.is-invalid').length > 0 || $('#isBtn').val() == 1) {
-                    Swal.fire({
-                        title: 'Confirmation Message',
-                        text: "Are You Sure Want to Go Back?",
-                        icon: 'warning',
-                        customClass: 'swal-wide',
-                        confirmButtonText: "Yes",
-                        cancelButtonText: "No",
-                        cancelButtonClass: 'btn-cancel',
-                        confirmButtonColor: '#2527a2',
-                        showCancelButton: true,
-                    }).then(callback);
-                    function callback(result) {
-                        if (result.value) {
-                            window.location.href = url;
-                        } else {
-                            // second variant
-                        }
-                    }
-                } else {
-                    window.location.href = url;
-                };
-            });
-        });
-
-    </script>
-
 }
-
-

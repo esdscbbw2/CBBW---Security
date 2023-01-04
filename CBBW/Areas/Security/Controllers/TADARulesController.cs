@@ -30,11 +30,8 @@ namespace CBBW.Areas.Security.Controllers
         }
         public ActionResult ViewRedirection(int CBUID, string NoteNumber = "") 
         {            
-            int RuleID = _iTADARules.GetAffectedRuleID(ref pMsg);
-            if (RuleID > 0)
-                return RedirectToAction("ViewRule", new { id = RuleID, isDelete = false });
-            else
-                return View();
+            string mEffectiveDate = _iTADARules.GetAffectedRuleID(ref pMsg).ToString("dd-MM-yyyy");
+            return RedirectToAction("ViewRule", new { id = 0, isDelete = false });
         }
         public ActionResult ViewRule(int id, bool isDelete)
         {

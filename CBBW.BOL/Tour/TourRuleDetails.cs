@@ -23,25 +23,26 @@ namespace CBBW.BOL.Tour
         public float MaxTraveltime_ComVeh_50km { get; set; }
         public float MaxTraveltime_PubTran_50km { get; set; }
         public float GracePeriod_200km { get; set; }
-        public bool MinutesGracePeriodAllowed { get; set; }
-        public bool LICAllowTour { get; set; }
+        public int MinutesGracePeriodAllowed { get; set; }
+        public int LICAllowTour { get; set; }
         public string ServiceTypeCodes { get; set; }
         public string ServiceTypeTexts { get; set; }
         public int CreatedBy { get; set; }
         public bool IsActive { get; set; }
     }
     public class TourRuleDetails : TourRuleSaveInfo    {
-        public bool ReadRule1 { get; set; }
-        public bool ReadRule2 { get; set; }
-        public bool ReadRule3 { get; set; }
-        public bool ReadRule4 { get; set; }
-        public bool ReadRule5 { get; set; }
+        public int ReadRule1 { get; set; }
+        public int ReadRule2 { get; set; }
+        public int ReadRule3 { get; set; }
+        public int ReadRule4 { get; set; }
+        public int ReadRule5 { get; set; }
         public List<CustomCheckBoxOption> ServiceTypes { get; set; }
         public List<int> SelectedServiceTypeIds { get; set; }
         public string CallBackUrl { get; set; }
         public string MinDate { get; set; }
         public string MaxDate { get; set; }
-
+        public List<ServiceTypeSelector> RuleServiceTypeList { get; set; }
+        public int IsbtnDeleteActive { get; set; }
     }
     public class TourRuleServiceTypes
     {

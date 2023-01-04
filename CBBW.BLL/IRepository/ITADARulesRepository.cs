@@ -18,6 +18,6 @@ namespace CBBW.BLL.IRepository
         bool IsValidRule(TADARuleDetails trd, ref string pMsg);
         IEnumerable<PublicTransportType> GetPublicTransportTypes(ref string pMsg);
         IEnumerable<TADAPubTransOption> GetPublicTransportClassTypes(int ID,ref string pMsg);
-        int GetAffectedRuleID(ref string pMsg);
+        DateTime GetAffectedRuleID(ref string pMsg);
     }
 }

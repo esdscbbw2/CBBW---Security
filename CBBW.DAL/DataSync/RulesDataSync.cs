@@ -75,9 +75,9 @@ namespace CBBW.DAL.DataSync
                 para[paracount] = new SqlParameter("@GracePeriod_200km", SqlDbType.Float);
                 para[paracount++].Value = trd.GracePeriod_200km;
                 para[paracount] = new SqlParameter("@MinutesGracePeriodAllowed", SqlDbType.Bit);
-                para[paracount++].Value = trd.MinutesGracePeriodAllowed;
+                para[paracount++].Value = trd.MinutesGracePeriodAllowed==1?true:false;
                 para[paracount] = new SqlParameter("@LICAllowTour", SqlDbType.Bit);
-                para[paracount++].Value = trd.LICAllowTour;
+                para[paracount++].Value = trd.LICAllowTour==1?true:false;
                 para[paracount] = new SqlParameter("@ServiceTypeCodes", SqlDbType.NVarChar, 50);
                 para[paracount++].Value = trd.ServiceTypeCodes;
                 para[paracount] = new SqlParameter("@ServiceTypeTexts", SqlDbType.NVarChar);
@@ -130,6 +130,38 @@ namespace CBBW.DAL.DataSync
                 para[paracount] = new SqlParameter("@EffectiveDate", SqlDbType.Date);
                 para[paracount++].Value = EffectiveDate;
                 using (SQLHelper sql = new SQLHelper("[RUL].[getTourInfoFromEffectiveDate]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable FinalSubmitToursRuleV2(DateTime EffectiveDate, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[1];
+                para[paracount] = new SqlParameter("@EffectiveDate", SqlDbType.Date);
+                para[paracount++].Value = EffectiveDate;
+                using (SQLHelper sql = new SQLHelper("[RUL].[FinalSubmitToursRuleV2]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable RemoveToursRuleV2(DateTime EffectiveDate, string ServiceTypeCodes, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[2];
+                para[paracount] = new SqlParameter("@EffectiveDate", SqlDbType.Date);
+                para[paracount++].Value = EffectiveDate;
+                para[paracount] = new SqlParameter("@ServiceTypeCodes", SqlDbType.NVarChar,50);
+                para[paracount++].Value = ServiceTypeCodes;
+                using (SQLHelper sql = new SQLHelper("[RUL].[RemoveToursRuleV2]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataTable(para, ref pMsg);
                 }

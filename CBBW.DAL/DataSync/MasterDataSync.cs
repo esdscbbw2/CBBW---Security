@@ -156,16 +156,16 @@ namespace CBBW.DAL.DataSync
             catch (Exception ex) { pMsg = ex.Message; }
             return ToDate;
         }
-        public int GetEffectedRuleID(int RuleType, ref string pMsg)
+        public DateTime GetEffectedRuleID(int RuleType, ref string pMsg)
         {
             try
             {
                 using (SQLHelper sql = new SQLHelper("SELECT [CTV].[GetEffectiveRuleID](" + RuleType + ")", CommandType.Text))
                 {
-                    return int.Parse(sql.ExecuteScaler(ref pMsg).ToString());
+                    return DateTime.Parse(sql.ExecuteScaler(ref pMsg).ToString());
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return 0; }
+            catch (Exception ex) { pMsg = ex.Message; return DateTime.Today; }
         }
         public DataTable getNewNoteNumber(string CTVPattern, ref string pMsg)
         {

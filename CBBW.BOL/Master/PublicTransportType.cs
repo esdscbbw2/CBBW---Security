@@ -11,4 +11,9 @@ namespace CBBW.BOL.Master
         public int ID { get; set; }
         public string DisplayText { get; set; }
     }
+    public class CompanyTransportType
+    {
+        public int ID { get; set; }
+        public string DisplayText { get; set; }
+    }
 }

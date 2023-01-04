@@ -52,6 +52,14 @@ namespace CBBW.BLL.Repository
         {
             return _entities.getVehicleBasicInfo(VehicleNumber, ref pMsg);
         }
+
+        public CompanyTransportType getVehicleEligibility(int EmployeeNumber, ref string pMsg)
+        {
+            CompanyTransportType result = new CompanyTransportType();
+            result.ID = 3;result.DisplayText = "LV";
+            return result;
+        }
+
         public List<VehicleNo> getVehicleList(string VehicleType, int wheeltype, ref string pMsg)
         {
             return _entities.getVehicleList(VehicleType, wheeltype, ref pMsg);

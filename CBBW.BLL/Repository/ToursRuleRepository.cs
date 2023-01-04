@@ -18,17 +18,36 @@ namespace CBBW.BLL.Repository
             _tourEntities = new TourEntities();
             _masterentities = new MasterEntities();
         }
-        public bool CreateNewTourRuleV2(TourRuleSaveInfo trd, ref string pMsg) 
+        #region - Tour Rule V2
+        public bool CreateNewTourRuleV2(TourRuleSaveInfo trd, ref string pMsg)
         {
             trd.EntryDate = DateTime.Today;
             trd.EntryTime = DateTime.Now.ToString("hh:mm tt");
             return _tourEntities.CreateNewTourRuleV2(trd, ref pMsg);
         }
+        public TourRuleServiceTypes getServiceTypesFromEffectiveDate(DateTime EffectiveDate, ref string pMsg)
+        {
+            return _tourEntities.getServiceTypesFromEffectiveDate(EffectiveDate, ref pMsg);
+        }
+        public TourRuleSaveInfo getLastTourInfoFromServiceTypeCodes(string serviceTypeCodes, ref string pMsg) 
+        {
+            return _tourEntities.getLastTourInfoFromServiceTypeCodes(serviceTypeCodes, ref pMsg);
+        }
+        public bool FinalSubmitToursRuleV2(DateTime EffectiveDate, ref string pMsg) 
+        {
+            return _tourEntities.FinalSubmitToursRuleV2(EffectiveDate, ref pMsg);
+        }
+        public bool RemoveToursRuleV2(DateTime EffectiveDate, string ServiceTypeCodes, ref string pMsg)
+        {
+           return _tourEntities.RemoveToursRuleV2(EffectiveDate, ServiceTypeCodes, ref pMsg);
+        }
+        #endregion
+
         public bool CreateNewTourRule(TourRuleDetails trd, ref string pMsg)
         {
             return _tourEntities.CreateNewTourRule(trd, ref pMsg);
         }
-        public int GetAffectedRuleID(ref string pMsg)
+        public DateTime GetAffectedRuleID(ref string pMsg)
         {
             //return 0;
             return _masterentities.getEffectedRuleID(1, ref pMsg);
@@ -71,9 +90,6 @@ namespace CBBW.BLL.Repository
         {            
             return _tourEntities.RemoveTourRule(ID, ref pMsg);
         }
-        public TourRuleServiceTypes getServiceTypesFromEffectiveDate(DateTime EffectiveDate, ref string pMsg)
-        {
-           return _tourEntities.getServiceTypesFromEffectiveDate(EffectiveDate, ref pMsg);
-        }
+        
     }
 }

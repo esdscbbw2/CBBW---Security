@@ -54,9 +54,9 @@ namespace CBBW.DAL.DBMapper
                     if (!DBNull.Value.Equals(dr["GracePeriod_200km"]))
                         result.GracePeriod_200km = float.Parse(dr["GracePeriod_200km"].ToString());
                     if (!DBNull.Value.Equals(dr["MinutesGracePeriodAllowed"]))
-                        result.MinutesGracePeriodAllowed = bool.Parse(dr["MinutesGracePeriodAllowed"].ToString());
+                        result.MinutesGracePeriodAllowed = bool.Parse(dr["MinutesGracePeriodAllowed"].ToString())?1:0;
                     if (!DBNull.Value.Equals(dr["LICAllowTour"]))
-                        result.LICAllowTour = bool.Parse(dr["LICAllowTour"].ToString());
+                        result.LICAllowTour = bool.Parse(dr["LICAllowTour"].ToString())?1:0;
                     if (!DBNull.Value.Equals(dr["ServiceTypeCodes"]))
                         result.ServiceTypeCodes = dr["ServiceTypeCodes"].ToString();
                     if (!DBNull.Value.Equals(dr["ServiceTypeTexts"]))
@@ -65,6 +65,7 @@ namespace CBBW.DAL.DBMapper
                         result.CreatedBy = int.Parse(dr["CreatedBy"].ToString());
                     if (!DBNull.Value.Equals(dr["IsActive"]))
                         result.IsActive = bool.Parse(dr["IsActive"].ToString());
+                    result.EntryDateDisplay = result.EntryDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture);
                 }
             }
             catch { }
@@ -193,14 +194,14 @@ namespace CBBW.DAL.DBMapper
                         result.EarlyMorningPunch_From = dr["EarlyMorningPunch_From"].ToString();
                     if (!DBNull.Value.Equals(dr["EarlyMorningPunch_To"]))
                         result.EarlyMorningPunch_To = dr["EarlyMorningPunch_To"].ToString();
-                    if (!DBNull.Value.Equals(dr["ReadRule1"]))
-                        result.ReadRule1 = bool.Parse(dr["ReadRule1"].ToString());
-                    if (!DBNull.Value.Equals(dr["ReadRule2"]))
-                        result.ReadRule2 = bool.Parse(dr["ReadRule2"].ToString());
-                    if (!DBNull.Value.Equals(dr["ReadRule3"]))
-                        result.ReadRule3 = bool.Parse(dr["ReadRule3"].ToString());
-                    if (!DBNull.Value.Equals(dr["ReadRule4"]))
-                        result.ReadRule4 = bool.Parse(dr["ReadRule4"].ToString());
+                    //if (!DBNull.Value.Equals(dr["ReadRule1"]))
+                    //    result.ReadRule1 = bool.Parse(dr["ReadRule1"].ToString());
+                    //if (!DBNull.Value.Equals(dr["ReadRule2"]))
+                    //    result.ReadRule2 = bool.Parse(dr["ReadRule2"].ToString());
+                    //if (!DBNull.Value.Equals(dr["ReadRule3"]))
+                    //    result.ReadRule3 = bool.Parse(dr["ReadRule3"].ToString());
+                    //if (!DBNull.Value.Equals(dr["ReadRule4"]))
+                    //    result.ReadRule4 = bool.Parse(dr["ReadRule4"].ToString());
                     if (!DBNull.Value.Equals(dr["MaxDayAllowed"]))
                         result.MaxDayAllowed = int.Parse(dr["MaxDayAllowed"].ToString());
                     if (!DBNull.Value.Equals(dr["MaxTraveltime_ComVeh_50km"]))

@@ -1,4 +1,17 @@
-﻿$.fn.makeEnabled = function () {
+﻿$.fn.noneInteractive = function () {
+    var that = this;
+    that.focus(function (e) {
+        that.blur();
+    });
+};
+$.fn.preventTypying = function () {
+    var that = this;
+    that.keypress(function (e) {
+        return false;
+        //return false; or e.preventDefault();
+    });
+};
+$.fn.makeEnabled = function () {
     var that = this;
     that.removeAttr('disabled');
 };
@@ -49,6 +62,27 @@ $.fn.CustomDateFormat = function () {
     $('#' + lblid).html(e);
     //that.addClass('is-valid').removeClass('is-invalid')
 };
+$(document).ready(function () {
+    $(".only-numeric").bind("keypress", function (e) {
+        var keyCode = e.which ? e.which : e.keyCode
+
+        if (!(keyCode >= 48 && keyCode <= 57)) {
+            //$(".error").css("display", "inline");
+            return false;
+        } else {
+            //$(".error").css("display", "none");
+        }
+    });
+    $(".only-decimal").bind("keypress", function (e) {
+        var keyCode = e.which ? e.which : e.keyCode
+        //alert(keyCode);
+        if (!(keyCode >= 48 && keyCode <= 57)) {
+            if (keyCode != 46) { return false; }                    
+        } else {
+        }
+    });
+
+});
 function ChangeDateFormat(dt) {
     //dt must be a string not a date
     var e = '';

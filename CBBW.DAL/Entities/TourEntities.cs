@@ -95,6 +95,18 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return Result;
         }
+        public bool FinalSubmitToursRuleV2(DateTime EffectiveDate, ref string pMsg) 
+        {
+            bool result = false;
+            _dbResponseMapper.Map_DBResponse(_datasync.FinalSubmitToursRuleV2(EffectiveDate, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
+        public bool RemoveToursRuleV2(DateTime EffectiveDate, string ServiceTypeCodes, ref string pMsg) 
+        {
+            bool result = false;
+            _dbResponseMapper.Map_DBResponse(_datasync.RemoveToursRuleV2(EffectiveDate, ServiceTypeCodes, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
         #endregion
         public IEnumerable<TourRule> GetTourRules(ref string pMsg) 
         {

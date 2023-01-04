@@ -61,16 +61,8 @@
                                 <th scope="row">@item.SL</th>
                                 <td>@item.EntryDateDisplay</td>
                                 <td>@item.EffectiveDateDisplay</td>
-                                <td>
-                                    @*<span class="actionBtn">
-                                            <button type="button" class="btn primaryLink" data-toggle="tooltip"
-                                                    data-placement="top" title="Details" onclick="window.location.href='@Url.Action("ViewRule", "TourRule", new { Area = "Security" ,id=item.ID ,isDelete=false})'">
-                                                <i data-feather="eye"></i>
-                                            </button>
-                                        </span>*@
-                                </td>
+                                <td></td>
                             </tr>
-
                         }
                     }
 
@@ -112,16 +104,14 @@
                 e.stopPropagation();
             });
         });
-
         function FnViewNote(ctrl) {
             var entrydate = $(ctrl).attr('id');
             var effectivedate = $(ctrl).attr('data-dt');
             var btnType = $(ctrl).attr('data-btn');
-            var destinationurl = '/Security/TourRule/ViewRuleV2?EffectiveDate=' + effectivedate + '&EntryDate=' + entrydate;
+            var destinationurl = '/Security/TourRule/ViewRuleV2?EffectiveDate=' + effectivedate +'&isFromIndex=true' ;
             if (btnType == 'D') { destinationurl = destinationurl + '&isDelete=true'; }
             window.location.href = destinationurl;
         };
-
     </script>
 }
 <script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>

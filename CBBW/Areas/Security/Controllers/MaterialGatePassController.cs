@@ -34,6 +34,8 @@ namespace CBBW.Areas.Security.Controllers
         #region For Out Details
         public ActionResult Index()
         {
+            TempData["MGPV"] = null;
+            TempData["MGPVM"] = null;
            // IEnumerable<MGPListDetails> model = _IMGP.getMGPDetailsforListPage(ref pMsg);
             return View();
         }

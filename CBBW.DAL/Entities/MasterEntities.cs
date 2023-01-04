@@ -145,7 +145,7 @@ namespace CBBW.DAL.Entities
             return _datasync.GetToSchDateForMultiLocation(FromDate, FromLocation, ToLocationType, ToLocation, ref pMsg);
             
         }
-        public int getEffectedRuleID(int RuleType, ref string pMsg) 
+        public DateTime getEffectedRuleID(int RuleType, ref string pMsg) 
         {
             return _datasync.GetEffectedRuleID(RuleType, ref pMsg);
         }

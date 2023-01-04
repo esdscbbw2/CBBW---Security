@@ -7,6 +7,8 @@ using CBBW.Areas.Security.ViewModel;
 using CBBW.BLL.IRepository;
 using CBBW.BOL.CTV;
 using CBBW.BOL.Tour;
+using System.Globalization;
+using CBBW.BOL.CustomModels;
 
 namespace CBBW.Areas.Security.Controllers
 {
@@ -32,11 +34,8 @@ namespace CBBW.Areas.Security.Controllers
         }
         public ActionResult ViewRedirection(int CBUID,string NoteNumber="")
         {
-            int RuleID = _toursRule.GetAffectedRuleID(ref pMsg);
-            if (RuleID > 0)
-                return RedirectToAction("ViewRule", new { id = RuleID, isDelete = false });
-            else
-                return View();
+            string mEffectiveDate = _toursRule.GetAffectedRuleID(ref pMsg).ToString("dd-MM-yyyy");
+            return RedirectToAction("ViewRuleV2", new { EffectiveDate = mEffectiveDate, isDelete = false, isFromIndex=false });            
         }
         // GET: Security/TourRule
         public ActionResult Index()
@@ -49,33 +48,32 @@ namespace CBBW.Areas.Security.Controllers
             TourRuleDetails model = _toursRule.GetLastToursRule(ref pMsg);
             model.MinDate = DateTime.Today.ToString("yyyy-MM-dd");
             model.MaxDate = DateTime.Today.AddMonths(1).ToString("yyyy-MM-dd");
-            model.ReadRule5 = true;
+            //model.ReadRule5 = true;
             TempData["TourDetails"] = model;
             return View(model);
         }
         [HttpPost]
-        public ActionResult CreateRule(TourRuleDetails model )
+        public ActionResult CreateRule(TourRuleDetails model,string Submit)
         {
-            model.EntryDate = DateTime.Now;
-            model.EntryTime = DateTime.Now.ToString("hh:mm:ss tt");
-            if (_toursRule.IsValidRule(model,ref pMsg))
+            model.CreatedBy = user.EmployeeNumber;
+            if (Submit == "save")
             {
-                bool b = _toursRule.CreateNewTourRule(model, ref pMsg);
-                ViewBag.Message = "New rule created successfully";
-
+                if (_toursRule.CreateNewTourRuleV2(model, ref pMsg))
+                {
+                    ViewBag.SaveMessage = "Rules Saved For Service Type - " + model.ServiceTypeTexts;
+                }
+                else
+                {
+                    ViewBag.ErrorMsg = "Faild To Save Date Due To : " + pMsg;
+                }
             }
-            else 
+            else if (Submit == "create") 
             {
-                ViewBag.DupMsg = "Rule Alearedy Exist";
-            }
-            
-            TourRuleDetails obj = TempData.Peek("TourDetails") as TourRuleDetails;
-            if (obj != null)
-            {
-                model.ServiceTypes = obj.ServiceTypes;
-            }
+                if (_toursRule.FinalSubmitToursRuleV2(model.EffectiveDate, ref pMsg)) 
+                { ViewBag.Message = "New Rule Created With Effective From " + model.EffectiveDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture); } 
+                else { ViewBag.ErrorMsg = "Faild To Create New Rule Due To : " + pMsg; }
+            }            
             return View(model);
-
         }
         public ActionResult DeleteRule(int id)
         {
@@ -87,22 +85,22 @@ namespace CBBW.Areas.Security.Controllers
         {          
          
            TourRuleDetails model= _toursRule.GetToursRuleByID(id,ref pMsg);
-            model.ReadRule5 = true;
             model.CallBackUrl= TempData["Tourcallbackurl"] != null ? TempData["Tourcallbackurl"].ToString() : "/Security/TourRule/Index";
 
             ViewBag.isDelete = isDelete;
             return View(model);
-
-
-
-
            
         }
-        public ActionResult ViewRuleV2(string EffectiveDate,string EntryDate, bool isDelete=false)
+        public ActionResult ViewRuleV2(string EffectiveDate,bool isDelete=false,bool isFromIndex=false)
         {
-            
-            return View();
-        }
+            if (isFromIndex) { _iUser.RecordCallBack("/Security/TourRule/Index"); }
+            TourRuleDetails model = new TourRuleDetails();
+            model.IsbtnDeleteActive = isDelete ? 1 : 0;
+            model.EffectiveDate = DateTime.Parse(EffectiveDate);
+            model.EffectiveDateDisplay = model.EffectiveDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+            model.RuleServiceTypeList = _toursRule.getServiceTypesFromEffectiveDate(model.EffectiveDate, ref pMsg).RuleServiceTypeList;
+            return View(model);
+        }        
         public JsonResult getListOfRules(int iDisplayLength, int iDisplayStart, int iSortCol_0,
             string sSortDir_0, string sSearch)
         {
@@ -121,6 +119,27 @@ namespace CBBW.Areas.Security.Controllers
         public JsonResult getServiceTypeList(string EffectiveDate) 
         {
             return Json(_toursRule.getServiceTypesFromEffectiveDate(DateTime.Parse(EffectiveDate), ref pMsg).MasterServiceTypeList, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getLastTourInfoFromServiceTypeCodes(string serviceTypeCodes)
+        {
+            TourRuleSaveInfo result = _toursRule.getLastTourInfoFromServiceTypeCodes(serviceTypeCodes, ref pMsg);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult RemoveToursRuleV2(string EffectiveDate, string ServiceTypeCodes)
+        {
+            CustomAjaxResponse result = new CustomAjaxResponse();
+            if (_toursRule.RemoveToursRuleV2(DateTime.Parse(EffectiveDate), ServiceTypeCodes, ref pMsg))
+            {
+                result.bResponseBool = true;
+                result.sResponseString = "Data Successfully Deleted.";
+            }
+            else 
+            {
+                result.bResponseBool = false;
+                result.sResponseString = "Failed To Delete Data Due To - "+pMsg;
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
     }
 }
