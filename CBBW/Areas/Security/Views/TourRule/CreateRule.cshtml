@@ -48,7 +48,7 @@
                                     <input id="mEffectiveDate" type="date"
                                            min="@DateTime.Today.ToString("yyyy-MM-dd")"
                                            max="@DateTime.Today.AddMonths(1).ToString("yyyy-MM-dd")"
-                                           class="form-control pointer is-invalid"
+                                           class="form-control pointer is-invalid valid"
                                            title="Accept Today Or Future One Month">
                                     <label id="lblmEffectiveDate" style="width:100px"
                                            class="datelabel">Select Date</label>
@@ -120,7 +120,7 @@
                                @class = "form-control only-numeric myctrl",
                                @placeholder = "Minutes",
                                onkeyup = "validatecontrol()",
-                               title = "value Must Be 1-999"
+                               title = "value Must Be 1-99"
                            })
                                 </div> Minutes
                             </li>
@@ -169,10 +169,10 @@
                                            @class = "form-control timePicker myctrl",
                                            required = "",
                                            @placeholder = "12:00 AM",
-                                           onkeyup = "validatecontrol()",
+                                           onblur = "validatecontrol()",
                                            title = "Enter Time"
                                        })
-                                        <span class=" date-ico "><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+                                        @*<span class=" date-ico "><i class="fa fa-clock-o" aria-hidden="true"></i></span>*@
 
                                     </div>
                                 </div> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To: &nbsp;&nbsp;&nbsp;
@@ -184,10 +184,10 @@
                                        @class = "form-control timePicker myctrl",
                                        required = "",
                                        @placeholder = "12:00 AM",
-                                       onkeyup = "validatecontrol()",
+                                       onblur = "validatecontrol()",
                                        title = "Enter Time"
                                    })
-                                        <span class=" date-ico "><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+                                        @*<span class=" date-ico "><i class="fa fa-clock-o" aria-hidden="true"></i></span>*@
                                     </div>
                                 </div>
                             </li>
@@ -203,10 +203,10 @@
                                            @class = "form-control timePicker myctrl",
                                            required = "",
                                            @placeholder = "12:00 AM",
-                                           onkeyup = "validatecontrol()",
+                                           onblur = "validatecontrol()",
                                            title = "Enter Time"
                                        })
-                                        <span class=" date-ico "><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+                                        @*<span class=" date-ico "><i class="fa fa-clock-o" aria-hidden="true"></i></span>*@
                                     </div>
                                 </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To: &nbsp;&nbsp;&nbsp;
                                 <div class="form-group">
@@ -218,10 +218,10 @@
                                            @class = "form-control timePicker myctrl",
                                            required = "",
                                            @placeholder = "12:00 AM",
-                                           onkeyup = "validatecontrol()",
+                                           onblur = "validatecontrol()",
                                            title = "Enter Time"
                                        })
-                                        <span class=" date-ico "><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+                                        @*<span class=" date-ico "><i class="fa fa-clock-o" aria-hidden="true"></i></span>*@
                                     </div>
                                 </div>
                             </li>
@@ -233,14 +233,14 @@
                         Should Be As Follows:
                         @Html.DropDownListFor(m => m.ReadRule1,
                      new[] {
+                         new SelectListItem { Text = "-", Value = "-1" },
                          new SelectListItem { Text = "Yes", Value = "1" },
-                         new SelectListItem { Text = "No", Value = "0" },
-                     new SelectListItem { Text = "-", Value = "-1" } },
+                         new SelectListItem { Text = "No", Value = "0" } },
                      htmlAttributes: new
                      {
                          @class = "form-select myctrl",
                          @onchange = "validatecontrol()",
-                         title = "Accept Only Yes"
+                         title = "Accept YES Only"
                      })
                         <ol style="list-style-type: lower-latin;">
                             <li>
@@ -277,14 +277,14 @@
                         Should Be As Follows:
                         @Html.DropDownListFor(m => m.ReadRule2,
                    new[] {
+                       new SelectListItem { Text = "-", Value = "-1" },
                        new SelectListItem { Text = "Yes", Value = "1" },
-                       new SelectListItem { Text = "No", Value = "0" },
-                   new SelectListItem { Text = "-", Value = "-1" }},
+                       new SelectListItem { Text = "No", Value = "0" } },
                    htmlAttributes: new
                    {
                        @class = "form-select myctrl",
                        @onchange = "validatecontrol()",
-                       title = "Accept Only Yes"
+                       title = "Accept YES Only"
                    })
                         <ol style="list-style-type: lower-latin;">
                             <li>
@@ -318,15 +318,15 @@
                         Session. Other Wise Rule Is As Follows:
                         @Html.DropDownListFor(m => m.ReadRule3,
                    new[] {
+                       new SelectListItem { Text = "-", Value = "-1" },
                        new SelectListItem { Text = "Yes", Value = "1" },
-                       new SelectListItem { Text = "No", Value = "0" },                       
-                       new SelectListItem { Text = "-", Value = "-1" }
+                       new SelectListItem { Text = "No", Value = "0" }
                         },
                    htmlAttributes: new
                    {
                        @class = "form-select myctrl",
                        @onchange = "validatecontrol()",
-                       title = "Accept Only Yes"
+                       title = "Accept YES Only"
                    })
                         <ol style="list-style-type: lower-latin;">
                             <li>Mark Half Day Absent If Last Punch Found Within 2<sup>nd</sup> Session Time.</li>
@@ -386,9 +386,11 @@
                              })
                         </div> Minutes Grace Period Allowed:
                         @Html.DropDownListFor(m => m.MinutesGracePeriodAllowed,
-                    new[] {new SelectListItem { Text = "Yes", Value = "1" },
-                          new SelectListItem { Text = "No", Value = "0" },
-                          new SelectListItem { Text = "-", Value = "-1" } },
+                    new[] {
+                        new SelectListItem { Text = "-", Value = "-1" },
+                        new SelectListItem { Text = "Yes", Value = "1" },
+                          new SelectListItem { Text = "No", Value = "0" }
+                           },
                     htmlAttributes: new
                     {
                         @class = "form-select myctrl",
@@ -400,15 +402,15 @@
                         10. Leave In Charge Employee Not Allowed To Go On Tour:
                         @Html.DropDownListFor(m => m.LICAllowTour,
                       new[] {
+                          new SelectListItem { Text = "-", Value = "-1" },
                           new SelectListItem { Text = "Yes", Value = "1" },
-                          new SelectListItem { Text = "No", Value = "0" },
-                          new SelectListItem { Text = "-", Value = "-1" }
+                          new SelectListItem { Text = "No", Value = "0" }                          
                            },
                       htmlAttributes: new
                       {
                           @class = "form-select myctrl",
                           @onchange = "validatecontrol()",
-                          title = "Accept Only Yes"
+                          title = "Accept YES Only"
                       })
                     </li>
                 </ul>
@@ -418,7 +420,7 @@
             <div class="d-flex justify-content-center mt-3">
                 <button id="btnSave" type="submit" name="Submit" value="save" 
                         disabled="disabled"
-                        class="btn btn-secondary me-2">
+                        class="btn btn-green me-2">
                     <i data-feather="check-circle"></i>
                     Save
                 </button>

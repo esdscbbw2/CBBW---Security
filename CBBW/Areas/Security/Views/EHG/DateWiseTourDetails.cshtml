@@ -14,7 +14,6 @@
         @Html.HiddenFor(m => m.FromdateStrForDisplay)
         @Html.HiddenFor(m => m.DWBackBtnActive)
         @Html.HiddenFor(m => m.DWSubmitBtnActive)
-
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
@@ -39,7 +38,6 @@
                         </button>
                     </div>
                     <h2>Employee’s Travelling Details & Vehicle Allotment (By HG) – ENTRY </h2>
-
                 </div>
             </div>
         </div>
@@ -83,7 +81,7 @@
                                                        onchange="ValidateCloneRowCtrl()"
                                                        max="@Model.TodateStr"
                                                        min="@Model.FromdateStr"
-                                                       class="form-control pointer is-invalid alterID CustomDateFormatCloneRow todt">
+                                                       class="form-control pointer is-invalid alterID CustomDateFormatCloneRow todt valid">
                                                 <label id="lblToDate" style="width:110px"
                                                        class="datelabel pointer alterID">Select Date</label>
                                             </div>
@@ -91,7 +89,7 @@
                                         <td class="text-center">
                                             <div class="form-group">
                                                 <select id="TourCategory" data-name="TourCatCodes" data-name-text="TourCatText"
-                                                        onchange="ChangeCashCadingSourceInCloaning('CenterCode', '/Security/EHG/GetTourLocations?CategoryID=')"
+                                                        onchange="ChangeCashCadingSourceInCloaning('CenterCode', '/Security/CTV/GetToLocationsFromType?TypeIDs=2&m=')"
                                                         class="form-select is-invalid alterID clonemultiselect"
                                                         aria-label="Default select example">
                                                 </select>

@@ -19,6 +19,7 @@ namespace CBBW.BOL.EHG
         public int Instructor { get; set; }
         public string VehicleNumber { get; set; }
         public bool IsApproved { get; set; }
+        public bool IsLockedForDelete { get; set; }
         public bool CanDelete { get; set; }
     }
 }

@@ -29,11 +29,11 @@ $.fn.makeReadOnly = function () {
 };
 $.fn.isInvalid = function () {
     var that = this;
-    that.addClass('is-invalid').removeClass('is-valid');
+    that.addClass('is-invalid valid').removeClass('is-valid');
 };
 $.fn.isValid = function () {
     var that = this;
-    that.addClass('is-valid').removeClass('is-invalid');
+    that.addClass('is-valid valid').removeClass('is-invalid');
 };
 $.fn.makeVisible = function () {
     var that = this;
@@ -485,6 +485,7 @@ async function getMultiselectData(multiselectID,dataSourceURL) {
 async function getMultiselectDataWithSelectedValues(multiselectID, dataSourceURL, commaSeparatedSelectedValues) {
     var multiselectCtrl = $('#' + multiselectID);
     var i = commaSeparatedSelectedValues.indexOf(',');
+    //alert(commaSeparatedSelectedValues + ' - ' + i);
     $.ajax({
         url: dataSourceURL,
         method: 'GET',

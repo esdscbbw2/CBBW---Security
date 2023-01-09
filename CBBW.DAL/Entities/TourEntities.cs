@@ -64,12 +64,12 @@ namespace CBBW.DAL.Entities
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-        public TourRuleSaveInfo getLastTourInfoFromServiceTypeCodes(string serviceTypeCodes, ref string pMsg) 
+        public TourRuleSaveInfo getLastTourInfoFromServiceTypeCodes(string serviceTypeCodes, int IsView, DateTime EffectiveDate, ref string pMsg) 
         {
             TourRuleSaveInfo result = new TourRuleSaveInfo();
             try
             {
-                dt = _datasync.getLastTourInfoFromServiceTypeCodes(serviceTypeCodes, ref pMsg);
+                dt = _datasync.getLastTourInfoFromServiceTypeCodes(serviceTypeCodes,IsView, EffectiveDate, ref pMsg);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     result = _mapper.Map_TourRuleSaveInfo(dt.Rows[0]);

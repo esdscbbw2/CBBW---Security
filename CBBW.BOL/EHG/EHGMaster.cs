@@ -39,6 +39,14 @@ namespace CBBW.BOL.EHG
                 new CustomComboOptions{ ID = 2, DisplayText = "Branch & Center Visit" },
                 new CustomComboOptions{ ID = 3, DisplayText = "Others" }
             };
+            TourCategoryForNZB = new List<CustomComboOptions>()
+            {
+                new CustomComboOptions{ ID = 1, DisplayText = "Center Visit" },
+                new CustomComboOptions{ ID = 2, DisplayText = "Branch & Center Visit" },
+                new CustomComboOptions{ ID = 4, DisplayText = "Branch Visit" },
+                new CustomComboOptions{ ID = 5, DisplayText = "Unknown Visit" },
+                new CustomComboOptions{ ID = 3, DisplayText = "Others" }
+            };
         }
         private void getPersonType()
         {
@@ -70,6 +78,7 @@ namespace CBBW.BOL.EHG
         public List<CustomComboOptions> PurposeOfAllotment { get; set; }
         public List<CustomComboOptions> PersonType { get; set; }
         public List<CustomComboOptions> TourCategory { get; set; }
+        public List<CustomComboOptions> TourCategoryForNZB { get; set; }
         public List<CustomComboOptions> VehicleBelongsTo { get; set; }
         
     }

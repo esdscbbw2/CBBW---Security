@@ -29,9 +29,9 @@ namespace CBBW.BLL.Repository
         {
             return _tourEntities.getServiceTypesFromEffectiveDate(EffectiveDate, ref pMsg);
         }
-        public TourRuleSaveInfo getLastTourInfoFromServiceTypeCodes(string serviceTypeCodes, ref string pMsg) 
+        public TourRuleSaveInfo getLastTourInfoFromServiceTypeCodes(string serviceTypeCodes, int IsView, DateTime EffectiveDate, ref string pMsg) 
         {
-            return _tourEntities.getLastTourInfoFromServiceTypeCodes(serviceTypeCodes, ref pMsg);
+            return _tourEntities.getLastTourInfoFromServiceTypeCodes(serviceTypeCodes,IsView, EffectiveDate, ref pMsg);
         }
         public bool FinalSubmitToursRuleV2(DateTime EffectiveDate, ref string pMsg) 
         {

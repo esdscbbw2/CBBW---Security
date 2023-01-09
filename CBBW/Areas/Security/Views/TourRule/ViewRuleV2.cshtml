@@ -20,10 +20,16 @@
                         </button>
                         <button id="deleteBtn" type="button"
                                 onclick="DeleteBtnClicked()"
-                            class="btn btn-primary me-2 inVisible">
-                        <i data-feather="trash-2"></i>
-                        Delete
-                    </button>
+                                class="btn btn-primary me-2 inVisible">
+                            <i data-feather="trash-2"></i>
+                            Delete
+                        </button>
+                        <button id="deleteAllBtn" type="button"
+                                onclick="DeleteAllBtnClicked()"
+                                class="btn btn-primary me-2 inVisible">
+                            <i data-feather="trash-2"></i>
+                            Delete All
+                        </button>
                     </div>
                     <h2>Tour - RULES</h2>
                 </div>
@@ -82,7 +88,7 @@
                                        htmlAttributes: new
                                        {
                                            @class = "form-select pointer",
-                                           onchange="ServiceTypeChanged()"
+                                           onchange="ServiceTypeChangedFromView()"
                                        })
                                 </div>
                             </div>
@@ -423,7 +429,14 @@
     <script>
         $(document).ready(function () {
             var deletebtn = $('#deleteBtn');
-            if ($('#IsbtnDeleteActive').val() == 1) { deletebtn.removeClass('inVisible'); } else { deletebtn.addClass('inVisible'); }
+            var deleteallbtn = $('#deleteAllBtn');
+            if ($('#IsbtnDeleteActive').val() == 1) {
+                deletebtn.removeClass('inVisible');
+                deleteallbtn.removeClass('inVisible');
+            } else {
+                deletebtn.addClass('inVisible');
+                deleteallbtn.addClass('inVisible');
+            }
         });
     </script>
 }

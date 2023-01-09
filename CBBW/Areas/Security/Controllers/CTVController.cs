@@ -594,7 +594,7 @@ namespace CBBW.Areas.Security.Controllers
         {
             return Json(_iCTV.getLocationTypes(ref pMsg), JsonRequestBehavior.AllowGet);
         }          
-        public JsonResult GetToLocationsFromType(string TypeIDs) 
+        public JsonResult GetToLocationsFromType(string TypeIDs,int m=0) 
         {
             IEnumerable<CustomComboOptions> result = _iCTV.getLocationsFromType(TypeIDs, ref pMsg);
             //result = result.Take(5);

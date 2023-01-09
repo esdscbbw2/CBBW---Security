@@ -250,6 +250,32 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+        public DataTable getDriverListForOfficeWork(string Notenumber, ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("select * from [EHG].[getDriverListForOfficeWork]('" + Notenumber + "')", CommandType.Text))
+                {
+                    return sql.GetDataTable();
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable LockEHGHdr(string Notenumber, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[1];
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
+                para[paracount++].Value = Notenumber;
+                using (SQLHelper sql = new SQLHelper("[EHG].[LockEHGHdr]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para,ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
         public DataTable getTravelingPersonDetails(string Notenumber, int IsActive, ref string pMsg)
         {
             try

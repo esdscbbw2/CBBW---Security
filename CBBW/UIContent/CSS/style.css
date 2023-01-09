@@ -1487,3 +1487,63 @@ strong {
         margin-left: 12rem;
     }
 }
+.footer-sec {
+    padding: 15px 0;
+    border-top: 1px solid #dee2e6;
+}
+
+    .footer-sec p a {
+        color: #2372db;
+        text-decoration: none;
+    }
+
+        .footer-sec p a:hover {
+            text-decoration: underline;
+        }
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    background: transparent;
+    bottom: 0;
+    color: transparent;
+    cursor: pointer;
+    height: auto;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: auto;
+    z-index: 3;
+}
+input[type="date"]::before {
+    content: '\f133';
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font: normal normal normal 14px/1 FontAwesome;
+    z-index: 1;
+}
+.calendar-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 10px !important;
+}
+input[type="date"].valid::before {
+    right: 32px;
+}
+.btn-green {
+    color: #FFF;
+    background-color: #27a225;
+    font-size: 13px;
+    border-color: #27a225;
+    font-weight: 600;
+    padding: 0.175rem 0.45rem;
+}
+
+    .btn-green svg {
+        width: 16px;
+    }
+
+.bgColor ul li .form-select.valid, .bgColor ol li .form-select.valid {
+    width: auto;
+}

@@ -120,9 +120,9 @@ namespace CBBW.Areas.Security.Controllers
         {
             return Json(_toursRule.getServiceTypesFromEffectiveDate(DateTime.Parse(EffectiveDate), ref pMsg).MasterServiceTypeList, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult getLastTourInfoFromServiceTypeCodes(string serviceTypeCodes)
+        public JsonResult getLastTourInfoFromServiceTypeCodes(string serviceTypeCodes,string EffectiveDate,int IsView= 0)
         {
-            TourRuleSaveInfo result = _toursRule.getLastTourInfoFromServiceTypeCodes(serviceTypeCodes, ref pMsg);
+            TourRuleSaveInfo result = _toursRule.getLastTourInfoFromServiceTypeCodes(serviceTypeCodes, IsView,DateTime.Parse(EffectiveDate), ref pMsg);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]

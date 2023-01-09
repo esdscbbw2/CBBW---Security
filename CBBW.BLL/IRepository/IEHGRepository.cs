@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CBBW.BOL.CustomModels;
 using CBBW.BOL.EHG;
 
 namespace CBBW.BLL.IRepository
@@ -18,12 +19,13 @@ namespace CBBW.BLL.IRepository
         List<DateWiseTourDetails> getDateWiseTourDetails(string Notenumber, int IsActive, ref string pMsg);
         List<EHGTravelingPersondtlsForManagement> getTravelingPersonDetails(string Notenumber, int IsActive, ref string pMsg);
         VehicleAllotmentDetails getVehicleAllotmentDetails(string Notenumber, int IsActive, ref string pMsg);
-        EHGHeader getEHGNoteHdr(string Notenumber, ref string pMsg);
+        EHGHeader getEHGNoteHdr(string Notenumber, ref string pMsg, int isLocked = 0);
         bool RemoveEHGNote(string NoteNumber, int RemoveTag, int ActiveTag, ref string pMsg);
         List<EHGNoteList> GetEHGNoteList(int DisplayLength, int DisplayStart, int SortColumn, 
             string SortDirection, string SearchText, int CentreCode,bool IsApprovedList, ref string pMsg);
         List<EHGNote> getNoteListToBeApproved(int CentreCode,ref string pMsg);
         bool SetEHGHdrAppStatus(string NoteNumber, bool IsApproved, string ReasonForDisApproval,
             int ApproverID, ref string pMsg);
+        List<CustomComboOptions> getDriverListForOfficeWork(string Notenumber, ref string pMsg);
     }
 }

@@ -182,6 +182,7 @@ $(document).ready(function () {
     notenumberctrl.change(function () {
         NoteNumberChanged($(this).val());        
     });
+    //alert(notenumberctrl.val());
     if (notenumberctrl.val() != '') { NoteNumberChanged(notenumberctrl.val()); }
     EnableBlockedControlls();
 });

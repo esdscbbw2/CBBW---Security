@@ -28,7 +28,6 @@ namespace CBBW.BOL.Tour
         public string ServiceTypeCodes { get; set; }
         public string ServiceTypeTexts { get; set; }
         public int CreatedBy { get; set; }
-        public bool IsActive { get; set; }
     }
     public class TourRuleDetails : TourRuleSaveInfo    {
         public int ReadRule1 { get; set; }

@@ -18,6 +18,8 @@ namespace CBBW.BOL.Tour
         public DateTime EffectiveDate { get; set; }
         public string EffectiveDateDisplay { get; set; }
         public bool IsApplied { get; set; }
+        public string IsActiveText { get; set; }
+        public bool IsActive { get; set; }
     }
     public class TourRule: TourRuleListData
     {

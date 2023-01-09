@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CBBW.BLL.IRepository;
 using CBBW.BOL.CTV;
+using CBBW.BOL.CustomModels;
 using CBBW.BOL.EHG;
 using CBBW.DAL.Entities;
 
@@ -29,14 +30,15 @@ namespace CBBW.BLL.Repository
         {
             return _EHGEntities.getDateWiseTourDetails(Notenumber, IsActive, ref pMsg);
         }
-        public EHGHeader getEHGNoteHdr(string Notenumber, ref string pMsg)
+        public EHGHeader getEHGNoteHdr(string Notenumber, ref string pMsg, int isLocked = 0)
         {
-            EHGHeader result= _EHGEntities.getEHGNoteHdr(Notenumber, ref pMsg);
+            EHGHeader result= _EHGEntities.getEHGNoteHdr(Notenumber, ref pMsg, isLocked);
             try
             {
                 EHGMaster m = EHGMaster.GetInstance;
-                if (result.PurposeOfAllotment > 0) 
+                if (result.PurposeOfAllotment > 0)
                 { result.POAText = m.PurposeOfAllotment.Where(o => o.ID == result.PurposeOfAllotment).FirstOrDefault().DisplayText; }
+                else { result.POAText = "NA"; }
                 if (result.VehicleType > 0)
                 { result.VehicleTypeText = m.VehicleTypes.Where(o => o.ID == result.VehicleType).FirstOrDefault().DisplayText; }
             }
@@ -125,7 +127,8 @@ namespace CBBW.BLL.Repository
             if (mData.VehicleBelongsTo == 2) 
             { 
                 mData.VehicleNumber = mData.OtherVehicleNumber;
-                mData.ModelName = mData.OtherVehicleModelName;
+                //mData.ModelName = mData.OtherVehicleModelName;
+                mData.ModelName = "NA";
             }
             return _EHGEntities.SetEHGVehicleAllotmentDetails(mData, ref pMsg);
         }
@@ -135,6 +138,9 @@ namespace CBBW.BLL.Repository
             header.EntryTime = DateTime.Now.ToString("hh:mm tt");
             return _EHGEntities.UpdateEHGHdr(header, ref pMsg);
         }
-
+        public List<CustomComboOptions> getDriverListForOfficeWork(string Notenumber, ref string pMsg) 
+        {
+            return _EHGEntities.getDriverListForOfficeWork(Notenumber, ref pMsg);
+        }
     }
 }

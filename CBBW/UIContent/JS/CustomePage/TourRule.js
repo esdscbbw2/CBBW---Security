@@ -26,7 +26,6 @@ function ValidateCtrl(CtrlID, value)
     var mCtrl = $('#' + CtrlID);
     switch (CtrlID) {
         case "PublicTranDelay_HalfDA":
-        case "OtherTranDelay_HalfDA":
         case "PublicTranDelay_FullDA":
         case "OtherTranDelay_FullDA":
             mCtrl.val(value);
@@ -34,6 +33,7 @@ function ValidateCtrl(CtrlID, value)
                 mCtrl.isValid();
             } else { mCtrl.isInvalid(); }
             break;
+        case "OtherTranDelay_HalfDA":
         case "MaxDayAllowed":
         case "MaxTraveltime_ComVeh_50km":
         case "MaxTraveltime_PubTran_50km":
@@ -43,11 +43,58 @@ function ValidateCtrl(CtrlID, value)
             break;
         case "NightPunch_From":
         case "NightPunch_To":
+            mCtrl.val(value);
+            if (value > '00:00' && value < '13:61') {
+                var fromtimeCtrl = $('#NightPunch_From');
+                var totimeCtrl = $('#NightPunch_To');
+                var fromtime = fromtimeCtrl.val();
+                var totime = totimeCtrl.val();
+                if (fromtime > '00:00' && fromtime < '13:61') {
+                    if (totime > '00:00' && totime < '13:61') {
+                        if (fromtime > totime) {
+                            fromtimeCtrl.isInvalid();
+                            fromtimeCtrl.prop('title', 'Invalid Time Range');
+                            totimeCtrl.isInvalid();
+                            totimeCtrl.prop('title', 'Invalid Time Range');
+                        }
+                        else {
+                            fromtimeCtrl.isValid();
+                            fromtimeCtrl.prop('title', 'Enter Time');
+                            totimeCtrl.isValid();
+                            totimeCtrl.prop('title', 'Enter Time');
+                        }
+                    }
+                }
+            } else { mCtrl.isInvalid(); }            
+            break;
         case "EarlyMorningPunch_From":
         case "EarlyMorningPunch_To":
+            //alert(value);
             mCtrl.val(value);
-            //if (value!='') { mCtrl.isValid(); } else { mCtrl.isInvalid(); }
-            if (value > '00:00' && value < '13:61') { mCtrl.isValid(); } else { mCtrl.isInvalid(); }
+            if (value > '00:00' && value < '13:61') {
+                var fromtimeCtrl = $('#EarlyMorningPunch_From');
+                var totimeCtrl = $('#EarlyMorningPunch_To');
+                var fromtime = fromtimeCtrl.val();
+                var totime = totimeCtrl.val();
+                if (fromtime > '00:00' && fromtime < '13:61') {
+                    if (totime > '00:00' && totime < '13:61') {
+                        if (fromtime > totime) {
+                            //alert(fromtime + ' - ' + totime+' Invalid');
+                            fromtimeCtrl.isInvalid();
+                            fromtimeCtrl.prop('title', 'Invalid Time Range');
+                            totimeCtrl.isInvalid();
+                            totimeCtrl.prop('title', 'Invalid Time Range');
+                        }
+                        else {
+                            //alert(fromtime + ' - ' + totime+' Valid');
+                            fromtimeCtrl.isValid();
+                            fromtimeCtrl.prop('title', 'Enter Time');
+                            totimeCtrl.isValid();
+                            totimeCtrl.prop('title', 'Enter Time');
+                        }
+                    }
+                }
+            } else { mCtrl.isInvalid(); mCtrl.title = "Enter Time"; }
             break;
         case "MinutesGracePeriodAllowed":
             if (value == 1) {
@@ -138,17 +185,88 @@ function DeleteBtnClicked() {
         });
     }    
 };
+function DeleteAllBtnClicked() {
+    Swal.fire({
+        title: 'Confirmation Message',
+        text: "Are You Sure Want To Delete The Rule For All Service Types?",
+        icon: 'warning',
+        customClass: 'swal-wide',
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        cancelButtonClass: 'btn-cancel',
+        confirmButtonColor: '#2527a2',
+        showCancelButton: true,
+    }).then(callback);
+    function callback(result) {
+        if (result.value) {
+            var effectiveDate = $('#EffectiveDate').val();
+            var x = '{"EffectiveDate":"' + effectiveDate
+                + '","ServiceTypeCodes":"ALL"}';
+            $.ajax({
+                method: 'POST',
+                url: '/Security/TourRule/RemoveToursRuleV2',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: x,
+                success: function (data) {
+                    $(data).each(function (index, item) {
+                        if (item.bResponseBool == true) {
+                            Swal.fire({
+                                title: 'Confirmation Message',
+                                text: "Rule Has Been Deleted For All Service Types Of Effective Date - ." + effectiveDate,
+                                icon: 'warning',
+                                customClass: 'swal-wide',
+                                confirmButtonText: "OK",
+                                confirmButtonColor: '#2527a2',
+                            }).then(callback);
+                            function callback(result) {
+                                if (result.value) {
+                                    var url = "/Security/TourRule/Index";
+                                    window.location.href = url;
+                                } 
+                            }
+                        }
+                        else {
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'Failed To Delete Rule.',
+                                icon: 'question',
+                                customClass: 'swal-wide',
+                                buttons: {
+                                    confirm: 'Ok'
+                                },
+                                confirmButtonColor: '#2527a2',
+                            });
+                        }
+                    });
+                },
+            });
+        } else {
+            //var url = "/Security/TourRule/ViewRuleV2?EffectiveDate=" + effectiveDate + "&isDelete=true";
+            //window.location.href = url;
+        }
+    }
+};
 function ServiceTypeChanged() {
     var target = $(ServiceTypeChanged.caller.arguments[0].target);
-    STChanged(target.val());
+    STChanged(target.val(),0);
     $('#BodyDiv').removeClass('sectionB');
     $('.myctrl').each(function () {
         $(this).makeDisable();
     });
 };
-function STChanged(value) {
+function ServiceTypeChangedFromView() {
+    var target = $(ServiceTypeChangedFromView.caller.arguments[0].target);
+    STChanged(target.val(),1);
+    $('#BodyDiv').removeClass('sectionB');
+    $('.myctrl').each(function () {
+        $(this).makeDisable();
+    });
+};
+function STChanged(value, IsView) {
+    var effDt = $('#EffectiveDate').val();
     $.ajax({
-        url: '/Security/TourRule/getLastTourInfoFromServiceTypeCodes?serviceTypeCodes=' + value,
+        url: '/Security/TourRule/getLastTourInfoFromServiceTypeCodes?serviceTypeCodes=' + value + '&IsView=' + IsView + '&EffectiveDate=' + effDt,
         method: 'GET',
         dataType: 'json',
         success: function (data) {

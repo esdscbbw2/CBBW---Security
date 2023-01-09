@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CBBW.BOL.CustomModels;
 using CBBW.BOL.EHG;
 using CBBW.DAL.DataSync;
 using CBBW.DAL.DBMapper;
@@ -104,7 +105,7 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
-        public EHGHeader getEHGNoteHdr(string Notenumber, ref string pMsg)
+        public EHGHeader getEHGNoteHdr(string Notenumber, ref string pMsg,int isLocked=0)
         {
             EHGHeader result = new EHGHeader();
             try
@@ -117,6 +118,7 @@ namespace CBBW.DAL.Entities
                         result = _DBMapper.Map_EHGHeader(dt.Rows[0]);
                     }
                 }
+                if (isLocked == 1) { _datasync.LockEHGHdr(Notenumber, ref pMsg); }
             }
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
@@ -173,6 +175,23 @@ namespace CBBW.DAL.Entities
         {
             bool result = false;
             _DBResponseMapper.Map_DBResponse(_datasync.SetEHGHdrAppStatus(NoteNumber,IsApproved,ReasonForDisApproval,ApproverID, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
+        public List<CustomComboOptions> getDriverListForOfficeWork(string Notenumber, ref string pMsg) 
+        {
+            List<CustomComboOptions> result = new List<CustomComboOptions>();
+            try
+            {
+                dt = _datasync.getDriverListForOfficeWork(Notenumber,ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        result.Add(_DBResponseMapper.Map_CustomComboOptionsForDrivers(dt.Rows[i]));
+                    }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
     }

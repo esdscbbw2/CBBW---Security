@@ -10,6 +10,9 @@ namespace CBBW.BLL.IRepository
 {
     public interface ITADARulesRepository
     {
+        List<TADARuleListData> getTADARules(int DisplayLength, int DisplayStart, int SortColumn,
+            string SortDirection, string SearchText, ref string pMsg);
+
         IEnumerable<TADARule> GetTADARules(ref string pMsg);
         TADARuleDetails GetLastTADARule(ref string pMsg);
         TADARuleDetails GetTADARuleByID(int ID, ref string pMsg);

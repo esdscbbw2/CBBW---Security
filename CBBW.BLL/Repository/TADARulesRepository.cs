@@ -20,18 +20,25 @@ namespace CBBW.BLL.Repository
             _tadaEntities = new TADAEntities();
             _masterentities = new MasterEntities();
         }
+        #region Version 2 Changes
+        public List<TADARuleListData> getTADARules(int DisplayLength, int DisplayStart, int SortColumn,
+                    string SortDirection, string SearchText, ref string pMsg)
+        {
+            return _tadaEntities.getTADARules(DisplayLength, DisplayStart, SortColumn, SortDirection, SearchText, ref pMsg);
+        }
+        
+        
+        #endregion
         public bool CreateNewTADARule(TADARuleDetails trd, ref string pMsg)
         {
             trd.EntryDate = DateTime.Now;
             trd.EntryTime = DateTime.Now.ToString("hh:mm:ss tt");
             return _tadaEntities.CreateNewTADARule(trd, ref pMsg);
         }
-
         public DateTime GetAffectedRuleID(ref string pMsg)
         {
             return _masterentities.getEffectedRuleID(2, ref pMsg);
         }
-
         public TADARuleDetails GetLastTADARule(ref string pMsg)
         {
             TADARuleDetails result = _tadaEntities.GetLastTADARule(ref pMsg);
@@ -53,17 +60,14 @@ namespace CBBW.BLL.Repository
             }
             return result;
         }
-
         public IEnumerable<TADAPubTransOption> GetPublicTransportClassTypes(int ID, ref string pMsg)
         {
             return _masterentities.getPublicTransportClassTypes(ID, ref pMsg);
         }
-
         public IEnumerable<PublicTransportType> GetPublicTransportTypes(ref string pMsg)
         {
             return _masterentities.getPublicTransportTypes(ref pMsg);
         }
-
         public TADARuleDetails GetTADARuleByID(int ID, ref string pMsg)
         {
             TADARuleDetails result= _tadaEntities.GetTADARuleByID(ID, ref pMsg);
@@ -78,12 +82,10 @@ namespace CBBW.BLL.Repository
         {
             return _tadaEntities.GetTADARules(ref pMsg);
         }
-
         public bool IsValidRule(TADARuleDetails trd, ref string pMsg)
         {
             return _tadaEntities.IsValidTadARule(trd, ref pMsg);
         }
-
         public bool RemoveTADARule(int ID, ref string pMsg)
         {
             return _tadaEntities.RemoveTADARule(ID,ref pMsg);

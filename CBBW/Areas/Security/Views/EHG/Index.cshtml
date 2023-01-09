@@ -33,32 +33,32 @@
                 <tr>
                     <th scope="col">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search...">
+                            <input type="text" class="form-control tblSearch" placeholder="Search...">
                         </div>
                     </th>
                     <th scope="col">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search...">
+                            <input type="text" class="form-control tblSearch" placeholder="Search...">
                         </div>
                     </th>
                     <th scope="col">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search...">
+                            <input type="text" class="form-control tblSearch" placeholder="Search...">
                         </div>
                     </th>
                     <th scope="col">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search...">
+                            <input type="text" class="form-control tblSearch" placeholder="Search...">
                         </div>
                     </th>
                     <th scope="col">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search...">
+                            <input type="text" class="form-control tblSearch" placeholder="Search...">
                         </div>
                     </th>
                     <th scope="col">
                         <div class="form-group">
-                            <input id="filterMonthnYear" type="text" class="form-control" placeholder="Search...">
+                            <input id="filterMonthnYear" type="text" class="form-control tblSearch" placeholder="Search...">
                         </div>
                     </th>                    
                 </tr>
@@ -102,7 +102,7 @@
 @section scripts{
     <script>
         $(document).ready(function () {
-            $('#NoteListTbl').DataTable({
+            var dtinstance=$('#NoteListTbl').DataTable({
                 columns: [
                     { 'data': 'RowNumber' },
                     { 'data': 'NoteNumber' },
@@ -127,6 +127,12 @@
                 bServerSide: true,
                 sAjaxSource: '/Security/EHG/getNoteList',
                 "pagingType": "input"
+            });
+            $('.tblSearch').on('keyup change', function () {
+                dtinstance.search(this.value).draw();
+            });
+            $('.tblSearch').on('click', function (e) {
+                e.stopPropagation();
             });
         });
         function FnViewNote(ctrl) {

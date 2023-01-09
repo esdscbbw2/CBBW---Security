@@ -229,9 +229,11 @@ namespace CBBW.DAL.DBMapper
                         result.VehicleNumber = dr["VehicleNumber"].ToString();
                     if (!DBNull.Value.Equals(dr["IsApproved"]))
                         result.IsApproved =bool.Parse(dr["IsApproved"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsLocked"]))
+                        result.IsLockedForDelete = bool.Parse(dr["IsLocked"].ToString());
                     result.EntryDateDisplay = result.EntryDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
                     result.NoteNumber2 = result.NoteNumber;
-                    if (!result.IsApproved && result.EntryDate == DateTime.Today)
+                    if (!result.IsLockedForDelete && !result.IsApproved && result.EntryDate == DateTime.Today)
                     { result.CanDelete = true; }
                     //result.CanDelete = true;
                 }

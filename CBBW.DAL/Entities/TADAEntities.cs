@@ -23,7 +23,27 @@ namespace CBBW.DAL.Entities
             _datasync = new RulesDataSync();
             _dbResponseMapper = new DBResponseMapper();
         }
+        #region Version 2 Changes
+        public List<TADARuleListData> getTADARules(int DisplayLength, int DisplayStart, int SortColumn,
+            string SortDirection, string SearchText, ref string pMsg)
+        {
+            List<TADARuleListData> TADARules = new List<TADARuleListData>();
+            try
+            {
+                dt = _datasync.getTADARules(DisplayLength, DisplayStart, SortColumn, SortDirection, SearchText, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        TADARules.Add(_mapper.Map_TADARuleListData(dt.Rows[i]));
+                    }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return TADARules;
+        }
 
+        #endregion
         public IEnumerable<TADARule> GetTADARules(ref string pMsg)
         {
             List<TADARule> tadaRules = new List<TADARule>();

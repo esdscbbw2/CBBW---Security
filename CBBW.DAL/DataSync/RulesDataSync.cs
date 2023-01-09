@@ -106,14 +106,18 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-        public DataTable getLastTourInfoFromServiceTypeCodes(string serviceTypeCodes, ref string pMsg) 
+        public DataTable getLastTourInfoFromServiceTypeCodes(string serviceTypeCodes, int IsView, DateTime EffectiveDate, ref string pMsg) 
         {
             try
             {
                 int paracount = 0;
-                SqlParameter[] para = new SqlParameter[1];
+                SqlParameter[] para = new SqlParameter[3];
                 para[paracount] = new SqlParameter("@ServiceTypeCodes", SqlDbType.NVarChar,50);
                 para[paracount++].Value = serviceTypeCodes;
+                para[paracount] = new SqlParameter("@IsView", SqlDbType.Int);
+                para[paracount++].Value = IsView;
+                para[paracount] = new SqlParameter("@EffectiveDate", SqlDbType.Date);
+                para[paracount++].Value = EffectiveDate;
                 using (SQLHelper sql = new SQLHelper("[RUL].[getLastTourInfoFromServiceTypeCodes]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataTable(para, ref pMsg);
@@ -168,6 +172,33 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+        public DataTable getTADARules(int DisplayLength, int DisplayStart, int SortColumn,
+            string SortDirection, string SearchText, ref string pMsg)
+        {
+            try
+            {
+                SortDirection = SortDirection.Substring(0, 1).ToUpper();
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[5];
+                para[paracount] = new SqlParameter("@DisplayLength", SqlDbType.Int);
+                para[paracount++].Value = DisplayLength;
+                para[paracount] = new SqlParameter("@DisplayStart", SqlDbType.Int);
+                para[paracount++].Value = DisplayStart;
+                para[paracount] = new SqlParameter("@sortCol", SqlDbType.Int);
+                para[paracount++].Value = SortColumn;
+                para[paracount] = new SqlParameter("@SortDir", SqlDbType.NVarChar, 1);
+                para[paracount++].Value = SortDirection;
+                para[paracount] = new SqlParameter("@Search", SqlDbType.NVarChar, 250);
+                para[paracount++].Value = SearchText;
+                using (SQLHelper sql = new SQLHelper("[RUL].[GetTADARulesV2]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+
+
         #endregion
         public DataTable getToursRules(ref string pMsg)
         {

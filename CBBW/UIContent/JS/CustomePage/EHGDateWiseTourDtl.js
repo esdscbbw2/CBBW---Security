@@ -5,11 +5,16 @@
 };
 function addCloneBtnClick() {
     var insrow = addCloneBtnClick.caller.arguments[0].target.closest('.add-row');
+    var insrowid = $(insrow).attr('id');
+    var addbtn = $('#AddBtn');
+    if (insrowid > 0) { addbtn = $('#AddBtn_' + insrowid); }
     var clonerowid = CloneRowReturningID('tbody1', 'tbody2', $(insrow).attr('id') * 1, true, false);
     var preToDate = $(insrow).find('.todt').val();
     var curFromDate = CustomDateChange(preToDate, 1, '/');
     $('#FromDateLbl_' + clonerowid).html(curFromDate);
     $('#btnSubmit').makeDisable();
+    $('#CenterCode_' + clonerowid).isInvalid();
+    addbtn.makeDisable();
 };
 function ValidateCloneRowCtrl() {
     var target = ValidateCloneRowCtrl.caller.arguments[0].target;
@@ -66,13 +71,13 @@ async function getInitialData() {
         success: function (data) {
             $(data).each(function (index, item) {
                 if (index > 0) {
-                    rowid = CloneRowReturningID('tbody1', 'tbody2', index - 1, true, true);
+                    rowid = CloneRowReturningID('tbody1', 'tbody2', index - 1, true, false);
                     fromdateCtrl = $('#FromDateLbl_' + rowid);
                     todateCtrl = $('#ToDate_' + rowid);
                     lbltodateCtrl = $('#lblToDate_' + rowid);
                     tourcatCtrl = $('#TourCategory_' + rowid);
                     centrecodeCtrl = $('#CenterCode_' + rowid);
-                    addbtnCtrl = $('#AddBtn_') + rowid;
+                    addbtnCtrl = $('#AddBtn_' + rowid) ;
                 }
                 fromdateCtrl.html(item.FromDateStrDisplay);
                 todateCtrl.val(item.ToDateStr).isValid();
@@ -84,19 +89,28 @@ async function getInitialData() {
                     tourcatCtrl.val(item.TourCatCodes).multiselect('refresh');
                 }
                 tourcatCtrl.isValid();
-                //alert(centrecodeCtrl.attr('id'));
+                
                 (async function () {
-                    const r1 = await getMultiselectDataWithSelectedValues(centrecodeCtrl.attr('id'), '/Security/EHG/GetTourLocations?CategoryID=' + item.TourCatCodes, item.CenterCodes);
-                })();
-                addbtnCtrl.makeEnabled();
+                    const r1 = await getMultiselectDataWithSelectedValues(centrecodeCtrl.attr('id'), '/Security/CTV/GetToLocationsFromType?TypeIDs=2&m=0', item.CenterCodes);
+                })();                
+                addbtnCtrl.makeDisable();
             });
         }
     });
 };
 function EnableSubmitBtn() {
+    var mEnable = false;
+    var todate = $('#TodateStr').val();
+    $('.todt').each(function () {
+        if ($(this).val() == todate) { mEnable = true; }
+        //alert(todate + ' - ' + mEnable + ' - ' + $(this).val());
+    });
     var x = getDivInvalidCount('HdrDiv');
+    //alert(x);
     var SubmitBtn = $('#btnSubmit');
-    if (x <= 0) { SubmitBtn.makeEnabled(); } else { SubmitBtn.makeDisable(); }
+    if (x <= 0) {       
+        if (mEnable) { SubmitBtn.makeEnabled(); } else { SubmitBtn.makeDisable(); }        
+    } else { SubmitBtn.makeDisable(); }
 };
 $(document).ready(function () {
     $('#btnBack').click(function () {

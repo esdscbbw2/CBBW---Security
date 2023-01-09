@@ -228,19 +228,42 @@ function DDPersonTypeChanged() {
     
 };
 function DDPickPersonChanged(x) {
-    UpdateAuthorisedPersonForOfficeWork('Select Authorized Person');
     var target = DDPickPersonChanged.caller.arguments[0].target;
     var tblRow = target.closest('.add-row');
     var mIndex = $(tblRow).attr('id');
     var targetCtrl = $(target);
     var mValue = targetCtrl.val();
+    //Check for Duplicate Person
+    var dstat = 0;
+    $('.xPerson').each(function () {        
+        if (mValue != '' && $(this).val() == mValue) { dstat +=1; }
+        //alert(mValue + ' - ' + $(this).val() + ' - ' + dstat);
+    });
+    //Check for Duplicate Person - end
     if (x == 1) {
         if (mValue.length <= 20 && mValue.length > 0)
         { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
     }
     else if (mValue > 0) { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
-    getDesgnCode(mIndex, mValue);
-    EnableAddBtn(tblRow, 'AddBtn');
+    if (dstat>1) {
+        targetCtrl.val('');
+        targetCtrl.isInvalid();
+        Swal.fire({
+            title: 'Data Duplicacy Error',
+            text: 'Person You Have Selected Is Already Taken.',
+            icon: 'error',
+            customClass: 'swal-wide',
+            buttons: {
+                confirm: 'Ok'
+            },
+            confirmButtonColor: '#2527a2',
+        });
+    }
+    else {
+        getDesgnCode(mIndex, mValue);
+        EnableAddBtn(tblRow, 'AddBtn');
+        UpdateAuthorisedPersonForOfficeWork('Select Authorized Person');
+    }    
 };
 function DriverNoForManagementChanged() {
     var target = DriverNoForManagementChanged.caller.arguments[0].target;
@@ -667,7 +690,8 @@ $(document).ready(function () {
         dwtBtnCtrl.makeEnabled();
         vadBtnCtrl.makeEnabled();
     } else {
-        dwtBtnCtrl.makeEnabled();
+        //alert('ok');
+        //dwtBtnCtrl.makeEnabled();
         vadBtnCtrl.makeDisable();
     }
     if (dwtFilled == 1 || vaFilled == 1) {

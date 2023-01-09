@@ -5,14 +5,8 @@
     ViewBag.Title = "Tour Rules";
     //Layout = "~/Areas/Security/Views/Shared/_Layout.cshtml";
 }
-
-
-
 <div class="row newTable">
     <div class="col-md-12">
-
-
-
         <div class="heading_text_btn mb-3 mt-4">
             <div class="leftButton">
                 <button type="submit" class="btn btn-primary"
@@ -22,7 +16,6 @@
                 </button>
             </div>
             <h2>Tour - RULES</h2>
-
         </div>
     </div>
     <div class="col-md-12">
@@ -30,15 +23,21 @@
             <table id="tblRules" class="table table-bordered btnalign mt-4">
                 <thead>
                     <tr>
-                        <th scope="col">SL.No.</th>
-                        <th scope="col">Entry Date</th>
-                        <th scope="col">Effective From Date</th>
-                        <th style="background-color: pink; color: black; border: none; text-align: center;" scope="col">Actions</th>
+                        <th scope="col" style="width:10%">SL.No.</th>
+                        <th scope="col" style="width: 26%">Entry Date</th>
+                        <th scope="col" style="width: 26%">Effective From Date</th>
+                        <th scope="col">Status</th>
+                        <th style="width: 10%;background-color: pink; color: black; border: none; text-align: center;" scope="col">Actions</th>
                     </tr>
                 </thead>
                 <thead>
                     <tr>
                         <th scope="col">&nbsp;</th>
+                        <th scope="col">
+                            <div class="form-group">
+                                <input type="text" class="form-control tblSearch" placeholder="Search...">
+                            </div>
+                        </th>
                         <th scope="col">
                             <div class="form-group">
                                 <input type="text" class="form-control tblSearch" placeholder="Search...">
@@ -57,22 +56,22 @@
                     {
                         foreach (var item in Model)
                         {
-                            <tr>
-                                <th scope="row">@item.SL</th>
-                                <td>@item.EntryDateDisplay</td>
-                                <td>@item.EffectiveDateDisplay</td>
-                                <td></td>
-                            </tr>
+                    <tr>
+                        <th scope="row">@item.SL</th>
+                        <td>@item.EntryDateDisplay</td>
+                        <td>@item.EffectiveDateDisplay</td>
+                        <td>@item.IsActiveText</td>
+                        <td></td>
+                    </tr>
                         }
                     }
-
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-@section scripts{   
-
+<br/>
+@section scripts{
     <script>
         $(document).ready(function () {
             var dtinstance = $('#tblRules').DataTable({
@@ -80,6 +79,7 @@
                     { 'data': 'SL' },
                     { 'data': 'EntryDateDisplay' },
                     { 'data': 'EffectiveDateDisplay', 'searchable': true, },
+                    { 'data': 'IsActiveText', 'searchable': true, },
                     {
                         'data': 'IsApplied', render: function (data, type, row, meta) {
                             //var viewBtn = '<button type="button" class="btn primaryLink" data-toggle="tooltip" data-placement="top"> <i data-feather="eye"></i></button>';
@@ -96,6 +96,7 @@
                 bServerSide: true,
                 sAjaxSource: '/Security/TourRule/getListOfRules',
                 "pagingType": "input",
+                "bPaginate": true,
             });            
             $('.tblSearch').on('keyup change', function () {
                 dtinstance.search(this.value).draw();

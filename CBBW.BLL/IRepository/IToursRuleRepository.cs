@@ -9,6 +9,7 @@ namespace CBBW.BLL.IRepository
 {
     public interface IToursRuleRepository
     {
+        TourRuleSaveInfo getLastTourInfoFromServiceTypeCodes(string serviceTypeCodes, int IsView, DateTime EffectiveDate, ref string pMsg);
         bool RemoveToursRuleV2(DateTime EffectiveDate, string ServiceTypeCodes, ref string pMsg);
         bool FinalSubmitToursRuleV2(DateTime EffectiveDate, ref string pMsg);
         List<TourRuleListData> GetTourRules(int DisplayLength, int DisplayStart, int SortColumn,
@@ -22,6 +23,6 @@ namespace CBBW.BLL.IRepository
         bool IsValidRule(TourRuleDetails trd, ref string pMsg);
         DateTime GetAffectedRuleID(ref string pMsg);
         bool CreateNewTourRuleV2(TourRuleSaveInfo trd, ref string pMsg);
-        TourRuleSaveInfo getLastTourInfoFromServiceTypeCodes(string serviceTypeCodes, ref string pMsg);
+        
     }
 }

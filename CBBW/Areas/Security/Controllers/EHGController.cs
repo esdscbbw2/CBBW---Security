@@ -67,7 +67,8 @@ namespace CBBW.Areas.Security.Controllers
         }
         public ActionResult ApproveNote() 
         {
-            appmodel = CastEHGAppTempData();            
+            appmodel = CastEHGAppTempData();
+            appmodel.AppStatus = -1;
             return View(appmodel);
         }
         public ActionResult ViewVADetails(string NoteNumber,int CBUID=0) 
@@ -106,7 +107,7 @@ namespace CBBW.Areas.Security.Controllers
                     ViewBag.Msg = "Note Number " + modelobj.NoteNumber + " Deleted Successfully.";
                     TempData["EHG"] = null;
                 }
-                else { ViewBag.ErrMsg = "Updation Failed For Note Number " + modelobj.NoteNumber; }
+                else { ViewBag.ErrMsg = "Failed To Delete Note Number " + modelobj.NoteNumber+". Because It Is Under Process Of Approval."; }
 
             }
             else if (Submit == "DWT") 
@@ -235,21 +236,26 @@ namespace CBBW.Areas.Security.Controllers
         public ActionResult VehicleAllotment() 
         {
             model = CastEHGTempData();
-            VehicleAllotmentDetails obj= _iEHG.getVehicleAllotmentDetails(model.ehgHeader.NoteNumber, 0, ref pMsg);
-            model.VADetails = obj;
-            model.VehicleList = _master.getVehicleList("L.C.V",model.ehgHeader.VehicleType==1?4:2, ref pMsg);
-            if (model.DriverList == null) { model.DriverList = model.getDriverList(user.CentreCode); }
-            if (model.VADetails == null || string.IsNullOrEmpty(model.VADetails.VehicleNumber)) 
+            try
             {
-                model.VADetails = new VehicleAllotmentDetails();
-                model.VADetails.NoteNumber = model.ehgHeader.NoteNumber;
-                model.VADetails.AuthorisedEmpName = model.ehgHeader.AuthorisedEmployeeName;
-                model.VADetails.AuthorisedEmpNumber = _myHelper.getFirstIntegerFromString(model.ehgHeader.AuthorisedEmployeeName, '/');
-                model.VADetails.DesignationText = _master.GetDesgCodenName(model.VADetails.AuthorisedEmpNumber, 1);
-                model.VADetails.DesignationCode = _myHelper.getFirstIntegerFromString(model.VADetails.DesignationText, '/');
-                model.VADetails.MaterialStatus = -1;
-                model.VADetails.VehicleType = model.ehgHeader.VehicleType==1?"LV": "2 Wheeler";                
-            }            
+                VehicleAllotmentDetails obj = _iEHG.getVehicleAllotmentDetails(model.ehgHeader.NoteNumber, 0, ref pMsg);
+                model.VADetails = obj;
+                model.VehicleList = _master.getVehicleList("L.C.V", model.ehgHeader.VehicleType == 1 ? 4 : 2, ref pMsg);
+                model.DriverList = _iEHG.getDriverListForOfficeWork(model.ehgHeader.NoteNumber, ref pMsg); 
+                if (model.VADetails == null || string.IsNullOrEmpty(model.VADetails.VehicleNumber))
+                {
+                    model.VADetails = new VehicleAllotmentDetails();
+                    model.VADetails.NoteNumber = model.ehgHeader.NoteNumber;
+                    model.VADetails.AuthorisedEmpName = model.ehgHeader.AuthorisedEmployeeName;
+                    model.VADetails.AuthorisedEmpNumber = _myHelper.getFirstIntegerFromString(model.ehgHeader.AuthorisedEmployeeName, '/');
+                    model.VADetails.DesignationText = _master.GetDesgCodenName(model.VADetails.AuthorisedEmpNumber, 1);
+                    model.VADetails.DesignationCode = _myHelper.getFirstIntegerFromString(model.VADetails.DesignationText, '/');
+                    model.VADetails.MaterialStatus = -1;
+                    model.VADetails.VehicleType = model.ehgHeader.VehicleType == 1 ? "LV" : "2 Wheeler";
+                }
+
+            }
+            catch { }
             return View(model);
         }
         [HttpPost]
@@ -283,7 +289,7 @@ namespace CBBW.Areas.Security.Controllers
         {
             EHGNotApprovalVM result = new EHGNotApprovalVM();
             result.NoteNumber = NoteNumber;
-            result.Header = _iEHG.getEHGNoteHdr(NoteNumber, ref pMsg);
+            result.Header = _iEHG.getEHGNoteHdr(NoteNumber, ref pMsg,1);
             result.TPDetails = _iEHG.getTravelingPersonDetails(NoteNumber, 1, ref pMsg);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -416,11 +422,9 @@ namespace CBBW.Areas.Security.Controllers
             List<EHGNoteList> noteList = _iEHG.GetEHGNoteList(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch,user.CentreCode,false,ref pMsg);
             var result = new
             {
-                iTotalRecords = noteList.Count==0?0:noteList.FirstOrDefault().TotalCount,
-                //iPages=10,
-                //iCurrentPage=1,
-                iTotalDisplayRecords = noteList.Count(),
-                iDisplayLength= iDisplayLength,
+                iTotalRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
+                iTotalDisplayRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
+                iDisplayLength = iDisplayLength,
                 iDisplayStart= iDisplayStart,
                 aaData = noteList
             };

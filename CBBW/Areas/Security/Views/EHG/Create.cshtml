@@ -290,11 +290,11 @@
                                         </td>
                                         <td id="tbl1Designation" class="text-center"> </td>
                                         <td class="text-center">
-                                            <div class="position-relative pointer">
+                                            <div class="position-relative pointer" style="width:200px">
                                                 @Html.TextBoxFor(m => m.FromdateForMang, "{0:yyyy-MM-dd}",
                                                    htmlAttributes: new
                                                         {
-                                                       @class = "form-control pointer CustomDateFormatCloneRow",
+                                                       @class = "form-control pointer CustomDateFormatCloneRow valid",
                                                        type = "date",
                                                        onchange = "ValidateControl()",
                                                        max = Model.MaxFromDate,
@@ -306,11 +306,11 @@
                                         </td>
 
                                         <td class="text-center">
-                                            <div class="input-group date pointer position-static placeholder-dark">
+                                            <div class="input-group date pointer position-static placeholder-dark" >
                                                 @Html.TextBoxFor(m => m.FromTimeForMang,
                                                    htmlAttributes: new
                                                    {
-                                                       @class = "form-control timePicker pointer",
+                                                       @class = "form-control timePicker pointer ",
                                                        type = "text",
                                                        onblur = "ValidateControl()",
                                                        placeholder = "Select Time"
@@ -325,11 +325,11 @@
                                         <td id="ActualTOutTimeForMang" class="text-center">
                                         </td>
                                         <td class="text-center">
-                                            <div class="position-relative pointer">
+                                            <div class="position-relative pointer" style="width:200px">
                                                 @Html.TextBoxFor(m => m.ToDateForMang, "{0:yyyy-MM-dd}",
                                                    htmlAttributes: new
                                                         {
-                                                       @class = "form-control pointer CustomDateFormatCloneRow",
+                                                       @class = "form-control pointer CustomDateFormatCloneRow valid",
                                                        type = "date",
                                                        onchange = "ValidateControl()",
                                                        min = Model.MinFromDate
@@ -345,7 +345,7 @@
                                             @Html.TextAreaFor(m => m.PurposeOfVisitFoeMang,
                                                    htmlAttributes: new
                                                    {
-                                                       @class = "form-control pointer",
+                                                       @class = "form-control",
                                                        rows = "3",
                                                        type = "text",
                                                        onblur = "ValidateControl()"
@@ -451,32 +451,33 @@
                                     <tr id="0" class="add-row">
                                         <th scope="row">1</th>
                                         <td class="text-center">
-                                            <select style="width:200px"  class="form-select w-200 is-invalid alterID inValidTag"
+                                            <select style="width:200px"  
+                                                    class="form-select w-200 is-invalid alterID inValidTag"
                                                     data-name="PersonType"
                                                     aria-label="Default select example"
                                                     id="DDPersonType" onchange="DDPersonTypeChanged()">
                                             </select>
                                         </td>
                                         <td class="text-center">
-                                            <select class="form-select alterID inValidTag pickPersonName"
+                                            <select class="form-select alterID inValidTag pickPersonName xPerson"
                                                     data-name="EmployeeNo" data-name-text="EmployeeNonNamecmb"
                                                     aria-label="Default select example"
                                                     onchange="DDPickPersonChanged(0)"
                                                     id="cmbDDPersonType">
                                             </select>
                                             <input type="text" style="width:300px" data-name="EmployeeNonName"
-                                                   class="form-control w-200 inVisible alterID pickPersonNametxt"
+                                                   class="form-control w-200 inVisible alterID pickPersonNametxt xPerson"
                                                    onblur="DDPickPersonChanged(1)"
                                                    id="txtDDPersonType">
                                         </td>
                                         <td id="DesgCodenName" data-name="DesignationCodenName" 
                                             class="text-center alterID htmlVal"> </td>
                                         <td class="text-center">
-                                            <div class="position-relative pointer">
+                                            <div class="position-relative pointer" style="width:200px">
                                                 <input id="FromDate" type="date"
                                                        data-name="FromDate"
                                                        onchange="ValidateCloneRowCtrl()"
-                                                       class="form-control pointer is-invalid alterID inValidTag CustomDateFormatCloneRow">
+                                                       class="form-control pointer is-invalid alterID inValidTag CustomDateFormatCloneRow valid">
                                                 <label id="lblFromDate" style="width:100px"
                                                        class="datelabel pointer alterID">Select Date</label>
                                             </div>
@@ -492,17 +493,15 @@
                                             </div>
                                         </td>
                                         <td class="text-center">
-                                            <div class="position-relative pointer">
+                                            <div class="position-relative pointer" style="width:200px">
                                                 <input id="ToDate" type="date"
                                                        data-name="ToDate"
                                                        onchange="ValidateCloneRowCtrl()"
-                                                       class="form-control pointer is-invalid alterID inValidTag CustomDateFormatCloneRow">
+                                                       class="form-control pointer is-invalid alterID inValidTag CustomDateFormatCloneRow valid">
                                                 <label id="lblToDate" style="width:110px"
                                                        class="datelabel pointer alterID">Select Date</label>
                                             </div>
                                         </td>
-
-
                                         <td class="text-center">
                                             <textarea name="" id="PurposeOfVisit" cols="20"
                                                       data-name="PurposeOfVisit"

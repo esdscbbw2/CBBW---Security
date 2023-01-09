@@ -273,5 +273,24 @@ namespace CBBW.Areas.Security.Controllers
             }
             return Json(PTRows, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult getListOfRules(int iDisplayLength, int iDisplayStart, int iSortCol_0,
+            string sSortDir_0, string sSearch)
+        {
+            List<TADARuleListData> ruleList = _iTADARules.getTADARules(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, ref pMsg);
+            var result = new
+            {
+                //iTotalRecords = ruleList.Count == 0 ? 0 : ruleList.FirstOrDefault().TotalCount,
+                iTotalRecords = ruleList.Count == 0 ? 0 : ruleList.FirstOrDefault().FilteredCount,
+                iTotalDisplayRecords = ruleList.Count == 0 ? 0 : ruleList.FirstOrDefault().FilteredCount,
+                iDisplayLength = iDisplayLength,
+                iDisplayStart = iDisplayStart,
+                aaData = ruleList
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult ViewRuleV2(string EffectiveDate, bool isDelete = false, bool isFromIndex = false) 
+        {
+            return View();
+        }
     }
 }
