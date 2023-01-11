@@ -101,5 +101,6 @@ namespace CBBW.Areas.Security.ViewModel.EHG
         public int Instructor { get; set; }
         public int AuthorisedEmpNo { get; set; }
         public int POA { get; set; }
+        public string OthVehNo { get; set; }
     }
 }

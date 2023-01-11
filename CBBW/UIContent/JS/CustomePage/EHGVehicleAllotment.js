@@ -34,6 +34,8 @@ function validatectrl(targetid, value) {
                     modelnameCtrl.val('NA');
                     modelnameCtrl.clearValidateClass()
                     //modelnameCtrl.makeDisable();
+                    $('#VADetails_OtherVehicleNumber').isValid();
+                    //alert(value);
                 }
             }            
             break;
@@ -77,7 +79,7 @@ function VehicleBelongsToChanged(mVal) {
     if (vehicleBelongsTo == 1) {
         ForCVCtrl.removeClass('inVisible');
         vnCtrl.isInvalid();
-        vnCtrl.val('');
+        //vnCtrl.val('');
         vnoCtrl.clearValidateClass();
         modelNameCtrl.clearValidateClass();        
         CVModelCtrl.removeClass('inVisible');        
@@ -91,11 +93,12 @@ function VehicleBelongsToChanged(mVal) {
         ForOVCtrl.removeClass('inVisible');
         vnoCtrl.isInvalid();
         modelNameCtrl.isInvalid();
-        vnoCtrl.val('');
+        //vnoCtrl.val('');
         OVModelCtrl.removeClass('inVisible');
         vbtoCtrl.isValid();
         ForCVCtrl.addClass('inVisible');
         CVModelCtrl.addClass('inVisible');
+        validatectrl('VADetails_OtherVehicleNumber', vnoCtrl.val());
     }
     else {
         ForCVCtrl.addClass('inVisible');

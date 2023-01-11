@@ -253,7 +253,8 @@ namespace CBBW.Areas.Security.Controllers
                     model.VADetails.MaterialStatus = -1;
                     model.VADetails.VehicleType = model.ehgHeader.VehicleType == 1 ? "LV" : "2 Wheeler";
                 }
-
+                //if(model.VADetails!=null)
+                //    model.OthVehNo = model.VADetails.OtherVehicleNumber;
             }
             catch { }
             return View(model);

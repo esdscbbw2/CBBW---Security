@@ -90,7 +90,11 @@ namespace CBBW.BLL.Repository
             {
                 EHGMaster m = EHGMaster.GetInstance;
                 result.VehicleBelongsToText = m.VehicleBelongsTo.Where(o => o.ID == result.VehicleBelongsTo).FirstOrDefault().DisplayText;
-
+                if (result.VehicleBelongsTo == 2) 
+                {
+                    result.OtherVehicleNumber = result.VehicleNumber;
+                    result.OtherVehicleModelName = "NA";
+                }
             }
             catch { }
             return result;

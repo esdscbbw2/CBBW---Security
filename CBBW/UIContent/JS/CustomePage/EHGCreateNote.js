@@ -48,9 +48,11 @@ function validatectrl(targetid, value) {
             break;
         case "FromDate":
             isvalid = validatectrl_ValidateLength(value);
+            //alert('fromdate');
             break;
         case "FromTime":
             isvalid = validatectrl_ValidateLength(value);
+            //alert('fromtime');
             break;
         case "ToDate":
             isvalid = validatectrl_ValidateLength(value);
@@ -313,7 +315,7 @@ function ValidateCloneRowCtrl() {
     if (isvalid) { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
     EnableAddBtn(tblRow, 'AddBtn');
     EnableDateWiseTourBtn();
-    EnableSubmitBtn();
+    EnableSubmitBtn();    
 };
 function EnableAddBtn(tblRow,addBtnBaseID) {
     var tblrow = $(tblRow);
