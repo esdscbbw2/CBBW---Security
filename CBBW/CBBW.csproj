@@ -136,6 +136,7 @@
     <Compile Include="Areas\Security\Controllers\CommonController.cs" />
     <Compile Include="Areas\Security\Controllers\CTVController.cs" />
     <Compile Include="Areas\Security\Controllers\EHGController.cs" />
+    <Compile Include="Areas\Security\Controllers\ETSController.cs" />
     <Compile Include="Areas\Security\Controllers\GVMRController.cs" />
     <Compile Include="Areas\Security\Controllers\HomeController.cs" />
     <Compile Include="Areas\Security\Controllers\MaterialGatePassController.cs" />
@@ -149,6 +150,8 @@
     <Compile Include="Areas\Security\ViewModel\EHG\EHGHeaderEntryVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EHG\EHGNotApprovalVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EHG\EHGTravellingPersonsVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\ETS\ETSHeaderEntryVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\ETS\ETSTravellingDetailsVM.cs" />
     <Compile Include="Areas\Security\ViewModel\GVMR\GVMRDetailsVM.cs" />
     <Compile Include="Areas\Security\ViewModel\LocalVehicleTripScheduleVM.cs" />
     <Compile Include="Areas\Security\ViewModel\LVTSFromMatVM.cs" />
@@ -310,6 +313,8 @@
     <Content Include="UIContent\JS\CustomePage\EHGDateWiseTourDtl.js" />
     <Content Include="UIContent\JS\CustomePage\EHGNoteApproval.js" />
     <Content Include="UIContent\JS\CustomePage\EHGVehicleAllotment.js" />
+    <Content Include="UIContent\JS\CustomePage\ETS\ETSEntry.js" />
+    <Content Include="UIContent\JS\CustomePage\ETS\TravellingDetails.js" />
     <Content Include="UIContent\JS\CustomePage\GVMR\GVMR.js" />
     <Content Include="UIContent\JS\CustomePage\LocVehTripSchEdit.js" />
     <Content Include="UIContent\JS\CustomePage\MGPass.js" />
@@ -339,7 +344,6 @@
     <Content Include="UIContent\JS\multiselect_0711.js" />
     <Content Include="UIContent\JS\popper.min.js" />
     <Content Include="UIContent\JS\sweetalert2.all.min.js" />
-    <Content Include="Upload\Forms\2936cfde-c229-4348-ada0-63e94a2459fc.jpg" />
     <Content Include="Views\Shared\EditorTemplates\CustomCheckBoxOption.cshtml" />
     <Content Include="Areas\Security\Views\Shared\_PartialNavBar.cshtml" />
     <Content Include="Areas\Security\Views\TADARules\CreateRule.cshtml" />
@@ -387,6 +391,11 @@
     <Content Include="Areas\Security\Views\GVMR\Details.cshtml" />
     <Content Include="Areas\Security\Views\GVMR\Index.cshtml" />
     <Content Include="Areas\Security\Views\TourRule\ViewRuleV2.cshtml" />
+    <Content Include="Areas\Security\Views\ETS\Create.cshtml" />
+    <Content Include="Areas\Security\Views\ETS\Details.cshtml" />
+    <Content Include="Areas\Security\Views\ETS\Index.cshtml" />
+    <Content Include="Areas\Security\Views\ETS\TravellingDetails.cshtml" />
+    <Content Include="Areas\Security\Views\ETS\TravellingDetailsView.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />
@@ -421,6 +430,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Security\Data\" />
     <Folder Include="Areas\Security\Views\Common\" />
+    <Folder Include="Upload\Forms\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

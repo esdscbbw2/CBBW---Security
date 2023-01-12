@@ -64,6 +64,10 @@
     <Compile Include="EHG\EHGNoteList.cs" />
     <Compile Include="EHG\EHGTravelingPersondtls.cs" />
     <Compile Include="EHG\VehicleAllotmentDetails.cs" />
+    <Compile Include="ETS\ETSDateWiseTour.cs" />
+    <Compile Include="ETS\ETSNote.cs" />
+    <Compile Include="ETS\ETSTravellingDetails.cs" />
+    <Compile Include="ETS\ETSTravellingPerson.cs" />
     <Compile Include="GVMR\GVMRDetails.cs" />
     <Compile Include="GVMR\GVMRNoteNumber.cs" />
     <Compile Include="GVMR\NoteNumberDetails.cs" />

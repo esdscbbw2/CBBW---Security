@@ -6,6 +6,7 @@
 <div class="row newTable">
     @using (Html.BeginForm())
     {
+        @Html.HiddenFor(m => m.IsBtn)
         @Html.HiddenFor(m => m.VADetails.ModelName)
         @Html.HiddenFor(m => m.VADetails.NoteNumber)
         @Html.HiddenFor(m => m.VADetails.AuthorisedEmpName)
@@ -16,7 +17,7 @@
         @Html.HiddenFor(m => m.VADetails.DriverName)
         @Html.HiddenFor(m => m.VABackBtnActive)
         @Html.HiddenFor(m => m.VASubmitBtnActive)
-        @Html.HiddenFor(m=>m.OthVehNo)
+        @Html.HiddenFor(m => m.OthVehNo)
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
@@ -26,7 +27,7 @@
                             <i data-feather="arrow-left-circle"></i>
                             Back
                         </button>
-                        <button id="btnSubmit" type="submit" name="Submit" 
+                        <button id="btnSubmit" type="submit" name="Submit"
                                 value="Save" disabled
                                 class="btn btn-secondary me-2">
                             <i data-feather="check-circle"></i>
@@ -75,7 +76,7 @@
                                 {
                                @class = "form-control",
                                disabled = "disabled",
-                               id = "Noteno2"
+                               id = "Noteno3"
                                 })
                             </div>
                         </div>
@@ -133,7 +134,7 @@
                                        htmlAttributes: new
                                        {
                                            @class = "form-select pointer ",
-                                           onchange = "VehicleNoChanged()"
+                                           onchange = "VehicleNoChanged(1)"
                                        })
                                 </div>
                             </div>
@@ -188,7 +189,7 @@
                                     {
                                         @class = "form-control",
                                         onchange = "ValidateControl()",
-                                        disabled="disabled"
+                                        disabled = "disabled"
                                     })
                                 </div>
                             </div>
@@ -202,7 +203,6 @@
                             <div class="col-md-4">
                                 @Html.DropDownListFor(m => m.VADetails.DriverNumber,
                                        new SelectList(Model.DriverList, "ID", "DisplayText"),
-                                       "Select Driver",
                                        htmlAttributes: new
                                        {
                                            @class = "form-select pointer is-invalid ",
@@ -248,4 +248,5 @@
 @section scripts{
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
     <script src="~/UIContent/JS/CustomePage/EHGVehicleAllotment.js"></script>
+    
 }

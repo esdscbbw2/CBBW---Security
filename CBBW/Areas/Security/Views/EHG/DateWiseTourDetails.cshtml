@@ -3,10 +3,12 @@
 @{
 
 }
+<div id="mMsg"></div>
 <div class="row newTable">
     @using (Html.BeginForm())
     {
         @Html.HiddenFor(m => m.ehgHeader.NoteNumber)
+        @Html.HiddenFor(m => m.ehgHeader.CenterCode)
         @Html.HiddenFor(m => m.FromdateForMang)
         @Html.HiddenFor(m => m.ToDateForMang)
         @Html.HiddenFor(m => m.FromdateStr)
@@ -18,9 +20,9 @@
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
                     <div class="leftButton">
-                        <button id="btnBack" type="button" 
-                                @*onclick="window.location.href='.html';"*@ 
-                                class="btn btn-primary me-2" >
+                        <button id="btnBack" type="button"
+                                @*onclick="window.location.href='.html';"*@
+                                class="btn btn-primary me-2">
                             <i data-feather="arrow-left-circle"></i>
                             Back
                         </button>
@@ -73,7 +75,6 @@
                                         <th scope="row">1</th>
                                         <td id="FromDateLbl" data-name="Fromdate"
                                             class="text-center alterID htmlVal">
-                                            17/11/2022
                                         </td>
                                         <td class="text-center">
                                             <div class="position-relative pointer">
@@ -144,8 +145,6 @@
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
     <script src="~/UIContent/JS/CustomePage/EHGDateWiseTourDtl.js"></script>
     <script>
-
-
         function trialBtnClick() {
             var notenumber = $('#ehgHeader_NoteNumber').val();
             var schrecords = getRecordsFromTableV2('table1');
@@ -177,7 +176,6 @@
                 },
             });
         };
-
     </script>
     <script>
 

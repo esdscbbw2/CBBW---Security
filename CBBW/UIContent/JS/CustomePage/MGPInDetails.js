@@ -78,10 +78,10 @@
                 } else {
                     $("#" + index + "_ActionIn").html('<span class="actionBtn d-block"><button type="button" onclick="DataNotAvailbles(this)"  id="' + item.VehicleNo + '" data-value="' + item.FromschDates + '"   class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Details" data-placement="top" title="" data-bs-original-title="Pending"> <svg xmlns=http://www.w3.org/2000/svg width=24 height=24 viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round class="feather feather-alert-triangle"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1=12 y1=9 x2=12 y2=13></line><line x1=12 y1=17 x2=12.01 y2=17></line></svg></button>');
                 }
-
+                GetRFIDCardNos(index);
             })
 
-            GetRFIDCardNos();
+           
             
         }
     });
@@ -131,8 +131,9 @@ function btnClearClicked() {
     });
 };
 
-function GetRFIDCardNos() {
-    var FRIDData = $('#0_RFID');
+function GetRFIDCardNos(index) {
+
+    var FRIDData = $('#' + index+'_RFID');
     $.ajax({
         url: '/MaterialGatePass/GetRFIdCards',
         method: 'GET',

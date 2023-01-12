@@ -14,5 +14,6 @@ namespace CBBW.Areas.Security.ViewModel.EHG
         public bool CanDelete { get; set; }
         public int CBUID { get; set; }
         public string HeaderText { get; set; }
+        public int DeleteBtn { get; set; }
     }
 }

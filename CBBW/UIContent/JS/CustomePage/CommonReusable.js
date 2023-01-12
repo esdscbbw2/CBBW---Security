@@ -83,6 +83,45 @@ $(document).ready(function () {
     });
 
 });
+function CompareDate(fromDate,fromDateOrder, toDate,toDateOrder)
+{
+    var result = false;
+    var fdt = fromDate;
+    var tdt = toDate;
+    if (fromDateOrder == 1) {
+        if (fromDate.indexOf('/') != -1) {
+            fdt = fromDate.split('/').join('-');
+        } else {
+            fdt = fromDate.split('-').join('-');
+        }
+    }
+    else {
+        if (fromDate.indexOf('/') != -1) {
+            fdt = fromDate.split('/').reverse().join('-');
+        }
+        else {
+            fdt = fromDate.split('-').reverse().join('-');
+        }
+    }
+    if (toDateOrder == 1) {
+        if (toDate.indexOf('/') != -1) {
+            tdt = toDate.split('/').join('-');
+        } else {
+            tdt = toDate.split('-').join('-');
+        }
+    }
+    else {
+        if (toDate.indexOf('/') != -1) {
+            tdt = toDate.split('/').reverse().join('-');
+        }
+        else {
+            tdt = toDate.split('-').reverse().join('-');
+        }
+    }
+    if (fdt <= tdt) { result = true; }
+    //alert(fdt + ' - ' + tdt + ' - ' + result);
+    return result;
+};
 function ChangeDateFormat(dt) {
     //dt must be a string not a date
     var e = '';

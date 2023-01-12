@@ -1,0 +1,382 @@
+﻿$.fn.makeEnabled = function () {
+    var that = this;
+    that.removeAttr('disabled');
+};
+$.fn.makeDisable = function () {
+    var that = this;
+    that.attr('disabled', 'disabled');
+};
+$.fn.isInvalid = function () {
+    var that = this;
+    that.addClass('is-invalid').removeClass('is-valid');
+};
+$.fn.isValid = function () {
+    var that = this;
+    that.addClass('is-valid').removeClass('is-invalid');
+};
+$.fn.clearValidateClass = function () {
+    var that = this;
+    that.removeClass('is-valid').removeClass('is-invalid');
+};
+function AddClonebtn() {
+    var insrow = AddClonebtn.caller.arguments[0].target.closest('.add-row');
+
+    var insrowid = $(insrow).attr('id');
+    var addbtn = $('#AddBtn');
+    if (insrowid > 0) { addbtn = $('#AddBtn_' + insrowid); }
+
+    var rowid = CloneRowReturningID('tbody1', 'tbody2', $(insrow).attr('id') * 1, true, false);
+    $('#cmbDDPersonType_' + rowid).empty();
+    $('#txtDDPersonType_' + rowid).val('').addClass('is-invalid');
+    addbtn.makeDisable();
+    EnableTravellingBtn();
+}
+function removeClonebtn() {
+    var tblRow = removeClonebtn.caller.arguments[0].target.closest('.add-row');
+    removeBtnClickFromCloneRow(tblRow, 'tbody2');
+    EnableTravellingBtn();
+};
+function EnableTravellingBtn() {
+    var x = getDivInvalidCount('HdrDiv');
+    var y = getDivInvalidCount('TravellingPerson');
+    
+    var DWTBtn = $('#VADBtn');
+
+    if ((x + y) * 1 > 0) {
+        DWTBtn.makeDisable();
+    }
+    else {
+        DWTBtn.makeEnabled();
+    }
+};
+function DDPersonTypeChanged() {
+    var target = DDPersonTypeChanged.caller.arguments[0].target;
+    var tblRow = target.closest('.add-row');
+    var targetCtrl = $(target);
+    var docname = $('#etsHeader_AttachFile').val();
+    if (docname != '') {
+    //var targetindexid = target.closest('.add-row');
+    var targetid = targetCtrl.attr('id');
+    var mValue = targetCtrl.val();
+    var cmbCtrl = $('#cmb' + targetid);
+    var txtCtrl = $('#txt' + targetid);
+    switch (mValue) {
+        case '1':
+            cmbCtrl.removeClass('inVisible').addClass('pickPersonName').isInvalid();
+            txtCtrl.addClass('inVisible').removeClass('pickPersonNametxt').clearValidateClass();
+            getDropDownData('cmb' + targetid, 'Select Employee', '/EHG/GetStaffList');
+            break;
+        case '2':
+            cmbCtrl.removeClass('inVisible').addClass('pickPersonName').isInvalid();
+            txtCtrl.addClass('inVisible').removeClass('pickPersonNametxt').clearValidateClass();
+            getDropDownData('cmb' + targetid, 'Select Driver', '/EHG/GetDriverList');
+            break;
+        case '3':
+            txtCtrl.removeClass('inVisible').addClass('pickPersonNametxt').isInvalid();
+            cmbCtrl.addClass('inVisible').removeClass('pickPersonName').clearValidateClass();
+
+            break;
+        case '4':
+            txtCtrl.removeClass('inVisible').addClass('pickPersonNametxt').isInvalid();
+            cmbCtrl.addClass('inVisible').removeClass('pickPersonName').clearValidateClass();
+            break;
+        default:
+            txtCtrl.addClass('inVisible').removeClass('pickPersonNametxt').clearValidateClass();
+            cmbCtrl.addClass('inVisible').removeClass('pickPersonName').clearValidateClass();
+            break;
+    }
+    if (mValue > 0) { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
+        EnableAddBtn(tblRow, 'AddBtn');
+    } else {
+        targetCtrl.val('').isInvalid();
+        Swal.fire({
+            title: 'Error',
+            text: 'No Documents Uploaded Yet.So Can Not Proceed Further.',
+            icon: 'question',
+            customClass: 'swal-wide',
+            buttons: {
+                confirm: 'Ok'
+            },
+            confirmButtonColor: '#2527a2',
+        });
+    }
+
+};
+function DDPickPersonChanged(x) {
+   // UpdateAuthorisedPersonForOfficeWork('Select Authorized Person');
+    var target = DDPickPersonChanged.caller.arguments[0].target;
+    var tblRow = target.closest('.add-row');
+    var mIndex = $(tblRow).attr('id');
+    var targetCtrl = $(target);
+    var mValue = targetCtrl.val();
+    if (x == 1) {
+        mValue = mValue.length;
+    }
+    if (mValue > 0) { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
+    getDesgnCode(mIndex, mValue);
+    GetVehicleEligibility(mIndex, mValue);
+    EnableAddBtn(tblRow, 'AddBtn');
+};
+$(document).ready(function () {
+    getDropDownData('DDPersonType', 'Select Type', '/EHG/GetPersonTypes');
+});
+function ValidateControl() {
+    var target = ValidateControl.caller.arguments[0].target;
+    var targetid = $(target).attr('id');
+    var isvalid = validatectrl(targetid, $(target).val());
+    if (isvalid) {
+        $(target).removeClass('is-invalid').addClass('is-valid');
+    } else {
+        $(target).removeClass('is-valid').addClass('is-invalid');
+    }
+    //$('#BackBtnActive').val(1);
+    EnableSubmitBtn();
+    
+};
+function ValidateCloneRowCtrl() {
+    var target = ValidateCloneRowCtrl.caller.arguments[0].target;
+    var tblRow = target.closest('.add-row');
+    var targetCtrl = $(target);
+    var targetid = targetCtrl.attr('id');
+    if (targetid.indexOf('_') >= 0) { targetid = targetid.split('_')[0] }
+    var isvalid = validatectrl(targetid, targetCtrl.val());
+    if (isvalid) { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
+    EnableAddBtn(tblRow, 'AddBtn');
+    EnableTravellingBtn();
+   // EnableSubmitBtn();
+   
+};
+function validatectrl(targetid, value) {
+    var isvalid = false;
+    switch (targetid) {
+        case "TaDaDenied":
+            isvalid = validatectrl_YesNoCombo(value);
+            
+            break;
+        case "otherplace":
+            isvalid = validatectrl_YesOrNo(value);
+            break;
+        case "carryLaptop":
+            isvalid = validatectrl_YesOrNo(value);
+            break;
+        case "Policy":
+            isvalid = validatectrl_YesOrNo(value);
+            break;
+    }
+    return isvalid;
+};
+function validatectrl_ValidateLength(value) {
+    if (value.length > 0) {
+        return true;
+    } else { return false; }
+}
+function validatectrl_YesNoCombo(value) {
+
+    if (value * 1 >= 0) {
+        return true;
+    } else { return false; }
+}
+function validatectrl_YesOrNo(value) {
+    
+    if (value * 1 ==0) {
+        return true;
+    } else { return false; }
+}
+function EnableAddBtn(tblRow, addBtnBaseID) {
+    var tblrow = $(tblRow);
+    var rowid = tblrow.attr('id')
+    if (rowid != 0) { addBtnBaseID = addBtnBaseID + '_' + rowid; }
+    var addBtnctrl = $('#' + addBtnBaseID);
+    if (tblrow.find('.is-invalid').length > 0) { addBtnctrl.makeDisable(); } else { addBtnctrl.makeEnabled(); }
+    //alert(rowid + ' - ' + addBtnBaseID+' - '+tblrow.find('.is-invalid').length);
+    EnableTravellingBtn();
+};
+function EnableSubmitBtn() {
+   // var x = getDivInvalidCount('HdrDiv');
+  //  var y = getDivInvalidCount('TravellingPerson');
+    var z = getDivInvalidCount('Questions');
+    var btn = $('#Btnsubmit').val();
+    var SubmitBtn = $('#btnSubmited');
+   // alert(z + ' - ' + btn);
+   
+    if (z <= 0 && btn==1) {
+        SubmitBtn.makeEnabled();
+        //alert(btn);
+    }
+};
+function getDivInvalidCount(mdivID) {
+    var x = 0;
+    var mDiv = $('#' + mdivID);
+    x = mDiv.find('.is-invalid').length;
+    //alert(mdivID + ' - ' + x);
+    return x;
+};
+function getDesgnCode(rowid, empCode) {
+    var actualempcode = 0
+    if ($.isNumeric(empCode)) { actualempcode = empCode; }
+    var desgCtrl = $('#DesgCodenName');
+    var persontypeCtrl = $('#DDPersonType');
+    if (rowid != 0) {
+        desgCtrl = $('#DesgCodenName_' + rowid);
+        persontypeCtrl = $('#DDPersonType_' + rowid);
+    }
+    var mValue = persontypeCtrl.val();
+    if (mValue <= 4 && mValue > 0)  {
+        var mUrl = "/EHG/GetDesgCodenName?empID=" + actualempcode + "&empType=" + mValue;
+        $.ajax({
+            url: mUrl,
+            success: function (result) { desgCtrl.html(result); }
+        });
+        desgCtrl.html('qwe');
+    }
+    else {
+        desgCtrl.html('');
+    }
+};
+function GetVehicleEligibility(rowid, empCode) {
+    var actualempcode = 0
+    if ($.isNumeric(empCode)) { actualempcode = empCode; }
+    //alert(rowid + ' - ' + empCode + ' - ' + actualempcode);
+    var VTypeCtrl = $('#EgblVehicleType');
+    var typeCtrlname = $('#EgblVehicleTypeName');
+    var persontypeCtrl = $('#DDPersonType');
+    if (rowid != 0) {
+        VTypeCtrl = $('#EgblVehicleType_' + rowid);
+        typeCtrlname = $('#EgblVehicleTypeName_' + rowid);
+        persontypeCtrl = $('#DDPersonType_' + rowid);
+    }
+    var mValue = persontypeCtrl.val() * 1;
+    if (mValue <= 4 && mValue > 0)  {
+        var mUrl = "/ETS/GetVehicleEligibility?EmployeeNumber=" + actualempcode;
+        $.ajax({
+            url: mUrl,
+            success: function (result) {
+                typeCtrlname.html(result.DisplayText);
+                VTypeCtrl.html(result.ID);
+            }
+        });
+        
+    }
+    else {
+        typeCtrlname.html('');
+        VTypeCtrl.html('');
+    }
+};
+
+
+function TravellingPersonBtnClicked() {
+    var notenumber = $('#etsHeader_NoteNumber').val();
+    var DocName = $('#etsHeader_AttachFile').val();
+    var CenterCodeName = $('#etsHeader_CenterCodeName').val();
+    //OficeWorkTbl    
+    var schrecords = getRecordsFromTableV2('Traveltbl');
+    var x = '{"NoteNumber":"' + notenumber + '","AttachFile":"' + DocName + '","CenterCodeName":"' + CenterCodeName + '","PersonDtls":' + schrecords + '}';
+    $.ajax({
+        method: 'POST',
+        url: '/ETS/GetTravelingPersonDetails',
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        data: x,
+        success: function (data) {
+            $(data).each(function (index, item) {
+                if (item.bResponseBool == true) {
+                    var url = "/Security/ETS/TravellingDetails";
+                    window.location.href = url;
+                }
+                else {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Failed To Update Traveling Person Details.',
+                        icon: 'question',
+                        customClass: 'swal-wide',
+                        buttons: {
+                            confirm: 'Ok'
+                        },
+                        confirmButtonColor: '#2527a2',
+                    });
+                }
+            });
+        },
+    });
+
+};
+
+function SaveFinalSubmit() {
+    var notenumber = $('#etsHeader_NoteNumber').val();
+    var DocName = $('#etsHeader_AttachFile').val();
+    var CenterCodeName = $('#etsHeader_CenterCodeName').val();
+  
+    var x = '{"NoteNumber":"' + notenumber + '","AttachFile":"' + DocName + '","CenterCodeName":"' + CenterCodeName + '"}';
+   // alert(x);
+    $.ajax({
+        method: 'POST',
+        url: '/ETS/Create',
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        data: x,
+        success: function (data) {
+            $(data).each(function (index, item) {
+                if (item.bResponseBool == true) {
+                    var url = "/Security/ETS/Index";
+                   
+                    Swal.fire({
+                        title: 'Confirmation',
+                        text: 'Data saved successfully.',
+                        setTimeout: 5000,
+                        icon: 'success',
+                        customClass: 'swal-wide',
+                        buttons: {
+                            confirm: 'Ok'
+                        },
+                        confirmButtonColor: '#2527a2',
+                    }).then(callback);
+                    function callback(result) {
+                        if (result.value) {
+                            var url = "/Security/ETS/Index"
+                            window.location.href = url;
+                        }
+                    }
+                }
+                else {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Failed To Update Traveling Person Details.',
+                        icon: 'question',
+                        customClass: 'swal-wide',
+                        buttons: {
+                            confirm: 'Ok'
+                        },
+                        confirmButtonColor: '#2527a2',
+                    });
+                }
+            });
+        },
+    });
+}
+
+$('#btnBack').click(function () {
+    var backbtnactive = $('#BackBtnActive').val(1);
+    var backurl = "/Security/ETS/Index";
+    if (backbtnactive == 1) {
+        Swal.fire({
+            title: 'Confirmation',
+            text: "Are You Sure Want to Go Back?",
+            icon: 'question',
+            customClass: 'swal-wide',
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            cancelButtonClass: 'btn-cancel',
+            confirmButtonColor: '#2527a2',
+            showCancelButton: true,
+        }).then(callback);
+        function callback(result) {
+            if (result.value) {
+                window.location.href = backurl;
+            }
+        }
+    }
+    else {
+        window.location.href = backurl;
+    }
+});
+

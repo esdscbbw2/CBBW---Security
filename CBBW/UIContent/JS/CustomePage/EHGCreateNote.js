@@ -48,11 +48,9 @@ function validatectrl(targetid, value) {
             break;
         case "FromDate":
             isvalid = validatectrl_ValidateLength(value);
-            //alert('fromdate');
             break;
         case "FromTime":
             isvalid = validatectrl_ValidateLength(value);
-            //alert('fromtime');
             break;
         case "ToDate":
             isvalid = validatectrl_ValidateLength(value);
@@ -72,7 +70,8 @@ function validatectrl(targetid, value) {
             break;        
         case "FromdateForMang":
             if (value != '') {
-                isvalid = true;
+                if ($('#lblFromdateForMang').html() == 'Select Date') { isvalid = false; }
+                else { isvalid = true; }
                 $('#ActualTOutDtForMang').html(ChangeDateFormat(value));
             }
             break;
@@ -84,15 +83,20 @@ function validatectrl(targetid, value) {
             break;
         case "ToDateForMang":
             if (value != '') {
-                isvalid = true;
+                var fromdate = $('#FromdateForMang').val();
+                isvalid = CompareDate(fromdate, 0, value, 0);                
                 $('#ReTInDtForMang').html(ChangeDateFormat(value));
+                if (!isvalid) { $('#ToDateForMang').prop('title', 'To Date Should Be Latter Than From Date'); }
             }
             break;
         case "TADADeniedForManagement":
-            if (value != '') { isvalid = true; }
+            if (value != -1) { isvalid = true; }
             break;
         case "PurposeOfVisitFoeMang":
             if (value.length > 1 && WordCount(value) <= 200)  { isvalid = true; }
+            break;
+        case "DriverNoForManagement":
+            if (value >= 1) { isvalid = true; }
             break;
     }
     return isvalid;
@@ -187,6 +191,8 @@ function DDPersonTypeChanged() {
         var mValue = targetCtrl.val();
         var cmbCtrl = $('#cmb' + targetid);
         var txtCtrl = $('#txt' + targetid);
+        //alert(mValue);
+        //$('#ehgHeader_PersonType').val(mValue);
         switch (mValue) {
             case '1':
                 cmbCtrl.removeClass('inVisible').addClass('pickPersonName').isInvalid();
@@ -303,15 +309,20 @@ function DriverNoForManagementChanged() {
             confirmButtonColor: '#2527a2',
         });
     }
-    
+    EnableSubmitBtn();
 };
 function ValidateCloneRowCtrl() {
     var target = ValidateCloneRowCtrl.caller.arguments[0].target;
     var tblRow = target.closest('.add-row');
     var targetCtrl = $(target);
     var targetid = targetCtrl.attr('id');
-    if (targetid.indexOf('_') >= 0) { targetid = targetid.split('_')[0] }
+    var fdtCtrl = $('#FromDate');
+    if (targetid.indexOf('_') >= 0) { targetid = targetid.split('_')[0]; fdtCtrl = $('#FromDate_' + $(tblRow).attr('id')); }
     var isvalid = validatectrl(targetid, targetCtrl.val());
+    //for todate>fromdate validation
+    if (targetid == 'ToDate') {
+        isvalid = CompareDate(fdtCtrl.val(), 0, targetCtrl.val(), 0);        
+    }
     if (isvalid) { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
     EnableAddBtn(tblRow, 'AddBtn');
     EnableDateWiseTourBtn();
@@ -347,14 +358,18 @@ function EnableDateWiseTourBtn() {
     }
 };
 function EnableSubmitBtn() {
+    var vehtypeCtrl = $('#ehgHeader_VehicleType');
+    var poaCtrl = $('#ehgHeader_PurposeOfAllotment');
+    var p = vehtypeCtrl.val();
+    var q = poaCtrl.val();
+    ForManagementDivRemoveInValidStatus();
+    if (p == 2) { poaCtrl.removeClass('is-invalid'); }    
     var x = getDivInvalidCount('HdrDiv');
     var y = getDivInvalidCount('for_OfficeWork');
     var z = getDivInvalidCount('for_Management');
     var a = $('#AcceptCmb').val();
     var b = $('#DWSubmitBtnActive').val();
-    var c = $('#VASubmitBtnActive').val();
-    var p = $('#ehgHeader_VehicleType').val();
-    var q = $('#ehgHeader_PurposeOfAllotment').val();
+    var c = $('#VASubmitBtnActive').val();    
     var IsSubmitActive = false;
     var SubmitBtn = $('#btnSubmit');
     //alert(x + ' - ' + y + ' - ' + z);
@@ -382,8 +397,9 @@ function EnableSubmitBtn() {
             }
         }
     }    
-    if (IsSubmitActive) { SubmitBtn.makeEnabled(); } else { SubmitBtn.makeDisable(); }
-    
+    if (IsSubmitActive) {        
+        SubmitBtn.makeEnabled();
+    } else { SubmitBtn.makeDisable(); }    
 };
 function UpdateAuthorisedPersonForOfficeWork(defaultText) {
     var DDCtrl = $('#DDAuthorisedEmpForWork');
@@ -462,29 +478,31 @@ function VehicleTypeChanged() {
     $('#VehicleType').val(selectedvt);
     if (selectedvt == 1) {
         POACtrl.removeClass('inVisible');
+        POADropdown.isInvalid();
+        
         POA2WhCtrl.addClass('inVisible');        
         ForOfficeWorkDiv.addClass('inVisible');
         ForManagementDiv.addClass('inVisible');
-        //POADropdown.val('');
-        POADropdown.isInvalid();
+        //POADropdown.val('');        
         //dwtBtnCtrl.makeDisable();
         //vadBtnCtrl.makeDisable();
     }
-    else if (selectedvt == 2) {        
-        POACtrl.addClass('inVisible');
+    else if (selectedvt == 2) {
         POA2WhCtrl.removeClass('inVisible');
         ForOfficeWorkDiv.removeClass('inVisible');
+        POADropdown.removeClass('is-invalid').removeClass('is-valid');
         ForManagementDiv.addClass('inVisible');
-        POADropdown.clearValidateClass();
+        POACtrl.addClass('inVisible');
         //dwtBtnCtrl.makeEnabled();
         //vadBtnCtrl.makeDisable();
     }
     else {
+        POADropdown.val(''); POADropdown.isInvalid();
         POACtrl.addClass('inVisible');
         POA2WhCtrl.addClass('inVisible');
         ForOfficeWorkDiv.addClass('inVisible');
         ForManagementDiv.addClass('inVisible');
-        POADropdown.val(''); POADropdown.isInvalid();
+        
         //dwtBtnCtrl.makeDisable();
         //vadBtnCtrl.makeDisable();
     };
@@ -493,6 +511,68 @@ function VehicleTypeChanged() {
     }
     else { VehicletypeCtrl.isInvalid(); }
     EnableDateWiseTourBtn();
+};
+function ForManagementDivRemoveInValidStatus() {
+    //if ($('#for_Management').hasClass('inVisible')) {
+    //} else {
+    var vehtypeCtrl = $('#ehgHeader_VehicleType');
+    var poaCtrl = $('#ehgHeader_PurposeOfAllotment');
+    var p = vehtypeCtrl.val();
+    var q = poaCtrl.val();
+    if (p == 1 && q == 1) {
+        var Ctrl1 = $('#DriverNoForManagement');
+        var ctrl2 = $('#FromdateForMang');
+        var ctrl3 = $('#FromTimeForMang');
+        var ctrl4 = $('#ToDateForMang');
+        var ctrl5 = $('#PurposeOfVisitFoeMang');
+        var ctrl6 = $('#TADADeniedForManagement');
+        var ctrl7=$('#AuthorisedEmpNoForManagement');
+        var isvalid = validatectrl('DriverNoForManagement', Ctrl1.val());
+        if (isvalid) {
+            Ctrl1.isValid();
+            isvalid = validatectrl('FromdateForMang', ctrl2.val());
+            if (isvalid) {
+                ctrl2.isValid();
+                isvalid = validatectrl('FromTimeForMang', ctrl3.val());
+                if (isvalid) {
+                    ctrl3.isValid();
+                    isvalid = validatectrl('ToDateForMang', ctrl4.val());
+                    if (isvalid) {
+                        ctrl4.isValid();
+                        isvalid = validatectrl('PurposeOfVisitFoeMang', ctrl5.val());
+                        if (isvalid) {
+                            ctrl5.isValid();
+                            isvalid = validatectrl('TADADeniedForManagement', ctrl6.val());
+                            if (isvalid) {
+                                ctrl6.isValid();
+                                isvalid = validatectrl('AuthorisedEmpNoForManagement', ctrl7.val());
+                                if (isvalid) {
+                                    ctrl7.isValid();
+                                }
+                                else { ctrl7.isInvalid(); }
+                            }
+                            else { ctrl6.isInvalid(); }
+                        }
+                        else { ctrl5.isInvalid(); }
+                    }
+                    else { ctrl4.isInvalid(); }
+                }
+                else { ctrl3.isInvalid(); }
+            }
+            else { ctrl2.isInvalid(); }
+        } else { Ctrl1.isInvalid() }
+    } else {
+        $('#DriverNoForManagement').removeClass('is-invalid');
+        $('#FromdateForMang').removeClass('is-invalid');
+        $('#FromTimeForMang').removeClass('is-invalid');
+        $('#ToDateForMang').removeClass('is-invalid');
+        $('#PurposeOfVisitFoeMang').removeClass('is-invalid');
+        $('#TADADeniedForManagement').removeClass('is-invalid');
+        $('#AuthorisedEmpNoForManagement').removeClass('is-invalid');
+    }
+        
+    //}
+    
 };
 function POADropdownChanged() {
     var ForManagementDiv = $('#for_Management');
@@ -514,12 +594,15 @@ function POADropdownChanged() {
         }
         else if (selectedvt == 2) {
             ForOfficeWorkDiv.removeClass('inVisible');
+            ForManagementDivRemoveInValidStatus();
             ForManagementDiv.addClass('inVisible');
+
             //DWTBtn.makeEnabled();
             //VABtn.makeEnabled();
         }
-        else {
+        else {            
             ForOfficeWorkDiv.addClass('inVisible');
+            ForManagementDivRemoveInValidStatus();
             ForManagementDiv.addClass('inVisible');
             //DWTBtn.makeDisable();
             //VABtn.makeDisable();

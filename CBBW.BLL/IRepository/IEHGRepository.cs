@@ -19,7 +19,7 @@ namespace CBBW.BLL.IRepository
         List<DateWiseTourDetails> getDateWiseTourDetails(string Notenumber, int IsActive, ref string pMsg);
         List<EHGTravelingPersondtlsForManagement> getTravelingPersonDetails(string Notenumber, int IsActive, ref string pMsg);
         VehicleAllotmentDetails getVehicleAllotmentDetails(string Notenumber, int IsActive, ref string pMsg);
-        EHGHeader getEHGNoteHdr(string Notenumber, ref string pMsg, int isLocked = 0);
+        EHGHeader getEHGNoteHdr(string Notenumber, ref string pMsg, int isLocked = 0, int UserID = 0);
         bool RemoveEHGNote(string NoteNumber, int RemoveTag, int ActiveTag, ref string pMsg);
         List<EHGNoteList> GetEHGNoteList(int DisplayLength, int DisplayStart, int SortColumn, 
             string SortDirection, string SearchText, int CentreCode,bool IsApprovedList, ref string pMsg);

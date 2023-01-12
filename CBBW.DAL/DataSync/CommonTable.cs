@@ -14,7 +14,7 @@ using CBBW.DAL.DBLogic;
 
 namespace CBBW.DAL.DataSync
 {
-    public class CommonTable
+    public partial class CommonTable
     {
         public DataTable UDTable { get; set; }
         public CommonTable(List<CustomCheckBoxOption> customoptions)

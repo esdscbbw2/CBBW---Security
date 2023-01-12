@@ -26,8 +26,6 @@ namespace CBBW.DAL.Entities
             _datasync = new MasterDataSync();
             _dbresmapper = new DBResponseMapper();
         }
-       
-
         public IEnumerable<ServiceType> getServiceTypes(int ID, ref string pMsg) 
         {
             List<ServiceType> servicetypes = new List<ServiceType>();
@@ -247,6 +245,23 @@ namespace CBBW.DAL.Entities
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     result=_mapper.Map_VehicleBasicInfo(dt.Rows[0]);                    
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
+        public IEnumerable<CustomComboOptions> getBranchType(int CenterId, ref string pMsg)
+        {
+            List<CustomComboOptions> result = new List<CustomComboOptions>();
+            try
+            {
+                dt = _datasync.getBranchType(CenterId, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        result.Add(_dbresmapper.Map_CustomComboOptions(dt.Rows[i]));
+                    }
                 }
             }
             catch (Exception ex) { pMsg = ex.Message; }

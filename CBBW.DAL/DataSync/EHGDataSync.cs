@@ -261,14 +261,16 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-        public DataTable LockEHGHdr(string Notenumber, ref string pMsg)
+        public DataTable LockEHGHdr(string Notenumber,int UserID, ref string pMsg)
         {
             try
             {
                 int paracount = 0;
-                SqlParameter[] para = new SqlParameter[1];
+                SqlParameter[] para = new SqlParameter[2];
                 para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
                 para[paracount++].Value = Notenumber;
+                para[paracount] = new SqlParameter("@UserID", SqlDbType.Int);
+                para[paracount++].Value = UserID;
                 using (SQLHelper sql = new SQLHelper("[EHG].[LockEHGHdr]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataTable(para,ref pMsg);

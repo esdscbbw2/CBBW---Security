@@ -22,6 +22,12 @@ namespace CBBW.BLL.Repository
         {
             return _entities.getServiceTypes(0,ref pMsg);
         }
+
+        public IEnumerable<CustomComboOptions> getBranchType(int CentreId, ref string pMsg)
+        {
+            return _entities.getBranchType(CentreId, ref pMsg);
+        }
+
         public string GetDesgCodenName(int empID, int empType)
         {
             //empType : 2-driver, 1-Others

@@ -268,12 +268,11 @@ function SaveData() {
         success: function (data) {
             $(data).each(function (index, item) {
                 if (item.bResponseBool == true) {
-                    var url = "/Security/GVMR/Index";
-                    window.location.href = url;
                     Swal.fire({
                         title: 'Confirmation',
                         text: 'Data saved successfully.',
                         icon: 'success',
+                        setTimeout:5000,
                         customClass: 'swal-wide',
                         buttons: {
                             confirm: 'Ok'
@@ -282,10 +281,10 @@ function SaveData() {
                     }).then(callback);
                     function callback(result) {
                         if (result.value) {
-                            var url = "/Security/GVMR/Index"
+                            var url = "/Security/GVMR/Index";
                             window.location.href = url;
                         }
-                    }
+                    };
                 } else {
                     Swal.fire({
                         title: 'Confirmation',
@@ -299,8 +298,6 @@ function SaveData() {
                     });
                 }
             });
-
-
         },
     });
 };

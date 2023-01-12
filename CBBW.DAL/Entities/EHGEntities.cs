@@ -105,7 +105,7 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
-        public EHGHeader getEHGNoteHdr(string Notenumber, ref string pMsg,int isLocked=0)
+        public EHGHeader getEHGNoteHdr(string Notenumber,int UserID, ref string pMsg,int isLocked=0)
         {
             EHGHeader result = new EHGHeader();
             try
@@ -118,7 +118,7 @@ namespace CBBW.DAL.Entities
                         result = _DBMapper.Map_EHGHeader(dt.Rows[0]);
                     }
                 }
-                if (isLocked == 1) { _datasync.LockEHGHdr(Notenumber, ref pMsg); }
+                if (isLocked == 1) { _datasync.LockEHGHdr(Notenumber, UserID, ref pMsg); }
             }
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
@@ -180,6 +180,7 @@ namespace CBBW.DAL.Entities
         public List<CustomComboOptions> getDriverListForOfficeWork(string Notenumber, ref string pMsg) 
         {
             List<CustomComboOptions> result = new List<CustomComboOptions>();
+            result.Add(new CustomComboOptions { ID = -1, DisplayText = "Select Driver" });
             try
             {
                 dt = _datasync.getDriverListForOfficeWork(Notenumber,ref pMsg);

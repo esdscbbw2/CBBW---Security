@@ -30,9 +30,9 @@ namespace CBBW.BLL.Repository
         {
             return _EHGEntities.getDateWiseTourDetails(Notenumber, IsActive, ref pMsg);
         }
-        public EHGHeader getEHGNoteHdr(string Notenumber, ref string pMsg, int isLocked = 0)
+        public EHGHeader getEHGNoteHdr(string Notenumber, ref string pMsg, int isLocked = 0, int UserID=0)
         {
-            EHGHeader result= _EHGEntities.getEHGNoteHdr(Notenumber, ref pMsg, isLocked);
+            EHGHeader result= _EHGEntities.getEHGNoteHdr(Notenumber, UserID, ref pMsg, isLocked);
             try
             {
                 EHGMaster m = EHGMaster.GetInstance;

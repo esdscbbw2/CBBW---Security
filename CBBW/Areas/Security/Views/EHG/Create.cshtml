@@ -6,7 +6,7 @@
 }
 <div class="row newTable">
     @using (Html.BeginForm())
-    {
+    {        
         @Html.HiddenFor(m => m.ehgHeader.NoteNumber)
         @Html.HiddenFor(m => m.ehgHeader.DocFileName)
         @Html.HiddenFor(m => m.ehgHeader.CenterCode)
@@ -296,7 +296,7 @@
                                                         {
                                                        @class = "form-control pointer CustomDateFormatCloneRow valid",
                                                        type = "date",
-                                                       onchange = "ValidateControl()",
+                                                       onblur = "ValidateControl()",
                                                        max = Model.MaxFromDate,
                                                        min = Model.MinFromDate
                                                    })
@@ -331,7 +331,7 @@
                                                         {
                                                        @class = "form-control pointer CustomDateFormatCloneRow valid",
                                                        type = "date",
-                                                       onchange = "ValidateControl()",
+                                                       onblur = "ValidateControl()",
                                                        min = Model.MinFromDate
                                                    })
                                                 @*<input type="date"
@@ -495,7 +495,7 @@
                                         <td class="text-center">
                                             <div class="position-relative pointer" style="width:200px">
                                                 <input id="ToDate" type="date"
-                                                       data-name="ToDate"
+                                                       data-name="ToDate" title="To Date Should Be Latter Than From Date"
                                                        onchange="ValidateCloneRowCtrl()"
                                                        class="form-control pointer is-invalid alterID inValidTag CustomDateFormatCloneRow valid">
                                                 <label id="lblToDate" style="width:110px"

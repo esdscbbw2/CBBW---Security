@@ -20,6 +20,7 @@
 
 (function ($) {
 	function calcDisableClasses(oSettings) {
+		alert('calcDisableClasses');
 		var start = oSettings._iDisplayStart;
 		var length = oSettings._iDisplayLength;
 		var visibleRecords = oSettings.fnRecordsDisplay();
@@ -41,10 +42,12 @@
 	}
 
 	function calcCurrentPage(oSettings) {
+		alert('calcCurrentPage');
 		return Math.ceil(oSettings._iDisplayStart / oSettings._iDisplayLength) + 1;
 	}
 
 	function calcPages(oSettings) {
+		alert('calcPages');
 		return Math.ceil(oSettings.fnRecordsDisplay() / oSettings._iDisplayLength);		
 	}
 
@@ -60,6 +63,7 @@
 
 	$.fn.dataTableExt.oPagination.input = {
 		'fnInit': function (oSettings, nPaging, fnCallbackDraw) {
+			alert('dataTableExt.oPagination.input');
 			var nFirst = document.createElement('span');
 			var nPrevious = document.createElement('span');
 			var nNext = document.createElement('span');
@@ -94,7 +98,7 @@
 			}
 
 			nInput.type = 'text';
-
+			debugger
 			info = info.replace(/_INPUT_/g, '</span>' + nInput.outerHTML + '<span>');
 			info = info.replace(/_TOTAL_/g, '</span>' + nTotal.outerHTML + '<span>');
 			nInfo.innerHTML = '<span>' + info + '</span>';

@@ -1,0 +1,368 @@
+﻿@using System.Globalization;
+@using CBBW.Areas.Security.ViewModel.ETS;
+@model ETSTravellingDetailsVM
+@{
+    ViewBag.Title = "Employees Travelling Schedule Details – ENTRY (FOR NZB STAFF)";
+
+}
+
+<div class="container">
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(x => x.PersonType);
+        @Html.HiddenFor(x => x.NoteNumber);
+        @Html.HiddenFor(x => x.AttachFile);
+        @Html.HiddenFor(x => x.CenterCodenName);
+        <div class="row newTable">
+            <div class="fixedElement">
+                <div class="col-md-12">
+                    <div class="heading_text_btn mb-3 mt-4">
+                        <div class="leftButton">
+                            <button id="btnBack" type="button" class="btn btn-primary me-2">
+                                <i data-feather="arrow-left-circle"></i>
+                                Back
+                            </button>
+                            <button disabled id="btnSubmits" type="button" onclick="SaveDataClicked()" class="btn btn-secondary me-2">
+                                <i data-feather="upload"></i>
+                                Submit
+                            </button>
+                            <button type="button"
+                                    class="btn btn-white">
+                                <i data-feather="x-circle"></i>
+                                Clear
+                            </button>
+                        </div>
+                        <h2>@ViewBag.Title</h2>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-12">
+                <div class="heading_text_btn2 d-block mt-4">
+                    <h2 class="text-left"> Travelling Details</h2>
+                </div>
+                <div class="heading_text_btn2 d-block mb-2">
+                    <h2 class="text-center"> Travelling Details (I) </h2>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-4">
+                <div class="col-md-12 pt-3">
+                    <div class="card">
+                        <div class="card-body" id="TravDetails">
+                            <div class="table-responsive max-content">
+                                <table class="table table-bordered w-100 btnalign" id="TravdtlTbl">
+                                    <thead>
+                                        <tr>
+
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                                Public Transport
+                                            </th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="12%">
+                                                Request For Company Vehicle Type
+
+                                            </th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="10%">
+                                                Reason For Company Vehicle Type Request
+                                            </th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                                Vehicle Type Provided
+                                            </th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="10%">Reason For Vehicle Provided </th>
+                                            <th scope="col" colspan="2" style="text-align: center; vertical-align: middle;">
+                                                Scheduled Tour From
+                                            </th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="9%">
+                                                Scheduled Tour To Date
+                                            </th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">Purpose Of Visit </th>
+
+                                        </tr>
+                                        <tr>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="9%">Date</th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="9%">Time</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr id="0" class="add-rows">
+                                            <td class="text-center">
+                                                <select id="PublicTransport"
+                                                        onchange="ValidateControl()"
+                                                        data-name="PublicTransport" class="form-select w-200 is-invalid" aria-label="Default select example">
+                                                    <option selected="" value="">Select</option>
+                                                    <option value="1">Yes</option>
+                                                    <option value="0">No </option>
+                                                </select>
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="forYes">
+                                                    NA
+                                                </div>
+                                                <div class="forNo">
+                                                    <select class="form-select w-200 is-invalid"
+                                                            data-name="VehicleType"
+                                                            aria-label="Default select example"
+                                                            id="VehicleType" onchange="ValidateControl()">
+                                                    </select>
+                                                </div>
+
+
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="forYes">
+                                                    NA
+                                                </div>
+                                                <div class="forNo">
+                                                    <textarea id="ReasonVehicleReq" onchange="ValidateControl()" data-name="ReasonVehicleReq" class="form-control is-invalid" cols="10" rows="2"></textarea>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                -
+                                            </td>
+                                            <td class="text-center">
+                                                -
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="position-relative pointer">
+                                                    <input id="SchFromDate" type="date" min="@Model.FromdateStr" max="@Model.TodateStr"
+                                                           data-name="SchFromDate"
+                                                           onchange="ValidateControl()"
+                                                           class="form-control pointer is-invalid CustomDateFormatCloneRow">
+                                                    <label id="lblSchFromDate" style="width:100px"
+                                                           class="datelabel pointer alterID">Select Date</label>
+
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="input-group date pointer position-static placeholder-dark">
+                                                    <input id="SchFromTime" type="text"
+                                                           data-name="SchFromTime"
+                                                           onblur="ValidateControl()"
+                                                           class="form-control is-invalid timePicker"
+                                                           placeholder="Select Time">
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="position-relative pointer">
+                                                    <input id="SchTourToDate" type="date"
+                                                           data-name="SchTourToDate"
+                                                           onchange="ValidateControl()"
+                                                           class="form-control pointer is-invalid CustomDateFormatCloneRow">
+                                                    <label id="lblSchTourToDate" style="width:100px"
+                                                           class="datelabel pointer alterID">Select Date</label>
+
+
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <textarea data-name="PurposeOfVisit" id="PurposeOfVisit" class="form-control" cols="10" rows="2"></textarea>
+                                            </td>
+
+                                        </tr>
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                            <form class="form-sample form-inline row ms-auto mt-4 pt-3 mb-2">
+                                <div class="row d-flex align-items-center">
+                                    <div class="col-form-label col-md-3">
+                                        <label>Authorized Employee No. & Name :</label>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <input type="text" class="form-control" value="-" disabled="">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-md-12 pt-3 mt-3 pb-3">
+                        <div class="heading_text_btn2 d-block mb-2">
+                            <h2 class="text-center">Date Wise Tour – Details (II) </h2>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body" id="dateDetails">
+                            <div class="table-responsive">
+                                <table class="table table-bordered w-100 btnalign" id="TourWisetbl">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" style="text-align: left; vertical-align: middle;">SL. No.</th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="10%"> Scheduled Tour From Date</th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">Scheduled Tour To Date </th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="20%">Tour Category </th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;">
+                                                Center Code & Name
+                                            </th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;">Branch Code & Name </th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;background-color: pink;color:#000;">Actions </th>
+                                        </tr>
+
+                                    </thead>
+                                    <tbody id="tbody1">
+                                        <tr id="0" class="add-row">
+                                            <th scope="row" class="text-center">1</th>
+                                            <td id="DDSchFromDate" data-name="DDSchFromDate" class="text-center alterID htmlVal ddSFDate"> </td>
+
+                                            <td class="text-center">
+                                                <div class="position-relative pointer">
+                                                    <input id="SchToDate" type="date"
+                                                           onchange="ValidateCloneRowCtrl()"
+                                                           data-name="SchToDate"
+                                                           class="form-control pointer is-invalid alterID inValidTag CustomDateFormatCloneRow todt">
+                                                    <label id="lblSchToDate" style="width:80px"
+                                                           class="datelabel pointer alterID">Select Date</label>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+
+                                                <select id="TourCategory" data-name="TourCategory" data-name-text="TourCatText"
+                                                        onchange="GetCenterCode();ValidateCloneRowCtrl()"
+                                                        class="form-select is-invalid alterID clonemultiselect CtrlTC"
+                                                        aria-label="Default select example">
+                                                </select>
+                                            </td>
+                                            <td class="text-center">
+                                                <div id="CentcodeNAdiv" class="alterID htmlVal">
+                                                    -
+                                                </div>
+                                                <div id="CenterDiv" class="alterID inVisible">
+                                                    <select id="CenterCodeName" data-name="CenterCodeName" data-name-text="CenterCodeNametxt"
+                                                            onchange="BranchChanges();ValidateCloneRowCtrl()"
+                                                            class="form-select is-invalid alterID clonemultiselect"
+                                                            aria-label="Default select example">
+                                                    </select>
+
+                                                </div>
+
+                                            </td>
+                                            <td class="text-center">
+
+                                                <div id="BCNAdiv" class="alterID htmlVal">
+                                                    -
+                                                </div>
+                                                <div id="BCctrldiv" class="alterID inVisible">
+                                                    <select id="BranchCodeName" data-name="BranchCodeName" data-name-text="BranchCodeNametxt"
+                                                            onchange="ValidateCloneRowCtrl()"
+                                                            class="form-select is-invalid alterID clonemultiselect"
+                                                            aria-label="Default select example">
+                                                    </select>
+                                                </div>
+
+                                            </td>
+
+
+                                            <td class="text-center">
+                                                <span class="actionBtn d-block">
+                                                    <button id="AddBtn" type="button" disabled
+                                                            class="btn primaryLink alterID cloneBtn addBtn"
+                                                            onclick="AddClonebtn()"
+                                                            data-toggle="tooltip"
+                                                            data-placement="top" title="Add">
+                                                        <i data-feather="plus"></i>
+                                                    </button>
+                                                    <button id="DeleteBtn" type="button"
+                                                            class="btn secondaryLink inVisible alterID cloneBtn removeBtn"
+                                                            onclick="removeClonebtn()"
+                                                            data-toggle="tooltip"
+                                                            data-placement="top" title="Delete">
+                                                        <i data-feather="x"></i>
+                                                    </button>
+                                                </span>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                    <tbody id="tbody2"></tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    }
+</div>
+@section headers
+    {
+    <style>
+        .inVisible {
+            display: none;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
+
+}
+@section scripts{
+
+    <script src="~/UIContent/JS/bootstrap-datetimepicker.min.js"></script>
+
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/ETS/TravellingDetails.js"></script>
+
+
+    <script>
+        var firstOpen = true;
+        var time;
+        $('.timePicker').datetimepicker({
+            minDate: moment(),
+            useCurrent: false,
+            format: "hh:mm A"
+        }).on('dp.show', function () {
+            if (firstOpen) {
+                minDate: moment(),
+                time = moment().startOf('day');
+                firstOpen = false;
+            } else {
+                time = "01:00 PM"
+            }
+            $(this).data('DateTimePicker').date(time);
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#btnBack').click(function () {
+                var url = "/Security/ETS/Create";
+                if ($('#PublicTransport').val() != "") {
+                    Swal.fire({
+                        title: 'Confirmation Message',
+                        text: "Are You Sure Want to Go Back?",
+                        icon: 'question',
+                        customClass: 'swal-wide',
+                        //buttons: {
+                        //    cancel: 'No',
+                        //    confirm: 'Yes'
+                        //},
+                        confirmButtonText: "Yes",
+                        cancelButtonText: "No",
+                        cancelButtonClass: 'btn-cancel',
+                        confirmButtonColor: '#2527a2',
+                        showCancelButton: true,
+                    }).then(callback);
+                    function callback(result) {
+                        if (result.value) {
+                            window.location.href = url;
+                        } else {
+                            // second variant
+                        }
+                    }
+                } else {
+                    window.location.href = url;
+                };
+            });
+        });
+    </script>
+
+
+
+
+}
+

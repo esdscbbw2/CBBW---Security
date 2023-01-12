@@ -14,6 +14,7 @@ function addCloneBtnClick() {
     $('#FromDateLbl_' + clonerowid).html(curFromDate);
     $('#btnSubmit').makeDisable();
     $('#CenterCode_' + clonerowid).isInvalid();
+    $('#ToDate_' + clonerowid).isInvalid();
     addbtn.makeDisable();
 };
 function ValidateCloneRowCtrl() {
@@ -22,12 +23,11 @@ function ValidateCloneRowCtrl() {
     var targetCtrl = $(target);
     var targetid = targetCtrl.attr('id');
     if (targetid.indexOf('_') >= 0) { targetid = targetid.split('_')[0] }
-    var isvalid = validatectrl(targetid, targetCtrl.val());
+    var isvalid = validatectrl(targetid, targetCtrl.val(), $(tblRow).attr('id'));
     if (isvalid) { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
     EnableAddBtnInCloneRow(tblRow, 'AddBtn');
     $('#DWBackBtnActive').val(1);
-    EnableSubmitBtn();
-    
+    EnableSubmitBtn();    
     var todate = new Date($('#TodateStr').val());
     var preToDate = $(tblRow).find('.todt').val();
     var calculatedFromdate =new Date(ChangeDateFormat(CustomDateChange(preToDate, 1, '-')));
@@ -39,14 +39,45 @@ function ValidateCloneRowCtrl() {
     }
     
 };
-function validatectrl(targetid, value) {
+function validatectrl(targetid, value,rowid) {
     var isvalid = false;
     switch (targetid) {
         case "ToDate":
-            if (value !='') { isvalid = true; }
+            if (value != '') {
+                var fromdateCtrl = $('#FromDateLbl');
+                if (rowid > 0) { fromdateCtrl = $('#FromDateLbl_' + rowid); }
+                if (CompareDate(fromdateCtrl.html(), 0, value, 1)) { isvalid = true; }
+                else {
+                    Swal.fire({
+                        title: 'Invalid Date Range!',
+                        text: 'To Date Must Be Greater Or Equal To From Date.',
+                        icon: 'error',
+                        customClass: 'swal-wide',
+                        buttons: {
+                            confirm: 'Ok'
+                        },
+                        confirmButtonColor: '#2527a2',
+                    });
+                    isvalid = false;
+                }
+            }
             break;        
         case "CenterCode":
-            if (value != '') { isvalid = true; }
+            if (value != '') {
+                if ($('#ehgHeader_CenterCode').val() == value) {
+                    Swal.fire({
+                        title: 'Invalid Centre Code!',
+                        text: 'Cannot Use Screen Initiated Centre Code',
+                        icon: 'error',
+                        customClass: 'swal-wide',
+                        buttons: {
+                            confirm: 'Ok'
+                        },
+                        confirmButtonColor: '#2527a2',
+                    });
+                }
+                else { isvalid = true; }                
+            }
             break;
         case "PurposeOfVisitFoeMang":
             if (value != '') { isvalid = true; }
@@ -88,11 +119,11 @@ async function getInitialData() {
                 else {
                     tourcatCtrl.val(item.TourCatCodes).multiselect('refresh');
                 }
-                tourcatCtrl.isValid();
-                
+                tourcatCtrl.isValid();                
                 (async function () {
                     const r1 = await getMultiselectDataWithSelectedValues(centrecodeCtrl.attr('id'), '/Security/CTV/GetToLocationsFromType?TypeIDs=2&m=0', item.CenterCodes);
-                })();                
+                })();
+                centrecodeCtrl.isValid();
                 addbtnCtrl.makeDisable();
             });
         }
@@ -107,6 +138,7 @@ function EnableSubmitBtn() {
     });
     var x = getDivInvalidCount('HdrDiv');
     //alert(x);
+    //$('#mMsg').html(x);
     var SubmitBtn = $('#btnSubmit');
     if (x <= 0) {       
         if (mEnable) { SubmitBtn.makeEnabled(); } else { SubmitBtn.makeDisable(); }        

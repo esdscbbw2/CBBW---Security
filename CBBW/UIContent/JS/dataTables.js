@@ -78,7 +78,7 @@
             info = info.replace(/_INPUT_/g, '</span>' + nInput.outerHTML + '<span>');
             info = info.replace(/_TOTAL_/g, '</span>' + nTotal.outerHTML + '<span>');
             nInfo.innerHTML = '<span>' + info + '</span>';
-
+            
             nPaging.appendChild(nFirst);
             nPaging.appendChild(nPrevious);
             $(nInfo).children().each(function (i, n) {
@@ -168,8 +168,12 @@
             var iCurrentPage = calcCurrentPage(oSettings);
 
             var an = oSettings.aanFeatures.p;
+            //alert(iPages);
             if (iPages <= 1) // hide paging when we can't page
             {
+                //11.01.2023 Santosh
+                $(an).find('.' + paginateTotalClassName).html(iPages);
+                $(an).find('.' + paginateInputClassName).val(iPages);
                 $(an).hide();
                 return;
             }
@@ -200,7 +204,7 @@
 
             // Paginate of N pages text
             $(an).find('.' + paginateTotalClassName).html(iPages);
-
+            
             // Current page number input value
             $(an).find('.' + paginateInputClassName).val(iCurrentPage);
         }

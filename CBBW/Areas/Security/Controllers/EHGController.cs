@@ -31,7 +31,7 @@ namespace CBBW.Areas.Security.Controllers
             _master = master;
             pMsg = "";
             user = iUser.getLoggedInUser();
-            ViewBag.LogInUser = user.UserName;
+            ViewBag.LogInUser = user.UserName;            
         }
         
         [HttpPost]
@@ -93,13 +93,14 @@ namespace CBBW.Areas.Security.Controllers
             modelobj.TPDetails = _iEHG.getTravelingPersonDetails(NoteNumber, 1, ref pMsg);
             modelobj.CanDelete = CanDelete == 1 ? true : false;
             modelobj.CBUID = CBUID;
+            modelobj.DeleteBtn = CanDelete;
             modelobj.HeaderText = CBUID == 1 ? "APPROVAL" : "ENTRY";
             return View(modelobj);
         }
         [HttpPost]
         public ActionResult ViewNote(EHGHeaderDisplayVM modelobj, string Submit) 
         {
-            string baseUrl="/Security/EHG/ViewNote?NoteNumber=" + modelobj.NoteNumber + "&CanDelete=" + modelobj.CanDelete+"&CBUID="+modelobj.CBUID;
+            string baseUrl="/Security/EHG/ViewNote?NoteNumber=" + modelobj.NoteNumber + "&CanDelete=" + modelobj.DeleteBtn+"&CBUID="+modelobj.CBUID;
             if (Submit == "Delete")
             {
                 if (_iEHG.RemoveEHGNote(modelobj.NoteNumber, 0, 1, ref pMsg))
@@ -244,17 +245,20 @@ namespace CBBW.Areas.Security.Controllers
                 model.DriverList = _iEHG.getDriverListForOfficeWork(model.ehgHeader.NoteNumber, ref pMsg); 
                 if (model.VADetails == null || string.IsNullOrEmpty(model.VADetails.VehicleNumber))
                 {
+                    int authPersonType = model.PersonDtls.Where(o => o.EmployeeNonName==model.ehgHeader.AuthorisedEmployeeName).FirstOrDefault().PersonType;
                     model.VADetails = new VehicleAllotmentDetails();
                     model.VADetails.NoteNumber = model.ehgHeader.NoteNumber;
                     model.VADetails.AuthorisedEmpName = model.ehgHeader.AuthorisedEmployeeName;
                     model.VADetails.AuthorisedEmpNumber = _myHelper.getFirstIntegerFromString(model.ehgHeader.AuthorisedEmployeeName, '/');
-                    model.VADetails.DesignationText = _master.GetDesgCodenName(model.VADetails.AuthorisedEmpNumber, 1);
+                    model.VADetails.DesignationText = _master.GetDesgCodenName(model.VADetails.AuthorisedEmpNumber, authPersonType);
                     model.VADetails.DesignationCode = _myHelper.getFirstIntegerFromString(model.VADetails.DesignationText, '/');
                     model.VADetails.MaterialStatus = -1;
+                    model.VADetails.DriverNumber = -1;
                     model.VADetails.VehicleType = model.ehgHeader.VehicleType == 1 ? "LV" : "2 Wheeler";
                 }
                 //if(model.VADetails!=null)
                 //    model.OthVehNo = model.VADetails.OtherVehicleNumber;
+                model.IsBtn = 0;
             }
             catch { }
             return View(model);
@@ -290,7 +294,7 @@ namespace CBBW.Areas.Security.Controllers
         {
             EHGNotApprovalVM result = new EHGNotApprovalVM();
             result.NoteNumber = NoteNumber;
-            result.Header = _iEHG.getEHGNoteHdr(NoteNumber, ref pMsg,1);
+            result.Header = _iEHG.getEHGNoteHdr(NoteNumber, ref pMsg,1,user.EmployeeNumber);
             result.TPDetails = _iEHG.getTravelingPersonDetails(NoteNumber, 1, ref pMsg);
             return Json(result, JsonRequestBehavior.AllowGet);
         }

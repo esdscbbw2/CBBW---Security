@@ -19,5 +19,6 @@ namespace CBBW.BLL.IRepository
         List<VehicleNo> getVehicleList(string VehicleType,int wheeltype, ref string pMsg);
         VehicleBasicInfo getVehicleBasicInfo(string VehicleNumber, ref string pMsg);
         CompanyTransportType getVehicleEligibility(int EmployeeNumber, ref string pMsg);
+        IEnumerable<CustomComboOptions> getBranchType(int CentreId, ref string pMsg);
     }
 }

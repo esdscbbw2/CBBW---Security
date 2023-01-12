@@ -37,5 +37,6 @@ namespace CBBW.BOL.EHG
         public string POAText { get; set; }
         public string VehicleTypeText { get; set; }
         public string DocFileName { get; set; }
+        //public int PersonType { get; set; }
     }
 }
