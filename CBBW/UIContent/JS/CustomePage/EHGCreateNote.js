@@ -698,7 +698,8 @@ async function getInitialDataForTravelingPerson() {
                         break;
                 }
                 cmbpersonCtrl.isValid();
-                addbtnCtrl.makeEnabled();                
+                addbtnCtrl.makeEnabled();
+                EnableDateWiseTourBtn();
             });
         }
     });
@@ -748,7 +749,7 @@ $(document).ready(function () {
     });
 });
 $(document).ready(function () {
-    getDropDownData('DDPersonType', 'Select Type', '/EHG/GetPersonTypes');
+    //getDropDownData('DDPersonType', 'Select Type', '/EHG/GetPersonTypes');
     var maxdt = $('#MaxFromDate').val();
     var mindt = $('#MinFromDate').val();
     $('#FromDate').attr('max', maxdt).attr('min', mindt);

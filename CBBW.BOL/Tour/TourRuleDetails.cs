@@ -42,6 +42,8 @@ namespace CBBW.BOL.Tour
         public string MaxDate { get; set; }
         public List<ServiceTypeSelector> RuleServiceTypeList { get; set; }
         public int IsbtnDeleteActive { get; set; }
+        public string EffectiveDateOfLastPartiallyFilledRule { get; set; }
+        public string EffectiveDateOfLastPartiallyFilledRuleDisplay { get; set; }
     }
     public class TourRuleServiceTypes
     {

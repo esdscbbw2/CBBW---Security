@@ -41,6 +41,10 @@ namespace CBBW.BLL.Repository
         {
            return _tourEntities.RemoveToursRuleV2(EffectiveDate, ServiceTypeCodes, ref pMsg);
         }
+        public DateTime? getLastEffectiveDatePartiallyFilled(int RuleType, ref string pMsg) 
+        {
+            return _tourEntities.getLastEffectiveDatePartiallyFilled(RuleType, ref pMsg);
+        }
         #endregion
 
         public bool CreateNewTourRule(TourRuleDetails trd, ref string pMsg)

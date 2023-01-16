@@ -1547,3 +1547,15 @@ input[type="date"].valid::before {
 .bgColor ul li .form-select.valid, .bgColor ol li .form-select.valid {
     width: auto;
 }
+.prompt-div {
+    background-color: #e5b2b0;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #212529;
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid #c1514c;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    border-radius: 0.25rem;
+}

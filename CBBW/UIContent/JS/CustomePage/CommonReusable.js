@@ -83,6 +83,38 @@ $(document).ready(function () {
     });
 
 });
+function CompareTime(fromTime, toTime) {
+    var ft = convertTime12To24int(fromTime);
+    var tt = convertTime12To24int(toTime);
+    var result = false;
+    if (ft <= tt) { result = true; }
+    return result;
+}
+function convertTime12To24int(mtime) {
+    var hours = Number(mtime.match(/^(\d+)/)[1]);
+    var minutes = Number(mtime.match(/:(\d+)/)[1]);
+    var AMPM = mtime.match(/\s(.*)$/)[1];
+    if (AMPM === "PM" && hours < 12) hours = hours + 12;
+    if (AMPM === "AM" && hours === 12) hours = hours - 12;
+    var sHours = hours.toString();
+    var sMinutes = minutes.toString();
+    if (hours < 10) sHours = "0" + sHours;
+    if (minutes < 10) sMinutes = "0" + sMinutes;
+    var result = sHours + "." + sMinutes;
+    return (result*1);
+}
+function convertTime12To24(mtime) {
+    var hours = Number(mtime.match(/^(\d+)/)[1]);
+    var minutes = Number(mtime.match(/:(\d+)/)[1]);
+    var AMPM = mtime.match(/\s(.*)$/)[1];
+    if (AMPM === "PM" && hours < 12) hours = hours + 12;
+    if (AMPM === "AM" && hours === 12) hours = hours - 12;
+    var sHours = hours.toString();
+    var sMinutes = minutes.toString();
+    if (hours < 10) sHours = "0" + sHours;
+    if (minutes < 10) sMinutes = "0" + sMinutes;
+    return (sHours + ":" + sMinutes);
+}
 function CompareDate(fromDate,fromDateOrder, toDate,toDateOrder)
 {
     var result = false;
@@ -715,6 +747,9 @@ function OpenDocument(pathid, docName) {
     if (pathid == 1) { filepath = "/Upload/Docs/"; }
     filepath = filepath + docName;
     window.open(filepath);
+};
+function FireSweetAlert() {
+
 };
 
 

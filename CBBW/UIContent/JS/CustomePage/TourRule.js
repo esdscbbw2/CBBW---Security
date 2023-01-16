@@ -51,11 +51,11 @@ function ValidateCtrl(CtrlID, value)
                 var totime = totimeCtrl.val();
                 if (fromtime > '00:00' && fromtime < '13:61') {
                     if (totime > '00:00' && totime < '13:61') {
-                        if (fromtime > totime) {
+                        if (!CompareTime(fromtime, totime)) {
                             fromtimeCtrl.isInvalid();
                             fromtimeCtrl.prop('title', 'Invalid Time Range');
                             totimeCtrl.isInvalid();
-                            totimeCtrl.prop('title', 'Invalid Time Range');
+                            totimeCtrl.prop('title', 'Invalid Time Range');                                                       
                         }
                         else {
                             fromtimeCtrl.isValid();
@@ -69,7 +69,6 @@ function ValidateCtrl(CtrlID, value)
             break;
         case "EarlyMorningPunch_From":
         case "EarlyMorningPunch_To":
-            //alert(value);
             mCtrl.val(value);
             if (value > '00:00' && value < '13:61') {
                 var fromtimeCtrl = $('#EarlyMorningPunch_From');
@@ -78,15 +77,13 @@ function ValidateCtrl(CtrlID, value)
                 var totime = totimeCtrl.val();
                 if (fromtime > '00:00' && fromtime < '13:61') {
                     if (totime > '00:00' && totime < '13:61') {
-                        if (fromtime > totime) {
-                            //alert(fromtime + ' - ' + totime+' Invalid');
+                        if (!CompareTime(fromtime, totime)) {
                             fromtimeCtrl.isInvalid();
                             fromtimeCtrl.prop('title', 'Invalid Time Range');
                             totimeCtrl.isInvalid();
                             totimeCtrl.prop('title', 'Invalid Time Range');
                         }
                         else {
-                            //alert(fromtime + ' - ' + totime+' Valid');
                             fromtimeCtrl.isValid();
                             fromtimeCtrl.prop('title', 'Enter Time');
                             totimeCtrl.isValid();
@@ -353,6 +350,13 @@ function ChangeEffectiveDate() {
         that.isValid();
     } else { that.isInvalid(); }
 };
+function MakeBodyDisable() {
+    $('#BodyDiv').addClass('sectionB');
+    $('.myctrl').each(function () {
+        $(this).val('').isInvalid();
+        $(this).makeDisable();
+    });
+}
 $(document).ready(function () {
     $('#mEffectiveDate').change(function () {
         ChangeEffectiveDate();
@@ -378,15 +382,18 @@ $(document).ready(function () {
         }
     });
     //Disableing all controls
-    $('#BodyDiv').addClass('sectionB');
-    $('.myctrl').each(function () {
-        $(this).val('').isInvalid();
-        $(this).makeDisable();
-    });    
+    MakeBodyDisable();
+    var lasteffdt = $('#EffectiveDateOfLastPartiallyFilledRule').val();
+    if (lasteffdt != '') {
+        $('#mEffectiveDate').val(lasteffdt);
+        $('#lblmEffectiveDate').html(ChangeDateFormat(lasteffdt));
+        ChangeEffectiveDate();
+    }
 });
 $(document).ready(function () {
     $("#btnClear").click(function () {
-        $('#EffectiveDate').removeClass('is-valid').addClass('is-invalid').val('');
+        //$('#lblmEffectiveDate').html('Select Date');
+        //$('#mEffectiveDate').removeClass('is-valid').addClass('is-invalid').val('');
         $('#PublicTranDelay_HalfDA').removeClass('is-valid').addClass('is-invalid').val('');
         $('#OtherTranDelay_HalfDA').removeClass('is-valid').addClass('is-invalid').val('');
         $('#PublicTranDelay_FullDA').removeClass('is-valid').addClass('is-invalid').val('');
@@ -408,7 +415,8 @@ $(document).ready(function () {
         $('#MinutesGracePeriodAllowed').removeClass('is-valid').addClass('is-invalid').val(-1);
         $('#ServiceTypeDD').multiselect('clearSelection').addClass('is-invalid');
         $('#ServiceTypeDD').multiselect('refresh').addClass('is-invalid');
-        $('#btnSave').makeDisable();
+        $('#btnSave').makeDisable();        
+        MakeBodyDisable();
     });
     $('#btnBackOnView').click(function () {
         $.ajax({

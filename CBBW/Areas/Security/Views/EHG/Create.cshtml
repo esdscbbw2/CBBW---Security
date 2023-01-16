@@ -451,11 +451,16 @@
                                     <tr id="0" class="add-row">
                                         <th scope="row">1</th>
                                         <td class="text-center">
-                                            <select style="width:200px"  
+                                            <select style="width:200px"
                                                     class="form-select w-200 is-invalid alterID inValidTag"
                                                     data-name="PersonType"
                                                     aria-label="Default select example"
                                                     id="DDPersonType" onchange="DDPersonTypeChanged()">
+                                                <option value="-1">Select Type</option>
+                                                <option value="1">Staff</option>
+                                                <option value="2">Driver </option>
+                                                <option value="3">Others</option>
+                                                <option value="4">Management</option>
                                             </select>
                                         </td>
                                         <td class="text-center">
@@ -510,7 +515,7 @@
                                         </td>
                                         <td class="text-center">
                                             <select id="TaDaDenied" class="form-select is-invalid alterID inValidTag"
-                                                    data-name="TADADenied"
+                                                    data-name="iTADADenied"
                                                     onchange="ValidateCloneRowCtrl()"
                                                     aria-label="Default select example">
                                                 <option selected value="-1">-</option>
@@ -725,7 +730,8 @@
         var time;
         $('.timePicker').datetimepicker({
             useCurrent: false,
-            format: "hh:mm A"
+            format: "hh:mm A",
+            minDate: moment()
         }).on('dp.show', function () {
             if (firstOpen) {
                 time = moment().startOf('day');

@@ -197,7 +197,17 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-
+        public DateTime? getLastEffectiveDatePartiallyFilled(int RuleType,ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("SELECT [RUL].[GetLastEffectiveDatePartiallyFilled]("+ RuleType + ")", CommandType.Text))
+                {
+                    return DateTime.Parse(sql.ExecuteScaler(ref pMsg).ToString());
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
 
         #endregion
         public DataTable getToursRules(ref string pMsg)

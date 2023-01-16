@@ -44,8 +44,14 @@ namespace CBBW.Areas.Security.Controllers
             return View(model);
         }
         public ActionResult CreateRule()
-        {
+        {            
             TourRuleDetails model = _toursRule.GetLastToursRule(ref pMsg);
+            var lasteffDt = _toursRule.getLastEffectiveDatePartiallyFilled(1, ref pMsg);
+            if (lasteffDt != null && lasteffDt >= DateTime.Today)
+            {
+                model.EffectiveDateOfLastPartiallyFilledRule = DateTime.Parse(lasteffDt.ToString()).ToString("yyyy-MM-dd");
+                model.EffectiveDate = DateTime.Parse(lasteffDt.ToString());
+            }
             model.MinDate = DateTime.Today.ToString("yyyy-MM-dd");
             model.MaxDate = DateTime.Today.AddMonths(1).ToString("yyyy-MM-dd");
             //model.ReadRule5 = true;
@@ -117,8 +123,9 @@ namespace CBBW.Areas.Security.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult getServiceTypeList(string EffectiveDate) 
-        {
-            return Json(_toursRule.getServiceTypesFromEffectiveDate(DateTime.Parse(EffectiveDate), ref pMsg).MasterServiceTypeList, JsonRequestBehavior.AllowGet);
+        {            
+            return Json(_toursRule.getServiceTypesFromEffectiveDate(EffectiveDate==""? DateTime.Today: DateTime.Parse(EffectiveDate), ref pMsg)
+                .MasterServiceTypeList, JsonRequestBehavior.AllowGet);
         }
         public JsonResult getLastTourInfoFromServiceTypeCodes(string serviceTypeCodes,string EffectiveDate,int IsView= 0)
         {

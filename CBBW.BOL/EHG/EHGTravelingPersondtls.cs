@@ -24,6 +24,7 @@ namespace CBBW.BOL.EHG
         public string ToDateStrDisplay { get; set; }
         public string PurposeOfVisit { get; set; }
         public bool TADADenied { get; set; }
+        public int iTADADenied { get; set; }
         public bool IsActive { get; set; }
         public bool IsAuthorised { get; set; }
         public string PersonTypeText { get; set; }

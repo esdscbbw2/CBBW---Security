@@ -5,6 +5,9 @@
 }
 @section headers{
 }
+<div id="xx">
+
+</div>
 <div class="row newTable">
     @using (Html.BeginForm("CreateRule", "TourRule", FormMethod.Post))
     {
@@ -12,6 +15,7 @@
         @Html.HiddenFor(m => m.EffectiveDate)
         @Html.HiddenFor(m => m.ServiceTypeCodes)
         @Html.HiddenFor(m => m.ServiceTypeTexts)
+        @Html.HiddenFor(m=>m.EffectiveDateOfLastPartiallyFilledRule)
         <div class="fixedElement">
             <div class="col-md-12" style="position: relative;">
                 <div class="heading_text_btn mb-4 mt-4">
@@ -21,7 +25,7 @@
                             <i data-feather="arrow-left-circle"></i>
                             Back
                         </button>
-                        <button type="submit" name="Submit" value="create" 
+                        <button type="submit" name="Submit" value="create" disabled 
                                 class="btn btn-secondary me-2" id="btnSubmit">
                             <i data-feather="upload"></i>
                             Submit

@@ -279,7 +279,7 @@ namespace CBBW.DAL.DataSync
                     dr["sFromTime"] = obj.FromTime;
                     dr["dToDate"] = obj.ToDate;
                     dr["sPurposeOfVisit"] = obj.PurposeOfVisit;
-                    dr["bTADADenied"] = obj.TADADenied;
+                    dr["bTADADenied"] = obj.iTADADenied==1?true:false;
                     dr["sEmployeeName"] = obj.EmployeeNonName;
                     dr["iDesignationCode"] = MyDBLogic.getFirstIntegerFromString(obj.DesignationCodenName,'/');
                     dr["bIsAuthorised"] = obj.EmployeeNonName == AuthEmp ? true : false;                    

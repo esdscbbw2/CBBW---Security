@@ -23,6 +23,8 @@ namespace CBBW.BLL.IRepository
         bool IsValidRule(TourRuleDetails trd, ref string pMsg);
         DateTime GetAffectedRuleID(ref string pMsg);
         bool CreateNewTourRuleV2(TourRuleSaveInfo trd, ref string pMsg);
-        
+        DateTime? getLastEffectiveDatePartiallyFilled(int RuleType, ref string pMsg);
+
+
     }
 }

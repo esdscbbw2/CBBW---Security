@@ -107,6 +107,10 @@ namespace CBBW.DAL.Entities
             _dbResponseMapper.Map_DBResponse(_datasync.RemoveToursRuleV2(EffectiveDate, ServiceTypeCodes, ref pMsg), ref pMsg, ref result);
             return result;
         }
+        public DateTime? getLastEffectiveDatePartiallyFilled(int RuleType, ref string pMsg) 
+        {
+            return _datasync.getLastEffectiveDatePartiallyFilled(RuleType, ref pMsg);
+        }
         #endregion
         public IEnumerable<TourRule> GetTourRules(ref string pMsg) 
         {
