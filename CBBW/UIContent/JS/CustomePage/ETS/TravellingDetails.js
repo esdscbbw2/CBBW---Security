@@ -3,7 +3,8 @@
         var PublicTransport = $('option:selected', this).val();
         var PersonType = $("#PersonType").val();
         MakevalueReset();
-        PublicTransportchange(PublicTransport, PersonType,0);
+        PublicTransportchange(PublicTransport, PersonType, 0);
+
         GetTourCategory(PublicTransport);
     });
 });
@@ -22,6 +23,13 @@ function PublicTransportchange(PublicTransport, PersonType,vehicleType) {
         $("#VehicleType").removeClass('is-invalid').addClass('is-valid');
         $("#ReasonVehicleReq").removeClass('is-invalid').addClass('is-valid');
     }
+};
+async function GetTourCategory(PublicTransport) {
+    (async function () {
+        const r1 = await getMultiselectData('TourCategory', '/ETS/GetTourCategories?PTval=' + PublicTransport);
+    })();
+
+    //  alert(PTval);
 };
 function MakevalueReset() {
     $("#SchFromDate").val('').isInvalid();
@@ -53,13 +61,7 @@ $(document).ready(function () {
     $('#SchTourToDate').makeDisable();
     $('#SchToDate').makeDisable();
 });
-async function GetTourCategory(PublicTransport) {
-    (async function () {
-        const r1 = await getMultiselectData('TourCategory', '/ETS/GetTourCategories?PTval=' + PublicTransport);
-    })();
-   
-  //  alert(PTval);
-};
+
 function ValidateControl() {
   
     var target = ValidateControl.caller.arguments[0].target;
@@ -503,15 +505,17 @@ async function getInitialData() {
         dataType: 'json',
         success: function (data) {
             $(data).each(function (index, item) {
+                alert('kk');
                 if (item.btnSubmit == 1) {
+                    var PT = item.travDetails.PublicTransports == true ? 1 : 0;
                     NoteNumber.val(item.NoteNumber);
                     AttachFile.val(item.AttachFile);
                     CenterCodenName.val(item.CenterCodenName);
                     PersonType.val(item.PersonType);
                 //$(item.TravellingDetails).each(function (index, travitem) {
-                    //alert(item.travDetails.SchTourToDateDisplay);
-                    PublicTransport.val(item.travDetails.PublicTransport).isValid();
-                    PublicTransportchange(item.travDetails.PublicTransport, item.PersonType, item.travDetails.VehicleType);
+                   
+                    PublicTransport.val(PT).isValid();
+                    PublicTransportchange(PT, item.PersonType, item.travDetails.VehicleType);
                     VehicleType.isValid();
                     ReasonVehicleReq.html(item.travDetails.ReasonVehicleReq).isValid();
                     SchFromDate.val(item.travDetails.SchFromDateStr).isValid();
@@ -542,9 +546,9 @@ async function getInitialData() {
                         SchToDate.val(travitem.SchToDatestr).isValid();
                         lblSchToDate.html(travitem.DDSchToDate);
                         //alert(travitem.CenterCode + ' - ' + travitem.BranchCode);
-                        getMultiselectDataWithSelectedValues(TourCategory.attr('id'), '/ETS/GetTourCategories?PTval=' + item.travDetails.PublicTransport, travitem.TourCategoryId);
+                        getMultiselectDataWithSelectedValues(TourCategory.attr('id'), '/ETS/GetTourCategories?PTval=' + PT, travitem.TourCategoryId);
                         TourCategory.isValid();
-                        debugger;
+                       
                         //ChangeCashCadingSourceInCloaningV2(TourCategory.attr('id'), rowid, CenterCodeName.attr('id'), '/Security/ETS/GetLocationsFromTypes?TypeID=' + travitem.TourCategoryId, travitem.CenterCode);
                         TourDateWiseDropdownvalue(rowid, travitem.TourCategoryId, travitem.TourCategoryId, travitem.CenterCode);
                         CenterCodeName.isValid();

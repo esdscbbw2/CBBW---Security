@@ -347,6 +347,7 @@ function ChangeEffectiveDate() {
         $('#ServiceTypeDD').makeEnabled();
         FillServiceType(that.val());
         $('#EffectiveDate').val(that.val());
+        $('#EffectiveDateOfLastPartiallyFilledRule').val('');
         that.isValid();
     } else { that.isInvalid(); }
 };
@@ -360,6 +361,7 @@ function MakeBodyDisable() {
 $(document).ready(function () {
     $('#mEffectiveDate').change(function () {
         ChangeEffectiveDate();
+        
     });
     $('#ServiceTypeDD').change(function () {
         that = $(this);

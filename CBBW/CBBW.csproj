@@ -316,6 +316,9 @@
     <Content Include="UIContent\JS\CustomePage\EHGNoteApproval.js" />
     <Content Include="UIContent\JS\CustomePage\EHGVehicleAllotment.js" />
     <Content Include="UIContent\JS\CustomePage\ETS\ETSEntry.js" />
+    <Content Include="UIContent\JS\CustomePage\ETS\ETSNoteApprove.js" />
+    <Content Include="UIContent\JS\CustomePage\ETS\ETSRatified.js" />
+    <Content Include="UIContent\JS\CustomePage\ETS\ETSTravApprove.js" />
     <Content Include="UIContent\JS\CustomePage\ETS\TravellingDetails.js" />
     <Content Include="UIContent\JS\CustomePage\GVMR\GVMR.js" />
     <Content Include="UIContent\JS\CustomePage\LocVehTripSchEdit.js" />
