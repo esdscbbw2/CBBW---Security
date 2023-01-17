@@ -26,7 +26,6 @@ namespace CBBW.Areas.Security.Controllers
         ETSHeaderEntryVM model;
         ETSTravellingDetailsVM modelTrav;
         ICTVRepository _iCTV;
-
         public ETSController(ICTVRepository iCTV, IUserRepository iUser, IETSRepository iETS, IMyHelperRepository myHelper, IMasterRepository master)
         {
             try
@@ -43,8 +42,7 @@ namespace CBBW.Areas.Security.Controllers
             catch (Exception ex) { pMsg = ex.ToString(); }
 
         }
-
-
+        #region For Entry Process
         public ActionResult Index()
         {
             TempData["ETS"] = null;
@@ -53,26 +51,48 @@ namespace CBBW.Areas.Security.Controllers
 
             return View();
         }
-        public ActionResult Create()
+        public ActionResult Create(string NoteNumber = null)
         {
             ETSHeaderEntryVM model = new ETSHeaderEntryVM();
             try
             {
-                if (TempData["ETS"] != null && TempData["ETSData"] != null)
+                if (NoteNumber != null)
                 {
-
                     model = TempData["ETS"] as ETSHeaderEntryVM;
-                    modelTrav = TempData["ETSData"] as ETSTravellingDetailsVM;
-                    model.etsHeader.NoteNumber = modelTrav.NoteNumber;
-                    model.etsHeader.AttachFile = modelTrav.AttachFile;
-                    model.Btnsubmit = modelTrav.btnSubmit;
+                    model.etsHeader.NoteNumber = model.NoteNumber;
+                    model.etsHeader.AttachFile = model.AttachFile;
                     model.etsHeader.CenterCodeName = model.CenterCodeName;
-                    model.PersonDtls = _iETS.GetETSTravellingPerson(modelTrav.NoteNumber, ref pMsg);
+                    model.PersonDtls = _iETS.GetETSTravellingPerson(model.NoteNumber, ref pMsg);
+                    if (TempData["BtnSubmit"] != null)
+                    {
+                        model.Btnsubmit = 1;
+                    }
+                    else
+                    {
+                        model.Btnsubmit = 0;
+                    }
+                    TempData["ETS"] = model;
                 }
                 else
                 {
-                    model.etsHeader = _iETS.getNewETSHeader(ref pMsg);
+                    if (TempData["ETS"] != null && TempData["ETSData"] != null)
+                    {
 
+                        model = TempData["ETS"] as ETSHeaderEntryVM;
+                        modelTrav = TempData["ETSData"] as ETSTravellingDetailsVM;
+                        TempData["ETS"] = model;
+                        TempData["ETSData"] = modelTrav;
+                        model.etsHeader.NoteNumber = modelTrav.NoteNumber;
+                        model.etsHeader.AttachFile = modelTrav.AttachFile;
+                        model.Btnsubmit = modelTrav.btnSubmit;
+                        model.etsHeader.CenterCodeName = model.CenterCodeName;
+                        model.PersonDtls = _iETS.GetETSTravellingPerson(modelTrav.NoteNumber, ref pMsg);
+                    }
+                    else
+                    {
+                        model.etsHeader = _iETS.getNewETSHeader(ref pMsg);
+
+                    }
                 }
 
 
@@ -83,7 +103,6 @@ namespace CBBW.Areas.Security.Controllers
             }
             return View(model);
         }
-
         [HttpPost]
         public ActionResult Create(ETSHeaderEntryVM hdrmodel)
         {
@@ -92,6 +111,7 @@ namespace CBBW.Areas.Security.Controllers
             hdrmodel.etsHeader.NoteNumber = hdrmodel.NoteNumber;
             hdrmodel.etsHeader.AttachFile = hdrmodel.AttachFile;
             hdrmodel.etsHeader.CenterCodeName = hdrmodel.CenterCodeName;
+            //hdrmodel.etsHeader.CenterCode = user.CentreCode;
             if (_iETS.SetETSDetailsFinalSubmit(hdrmodel.etsHeader, ref pMsg))
             {
                 result.bResponseBool = true;
@@ -107,14 +127,13 @@ namespace CBBW.Areas.Security.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
 
         }
-
         public JsonResult GetVehicleEligibility(int EmployeeNumber)
         {
+
             return Json(_master.getVehicleEligibility(EmployeeNumber, ref pMsg), JsonRequestBehavior.AllowGet);
         }
-
         [HttpPost]
-        public ActionResult GetTravelingPersonDetails(ETSHeaderEntryVM modelvm)
+        public ActionResult SetTravelingPersonDetails(ETSHeaderEntryVM modelvm)
         {
             CustomAjaxResponse result = new CustomAjaxResponse();
             try
@@ -123,19 +142,35 @@ namespace CBBW.Areas.Security.Controllers
                 model.etsHeader.NoteNumber = modelvm.NoteNumber;
                 model.etsHeader.AttachFile = modelvm.AttachFile;
                 model.etsHeader.CenterCodeName = modelvm.CenterCodeName;
-                if (modelvm != null)
-                {
-                    if (_iETS.SetETSTravellingPerson(modelvm.NoteNumber, modelvm.PersonDtls, ref pMsg))
-                    {
-                        TempData["ETS"] = modelvm;
-                        result.bResponseBool = true;
-                        result.sResponseString = "Data successfully updated.";
+                //if (model.Btnsubmit == 2 || model.Btnsubmit==1) {
+                //     modelvm= TempData["ETS"] as ETSHeaderEntryVM;
+                //    TempData["ETS"] = modelvm;
+                //    result.bResponseBool = true;
 
-                    }
-                    else
+                //} else { 
+                if (model.Btnsubmit == 1)
+                {
+                    modelvm = TempData["ETS"] as ETSHeaderEntryVM;
+                    TempData["ETS"] = modelvm;
+                    result.bResponseBool = true;
+
+                }
+                else
+                {
+                    if (modelvm != null)
                     {
-                        result.bResponseBool = false;
-                        result.sResponseString = pMsg;
+                        if (_iETS.SetETSTravellingPerson(modelvm.NoteNumber, modelvm.PersonDtls, ref pMsg))
+                        {
+                            TempData["ETS"] = modelvm;
+                            result.bResponseBool = true;
+                            result.sResponseString = "Data successfully updated.";
+
+                        }
+                        else
+                        {
+                            result.bResponseBool = false;
+                            result.sResponseString = pMsg;
+                        }
                     }
                 }
             }
@@ -146,7 +181,6 @@ namespace CBBW.Areas.Security.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
 
         }
-
         [HttpPost]
         public ActionResult SetTravNTourDetails(ETSTravellingDetailsVM models)
         {
@@ -195,24 +229,32 @@ namespace CBBW.Areas.Security.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
 
         }
-        public ActionResult TravellingDetails()
+        public ActionResult TravellingDetails(int Btnsubmit = 0)
         {
             ETSTravellingDetailsVM modeltravvm = new ETSTravellingDetailsVM();
             try
             {
-                if (TempData["ETS"] != null)
+                model = TempData["ETS"] as ETSHeaderEntryVM;
+                if (Btnsubmit != 1)
                 {
-                    model = TempData["ETS"] as ETSHeaderEntryVM;
-                    TempData["ETS"] = model;
-                    modeltravvm.PersonType = model.PersonDtls.Select(o => o.PersonType).Max();
-                    modeltravvm.NoteNumber = model.NoteNumber;
-                    modeltravvm.AttachFile = model.AttachFile;
-                    modeltravvm.CenterCodenName = model.CenterCodeName;
-                    modeltravvm.TodateStr = DateTime.Today.AddDays(3).ToString("yyyy-MM-dd");
-                    modeltravvm.FromdateStr = DateTime.Today.ToString("yyyy-MM-dd");
+
+                    if (TempData["ETS"] != null)
+                    {
+
+                        modeltravvm.PersonType = model.PersonDtls.Select(o => o.PersonType).Max();
+                        modeltravvm.NoteNumber = model.NoteNumber;
+                        modeltravvm.AttachFile = model.AttachFile;
+                        modeltravvm.CenterCodenName = model.CenterCodeName;
+                        modeltravvm.TodateStr = DateTime.Today.AddDays(3).ToString("yyyy-MM-dd");
+                        modeltravvm.FromdateStr = DateTime.Today.ToString("yyyy-MM-dd");
+
+
+                    }
 
                 }
-
+                string baseUrl = "/Security/ETS/Create?NoteNumber=" + model.NoteNumber;
+                ViewBag.BackUrl = baseUrl;
+                TempData["ETS"] = model;
             }
             catch (Exception ex)
             {
@@ -222,7 +264,56 @@ namespace CBBW.Areas.Security.Controllers
 
             return View(modeltravvm);
         }
+        public JsonResult GetTraveelingDetailsReverseData()
+        {
+            CustomAjaxResponse result = new CustomAjaxResponse();
+            ETSTravellingDetailsVM TdModel = new ETSTravellingDetailsVM();
+            try
+            {
+                if (TempData["ETSData"] != null)
+                {
 
+                    TdModel = TempData["ETSData"] as ETSTravellingDetailsVM;
+                    if (TdModel.btnSubmit == 1)
+                    {
+                        TempData["ETSData"] = TdModel;
+                        TdModel.travDetails = _iETS.GetETSTravellingDetails(TdModel.NoteNumber, ref pMsg);
+                        TdModel.travDetails.SchFromDateStr = TdModel.travDetails.SchFromDate.ToString("yyyy-MM-dd");
+                        TdModel.travDetails.SchTourToDateStr = TdModel.travDetails.SchTourToDate.ToString("yyyy-MM-dd");
+                        //TdModel.travDetails.SchFromDateDisplay
+                        TdModel.dateTour = _iETS.GetETSDateWiseTour(TdModel.NoteNumber, ref pMsg);
+                        TempData["BtnSubmit"] = 1;
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
+            return Json(TdModel, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetTraveelingPersonReverseData()
+        {
+            ETSHeaderEntryVM modelhdr = new ETSHeaderEntryVM();
+            CustomAjaxResponse result = new CustomAjaxResponse();
+            List<ETSTravellingPerson> modelTP = new List<ETSTravellingPerson>();
+            try
+            {
+                if (TempData["ETS"] != null)
+                {
+                    modelhdr = TempData["ETS"] as ETSHeaderEntryVM;
+                    TempData["ETS"] = modelhdr;
+                    modelhdr.PersonDtls = _iETS.GetETSTravellingPerson(modelhdr.NoteNumber, ref pMsg);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                ex.ToString();
+            }
+            return Json(modelhdr, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult Details(string NoteNumber, int CanDelete, int CBUID = 0)
         {
             ETSHeaderEntryVM modelvmobj = new ETSHeaderEntryVM();
@@ -238,34 +329,32 @@ namespace CBBW.Areas.Security.Controllers
 
             return View(modelvmobj);
         }
-
         [HttpPost]
         public ActionResult Details(ETSHeaderEntryVM modelobj, string Submit)
         {
-            string baseUrl = "/Security/ETS/Details?NoteNumber="+ modelobj.NoteNumber +"&CanDelete=" + modelobj.CanDelete + "&CBUID=" + modelobj.CBUID;
+            string baseUrl = "/Security/ETS/Details?NoteNumber=" + modelobj.NoteNumber + "&CanDelete=" + modelobj.CanDelete + "&CBUID=" + modelobj.CBUID;
             ViewBag.HeaderText = modelobj.HeaderText;
             if (Submit == "Delete")
             {
                 if (_iETS.RemoveETSNoteNumber(modelobj.NoteNumber, 0, 1, ref pMsg))
                 {
                     ViewBag.Msg = "Note Number " + modelobj.NoteNumber + " Deleted Successfully.";
-                    
+
                 }
                 else { ViewBag.ErrMsg = "Updation Failed For Note Number " + modelobj.NoteNumber; }
 
             }
             else if (Submit == "DTD")
             {
-               TempData["BackUrl"] = baseUrl;
+                TempData["BackUrl"] = baseUrl;
                 return RedirectToAction("TravellingDetailsView", "ETS", new { NoteNumber = modelobj.NoteNumber, CBUID = modelobj.CBUID });
             }
             modelobj.etsHeader = _iETS.GetETSHdrEntry(modelobj.NoteNumber, ref pMsg);
             modelobj.PersonDtls = _iETS.GetETSTravellingPerson(modelobj.NoteNumber, ref pMsg);
-          
+
             return View(modelobj);
         }
-
-        public ActionResult TravellingDetailsView(string NoteNumber,int CBUID)
+        public ActionResult TravellingDetailsView(string NoteNumber, int CBUID)
         {
             ETSTravellingDetailsVM modelvm = new ETSTravellingDetailsVM();
             try
@@ -278,17 +367,10 @@ namespace CBBW.Areas.Security.Controllers
 
             return View(modelvm);
         }
-
-
-
-
-
-
-
         public JsonResult GetETSNZBDetailsforListPage(int iDisplayLength, int iDisplayStart, int iSortCol_0,
     string sSortDir_0, string sSearch)
         {
-            List<ETSNoteList> noteList = _iETS.GetETSNZBDetailsforListPage(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, user.CentreCode, ref pMsg);
+            List<ETSNoteList> noteList = _iETS.GetETSNZBDetailsforListPage(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, user.CentreCode, 1, ref pMsg);
 
             var result = new
             {
@@ -300,24 +382,379 @@ namespace CBBW.Areas.Security.Controllers
             };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+        #endregion
+        #region For Approval process
+        public JsonResult GetETSNZBApprovalforListPage(int iDisplayLength, int iDisplayStart, int iSortCol_0,
+   string sSortDir_0, string sSearch)
+        {
+            List<ETSNoteList> noteList = _iETS.GetETSNZBDetailsforListPage(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, user.CentreCode, 2, ref pMsg);
 
-        public JsonResult GetVehicleTypes(int TypeVal)
+            var result = new
+            {
+                iTotalRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
+                iTotalDisplayRecords = noteList.Count(),
+                iDisplayLength = iDisplayLength,
+                iDisplayStart = iDisplayStart,
+                aaData = noteList
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult ETSNoteApproveList()
+        {
+            TempData["ETSApproveTrav"] = null;
+            return View();
+        }
+        public ActionResult ETSApproveNote(string NoteNumber = null)
+        {
+            ETSNoteApproveVM modelobj = new ETSNoteApproveVM();
+            if (NoteNumber != null)
+            {
+                if (TempData["ETSApproveTrav"] != null)
+                {
+                    modelobj = TempData["ETSApproveTrav"] as ETSNoteApproveVM;
+                    TempData["ETSApproveTrav"] = modelobj;
+                }
+                modelobj.Notelist = _iETS.GetETSNoteListToBeApproved(user.CentreCode, 1, ref pMsg);
+                modelobj.NoteNumber = modelobj.Notelist.Where(x => x.NoteNumber == NoteNumber).FirstOrDefault().NoteNumber;
+
+            }
+            else
+            {
+                modelobj.Notelist = _iETS.GetETSNoteListToBeApproved(user.CentreCode, 1, ref pMsg);
+            }
+            return View(modelobj);
+        }
+        [HttpPost]
+        public ActionResult ETSApproveNote(ETSNoteApproveVM modelobj, string Submit = null)
+        {
+
+            if (Submit == "btnTravDetails")
+            {
+                return RedirectToAction("ETSApprovedTravDetails",
+                 new { Area = "Security", NoteNumber = modelobj.NoteNumber, CBUID = 1 });
+            }
+            else if (Submit == "TravSubmit")
+            {
+
+            }
+            else
+            {
+                CustomAjaxResponse result = new CustomAjaxResponse();
+                modelobj.travdetails.NoteNumber = modelobj.NoteNumber;
+                modelobj.travdetails.IsApproved = modelobj.IsApprove == 1 ? true : false;
+                modelobj.travdetails.ApprovedReason = modelobj.ApproveReason;
+                modelobj.travdetails.ReasonVehicleProvided = "NA";
+                modelobj.travdetails.VehicleTypeProvided = 0;
+                modelobj.travdetails.EmployeeNonName = "NA";
+                modelobj.travdetails.status = 1;
+                if (_iETS.SetETSApprovalData(modelobj.travdetails, ref pMsg))
+                {
+                    result.bResponseBool = true;
+                    result.sResponseString = "Data successfully updated.";
+                }
+                else
+                {
+                    result.bResponseBool = false;
+                    result.sResponseString = pMsg;
+                }
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            return View(modelobj);
+        }
+        public ActionResult ETSApprovedTravDetails(string NoteNumber, int CBUID)
+        {
+            ETSTravellingDetailsVM modelvms = new ETSTravellingDetailsVM();
+            ETSHeaderEntryVM result = new ETSHeaderEntryVM();
+            List<Employee> objemp = new List<Employee>();
+            try
+            {
+                Employee obhemp = new Employee();
+                result.PersonDtls = _iETS.GetETSTravellingPerson(NoteNumber, ref pMsg);
+                modelvms.travDetails = _iETS.GetETSTravellingDetails(NoteNumber, ref pMsg);
+                modelvms.dateTour = _iETS.GetETSDateWiseTour(NoteNumber, ref pMsg);
+                string baseUrl = "/Security/ETS/ETSApproveNote?NoteNumber=" + NoteNumber;
+                ViewBag.BackUrl = baseUrl;
+            }
+            catch (Exception ex) { ex.ToString(); }
+
+            return View(modelvms);
+
+        }
+        public JsonResult GetETSHdrDetails(string NoteNumber)
+        {
+            ETSHeaderEntryVM result = new ETSHeaderEntryVM();
+            result.NoteNumber = NoteNumber;
+            result.etsHeader = _iETS.GetETSHdrEntry(NoteNumber, ref pMsg);
+            result.PersonDtls = _iETS.GetETSTravellingPerson(NoteNumber, ref pMsg);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetEmployeeNoName(string NoteNo)
+        {
+            ETSHeaderEntryVM result = new ETSHeaderEntryVM();
+            List<Employee> objemp = new List<Employee>();
+
+            result.PersonDtls = _iETS.GetETSTravellingPerson(NoteNo, ref pMsg);
+
+            if (result.PersonDtls != null)
+            {
+                foreach (var item in result.PersonDtls)
+                {
+                    Employee emp = new Employee();
+                    emp.EmployeeNonName = item.EmployeeNonName;
+                    objemp.Add(emp);
+                }
+            }
+            return Json(objemp, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public ActionResult SetApprovalTravDetails(ETSTravellingDetailsVM model)
+        {
+            CustomAjaxResponse result = new CustomAjaxResponse();
+            if (model != null)
+            {
+                ETSNoteApproveVM Travmodel = new ETSNoteApproveVM();
+                Travmodel.travdetails.NoteNumber = model.NoteNumber;
+                Travmodel.travdetails.VehicleTypeProvided = model.VehicleTypeProvided;
+                Travmodel.travdetails.ReasonVehicleProvided = model.ReasonVehicleProvided;
+                Travmodel.travdetails.EmployeeNonName = model.EmployeeNonName;
+                Travmodel.travdetails.ApprovedReason = "NA";
+                Travmodel.travdetails.status = 2;
+                if (_iETS.SetETSApprovalData(Travmodel.travdetails, ref pMsg))
+                {
+                    Travmodel.NoteNumber = model.NoteNumber;
+                    Travmodel.btnDisplay = 1;
+                    TempData["ETSApproveTrav"] = Travmodel;
+                    result.bResponseBool = true;
+                    result.sResponseString = "Data successfully updated.";
+                }
+                else
+                {
+                    result.bResponseBool = false;
+                    result.sResponseString = pMsg;
+                }
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult ApprovalDetails(string NoteNumber, int CanDelete, int CBUID = 0)
+        {
+            ETSHeaderEntryVM modelvmobj = new ETSHeaderEntryVM();
+            try
+            {
+                modelvmobj.etsHeader = _iETS.GetETSHdrEntry(NoteNumber, ref pMsg);
+                modelvmobj.PersonDtls = _iETS.GetETSTravellingPerson(NoteNumber, ref pMsg);
+                modelvmobj.CanDelete = CanDelete;// == 1 ? true : false;
+                modelvmobj.HeaderText = "Approval";
+
+
+            }
+            catch (Exception ex) { ex.ToString(); }
+
+            return View(modelvmobj);
+        }
+        [HttpPost]
+        public ActionResult ApprovalDetails(ETSHeaderEntryVM modelobj, string Submit)
+        {
+            string baseUrls = "/Security/ETS/ApprovalDetails?NoteNumber=" + modelobj.NoteNumber + "&CanDelete=0&CBUID=0";
+
+
+            if (Submit == "DTD")
+            {
+                TempData["ABackUrl"] = baseUrls;
+                return RedirectToAction("ApprovalTravellingDetailsView", "ETS", new { NoteNumber = modelobj.NoteNumber, CBUID = modelobj.CBUID });
+            }
+
+            return View(modelobj);
+        }
+        public ActionResult ApprovalTravellingDetailsView(string NoteNumber, int CBUID)
+        {
+            ETSTravellingDetailsVM modelvm = new ETSTravellingDetailsVM();
+            try
+            {
+                ViewBag.BackUrls = TempData["ABackUrl"] as string;
+                modelvm.travDetails = _iETS.GetETSTravellingDetails(NoteNumber, ref pMsg);
+                modelvm.dateTour = _iETS.GetETSDateWiseTour(NoteNumber, ref pMsg);
+            }
+            catch (Exception ex) { ex.ToString(); }
+
+            return View(modelvm);
+        }
+
+        //public JsonResult GetETSTravellingperson(string Notenumber)
+        //{
+        //    ETSHeaderEntryVM modelobj = new ETSHeaderEntryVM();
+
+        //    return Json(modelobj, JsonRequestBehavior.AllowGet);
+        //}
+        #endregion
+        #region For RATIFICATION window
+        public JsonResult GetETSRTFCNforListPage(int iDisplayLength, int iDisplayStart, int iSortCol_0,
+  string sSortDir_0, string sSearch)
+        {
+            List<ETSNoteList> noteList = _iETS.GetETSNZBDetailsforListPage(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, user.CentreCode, 3, ref pMsg);
+
+            var result = new
+            {
+                iTotalRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
+                iTotalDisplayRecords = noteList.Count(),
+                iDisplayLength = iDisplayLength,
+                iDisplayStart = iDisplayStart,
+                aaData = noteList
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult RTFNIndex()
+        {
+
+            return View();
+        }
+        public ActionResult RTFNCreate(string NoteNumber = null, int btnDisplay = 0)
+        {
+            ETSNoteApproveVM modelobj = new ETSNoteApproveVM();
+            try
+            {
+                if (NoteNumber != null)
+                {
+                    modelobj.btnDisplay = btnDisplay;
+                    modelobj.Notelist = _iETS.GetETSNoteListToBeApproved(user.CentreCode, 2, ref pMsg);
+                    if (modelobj.Notelist != null) {
+                    modelobj.NoteNumber = modelobj.Notelist.Where(x => x.NoteNumber == NoteNumber).FirstOrDefault().NoteNumber;
+                    }
+                }
+                else
+                {
+                    modelobj.Notelist = _iETS.GetETSNoteListToBeApproved(user.CentreCode, 2, ref pMsg);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                ex.ToString();
+            }
+
+            return View(modelobj);
+        }
+        [HttpPost]
+        public ActionResult RTFNCreate(ETSNoteApproveVM modelobj, string Submit = null)
+        {
+            if (Submit == "btnTravDetails")
+            {
+                return RedirectToAction("RTFNTravellingDetails",
+                 new { Area = "Security", NoteNumber = modelobj.NoteNumber, CBUID = 1 });
+            }
+            else
+            {
+                CustomAjaxResponse result = new CustomAjaxResponse();
+                modelobj.ratified.NoteNumber = modelobj.NoteNumber;
+                modelobj.ratified.IsRatified = modelobj.IsRatified == 1 ? true : false;
+                modelobj.ratified.RatifiedReason = modelobj.RatifiedReason;
+                modelobj.ratified.status = 1;
+                if (_iETS.SetETSRatifiedData(modelobj.ratified, ref pMsg))
+                {
+                    result.bResponseBool = true;
+                    result.sResponseString = "Data successfully updated.";
+                }
+                else
+                {
+                    result.bResponseBool = false;
+                    result.sResponseString = pMsg;
+                }
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            
+            return View(modelobj);
+        }
+        public ActionResult RTFNTravellingDetails(string NoteNumber, int CBUID=0)
+        {
+            ETSTravellingDetailsVM modelvms = new ETSTravellingDetailsVM();
+            ETSHeaderEntryVM result = new ETSHeaderEntryVM();
+            List<Employee> objemp = new List<Employee>();
+            string baseUrl = "";
+            try
+            {
+                Employee obhemp = new Employee();
+                // result.PersonDtls = _iETS.GetETSTravellingPerson(NoteNumber, ref pMsg);
+                modelvms.travDetails = _iETS.GetETSTravellingDetails(NoteNumber, ref pMsg);
+                modelvms.dateTour = _iETS.GetETSDateWiseTour(NoteNumber, ref pMsg);
+                if (CBUID == 2) {
+                    baseUrl = "/Security/ETS/RTFNDetailsView?NoteNumber=" + NoteNumber;
+                }
+                else { 
+                 baseUrl = "/Security/ETS/RTFNCreate?NoteNumber=" + NoteNumber;
+                }
+                ViewBag.BackUrl = baseUrl;
+                ViewBag.CBUID = CBUID;
+            }
+            catch (Exception ex) { ex.ToString(); }
+
+            return View(modelvms);
+        }
+        [HttpPost]
+        public ActionResult RTFNTravellingDetails(ETSTravellingDetailsVM modelobj)
+        {
+            if (modelobj != null)
+            {
+                return RedirectToAction("RTFNCreate",
+                     new { Area = "Security", NoteNumber = modelobj.NoteNumber, btnDisplay = 1 });
+
+            }
+            return View(modelobj);
+        }
+        public ActionResult RTFNDetailsView(string NoteNumber, int CanDelete=0, int CBUID = 0)
+        {
+            ETSHeaderEntryVM modelvmobj = new ETSHeaderEntryVM();
+            try
+            {
+                modelvmobj.etsHeader = _iETS.GetETSHdrEntry(NoteNumber, ref pMsg);
+                modelvmobj.PersonDtls = _iETS.GetETSTravellingPerson(NoteNumber, ref pMsg);
+                modelvmobj.CanDelete = CanDelete;// == 1 ? true : false;
+                modelvmobj.HeaderText = "Ratification";
+
+
+            }
+            catch (Exception ex) { ex.ToString(); }
+
+            return View(modelvmobj);
+        }
+        [HttpPost]
+        public ActionResult RTFNDetailsView(ETSHeaderEntryVM model)
+        {
+            if (model.NoteNumber != null) { 
+            return RedirectToAction("RTFNTravellingDetails",
+                     new { Area = "Security", NoteNumber = model.NoteNumber, CBUID = 2 });
+            }
+            return View();
+        }
+        #endregion
+        #region For Common use data
+        public JsonResult GetDesgCodenName(int empID, int empType)
+        {//empType : 2-driver, 1-Others
+            return Json(_master.GetDesgCodenName(empID, empType), JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetVehicleTypes(int TypeVal = 0)
         {
             List<CustomComboOptions> result = new List<CustomComboOptions>();
 
             EHGMaster master = EHGMaster.GetInstance;
-            if (TypeVal == 3 || TypeVal == 4)
+
+            if (TypeVal == 1 || TypeVal == 2)
             {
-                result = master.VehicleTypes;
+                result = master.VehicleTypes.Where(x => x.ID == 2).ToList();
             }
             else
             {
-                result = master.VehicleTypes.Where(x => x.ID == 2).ToList();
+                result = master.VehicleTypes;
             }
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult GetPersonTypes()
+        {
+            List<CustomComboOptions> result = new List<CustomComboOptions>();
 
+            EHGMaster master = EHGMaster.GetInstance;
+            result = master.PersonType;
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
         public JsonResult GetTourCategories(int PTval)
         {
             List<CustomComboOptions> result = new List<CustomComboOptions>();
@@ -335,7 +772,6 @@ namespace CBBW.Areas.Security.Controllers
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
         public JsonResult GetLocationsFromTypes(string TypeIDs)
         {
             IEnumerable<CustomComboOptions> result = _iCTV.getLocationsFromType(TypeIDs, ref pMsg);
@@ -354,6 +790,8 @@ namespace CBBW.Areas.Security.Controllers
         {
             IEnumerable<CustomComboOptions> result = _master.getBranchType(CenterId, ref pMsg);
             return Json(result, JsonRequestBehavior.AllowGet);
+
+
         }
 
         //public JsonResult GetBranchCode(string CId)
@@ -363,7 +801,7 @@ namespace CBBW.Areas.Security.Controllers
         //    result = master.BranchCode;
         //    return Json(result, JsonRequestBehavior.AllowGet);
         //}
-
+        #endregion
         #region Private Function for Teamp Data
         private ETSHeaderEntryVM CastETSTempData()
         {

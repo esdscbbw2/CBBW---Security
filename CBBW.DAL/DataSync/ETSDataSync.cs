@@ -88,13 +88,13 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-        public DataTable GetETSNZBDetailsforListPage(int DisplayLength, int DisplayStart, int SortColumn, string SortDirection, string SearchText, int CenterCode, ref string pMsg)
+        public DataTable GetETSNZBDetailsforListPage(int DisplayLength, int DisplayStart, int SortColumn, string SortDirection, string SearchText, int CenterCode,int status, ref string pMsg)
         {
             try
             {
                 SortDirection = SortDirection.Substring(0, 1).ToUpper();
                 int paracount = 0;
-                SqlParameter[] para = new SqlParameter[6];
+                SqlParameter[] para = new SqlParameter[7];
                 para[paracount] = new SqlParameter("@DisplayLength", SqlDbType.Int);
                 para[paracount++].Value = DisplayLength;
                 para[paracount] = new SqlParameter("@DisplayStart", SqlDbType.Int);
@@ -107,6 +107,8 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = SearchText;
                 para[paracount] = new SqlParameter("@CenterCode", SqlDbType.Int);
                 para[paracount++].Value = CenterCode;
+                para[paracount] = new SqlParameter("@status", SqlDbType.Int);
+                para[paracount++].Value = status; 
                 using (SQLHelper sql = new SQLHelper("[ETS].[getETSNZBDetailsforListPage]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataTable(para, ref pMsg);
@@ -176,6 +178,73 @@ namespace CBBW.DAL.DataSync
                 para[paracount] = new SqlParameter("@ActiveTag", SqlDbType.Int);
                 para[paracount++].Value = ActiveTag;
                 using (SQLHelper sql = new SQLHelper("[ETS].[RemoveETSNoteNumber]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+
+
+        public DataTable GetETSNoteListToBeApproved(int CentreCode, int status, ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("select * from [ETS].[getETSNoteListToBeApproved](" + CentreCode + "," + status + ")", CommandType.Text))
+                {
+                    return sql.GetDataTable();
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+
+
+        public DataTable SetETSApprovalData(ETSApproveTravDetails model, ref string pMsg)
+        {
+            try
+            {
+
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[7];
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
+                para[paracount++].Value = model.NoteNumber;
+                para[paracount] = new SqlParameter("@VehicleTypeProvided", SqlDbType.Int);
+                para[paracount++].Value = model.VehicleTypeProvided;
+                para[paracount] = new SqlParameter("@ReasonVehicleProvided", SqlDbType.NChar, 100);
+                para[paracount++].Value = model.ReasonVehicleProvided;
+                para[paracount] = new SqlParameter("@EmployeeNonName", SqlDbType.NChar, 150);
+                para[paracount++].Value = model.EmployeeNonName;
+                para[paracount] = new SqlParameter("@IsApproved", SqlDbType.Bit);
+                para[paracount++].Value = model.IsApproved;
+                para[paracount] = new SqlParameter("@ApprovedReason", SqlDbType.NChar, 250);
+                para[paracount++].Value = model.ApprovedReason;
+                para[paracount] = new SqlParameter("@status", SqlDbType.Int);
+                para[paracount++].Value = model.status;
+
+                using (SQLHelper sql = new SQLHelper("[ETS].[SetETSApprovalData]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable SetETSRatifiedData(ETSRatified model, ref string pMsg)
+        {
+            try
+            {
+
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[4];
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
+                para[paracount++].Value = model.NoteNumber;
+                para[paracount] = new SqlParameter("@IsRatified", SqlDbType.Bit);
+                para[paracount++].Value = model.IsRatified;
+                para[paracount] = new SqlParameter("@RatifiedReason", SqlDbType.NChar, 250);
+                para[paracount++].Value = model.RatifiedReason;
+                para[paracount] = new SqlParameter("@status", SqlDbType.Int);
+                para[paracount++].Value = model.status;
+
+                using (SQLHelper sql = new SQLHelper("[ETS].[SetETSRatifiedData]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataTable(para, ref pMsg);
                 }

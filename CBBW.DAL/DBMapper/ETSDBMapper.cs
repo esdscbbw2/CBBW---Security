@@ -24,14 +24,22 @@ namespace CBBW.DAL.DBMapper
                         result.PersonType = int.Parse(dr["PersonType"].ToString());
                     if (!DBNull.Value.Equals(dr["PersonTypeName"]))
                         result.PersonTypeName = dr["PersonTypeName"].ToString();
+                    if (!DBNull.Value.Equals(dr["EmployeeNo"]))
+                        result.EmployeeNo = int.Parse(dr["EmployeeNo"].ToString());
                     if (!DBNull.Value.Equals(dr["EmployeeNonName"]))
                         result.EmployeeNonName = dr["EmployeeNonName"].ToString();
+                    if (!DBNull.Value.Equals(dr["DesignationCode"]))
+                        result.DesignationCode = int.Parse(dr["DesignationCode"].ToString());
                     if (!DBNull.Value.Equals(dr["DesignationCodenName"]))
                         result.DesignationCodenName =dr["DesignationCodenName"].ToString();
+                    if (!DBNull.Value.Equals(dr["EligibleVehicleType"]))
+                        result.EligibleVehicleType = int.Parse(dr["EligibleVehicleType"].ToString());
                     if (!DBNull.Value.Equals(dr["EligibleVehicleTypeName"]))
                         result.EligibleVehicleTypeName = dr["EligibleVehicleTypeName"].ToString();
+                   //if (!DBNull.Value.Equals(dr["TADADenied"]))
+                   //    result.TADADenied =int.Parse(dr["TADADenied"].ToString());
                     if (!DBNull.Value.Equals(dr["TADADenied"]))
-                        result.TADADenied =int.Parse(dr["TADADenied"].ToString()); 
+                        result.TADADenieds = bool.Parse(dr["TADADenied"].ToString());
                 }
             }
             catch (Exception ex) { ex.ToString(); }
@@ -59,8 +67,23 @@ namespace CBBW.DAL.DBMapper
                         result.IsActive = bool.Parse(dr["IsActive"].ToString());
                     if (!DBNull.Value.Equals(dr["IsApproved"]))
                         result.IsApproved = bool.Parse(dr["IsApproved"].ToString());
+                    if (!DBNull.Value.Equals(dr["ApprovedReason"]))
+                        result.ApprovedReason = dr["ApprovedReason"].ToString();
+                    if (!DBNull.Value.Equals(dr["ApproveDate"]))
+                        result.ApproveDate = DateTime.Parse(dr["ApproveDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["ApproveTime"]))
+                        result.ApproveTime =dr["ApproveTime"].ToString();
+                    if (!DBNull.Value.Equals(dr["IsRatified"]))
+                        result.IsRatified = bool.Parse(dr["IsRatified"].ToString());
+                    if (!DBNull.Value.Equals(dr["RatifiedReason"]))
+                        result.RatifiedReason = dr["RatifiedReason"].ToString();
+                    if (!DBNull.Value.Equals(dr["RatifiedDate"]))
+                        result.RatifiedDate = DateTime.Parse(dr["RatifiedDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["RatifiedTime"]))
+                        result.RatifiedTime = dr["RatifiedTime"].ToString();
                     result.EntryDateDisplay = MyDBLogic.ConvertDateToString(result.EntryDate);
-
+                    result.ApproveDatestr = MyDBLogic.ConvertDateToString(result.ApproveDate);
+                    result.RatifiedDatestr = MyDBLogic.ConvertDateToString(result.RatifiedDate);
                 }
             }
             catch (Exception ex) { ex.ToString(); }
@@ -163,6 +186,7 @@ namespace CBBW.DAL.DBMapper
                     if (!DBNull.Value.Equals(dr["IsActive"]))
                         result.IsActive = bool.Parse(dr["IsActive"].ToString());
                     result.DDSchToDate = MyDBLogic.ConvertDateToString(result.SchToDate);
+                    result.SchToDatestr = result.SchToDate.ToString("yyyy-MM-dd");
                 }
             }
             catch (Exception ex) { ex.ToString(); }

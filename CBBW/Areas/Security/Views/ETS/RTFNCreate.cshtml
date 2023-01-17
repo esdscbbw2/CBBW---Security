@@ -1,0 +1,281 @@
+﻿@using System.Globalization;
+@using CBBW.Areas.Security.ViewModel.ETS;
+@model ETSNoteApproveVM
+@{
+
+}
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(x => x.btnDisplay)
+    <div class="container">
+        <div class="row newTable">
+            <div class="fixedElement">
+                <div class="col-md-12">
+                    <div class="heading_text_btn mb-3 mt-4">
+                        <div class="leftButton">
+                            <button type="button" class="btn btn-primary me-2" onclick="window.location.href='/Security/ETS/RTFNIndex';">
+                                <i data-feather="arrow-left-circle"></i>
+                                Back
+                            </button>
+                            <button type="button" onclick="SaveDataClicked()" id="btnSubmit" class="btn btn-secondary me-2" disabled>
+                                <i data-feather="upload"></i>
+                                Submit
+                            </button>
+                            <button type="button" onclick="Buttonclear()" class="btn btn-white">
+                                <i data-feather="x-circle"></i>
+                                Clear
+                            </button>
+                        </div>
+
+                        <h2>Employees Travelling Schedule Details – RATIFICATION (FOR NZB STAFF) </h2>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-md-12 d-flex justify-content-between">
+                <div class="text-left pt-2 pb-2">
+                    <button type="button" id="btnViewDoc" class="btn btn-light-green">
+                        To Check Attached “Travelling Request Form” Click Here
+
+                    </button>
+                    <input type="hidden" id="AttachFile" />
+                </div>
+                <div class="text-right pt-2 pb-2">
+                    <div class="upper-tab-buttons">
+                        <button type="button" class="btn btn-primary me-2" id="btnTourRule">
+                            To Check  “Tour Rules”   Click Here
+                        </button>
+                        <button type="button" class="btn btn-primary " onclick="window.location.href='#';">
+                            To Check “TA & DA Rules”   Click Here
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-4">
+                <div class="card mb-4 mt-4">
+                    <div class="card-body approvalForm">
+                        <form class="form-sample form-inline row ms-auto">
+                            <div class="row d-flex align-items-center mb-4">
+                                <label class="col-form-label col-md-2">
+                                    Ref. Employees Travelling  Schedule Details – ENTRY Note No. :
+                                </label>
+                                <div class="col-md-3">
+                                    @Html.DropDownListFor(m => m.NoteNumber,
+                              new SelectList(Model.Notelist, "NoteNumber", "NoteNumber"),
+                              "Select Note Number",
+                              htmlAttributes: new
+                              {
+                                  @class = "form-select pointer"
+                              })
+                                </div>
+                                <label class="col-form-label col-md-1">
+                                    Date  :
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" value="@DateTime.Today.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)" disabled>
+                                </div>
+                                <label class="col-form-label col-md-1">
+                                    Time  :
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" value="@DateTime.Now.ToString("hh:mm tt")" disabled>
+                                </div>
+                            </div>
+                            <div class="row d-flex align-items-center mb-4">
+                                <label class="col-form-label col-md-2">
+                                    Center Code & Name  :
+                                </label>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" value="" id="CenterCodeName" disabled>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="card mt-4 mb-4">
+                    <div class="card-body alert alert-success approvalForm text-dark ">
+                        <div class="row d-flex align-items-center">
+                            <div class="col-md-2 col-form-label">
+                                <label>Approved :</label>
+                            </div>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control width-85 pointer-none" id="IsApproved" value="" disabled="">
+                            </div>
+                            <div class="col-md-2 col-form-label">
+                                <label>Date &amp; Time Of Approval :</label>
+                            </div>
+                            <div class="col-md-2">
+                                <input type="text" id="ApprovedDateTime" class="form-control" value="" disabled="">
+                            </div>
+                            <div class="col-md-2 col-form-label">
+                                <label>Reason If Not Approved :</label>
+                            </div>
+
+                            <div class="col-md-2">
+                                <textarea name="" id="ApprovedReason" cols="20" rows="2" class="form-control pointer-default" readonly data-toggle="tooltip" data-placement="bottom">  </textarea>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 mt-4 pt-3">
+                    <div class="heading_text_btn2 d-block mb-4">
+                        <h2>
+                            Travelling Person - Details
+                        </h2>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive btnalign">
+                                <table class="table table-bordered w-100" id="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" style="vertical-align: middle;">SL.No.</th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;">
+                                                Person Type
+                                            </th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;">Employee No. & Name</th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;">
+                                                Designation Code & Name
+                                            </th>
+                                            <!-- <th scope="col" style="text-align: center; vertical-align: middle;"> Is He Back With Vehicle</th> -->
+                                            <th scope="col" style="text-align: center; vertical-align: middle;">
+                                                Eligible Company Vehicle Type
+                                            </th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;">
+                                                T.A & D.A Denied
+                                            </th>
+                                        </tr>
+
+                                    </thead>
+                                    <tbody id="tbody1">
+                                        <tr id="0" class="add-row">
+                                            <th scope="row" class="text-center OffSpecial">1</th>
+                                            <td id="PersonTypeName" scope="row"
+                                                class="text-center alterID htmlVal">
+                                            </td>
+                                            <td id="EmployeeNonName" scope="row"
+                                                class="text-center alterID htmlVal">
+                                            </td>
+                                            <td id="DesignationCodenName" scope="row"
+                                                class="text-center alterID htmlVal">
+                                            </td>
+                                            <td id="EligibleVehicleTypeName" scope="row"
+                                                class="text-center alterID htmlVal">
+                                            </td>
+                                            <td id="TADADenieds" scope="row"
+                                                class="text-center alterID htmlVal">
+                                            </td>
+                                    </tbody>
+                                    <tbody id="tbody2"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="d-flex justify-content-center mt-4">
+                        <button type="submit" name="Submit" value="btnTravDetails" id="btnTravDetails" disabled class="btn btn-primary me-2">
+                            Travelling Details
+                        </button>
+                    </div>
+                </div>
+                <div class="bgColor mt-4 bg-transparent text-left">
+                    <ul style="list-style:none;">
+                        <li style="font-size: 16px;">
+                            It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As It Is selected:
+                            <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                        </li>
+                        <li style="font-size: 16px;">
+                            It Is Ensured That This Person Is Carrying Laptop As Provided To Him. The Same Has Been Confirmed (as per leave rules):
+                            <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                        </li>
+                        <li style="font-size: 16px;">
+                            The Entry Is Done As Per Policy & As Required:
+                            <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                        </li>
+                        <li style="font-size: 16px;">
+                            Tour Is Approved / Rejected After Written Information & Consent Of COO. When Ever Required, VB Document Shall Be Produced:
+                            <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                        </li>
+                    </ul>
+                </div>
+                <div class="bgColor mt-4 bg-transparent text-left">
+                    <ul style="list-style:none;">
+                        <li style="font-size: 16px;">
+                            This Tour Schedule Has Been Selected As “Other Place” And It Is Genuine & As Required:
+                            <select id="OtherP" data-name="OtherP" data-name-text="OtherPtxt"
+                                    onchange="ValidateControl()"
+                                    class="form-select is-invalid clear"
+                                    aria-label="Default select example" style="width: 110px;">
+                                <option selected value="-1"> -</option>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card mb-4 mt-4">
+                    <div class="card-body alert alert-danger approvalForm text-dark ">
+                        <form class="form-sample form-inline row ms-auto">
+                            <div class="row d-flex align-items-center">
+                                <div class="col-md-2 col-form-label">
+                                    <label>Ratified :</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <select name="IsRatified" id="IsRatified" data-name="IsRatified" data-name-text="IsRatifiedtxt"
+                                            onchange="ValidateControl()"
+                                            class="form-select is-invalid clear"
+                                            aria-label="Default select example" style="width: 110px;">
+                                        <option selected value="-1"> -</option>
+                                        <option value="1">Yes</option>
+                                        <option value="0">No</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 col-form-label">
+                                    <label>Date & Time Of &nbsp; Ratification :</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" value="@DateTime.Today.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture) @DateTime.Now.ToString("hh:mm tt")" disabled="">
+                                </div>
+                                <div class="col-md-2 col-form-label">
+                                    <label>Reason If Not Ratified :</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <textarea maxlength="200" name="RatifiedReason" id="RatifiedReason" onchange="ValidateControl()" data-name="ApproveReason" class="form-control is-invalid clear" cols="10" rows="2"></textarea>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+@section headers
+{
+
+}
+@section scripts{
+    <script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/ETS/ETSRatified.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#btnTourRule').click(function () {
+                var url = "/Security/TourRule/ViewRedirection?CBUID=1";
+                window.open(url);
+            });
+        });
+    </script>
+
+}

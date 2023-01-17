@@ -21,12 +21,13 @@ namespace CBBW.BOL.ETS
 		public string CenterCode { get; set; }
 		public string TourCategoryId { get; set; }
 		public string BranchCode { get; set; }
-
 		public string TourCatText { get; set; }
 		public string CenterCodeNametxt { get; set; }
 		public string BranchCodeNametxt { get; set; }
-
-
 		public bool IsActive { get; set; }
-    }
+
+		public string SchToDatestr { get; set; }
+		
+
+	}
 }

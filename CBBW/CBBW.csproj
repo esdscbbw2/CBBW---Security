@@ -151,6 +151,7 @@
     <Compile Include="Areas\Security\ViewModel\EHG\EHGNotApprovalVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EHG\EHGTravellingPersonsVM.cs" />
     <Compile Include="Areas\Security\ViewModel\ETS\ETSHeaderEntryVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\ETS\ETSNoteApproveVM.cs" />
     <Compile Include="Areas\Security\ViewModel\ETS\ETSTravellingDetailsVM.cs" />
     <Compile Include="Areas\Security\ViewModel\GVMR\GVMRDetailsVM.cs" />
     <Compile Include="Areas\Security\ViewModel\LocalVehicleTripScheduleVM.cs" />
@@ -238,6 +239,7 @@
     <Content Include="img\charbhai-logo-center.jpg" />
     <Content Include="UIContent\CSS\bootstrap-datetimepicker.min.css" />
     <Content Include="UIContent\CSS\Custom_ErrorToolTip.css" />
+    <Content Include="UIContent\CSS\fixedColumns.dataTables.min.css" />
     <Content Include="UIContent\CSS\font-awesome.min.css" />
     <Content Include="UIContent\CSS\img\clock.png" />
     <Content Include="UIContent\CSS\img\main-banner.png" />
@@ -327,6 +329,7 @@
     <Content Include="UIContent\JS\CustomLayout.js" />
     <Content Include="UIContent\JS\DataTablePagingInput.js" />
     <Content Include="UIContent\JS\dataTables.bootstrap5.min.js" />
+    <Content Include="UIContent\JS\dataTables.fixedColumns.min.js" />
     <Content Include="UIContent\JS\dataTables.js" />
     <Content Include="UIContent\JS\feather.min.js" />
     <Content Include="UIContent\JS\jquery-2.1.3.min.js" />
@@ -396,6 +399,15 @@
     <Content Include="Areas\Security\Views\ETS\Index.cshtml" />
     <Content Include="Areas\Security\Views\ETS\TravellingDetails.cshtml" />
     <Content Include="Areas\Security\Views\ETS\TravellingDetailsView.cshtml" />
+    <Content Include="Areas\Security\Views\ETS\ApprovalDetails.cshtml" />
+    <Content Include="Areas\Security\Views\ETS\ApprovalTravellingDetailsView.cshtml" />
+    <Content Include="Areas\Security\Views\ETS\ETSApprovedTravDetails.cshtml" />
+    <Content Include="Areas\Security\Views\ETS\ETSApproveNote.cshtml" />
+    <Content Include="Areas\Security\Views\ETS\ETSNoteApproveList.cshtml" />
+    <Content Include="Areas\Security\Views\ETS\RTFNCreate.cshtml" />
+    <Content Include="Areas\Security\Views\ETS\RTFNDetailsView.cshtml" />
+    <Content Include="Areas\Security\Views\ETS\RTFNIndex.cshtml" />
+    <Content Include="Areas\Security\Views\ETS\RTFNTravellingDetails.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />

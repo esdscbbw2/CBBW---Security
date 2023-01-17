@@ -61,6 +61,7 @@
     <Compile Include="Repository\ETSRepository.cs" />
     <Compile Include="Repository\GVMRRepository.cs" />
     <Compile Include="Repository\MasterRepository.cs" />
+    <Compile Include="Repository\MasterRepositoryUser2.cs" />
     <Compile Include="Repository\MGPRepository.cs" />
     <Compile Include="Repository\MyHelperRepository.cs" />
     <Compile Include="Repository\TADARulesRepository.cs" />

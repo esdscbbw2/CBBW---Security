@@ -22,7 +22,7 @@
             <thead>
                 <tr>
                     <th scope="col" rowspan="2"> SL.No.</th>
-                    <th scope="col"> Note No.</th>
+                    <th scope="col" class=" dtfc-fixed-left" style="width: 233.778px; left: 81.9861px; position: sticky;"> Note No.</th>
                     <th scope="col"> Date </th>
                     <th scope="col">Center Code & Name</th>
                     <th scope="col">Purpose Of Allotment</th>
@@ -97,7 +97,7 @@
 </div>
 @section headers
     {
-
+    
 }
 @section scripts{
     <script>
@@ -126,7 +126,8 @@
                 ],
                 bServerSide: true,
                 sAjaxSource: '/Security/EHG/getNoteList',
-                "pagingType": "input"
+                "pagingType": "input",
+                fixedColumns: {left:2},
             });
             $('.tblSearch').on('keyup change', function () {
                 dtinstance.search(this.value).draw();
@@ -147,7 +148,7 @@
             //        window.location.href =destinationurl;;
             //    }
             //});
-        };
+        };        
     </script>
     
 }

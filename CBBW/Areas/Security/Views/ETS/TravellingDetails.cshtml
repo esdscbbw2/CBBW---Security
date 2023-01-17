@@ -18,7 +18,7 @@
                 <div class="col-md-12">
                     <div class="heading_text_btn mb-3 mt-4">
                         <div class="leftButton">
-                            <button id="btnBack" type="button" class="btn btn-primary me-2">
+                            <button id="btnBack" onclick="BackUrls()" type="button" class="btn btn-primary me-2">
                                 <i data-feather="arrow-left-circle"></i>
                                 Back
                             </button>
@@ -129,7 +129,7 @@
                                                            data-name="SchFromDate"
                                                            onchange="ValidateControl()"
                                                            class="form-control pointer is-invalid CustomDateFormatCloneRow">
-                                                    <label id="lblSchFromDate" style="width:100px"
+                                                    <label id="lblSchFromDate" style="width:80px"
                                                            class="datelabel pointer alterID">Select Date</label>
 
                                                 </div>
@@ -156,7 +156,7 @@
                                                 </div>
                                             </td>
                                             <td class="text-center">
-                                                <textarea data-name="PurposeOfVisit" id="PurposeOfVisit" class="form-control" cols="10" rows="2"></textarea>
+                                                <textarea maxlength="200" data-name="PurposeOfVisit" id="PurposeOfVisit" class="form-control" cols="10" rows="2"></textarea>
                                             </td>
 
                                         </tr>
@@ -166,7 +166,7 @@
                                 </table>
                             </div>
                             <form class="form-sample form-inline row ms-auto mt-4 pt-3 mb-2">
-                                <div class="row d-flex align-items-center">
+                                <div class="row d-flex align-items-center" style="padding-top: 40px;">
                                     <div class="col-form-label col-md-3">
                                         <label>Authorized Employee No. & Name :</label>
                                     </div>
@@ -319,7 +319,7 @@
         }).on('dp.show', function () {
             if (firstOpen) {
                 minDate: moment(),
-                time = moment().startOf('day');
+                    time = moment().startOf('day');
                 firstOpen = false;
             } else {
                 time = "01:00 PM"
@@ -328,38 +328,49 @@
         });
     </script>
     <script>
-        $(document).ready(function () {
-            $('#btnBack').click(function () {
-                var url = "/Security/ETS/Create";
-                if ($('#PublicTransport').val() != "") {
-                    Swal.fire({
-                        title: 'Confirmation Message',
-                        text: "Are You Sure Want to Go Back?",
-                        icon: 'question',
-                        customClass: 'swal-wide',
-                        //buttons: {
-                        //    cancel: 'No',
-                        //    confirm: 'Yes'
-                        //},
-                        confirmButtonText: "Yes",
-                        cancelButtonText: "No",
-                        cancelButtonClass: 'btn-cancel',
-                        confirmButtonColor: '#2527a2',
-                        showCancelButton: true,
-                    }).then(callback);
-                    function callback(result) {
-                        if (result.value) {
-                            window.location.href = url;
-                        } else {
-                            // second variant
-                        }
-                    }
-                } else {
-                    window.location.href = url;
-                };
-            });
-        });
+        
+            function BackUrls() {
+                debugger;
+                var url = "@ViewBag.BackUrl";
+                var urlbk = url.replace(/&amp;/g, '&');
+
+                window.location.href = urlbk;
+            };
+        
     </script>
+    @*<script>
+            $(document).ready(function () {
+                $('#btnBack').click(function () {
+                    var url = "/Security/ETS/Create";
+                    if ($('#PublicTransport').val() != "") {
+                        Swal.fire({
+                            title: 'Confirmation Message',
+                            text: "Are You Sure Want to Go Back?",
+                            icon: 'question',
+                            customClass: 'swal-wide',
+                            //buttons: {
+                            //    cancel: 'No',
+                            //    confirm: 'Yes'
+                            //},
+                            confirmButtonText: "Yes",
+                            cancelButtonText: "No",
+                            cancelButtonClass: 'btn-cancel',
+                            confirmButtonColor: '#2527a2',
+                            showCancelButton: true,
+                        }).then(callback);
+                        function callback(result) {
+                            if (result.value) {
+                                window.location.href = url;
+                            } else {
+                                // second variant
+                            }
+                        }
+                    } else {
+                        window.location.href = url;
+                    };
+                });
+            });
+        </script>*@
 
 
 

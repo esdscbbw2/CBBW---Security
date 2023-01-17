@@ -15,7 +15,7 @@
                             Back
                         </button>
                     </div>
-                    <h2>Employees Travelling Schedule Details – @ViewBag.HeaderText (FOR NZB STAFF) </h2>
+                    <h2>Employees Travelling Schedule Details – Approval (FOR NZB STAFF) </h2>
 
                 </div>
             </div>
@@ -169,6 +169,19 @@
                         </form>
                     </div>
                 </div>
+                <div class="bgColor mt-4 bg-transparent text-left">
+                    <ul style="list-style:none;">
+                        <li style="font-size: 16px;">
+                            Even Tough The Person Is Not Eligible For The Vehicle Type As Displayed In The Screen But Still You Are Providing Higher Class Vehicle Type? Are You Sure To Continue With The Vehicle Allotment:
+                            <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                        </li>
+
+                        <li style="font-size: 16px;">
+                            Even Tough The Person Is Eligible For Public Transport But Still You Are Providing Company Vehicle? Are You Sure To Continue With The Vehicle Allotment:
+                            <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                        </li>
+                    </ul>
+                </div>
                 <div class="col-md-12 pt-3 mt-3 pb-3">
                     <div class="heading_text_btn2 d-block mb-2">
                         <h2 class="text-center">Date Wise Tour – Details (II) </h2>
@@ -244,17 +257,11 @@
 
 </div>
 @section scripts{
-
-
-
     <script>
         $(document).ready(function () {
             $('#btnBack').click(function () {
-
-                debugger;
-                var url = "@ViewBag.BackUrl";
+                var url = "@ViewBag.BackUrls";
                 var urlbk = url.replace(/&amp;/g, '&');
-
                 window.location.href = urlbk;
             });
         });

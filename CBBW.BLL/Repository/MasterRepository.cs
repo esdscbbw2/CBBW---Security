@@ -11,7 +11,7 @@ using CBBW.DAL.Entities;
 
 namespace CBBW.BLL.Repository
 {
-    public class MasterRepository : IMasterRepository
+    public partial class MasterRepository : IMasterRepository
     {
         MasterEntities _entities;
         public MasterRepository()
@@ -23,10 +23,10 @@ namespace CBBW.BLL.Repository
             return _entities.getServiceTypes(0,ref pMsg);
         }
 
-        public IEnumerable<CustomComboOptions> getBranchType(int CentreId, ref string pMsg)
-        {
-            return _entities.getBranchType(CentreId, ref pMsg);
-        }
+        //public IEnumerable<CustomComboOptions> getBranchType(int CentreId, ref string pMsg)
+        //{
+        //    return _entities.getBranchType(CentreId, ref pMsg);
+        //}
 
         public string GetDesgCodenName(int empID, int empType)
         {
@@ -59,12 +59,12 @@ namespace CBBW.BLL.Repository
             return _entities.getVehicleBasicInfo(VehicleNumber, ref pMsg);
         }
 
-        public CompanyTransportType getVehicleEligibility(int EmployeeNumber, ref string pMsg)
-        {
-            CompanyTransportType result = new CompanyTransportType();
-            result.ID = 3;result.DisplayText = "LV";
-            return result;
-        }
+        //public CompanyTransportType getVehicleEligibility(int EmployeeNumber, ref string pMsg)
+        //{
+        //    CompanyTransportType result = new CompanyTransportType();
+        //    result.ID = 3;result.DisplayText = "LV";
+        //    return result;
+        //}
 
         public List<VehicleNo> getVehicleList(string VehicleType, int wheeltype, ref string pMsg)
         {

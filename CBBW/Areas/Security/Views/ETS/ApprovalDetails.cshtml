@@ -2,7 +2,7 @@
 @using CBBW.Areas.Security.ViewModel.ETS;
 @model ETSHeaderEntryVM
 @{
-    ViewBag.Title = "Employees Travelling Schedule Details – ENTRY (FOR NZB STAFF)";
+    ViewBag.Title = "Employees Travelling Schedule Details – Approval (FOR NZB STAFF)";
 
 }
 
@@ -10,14 +10,14 @@
 <div class="container">
     @using (Html.BeginForm())
     {
-        @Html.HiddenFor(m =>m.NoteNumber)
+        @Html.HiddenFor(m => m.NoteNumber)
         @Html.HiddenFor(m => m.CanDelete)
         @Html.HiddenFor(m => m.CBUID)
         @Html.HiddenFor(m => m.etsHeader.AttachFile)
         @Html.HiddenFor(m => m.etsHeader.CenterCodeName)
         @Html.HiddenFor(m => m.HeaderText)
 
-       
+
         <div class="row newTable">
             <div class="fixedElement">
                 <div class="col-md-12">
@@ -27,7 +27,7 @@
                                 <i data-feather="arrow-left-circle"></i>
                                 Back
                             </button>
-                            @if (Model.CanDelete==1)
+                            @if (Model.CanDelete == 1)
                             {
                                 <button id="btnDelete" type="submit" name="Submit" value="Delete"
                                         class="btn btn-primary me-2">
@@ -36,7 +36,7 @@
                                 </button>
                             }
                         </div>
-                        <h2>Employees Travelling Schedule Details – @Model.HeaderText (FOR NZB STAFF)</h2>
+                        <h2>Employees Travelling Schedule Details –@Model.HeaderText (FOR NZB STAFF)</h2>
                     </div>
                 </div>
 
@@ -51,7 +51,7 @@
                 </div>
                 <div class="text-right pt-2 pb-2">
                     <div class="upper-tab-buttons">
-                        <button type="button" id="btnTourRule" class="btn btn-primary me-2">
+                        <button type="button" class="btn btn-primary me-2" id="btnTourRule">
                             To Check  “Tour Rules”   Click Here
                         </button>
                         <button type="button" class="btn btn-primary " onclick="window.location.href='#';">
@@ -261,43 +261,89 @@
                         </li>
                     </ul>
                 </div>
+                <div class="bgColor mt-4 bg-transparent text-left">
+                    <ul style="list-style:none;">
+                        <li style="font-size: 16px;">
+                            Tour Is Approved / Rejected After Written Information & Consent Of COO. When Ever Required, VB Document Shall Be Produced:
+                            <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                        </li>
+                    </ul>
+                </div>
+                <div class="card mt-4 mb-4">
+                    <div class="card-body alert alert-success approvalForm text-dark ">
+                        <div class="row d-flex align-items-center">
+                            <div class="col-md-2 col-form-label">
+                                <label>Approved :</label>
+                            </div>
+                            <div class="col-md-2">
+                                @if (Model.etsHeader.IsApproved == true)
+                                {
+                                    <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                                }
+                                else
+                                {
+                                    <input type="text" class="form-control width-85 pointer-none" value="No" disabled="">
+                                }
+
+                            </div>
+                            <div class="col-md-2 col-form-label">
+                                <label>Date &amp; Time Of Approval :</label>
+                            </div>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" value="@Model.etsHeader.ApproveDatestr @Model.etsHeader.ApproveTime" disabled>
+                            </div>
+                            <div class="col-md-2 col-form-label">
+                                <label>Reason If Not Approved :</label>
+                            </div>
+
+                            <div class="col-md-2">
+                                <textarea name="" id="" cols="20" rows="2" class="form-control pointer-default" readonly data-toggle="tooltip" data-placement="bottom">   @Model.etsHeader.ApprovedReason</textarea>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
+
         </div>
-    }
-</div>
-
-
-@section headers
-{
+   
 
 }
-@section scripts{
+    </div>
 
-    <script>
-        $(document).ready(function () {
 
-            $('#btnViewDoc').click(function () {
-                var docfilename = $('#etsHeader_AttachFile').val();
-                var filepath = "/Upload/Forms/" + docfilename;
-                if (docfilename.length > 2) { window.open(filepath); }
-                else {
-                    Swal.fire({
-                        title: 'Information',
-                        text: "No Document Found For This Note",
-                        icon: 'warning',
-                        customClass: 'swal-wide',
-                        buttons: {
-                            //cancel: 'Cancel',
-                            confirm: 'Ok'
-                        },
-                        //cancelButtonClass: 'btn-cancel',
-                        confirmButtonColor: '#2527a2',
-                    });
-                }
+    @section headers
+{
+
+    }
+    @section scripts{
+
+        <script>
+            $(document).ready(function () {
+
+                $('#btnViewDoc').click(function () {
+                    var docfilename = $('#etsHeader_AttachFile').val();
+                    var filepath = "/Upload/Forms/" + docfilename;
+                    if (docfilename.length > 2) { window.open(filepath); }
+                    else {
+                        Swal.fire({
+                            title: 'Information',
+                            text: "No Document Found For This Note",
+                            icon: 'warning',
+                            customClass: 'swal-wide',
+                            buttons: {
+                                //cancel: 'Cancel',
+                                confirm: 'Ok'
+                            },
+                            //cancelButtonClass: 'btn-cancel',
+                            confirmButtonColor: '#2527a2',
+                        });
+                    }
+                });
             });
-        });
-    </script>
-    <script>
+        </script>
+        <script>
          $(document).ready(function () {
             //var mymsg = '@ViewBag.ErrMsg';
             if ('@ViewBag.ErrMsg' != '') {
@@ -327,7 +373,7 @@
                 }).then(callback);
                 function callback(result) {
                     if (result.value) {
-                        var url = "/Security/ETS/Index";
+                        var url = "/Security/ETS/ETSNoteApproveList";
                         window.location.href = url;
                     }
                 }
@@ -337,20 +383,20 @@
             };
             alert('@ViewBag.BtnActive');*@
         });
-    </script>
+        </script>
 
-    <script>
-        $(document).ready(function () {
-            $('#btnBack').click(function () {
-                var url = "/Security/ETS/Index";
-                window.location.href = url;
+        <script>
+            $(document).ready(function () {
+                $('#btnBack').click(function () {
+                    var url = "/Security/ETS/ETSNoteApproveList";
+                    window.location.href = url;
+                });
             });
-        });
-        $(document).ready(function () {
-            $('#btnTourRule').click(function () {
-                var url = "/Security/TourRule/ViewRedirection?CBUID=1";
-                window.open(url);
+            $(document).ready(function () {
+                $('#btnTourRule').click(function () {
+                    var url = "/Security/TourRule/ViewRedirection?CBUID=1";
+                    window.open(url);
+                });
             });
-        });
-    </script>
-}
+        </script>
+    }

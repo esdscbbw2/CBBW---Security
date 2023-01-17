@@ -41,7 +41,10 @@ function EnableTravellingBtn() {
     var y = getDivInvalidCount('TravellingPerson');
     
     var DWTBtn = $('#VADBtn');
+    var Btnsubmit = $('#Btnsubmit').val();
 
+    if (Btnsubmit == 1) { DWTBtn.makeEnabled(); }
+    
     if ((x + y) * 1 > 0) {
         DWTBtn.makeDisable();
     }
@@ -58,33 +61,9 @@ function DDPersonTypeChanged() {
     //var targetindexid = target.closest('.add-row');
     var targetid = targetCtrl.attr('id');
     var mValue = targetCtrl.val();
-    var cmbCtrl = $('#cmb' + targetid);
-    var txtCtrl = $('#txt' + targetid);
-    switch (mValue) {
-        case '1':
-            cmbCtrl.removeClass('inVisible').addClass('pickPersonName').isInvalid();
-            txtCtrl.addClass('inVisible').removeClass('pickPersonNametxt').clearValidateClass();
-            getDropDownData('cmb' + targetid, 'Select Employee', '/EHG/GetStaffList');
-            break;
-        case '2':
-            cmbCtrl.removeClass('inVisible').addClass('pickPersonName').isInvalid();
-            txtCtrl.addClass('inVisible').removeClass('pickPersonNametxt').clearValidateClass();
-            getDropDownData('cmb' + targetid, 'Select Driver', '/EHG/GetDriverList');
-            break;
-        case '3':
-            txtCtrl.removeClass('inVisible').addClass('pickPersonNametxt').isInvalid();
-            cmbCtrl.addClass('inVisible').removeClass('pickPersonName').clearValidateClass();
-
-            break;
-        case '4':
-            txtCtrl.removeClass('inVisible').addClass('pickPersonNametxt').isInvalid();
-            cmbCtrl.addClass('inVisible').removeClass('pickPersonName').clearValidateClass();
-            break;
-        default:
-            txtCtrl.addClass('inVisible').removeClass('pickPersonNametxt').clearValidateClass();
-            cmbCtrl.addClass('inVisible').removeClass('pickPersonName').clearValidateClass();
-            break;
-    }
+        var selectvalue = 0;
+        var Empval = "";
+        GetDDPersonTypeChanged(targetid, mValue, selectvalue, Empval);
     if (mValue > 0) { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
         EnableAddBtn(tblRow, 'AddBtn');
     } else {
@@ -102,23 +81,90 @@ function DDPersonTypeChanged() {
     }
 
 };
+function GetDDPersonTypeChanged(targetid, mValue, selectedvalue, Empval) {
+   // alert(targetid + '--' + mValue + '--' + selectedvalue);
+    debugger;
+    var cmbCtrl = $('#cmb' + targetid);
+    var txtCtrl = $('#txt' + targetid);
+   
+    switch (mValue*1) {
+        case 1:
+            cmbCtrl.removeClass('inVisible').addClass('pickPersonName').isInvalid();
+            txtCtrl.addClass('inVisible').removeClass('pickPersonNametxt').clearValidateClass();
+            getDropDownDataWithSelectedValue('cmb' + targetid, 'Select Employee', '/EHG/GetStaffList', selectedvalue);
+            //getDropDownData('cmb' + targetid, 'Select Employee', '/EHG/GetStaffList');
+            break;
+        case 2:
+            cmbCtrl.removeClass('inVisible').addClass('pickPersonName').isInvalid();
+            txtCtrl.addClass('inVisible').removeClass('pickPersonNametxt').clearValidateClass();
+            getDropDownDataWithSelectedValue('cmb' + targetid, 'Select Driver', '/EHG/GetDriverList', selectedvalue);
+            //getDropDownData('cmb' + targetid, 'Select Driver', '/EHG/GetDriverList');
+            break;
+        case 3:
+            txtCtrl.removeClass('inVisible').addClass('pickPersonNametxt').isInvalid();
+            cmbCtrl.addClass('inVisible').removeClass('pickPersonName').clearValidateClass();
+            txtCtrl.val(Empval);
+            break;
+        case 4:
+            txtCtrl.removeClass('inVisible').addClass('pickPersonNametxt').isInvalid();
+            cmbCtrl.addClass('inVisible').removeClass('pickPersonName').clearValidateClass();
+            txtCtrl.val(Empval);
+            break;
+        default:
+            txtCtrl.addClass('inVisible').removeClass('pickPersonNametxt').clearValidateClass();
+            cmbCtrl.addClass('inVisible').removeClass('pickPersonName').clearValidateClass();
+            break;
+    }
+
+
+};
+
 function DDPickPersonChanged(x) {
-   // UpdateAuthorisedPersonForOfficeWork('Select Authorized Person');
+   
     var target = DDPickPersonChanged.caller.arguments[0].target;
     var tblRow = target.closest('.add-row');
     var mIndex = $(tblRow).attr('id');
     var targetCtrl = $(target);
     var mValue = targetCtrl.val();
+  
+    //Check for Duplicate Person
+    var dstat = 0;
+    $('.xPerson').each(function () {
+        if (mValue != '' && $(this).val() == mValue) { dstat += 1; }
+        //alert(mValue + ' - ' + $(this).val() + ' - ' + dstat);
+    });
+
     if (x == 1) {
         mValue = mValue.length;
     }
     if (mValue > 0) { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
-    getDesgnCode(mIndex, mValue);
-    GetVehicleEligibility(mIndex, mValue);
-    EnableAddBtn(tblRow, 'AddBtn');
+
+   
+    if (x == 1) { GetVehicleEligibility(mIndex, 0); } else { GetVehicleEligibility(mIndex, mValue);}
+
+    if (dstat > 1) {
+        targetCtrl.val('');
+        targetCtrl.isInvalid();
+        Swal.fire({
+            title: 'Data Duplicacy Error',
+            text: 'Person You Have Selected Is Already Taken.',
+            icon: 'error',
+            customClass: 'swal-wide',
+            buttons: {
+                confirm: 'Ok'
+            },
+            confirmButtonColor: '#2527a2',
+        });
+    } else {
+        getDesgnCode(mIndex, mValue);
+        EnableAddBtn(tblRow, 'AddBtn');
+    }
+   
 };
 $(document).ready(function () {
-    getDropDownData('DDPersonType', 'Select Type', '/EHG/GetPersonTypes');
+    EnableTravellingBtn();
+    getDropDownDataWithSelectedValue('DDPersonType', 'select Person Type', '/Security/ETS/GetPersonTypes', 0);
+
 });
 function ValidateControl() {
     var target = ValidateControl.caller.arguments[0].target;
@@ -212,6 +258,7 @@ function getDivInvalidCount(mdivID) {
     return x;
 };
 function getDesgnCode(rowid, empCode) {
+    debugger;
     var actualempcode = 0
     if ($.isNumeric(empCode)) { actualempcode = empCode; }
     var desgCtrl = $('#DesgCodenName');
@@ -221,8 +268,9 @@ function getDesgnCode(rowid, empCode) {
         persontypeCtrl = $('#DDPersonType_' + rowid);
     }
     var mValue = persontypeCtrl.val();
-    if (mValue <= 4 && mValue > 0)  {
-        var mUrl = "/EHG/GetDesgCodenName?empID=" + actualempcode + "&empType=" + mValue;
+    if (mValue <= 4 && mValue > 0) {
+       
+        var mUrl = "/ETS/GetDesgCodenName?empID=" + actualempcode + "&empType=" + mValue;
         $.ajax({
             url: mUrl,
             success: function (result) { desgCtrl.html(result); }
@@ -234,6 +282,7 @@ function getDesgnCode(rowid, empCode) {
     }
 };
 function GetVehicleEligibility(rowid, empCode) {
+    debugger
     var actualempcode = 0
     if ($.isNumeric(empCode)) { actualempcode = empCode; }
     //alert(rowid + ' - ' + empCode + ' - ' + actualempcode);
@@ -262,25 +311,26 @@ function GetVehicleEligibility(rowid, empCode) {
         VTypeCtrl.html('');
     }
 };
-
-
 function TravellingPersonBtnClicked() {
     var notenumber = $('#etsHeader_NoteNumber').val();
     var DocName = $('#etsHeader_AttachFile').val();
     var CenterCodeName = $('#etsHeader_CenterCodeName').val();
+    var Btnsubmit = $('#Btnsubmit').val();
+    if (Btnsubmit == null) { Btnsubmit = 0;}
+  //  alert(Btnsubmit);
     //OficeWorkTbl    
     var schrecords = getRecordsFromTableV2('Traveltbl');
-    var x = '{"NoteNumber":"' + notenumber + '","AttachFile":"' + DocName + '","CenterCodeName":"' + CenterCodeName + '","PersonDtls":' + schrecords + '}';
+    var x = '{"NoteNumber":"' + notenumber + '","AttachFile":"' + DocName + '","CenterCodeName":"' + CenterCodeName + '","Btnsubmit":"' + Btnsubmit + '","PersonDtls":' + schrecords + '}';
     $.ajax({
         method: 'POST',
-        url: '/ETS/GetTravelingPersonDetails',
+        url: '/ETS/SetTravelingPersonDetails',
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         data: x,
         success: function (data) {
             $(data).each(function (index, item) {
                 if (item.bResponseBool == true) {
-                    var url = "/Security/ETS/TravellingDetails";
+                    var url = "/Security/ETS/TravellingDetails?Btnsubmit="+Btnsubmit;
                     window.location.href = url;
                 }
                 else {
@@ -300,7 +350,6 @@ function TravellingPersonBtnClicked() {
     });
 
 };
-
 function SaveFinalSubmit() {
     var notenumber = $('#etsHeader_NoteNumber').val();
     var DocName = $('#etsHeader_AttachFile').val();
@@ -353,7 +402,6 @@ function SaveFinalSubmit() {
         },
     });
 }
-
 $('#btnBack').click(function () {
     var backbtnactive = $('#BackBtnActive').val(1);
     var backurl = "/Security/ETS/Index";
@@ -379,4 +427,67 @@ $('#btnBack').click(function () {
         window.location.href = backurl;
     }
 });
+
+$(document).ready(function () {
+    (async function () {
+        const r1 = await getInitialData();
+    })();
+
+});
+async function getInitialData() {
+    var rowid = 0;
+    var TaDa;
+    var NoteNumber = $('#NoteNumber');
+    var DDPersonType = $('#DDPersonType');
+    var cmbDDPersonType = $('#cmbDDPersonType');
+    var txtDDPersonType = $('#txtDDPersonType');
+    var DesgCodenName = $('#DesgCodenName');
+    var EgblVehicleType = $('#EgblVehicleType');
+    var EgblVehicleTypeName = $('#EgblVehicleTypeName');
+    var TaDaDenied = $('#TaDaDenied');
+    var AddBtn = $('#AddBtn');
+    $.ajax({
+        url: '/ETS/GetTraveelingPersonReverseData',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            $(data).each(function (index, item) {
+               
+                if (item.Btnsubmit == 0) {
+                    
+                    $(item.PersonDtls).each(function (indexs, Peritem) {
+                        if (indexs > 0) {
+                            rowid = CloneRowReturningID('tbody1', 'tbody2', indexs - 1, true, false);
+                           
+                            DDPersonType = $('#DDPersonType_' + rowid);
+                            cmbDDPersonType = $('#cmbDDPersonType_' + rowid);
+                            txtDDPersonType = $('#txtDDPersonType_' + rowid);
+                            DesgCodenName = $('#DesgCodenName_' + rowid);
+                            EgblVehicleType = $('#EgblVehicleType_' + rowid);
+                            EgblVehicleTypeName = $('#EgblVehicleTypeName_' + rowid);
+                            TaDaDenied = $('#TaDaDenied_' + rowid);
+                            AddBtn = $('#AddBtn_' + rowid);
+                        }
+                       
+                        getDropDownDataWithSelectedValue(DDPersonType.attr('id'), 'select Person Type', '/Security/EHG/GetPersonTypes', Peritem.PersonType);
+                        DDPersonType.val(Peritem.PersonType).isValid();
+                        GetDDPersonTypeChanged(DDPersonType.attr('id'), Peritem.PersonType, Peritem.EmployeeNo, Peritem.EmployeeNonName)
+                        cmbDDPersonType.isValid();
+                        txtDDPersonType.isValid();
+                        alert(Peritem.EmployeeNonName);
+                        getDesgnCode(rowid, Peritem.EmployeeNo);
+                        
+                        GetVehicleEligibility(rowid, Peritem.EmployeeNo);
+                        if (Peritem.TADADenieds == true) { TaDa = 1 } else { TaDa=0};
+                        TaDaDenied.val(TaDa).isValid();
+                        AddBtn.makeDisable();
+                        EnableTravellingBtn();
+                    });
+                }
+            });
+        }
+    });
+};
+
+
 

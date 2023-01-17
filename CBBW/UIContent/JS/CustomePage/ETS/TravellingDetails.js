@@ -1,27 +1,28 @@
 ﻿$(function () {
     $("#PublicTransport").change(function () {
+        var PublicTransport = $('option:selected', this).val();
+        var PersonType = $("#PersonType").val();
         MakevalueReset();
-        var PTval = $('option:selected', this).val();
-        var Typeval = $("#PersonType").val();
-        if (PTval == '0') {
-            $('.forYes').hide();
-            $('.forNo').show();
-            $("#VehicleType").removeClass('is-valid').addClass('is-invalid');
-            $("#ReasonVehicleReq").removeClass('is-valid').addClass('is-invalid');
-            getDropDownData('VehicleType', 'Select Type', '/ETS/GetVehicleTypes?TypeVal=' + Typeval);
-        } else {
-            $('.forYes').show();
-            $('.forNo').hide();
-            $("#VehicleType").removeClass('is-invalid').addClass('is-valid');
-            $("#ReasonVehicleReq").removeClass('is-invalid').addClass('is-valid');
-           
-        }
-       
-        GetTourCategory(PTval);
-        //getMultiselectData('TourCategory', '/ETS/GetTourCategories?PTval='+PTval);
-        
+        PublicTransportchange(PublicTransport, PersonType,0);
+        GetTourCategory(PublicTransport);
     });
 });
+
+function PublicTransportchange(PublicTransport, PersonType,vehicleType) {
+    
+    if (PublicTransport * 1 == 0) {
+        $('.forYes').hide();
+        $('.forNo').show();
+        $("#VehicleType").removeClass('is-valid').addClass('is-invalid');
+        $("#ReasonVehicleReq").removeClass('is-valid').addClass('is-invalid');
+        getDropDownDataWithSelectedValue('VehicleType', 'Select Type', '/ETS/GetVehicleTypes?TypeVal=' + PersonType, vehicleType);
+    } else {
+        $('.forYes').show();
+        $('.forNo').hide();
+        $("#VehicleType").removeClass('is-invalid').addClass('is-valid');
+        $("#ReasonVehicleReq").removeClass('is-invalid').addClass('is-valid');
+    }
+};
 function MakevalueReset() {
     $("#SchFromDate").val('').isInvalid();
     $("#SchFromTime").val('').isInvalid();
@@ -52,8 +53,11 @@ $(document).ready(function () {
     $('#SchTourToDate').makeDisable();
     $('#SchToDate').makeDisable();
 });
-function GetTourCategory(PTval) {
-    getMultiselectData('TourCategory', '/ETS/GetTourCategories?PTval=' + PTval);
+async function GetTourCategory(PublicTransport) {
+    (async function () {
+        const r1 = await getMultiselectData('TourCategory', '/ETS/GetTourCategories?PTval=' + PublicTransport);
+    })();
+   
   //  alert(PTval);
 };
 function ValidateControl() {
@@ -90,7 +94,7 @@ function ValidateCloneRowCtrl() {
     var isvalid = validatectrl(targetid, targetCtrl.val());
     if (isvalid) { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
     EnableAddBtn(tblRow, 'AddBtn');
-
+    
     var todate = new Date($('#SchTourToDate').val());
     var preToDate = $(tblRow).find('.todt').val();
     var calculatedFromdate = new Date(ChangeDateFormat(CustomDateChange(preToDate, 1, '-')));
@@ -166,13 +170,23 @@ function EnableSubmitBtn() {
     var x = getDivInvalidCount('TravDetails');
     var y = getDivInvalidCount('dateDetails');
     var DWTBtn = $('#btnSubmits');
+    var mEnable = false;
+    var todate = $('#SchTourToDate').val();
+    $('.todt').each(function () {
+        if ($(this).val() == todate) { mEnable = true; }
+        
+    });
+    if ((x + y) * 1  <= 0) {
+        if (mEnable) { DWTBtn.makeEnabled(); } else { DWTBtn.makeDisable(); }
+    } else { DWTBtn.makeDisable(); }
+
    // alert(x); alert(y);
-    if ((x + y) * 1 > 0) {
-        DWTBtn.makeDisable();
-    }
-    else {
-        DWTBtn.makeEnabled();
-    }
+    //if ((x + y) * 1 > 0) {
+    //    DWTBtn.makeDisable();
+    //}
+    //else {
+    //    DWTBtn.makeEnabled();
+    //}
 };
 function AddClonebtn() {
     var insrow = AddClonebtn.caller.arguments[0].target.closest('.add-row');
@@ -268,6 +282,19 @@ function GetCenterCode() {
     var targetCtrl = $(target);
     //alert(targetid +'-'+ targetval);
     var rowid = $(target.closest('.add-row')).attr("id");
+   
+    var x = '';
+    $('#' + targetid + ' option:selected').each(function () {
+        x = x + '_' + $(this).val();
+    });
+    var selectval = '0';
+    TourDateWiseDropdownvalue(rowid, targetval, x, selectval);
+       toggleGroupv(target,targetid, targetval);
+    
+};
+
+function TourDateWiseDropdownvalue(rowid, targetval, x, selectedvalues) {
+    debugger;
     var CCnamectrl = 'CenterCodeName';
     var CCCtrldiv = 'CenterDiv';
     var CCNaDiv = 'CentcodeNAdiv';
@@ -281,7 +308,6 @@ function GetCenterCode() {
         CCnamectrl = 'CenterCodeName_' + rowid;
         CCCtrldiv = 'CenterDiv_' + rowid;
         CCNaDiv = 'CentcodeNAdiv_' + rowid;
-
         BCnamectrl = 'BranchCodeName_' + rowid;
         BCCtrlDiv = 'BCctrldiv_' + rowid;
         BCNaDiv = 'BCNAdiv_' + rowid;
@@ -292,53 +318,61 @@ function GetCenterCode() {
     $('#' + BCCtrlDiv).addClass('inVisible');
     $('#' + CCNaDiv).html('').addClass('inVisible');
     $('#' + BCNaDiv).html('').addClass('inVisible');
-    var x = '';
-    $('#' + targetid + ' option:selected').each(function () {
-        x = x + '_' + $(this).val();
-    });
     if (targetval == "4") {
         $('#' + CCCtrldiv).removeClass('inVisible');
         $('#' + BCCtrlDiv).removeClass('inVisible');
         $('#' + CCnamectrl).removeAttr('multiple');
         $('#' + CCnamectrl).multiselect('destroy');
         $('#' + CCnamectrl).isInvalid();
-        getDropDownData(CCnamectrl, 'select Center Code', '/Security/ETS/GetLocationsFromType?TypeID=' + 4);
+        getDropDownDataWithSelectedValue(CCnamectrl, 'select Center Code', '/Security/ETS/GetLocationsFromType?TypeID=' + 4, selectedvalues);
     } else if (targetval == "5") {
         $('#' + CCNaDiv).removeClass('inVisible').html('NA');
         $('#' + BCNaDiv).removeClass('inVisible').html('NA');
-    } else if (targetval == "3" || targetval == "2" || targetval == "1"|| targetval == "1,3" || targetval == "2,3" || targetval == "3,5") {
+    } else if (targetval == "3" || targetval == "2" || targetval == "1" || targetval == "1,3" || targetval == "2,3" || targetval == "3,5") {
         $('#' + CCCtrldiv).removeClass('inVisible');
         $('#' + BCNaDiv).removeClass('inVisible').html('NA');
         $('#' + CCnamectrl).isInvalid();
-        getMultiselectData(CCnamectrl, '/Security/ETS/GetLocationsFromTypes?TypeIDs=' + x);
+        getMultiselectDataWithSelectedValues(CCnamectrl, '/Security/ETS/GetLocationsFromTypes?TypeIDs=' + x, selectedvalues);
 
     } else {
         $('#' + CCNaDiv).removeClass('inVisible').html('NA');
         $('#' + BCNaDiv).removeClass('inVisible').html('NA');
     }
-    toggleGroupv(target,targetid, targetval);
-    
-};
+
+}
 function BranchChanges() {
 
     var target = BranchChanges.caller.arguments[0].target;
     var targetid = $(target).attr('id');
     var targetval = $(target).val();
     var rowid = $(target.closest('.add-row')).attr("id");
-    debugger;
     var bbnamectrl = 'BranchCodeName';
     var Tournamectrl = 'TourCategory';
     if (rowid > 0) {
         Tournamectrl = 'TourCategory_' + rowid;
         bbnamectrl = 'BranchCodeName_' + rowid;
     }
-    var CCCTournamectrl = $('#' + Tournamectrl).val();
-    if (CCCTournamectrl == "4") {
-        $('#' + bbnamectrl).isInvalid();
-        getMultiselectData(bbnamectrl, '/Security/ETS/getBranchType?CenterId=' + targetval);
-    }
+   var TourVal = $('#' + Tournamectrl).val();
+    GetBranchData(rowid, targetval, TourVal,'0');
   
 };
+function GetBranchData(rowid, targetval, Tourval, Selectedvalue) {
+   // alert(rowid + "--" + targetval + "--" + Tourval+"-"+ Selectedvalue);
+  
+    var bbnamectrl = 'BranchCodeName';
+    var Tournamectrl = 'TourCategory';
+    if (rowid > 0) {
+        Tournamectrl = 'TourCategory_' + rowid;
+        bbnamectrl = 'BranchCodeName_' + rowid;
+    }
+   
+    if (Tourval == "4") {
+        $('#' + bbnamectrl).isInvalid();
+        getMultiselectDataWithSelectedValues(bbnamectrl, '/Security/ETS/getBranchType?CenterId=' + targetval, Selectedvalue);
+    }
+
+    
+}
 function SaveDataClicked() {
     var PersonType = $('#PersonType').val();
     var NoteNumber = $('#NoteNumber').val();
@@ -430,5 +464,99 @@ function WarringMsg() {
             confirm: 'Ok'
         },
         confirmButtonColor: '#2527a2',
+    });
+};
+$(document).ready(function () {
+    
+    (async function () {
+        const r1 = await getInitialData();
+    })();
+    
+});
+async function getInitialData() {
+    var rowid=0;
+    var NoteNumber = $('#NoteNumber');
+    var AttachFile = $('#AttachFile');
+    var CenterCodenName = $('#CenterCodenName');
+    var PublicTransport = $('#PublicTransport');
+    var PersonType = $('#PersonType');
+    var VehicleType = $('#VehicleType');
+    var SchFromDate = $('#SchFromDate');
+    var SchFromTime = $('#SchFromTime');
+    var SchTourToDate = $('#SchTourToDate');
+    var PurposeOfVisit = $('#PurposeOfVisit');
+    var ReasonVehicleReq = $('#ReasonVehicleReq');
+    //For Tour Wise Date
+    var DDSchFromDate = $('#DDSchFromDate');
+    var SchToDate = $('#SchToDate');
+    var TourCategory = $('#TourCategory');
+    var CenterCodeName = $('#CenterCodeName');
+    var CCNAdiv = $('#CentcodeNAdiv');
+    var BranchCodeName = $('#BranchCodeName');
+    var BCNAdiv = $('#BCNAdiv');
+    var BCctrldiv = $('#BCctrldiv');
+    var lblSchToDate = $('#lblSchToDate');
+    var addbtnCtrl = $('#AddBtn');
+    $.ajax({
+        url: '/ETS/GetTraveelingDetailsReverseData',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            $(data).each(function (index, item) {
+                if (item.btnSubmit == 1) {
+                    NoteNumber.val(item.NoteNumber);
+                    AttachFile.val(item.AttachFile);
+                    CenterCodenName.val(item.CenterCodenName);
+                    PersonType.val(item.PersonType);
+                //$(item.TravellingDetails).each(function (index, travitem) {
+                    //alert(item.travDetails.SchTourToDateDisplay);
+                    PublicTransport.val(item.travDetails.PublicTransport).isValid();
+                    PublicTransportchange(item.travDetails.PublicTransport, item.PersonType, item.travDetails.VehicleType);
+                    VehicleType.isValid();
+                    ReasonVehicleReq.html(item.travDetails.ReasonVehicleReq).isValid();
+                    SchFromDate.val(item.travDetails.SchFromDateStr).isValid();
+                    $('#lblSchFromDate').html(item.travDetails.SchFromDateDisplay);
+                    Datechange(item.travDetails.SchFromDateStr);
+                    SchFromTime.val(item.travDetails.SchFromTime).isValid();
+                    SchTourToDate.val(item.travDetails.SchTourToDateStr).isValid();
+                    $('#lblSchTourToDate').html(item.travDetails.SchTourToDateDisplay);
+                    SetDatechange(item.travDetails.SchTourToDateStr);
+                    PurposeOfVisit.val(item.travDetails.PurposeOfVisit).isValid();
+                    $(item.dateTour).each(function (indexs, travitem) {
+                       
+                        if (indexs > 0) {
+                            rowid = CloneRowReturningID('tbody1', 'tbody2', indexs - 1, true, false);
+                            DDSchFromDate = $('#DDSchFromDate_' + rowid);
+                            SchToDate = $('#SchToDate_' + rowid);
+                            lblSchToDate = $('#lblSchToDate_' + rowid);
+                            TourCategory = $('#TourCategory_' + rowid);
+                            CenterCodeName = $('#CenterCodeName_' + rowid);
+                            CCNAdiv = $('#CCNAdiv_' + rowid);
+                            BranchCodeName = $('#BranchCodeName_' + rowid);
+                            BCNAdiv = $('#BCNAdiv_' + rowid);
+                            BCctrldiv = $('#BCctrldiv_' + rowid);
+                            addbtnCtrl = $('#AddBtn_' + rowid);
+                        }
+                        
+                        DDSchFromDate.html(travitem.SchFromDate).isValid();
+                        SchToDate.val(travitem.SchToDatestr).isValid();
+                        lblSchToDate.html(travitem.DDSchToDate);
+                        //alert(travitem.CenterCode + ' - ' + travitem.BranchCode);
+                        getMultiselectDataWithSelectedValues(TourCategory.attr('id'), '/ETS/GetTourCategories?PTval=' + item.travDetails.PublicTransport, travitem.TourCategoryId);
+                        TourCategory.isValid();
+                        debugger;
+                        //ChangeCashCadingSourceInCloaningV2(TourCategory.attr('id'), rowid, CenterCodeName.attr('id'), '/Security/ETS/GetLocationsFromTypes?TypeID=' + travitem.TourCategoryId, travitem.CenterCode);
+                        TourDateWiseDropdownvalue(rowid, travitem.TourCategoryId, travitem.TourCategoryId, travitem.CenterCode);
+                        CenterCodeName.isValid();
+                        if (travitem.TourCategoryId == "4") {
+                            GetBranchData(rowid, travitem.CenterCode, travitem.TourCategoryId, travitem.BranchCode);
+                            BranchCodeName.isValid();
+                        }
+                        addbtnCtrl.makeDisable();
+                    });
+                }
+               
+            });
+        }
     });
 };

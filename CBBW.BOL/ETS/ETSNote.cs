@@ -21,7 +21,7 @@ namespace CBBW.BOL.ETS
         public bool CanDelete { get; set; }
 
     }
-    public class ETSHeader: ETSNoteList
+    public class ETSHeader : ETSNoteList
     {
         public int CenterCode { get; set; }
         public string CenterName { get; set; }
@@ -29,6 +29,16 @@ namespace CBBW.BOL.ETS
         public string AttachFile { get; set; }
         public bool IsActive { get; set; }
         public int Status { get; set; }
+        public string ApprovedReason { get; set; }
+        public DateTime ApproveDate { get; set; }
+        public string ApproveDatestr { get; set; }
+        public string ApproveTime { get; set; }
+        public bool IsRatified { get; set; }
+        public string RatifiedReason { get; set; }
+        public DateTime RatifiedDate { get; set; }
+        public string RatifiedDatestr { get; set; }
+        public string RatifiedTime { get; set; }
+
 
     }
 

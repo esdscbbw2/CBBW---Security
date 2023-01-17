@@ -54,9 +54,9 @@ namespace CBBW.BLL.Repository
         {
             return _ETSEntities.SetETSDetailsFinalSubmit(hdrmodel, ref pMsg);
         }
-        public List<ETSNoteList> GetETSNZBDetailsforListPage(int DisplayLength, int DisplayStart, int SortColumn, string SortDirection, string SearchText, int CenterCode, ref string pMsg)
+        public List<ETSNoteList> GetETSNZBDetailsforListPage(int DisplayLength, int DisplayStart, int SortColumn, string SortDirection, string SearchText, int CenterCode,int status, ref string pMsg)
         {
-            return _ETSEntities.GetETSNZBDetailsforListPage(DisplayLength, DisplayStart, SortColumn, SortDirection, SearchText, CenterCode, ref pMsg);
+            return _ETSEntities.GetETSNZBDetailsforListPage(DisplayLength, DisplayStart, SortColumn, SortDirection, SearchText, CenterCode, status, ref pMsg);
         }
 
         public ETSHeader GetETSHdrEntry(string Notenumber, ref string pMsg)
@@ -74,6 +74,20 @@ namespace CBBW.BLL.Repository
         public bool RemoveETSNoteNumber(string NoteNumber, int RemoveTag, int ActiveTag, ref string pMsg)
         {
             return _ETSEntities.RemoveETSNoteNumber(NoteNumber, RemoveTag, ActiveTag, ref pMsg);
+        }
+
+        public List<ETSNote> GetETSNoteListToBeApproved(int CentreCode, int status, ref string pMsg)
+        {
+            return _ETSEntities.GetETSNoteListToBeApproved(CentreCode, status, ref pMsg);
+        }
+
+        public bool SetETSApprovalData(ETSApproveTravDetails model, ref string pMsg)
+        {
+            return _ETSEntities.SetETSApprovalData(model, ref pMsg);
+        }
+        public bool SetETSRatifiedData(ETSRatified model, ref string pMsg)
+        {
+            return _ETSEntities.SetETSRatifiedData(model, ref pMsg);
         }
     }
 }

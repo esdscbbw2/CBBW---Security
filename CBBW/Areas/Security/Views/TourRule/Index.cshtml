@@ -97,6 +97,7 @@
                 sAjaxSource: '/Security/TourRule/getListOfRules',
                 "pagingType": "input",
                 "bPaginate": true,
+                order:[[2,'desc']]
             });            
             $('.tblSearch').on('keyup change', function () {
                 dtinstance.search(this.value).draw();

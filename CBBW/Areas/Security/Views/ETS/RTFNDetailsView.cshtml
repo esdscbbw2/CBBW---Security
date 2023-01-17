@@ -2,22 +2,22 @@
 @using CBBW.Areas.Security.ViewModel.ETS;
 @model ETSHeaderEntryVM
 @{
-    ViewBag.Title = "Employees Travelling Schedule Details – ENTRY (FOR NZB STAFF)";
+    ViewBag.Title = "Employees Travelling Schedule Details – RATIFICATION (FOR NZB STAFF)";
 
 }
 
 
 <div class="container">
-    @using (Html.BeginForm())
+    @using (Html.BeginForm("RTFNDetailsView", "ETS", FormMethod.Post))
     {
-        @Html.HiddenFor(m =>m.NoteNumber)
+        @Html.HiddenFor(m => m.NoteNumber)
         @Html.HiddenFor(m => m.CanDelete)
         @Html.HiddenFor(m => m.CBUID)
         @Html.HiddenFor(m => m.etsHeader.AttachFile)
         @Html.HiddenFor(m => m.etsHeader.CenterCodeName)
         @Html.HiddenFor(m => m.HeaderText)
 
-       
+
         <div class="row newTable">
             <div class="fixedElement">
                 <div class="col-md-12">
@@ -27,16 +27,9 @@
                                 <i data-feather="arrow-left-circle"></i>
                                 Back
                             </button>
-                            @if (Model.CanDelete==1)
-                            {
-                                <button id="btnDelete" type="submit" name="Submit" value="Delete"
-                                        class="btn btn-primary me-2">
-                                    <i data-feather="trash-2"></i>
-                                    Delete
-                                </button>
-                            }
+
                         </div>
-                        <h2>Employees Travelling Schedule Details – @Model.HeaderText (FOR NZB STAFF)</h2>
+                        <h2>Employees Travelling Schedule Details –@Model.HeaderText (FOR NZB STAFF)</h2>
                     </div>
                 </div>
 
@@ -51,7 +44,7 @@
                 </div>
                 <div class="text-right pt-2 pb-2">
                     <div class="upper-tab-buttons">
-                        <button type="button" id="btnTourRule" class="btn btn-primary me-2">
+                        <button type="button" class="btn btn-primary me-2" id="btnTourRule">
                             To Check  “Tour Rules”   Click Here
                         </button>
                         <button type="button" class="btn btn-primary " onclick="window.location.href='#';">
@@ -76,13 +69,13 @@
                                     Date  :
                                 </label>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" value="@Model.etsHeader.EntryDateDisplay" disabled>
+                                    <input type="text" class="form-control" value="@Model.etsHeader.RatifiedDatestr" disabled>
                                 </div>
                                 <label class="col-form-label col-md-1">
                                     Time  :
                                 </label>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" value="@Model.etsHeader.EntryTime" disabled>
+                                    <input type="text" class="form-control" value="@Model.etsHeader.RatifiedTime" disabled>
                                 </div>
                             </div>
                             <div class="row d-flex align-items-center mb-4">
@@ -96,53 +89,36 @@
                         </form>
                     </div>
                 </div>
+
                 <div class="card mb-4 mt-4">
                     <div class="card-body  alert alert-danger text-dark approvalForm">
                         <form class="form-sample form-inline row ms-auto">
                             <div class="row d-flex align-items-center">
                                 <div class="col-md-2 col-form-label">
-                                    <label>Approved :</label>
+                                    <label>Approval :</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" value="-" disabled="">
+                                    @if (Model.etsHeader.IsApproved == true)
+                                    {
+                                        <input type="text" class="form-control" value="Yes" disabled="">
+                                    }
+                                    else
+                                    {
+
+                                        <input type="text" class="form-control" value="No" disabled="">
+                                    }
                                 </div>
                                 <div class="col-md-2 col-form-label">
-                                    <label>Date &amp; Time Of Approval :</label>
+                                    <label>Date & Time Of &nbsp; Approval :</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" value="-" disabled="">
+                                    <input type="text" class="form-control" value="@Model.etsHeader.ApproveDatestr @Model.etsHeader.ApproveTime" disabled="">
                                 </div>
                                 <div class="col-md-2 col-form-label">
-                                    <label>Reason If Not Approved :</label>
+                                    <label>Reason If Not Approval :</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <textarea name="" id="" cols="10" rows="2" class="form-control pointer-default" readonly>-</textarea>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="card mb-4 mt-4">
-                    <div class="card-body  alert alert-danger text-dark approvalForm">
-                        <form class="form-sample form-inline row ms-auto">
-                            <div class="row d-flex align-items-center">
-                                <div class="col-md-2 col-form-label">
-                                    <label>Ratified :</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control" value="-" disabled="">
-                                </div>
-                                <div class="col-md-2 col-form-label">
-                                    <label>Date & Time Of &nbsp; Ratification :</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control" value="-" disabled="">
-                                </div>
-                                <div class="col-md-2 col-form-label">
-                                    <label>Reason If Not Ratified :</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <textarea name="" id="" cols="10" rows="2" class="form-control pointer-default" readonly>-</textarea>
+                                    <textarea name="" id="" cols="10" rows="2" class="form-control pointer-default" readonly>@Model.etsHeader.ApprovedReason</textarea>
                                 </div>
                             </div>
                         </form>
@@ -239,7 +215,7 @@
                 </div>
                 <div class="col-md-12">
                     <div class="d-flex justify-content-center mt-4">
-                        <button type="submit" value="DTD" name="submit" class="btn btn-primary me-2">
+                        <button type="submit" value="TravD" name="Submit" id="TravD" class="btn btn-primary me-2">
                             Travelling Details
                         </button>
                     </div>
@@ -247,8 +223,7 @@
                 <div class="bgColor mt-4 bg-transparent text-left">
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
-                            It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
-
+                            It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As It Is selected:
                             <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
                         </li>
                         <li style="font-size: 16px;">
@@ -259,10 +234,60 @@
                             The Entry Is Done As Per Policy & As Required:
                             <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
                         </li>
+                        <li style="font-size: 16px;">
+                            Tour Is Approved / Rejected After Written Information & Consent Of COO. When Ever Required, VB Document Shall Be Produced:
+                            <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                        </li>
                     </ul>
                 </div>
+                <div class="bgColor mt-4 bg-transparent text-left">
+                    <ul style="list-style:none;">
+                        <li style="font-size: 16px;">
+                            This Tour Schedule Has Been Selected As “Other Place” And It Is Genuine & As Required:
+                            <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                        </li>
+                    </ul>
+                </div>
+                <div class="card mt-4 mb-4">
+                    <div class="card-body alert alert-success approvalForm text-dark ">
+                        <div class="row d-flex align-items-center">
+                            <div class="col-md-2 col-form-label">
+                                <label>Ratified :</label>
+                            </div>
+                            <div class="col-md-2">
+                                @if (Model.etsHeader.IsRatified == true)
+                                {
+                                    <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                                }
+                                else
+                                {
+                                    <input type="text" class="form-control width-85 pointer-none" value="No" disabled="">
+                                }
+
+                            </div>
+                            <div class="col-md-2 col-form-label">
+                                <label>Date &amp; Time Of Ratification :</label>
+                            </div>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" value="@Model.etsHeader.RatifiedDatestr @Model.etsHeader.RatifiedTime" disabled>
+                            </div>
+                            <div class="col-md-2 col-form-label">
+                                <label>Reason If Not Ratified :</label>
+                            </div>
+
+                            <div class="col-md-2">
+                                <textarea name="" id="" cols="20" rows="2" class="form-control pointer-default" readonly data-toggle="tooltip" data-placement="bottom">   @Model.etsHeader.RatifiedReason</textarea>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
+
         </div>
+
+
     }
 </div>
 
@@ -327,7 +352,7 @@
                 }).then(callback);
                 function callback(result) {
                     if (result.value) {
-                        var url = "/Security/ETS/Index";
+                        var url = "/Security/ETS/ETSNoteApproveList";
                         window.location.href = url;
                     }
                 }
@@ -342,9 +367,10 @@
     <script>
         $(document).ready(function () {
             $('#btnBack').click(function () {
-                var url = "/Security/ETS/Index";
+                var url = "/Security/ETS/RTFNIndex";
                 window.location.href = url;
             });
+           
         });
         $(document).ready(function () {
             $('#btnTourRule').click(function () {

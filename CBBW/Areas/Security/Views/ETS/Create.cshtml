@@ -8,6 +8,7 @@
     @using (Html.BeginForm())
     {
         @Html.HiddenFor(m => m.etsHeader.NoteNumber)
+
         @Html.HiddenFor(m => m.etsHeader.AttachFile)
         @Html.HiddenFor(m => m.etsHeader.CenterCode)
         @Html.HiddenFor(m => m.etsHeader.CenterName)
@@ -50,7 +51,7 @@
                     </div>
                     <div class="text-right pt-2 pb-2">
                         <div class="upper-tab-buttons">
-                            <button type="button" class="btn btn-primary me-2" onclick="window.location.href='#';">
+                            <button type="button" id="btnTourRule" class="btn btn-primary me-2">
                                 To Check  “Tour Rules”   Click Here
                             </button>
                             <button type="button" class="btn btn-primary " onclick="window.location.href='#';">
@@ -198,7 +199,7 @@
                                         </thead>
 
 
-                                        @if (Model.PersonDtls != null)
+                                        @if (Model.Btnsubmit == 1)
                                         {
                                             if (Model.PersonDtls.Count > 0)
                                             {
@@ -215,7 +216,7 @@
                                                             <td class="text-center">@item.EmployeeNonName</td>
                                                             <td class="text-center">@item.DesignationCodenName</td>
                                                             <td class="text-center">@item.EligibleVehicleTypeName</td>
-                                                            @if (item.TADADenied == 1)
+                                                            @if (item.TADADenieds)
                                                             {
                                                                 <td class="text-center">
                                                                     Yes
@@ -250,14 +251,14 @@
                                                         </select>
                                                     </td>
                                                     <td class="text-center">
-                                                        <select class="form-select alterID inValidTag pickPersonName"
+                                                        <select class="form-select alterID inValidTag pickPersonName xPerson"
                                                                 data-name="EmployeeNo" data-name-text="EmployeeNonNamecmb"
                                                                 aria-label="Default select example"
                                                                 onchange="DDPickPersonChanged(0)"
                                                                 id="cmbDDPersonType">
                                                         </select>
-                                                        <input type="text" data-name="EmployeeNonName"
-                                                               class="form-control w-200 inVisible alterID pickPersonNametxt"
+                                                        <input type="text" maxlength="20" data-name="EmployeeNonName"
+                                                               class="form-control w-200 inVisible alterID pickPersonNametxt xPerson"
                                                                onblur="DDPickPersonChanged(1)"
                                                                id="txtDDPersonType">
                                                     </td>
@@ -318,7 +319,7 @@
                         <ul style="list-style:none;">
                             <li style="font-size: 16px;">
                                 It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
-                                <select id="otherplace" class="form-select is-invalid" onchange="ValidateControl()" aria-label="Default select example">
+                                <select id="otherplace" style="width: 110px;" class="form-select is-invalid" onchange="ValidateControl()" aria-label="Default select example">
                                     <option selected="">-</option>
                                     <option value="0">Yes</option>
                                     <option value="1">No</option>
@@ -326,7 +327,7 @@
                             </li>
                             <li style="font-size: 16px;">
                                 It Is Ensured That This Person Is Carrying Laptop As Provided To Him. The Same Has Been Confirmed (as per leave rules):
-                                <select id="carryLaptop" class="form-select is-invalid" onchange="ValidateControl()" aria-label="Default select example">
+                                <select id="carryLaptop" style="width: 110px;" class="form-select is-invalid" onchange="ValidateControl()" aria-label="Default select example">
                                     <option selected="">-</option>
                                     <option value="0">Yes</option>
                                     <option value="1">No</option>
@@ -334,7 +335,7 @@
                             </li>
                             <li style="font-size: 16px;">
                                 The Entry Is Done As Per Policy & As Required:
-                                <select id="Policy" class="form-select is-invalid" onchange="ValidateControl()" aria-label="Default select example">
+                                <select id="Policy" style="width: 110px;" class="form-select is-invalid" onchange="ValidateControl()" aria-label="Default select example">
                                     <option selected="">-</option>
                                     <option value="0">Yes</option>
                                     <option value="1">No</option>
@@ -364,11 +365,11 @@
                 text: "Are you sure you want to delete this?",
                 icon: 'success',
                 html: `<div style="text-align:left;">
-                                                    <div class="form-group">
-                                                        <label class="swal-label">Attach File (Only Pdf,Png & Jpg Files)</label>
-                                                        <input type="file" id="uploadCtrl" name="uploadCtrl" class="form-control" placeholder="">
-                                                    </div>
-                                                </div>`,
+                                                            <div class="form-group">
+                                                                <label class="swal-label">Attach File (Only Pdf,Png & Jpg Files)</label>
+                                                                <input type="file" id="uploadCtrl" name="uploadCtrl" class="form-control" placeholder="">
+                                                            </div>
+                                                        </div>`,
                 cancelButtonClass: 'btn-cancel',
                 cancelButtonText: 'Cancel',
                 confirmButtonText: 'Submit',
@@ -447,7 +448,7 @@
                         text: "Are You Sure Want to Go Back?",
                         icon: 'question',
                         customClass: 'swal-wide',
-                        setTimeout:5000,
+                        setTimeout: 5000,
                         //buttons: {
                         //    cancel: 'No',
                         //    confirm: 'Yes'
@@ -470,6 +471,13 @@
                 };
             });
         });
+        $(document).ready(function () {
+            $('#btnTourRule').click(function () {
+                var url = "/Security/TourRule/ViewRedirection?CBUID=1";
+                window.open(url);
+            });
+        });
+        
     </script>
 }
 
