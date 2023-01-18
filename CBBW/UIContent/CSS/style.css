@@ -1559,3 +1559,23 @@ input[type="date"].valid::before {
     font-size: 1rem;
     border-radius: 0.25rem;
 }
+.hide {
+    display: none;
+}
+.myDIV:hover + .hide {
+    padding: 10px;
+    display: block;
+    color: white;
+    position: absolute;
+    background: #000;
+    width: 100%;
+    right: 0;
+    border-radius: 5px;
+}
+.myDIV svg {
+    width: 18px;
+    position: absolute;
+    right: 3px;
+    bottom: 0px;
+    cursor: pointer;
+}

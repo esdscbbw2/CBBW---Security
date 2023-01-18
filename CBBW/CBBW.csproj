@@ -137,6 +137,7 @@
     <Compile Include="Areas\Security\Controllers\CTVController.cs" />
     <Compile Include="Areas\Security\Controllers\EHGController.cs" />
     <Compile Include="Areas\Security\Controllers\ETSController.cs" />
+    <Compile Include="Areas\Security\Controllers\ETSEditController.cs" />
     <Compile Include="Areas\Security\Controllers\GVMRController.cs" />
     <Compile Include="Areas\Security\Controllers\HomeController.cs" />
     <Compile Include="Areas\Security\Controllers\MaterialGatePassController.cs" />
@@ -445,6 +446,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Security\Data\" />
     <Folder Include="Areas\Security\Views\Common\" />
+    <Folder Include="Areas\Security\Views\ETSEdit\" />
     <Folder Include="Upload\Forms\" />
   </ItemGroup>
   <ItemGroup>

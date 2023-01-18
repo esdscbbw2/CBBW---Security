@@ -47,6 +47,7 @@
     <Compile Include="DataSync\CTVDataSync.cs" />
     <Compile Include="DataSync\EHGDataSync.cs" />
     <Compile Include="DataSync\ETSDataSync.cs" />
+    <Compile Include="DataSync\ETSEditDataSync.cs" />
     <Compile Include="DataSync\GVMRDataSync.cs" />
     <Compile Include="DataSync\MasterDataSync.cs" />
     <Compile Include="DataSync\MGPDataSync.cs" />
@@ -57,12 +58,14 @@
     <Compile Include="DBMapper\DBResponseMapper.cs" />
     <Compile Include="DBMapper\EHGDBMapper.cs" />
     <Compile Include="DBMapper\ETSDBMapper.cs" />
+    <Compile Include="DBMapper\ETSEditDBMapper.cs" />
     <Compile Include="DBMapper\GVMRDBMapper.cs" />
     <Compile Include="DBMapper\MasterDBMapper.cs" />
     <Compile Include="DBMapper\MGPMapper.cs" />
     <Compile Include="DBMapper\RulesDBMapper.cs" />
     <Compile Include="Entities\CTVEntities.cs" />
     <Compile Include="Entities\EHGEntities.cs" />
+    <Compile Include="Entities\ETSEditEntities.cs" />
     <Compile Include="Entities\ETSEntities.cs" />
     <Compile Include="Entities\GVMREntities.cs" />
     <Compile Include="Entities\MasterEntities.cs" />
