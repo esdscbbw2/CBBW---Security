@@ -110,7 +110,7 @@ namespace CBBW.DAL.DBMapper
                     if (!DBNull.Value.Equals(dr["IsApproved"]))
                         result.IsApproved = bool.Parse(dr["IsApproved"].ToString());
                     result.EntryDateDisplay = MyDBLogic.ConvertDateToString(result.EntryDate);
-                    if (!result.IsApproved && result.EntryDate == DateTime.Today)
+                    if (!result.IsApproved.HasValue && result.EntryDate == DateTime.Today)
                     { result.CanDelete = true; }
 
                 }

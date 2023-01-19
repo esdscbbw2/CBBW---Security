@@ -7,6 +7,8 @@
 @using (Html.BeginForm("ETSApproveNote", "ETS", FormMethod.Post))
 {
     @Html.HiddenFor(x => x.NoteNumber)
+    @Html.HiddenFor(x => x.travDetails.PublicTransports)
+    @Html.HiddenFor(x => x.travDetails.VehicleType)
 
     <div class="container">
         <div class="row newTable">
@@ -83,76 +85,83 @@
                                             {
 
 
-                                                <tr>
+                                        <tr>
 
-                                                    @if (Model.travDetails.PublicTransports == true)
-                                                    {
-
-
-                                                        <td class="text-center">Yes</td>
-                                                    }
-                                                    else
-                                                    {
-                                                        <td class="text-center">No</td>
-                                                    }
-                                                    @if (Model.travDetails.VehicleType == 0)
-                                                    {
-                                                        <td class="text-center">
-                                                            NA
-                                                        </td>
-                                                    }
-                                                    else if (Model.travDetails.VehicleType == 1)
-                                                    {
-                                                        <td class="text-center">
-                                                            LV
-
-                                                        </td>
-                                                    }
-                                                    else if (Model.travDetails.VehicleType == 2)
-                                                    {
-                                                        <td class="text-center">
-                                                            2 wheelar
-
-                                                        </td>
-                                                    }
-
-                                                    <td class="text-center">
-                                                        @Model.travDetails.ReasonVehicleReq
-
-                                                    </td>
+                                            @if (Model.travDetails.PublicTransports == true)
+                                            {
 
 
+                                                <td class="text-center">Yes</td>
+                                            }
+                                            else
+                                            {
+                                                <td class="text-center">No</td>
+                                            }
+                                            @if (Model.travDetails.VehicleType == 0)
+                                            {
+                                                <td class="text-center">
+                                                    NA
+                                                </td>
+                                            }
+                                            else if (Model.travDetails.VehicleType == 1)
+                                            {
+                                                <td class="text-center">
+                                                    LV
 
-                                                    <td class="text-center">
+                                                </td>
+                                            }
+                                            else if (Model.travDetails.VehicleType == 2)
+                                            {
+                                                <td class="text-center">
+                                                    2 wheeler
 
-                                                        <select id="VehicleTypeProvided" data-name="VehicleTypeProvidedtxt" data-name-text="VehicleTypeProvidedtxt"
-                                                                onchange="ValidateControlCtrl()"
-                                                                class="form-select is-invalid clear"
-                                                                aria-label="Default select example">
-                                                        </select>
+                                                </td>
+                                            }
+                                            else if (Model.travDetails.VehicleType == 3)
+                                            {
+                                                <td class="text-center">
+                                                    Public Transport
 
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <textarea maxlength="200" id="ReasonVehicleProvided" onchange="ValidateControlCtrl()" data-name="ReasonVehicleProvided" class="form-control is-invalid clear" cols="10" rows="2"></textarea>
+                                                </td>
+                                            }
 
-                                                    </td>
+                                            <td class="text-center">
+                                                @Model.travDetails.ReasonVehicleReq
 
-                                                    <td class="text-center">
-                                                        @Model.travDetails.SchFromDateDisplay
+                                            </td>
 
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @Model.travDetails.SchFromTime
 
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @Model.travDetails.SchTourToDateDisplay
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <textarea name="" id="" cols="20" rows="2" class="form-control pointer-default" readonly data-toggle="tooltip" data-placement="bottom">@Model.travDetails.PurposeOfVisit   </textarea>
-                                                    </td>
 
-                                                </tr>
+                                            <td class="text-center">
+
+                                                <select id="VehicleTypeProvided" data-name="VehicleTypeProvidedtxt" data-name-text="VehicleTypeProvidedtxt"
+                                                        onchange="ValidateControlCtrl()"
+                                                        class="form-select is-invalid clear"
+                                                        aria-label="Default select example">
+                                                </select>
+
+                                            </td>
+                                            <td class="text-center">
+                                                <textarea maxlength="200" id="ReasonVehicleProvided" onchange="ValidateControlCtrl()" data-name="ReasonVehicleProvided" class="form-control is-invalid clear" cols="10" rows="2"></textarea>
+
+                                            </td>
+
+                                            <td class="text-center">
+                                                @Model.travDetails.SchFromDateDisplay
+
+                                            </td>
+                                            <td class="text-center">
+                                                @Model.travDetails.SchFromTime
+
+                                            </td>
+                                            <td class="text-center">
+                                                @Model.travDetails.SchTourToDateDisplay
+                                            </td>
+                                            <td class="text-center">
+                                                <textarea name="" id="" cols="20" rows="2" class="form-control pointer-default" readonly data-toggle="tooltip" data-placement="bottom">@Model.travDetails.PurposeOfVisit   </textarea>
+                                            </td>
+
+                                        </tr>
                                             }
                                         }
                                     </tbody>
@@ -168,7 +177,7 @@
                                         <select id="EmployeeNonName" data-name="EmployeeNonNametxt" data-name-text="EmployeeNonNametxt"
                                                 onchange="ValidateControlCtrl()"
                                                 class="form-select is-invalid clear"
-                                                aria-label="Default select example">
+                                                aria-label="Default select example" disabled>
                                         </select>
                                     </div>
                                 </div>
@@ -180,7 +189,7 @@
                         <ul style="list-style:none;">
                             <li style="font-size: 16px;">
                                 Even Tough The Person Is Not Eligible For The Vehicle Type As Displayed In The Screen But Still You Are Providing Higher Class Vehicle Type? Are You Sure To Continue With The Vehicle Allotment:
-                                <select id="EligibleVeh"  style="width: 110px;"  class="form-select is-invalid clear" onchange="ValidateControlCtrl()" aria-label="Default select example">
+                                <select id="EligibleVeh" style="width: 110px;" class="form-select is-invalid clear" onchange="ValidateControlCtrl()" aria-label="Default select example">
                                     <option selected value="-1">-</option>
                                     <option value="1">Yes</option>
                                     <option value="0">No</option>
@@ -189,7 +198,7 @@
 
                             <li style="font-size: 16px;">
                                 Even Tough The Person Is Eligible For Public Transport But Still You Are Providing Company Vehicle? Are You Sure To Continue With The Vehicle Allotment:
-                                <select id="VehicleAlloc"  style="width: 110px;"  class="form-select is-invalid clear" onchange="ValidateControlCtrl()" aria-label="Default select example">
+                                <select id="VehicleAlloc" style="width: 110px;" class="form-select is-invalid clear" onchange="ValidateControlCtrl()" aria-label="Default select example">
                                     <option selected value="-1">-</option>
                                     <option value="1">Yes</option>
                                     <option value="0">No</option>
@@ -277,13 +286,20 @@
     <script>
         $(document).ready(function () {
             var DropdownCtrl = $('#VehicleTypeProvided');
+            var pubTran = $('#travDetails_PublicTransports').val();
+            var VType = $('#travDetails_VehicleType').val();
+            
+            var PublicT = VType;
+            //if (pubTran === true) { PublicT = 1; } else { PublicT = 0;}
+            //alert(pubTran); alert(PublicT);
+
             $.ajax({
-                url: '/Security/ETS/GetVehicleTypes?TypeVal=' + 0,
+                url: '/Security/ETS/GetVehicleTypes?TypeVal=' + PublicT +'&PT=PT',
                 method: 'GET',
                 dataType: 'json',
                 success: function (data) {
                     debugger;
-                    DropdownCtrl.append($('<option/>', { value: "-1", text: "Select" }));
+                    DropdownCtrl.append($('<option/>', { value: "", text: "Select" }));
                     $(data).each(function (index, item) {
                         DropdownCtrl.append($('<option/>', { value: item.ID, text: item.DisplayText }));
                     });
@@ -295,22 +311,25 @@
         $(document).ready(function () {
             var NoteNo = $('#NoteNumber').val();
             var DropdownCtrl = $('#EmployeeNonName');
+            var pubTran = $('#travDetails_PublicTransports').val();
             $.ajax({
                 url: '/Security/ETS/GetEmployeeNoName?Noteno=' + NoteNo,
                 method: 'GET',
                 dataType: 'json',
                 success: function (data) {
-                    debugger;
-                    DropdownCtrl.append($('<option/>', { value: "-1", text: "Select" }));
+
+                    
+                    DropdownCtrl.append($('<option/>', { value: "", text: "Select" }));
                     $(data).each(function (index, item) {
                         DropdownCtrl.append($('<option/>', { value: item.EmployeeNonName, text: item.EmployeeNonName }));
                     });
+                   
                 }
             });
 
 
         });
-        
+
         $(document).ready(function () {
             $('#btnBack').click(function () {
 
@@ -321,7 +340,7 @@
                 window.location.href = urlbk;
             });
         });
-    
+
     </script>
 
 }

@@ -118,7 +118,6 @@ function GetDDPersonTypeChanged(targetid, mValue, selectedvalue, Empval) {
 
 
 };
-
 function DDPickPersonChanged(x) {
    
     var target = DDPickPersonChanged.caller.arguments[0].target;
@@ -427,7 +426,6 @@ $('#btnBack').click(function () {
         window.location.href = backurl;
     }
 });
-
 $(document).ready(function () {
     (async function () {
         const r1 = await getInitialData();
@@ -474,7 +472,7 @@ async function getInitialData() {
                         GetDDPersonTypeChanged(DDPersonType.attr('id'), Peritem.PersonType, Peritem.EmployeeNo, Peritem.EmployeeNonName)
                         cmbDDPersonType.isValid();
                         txtDDPersonType.isValid();
-                        alert(Peritem.EmployeeNonName);
+                        //alert(Peritem.EmployeeNonName);
                         getDesgnCode(rowid, Peritem.EmployeeNo);
                         
                         GetVehicleEligibility(rowid, Peritem.EmployeeNo);
@@ -488,6 +486,24 @@ async function getInitialData() {
         }
     });
 };
+$('#btnClear').click(function () {
+    var selectvalue = 0;
+    var Empval = "";
+    var mValue = 0;
+    var DDPersonType = $('#DDPersonType');
+    var TaDaDenied = $('#TaDaDenied');
+    $('#etsHeader_AttachFile').val('');
+    $('#otherplace').val('');
+    $('#carryLaptop').val('');
+    $('#Policy').val('');
+    DDPersonType.val('').isInvalid();
+    GetDDPersonTypeChanged(DDPersonType.attr('id'), mValue, selectvalue, Empval);
+    getDesgnCode(0, 0);
+    GetVehicleEligibility(0,0);
+    TaDaDenied.val('').isInvalid();
+    $("#tbody2").empty();
+    EnableTravellingBtn();
 
+});
 
 

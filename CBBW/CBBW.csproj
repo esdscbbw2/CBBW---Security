@@ -17,7 +17,7 @@
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <Use64BitIISExpress />
+    <Use64BitIISExpress>true</Use64BitIISExpress>
     <IISExpressSSLPort>44337</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -351,6 +351,7 @@
     <Content Include="UIContent\JS\multiselect_0711.js" />
     <Content Include="UIContent\JS\popper.min.js" />
     <Content Include="UIContent\JS\sweetalert2.all.min.js" />
+    <Content Include="Upload\Forms\0e2c0a2f-554f-475f-9784-fc42d532c44f.png" />
     <Content Include="Views\Shared\EditorTemplates\CustomCheckBoxOption.cshtml" />
     <Content Include="Areas\Security\Views\Shared\_PartialNavBar.cshtml" />
     <Content Include="Areas\Security\Views\TADARules\CreateRule.cshtml" />
@@ -447,7 +448,6 @@
     <Folder Include="Areas\Security\Data\" />
     <Folder Include="Areas\Security\Views\Common\" />
     <Folder Include="Areas\Security\Views\ETSEdit\" />
-    <Folder Include="Upload\Forms\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

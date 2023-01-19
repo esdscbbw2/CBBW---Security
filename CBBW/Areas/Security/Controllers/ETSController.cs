@@ -240,8 +240,10 @@ namespace CBBW.Areas.Security.Controllers
 
                     if (TempData["ETS"] != null)
                     {
-
-                        modeltravvm.PersonType = model.PersonDtls.Select(o => o.PersonType).Max();
+                        if (model.PersonDtls.Where(x => x.PersonType == 2 || x.PersonType == 4).FirstOrDefault() != null)
+                            modeltravvm.PersonType = model.PersonDtls.Where(x => x.PersonType == 2 || x.PersonType == 4).FirstOrDefault().PersonType > 0 ? 4 : 1;
+                        else
+                            modeltravvm.PersonType = 1;
                         modeltravvm.NoteNumber = model.NoteNumber;
                         modeltravvm.AttachFile = model.AttachFile;
                         modeltravvm.CenterCodenName = model.CenterCodeName;
@@ -254,6 +256,8 @@ namespace CBBW.Areas.Security.Controllers
                 }
                 string baseUrl = "/Security/ETS/Create?NoteNumber=" + model.NoteNumber;
                 ViewBag.BackUrl = baseUrl;
+
+                ViewBag.BtnClear = "/Security/ETS/TravellingDetails?Btnsubmit=" + model.Btnsubmit;
                 TempData["ETS"] = model;
             }
             catch (Exception ex)
@@ -320,6 +324,32 @@ namespace CBBW.Areas.Security.Controllers
             try
             {
                 modelvmobj.etsHeader = _iETS.GetETSHdrEntry(NoteNumber, ref pMsg);
+                if (modelvmobj.etsHeader.IsApproved.HasValue)
+                {
+                    modelvmobj.etsHeader.IsApproveds = modelvmobj.etsHeader.IsApproved == true ? "Yes" : "No";
+                }
+                else
+                {
+                    modelvmobj.etsHeader.IsApproveds = "-";
+                }
+                modelvmobj.etsHeader.ApproveDatestr = modelvmobj.etsHeader.ApproveDatestr != "01/01/0001" ? modelvmobj.etsHeader.ApproveDatestr : "-";
+
+                modelvmobj.etsHeader.ApproveTime = modelvmobj.etsHeader.ApproveTime != null ? modelvmobj.etsHeader.ApproveTime : "-";
+                modelvmobj.etsHeader.ApprovedReason = modelvmobj.etsHeader.ApprovedReason != null ? modelvmobj.etsHeader.ApprovedReason : "-";
+
+                if (modelvmobj.etsHeader.IsRatified.HasValue)
+                {
+                    modelvmobj.etsHeader.IsRatifieds = modelvmobj.etsHeader.IsRatified == true ? "Yes" : "No";
+                }
+                else
+                {
+                    modelvmobj.etsHeader.IsRatifieds = "-";
+                }
+                modelvmobj.etsHeader.RatifiedDatestr = modelvmobj.etsHeader.RatifiedDatestr != "01/01/0001" ? modelvmobj.etsHeader.RatifiedDatestr : "-";
+
+                modelvmobj.etsHeader.RatifiedTime = modelvmobj.etsHeader.RatifiedTime != null ? modelvmobj.etsHeader.RatifiedTime : "-";
+                modelvmobj.etsHeader.RatifiedReason = modelvmobj.etsHeader.RatifiedReason != null ? modelvmobj.etsHeader.RatifiedReason : "-";
+
                 modelvmobj.PersonDtls = _iETS.GetETSTravellingPerson(NoteNumber, ref pMsg);
                 modelvmobj.CanDelete = CanDelete;// == 1 ? true : false;
                 modelvmobj.HeaderText = CanDelete == 1 ? "Delete" : "View";
@@ -442,7 +472,7 @@ namespace CBBW.Areas.Security.Controllers
                 CustomAjaxResponse result = new CustomAjaxResponse();
                 modelobj.travdetails.NoteNumber = modelobj.NoteNumber;
                 modelobj.travdetails.IsApproved = modelobj.IsApprove == 1 ? true : false;
-                modelobj.travdetails.ApprovedReason = modelobj.ApproveReason;
+                modelobj.travdetails.ApprovedReason = modelobj.ApproveReason != null ? modelobj.ApproveReason : "NA";
                 modelobj.travdetails.ReasonVehicleProvided = "NA";
                 modelobj.travdetails.VehicleTypeProvided = 0;
                 modelobj.travdetails.EmployeeNonName = "NA";
@@ -541,6 +571,18 @@ namespace CBBW.Areas.Security.Controllers
             try
             {
                 modelvmobj.etsHeader = _iETS.GetETSHdrEntry(NoteNumber, ref pMsg);
+                if (modelvmobj.etsHeader.IsRatified.HasValue)
+                 {
+                    modelvmobj.etsHeader.IsRatifieds = modelvmobj.etsHeader.IsRatified == true ? "Yes" : "No";
+                }
+                else
+                {
+                    modelvmobj.etsHeader.IsRatifieds = "-";
+                }
+                modelvmobj.etsHeader.RatifiedDatestr = modelvmobj.etsHeader.RatifiedDatestr != "01/01/0001" ? modelvmobj.etsHeader.RatifiedDatestr : "-";
+       
+                modelvmobj.etsHeader.RatifiedTime = modelvmobj.etsHeader.RatifiedTime != null ? modelvmobj.etsHeader.RatifiedTime : "-";
+                modelvmobj.etsHeader.RatifiedReason = modelvmobj.etsHeader.RatifiedReason != null ? modelvmobj.etsHeader.RatifiedReason : "-";
                 modelvmobj.PersonDtls = _iETS.GetETSTravellingPerson(NoteNumber, ref pMsg);
                 modelvmobj.CanDelete = CanDelete;// == 1 ? true : false;
                 modelvmobj.HeaderText = "Approval";
@@ -616,8 +658,9 @@ namespace CBBW.Areas.Security.Controllers
                 {
                     modelobj.btnDisplay = btnDisplay;
                     modelobj.Notelist = _iETS.GetETSNoteListToBeApproved(user.CentreCode, 2, ref pMsg);
-                    if (modelobj.Notelist != null) {
-                    modelobj.NoteNumber = modelobj.Notelist.Where(x => x.NoteNumber == NoteNumber).FirstOrDefault().NoteNumber;
+                    if (modelobj.Notelist != null)
+                    {
+                        modelobj.NoteNumber = modelobj.Notelist.Where(x => x.NoteNumber == NoteNumber).FirstOrDefault().NoteNumber;
                     }
                 }
                 else
@@ -646,7 +689,7 @@ namespace CBBW.Areas.Security.Controllers
                 CustomAjaxResponse result = new CustomAjaxResponse();
                 modelobj.ratified.NoteNumber = modelobj.NoteNumber;
                 modelobj.ratified.IsRatified = modelobj.IsRatified == 1 ? true : false;
-                modelobj.ratified.RatifiedReason = modelobj.RatifiedReason;
+                modelobj.ratified.RatifiedReason = modelobj.RatifiedReason!=null? modelobj.RatifiedReason:"NA";
                 modelobj.ratified.status = 1;
                 if (_iETS.SetETSRatifiedData(modelobj.ratified, ref pMsg))
                 {
@@ -660,10 +703,10 @@ namespace CBBW.Areas.Security.Controllers
                 }
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
-            
+
             return View(modelobj);
         }
-        public ActionResult RTFNTravellingDetails(string NoteNumber, int CBUID=0)
+        public ActionResult RTFNTravellingDetails(string NoteNumber, int CBUID = 0)
         {
             ETSTravellingDetailsVM modelvms = new ETSTravellingDetailsVM();
             ETSHeaderEntryVM result = new ETSHeaderEntryVM();
@@ -674,12 +717,15 @@ namespace CBBW.Areas.Security.Controllers
                 Employee obhemp = new Employee();
                 // result.PersonDtls = _iETS.GetETSTravellingPerson(NoteNumber, ref pMsg);
                 modelvms.travDetails = _iETS.GetETSTravellingDetails(NoteNumber, ref pMsg);
+                ViewBag.PublicTrans = modelvms.travDetails.PublicTransports;
                 modelvms.dateTour = _iETS.GetETSDateWiseTour(NoteNumber, ref pMsg);
-                if (CBUID == 2) {
+                if (CBUID == 2)
+                {
                     baseUrl = "/Security/ETS/RTFNDetailsView?NoteNumber=" + NoteNumber;
                 }
-                else { 
-                 baseUrl = "/Security/ETS/RTFNCreate?NoteNumber=" + NoteNumber;
+                else
+                {
+                    baseUrl = "/Security/ETS/RTFNCreate?NoteNumber=" + NoteNumber;
                 }
                 ViewBag.BackUrl = baseUrl;
                 ViewBag.CBUID = CBUID;
@@ -699,7 +745,7 @@ namespace CBBW.Areas.Security.Controllers
             }
             return View(modelobj);
         }
-        public ActionResult RTFNDetailsView(string NoteNumber, int CanDelete=0, int CBUID = 0)
+        public ActionResult RTFNDetailsView(string NoteNumber, int CanDelete = 0, int CBUID = 0)
         {
             ETSHeaderEntryVM modelvmobj = new ETSHeaderEntryVM();
             try
@@ -718,9 +764,10 @@ namespace CBBW.Areas.Security.Controllers
         [HttpPost]
         public ActionResult RTFNDetailsView(ETSHeaderEntryVM model)
         {
-            if (model.NoteNumber != null) { 
-            return RedirectToAction("RTFNTravellingDetails",
-                     new { Area = "Security", NoteNumber = model.NoteNumber, CBUID = 2 });
+            if (model.NoteNumber != null)
+            {
+                return RedirectToAction("RTFNTravellingDetails",
+                         new { Area = "Security", NoteNumber = model.NoteNumber, CBUID = 2 });
             }
             return View();
         }
@@ -730,21 +777,38 @@ namespace CBBW.Areas.Security.Controllers
         {//empType : 2-driver, 1-Others
             return Json(_master.GetDesgCodenName(empID, empType), JsonRequestBehavior.AllowGet);
         }
-        public JsonResult GetVehicleTypes(int TypeVal = 0)
+        public JsonResult GetVehicleTypes(int TypeVal = 0, string PT = null)
         {
             List<CustomComboOptions> result = new List<CustomComboOptions>();
 
             EHGMaster master = EHGMaster.GetInstance;
-
-            if (TypeVal == 1 || TypeVal == 2)
+            if (PT == null)
             {
-                result = master.VehicleTypes.Where(x => x.ID == 2).ToList();
+                if (TypeVal == 1 || TypeVal == 2)
+                {
+                    result = master.VehicleTypes.Where(x => x.ID == 2).ToList();
+                }
+                else
+                {
+                    result = master.VehicleTypes.Where(x => x.ID != 3).ToList(); ;
+                }
             }
             else
             {
-                result = master.VehicleTypes;
-            }
+                if (TypeVal == 1)
+                {
+                    result = master.VehicleTypes.ToList();
+                }
+                else if (TypeVal == 2)
+                {
+                    result = master.VehicleTypes.Where(x => x.ID!=1).ToList();
+                }
+                else
+                {
+                    result = master.VehicleTypes.Where(x => x.ID == 3).ToList();
+                }
 
+            }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetPersonTypes()

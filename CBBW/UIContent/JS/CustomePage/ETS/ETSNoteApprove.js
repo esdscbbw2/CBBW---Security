@@ -87,6 +87,16 @@ function ValidateControl() {
         $(target).removeClass('is-valid').addClass('is-invalid');
     }
 
+    if (targetid == 'IsApprove') {
+        if ($(target).val() == 1) {
+            $('#ApproveReason').makeDisable();
+            $('#ApproveReason').val('');
+            $('#ApproveReason').removeClass('is-invalid').removeClass('is-valid');
+        } else {
+            $('#ApproveReason').makeEnabled()
+            $('#ApproveReason').isInvalid();
+        }
+    }
     EnableSubmitBtn();
 
 };
@@ -130,7 +140,7 @@ function EnableSubmitBtn() {
     var DWTBtn = $('#btnSubmit');
     var btnDisplay= $('#btnDisplay').val();
     
-    // alert(x); alert(y);
+    
     if ((x + y) * 1 > 0 || btnDisplay==0) {
         DWTBtn.makeDisable();
     }
@@ -138,12 +148,10 @@ function EnableSubmitBtn() {
         DWTBtn.makeEnabled();
     }
 };
-
 function Buttonclear() {
     $('.clear').val('');
     $('.clear').isInvalid();
 }
-
 function SaveDataClicked() {
     var NoteNumber = $('#NoteNumber').val();
     var IsApprove = $('#IsApprove').val();

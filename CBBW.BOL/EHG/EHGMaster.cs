@@ -71,7 +71,8 @@ namespace CBBW.BOL.EHG
             VehicleTypes = new List<CustomComboOptions>() 
             {
                 new CustomComboOptions{ ID = 1, DisplayText = "LV" },
-                new CustomComboOptions{ ID = 2, DisplayText = "2 Wheeler" }
+                new CustomComboOptions{ ID = 2, DisplayText = "2 Wheeler" },
+                new CustomComboOptions{ ID = 3, DisplayText = "Public Transport" }
             }; 
         }
         public List<CustomComboOptions> VehicleTypes { get; set; }

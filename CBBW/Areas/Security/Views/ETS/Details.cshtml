@@ -104,19 +104,19 @@
                                     <label>Approved :</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" value="-" disabled="">
+                                    <input type="text" class="form-control" value="@Model.etsHeader.IsApproveds" disabled="">
                                 </div>
                                 <div class="col-md-2 col-form-label">
                                     <label>Date &amp; Time Of Approval :</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" value="-" disabled="">
+                                    <input type="text" class="form-control" value="@Model.etsHeader.ApproveDatestr @Model.etsHeader.ApproveTime" disabled="">
                                 </div>
                                 <div class="col-md-2 col-form-label">
                                     <label>Reason If Not Approved :</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <textarea name="" id="" cols="10" rows="2" class="form-control pointer-default" readonly>-</textarea>
+                                    <textarea name="" id="" cols="10" rows="2" class="form-control pointer-default" readonly>@Model.etsHeader.ApprovedReason</textarea>
                                 </div>
                             </div>
                         </form>
@@ -130,19 +130,19 @@
                                     <label>Ratified :</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" value="-" disabled="">
+                                    <input type="text" class="form-control" value="@Model.etsHeader.IsRatifieds" disabled="">
                                 </div>
                                 <div class="col-md-2 col-form-label">
                                     <label>Date & Time Of &nbsp; Ratification :</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" value="-" disabled="">
+                                    <input type="text" class="form-control" value="@Model.etsHeader.RatifiedDatestr @Model.etsHeader.RatifiedTime" disabled="">
                                 </div>
                                 <div class="col-md-2 col-form-label">
                                     <label>Reason If Not Ratified :</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <textarea name="" id="" cols="10" rows="2" class="form-control pointer-default" readonly>-</textarea>
+                                    <textarea name="" id="" cols="10" rows="2" class="form-control pointer-default" readonly>@Model.etsHeader.RatifiedReason</textarea>
                                 </div>
                             </div>
                         </form>

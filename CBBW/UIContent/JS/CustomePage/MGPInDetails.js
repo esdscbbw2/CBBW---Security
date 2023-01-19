@@ -61,18 +61,18 @@
                 }
                 $("#" + index + "_LoadedIn").html(item.LoadPercentageIn + " %");
                 $("#" + index + "_Loaded").val(item.LoadPercentageIn);
-                $("#" + index + "_RFIDNo").val(item.RFIDCard).html('<select data-name="RFIDCard" id="' + index + '_RFID" class="form-select pointer is-invalid displayRfID canclear" style="width: 154px;" onchange="SelectedRFIDValid();ValidateControls();"  aria-label="Default select example"></select>');
+                $("#" + index + "_RFIDNo").val(item.RFIDCard).html('<select id="' + index + '_RFID" class="form-select pointer is-invalid" style="width: 154px;" onchange="SelectedRFIDValid();ValidateControls();"  aria-label="Default select example"></select>');
                 $("#" + index + "_Schdate").html(item.FromschDates);
-                $("#" + index + "_ActualDate").val(item.ActualTripInDate).html('<input data-name="ActualTripInDate" id="' + index + '_ActualTripDate" type="text" style="width: 154px;" placeholder="dd/mm/yyyy" class="form-control pointer is-invalid ActualTripDates displaytripdate canclear" onchange="ValidateControls()">');
+                $("#" + index + "_ActualDate").val(item.ActualTripInDate).html('<input id="' + index + '_ActualTripDate" type="text" style="width: 154px;" placeholder="dd/mm/yyyy" class="form-control pointer is-invalid ActualTripDates" onchange="ValidateControls()">');
                 $("#" + index + "_ActualTime").val(item.ActualTripInTime);//.html('<input id="' + index + '_ActualTripTime"  type="text" style="width: 154px;" class="form-control pointer is-invalid" onchange="ValidateControls()" placeholder="08:00PM">').addClass('timePicker');
                 $("#" + index + "_ReqKMIn").html(item.RequiredKmIn);//Display Only
                 $("#" + index + "_RKMIn").val(item.RequiredKmIn);
                 $("#" + index + "_KMout").val(item.KMSOut);
-                $("#" + index + "_ActualKMIns").val(item.ActualKmIn).html('<input data-name="ActualKmIn" id="' + index + '_ActualKmIn" value="' + item.ActKmIn +'" type="number" style="width: 154px;" min="0" onchange="ValidateControls();" class="form-control pointer is-invalid displayactualkm">');
-                $("#" + index + "_RunInTrip").val(item.KMRunInTrip).html('<input data-name="KMRunInTrip" id="' + index + '_KMRunInTrip" value="' + item.RunningKm +'"  type="text" style="width: 154px;" class="form-control displayrun" readonly="readonly">');
-                $("#" + index + "_Remark").val(item.InRemark).html('<input data-name="InRemark" id="' + index + '_InRemarks" type="text" style="width: 154px;" class="form-control displayremark canclear" onchange="GetRemarks();">');
+                $("#" + index + "_ActualKMIns").val(item.ActualKmIn).html('<input id="' + index + '_ActualKmIn" value="' + item.ActKmIn+'" type="number" style="width: 154px;" min="0" onchange="ValidateControls();" class="form-control pointer is-invalid">');
+                $("#" + index + "_RunInTrip").val(item.KMRunInTrip).html('<input id="' + index + '_KMRunInTrip" value="' + item.RunningKm +'"  type="text" style="width: 154px;" class="form-control" readonly="readonly">');
+                $("#" + index + "_Remark").val(item.InRemark).html('<input id="' + index + '_InRemarks" type="text" style="width: 154px;" class="form-control">');
                // $("#" + index + "_ActionIn").html('<span class="actionBtn d-block"><button type="button" onclick="OnclickNewDCDetails(this)"  id="' + item.VehicleNo + '" data-value="' + item.FromschDates + '"   class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Details" data-placement="top" title="" data-bs-original-title="Pending"> <svg xmlns=http://www.w3.org/2000/svg width=24 height=24 viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round class="feather feather-alert-triangle"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1=12 y1=9 x2=12 y2=13></line><line x1=12 y1=17 x2=12.01 y2=17></line></svg></button>');
-                
+
                 if (item.CarryingInMaterial == true) {
                     $("#" + index + "_ActionIn").html('<span class="actionBtn d-block"><button type="button" onclick="OnclickNewDCDetails(this)"  id="' + item.VehicleNo + '" data-value="' + item.FromschDates + '"   class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Details" data-placement="top" title="" data-bs-original-title="Pending"> <svg xmlns=http://www.w3.org/2000/svg width=24 height=24 viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round class="feather feather-alert-triangle"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1=12 y1=9 x2=12 y2=13></line><line x1=12 y1=17 x2=12.01 y2=17></line></svg></button>');
                 } else {
@@ -81,59 +81,13 @@
                 GetRFIDCardNos(index);
             })
 
-           
             
         }
     });
-    
+
 });
-
-function DisplayData() {
-    var rfidcard = $('#RFIDCard').val();
-    var displaytripdate = $('#ActualTripInDate').val();
-    var actualkm = $('#ActualKmIn').val();
-    var kmrun = $('#KMRunInTrip').val();
-    var ActualTime = $('#ActualTime').val();
-    displaytripdate = displaytripdate.split(' ')[0];
-    displaytripdate = DateFormat(displaytripdate);
-    if (rfidcard != '') {
-    $('.displayRfID').each(function () {
-        $(this).val($('#RFIDCard').val()).addClass('is-valid').removeClass('is-invalid');
-    })
-    } 
-    if (displaytripdate != '01/01/0001') { $('.displaytripdate').val(displaytripdate).addClass('is-valid').removeClass('is-invalid'); }
-    if (actualkm != 0) { $('.displayactualkm').val(actualkm).addClass('is-valid').removeClass('is-invalid'); }
-    if (kmrun != 0) { $('.displayrun').val(kmrun).addClass('is-valid').removeClass('is-invalid'); }
-    if (ActualTime != 0) { $('.displaytime').val(ActualTime).addClass('is-valid').removeClass('is-invalid'); }
-
-    $('.displayremark').val($('#InRemark').val());
-    DatePicker();
-    ValidateControls();
-};
-
-function GetRemarks() {
-    var target = GetRemarks.caller.arguments[0].target;
-    var targetid = $(target).attr('id');
-    if (targetid.split('_')[1] == 'InRemarks') {
-        $('#InRemark').val($(target).val());
-    }
-};
-
-function DateFormat(ctrls) {
-    var date = ctrls.split('-')[0];
-    var month = ctrls.split('-')[1];
-    var year = ctrls.split('-')[2];
-    return date + '/' + month + '/' + year;
-};
-function btnClearClicked() {
-    $('.canclear').each(function () {
-        $(this).val('');
-    });
-};
-
 function GetRFIDCardNos(index) {
-
-    var FRIDData = $('#' + index+'_RFID');
+    var FRIDData = $('#' + index + '_RFID');
     $.ajax({
         url: '/MaterialGatePass/GetRFIdCards',
         method: 'GET',
@@ -145,7 +99,6 @@ function GetRFIDCardNos(index) {
                 FRIDData.append($('<option/>', { value: item.RFIDCardNo, text: item.RFIDCardNo }));
             });
             FRIDData.append($('<option/>', { value: "NA", text: "NA" }));
-            DisplayData();
         }
     });
 
@@ -155,7 +108,7 @@ function DataNotAvailbles(ctrl) {
     $("#savebtndisables").removeClass('is-valid').addClass('is-invalid');
     $("#savebtndisables").removeClass('is-invalid').addClass('is-valid');
     // var target = DataNotAvailble.caller.arguments[0].target;
-    //var targetval = target.attr('data-value');  
+    //var targetval = target.attr('data-value');
     $('#tbody4').empty();
     Swal.fire({
         title: 'Confirmation',
@@ -167,6 +120,7 @@ function DataNotAvailbles(ctrl) {
         },
         confirmButtonColor: '#2527a2',
     })
+   
     ValidateControls();
 };
 //for new Dc details
@@ -351,12 +305,6 @@ function activateSubmitBtn() {
     }
 };
 function ValidateControls() {
-    if (isvalid) {
-        $(target).removeClass('is-invalid').addClass('is-valid');
-    } else {
-        $(target).removeClass('is-valid').addClass('is-invalid');
-    }
-    activateSubmitBtn();
     var target = ValidateControls.caller.arguments[0].target;
     var targetid = $(target).attr('id');
     var isvalid = validatectrl(targetid, $(target).val());
@@ -369,8 +317,6 @@ function ValidateControls() {
         var kmout = $('#' + index + '_KMout').val() * 1;
         var actualkm = $(target).val() * 1;
         kmintrip.val(actualkm - kmout);
-        $('#KMRunInTrip').val(actualkm - kmout);
-       
         //var rkp = rk * 1.15;
         //var rkwithp = rkp + rk;
         //var cal;
@@ -389,31 +335,17 @@ function ValidateControls() {
         //    //kmintrip.val(cal);
         //}
     }
+
     if (isvalid) {
         $(target).removeClass('is-invalid').addClass('is-valid');
     } else {
         $(target).removeClass('is-valid').addClass('is-invalid');
     }
-    activateSubmitBtn();
-   
-};
-
-
-function validatectrl(targetid, value) {
-    var isvalid = false;
-    if (targetid.split('_')[1] == 'RFID') { $('#RFIDCard').val(value);
-    }
-    if (targetid.split('_')[1] == 'ActualTripDate') {$('#ActualTripInDate').val(value);
-    }
-    if (targetid.split('_')[1] == 'ActualKmIn') {$('#ActualKmIn').val(value);
-    }
-    if (targetid.split('_')[1] == 'ActualTime') {
-        $('#ActualTime').val(value);
-    }
-   
-
     
-   
+    activateSubmitBtn();
+};
+function validatectrl(targetid, value) {
+    var isvalid = false; 
     if (value == "" || value == null) { isvalid = false; } else { isvalid = true }
     activateSubmitBtn();
     return isvalid;

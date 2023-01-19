@@ -32,9 +32,6 @@ function Notenumberchanged(notenumber) {
         }
     });
 };
-
-
-
 function ActivateOutbtn(notenumber) {
    
     var btnOut = $('#btnCMOD');
@@ -89,13 +86,30 @@ function ActivateOutbtn(notenumber) {
     });
 };
 function btnClearClicked() {
-    
+    debugger;
     $('.canclear').each(function () {
         $(this).val('');
     });
-    
-};
+    //$('#submitConfirmation').removeClass('is-valid').addClass('is-invalid');
+    //$('#Vehicleno').removeClass('is-valid').addClass('is-invalid');
+    //$('#divErrorLVS').addClass('inVisible');
+    //$('#divErrorOTS').addClass('inVisible');
+    //$('#divError').addClass('inVisible');
+    //$('#btnLVT').attr('disabled', 'disabled');
+    //$('#btnOVT').attr('disabled', 'disabled');
+    //var noteno = $('#NoteNo').val();
+    //$.ajax({
+    //    url: '/CTV/RemoveNoteDetails',
+    //    method: 'GET',
+    //    data: { NoteNumber: noteno },
+    //    dataType: 'json',
+    //    success: function (data) {
+    //        $(data).each(function (index, item) {
 
+    //        });
+    //    }
+    //});
+};
 function activateSubmitBtn() {
     //alert($('.is-invalid').length);
     //isOtherPlaceButtonEnabled();
@@ -127,7 +141,6 @@ function ValidateControl() {
 
     activateSubmitBtn();
 };
-
 function validatectrl(targetid, mvalue) {
     var isvalid = false;
     if (targetid == 'vehicledriver' || targetid == 'driversame') {

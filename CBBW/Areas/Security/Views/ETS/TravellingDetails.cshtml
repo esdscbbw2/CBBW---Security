@@ -13,6 +13,7 @@
         @Html.HiddenFor(x => x.NoteNumber);
         @Html.HiddenFor(x => x.AttachFile);
         @Html.HiddenFor(x => x.CenterCodenName);
+        @Html.HiddenFor(x => x.btnSubmit);
         <div class="row newTable">
             <div class="fixedElement">
                 <div class="col-md-12">
@@ -24,9 +25,10 @@
                             </button>
                             <button disabled id="btnSubmits" type="button" onclick="SaveDataClicked()" class="btn btn-secondary me-2">
                                 <i data-feather="upload"></i>
-                                Submit
+                                Save
                             </button>
                             <button type="button"
+                                    id="btnClear"
                                     class="btn btn-white">
                                 <i data-feather="x-circle"></i>
                                 Clear
@@ -89,7 +91,7 @@
                                             <td class="text-center">
                                                 <select id="PublicTransport"
                                                         onchange="ValidateControl()"
-                                                        data-name="PublicTransport" class="form-select w-200 is-invalid" aria-label="Default select example">
+                                                        data-name="PublicTransport" class="form-select w-200 clear is-invalid" aria-label="Default select example">
                                                     <option selected="" value="">Select</option>
                                                     <option value="1">Yes</option>
                                                     <option value="0">No </option>
@@ -100,7 +102,7 @@
                                                     NA
                                                 </div>
                                                 <div class="forNo">
-                                                    <select class="form-select w-200 is-invalid"
+                                                    <select class="form-select w-200 clear is-invalid"
                                                             data-name="VehicleType"
                                                             aria-label="Default select example"
                                                             id="VehicleType" onchange="ValidateControl()">
@@ -114,7 +116,7 @@
                                                     NA
                                                 </div>
                                                 <div class="forNo">
-                                                    <textarea id="ReasonVehicleReq" onchange="ValidateControl()" data-name="ReasonVehicleReq" class="form-control is-invalid" cols="10" rows="2"></textarea>
+                                                    <textarea id="ReasonVehicleReq" onchange="ValidateControl()" data-name="ReasonVehicleReq" class="form-control clear is-invalid" cols="10" rows="2"></textarea>
                                                 </div>
                                             </td>
                                             <td class="text-center">
@@ -128,41 +130,38 @@
                                                     <input id="SchFromDate" type="date" min="@Model.FromdateStr" max="@Model.TodateStr"
                                                            data-name="SchFromDate"
                                                            onchange="ValidateControl()"
-                                                           class="form-control pointer is-invalid CustomDateFormatCloneRow">
+                                                           class="form-control pointer is-invalid clear CustomDateFormatCloneRow">
                                                     <label id="lblSchFromDate" style="width:80px"
-                                                           class="datelabel pointer alterID">Select Date</label>
+                                                           class="datelabel cleardate pointer alterID">Select Date</label>
 
                                                 </div>
                                             </td>
                                             <td class="text-center">
-                                                <div class="input-group date pointer position-static placeholder-dark">
+                                                <div class="input-group clear date pointer position-static placeholder-dark">
                                                     <input id="SchFromTime" type="text"
                                                            data-name="SchFromTime"
                                                            onblur="ValidateControl()"
-                                                           class="form-control is-invalid timePicker"
+                                                           class="form-control clear is-invalid timePicker"
                                                            placeholder="Select Time">
                                                 </div>
                                             </td>
                                             <td class="text-center">
-                                                <div class="position-relative pointer">
+                                                <div class="position-relative clear pointer">
                                                     <input id="SchTourToDate" type="date"
                                                            data-name="SchTourToDate"
                                                            onchange="ValidateControl()"
-                                                           class="form-control pointer is-invalid CustomDateFormatCloneRow">
+                                                           class="form-control pointer clear is-invalid CustomDateFormatCloneRow">
                                                     <label id="lblSchTourToDate" style="width:100px"
-                                                           class="datelabel pointer alterID">Select Date</label>
+                                                           class="datelabel cleardate pointer alterID">Select Date</label>
 
 
                                                 </div>
                                             </td>
                                             <td class="text-center">
-                                                <textarea maxlength="200" data-name="PurposeOfVisit" id="PurposeOfVisit" class="form-control" cols="10" rows="2"></textarea>
+                                                <textarea maxlength="200" data-name="PurposeOfVisit" id="PurposeOfVisit" class="form-control clearNoVal" cols="10" rows="2"></textarea>
                                             </td>
-
                                         </tr>
-
                                     </tbody>
-
                                 </table>
                             </div>
                             <form class="form-sample form-inline row ms-auto mt-4 pt-3 mb-2">
@@ -337,6 +336,18 @@
                 window.location.href = urlbk;
             };
         
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#btnClear').click(function () {
+                debugger;
+                var url = "@ViewBag.BtnClear";
+                var urlbk = url.replace(/&amp;/g, '&');
+
+                window.location.href = urlbk;
+            });
+        });
     </script>
     @*<script>
             $(document).ready(function () {

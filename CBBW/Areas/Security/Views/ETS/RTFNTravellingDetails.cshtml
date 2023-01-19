@@ -80,87 +80,94 @@
                                             {
 
 
-                                                <tr>
+                                        <tr>
 
-                                                    @if (Model.travDetails.PublicTransports == true)
-                                                    {
-
-
-                                                        <td class="text-center">Yes</td>
-                                                    }
-                                                    else
-                                                    {
-                                                        <td class="text-center">No</td>
-                                                    }
-                                                    @if (Model.travDetails.VehicleType == 0)
-                                                    {
-                                                        <td class="text-center">
-                                                            NA
-                                                        </td>
-                                                    }
-                                                    else if (Model.travDetails.VehicleType == 1)
-                                                    {
-                                                        <td class="text-center">
-                                                            LV
-
-                                                        </td>
-                                                    }
-                                                    else if (Model.travDetails.VehicleType == 2)
-                                                    {
-                                                        <td class="text-center">
-                                                            2 wheelar
-
-                                                        </td>
-                                                    }
-
-                                                    <td class="text-center">
-                                                        @Model.travDetails.ReasonVehicleReq
-
-                                                    </td>
-
-                                                    @if (Model.travDetails.VehicleTypeProvided == 0)
-                                                    {
-                                                        <td class="text-center">
-                                                            NA
-                                                        </td>
-                                                    }
-                                                    else if (Model.travDetails.VehicleTypeProvided == 1)
-                                                    {
-                                                        <td class="text-center">
-                                                            LV
-
-                                                        </td>
-                                                    }
-                                                    else if (Model.travDetails.VehicleTypeProvided == 2)
-                                                    {
-                                                        <td class="text-center">
-                                                            2 wheelar
-
-                                                        </td>
-                                                    }
+                                            @if (Model.travDetails.PublicTransports == true)
+                                            {
 
 
-                                                    <td class="text-center">
-                                                        <textarea maxlength="200" id="ReasonVehicleProvided" data-name="" class="form-control" cols="10" rows="2" disabled>@Model.travDetails.ReasonVehicleProvided</textarea>
+                                                <td class="text-center">Yes</td>
+                                            }
+                                            else
+                                            {
+                                                <td class="text-center">No</td>
+                                            }
+                                            @if (Model.travDetails.VehicleType == 0)
+                                            {
+                                                <td class="text-center">
+                                                    NA
+                                                </td>
+                                            }
+                                            else if (Model.travDetails.VehicleType == 1)
+                                            {
+                                                <td class="text-center">
+                                                    LV
 
-                                                    </td>
+                                                </td>
+                                            }
+                                            else if (Model.travDetails.VehicleType == 2)
+                                            {
+                                                <td class="text-center">
+                                                    2 wheelar
 
-                                                    <td class="text-center">
-                                                        @Model.travDetails.SchFromDateDisplay
+                                                </td>
+                                            }
+                                            else if (Model.travDetails.VehicleType == 3)
+                                            {
+                                                <td class="text-center">
+                                                    Public Transport
 
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @Model.travDetails.SchFromTime
+                                                </td>
+                                            }
 
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @Model.travDetails.SchTourToDateDisplay
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <textarea name="" id="" cols="20" rows="2" class="form-control pointer-default" readonly data-toggle="tooltip" data-placement="bottom">@Model.travDetails.PurposeOfVisit   </textarea>
-                                                    </td>
+                                            <td class="text-center">
+                                                @Model.travDetails.ReasonVehicleReq
 
-                                                </tr>
+                                            </td>
+
+                                            @if (Model.travDetails.VehicleTypeProvided == 0)
+                                            {
+                                                <td class="text-center">
+                                                    NA
+                                                </td>
+                                            }
+                                            else if (Model.travDetails.VehicleTypeProvided == 1)
+                                            {
+                                                <td class="text-center">
+                                                    LV
+
+                                                </td>
+                                            }
+                                            else if (Model.travDetails.VehicleTypeProvided == 2)
+                                            {
+                                                <td class="text-center">
+                                                    2 wheelar
+
+                                                </td>
+                                            }
+
+
+                                            <td class="text-center">
+                                                <textarea maxlength="200" id="ReasonVehicleProvided" data-name="" class="form-control" cols="10" rows="2" disabled>@Model.travDetails.ReasonVehicleProvided</textarea>
+
+                                            </td>
+
+                                            <td class="text-center">
+                                                @Model.travDetails.SchFromDateDisplay
+
+                                            </td>
+                                            <td class="text-center">
+                                                @Model.travDetails.SchFromTime
+
+                                            </td>
+                                            <td class="text-center">
+                                                @Model.travDetails.SchTourToDateDisplay
+                                            </td>
+                                            <td class="text-center">
+                                                <textarea name="" id="" cols="20" rows="2" class="form-control pointer-default" readonly data-toggle="tooltip" data-placement="bottom">@Model.travDetails.PurposeOfVisit   </textarea>
+                                            </td>
+
+                                        </tr>
                                             }
                                         }
                                     </tbody>

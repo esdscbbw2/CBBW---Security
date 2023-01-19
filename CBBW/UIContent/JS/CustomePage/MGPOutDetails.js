@@ -70,16 +70,16 @@
                 $("#" + index + "_LoadM").html(item.LoadPercentage+" %");//Display only
                 $("#" + index + "_LoadMat").val(item.LoadPercentage);
 
-                $("#" + index + "_RFIDs").val().html('<select id="' + index + '_RFID" class="form-select pointer is-invalid" onchange="SelectedRFIDValid();ValidateControl()"  aria-label="Default select example"></select>');
+                $("#" + index + "_RFIDs").val(item.RFIDCard).html('<select id="' + index + '_RFID" class="form-select pointer is-invalid" onchange="SelectedRFIDValid();ValidateControl()"  aria-label="Default select example"></select>');
                 $("#" + index + "_SchTripDate").html(item.SchFromDatestr);//display only
                 
                 $("#" + index + "_SchTripdatetext").val(item.SchFromDatestr);
                 $("#" + index + "_SchTrip").val(item.SchFromDate);
-                $("#" + index + "_ActualTripDates").val().html('<input id="' + index + '_ActualTripDate" type="text" placeholder="dd/mm/yyyy" class="form-control pointer is-invalid ActualTripDates" onchange="ValidateControl()">');
-                $("#" + index + "_ActualTripTime").val();//.html('<input id="' + index + '_ActualTripTime"  type="text" class="form-control pointer is-invalid" onblur="ValidateControl()" placeholder="08:00PM">').addClass('timePicker');
+                $("#" + index + "_ActualTripDates").val(item.ActualTripOutDate).html('<input id="' + index + '_ActualTripDate" type="text" placeholder="dd/mm/yyyy" class="form-control pointer is-invalid ActualTripDates" onchange="ValidateControl()">');
+                $("#" + index + "_ActualTripTime").val(item.ActualTripOutTime);//.html('<input id="' + index + '_ActualTripTime"  type="text" class="form-control pointer is-invalid" onblur="ValidateControl()" placeholder="08:00PM">').addClass('timePicker');
                 $("#" + index + "_KM").html(item.KMOUT);//Display Only
                 $("#" + index + "_KMOut").val(item.KMOUT);
-                $("#" + index + "_OutRemarks").val().html('<input id="' + index + '_OutRemark" type="text" class="form-control">');
+                $("#" + index + "_OutRemarks").val(item.OutRemark).html('<input id="' + index + '_OutRemark" type="text" class="form-control">');
                // $("#" + index + "_ActionDCNew").html('<span class="actionBtn d-block"><button type="button" onclick="OnclickNewDCDetails(this)"  id="' + item.VehicleNumber + '" data-value="' + item.SchFromDatestr + '"   class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Details" data-placement="top" title="" data-bs-original-title="Pending"> <svg xmlns=http://www.w3.org/2000/svg width=24 height=24 viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round class="feather feather-alert-triangle"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1=12 y1=9 x2=12 y2=13></line><line x1=12 y1=17 x2=12.01 y2=17></line></svg></button>');
                 if (item.CarryingOutMat == true) {
                    
@@ -117,8 +117,8 @@ function DataNotAvailble(ctrl) {
     ValidateControl();
 };
 function GetRFIDCardNos(index) {
-   
-    var FRIDData = $('#' + index+'_RFID');
+  
+    var FRIDData = $('#'+ index +'_RFID');
     $.ajax({
         url: '/MaterialGatePass/GetRFIdCards',
         method: 'GET',

@@ -96,32 +96,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="card mb-4 mt-4">
-                    <div class="card-body  alert alert-danger text-dark approvalForm">
-                        <form class="form-sample form-inline row ms-auto">
-                            <div class="row d-flex align-items-center">
-                                <div class="col-md-2 col-form-label">
-                                    <label>Approved :</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control" value="-" disabled="">
-                                </div>
-                                <div class="col-md-2 col-form-label">
-                                    <label>Date &amp; Time Of Approval :</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control" value="-" disabled="">
-                                </div>
-                                <div class="col-md-2 col-form-label">
-                                    <label>Reason If Not Approved :</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <textarea name="" id="" cols="10" rows="2" class="form-control pointer-default" readonly>-</textarea>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+
                 <div class="card mb-4 mt-4">
                     <div class="card-body  alert alert-danger text-dark approvalForm">
                         <form class="form-sample form-inline row ms-auto">
@@ -130,19 +105,22 @@
                                     <label>Ratified :</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" value="-" disabled="">
-                                </div>
+                                   
+
+
+                                        <input type="text" class="form-control" value="@Model.etsHeader.IsRatifieds" disabled="">
+                                                                    </div>
                                 <div class="col-md-2 col-form-label">
                                     <label>Date & Time Of &nbsp; Ratification :</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" value="-" disabled="">
+                                    <input type="text" class="form-control" value="@Model.etsHeader.RatifiedDatestr @Model.etsHeader.RatifiedTime" disabled="">
                                 </div>
                                 <div class="col-md-2 col-form-label">
                                     <label>Reason If Not Ratified :</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <textarea name="" id="" cols="10" rows="2" class="form-control pointer-default" readonly>-</textarea>
+                                    <textarea name="" id="" cols="10" rows="2" class="form-control pointer-default" readonly>@Model.etsHeader.RatifiedReason</textarea>
                                 </div>
                             </div>
                         </form>
@@ -307,43 +285,43 @@
             </div>
 
         </div>
-   
 
-}
-    </div>
-
-
-    @section headers
-{
 
     }
-    @section scripts{
+</div>
 
-        <script>
-            $(document).ready(function () {
 
-                $('#btnViewDoc').click(function () {
-                    var docfilename = $('#etsHeader_AttachFile').val();
-                    var filepath = "/Upload/Forms/" + docfilename;
-                    if (docfilename.length > 2) { window.open(filepath); }
-                    else {
-                        Swal.fire({
-                            title: 'Information',
-                            text: "No Document Found For This Note",
-                            icon: 'warning',
-                            customClass: 'swal-wide',
-                            buttons: {
-                                //cancel: 'Cancel',
-                                confirm: 'Ok'
-                            },
-                            //cancelButtonClass: 'btn-cancel',
-                            confirmButtonColor: '#2527a2',
-                        });
-                    }
-                });
+@section headers
+{
+
+}
+@section scripts{
+
+    <script>
+        $(document).ready(function () {
+
+            $('#btnViewDoc').click(function () {
+                var docfilename = $('#etsHeader_AttachFile').val();
+                var filepath = "/Upload/Forms/" + docfilename;
+                if (docfilename.length > 2) { window.open(filepath); }
+                else {
+                    Swal.fire({
+                        title: 'Information',
+                        text: "No Document Found For This Note",
+                        icon: 'warning',
+                        customClass: 'swal-wide',
+                        buttons: {
+                            //cancel: 'Cancel',
+                            confirm: 'Ok'
+                        },
+                        //cancelButtonClass: 'btn-cancel',
+                        confirmButtonColor: '#2527a2',
+                    });
+                }
             });
-        </script>
-        <script>
+        });
+    </script>
+    <script>
          $(document).ready(function () {
             //var mymsg = '@ViewBag.ErrMsg';
             if ('@ViewBag.ErrMsg' != '') {
@@ -383,20 +361,20 @@
             };
             alert('@ViewBag.BtnActive');*@
         });
-        </script>
+    </script>
 
-        <script>
-            $(document).ready(function () {
-                $('#btnBack').click(function () {
-                    var url = "/Security/ETS/ETSNoteApproveList";
-                    window.location.href = url;
-                });
+    <script>
+        $(document).ready(function () {
+            $('#btnBack').click(function () {
+                var url = "/Security/ETS/ETSNoteApproveList";
+                window.location.href = url;
             });
-            $(document).ready(function () {
-                $('#btnTourRule').click(function () {
-                    var url = "/Security/TourRule/ViewRedirection?CBUID=1";
-                    window.open(url);
-                });
+        });
+        $(document).ready(function () {
+            $('#btnTourRule').click(function () {
+                var url = "/Security/TourRule/ViewRedirection?CBUID=1";
+                window.open(url);
             });
-        </script>
-    }
+        });
+    </script>
+}

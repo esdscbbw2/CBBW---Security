@@ -7,6 +7,19 @@
     } else {
         $(target).removeClass('is-valid').addClass('is-invalid');
     }
+    
+    if (targetid == 'VehicleTypeProvided') {
+        if ($(target).val() == "") {
+            $('#EmployeeNonName').val('').removeClass('is-invalid').removeClass('is-valid');
+            $('#EmployeeNonName').makeDisable();
+        } else {
+            $('#EmployeeNonName').val('');
+            $('#EmployeeNonName').makeEnabled();
+            $('#EmployeeNonName').isInvalid();
+        }
+    
+       
+    } 
 
     EnableSubmitBtnActive();
 

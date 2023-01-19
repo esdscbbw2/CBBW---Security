@@ -5,6 +5,7 @@
 
     Notenumberchanged($('#NoteNumber').val());
     var btnDisplays = $("#btnDisplay").val();
+
     if (btnDisplays == 1) {
         $('#NoteNumber').makeDisable();
     } else {
@@ -15,19 +16,27 @@ function Notenumberchanged(notenumber) {
     var noteCtrl = $('#NoteNumber');
     if (notenumber != '') { noteCtrl.isValid(); } else { noteCtrl.isInvalid(); }
     $('#tbody2').empty();
+   
     $.ajax({
         url: '/ETS/GetETSHdrDetails',
         method: 'GET',
         data: { Notenumber: notenumber },
         dataType: 'json',
         success: function (data) {
+
             $(data).each(function (index, item) {
                 $('#CenterCodeName').val(item.etsHeader.CenterCodeName);
-                $('#AttachFile').val(item.etsHeader.AttachFile)
-                var approv = item.etsHeader.IsApproved == true ?"Yes":"No"
-                $('#IsApproved').val(approv)
-                $('#ApprovedDateTime').val(item.etsHeader.ApproveDatestr + " " + item.etsHeader.ApproveTime)
-                $('#ApprovedReason').val(item.etsHeader.ApprovedReason)
+                $('#AttachFile').val(item.etsHeader.AttachFile);
+                var approv = item.etsHeader.IsApproved == true ? "Yes" : "No"
+                if (notenumber == null || notenumber == "") {
+                    $('#IsApproved').val('-');
+                    $('#ApprovedDateTime').val('-');
+                    $('#ApprovedReason').val('-');
+                } else {
+                    $('#IsApproved').val(approv);
+                    $('#ApprovedDateTime').val(item.etsHeader.ApproveDatestr + " " + item.etsHeader.ApproveTime);
+                    $('#ApprovedReason').val(item.etsHeader.ApprovedReason);
+                }
                 DisplayTPDetails(item.PersonDtls);
 
                 if ($('#CenterCodeName').val() != "") { $('#btnTravDetails').makeEnabled(); }
@@ -90,7 +99,16 @@ function ValidateControl() {
     } else {
         $(target).removeClass('is-valid').addClass('is-invalid');
     }
-
+    if (targetid == 'IsRatified') {
+        if ($(target).val() == 1) {
+            $('#RatifiedReason').makeDisable();
+            $('#RatifiedReason').val('');
+            $('#RatifiedReason').removeClass('is-invalid').removeClass('is-valid');
+        } else {
+            $('#RatifiedReason').makeEnabled()
+            $('#RatifiedReason').isInvalid();
+        }
+    }
     EnableSubmitBtn();
 
 };

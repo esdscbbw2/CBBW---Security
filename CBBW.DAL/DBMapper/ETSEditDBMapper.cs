@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CBBW.BOL.EHG;
 using CBBW.BOL.ETSEdit;
 
 namespace CBBW.DAL.DBMapper
@@ -67,6 +68,49 @@ namespace CBBW.DAL.DBMapper
                         result.EPTourText = "NA";
                     //Else part is pending for the required module.
 
+                }
+            }
+            catch { }
+            return result;
+        }
+        public EditTPDetails Map_EditTPDetails(DataRow dr)
+        {
+            EditTPDetails result = new EditTPDetails();
+            try
+            {
+                if (dr != null)
+                {
+                    EHGMaster _EHGMaster = EHGMaster.GetInstance;
+                    if (!DBNull.Value.Equals(dr["NoteNumber"]))
+                        result.NoteNumber = dr["NoteNumber"].ToString();
+                    if (!DBNull.Value.Equals(dr["PersonType"]))
+                    { 
+                        result.PersonType = int.Parse(dr["PersonType"].ToString());
+                        result.PersonTypeText = _EHGMaster.PersonType.Where(o => o.ID == result.PersonType).FirstOrDefault().DisplayText;
+                    }
+                    if (!DBNull.Value.Equals(dr["EmployeeNo"]))
+                        result.EmployeeNo = int.Parse(dr["EmployeeNo"].ToString());
+                    if (!DBNull.Value.Equals(dr["EmployeeNonName"]))
+                        result.EmployeeNonName = dr["EmployeeNonName"].ToString();
+                    if (!DBNull.Value.Equals(dr["DesignationCode"]))
+                        result.DesignationCode =int.Parse( dr["DesignationCode"].ToString());
+                    if (!DBNull.Value.Equals(dr["DesignationCodenName"]))
+                        result.DesignationCodenName = dr["DesignationCodenName"].ToString();
+                    if (!DBNull.Value.Equals(dr["CenterCode"]))
+                        result.CenterCode = int.Parse(dr["CenterCode"].ToString());
+                    if (!DBNull.Value.Equals(dr["CenterName"]))
+                        result.CenterName = dr["CenterName"].ToString();
+                    if (!DBNull.Value.Equals(dr["EligibleVehicleType"]))
+                        result.EligibleVehicleType =int.Parse(dr["EligibleVehicleType"].ToString());
+                    if (!DBNull.Value.Equals(dr["EligibleVehicleTypeName"]))
+                        result.EligibleVehicleTypeName = dr["EligibleVehicleTypeName"].ToString();
+                    if (!DBNull.Value.Equals(dr["EPNoteNumber"]))
+                        result.EPNoteNumber = dr["EPNoteNumber"].ToString();
+                    if (!DBNull.Value.Equals(dr["EPNoteDate"]))
+                        result.EPNoteDate =DateTime.Parse(dr["EPNoteDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["TADADenied"]))
+                        result.TADADenied =bool.Parse(dr["TADADenied"].ToString());
+                    
                 }
             }
             catch { }
