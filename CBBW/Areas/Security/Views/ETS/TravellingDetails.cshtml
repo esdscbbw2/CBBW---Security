@@ -312,12 +312,12 @@
         var firstOpen = true;
         var time;
         $('.timePicker').datetimepicker({
-            minDate: moment(),
+            //minDate: moment(),
             useCurrent: false,
             format: "hh:mm A"
         }).on('dp.show', function () {
             if (firstOpen) {
-                minDate: moment(),
+                //minDate: moment(),
                     time = moment().startOf('day');
                 firstOpen = false;
             } else {

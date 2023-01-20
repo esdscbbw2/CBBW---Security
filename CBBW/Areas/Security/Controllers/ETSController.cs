@@ -240,6 +240,7 @@ namespace CBBW.Areas.Security.Controllers
 
                     if (TempData["ETS"] != null)
                     {
+
                         if (model.PersonDtls.Where(x => x.PersonType == 2 || x.PersonType == 4).FirstOrDefault() != null)
                             modeltravvm.PersonType = model.PersonDtls.Where(x => x.PersonType == 2 || x.PersonType == 4).FirstOrDefault().PersonType > 0 ? 4 : 1;
                         else
@@ -510,6 +511,19 @@ namespace CBBW.Areas.Security.Controllers
             return View(modelvms);
 
         }
+      
+        //public JsonResult GetApprovalTravDetailsforReverseData(string NoteNumber)
+        //{
+        //    ETSTravellingDetailsVM modelvms = new ETSTravellingDetailsVM();
+        //   try{
+
+        //        modelvms.travDetails = _iETS.GetETSTravellingDetails(NoteNumber, ref pMsg);
+
+        //    }
+        //    catch (Exception ex) { ex.ToString(); }
+            
+        //    return Json(modelvms.travDetails, JsonRequestBehavior.AllowGet);
+        //}
         public JsonResult GetETSHdrDetails(string NoteNumber)
         {
             ETSHeaderEntryVM result = new ETSHeaderEntryVM();
@@ -521,20 +535,24 @@ namespace CBBW.Areas.Security.Controllers
         public JsonResult GetEmployeeNoName(string NoteNo)
         {
             ETSHeaderEntryVM result = new ETSHeaderEntryVM();
-            List<Employee> objemp = new List<Employee>();
-
+            //List<Employee> objemp = new List<Employee>();
+            List<CustomComboOptionsWithString> results = new List<CustomComboOptionsWithString>();
             result.PersonDtls = _iETS.GetETSTravellingPerson(NoteNo, ref pMsg);
 
             if (result.PersonDtls != null)
             {
                 foreach (var item in result.PersonDtls)
                 {
-                    Employee emp = new Employee();
-                    emp.EmployeeNonName = item.EmployeeNonName;
-                    objemp.Add(emp);
+                    CustomComboOptionsWithString cmb = new CustomComboOptionsWithString();
+                    //Employee emp = new Employee();
+                    //emp.EmployeeNonName = item.EmployeeNonName;
+                    cmb.ID= item.EmployeeNonName;
+                    cmb.DisplayText = item.EmployeeNonName;
+                    results.Add(cmb);
                 }
             }
-            return Json(objemp, JsonRequestBehavior.AllowGet);
+            
+            return Json(results, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public ActionResult SetApprovalTravDetails(ETSTravellingDetailsVM model)
@@ -545,8 +563,8 @@ namespace CBBW.Areas.Security.Controllers
                 ETSNoteApproveVM Travmodel = new ETSNoteApproveVM();
                 Travmodel.travdetails.NoteNumber = model.NoteNumber;
                 Travmodel.travdetails.VehicleTypeProvided = model.VehicleTypeProvided;
-                Travmodel.travdetails.ReasonVehicleProvided = model.ReasonVehicleProvided;
-                Travmodel.travdetails.EmployeeNonName = model.EmployeeNonName;
+                Travmodel.travdetails.ReasonVehicleProvided = model.ReasonVehicleProvided!=null? model.ReasonVehicleProvided:"NA";
+                Travmodel.travdetails.EmployeeNonName = model.EmployeeNonName!=null? model.EmployeeNonName:"NA";
                 Travmodel.travdetails.ApprovedReason = "NA";
                 Travmodel.travdetails.status = 2;
                 if (_iETS.SetETSApprovalData(Travmodel.travdetails, ref pMsg))

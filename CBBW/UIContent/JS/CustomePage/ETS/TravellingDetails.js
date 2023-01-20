@@ -19,6 +19,8 @@ function PublicTransportchange(PublicTransport, PersonType,vehicleType) {
     } else {
         $('.forYes').show();
         $('.forNo').hide();
+        $("#VehicleType").val('');
+        $("#ReasonVehicleReq").val('');
         $("#VehicleType").removeClass('is-invalid').addClass('is-valid');
         $("#ReasonVehicleReq").removeClass('is-invalid').addClass('is-valid');
     }

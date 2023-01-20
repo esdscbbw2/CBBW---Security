@@ -1,4 +1,39 @@
-﻿function ValidateControlCtrl() {
+﻿$(document).ready(function () {
+    (async function () {
+        const r3 = await getInitialData();
+    })();  
+});
+async function GetVechileType(selectedval) {
+    var DropdownCtrl = $('#VehicleTypeProvideds');
+    var pubTran = $('#travDetails_PublicTransports').val();
+    var VType = $('#travDetails_VehicleType').val();
+    var PublicT = VType;
+    $('#VehicleTypeVal').val('');
+   
+    if (pubTran == 'True') {
+        DropdownCtrl.append($('<option/>', { value: "3", text: "Public Transport" }));
+        DropdownCtrl.isValid();
+        DropdownCtrl.makeDisable();
+        $('#VehicleTypeVal').val(3);
+    }
+    if (pubTran == 'False') {
+        getDropDownDataWithSelectedValue(DropdownCtrl.attr('id'), 'Select', '/Security/ETS/GetVehicleTypes?TypeVal=' + PublicT + '&PT=PT', selectedval)
+    }
+};
+async function GetAuthEmployee(selectedval) {
+    var NoteNo = $('#NoteNumber').val();
+    var DropdownCtrl = $('#EmployeeNonName');
+    var pubTran = $('#travDetails_PublicTransports').val();
+    debugger;
+    if (pubTran == 'False') {
+        getDropDownDataWithSelectedValue(DropdownCtrl.attr('id'), 'Select', '/Security/ETS/GetEmployeeNoName?Noteno=' + NoteNo, selectedval)
+    } else {
+        DropdownCtrl.append($('<option/>', { value: "NA", text: "NA" }));
+        DropdownCtrl.removeClass('is-invalid').makeDisable();
+    }
+};
+
+function ValidateControlCtrl() {
     var target = ValidateControlCtrl.caller.arguments[0].target;
     var targetid = $(target).attr('id');
     var isvalid = validatectrl(targetid, $(target).val());
@@ -8,18 +43,18 @@
         $(target).removeClass('is-valid').addClass('is-invalid');
     }
     
-    if (targetid == 'VehicleTypeProvided') {
-        if ($(target).val() == "") {
-            $('#EmployeeNonName').val('').removeClass('is-invalid').removeClass('is-valid');
-            $('#EmployeeNonName').makeDisable();
-        } else {
-            $('#EmployeeNonName').val('');
-            $('#EmployeeNonName').makeEnabled();
-            $('#EmployeeNonName').isInvalid();
-        }
+    //if (targetid == 'VehicleTypeProvideds') {
+    //    if ($(target).val() == "") {
+    //        $('#EmployeeNonName').val('').removeClass('is-invalid').removeClass('is-valid');
+    //        $('#EmployeeNonName').makeDisable();
+    //    } else {
+    //        $('#EmployeeNonName').val('');
+    //        $('#EmployeeNonName').makeEnabled();
+    //        $('#EmployeeNonName').isInvalid();
+    //    }
     
        
-    } 
+    //} 
 
     EnableSubmitBtnActive();
 
@@ -33,17 +68,14 @@ function validatectrl(targetid, value) {
         case "EligibleVeh":
             isvalid = validatectrl_YesNoCombo(value);
             break;
-        case "ReasonVehicleProvided":
+        case "ReasonVehicleProvideds":
             isvalid = validatectrl_ValidateLength(value);
             break;
-        case "VehicleTypeProvided":
-            isvalid = validatectrl_ValidateLength(value);
-            break;
-        case "ReasonVehicleProvided":
+        case "VehicleTypeProvideds":
             isvalid = validatectrl_ValidateLength(value);
             break;
         case "EmployeeNonName":
-            isvalid = validatectrl_ValidateLength(value);
+            isvalid = validatectrl_ValidatestringLength(value);
             break;
     }
 
@@ -51,6 +83,11 @@ function validatectrl(targetid, value) {
 };
 function validatectrl_ValidateLength(value) {
     if (value.length > 0) {
+        return true;
+    } else { return false; }
+};
+function validatectrl_ValidatestringLength(value) {
+    if (value !="-1" ) {
         return true;
     } else { return false; }
 };
@@ -75,15 +112,20 @@ function EnableSubmitBtnActive() {
 function Buttonclear() {
     $('.clear').val('');
     $('.clear').isInvalid();
-}
-
+};
 function SaveDataTravClicked() {
-    var VehicleTypeProvided = $('#VehicleTypeProvided').val();
-    var ReasonVehicleProvided = $('#ReasonVehicleProvided').val();
+    debugger;
+    var VehicleTypeId;
+    var Vtypeval = $('#VehicleTypeVal').val();
+    var VehicleTypeProvided = $('#VehicleTypeProvideds').val();
+    if (Vtypeval != "") {
+        VehicleTypeId = Vtypeval;
+    } else { VehicleTypeId = VehicleTypeProvided;}
+    
+    var ReasonVehicleProvided = $('#ReasonVehicleProvideds').val();
     var NoteNumber = $('#NoteNumber').val();
     var EmployeeNonName = $('#EmployeeNonName').val();
-
-    var x = '{"VehicleTypeProvided":"' + VehicleTypeProvided + '","NoteNumber":"' + NoteNumber + '","ReasonVehicleProvided":"' + ReasonVehicleProvided + '","EmployeeNonName":"' + EmployeeNonName + '"}';
+    var x = '{"VehicleTypeProvided":"' + VehicleTypeId + '","NoteNumber":"' + NoteNumber + '","ReasonVehicleProvided":"' + ReasonVehicleProvided + '","EmployeeNonName":"' + EmployeeNonName + '"}';
     $.ajax({
         method: 'POST',
         url: '/ETS/SetApprovalTravDetails',
@@ -128,5 +170,39 @@ function SaveDataTravClicked() {
             });
         },
     });
+
+};
+
+async function getInitialData() {
+    var selectedval = "";
+    var NoteNo = $('#NoteNumber');
+    var EmpNoName = $('#travDetails_EmpNoName');
+    var ReasonVehicleProvided = $('#travDetails_ReasonVehicleProvided');
+    var VehicleTypeProvided = $('#travDetails_VehicleTypeProvided');
+    var EmployeeNonName = $('#EmployeeNonName');
+    var VehicleTypeProvideds = $('#VehicleTypeProvideds');
+    var EligibleVeh = $('#EligibleVeh');
+    var VehicleAlloc = $('#VehicleAlloc');
+    if (VehicleTypeProvided.val() > 0) {
+       
+        $('#ReasonVehicleProvideds').val(ReasonVehicleProvided.val());
+        $('#ReasonVehicleProvideds').isValid();
+        
+        (async function () {
+            const r1 = await GetVechileType(VehicleTypeProvided.val());
+            const r2 = await GetAuthEmployee($.trim(EmpNoName.val()));
+        })();
+        EmployeeNonName.isValid();
+        VehicleTypeProvideds.isValid();
+        EligibleVeh.val('1').isValid();
+        VehicleAlloc.val('1').isValid();
+        } else {
+        (async function () {
+            const r1 = await GetVechileType(selectedval);
+            const r2 = await GetAuthEmployee(selectedval);
+        })();
+        
+    }
+   
 
 };

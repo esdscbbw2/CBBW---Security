@@ -54,6 +54,7 @@
     <Compile Include="CustomModels\CustomAjaxResponse.cs" />
     <Compile Include="CustomModels\CustomCheckBoxOption.cs" />
     <Compile Include="CustomModels\CustomComboOptions.cs" />
+    <Compile Include="CustomModels\CustomComboOptionsWithString.cs" />
     <Compile Include="CustomModels\CustomDateRange.cs" />
     <Compile Include="CustomModels\FileUploadResponse.cs" />
     <Compile Include="CustomModels\RowDisplayInfo.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="EHG\EHGNoteList.cs" />
     <Compile Include="EHG\EHGTravelingPersondtls.cs" />
     <Compile Include="EHG\VehicleAllotmentDetails.cs" />
+    <Compile Include="ETSEdit\EditDWTDetails.cs" />
     <Compile Include="ETSEdit\EditTPDetails.cs" />
     <Compile Include="ETSEdit\NoteDetails.cs" />
     <Compile Include="ETS\ETSDateWiseTour.cs" />

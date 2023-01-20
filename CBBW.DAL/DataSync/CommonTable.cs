@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.EHG;
+using CBBW.BOL.ETSEdit;
 using CBBW.BOL.Master;
 using CBBW.BOL.MGP;
 using CBBW.BOL.TADA;
@@ -311,6 +312,45 @@ namespace CBBW.DAL.DataSync
                 }
             }
         }
-
+        public CommonTable(List<EditDWTDetails> customoptions)
+        {
+            UDTable = new DataTable();
+            UDTable.Columns.Add("dSchFromDate", typeof(DateTime));
+            UDTable.Columns.Add("dSchToDate", typeof(DateTime));
+            UDTable.Columns.Add("dEditedTourToDate", typeof(DateTime));
+            UDTable.Columns.Add("sTourCategoryIds", typeof(string));
+            UDTable.Columns.Add("sTourCategoryNames", typeof(string));
+            UDTable.Columns.Add("sTourCenterCodeIds", typeof(string));
+            UDTable.Columns.Add("sTourCenterNames", typeof(string));
+            UDTable.Columns.Add("sBranchCodes", typeof(string));
+            UDTable.Columns.Add("sBranchNames", typeof(string));
+            UDTable.Columns.Add("iSourceID", typeof(int));
+            UDTable.Columns.Add("iPersonType", typeof(int));
+            UDTable.Columns.Add("iPersonID", typeof(int));
+            UDTable.Columns.Add("iPersonIDnName", typeof(string));
+            UDTable.Columns.Add("bIsEdited", typeof(bool));
+            if (customoptions != null && customoptions.Count > 0)
+            {
+                foreach (EditDWTDetails obj in customoptions)
+                {
+                    DataRow dr = UDTable.NewRow();
+                    dr["dSchFromDate"] = obj.SchFromDate;
+                    dr["dSchToDate"] = obj.SchToDate;
+                    dr["dEditedTourToDate"] = obj.EditedTourToDate;
+                    dr["sTourCategoryIds"] = obj.TourCategoryIds;
+                    dr["sTourCategoryNames"] = obj.TourCategoryNames;
+                    dr["sTourCenterCodeIds"] = obj.TourCenterCodeIds;
+                    dr["sTourCenterNames"] = obj.TourCenterNames;
+                    dr["sBranchCodes"] = obj.BranchCodes;
+                    dr["sBranchNames"] = obj.BranchNames;
+                    dr["iSourceID"] = obj.SourceID;
+                    dr["iPersonType"] = obj.PersonType;
+                    dr["iPersonID"] = obj.PersonID;
+                    dr["iPersonIDnName"] = obj.PersonIDnName;
+                    dr["bIsEdited"] = obj.IsEdited;
+                    UDTable.Rows.Add(dr);
+                }
+            }
+        }
     }
 }
