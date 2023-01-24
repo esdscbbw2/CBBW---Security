@@ -9,8 +9,12 @@ namespace CBBW.BOL.ETSEdit
     public class EditDWTDetails: EditNoteNumber
     {
         public DateTime SchFromDate { get; set; }
+        public string SchFromDateDisplay { get; set; }
         public DateTime SchToDate { get; set; }
+        public string SchToDateDisplay { get; set; }
         public DateTime EditedTourToDate { get; set; }
+        public string EditedTourToDateDisplay { get; set; }
+        public string EditedTourToDateStr { get; set; }
         public string TourCategoryIds { get; set; }
         public string TourCategoryNames { get; set; }
         public string TourCenterCodeIds { get; set; }
@@ -22,5 +26,6 @@ namespace CBBW.BOL.ETSEdit
         public int PersonID { get; set; }
         public string PersonIDnName { get; set; }
         public bool IsEdited { get; set; }
+        public int EditSL { get; set; }
     }
 }

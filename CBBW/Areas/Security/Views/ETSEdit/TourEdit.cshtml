@@ -1,0 +1,507 @@
+﻿@using System.Globalization;
+@using CBBW.Areas.Security.ViewModel.ETSEdit;
+@model ETSEditCreateVM
+@{
+
+}
+<div class="row newTable">
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(m => m.NoteNumber)
+        @Html.HiddenFor(m => m.IsExtensionAllowed)
+        @Html.HiddenFor(m=>m.ExtensionFromDate)
+        <div class="fixedElement">
+            <div class="col-md-12">
+                <div class="heading_text_btn mb-3 mt-4">
+                    <div class="leftButton">
+                        <button type="submit" class="btn btn-primary me-2" onclick="window.location.href='emp_travelling_detail_edit_add.html';">
+                            <i data-feather="arrow-left-circle"></i>
+                            Back
+                        </button>
+                        <button type="submit" class="btn btn-secondary me-2" onclick="window.location.href='emp_travelling_detail_edit_add.html';">
+                            <i data-feather="check-circle"></i>
+                            Save
+                        </button>
+                        <button type="submit" class="btn btn-white">
+                            <i data-feather="x-circle"></i>
+                            Clear
+                        </button>
+                    </div>
+                    <h2>Employees Travelling  Schedule Details – EDIT  </h2>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-12">
+                <div class="heading_text_btn2 d-block mt-4">
+                    <h2 class="text-left"> Tour EDIT Details:</h2>
+                </div>
+                <div class="heading_text_btn2 d-block mb-2">
+                    <h2 class="text-center">Travelling Person – Details (I) </h2>
+                </div>
+            </div>
+        <div class="col-md-12 mb-4">
+            <div class="col-md-12 pt-3">
+                <div class="card">
+                    <div class="card-body sectionB">
+                        <div class="table-responsive">
+                            <table class="table table-bordered w-100 btnalign " id="tblTravelingPersons">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">SL  No.</th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">Person Type </th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="12%"> Employee No. & Name </th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="14%">Designation Code & Name </th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="13%">Center Code & Name </th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">Eligible  Vehicle Type</th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">Ref. E.P Note No. & Date </th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="9%">T.A & D.A Denied</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.TravelingPersonDetails != null)
+                                    {
+                                        int sl = 1;
+                                        foreach (var item in Model.TravelingPersonDetails)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @sl
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.PersonTypeText
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.EmployeeNonName
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.DesignationCodenName
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.CenterName
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.EligibleVehicleTypeName
+                                                </td>
+                                                <td class="text-center">
+                                                    @(item.EPNoteDate.Year==1?"-":item.EPNoteNumber+" / "+ item.EPNoteDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture))
+                                                </td>
+                                                <td class="text-center">
+                                                    @(item.TADADenied?"Yes":"No")
+                                                </td>
+                                            </tr>
+                                            sl += 1;
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 pt-3 mt-3 pb-3">
+                    <div class="heading_text_btn2 d-block mb-2">
+                        <h2 class="text-center">Date Wise Tour – Details (II) </h2>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row d-flex align-items-center">
+                            <div class="col-form-label col-md-2">
+                                <label>EDIT Required :</label>
+                            </div>
+                            <div class="col-md-4">
+                                @Html.DropDownListFor(m => m.EditTag,
+                                new SelectList(Model.EditTags, "ID", "DisplayText"),
+                                htmlAttributes: new
+                                {
+                                    @class = "form-select pointer is-invalid",
+                                    onchange = "EditTagChanged()"
+                                })
+                            </div>
+                            <div class="col-form-label col-md-2">
+                                <label>Reason For EDIT :</label>
+                            </div>
+                            <div class="col-md-4">
+                                @Html.TextAreaFor(m => m.PurposeOfEdit,
+                                   htmlAttributes: new
+                                   {
+                                       @class = "form-control is-invalid",
+                                       onkeyup = "ValidatePurposeOfEdit()",
+                                       title = "Maximum 20 Words Allowed"
+                                   })
+                            </div>
+                            <div class="col-md-12 pt-3 pb-2 text-end">
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-primary"
+                                        data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    See Previous Details
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Modal -->
+                        <div class="modal modal-previous-details fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title text-center" id="exampleModalLabel">Employees Travelling  Schedule Details – EDIT </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div id="">
+                                                    <h6 class="pb-2 text-center">Tour Edit - Previous Details</h6>
+                                                    <div class="table-responsive vertical-scroll-table">
+                                                        @if (Model.EditSequence != null)
+                                                        {
+                                                            foreach (int s in Model.EditSequence)
+                                                            {
+                                                                <table class="table table-bordered w-100 btnalign" id="table">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th scope="col" style="text-align: left; vertical-align: middle;">SL. No.</th>
+                                                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="10%"> Scheduled Tour From Date</th>
+                                                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">Scheduled Tour To Date </th>
+                                                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">EDITED Tour To Date</th>
+                                                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="20%">Tour Category </th>
+                                                                            <th scope="col" style="text-align: center; vertical-align: middle;">Center Code & Name</th>
+                                                                            <th scope="col" style="text-align: center; vertical-align: middle;">Branch Code & Name </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        @if (Model.DWTDetailsHistory.Where(o => o.EditSL == s) != null)
+                                                                        {
+                                                                            int sl = 1;
+                                                                            foreach (var item in Model.DWTDetailsHistory.Where(o => o.EditSL == s))
+                                                                            {
+                                                                                <tr class="previous-details">
+                                                                                    <td>
+                                                                                        @sl
+                                                                                    </td>
+                                                                                    <td class="text-center">
+                                                                                        @item.SchFromDateDisplay
+                                                                                    </td>
+                                                                                    <td class="text-center">
+                                                                                        @item.SchToDateDisplay
+                                                                                    </td>
+                                                                                    <td class="text-center">
+                                                                                        @item.EditedTourToDateDisplay
+                                                                                    </td>
+                                                                                    <td class="text-center">
+                                                                                        @item.TourCategoryNames
+                                                                                        @*<div class="position-relative">
+                                                                                                <div class="myDIV"><i data-feather="external-link"></i></div>
+                                                                                                <div class="hide">I am shown when someone<br /> hovers over the div above.</div>
+                                                                                            </div>*@
+                                                                                    </td>
+                                                                                    <td class="text-center">
+                                                                                        @item.TourCenterNames
+                                                                                    </td>
+                                                                                    <td class="text-center">
+                                                                                        @item.BranchNames
+                                                                                    </td>
+                                                                                </tr>
+                                                                                sl += 1;
+                                                                            }
+                                                                        }
+                                                                    </tbody>
+                                                                </table>
+                                                            }
+                                                        }
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tour_cancel" class="inVisible">
+                            <div class="table-responsive ">
+                                <table class="table table-bordered w-100 btnalign" id="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" style="text-align: left; vertical-align: middle;">SL. No.</th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="10%"> Scheduled Tour From Date</th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">Scheduled Tour To Date </th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">EDITED Tour To Date</th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="20%">Tour Category </th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;">Center Code & Name</th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;">Branch Code & Name </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model.DWTDetailsCurrent != null && Model.DWTDetailsCurrent.Count > 0)
+                                        {
+                                            int sl = 1;
+                                            foreach (var item in Model.DWTDetailsCurrent)
+                                            {
+                                                <tr>
+                                                    <td>@sl</td>
+                                                    <td class="text-center">
+                                                        @item.SchFromDateDisplay
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.SchToDateDisplay
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class="position-relative pointer" style="width:200px">
+                                                            <input id="FromDate_@sl" type="date"
+                                                                   data-name="FromDate"
+                                                                   onchange="ValidateEditDateCtrl()"
+                                                                   max="@item.SchToDate.ToString("yyyy-MM-dd")"
+                                                                   min="@item.SchFromDate.ToString("yyyy-MM-dd")"
+                                                                   class="form-control pointer is-invalid CustomDateFormatCloneRow valid">
+                                                            <label id="lblFromDate_@sl" style="width:100px"
+                                                                   class="datelabel pointer">Select Date</label>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.TourCategoryNames
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.TourCenterNames
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.BranchNames
+                                                    </td>
+                                                </tr>
+                                                sl += 1;
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div id="tour_extension" class="inVisible">
+                            <div class="table-responsive max-content">
+                                <table class="table table-bordered w-100 btnalign" id="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" style="text-align: left; vertical-align: middle;">SL. No.</th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="10%"> Scheduled Tour From Date</th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">Scheduled Tour To Date </th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">
+                                                EDITED Tour To Date
+                                            </th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="20%">Tour Category </th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;">
+                                                Center Code & Name
+                                            </th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;">Branch Code & Name </th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle; background: pink;
+                                                color: rgb(0, 0, 0);">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody1">
+                                        <tr id="0" class="add-row">
+                                            <th>1</th>
+                                            <td id="FromDateLbl" data-name="SchFromDate"
+                                                class="text-center alterID htmlVal">
+                                                @Model.ExtensionFromDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)
+                                            </td>
+                                            <td class="text-center">
+                                                -
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="position-relative pointer" style="width:160px">
+                                                    <input id="ToDate" type="date" data-name="ToDate"
+                                                           onchange="ToDateChanged()"
+                                                           max="@Model.ExtensionFromDate.AddDays(10).ToString("yyyy-MM-dd")"
+                                                           min="@Model.ExtensionFromDate.ToString("yyyy-MM-dd")"
+                                                           class="form-control pointer is-invalid alterID CustomDateFormatCloneRow todt valid">
+                                                    <label id="lblToDate" style="width:110px"
+                                                           class="datelabel pointer alterID">Select Date</label>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <select id="CRTourCategory" data-name="TourCatCodes" data-name-text="TourCatText" 
+                                                        class="form-select is-invalid alterID clonemultiselect"
+                                                        onchange="CRTourCategoryChanged()"
+                                                        aria-label="Default select example">
+                                                </select>
+                                            </td>
+                                            <td class="text-center">
+                                                <div id="CRCenterCodeText" data-name="CenterNames" 
+                                                     class="alterID htmlVal">
+                                                    -
+                                                </div>
+                                                <div id="CRCOMultiDiv" class="alterID inVisible">
+                                                    <select id="CRCenterCodeMulti" data-name="CenterCodes" data-name-text="CenterNames" 
+                                                            class="form-select alterID is-invalid clonemultiselect" 
+                                                            onchange="CRCenterCodeMultiChanged()"
+                                                            aria-label="Default select example">                                                        
+                                                    </select>
+                                                </div>
+                                                <div id="CRCODDDiv" class="alterID inVisible">
+                                                    <select id="CRCenterCodeDD" data-name="CenterCodes" data-name-text="CenterNames" 
+                                                            class="form-select alterID is-invalid"
+                                                            onchange="CRCenterCodeDDChanged()"
+                                                            aria-label="Default select example">                                                        
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <div id="CRBranchCodeText" data-name="BranchNames"
+                                                     class="alterID htmlVal">
+                                                    -
+                                                </div>                                                
+                                                <div id="CRBRMultiDiv" class="alterID inVisible">
+                                                    <select id="CRBranchCodeMulti" data-name="BranchCodes" data-name-text="BranchNames" 
+                                                            class="form-select alterID clonemultiselect" 
+                                                            onchange="CRBranchCodeMultiChanged()"
+                                                            aria-label="Default select example">                                                        
+                                                    </select>
+                                                </div>                                                
+                                            </td>
+                                            <td class="text-center">
+                                                <span class="actionBtn d-block">
+                                                    <button id="AddBtn" type="button"
+                                                            class="btn primaryLink alterID cloneBtn addBtn"
+                                                            data-toggle="tooltip"
+                                                            onclick="addCloneBtnClick()"
+                                                            data-placement="top" title="Add">
+                                                        <i data-feather="plus"></i>
+                                                    </button>
+                                                    <button id="DeleteBtn" type="button"
+                                                            class="btn secondaryLink inVisible alterID cloneBtn removeBtn"
+                                                            onclick="RemoveBtnClicked()"
+                                                            data-toggle="tooltip"
+                                                            data-placement="top" title="Delete">
+                                                        <i data-feather="x"></i>
+                                                    </button>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody id="tbody2"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div id="other_edit" class="inVisible">
+                            <div class="table-responsive">
+                                <table class="table table-bordered w-100 btnalign" id="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" style="text-align: left; vertical-align: middle;">SL. No.</th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="10%"> Scheduled Tour From Date</th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">Scheduled Tour To Date </th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">
+                                                EDITED Tour To Date
+                                            </th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="20%">Tour Category </th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;">
+                                                Center Code & Name
+                                            </th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;">Branch Code & Name </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model.DWTDetailsCurrent != null && Model.DWTDetailsCurrent.Count > 0)
+                                        {
+                                            int sl = 1;
+                                            foreach (var item in Model.DWTDetailsCurrent)
+                                            {
+                                                <tr>
+                                                    <td>@sl</td>
+                                                    <td class="text-center">
+                                                        @item.SchFromDateDisplay
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.SchToDateDisplay
+                                                    </td>
+                                                    <td class="text-center">
+                                                        -
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <select id="select7" multiple="multiple" 
+                                                                class="form-select  example-getting-started" 
+                                                                aria-label="Default select example">
+                                                            <option value="1"> Center Visit </option>
+                                                            <option value="2"> Branch & Center Visit </option>
+                                                            <option value="4"> Branch  Visit  </option>
+                                                            <option value="5"> Un Known Destination  </option>
+                                                            <option value="3"> Other Place </option>
+                                                            <option value="6"> E.P. Tour </option>
+                                                        </select>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class="pr-price7 m7">
+                                                            -
+                                                        </div>
+                                                        <div class="pr-price7  m2">
+                                                            <select multiple="multiple" class="form-select example-getting-started" aria-label="Default select example">
+                                                                <option value="1">
+                                                                    01 / Nizamabad
+                                                                </option>
+                                                                <option value="2"> 01 / Koratla</option>
+                                                                <option value="3">02 / Nizamabad</option>
+                                                                <option value="4"> 02 / Koratla</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="pr-price7  m3">
+                                                            <select class="form-select" aria-label="Default select example">
+                                                                <option selected="" value="01 / Production">01 / Production </option>
+                                                                <option value="01 / Koratla"> 01 / Koratla  </option>
+                                                                <option value="01 / Production "> 01 / Production  </option>
+                                                                <option value="01 / Production "> 01 / Production  </option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class="pr-price7  m7">
+                                                            -
+                                                        </div>
+                                                        <div class="pr-price7  m3">
+                                                            <select multiple="multiple" class="form-select example-getting-started" aria-label="Default select example">
+                                                                <option value="1">
+                                                                    01 / Nizamabad
+                                                                </option>
+                                                                <option value="2"> 01 / Koratla</option>
+                                                                <option value="3">02 / Nizamabad</option>
+                                                                <option value="4"> 02 / Koratla</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                sl += 1;
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bgColor mt-4 bg-transparent content text-left border-red">
+                    <ul style="list-style:none;">
+                        <li style="font-size: 16px;">
+                            It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
+                            <select class="form-select content border-red" aria-label="Default select example" id="paragraphSpaceOPtion">
+                                <option selected="">-</option>
+                                <option value="1">Yes</option>
+                                <option value="1">No</option>
+                            </select>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@section headers
+{
+
+}
+@section scripts{
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/ETSEdit/ETSEditCreateTourEdit.js"></script>
+    <script>
+
+    </script>
+}

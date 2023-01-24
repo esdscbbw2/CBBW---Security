@@ -20,7 +20,8 @@ namespace CBBW.BOL.EHG
             getPurposeOfAllotment();
             getPersonType();
             getTourCategory();
-            getVehicleBelongsTo();            
+            getVehicleBelongsTo();
+            getEditTag();
         }
         private void getVehicleBelongsTo()
         {
@@ -47,6 +48,15 @@ namespace CBBW.BOL.EHG
                 new CustomComboOptions{ ID = 5, DisplayText = "Unknown Visit" },
                 new CustomComboOptions{ ID = 3, DisplayText = "Others" }
             };
+            TourCategoryForEdit = new List<CustomComboOptions>()
+            {
+                new CustomComboOptions{ ID = 1, DisplayText = "Center Visit" },
+                new CustomComboOptions{ ID = 2, DisplayText = "Branch & Center Visit" },
+                new CustomComboOptions{ ID = 4, DisplayText = "Branch Visit" },
+                new CustomComboOptions{ ID = 5, DisplayText = "Unknown Destination" },
+                new CustomComboOptions{ ID = 3, DisplayText = "Others" },
+                new CustomComboOptions{ ID = 6, DisplayText = "E.P. Tour" }
+            };
         }
         private void getPersonType()
         {
@@ -69,19 +79,43 @@ namespace CBBW.BOL.EHG
         private void getVehicletypes()
         {
             VehicleTypes = new List<CustomComboOptions>() 
-            {
+            {                
                 new CustomComboOptions{ ID = 1, DisplayText = "LV" },
                 new CustomComboOptions{ ID = 2, DisplayText = "2 Wheeler" },
                 new CustomComboOptions{ ID = 3, DisplayText = "Public Transport" }
-            }; 
+            };
+            VehicleTypesForHg = new List<CustomComboOptions>()
+            {
+                new CustomComboOptions{ ID = 1, DisplayText = "LV" },
+                new CustomComboOptions{ ID = 2, DisplayText = "2 Wheeler" }
+            };
+        }
+        private void getEditTag() 
+        {
+            EditTag = new List<CustomComboOptions>()
+            {
+                new CustomComboOptions{ ID = 0, DisplayText = "Select Required EDIT" },
+                new CustomComboOptions{ ID = 1, DisplayText = "Tour Cancellation" },
+                new CustomComboOptions{ ID = 3, DisplayText = "Tour Extension" },
+                new CustomComboOptions{ ID = 2, DisplayText = "Other EDIT " }
+            };
+            IndividualEditTag = new List<CustomComboOptions>()
+            {
+                new CustomComboOptions{ ID = 0, DisplayText = "Select Required EDIT" },
+                new CustomComboOptions{ ID = 1, DisplayText = "Tour Cancellation" },
+                new CustomComboOptions{ ID = 2, DisplayText = "Other EDIT " }
+            };
         }
         public List<CustomComboOptions> VehicleTypes { get; set; }
+        public List<CustomComboOptions> VehicleTypesForHg { get; set; }
         public List<CustomComboOptions> PurposeOfAllotment { get; set; }
         public List<CustomComboOptions> PersonType { get; set; }
         public List<CustomComboOptions> TourCategory { get; set; }
         public List<CustomComboOptions> TourCategoryForNZB { get; set; }
+        public List<CustomComboOptions> TourCategoryForEdit { get; set; }
         public List<CustomComboOptions> VehicleBelongsTo { get; set; }
-        
+        public List<CustomComboOptions> EditTag { get; set; }
+        public List<CustomComboOptions> IndividualEditTag { get; set; }
     }
 
 }

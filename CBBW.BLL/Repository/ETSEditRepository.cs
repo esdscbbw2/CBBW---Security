@@ -28,5 +28,22 @@ namespace CBBW.BLL.Repository
         {
             return _ETSEditEntities.getETSNoteListToBeEdited(CentreCode, ref pMsg);
         }
+        public IEnumerable<EditTPDetails> getEditTPDetails(string NoteNumber, ref string pMsg) 
+        {
+            return _ETSEditEntities.getEditTPDetails(NoteNumber, ref pMsg);
+        }
+        public List<EditDWTDetails> getCurrentDateWiseTour(string NoteNumber, int FieldTag, ref string pMsg)
+        {
+            int maxrowid = 0;
+            List<EditDWTDetails> objlist = _ETSEditEntities.getCurrentDateWiseTour(NoteNumber, FieldTag, ref pMsg);
+            if (objlist != null) { maxrowid = objlist.Max(o => o.EditSL); }
+            List<EditDWTDetails> result = objlist.Where(o => o.EditSL == maxrowid).ToList();
+            return result;
+        }
+        public List<EditDWTDetails> getDateWiseTourHistory(string NoteNumber, int FieldTag, ref string pMsg)
+        {
+            List<EditDWTDetails> objlist = _ETSEditEntities.getCurrentDateWiseTour(NoteNumber, FieldTag, ref pMsg);
+            return objlist;
+        }
     }
 }

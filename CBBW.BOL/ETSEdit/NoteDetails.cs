@@ -29,10 +29,14 @@ namespace CBBW.BOL.ETSEdit
         public int EPTour { get; set; }
         public string EPTourText { get; set; }
         public bool IsApproved { get; set; }
+        public string IsApprovedDisplay { get; set; }
         public DateTime AppDateTime { get; set; }
+        public string AppDateTimeDisplay { get; set; }
         public string NotAppReason { get; set; }
         public bool IsRatified { get; set; }
+        public string IsRatifiedDisplay { get; set; }
         public DateTime RetDateTime { get; set; }
+        public string RetDateTimeDisplay { get; set; }
         public string RetReason { get; set; }
     }
 }

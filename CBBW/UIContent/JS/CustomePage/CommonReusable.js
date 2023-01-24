@@ -733,7 +733,7 @@ function EnableAddBtnInCloneRow(tblRow, addBtnBaseID) {
     if (rowid != 0) { addBtnBaseID = addBtnBaseID + '_' + rowid; }
     var addBtnctrl = $('#' + addBtnBaseID);
     if (tblrow.find('.is-invalid').length > 0) { addBtnctrl.makeDisable(); } else { addBtnctrl.makeEnabled(); }
-    
+    //alert(tblrow.find('.is-invalid').length);
 };
 function getDivInvalidCount(mdivID) {
     var x = 0;

@@ -36,8 +36,7 @@ function ValidateCloneRowCtrl() {
     //if (rowid > 0) { addbtn = $('#AddBtn_' + rowid); }
     if (todate <= calculatedFromdate) {
         $(tblRow).find('.addBtn').makeDisable();
-    }
-    
+    }    
 };
 function validatectrl(targetid, value,rowid) {
     var isvalid = false;

@@ -151,6 +151,7 @@
     <Compile Include="Areas\Security\ViewModel\EHG\EHGHeaderEntryVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EHG\EHGNotApprovalVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EHG\EHGTravellingPersonsVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\ETSEdit\ETSEditCreateVM.cs" />
     <Compile Include="Areas\Security\ViewModel\ETS\ETSHeaderEntryVM.cs" />
     <Compile Include="Areas\Security\ViewModel\ETS\ETSNoteApproveVM.cs" />
     <Compile Include="Areas\Security\ViewModel\ETS\ETSTravellingDetailsVM.cs" />
@@ -316,6 +317,8 @@
     <Content Include="UIContent\JS\CustomePage\EHGDateWiseTourDtl.js" />
     <Content Include="UIContent\JS\CustomePage\EHGNoteApproval.js" />
     <Content Include="UIContent\JS\CustomePage\EHGVehicleAllotment.js" />
+    <Content Include="UIContent\JS\CustomePage\ETSEdit\ETSEditCreateJS.js" />
+    <Content Include="UIContent\JS\CustomePage\ETSEdit\ETSEditCreateTourEdit.js" />
     <Content Include="UIContent\JS\CustomePage\ETS\ETSEntry.js" />
     <Content Include="UIContent\JS\CustomePage\ETS\ETSNoteApprove.js" />
     <Content Include="UIContent\JS\CustomePage\ETS\ETSRatified.js" />
@@ -413,6 +416,9 @@
     <Content Include="Areas\Security\Views\ETS\RTFNDetailsView.cshtml" />
     <Content Include="Areas\Security\Views\ETS\RTFNIndex.cshtml" />
     <Content Include="Areas\Security\Views\ETS\RTFNTravellingDetails.cshtml" />
+    <Content Include="Areas\Security\Views\ETSEdit\Create.cshtml" />
+    <Content Include="Areas\Security\Views\ETSEdit\TourEdit.cshtml" />
+    <Content Include="Areas\Security\Views\ETSEdit\IndividualEdit.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />
@@ -447,7 +453,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Security\Data\" />
     <Folder Include="Areas\Security\Views\Common\" />
-    <Folder Include="Areas\Security\Views\ETSEdit\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -490,7 +495,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>56411</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44397/</IISUrl>
+          <IISUrl>https://localhost:44396/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

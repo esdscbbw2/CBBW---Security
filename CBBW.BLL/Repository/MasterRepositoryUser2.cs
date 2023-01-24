@@ -5,28 +5,28 @@ using System.Text;
 using System.Threading.Tasks;
 using CBBW.BLL.IRepository;
 using CBBW.BOL.CustomModels;
+using CBBW.BOL.EHG;
 using CBBW.BOL.Master;
 
 namespace CBBW.BLL.Repository
 {
     public partial class MasterRepository : IMasterRepository
     {
-        public CompanyTransportType getVehicleEligibility(int EmployeeNumber, ref string pMsg)
+        public CustomComboOptions getVehicleEligibility(int EmployeeNumber, ref string pMsg)
         {
-            CompanyTransportType result = new CompanyTransportType();
-            if (EmployeeNumber == 0)
-            {
-                result.ID = 0; result.DisplayText = "NA";
-            }
-            else
-            {
-                result.ID = 3; result.DisplayText = "LV";
-            }
-            return result;
+            int vt=_entities.getEligibleVehicleType(EmployeeNumber, ref pMsg);
+            EHGMaster master = EHGMaster.GetInstance;
+            return master.VehicleTypes.Where(o => o.ID == vt).FirstOrDefault();
+            
         }
         public IEnumerable<CustomComboOptions> getBranchType(int CentreId, ref string pMsg)
         {
             return _entities.getBranchType(CentreId, ref pMsg);
+        }
+
+        public VTStatement getVehicleEligibilityStatement(int EligibleVT, int ProvidedVT, ref string pMsg)
+        {
+            return _entities.getVehicleEligibilityStatement(EligibleVT, ProvidedVT,ref pMsg);
         }
     }
 }

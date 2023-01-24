@@ -14,6 +14,7 @@ namespace CBBW.DAL.Entities
     public class ETSEditEntities
     {
         DataTable dt;
+        DataSet ds;
         ETSEditDataSync _ETSEditDataSync;
         ETSEditDBMapper _ETSEditDBMapper;
         public ETSEditEntities()
@@ -69,6 +70,44 @@ namespace CBBW.DAL.Entities
             }
             catch (Exception ex)
             { pMsg =ex.Message; return null; }
+        }
+        public List<EditTPDetails> getEditTPDetails(string NoteNumber, ref string pMsg) 
+        {
+            List<EditTPDetails> result = new List<EditTPDetails>();
+            try
+            {
+                dt = _ETSEditDataSync.getEditTPDetails(NoteNumber, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        result.Add(_ETSEditDBMapper.Map_EditTPDetails(dt.Rows[i]));
+                    }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
+        public List<EditDWTDetails> getCurrentDateWiseTour(string NoteNumber, int FieldTag, ref string pMsg) 
+        {
+            List<EditDWTDetails> result = new List<EditDWTDetails>();
+            try
+            {
+                ds = _ETSEditDataSync.getCurrentDateWiseTour(NoteNumber, FieldTag, ref pMsg);
+                if (ds != null) 
+                {
+                    dt = ds.Tables[0];
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+                            result.Add(_ETSEditDBMapper.Map_EditDWTDetails(dt.Rows[i]));
+                        }
+                    }
+                }                
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
         }
     }
 }

@@ -11,6 +11,23 @@ namespace CBBW.DAL.DBMapper
 {
     public class MasterDBMapper
     {
+        public VTStatement Map_VTStatement(DataRow dr)
+        {
+            VTStatement result = new VTStatement();
+            if (dr != null)
+            {
+                if (!DBNull.Value.Equals(dr["EligibleVT"]))
+                    result.EligibleVT =int.Parse(dr["EligibleVT"].ToString());
+                if (!DBNull.Value.Equals(dr["ProvidedVT"]))
+                    result.ProvidedVT = int.Parse(dr["ProvidedVT"].ToString());
+                if (!DBNull.Value.Equals(dr["CStatement"]))
+                    result.CStatement = dr["CStatement"].ToString();
+                if (!DBNull.Value.Equals(dr["AuthEmp"]))
+                    result.AuthEmp =bool.Parse( dr["AuthEmp"].ToString());
+                
+            }
+            return result;
+        }
         public VehicleBasicInfo Map_VehicleBasicInfo(DataRow dr) 
         {
             VehicleBasicInfo result = new VehicleBasicInfo();

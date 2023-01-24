@@ -17,7 +17,7 @@ namespace CBBW.Areas.Security.ViewModel.EHG
         public EHGHeaderEntryVM(int centerCode)
         {
             EHGMaster master = EHGMaster.GetInstance;
-            this.VehicleTypes = master.VehicleTypes;
+            this.VehicleTypes = master.VehicleTypesForHg;
             this.PurposeOfAllotment = master.PurposeOfAllotment;
             this.PersonType = master.PersonType;
             this.TourCategory = master.TourCategory;

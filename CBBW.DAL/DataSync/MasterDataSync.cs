@@ -10,6 +10,17 @@ namespace CBBW.DAL.DataSync
 {
     public class MasterDataSync
     {
+        public DataTable getVehicleEligibilityStatement(int EligibleVT,int ProvidedVT, ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("Select * from [MTR].[getVehicleEligibilityStatement](" + EligibleVT + ","+ ProvidedVT + ")", CommandType.Text))
+                {
+                    return sql.GetDataTable();
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
         public DataTable getServiceTypes(int ID,ref string pMsg)
         {
             try
@@ -249,5 +260,17 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+        public int getEligibleVehicleType(int EmployeeNumber, ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("SELECT [ETS].[GetEligibleVehicleType](" + EmployeeNumber + ")", CommandType.Text))
+                {
+                    return int.Parse(sql.ExecuteScaler(ref pMsg).ToString());
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return 0; }
+        }
+
     }
 }

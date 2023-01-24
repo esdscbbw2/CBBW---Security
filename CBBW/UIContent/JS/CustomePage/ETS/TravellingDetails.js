@@ -73,9 +73,9 @@ function ValidateControl() {
     } else {
         $(target).removeClass('is-valid').addClass('is-invalid');
     }
-    if (targetid == 'VehicleType') {
-        fireSweetAlert($(target).val());
-    }
+    //if (targetid == 'VehicleType') {
+    //    fireSweetAlert($(target).val());
+    //}
     
     if (targetid == "SchFromDate") { Datechange($(target).val());}
     if (targetid == "SchTourToDate") { SetDatechange($(target).val()); } else {

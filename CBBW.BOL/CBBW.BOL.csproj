@@ -77,6 +77,7 @@
     <Compile Include="GVMR\NoteNumberDetails.cs" />
     <Compile Include="Master\PublicTransportType.cs" />
     <Compile Include="Master\ServiceType.cs" />
+    <Compile Include="Master\VTStatement.cs" />
     <Compile Include="MGP\MGPCurrentInDetails.cs" />
     <Compile Include="MGP\MGPHistoryDCDetails.cs" />
     <Compile Include="MGP\MGPItemWiseDetails.cs" />

@@ -129,8 +129,12 @@ namespace CBBW.Areas.Security.Controllers
         }
         public JsonResult GetVehicleEligibility(int EmployeeNumber)
         {
-
-            return Json(_master.getVehicleEligibility(EmployeeNumber, ref pMsg), JsonRequestBehavior.AllowGet);
+            CustomComboOptions result = _master.getVehicleEligibility(EmployeeNumber, ref pMsg);
+            if (result == null) 
+            {
+            result = new CustomComboOptions() { ID = 0, DisplayText = "NA" };  
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public ActionResult SetTravelingPersonDetails(ETSHeaderEntryVM modelvm)

@@ -267,6 +267,23 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
-
+        public int getEligibleVehicleType(int EmployeeNumber, ref string pMsg) 
+        {
+            return _datasync.getEligibleVehicleType(EmployeeNumber, ref pMsg);
+        }
+        public VTStatement getVehicleEligibilityStatement(int EligibleVT, int ProvidedVT, ref string pMsg)
+        {
+            VTStatement result = new VTStatement();
+            try
+            {
+                dt = _datasync.getVehicleEligibilityStatement(EligibleVT, ProvidedVT, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    result = _mapper.Map_VTStatement(dt.Rows[0]);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
     }
 }
