@@ -161,8 +161,10 @@ namespace CBBW.DAL.DBMapper
                         result.BranchNames = "NA";
                     if (!DBNull.Value.Equals(dr["EditSL"]))
                         result.EditSL = int.Parse(dr["EditSL"].ToString());
+                if (!DBNull.Value.Equals(dr["SourceID"]))
+                    result.SourceID = int.Parse(dr["SourceID"].ToString());
 
-                    result.SchFromDateDisplay = result.SchFromDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+                result.SchFromDateDisplay = result.SchFromDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
                     result.SchToDateDisplay = result.SchToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
                     result.EditedTourToDateDisplay = result.EditedTourToDate.Year==1?"-":result.EditedTourToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
                     result.EditedTourToDateStr = result.EditedTourToDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);

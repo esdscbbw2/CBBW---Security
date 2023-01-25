@@ -4,7 +4,6 @@
         var PersonType = $("#PersonType").val();
         MakevalueReset();
         PublicTransportchange(PublicTransport, PersonType, 0);
-        
         GetTourCategory(PublicTransport);
     });
 });

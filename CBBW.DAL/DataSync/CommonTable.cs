@@ -312,7 +312,7 @@ namespace CBBW.DAL.DataSync
                 }
             }
         }
-        public CommonTable(List<EditDWTDetails> customoptions)
+        public CommonTable(List<DWTourDetailsFromTable> customoptions)
         {
             UDTable = new DataTable();
             UDTable.Columns.Add("dSchFromDate", typeof(DateTime));
@@ -324,30 +324,72 @@ namespace CBBW.DAL.DataSync
             UDTable.Columns.Add("sTourCenterNames", typeof(string));
             UDTable.Columns.Add("sBranchCodes", typeof(string));
             UDTable.Columns.Add("sBranchNames", typeof(string));
-            UDTable.Columns.Add("iSourceID", typeof(int));
-            UDTable.Columns.Add("iPersonType", typeof(int));
-            UDTable.Columns.Add("iPersonID", typeof(int));
-            UDTable.Columns.Add("iPersonIDnName", typeof(string));
+            UDTable.Columns.Add("iSourceID", typeof(int));            
             UDTable.Columns.Add("bIsEdited", typeof(bool));
             if (customoptions != null && customoptions.Count > 0)
             {
-                foreach (EditDWTDetails obj in customoptions)
+                foreach (DWTourDetailsFromTable obj in customoptions)
                 {
+                    string mCentreCodes = "";
+                    string mCentreNames = "";
+                    string mBranchCodes = "";
+                    string mBranchNames = "";
+                    if (string.IsNullOrEmpty(obj.CentreCodes) || obj.CentreCodes == "NA")
+                    {
+                        if (string.IsNullOrEmpty(obj.CentreCodesMulti))
+                        {
+                            if (string.IsNullOrEmpty(obj.CentreCodesDD))
+                            {
+                                mCentreCodes = "NA";
+                            }
+                            else { mCentreCodes = obj.CentreCodesDD; }
+                        }
+                        else { mCentreCodes = obj.CentreCodesMulti; }
+                    }
+                    else { mCentreCodes = obj.CentreCodes; }
+                    if (string.IsNullOrEmpty(obj.CentreNames) || obj.CentreNames == "NA")
+                    {
+                        if (string.IsNullOrEmpty(obj.CentreNamesMulti))
+                        {
+                            if (string.IsNullOrEmpty(obj.CentreNamesDD))
+                            {
+                                mCentreNames = "NA";
+                            }
+                            else { mCentreNames = obj.CentreNamesDD; }
+                        }
+                        else { mCentreNames = obj.CentreNamesMulti; }
+                    }
+                    else { mCentreNames = obj.CentreNames; }
+                    if (string.IsNullOrEmpty(obj.BranchCodes) || obj.BranchCodes == "NA")
+                    {
+                        if (string.IsNullOrEmpty(obj.BranchCodesDD))
+                        {
+                            mBranchCodes = "NA";
+                        }
+                        else { mBranchCodes = obj.BranchCodesDD; }
+                    }
+                    else { mBranchCodes = obj.BranchCodes; }
+                    if (string.IsNullOrEmpty(obj.BranchNames) || obj.BranchNames == "NA")
+                    {
+                        if (string.IsNullOrEmpty(obj.BranchNamesDD))
+                        {
+                            mBranchNames = "NA";
+                        }
+                        else { mBranchNames = obj.BranchNamesDD; }
+                    }
+                    else { mBranchNames = obj.BranchNames; }                    
                     DataRow dr = UDTable.NewRow();
-                    dr["dSchFromDate"] = obj.SchFromDate;
-                    dr["dSchToDate"] = obj.SchToDate;
-                    dr["dEditedTourToDate"] = obj.EditedTourToDate;
-                    dr["sTourCategoryIds"] = obj.TourCategoryIds;
-                    dr["sTourCategoryNames"] = obj.TourCategoryNames;
-                    dr["sTourCenterCodeIds"] = obj.TourCenterCodeIds;
-                    dr["sTourCenterNames"] = obj.TourCenterNames;
-                    dr["sBranchCodes"] = obj.BranchCodes;
-                    dr["sBranchNames"] = obj.BranchNames;
-                    dr["iSourceID"] = obj.SourceID;
-                    dr["iPersonType"] = obj.PersonType;
-                    dr["iPersonID"] = obj.PersonID;
-                    dr["iPersonIDnName"] = obj.PersonIDnName;
-                    dr["bIsEdited"] = obj.IsEdited;
+                    dr["dSchFromDate"] =DateTime.Parse(obj.FromDate);
+                    dr["dSchToDate"] =DateTime.Parse(obj.ToDate=="-"?"01/01/0001": obj.ToDate);
+                    dr["dEditedTourToDate"] =DateTime.Parse(obj.EditToDate=="-"?"01/01/0001": obj.EditToDate);
+                    dr["sTourCategoryIds"] = obj.TourCategoryIDs;
+                    dr["sTourCategoryNames"] = obj.TourCategoryNames.Replace("&amp;","&");
+                    dr["sTourCenterCodeIds"] =obj.TourCategoryIDs=="6"?"13":mCentreCodes;
+                    dr["sTourCenterNames"] = mCentreNames;
+                    dr["sBranchCodes"] = mBranchCodes;
+                    dr["sBranchNames"] = mBranchNames;
+                    dr["iSourceID"] = obj.SourceID;                    
+                    dr["bIsEdited"] = true;
                     UDTable.Rows.Add(dr);
                 }
             }

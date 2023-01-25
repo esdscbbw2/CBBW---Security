@@ -20,19 +20,46 @@ async function GetVechileType(selectedval) {
         getDropDownDataWithSelectedValue(DropdownCtrl.attr('id'), 'Select', '/Security/ETS/GetVehicleTypes?TypeVal=' + PublicT + '&PT=PT', selectedval)
     }
 };
-async function GetAuthEmployee(selectedval) {
+async function GetAuthEmployee(selectedval, Vtype) {
     var NoteNo = $('#NoteNumber').val();
-    var DropdownCtrl = $('#EmployeeNonName');
     var pubTran = $('#travDetails_PublicTransports').val();
-    debugger;
-    if (pubTran == 'False') {
-        getDropDownDataWithSelectedValue(DropdownCtrl.attr('id'), 'Select', '/Security/ETS/GetEmployeeNoName?Noteno=' + NoteNo, selectedval)
-    } else {
-        DropdownCtrl.append($('<option/>', { value: "NA", text: "NA" }));
-        DropdownCtrl.removeClass('is-invalid').makeDisable();
-    }
-};
+    var DropdownCtrl = $('#EmployeeNonName');
+    var EligibleVeh = $('#EligibleVeh');
+    var VehicleAlloc = $('#VehicleAlloc');
+    var dateDetails = $('#dateDetails');
+    //VehicleAlloc.isInvalid();
+    //EligibleVeh.isInvalid();
+    dateDetails.show();
+    DropdownCtrl.makeEnabled();
+    DropdownCtrl.val('');
+    if (Vtype == "") {
+        if (pubTran == 'False') {
+            getDropDownDataWithSelectedValue(DropdownCtrl.attr('id'), 'Select', '/Security/ETS/GetEmployeeNoName?Noteno=' + NoteNo, selectedval)
+        } else {
+            DropdownCtrl.append($('<option/>', { value: "NA", text: "NA" }));
+            DropdownCtrl.clearValidateClass();
+            DropdownCtrl.makeDisable();
+            DropdownCtrl.makeDisable();
+            VehicleAlloc.isValid();
+            EligibleVeh.isValid();
+            dateDetails.hide();
 
+        }
+    } else if (Vtype == "3") {
+        
+        DropdownCtrl.append($('<option/>', { value: "NA", text: "NA" }));
+        DropdownCtrl.val('NA');
+        DropdownCtrl.clearValidateClass();
+        DropdownCtrl.makeDisable();
+        VehicleAlloc.isValid();
+        EligibleVeh.isValid();
+        dateDetails.hide();
+    } else {
+        DropdownCtrl.isInvalid();
+        getDropDownDataWithSelectedValue(DropdownCtrl.attr('id'), 'Select', '/Security/ETS/GetEmployeeNoName?Noteno=' + NoteNo, selectedval)
+    }
+  //  EnableSubmitBtnActive();
+};
 function ValidateControlCtrl() {
     var target = ValidateControlCtrl.caller.arguments[0].target;
     var targetid = $(target).attr('id');
@@ -72,7 +99,7 @@ function validatectrl(targetid, value) {
             isvalid = validatectrl_ValidateLength(value);
             break;
         case "VehicleTypeProvideds":
-            isvalid = validatectrl_ValidateLength(value);
+            isvalid = validatectrl_ValidatestringLength(value);
             break;
         case "EmployeeNonName":
             isvalid = validatectrl_ValidatestringLength(value);
@@ -172,9 +199,9 @@ function SaveDataTravClicked() {
     });
 
 };
-
 async function getInitialData() {
     var selectedval = "";
+    var Vtype="";
     var NoteNo = $('#NoteNumber');
     var EmpNoName = $('#travDetails_EmpNoName');
     var ReasonVehicleProvided = $('#travDetails_ReasonVehicleProvided');
@@ -183,26 +210,94 @@ async function getInitialData() {
     var VehicleTypeProvideds = $('#VehicleTypeProvideds');
     var EligibleVeh = $('#EligibleVeh');
     var VehicleAlloc = $('#VehicleAlloc');
+    var btnSubmit = $('#btnSubmit');
     if (VehicleTypeProvided.val() > 0) {
-       
+        debugger;
+        btnSubmit.makeDisable();
         $('#ReasonVehicleProvideds').val(ReasonVehicleProvided.val());
         $('#ReasonVehicleProvideds').isValid();
-        
+
         (async function () {
             const r1 = await GetVechileType(VehicleTypeProvided.val());
-            const r2 = await GetAuthEmployee($.trim(EmpNoName.val()));
+            const r2 = await GetAuthEmployee($.trim(EmpNoName.val()), VehicleTypeProvided.val());
         })();
         EmployeeNonName.isValid();
+        GetEmpEligibilty(parseInt($.trim(EmpNoName.val())), VehicleTypeProvided.val());
         VehicleTypeProvideds.isValid();
         EligibleVeh.val('1').isValid();
         VehicleAlloc.val('1').isValid();
+        
         } else {
         (async function () {
             const r1 = await GetVechileType(selectedval);
-            const r2 = await GetAuthEmployee(selectedval);
+          //  const r2 = await GetAuthEmployee(selectedval, Vtype);
         })();
         
     }
    
+
+};
+
+$(function () {
+    var selectedval = "";
+    var EligibleVeh = $('#EligibleVeh');
+    var VehicleAlloc = $('#VehicleAlloc');
+        $("#VehicleTypeProvideds").change(function () {
+            var Vtype = $('option:selected', this).val();
+            GetAuthEmployee(selectedval, Vtype);
+            EligibleVeh.val(''); EligibleVeh.isInvalid();
+            VehicleAlloc.val(''); VehicleAlloc.isInvalid();
+        });
+});
+
+
+$(function () {
+    var selectedval = "";
+    $("#EmployeeNonName").change(function () {
+        var EMPName = $('option:selected', this).val();
+        GetEmpEligibilty(parseInt(EMPName), selectedval)
+    });
+});
+
+function GetEmpEligibilty(actualempcode, VtypeProvided) {
+    if (VtypeProvided == "") {
+        var VtypeProvided = $("#VehicleTypeProvideds").val();
+    }
+    var mUrl = "/ETS/GetVehicleEligibility?EmployeeNumber=" + actualempcode;
+    $.ajax({
+        url: mUrl,
+        success: function (result) {
+          
+            GetStatement(result.ID, VtypeProvided);
+           // alert(result.DisplayText);
+            //alert(result.ID);
+        }
+    });
+}
+
+async function GetStatement(EligibleVT, VtypeProvided) {
+    debugger;
+    var EligibleVeh = $('#EligibleVeh');
+    var VehicleAlloc = $('#VehicleAlloc');
+    var dateDetails = $('#dateDetails');
+    var VA = $('#VA');
+    var EV = $('#EV');
+    //VehicleAlloc.isInvalid();
+    //EligibleVeh.isInvalid();
+    dateDetails.show();
+    var mUrl = "/ETS/getVehicleEligibilityStatement?EligibleVT=" + EligibleVT + "&ProvidedVT=" + VtypeProvided;
+    $.ajax({
+        url: mUrl,
+        success: function (result) {
+            if ($.trim(result.CStatement) == "1") {
+                VehicleAlloc.isValid();
+                VA.hide();
+            } else if (result.CStatement == null) {
+                VehicleAlloc.isValid();
+                EligibleVeh.isValid();
+                dateDetails.hide();
+            } 
+        }
+    });
 
 };

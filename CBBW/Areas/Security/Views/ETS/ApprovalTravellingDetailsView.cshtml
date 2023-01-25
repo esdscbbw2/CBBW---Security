@@ -4,6 +4,8 @@
 @{
 
 }
+@Html.HiddenFor(x => x.travDetails.VehicleTypeProvided)
+@Html.HiddenFor(x => x.travDetails.EmpNoName)
 <div class="container">
     <div class="row newTable">
         <div class="fixedElement">
@@ -73,83 +75,89 @@
                                         {
 
 
-                                    <tr>
+                                            <tr>
 
-                                        @if (Model.travDetails.PublicTransports == true)
-                                        {
-
-
-                                            <td class="text-center">Yes</td>
-                                        }
-                                        else
-                                        {
-                                            <td class="text-center">No</td>
-                                        }
-                                        @if (Model.travDetails.VehicleType == 0)
-                                        {
-                                            <td class="text-center">
-                                                NA
-
-                                            </td>
-                                        }
-                                        else if (Model.travDetails.VehicleType == 1)
-                                        {
+                                                @if (Model.travDetails.PublicTransports == true)
+                                                {
 
 
-                                            <td class="text-center">
-                                                LV
+                                                    <td class="text-center">Yes</td>
+                                                }
+                                                else
+                                                {
+                                                    <td class="text-center">No</td>
+                                                }
+                                                @if (Model.travDetails.VehicleType == 0)
+                                                {
+                                                    <td class="text-center">
+                                                        NA
 
-                                            </td>
-                                        }
-                                        else if (Model.travDetails.VehicleType == 2)
-                                        {
-                                            <td class="text-center">
-                                                2 wheeler
-
-                                            </td>
-                                        }
-
-                                        <td class="text-center">
-                                            @Model.travDetails.ReasonVehicleReq
-
-                                        </td>
-
-                                        @if (Model.travDetails.VehicleTypeProvided == 1)
-                                        {
+                                                    </td>
+                                                }
+                                                else if (Model.travDetails.VehicleType == 1)
+                                                {
 
 
-                                            <td class="text-center">LV</td>
-                                        }
-                                        else if (Model.travDetails.VehicleTypeProvided == 2)
-                                        {
+                                                    <td class="text-center">
+                                                        LV
+
+                                                    </td>
+                                                }
+                                                else if (Model.travDetails.VehicleType == 2)
+                                                {
+                                                    <td class="text-center">
+                                                        2 wheeler
+
+                                                    </td>
+                                                }
+
+                                                <td class="text-center">
+                                                    @Model.travDetails.ReasonVehicleReq
+
+                                                </td>
+
+                                                @if (Model.travDetails.VehicleTypeProvided == 1)
+                                                {
 
 
-                                            <td class="text-center"> 2 wheeler</td>
-                                        }
-                                        else
-                                        {
-                                            <td class="text-center"> NA</td>
-                                        }
+                                                    <td class="text-center">LV</td>
+                                                }
+                                                else if (Model.travDetails.VehicleTypeProvided == 2)
+                                                {
 
 
-                                        <td class="text-center">@Model.travDetails.ReasonVehicleProvided</td>
+                                                    <td class="text-center"> 2 wheeler</td>
+                                                }
+                                                else if (Model.travDetails.VehicleTypeProvided == 3)
+                                                {
 
-                                        <td class="text-center">
-                                            @Model.travDetails.SchFromDateDisplay
 
-                                        </td>
-                                        <td class="text-center">
-                                            @Model.travDetails.SchFromTime
+                                                    <td class="text-center"> Public Transport</td>
+                                                }
+                                                else
+                                                {
+                                                    <td class="text-center"> NA</td>
+                                                }
 
-                                        </td>
-                                        <td class="text-center">
-                                            @Model.travDetails.SchTourToDateDisplay
-                                        </td>
-                                        <td class="text-center">
-                                            <textarea name="" id="" cols="20" rows="2" class="form-control pointer-default" readonly data-toggle="tooltip" data-placement="bottom">@Model.travDetails.PurposeOfVisit   </textarea>
-                                        </td>
 
-                                    </tr>
+                                                <td class="text-center">@Model.travDetails.ReasonVehicleProvided</td>
+
+                                                <td class="text-center">
+                                                    @Model.travDetails.SchFromDateDisplay
+
+                                                </td>
+                                                <td class="text-center">
+                                                    @Model.travDetails.SchFromTime
+
+                                                </td>
+                                                <td class="text-center">
+                                                    @Model.travDetails.SchTourToDateDisplay
+                                                </td>
+                                                <td class="text-center">
+                                                    <textarea name="" id="" cols="20" rows="2" class="form-control pointer-default" readonly data-toggle="tooltip" data-placement="bottom">@Model.travDetails.PurposeOfVisit   </textarea>
+                                                </td>
+
+                                            </tr>
                                         }
                                     }
 
@@ -169,19 +177,21 @@
                         </form>
                     </div>
                 </div>
-                <div class="bgColor mt-4 bg-transparent text-left">
+
+                <div class="bgColor mt-4 bg-transparent text-left" id="dateDetails">
                     <ul style="list-style:none;">
-                        <li style="font-size: 16px;">
+                        <li style="font-size: 16px;" id="EV">
                             Even Tough The Person Is Not Eligible For The Vehicle Type As Displayed In The Screen But Still You Are Providing Higher Class Vehicle Type? Are You Sure To Continue With The Vehicle Allotment:
                             <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
                         </li>
 
-                        <li style="font-size: 16px;">
+                        <li style="font-size: 16px;" id="VA">
                             Even Tough The Person Is Eligible For Public Transport But Still You Are Providing Company Vehicle? Are You Sure To Continue With The Vehicle Allotment:
                             <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
                         </li>
                     </ul>
                 </div>
+
                 <div class="col-md-12 pt-3 mt-3 pb-3">
                     <div class="heading_text_btn2 d-block mb-2">
                         <h2 class="text-center">Date Wise Tour – Details (II) </h2>
@@ -265,5 +275,40 @@
                 window.location.href = urlbk;
             });
         });
+
+        $(document).ready(function () {
+            var emp = $('#travDetails_EmpNoName').val();
+            if ($.trim(emp) == "NA") { emp = 0; }
+            var EmpNo = parseInt($.trim(emp));
+           
+            var mUrl = "/ETS/GetVehicleEligibility?EmployeeNumber=" + EmpNo;
+            $.ajax({
+                url: mUrl,
+                success: function (result) {
+                    GetStatement(result.ID);
+                
+                }
+            });
+        });
+        function GetStatement(EmpNo) {
+            var pVT = $('#travDetails_VehicleTypeProvided').val();
+            var VA = $('#VA');
+            var EV = $('#EV');
+            var dateDetails = $('#dateDetails');
+            dateDetails.show();
+            var mUrl = "/ETS/getVehicleEligibilityStatement?EligibleVT=" + $.trim(EmpNo) + "&ProvidedVT=" + $.trim(pVT);
+            $.ajax({
+                url: mUrl,
+                success: function (result) {
+                   
+                    if ($.trim(result.CStatement) == "1") {
+                        VA.hide();
+                    } else if (result.CStatement == null) {
+                        dateDetails.hide();
+                    }
+                }
+            });
+
+        };
     </script>
 }

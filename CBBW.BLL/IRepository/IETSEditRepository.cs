@@ -15,5 +15,6 @@ namespace CBBW.BLL.IRepository
         IEnumerable<EditTPDetails> getEditTPDetails(string NoteNumber, ref string pMsg);
         List<EditDWTDetails> getCurrentDateWiseTour(string NoteNumber, int FieldTag, ref string pMsg);
         List<EditDWTDetails> getDateWiseTourHistory(string NoteNumber, int FieldTag, ref string pMsg);
+        bool SetETSTourEdit(DWTTourDetailsForDB obj, ref string pMsg);
     }
 }

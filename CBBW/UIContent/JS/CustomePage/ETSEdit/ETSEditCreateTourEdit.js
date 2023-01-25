@@ -1,6 +1,10 @@
 ﻿function ValidateEditDateCtrl() {
     var targetCtrl = $(ValidateEditDateCtrl.caller.arguments[0].target);
-    if (targetCtrl.val() != '') { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
+    var tblRowid = targetCtrl.attr('id').split('_')[1];
+    var ctrl1 = $('#EditTagDiv_' + tblRowid);
+    if (targetCtrl.val() != '') {
+        targetCtrl.isValid(); ctrl1.html(1);
+    } else { targetCtrl.isInvalid(); ctrl1.html(0); }
 };
 function ValidatePurposeOfEdit() {
     var poeCtrl = $('#PurposeOfEdit');
@@ -37,8 +41,7 @@ function EditTagChanged() {
             //}            
         }
     }
-    else { editTagCtrl.isInvalid(); }
-    
+    else { editTagCtrl.isInvalid(); }    
 };
 function togleDiv(divID) {
     var tourCancelDiv = $('#tour_cancel');
@@ -49,12 +52,12 @@ function togleDiv(divID) {
     tourOtherDiv.addClass('inVisible');
     $('#' + divID).removeClass('inVisible');
 };
-function CRTourCategoryChangedReUsable(targetCtrl, tblRowid) {
-    var CtrlMulti = 'CRCenterCodeMulti';
-    var CtrlDD = 'CRCenterCodeDD';
+function CRTourCategoryChangedReUsable(targetCtrl, tblRowid,mTag) {
+    var CtrlMulti = mTag+'CenterCodeMulti';
+    var CtrlDD = mTag+'CenterCodeDD';
     if (tblRowid > 0) {
-        CtrlMulti = 'CRCenterCodeMulti_' + tblRowid;
-        CtrlDD = 'CRCenterCodeDD_' + tblRowid;
+        CtrlMulti = mTag+'CenterCodeMulti_' + tblRowid;
+        CtrlDD = mTag+'CenterCodeDD_' + tblRowid;
     }
     var CatCodes = targetCtrl.val();
     var mValid = true;
@@ -65,8 +68,8 @@ function CRTourCategoryChangedReUsable(targetCtrl, tblRowid) {
             mValid = false;
         }
         else {
-            toggleCentreDiv('CRCOMultiDiv', tblRowid, '');
-            toggleBranchDiv('CRBranchCodeText', tblRowid, 'NA');
+            toggleCentreDiv(mTag + 'COMultiDiv', tblRowid, '', mTag);
+            toggleBranchDiv(mTag + 'BranchCodeText', tblRowid, 'NA', mTag);
             getMultiselectData(CtrlMulti, '/Security/ETS/GetLocationsFromTypes?TypeIDs=' + CatCodes);
         }
     } else {
@@ -75,19 +78,19 @@ function CRTourCategoryChangedReUsable(targetCtrl, tblRowid) {
         }
         else {
             if (CatCodes == 4) {
-                toggleCentreDiv('CRCODDDiv', tblRowid, '');
-                toggleBranchDiv('CRBRMultiDiv', tblRowid, '');
+                toggleCentreDiv(mTag + 'CODDDiv', tblRowid, '', mTag);
+                toggleBranchDiv(mTag + 'BRMultiDiv', tblRowid, '', mTag);
                 getDropDownData(CtrlDD, 'Select Center Code', '/Security/ETS/GetLocationsFromType?TypeID=' + CatCodes);
             } else {
-                toggleCentreDiv('CRCenterCodeText', tblRowid, mText);
-                toggleBranchDiv('CRBranchCodeText', tblRowid, 'NA');
+                toggleCentreDiv(mTag + 'CenterCodeText', tblRowid, mText, mTag);
+                toggleBranchDiv(mTag + 'BranchCodeText', tblRowid, 'NA', mTag);
             }
         }
     }
     if (!mValid) {
         targetCtrl.multiselect('clearSelection');
-        toggleCentreDiv('CRCenterCodeText', tblRowid, 'NA');
-        toggleBranchDiv('CRBranchCodeText', tblRowid, 'NA');
+        toggleCentreDiv(mTag + 'CenterCodeText', tblRowid, 'NA', mTag);
+        toggleBranchDiv(mTag + 'BranchCodeText', tblRowid, 'NA', mTag);
         Swal.fire({
             title: 'Error',
             text: 'Invalid Combination Of Tour Category. Only Centre Visit,Branch & Centre Visit,Others Can Be Combined Together.',
@@ -107,16 +110,25 @@ function CRTourCategoryChanged() {
     var tblRow = $(target.closest('.add-row'));
     var tblRowid = tblRow.attr('id');
     var targetCtrl = $(target);
-    CRTourCategoryChangedReUsable(targetCtrl, tblRowid);
+    CRTourCategoryChangedReUsable(targetCtrl, tblRowid,'CR');
     EnableAddBtnInCloneRow(tblRow, 'AddBtn');
 };
-function CRCenterCodeDDChangedReUsable(targetCtrl, tblRowid) {
-    var Ctrl1 = 'CRBranchCodeMulti';
-    var Ctrl2 = $('#CRCenterCodeMulti');
+function OETourCategoryChanged() {
+    var target = OETourCategoryChanged.caller.arguments[0].target;
+    //var tblRow = $(target.closest('.add-row'));    
+    var targetCtrl = $(target);
+    var tblRowid = targetCtrl.attr('id').split('_')[1];
+    CRTourCategoryChangedReUsable(targetCtrl, tblRowid, 'OE');
+    var EditTagCtrl = $('#EditTagDivOE_' + tblRowid);
+    if (targetCtrl.val() != '') { EditTagCtrl.html(1); } else { EditTagCtrl.html(0); }
+};
+function CRCenterCodeDDChangedReUsable(targetCtrl, tblRowid,mTag) {
+    var Ctrl1 = mTag+'BranchCodeMulti';
+    var Ctrl2 = $('#' + mTag+'CenterCodeMulti');
     var mVal = targetCtrl.val();
     if (tblRowid > 0) {
-        Ctrl1 = 'CRBranchCodeMulti_' + tblRowid;
-        Ctrl2 = $('#CRCenterCodeMulti' + tblRowid);
+        Ctrl1 = mTag+'BranchCodeMulti_' + tblRowid;
+        Ctrl2 = $('#' + mTag+'CenterCodeMulti' + tblRowid);
     }
     (async function () {
         const r1 = await getMultiselectData(Ctrl1, '/Security/ETS/getBranchType?CenterId=' + mVal);
@@ -132,12 +144,18 @@ function CRCenterCodeDDChanged() {
     var tblRow = $(target.closest('.add-row'));
     var tblRowid = tblRow.attr('id');
     var targetCtrl = $(target);
-    CRCenterCodeDDChangedReUsable(targetCtrl, tblRowid);
+    CRCenterCodeDDChangedReUsable(targetCtrl, tblRowid,'CR');
     EnableAddBtnInCloneRow(tblRow, 'AddBtn');
 };
-function CRCenterCodeMultiChangedReUsable(targetCtrl, tblRowid) {
-    var Ctrl1 = $('#CRCenterCodeDD');
-    if (tblRowid > 0) { Ctrl1 = $('#CRCenterCodeDD_' + tblRowid);}
+function OECenterCodeDDChanged() {
+    var target = OECenterCodeDDChanged.caller.arguments[0].target;
+    var targetCtrl = $(target);
+    var tblRowid = targetCtrl.attr('id').split('_')[1];
+    CRCenterCodeDDChangedReUsable(targetCtrl, tblRowid,'OE');
+};
+function CRCenterCodeMultiChangedReUsable(targetCtrl, tblRowid,mTag) {
+    var Ctrl1 = $('#' + mTag+'CenterCodeDD');
+    if (tblRowid > 0) { Ctrl1 = $('#' + mTag+'CenterCodeDD_' + tblRowid);}
     if (targetCtrl.val() != '') {
         targetCtrl.isValid();
         Ctrl1.isValid();
@@ -148,15 +166,30 @@ function CRCenterCodeMultiChanged() {
     var tblRow = $(target.closest('.add-row'));
     var tblRowid = tblRow.attr('id');
     var targetCtrl = $(target);
-    CRCenterCodeMultiChangedReUsable(targetCtrl, tblRowid);
+    CRCenterCodeMultiChangedReUsable(targetCtrl, tblRowid,'CR');
     EnableAddBtnInCloneRow(tblRow, 'AddBtn');
+};
+function OECenterCodeMultiChanged() {
+    var target = OECenterCodeMultiChanged.caller.arguments[0].target;
+    var targetCtrl = $(target);
+    var tblRowid = targetCtrl.attr('id').split('_')[1];
+    CRCenterCodeMultiChangedReUsable(targetCtrl, tblRowid,'OE');
 };
 function ToDateChanged() {
     var target = ToDateChanged.caller.arguments[0].target;
     var tblRow = $(target.closest('.add-row'));
     var tblRowid = tblRow.attr('id');
     var targetCtrl = $(target);
-    if (targetCtrl.val() != '') { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
+    if (targetCtrl.val() != '') {
+        targetCtrl.isValid();
+        //var lbltodtCtrl = $('#lblToDate');
+        //var crtodtCtrl = $('#CRTodate');
+        //if (tblRowid > 0) {
+        //    lbltodtCtrl = $('#lblToDate_' + tblRowid);
+        //    crtodtCtrl = $('#CRTodate_' + tblRowid);
+        //}
+        //crtodtCtrl.html(lbltodtCtrl.val());
+    } else { targetCtrl.isInvalid(); }
     EnableAddBtnInCloneRow(tblRow, 'AddBtn');
 };
 function CRBranchCodeMultiChanged() {
@@ -169,16 +202,27 @@ function CRBranchCodeMultiChanged() {
     } else { targetCtrl.isInvalid(); }
     EnableAddBtnInCloneRow(tblRow, 'AddBtn');
 };
-function toggleCentreDiv(divID, rowID,divText) {
-    var ccTextCtrl = $('#CRCenterCodeText');
-    var ccMulCtrl = $('#CRCOMultiDiv');
-    var ccDDCtrl = $('#CRCODDDiv');
-    var mCTRL = $('#' + divID );
+function OEBranchCodeMultiChanged() {
+    var target = OEBranchCodeMultiChanged.caller.arguments[0].target;
+    var targetCtrl = $(target);
+    if (targetCtrl.val() != '') {
+        targetCtrl.isValid();
+    } else { targetCtrl.isInvalid(); }
+};
+function toggleCentreDiv(divID, rowID, divText, mTag) {
+    var ccTextCtrl = $('#' + mTag+'CenterCodeText');
+    var ccMulCtrl = $('#' + mTag+'COMultiDiv');
+    var ccDDCtrl = $('#' + mTag+'CODDDiv');
+    var mCTRL = $('#' + divID);
+    var Ctrl1 = $('#' + mTag + 'CenterCodeMulti');
+    var Ctrl2 = $('#' + mTag + 'CenterCodeDD');
     if (rowID > 0) {
-        ccTextCtrl = $('#CRCenterCodeText_' + rowID);
-        ccMulCtrl = $('#CRCOMultiDiv_' + rowID);
-        ccDDCtrl = $('#CRCODDDiv_' + rowID);
+        ccTextCtrl = $('#' + mTag+'CenterCodeText_' + rowID);
+        ccMulCtrl = $('#' + mTag+'COMultiDiv_' + rowID);
+        ccDDCtrl = $('#' + mTag+'CODDDiv_' + rowID);
         mCTRL = $('#' + divID + '_' + rowID);
+        Ctrl1 = $('#' + mTag + 'CenterCodeMulti_' + rowID);
+        Ctrl2 = $('#' + mTag + 'CenterCodeDD_' + rowID);
     }
     //alert(divID + ' - ' + rowID+' - ' +mCTRL.attr('id'));
     ccTextCtrl.addClass('inVisible');
@@ -186,23 +230,29 @@ function toggleCentreDiv(divID, rowID,divText) {
     ccDDCtrl.addClass('inVisible');
     mCTRL.removeClass('inVisible');
     ccTextCtrl.html(divText);
+    if (divID == 'OECOMultiDiv' || divID == 'CRCOMultiDiv') {
+        Ctrl1.isInvalid();
+    } else { Ctrl1.isValid(); }
+    if (divID == 'OECODDDiv' || divID == 'CRCODDDiv') {
+        Ctrl2.isInvalid();
+    } else { Ctrl2.isValid(); }
 };
-function toggleBranchDiv(divID, rowID,divText) {
-    var ccTextCtrl = $('#CRBranchCodeText');
-    var ccMulCtrl = $('#CRBRMultiDiv');
-    var Ctrl1 = $('#CRBranchCodeMulti');
+function toggleBranchDiv(divID, rowID, divText, mTag) {
+    var ccTextCtrl = $('#' + mTag+'BranchCodeText');
+    var ccMulCtrl = $('#' + mTag+'BRMultiDiv');
+    var Ctrl1 = $('#' + mTag+'BranchCodeMulti');
     var mCTRL = $('#' + divID);
     if (rowID > 0) {
-        ccTextCtrl = $('#CRBranchCodeText_' + rowID);
-        ccMulCtrl = $('#CRBRMultiDiv_' + rowID);
-        Ctrl1 = $('#CRBranchCodeMulti_' + rowID);
+        ccTextCtrl = $('#' + mTag+'BranchCodeText_' + rowID);
+        ccMulCtrl = $('#' + mTag+'BRMultiDiv_' + rowID);
+        Ctrl1 = $('#' + mTag+'BranchCodeMulti_' + rowID);
         mCTRL = $('#' + divID + '_' + rowID);
     }
     ccTextCtrl.addClass('inVisible');
     ccMulCtrl.addClass('inVisible');
     mCTRL.removeClass('inVisible');
     ccTextCtrl.html(divText);
-    if (divID == 'CRBRMultiDiv') { Ctrl1.isInvalid(); } else { Ctrl1.isValid(); }
+    if (divID == mTag+'BRMultiDiv') { Ctrl1.isInvalid(); } else { Ctrl1.isValid(); }
 };
 function EnableSubmitBtn() {
 
@@ -227,6 +277,55 @@ function addCloneBtnClick() {
     $('#CRCenterCodeDD_' + clonerowid).isInvalid();
     $('#CRBranchCodeMulti_' + clonerowid).isInvalid();
     addbtn.makeDisable();
+    var maxSourceid = ($('#MaxSourceID').val() * 1) + clonerowid;
+    $('#SourceIDDiv_' + clonerowid).html(maxSourceid);
+    $('#CREditTagDiv_' + clonerowid).html(1);
+    //$('#CRTodate_' + clonerowid).html('-');
+};
+function btnSubmitClicked() {
+    var editTag = $('#EditTag').val();
+    var editPurpose = $('#PurposeOfEdit').val();
+    var notenumber = $('#NoteNumber').val();
+    var tblRecords = '';
+    if (editTag == 1) {
+        tblRecords = getRecordsFromTableV2('tblTourCancel');
+    } else if (editTag == 2) {
+        tblRecords = getRecordsFromTableV2('tblOtherEdit');
+    } else if (editTag == 3) {
+        tblRecords = getRecordsFromTableV2('tblTourExtension');
+    }
+    var x = '{"NoteNumber":"' + notenumber
+        + '","EditTag":"' + editTag
+        + '","ReasonForEdit":"' + editPurpose
+        + '","DWTDetails":'
+        + tblRecords + '}';
+    alert(tblRecords);
+    $.ajax({
+        method: 'POST',
+        url: '/ETSEdit/SetDWTForTourEdit',
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        data: x,
+        success: function (data) {
+            $(data).each(function (index, item) {
+                if (item.bResponseBool == true) {
+                    var url = "/Security/ETSEdit/Create";
+                    window.location.href = url;
+                } else {
+                    Swal.fire({
+                        title: 'Confirmation',
+                        text: 'Failed To Save Date Wise Tour Details.',
+                        icon: 'question',
+                        customClass: 'swal-wide',
+                        buttons: {
+                            confirm: 'Ok'
+                        },
+                        confirmButtonColor: '#2527a2',
+                    });
+                }
+            });
+        },
+    });
 };
 $(document).ready(function () {
     (async function () {

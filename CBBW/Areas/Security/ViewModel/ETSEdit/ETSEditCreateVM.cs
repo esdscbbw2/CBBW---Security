@@ -33,5 +33,6 @@ namespace CBBW.Areas.Security.ViewModel.ETSEdit
         public int btnIndividualEdit { get; set; }
         public DateTime ExtensionFromDate { get; set; }
         public int IsExtensionAllowed { get; set; }
+        public int MaxSourceID { get; set; }
     }
 }

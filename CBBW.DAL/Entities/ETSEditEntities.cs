@@ -17,10 +17,12 @@ namespace CBBW.DAL.Entities
         DataSet ds;
         ETSEditDataSync _ETSEditDataSync;
         ETSEditDBMapper _ETSEditDBMapper;
+        DBResponseMapper _DBResponseMapper;
         public ETSEditEntities()
         {
             _ETSEditDataSync = new ETSEditDataSync();
             _ETSEditDBMapper = new ETSEditDBMapper();
+            _DBResponseMapper = new DBResponseMapper();
         }
         public int getEditSL(string NoteNumber, ref string pMsg) 
         {
@@ -107,6 +109,12 @@ namespace CBBW.DAL.Entities
                 }                
             }
             catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
+        public bool SetETSTourEdit(DWTTourDetailsForDB obj, ref string pMsg) 
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_ETSEditDataSync.SetETSTourEdit(obj, ref pMsg), ref pMsg, ref result);
             return result;
         }
     }

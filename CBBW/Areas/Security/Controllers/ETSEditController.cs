@@ -47,6 +47,7 @@ namespace CBBW.Areas.Security.Controllers
                     DateTime tFromDate = model.DWTDetailsCurrent.Min(o => o.SchFromDate);
                     DateTime tToDate = model.DWTDetailsCurrent.Max(o => o.SchToDate);
                     model.ExtensionFromDate = tToDate.AddDays(1);
+                    model.MaxSourceID = model.DWTDetailsCurrent.Max(o => o.SourceID)+1;
                     if (DateTime.Today >= tFromDate && DateTime.Today <= tToDate){ model.IsExtensionAllowed = 1; }
                 }
             }
@@ -58,8 +59,10 @@ namespace CBBW.Areas.Security.Controllers
         }
         public ActionResult Create() 
         {
-            if (TempData["EHGEdit"] == null) 
-                model=CastEHGEditTempData();
+            if (TempData["EHGEdit"] == null)
+                model = CastEHGEditTempData();
+            else
+                model = TempData["EHGEdit"] as ETSEditCreateVM;
             return View(model);
         }        
         [HttpPost]
@@ -95,6 +98,27 @@ namespace CBBW.Areas.Security.Controllers
             result = master.TourCategoryForEdit;
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+        [HttpPost]
+        public ActionResult SetDWTForTourEdit(DWTTourDetailsForEdit modelobj)
+        {
+            DWTTourDetailsForDB obj = new DWTTourDetailsForDB();
+            obj.NoteNumber = modelobj.NoteNumber;
+            obj.EditTag = modelobj.EditTag;
+            obj.ReasonForEdit = modelobj.ReasonForEdit;
+            obj.UserID = user.EmployeeNumber;
+            obj.UserName = user.EmployeeName;
+            obj.IsIndividualEdit = false;
+            obj.PersonName = " ";
+            obj.DWTDetails = modelobj.DWTDetails.Where(o => o.EditRowTag == 1).ToList();
+            CustomAjaxResponse result = new CustomAjaxResponse();
+            if (modelobj != null)
+            {
+                result.bResponseBool=_IETSEdit.SetETSTourEdit(obj, ref pMsg);
+                result.sResponseString = pMsg;
+            }
+            //return RedirectToAction("index");
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
         #endregion
         //private functions
         private ETSEditCreateVM CastEHGEditTempData()
@@ -105,9 +129,11 @@ namespace CBBW.Areas.Security.Controllers
             }
             else
             {
-                model = new ETSEditCreateVM();
-                model.ToBeEditNoteList = _IETSEdit.getETSNoteListToBeEdited(user.CentreCode, ref pMsg);
+                model = new ETSEditCreateVM();                
             }
+            if (model.ToBeEditNoteList == null)
+                model.ToBeEditNoteList = _IETSEdit.getETSNoteListToBeEdited(user.CentreCode, ref pMsg);
+            
             TempData["EHGEdit"] = model;
             return model;
         }

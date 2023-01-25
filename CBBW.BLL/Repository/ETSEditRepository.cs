@@ -45,5 +45,10 @@ namespace CBBW.BLL.Repository
             List<EditDWTDetails> objlist = _ETSEditEntities.getCurrentDateWiseTour(NoteNumber, FieldTag, ref pMsg);
             return objlist;
         }
+        public bool SetETSTourEdit(DWTTourDetailsForDB obj, ref string pMsg) 
+        {
+            return _ETSEditEntities.SetETSTourEdit(obj, ref pMsg);
+        }
+
     }
 }

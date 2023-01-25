@@ -9,7 +9,8 @@
     {
         @Html.HiddenFor(m => m.NoteNumber)
         @Html.HiddenFor(m => m.IsExtensionAllowed)
-        @Html.HiddenFor(m=>m.ExtensionFromDate)
+        @Html.HiddenFor(m => m.ExtensionFromDate)
+        @Html.HiddenFor(m => m.MaxSourceID)
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
@@ -18,7 +19,9 @@
                             <i data-feather="arrow-left-circle"></i>
                             Back
                         </button>
-                        <button type="submit" class="btn btn-secondary me-2" onclick="window.location.href='emp_travelling_detail_edit_add.html';">
+                        <button type="button" id="btnSubmit"
+                                onclick="btnSubmitClicked()"
+                                class="btn btn-secondary me-2">
                             <i data-feather="check-circle"></i>
                             Save
                         </button>
@@ -33,13 +36,13 @@
 
         </div>
         <div class="col-md-12">
-                <div class="heading_text_btn2 d-block mt-4">
-                    <h2 class="text-left"> Tour EDIT Details:</h2>
-                </div>
-                <div class="heading_text_btn2 d-block mb-2">
-                    <h2 class="text-center">Travelling Person – Details (I) </h2>
-                </div>
+            <div class="heading_text_btn2 d-block mt-4">
+                <h2 class="text-left"> Tour EDIT Details:</h2>
             </div>
+            <div class="heading_text_btn2 d-block mb-2">
+                <h2 class="text-center">Travelling Person – Details (I) </h2>
+            </div>
+        </div>
         <div class="col-md-12 mb-4">
             <div class="col-md-12 pt-3">
                 <div class="card">
@@ -105,6 +108,13 @@
                 </div>
                 <div class="card">
                     <div class="card-body">
+                        <div class="col-md-12 pt-3 pb-2 text-end">
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary"
+                                    data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                See Previous Details
+                            </button>
+                        </div>
                         <div class="row d-flex align-items-center">
                             <div class="col-form-label col-md-2">
                                 <label>EDIT Required :</label>
@@ -129,13 +139,6 @@
                                        onkeyup = "ValidatePurposeOfEdit()",
                                        title = "Maximum 20 Words Allowed"
                                    })
-                            </div>
-                            <div class="col-md-12 pt-3 pb-2 text-end">
-                                <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-primary"
-                                        data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                    See Previous Details
-                                </button>
                             </div>
                         </div>
                         <!-- Modal -->
@@ -223,7 +226,7 @@
                         </div>
                         <div id="tour_cancel" class="inVisible">
                             <div class="table-responsive ">
-                                <table class="table table-bordered w-100 btnalign" id="table">
+                                <table class="table table-bordered w-100 btnalign" id="tblTourCancel">
                                     <thead>
                                         <tr>
                                             <th scope="col" style="text-align: left; vertical-align: middle;">SL. No.</th>
@@ -242,45 +245,67 @@
                                             foreach (var item in Model.DWTDetailsCurrent)
                                             {
                                                 <tr>
-                                                    <td>@sl</td>
-                                                    <td class="text-center">
-                                                        @item.SchFromDateDisplay
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @item.SchToDateDisplay
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <div class="position-relative pointer" style="width:200px">
-                                                            <input id="FromDate_@sl" type="date"
-                                                                   data-name="FromDate"
-                                                                   onchange="ValidateEditDateCtrl()"
-                                                                   max="@item.SchToDate.ToString("yyyy-MM-dd")"
-                                                                   min="@item.SchFromDate.ToString("yyyy-MM-dd")"
-                                                                   class="form-control pointer is-invalid CustomDateFormatCloneRow valid">
-                                                            <label id="lblFromDate_@sl" style="width:100px"
-                                                                   class="datelabel pointer">Select Date</label>
-                                                        </div>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @item.TourCategoryNames
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @item.TourCenterNames
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @item.BranchNames
-                                                    </td>
-                                                </tr>
-                                                sl += 1;
+                                                    <td>
+                                                        @sl
+                                                        <div id="EditTagDiv_@sl" data-name="EditRowTag"
+                                                             class="inVisible htmlVal"></div>
+                                                        @*Injecting Extra data for Table records sync*@
+                                                        <div data-name="SourceID"
+                                                             class="inVisible htmlVal">@item.SourceID</div>
+                                                            <div data-name="CentreCodesMulti"
+                                                                 class="inVisible htmlVal"></div>
+                                                            <div data-name="CentreNamesMulti"
+                                                                 class="inVisible htmlVal"></div>
+                                                            <div data-name="CentreCodesDD"
+                                                                 class="inVisible htmlVal"></div>
+                                                            <div data-name="CentreNamesDD"
+                                                                 class="inVisible htmlVal"></div>
+                                                            <div data-name="BranchCodesDD"
+                                                                 class="inVisible htmlVal"></div>
+                                                            <div data-name="BranchNamesDD"
+                                                                 class="inVisible htmlVal"></div>
+                                                            <div class="htmlVal inVisible" data-name="BranchCodes">@item.BranchCodes</div>
+                                                            <div class="htmlVal inVisible" data-name="TourCategoryIDs">@item.TourCategoryIds</div>
+                                                            <div class="htmlVal inVisible" data-name="CentreCodes">@item.TourCenterCodeIds</div>
+                                                        </td>
+                                                        <td class="text-center htmlVal" data-name="FromDate">
+                                                            @item.SchFromDateDisplay
+                                                        </td>
+                                                        <td class="text-center htmlVal" data-name="ToDate">
+                                                            @item.SchToDateDisplay
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <div class="position-relative pointer" style="width:200px">
+                                                                <input id="FromDate_@sl" type="date"
+                                                                       data-name="EditToDate"
+                                                                       onchange="ValidateEditDateCtrl()"
+                                                                       max="@item.SchToDate.ToString("yyyy-MM-dd")"
+                                                                       min="@item.SchFromDate.ToString("yyyy-MM-dd")"
+                                                                       class="form-control pointer CustomDateFormatCloneRow valid CancelDate">
+                                                                <label id="lblFromDate_@sl" style="width:100px"
+                                                                       class="datelabel pointer">Select Date</label>
+                                                            </div>
+                                                        </td>
+                                                        <td class="text-center htmlVal" data-name="TourCategoryNames">
+                                                            @item.TourCategoryNames.Trim()
+                                                        </td>
+                                                        <td class="text-center htmlVal" data-name="CentreNames">
+                                                            @item.TourCenterNames.Trim()
+                                                        </td>
+                                                        <td class="text-center htmlVal" data-name="BranchNames">
+                                                            @item.BranchNames.Trim()
+                                                        </td>
+                                                    </tr>
+                                                    sl += 1;
+                                                }
                                             }
-                                        }
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                         <div id="tour_extension" class="inVisible">
                             <div class="table-responsive max-content">
-                                <table class="table table-bordered w-100 btnalign" id="table">
+                                <table class="table table-bordered w-100 btnalign" id="tblTourExtension">
                                     <thead>
                                         <tr>
                                             <th scope="col" style="text-align: left; vertical-align: middle;">SL. No.</th>
@@ -300,49 +325,58 @@
                                     </thead>
                                     <tbody id="tbody1">
                                         <tr id="0" class="add-row">
-                                            <th>1</th>
-                                            <td id="FromDateLbl" data-name="SchFromDate"
+                                            <th>
+                                                1                                                
+                                            </th>
+                                            <td id="FromDateLbl" data-name="FromDate"
                                                 class="text-center alterID htmlVal">
-                                                @Model.ExtensionFromDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)
+                                                @Model.ExtensionFromDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)
                                             </td>
-                                            <td class="text-center">
+                                            <td id="CRTodate" class="text-center alterID htmlVal">
                                                 -
-                                            </td>
+                                            </td>                                             
                                             <td class="text-center">
                                                 <div class="position-relative pointer" style="width:160px">
-                                                    <input id="ToDate" type="date" data-name="ToDate"
+                                                    <input id="ToDate" type="date" data-name="EditToDate"
                                                            onchange="ToDateChanged()"
                                                            max="@Model.ExtensionFromDate.AddDays(10).ToString("yyyy-MM-dd")"
                                                            min="@Model.ExtensionFromDate.ToString("yyyy-MM-dd")"
                                                            class="form-control pointer is-invalid alterID CustomDateFormatCloneRow todt valid">
-                                                    <label id="lblToDate" style="width:110px"
-                                                           class="datelabel pointer alterID">Select Date</label>
-                                                </div>
+                                                    <label id="lblToDate" style="width:110px" data-name="ToDate"
+                                                           class="datelabel pointer alterID htmlVal">Select Date</label>
+                                                </div>                                                
+                                                <div id="CREditTagDiv" data-name="EditRowTag"
+                                                     class="inVisible alterID htmlVal">1</div>
+                                                <div id="SourceIDDiv" data-name="SourceID"
+                                                     class="inVisible alterID htmlVal">@Model.MaxSourceID</div>                                                
                                             </td>
                                             <td class="text-center">
-                                                <select id="CRTourCategory" data-name="TourCatCodes" data-name-text="TourCatText" 
+                                                <select id="CRTourCategory"
+                                                        data-name="TourCategoryIDs" data-name-text="TourCategoryNames"
                                                         class="form-select is-invalid alterID clonemultiselect"
                                                         onchange="CRTourCategoryChanged()"
                                                         aria-label="Default select example">
                                                 </select>
                                             </td>
                                             <td class="text-center">
-                                                <div id="CRCenterCodeText" data-name="CenterNames" 
+                                                <div id="CRCenterCodeText" data-name="CentreNames"
                                                      class="alterID htmlVal">
                                                     -
                                                 </div>
                                                 <div id="CRCOMultiDiv" class="alterID inVisible">
-                                                    <select id="CRCenterCodeMulti" data-name="CenterCodes" data-name-text="CenterNames" 
-                                                            class="form-select alterID is-invalid clonemultiselect" 
+                                                    <select id="CRCenterCodeMulti"
+                                                            data-name="CentreCodesMulti" data-name-text="CentreNamesMulti"
+                                                            class="form-select alterID is-invalid clonemultiselect"
                                                             onchange="CRCenterCodeMultiChanged()"
-                                                            aria-label="Default select example">                                                        
+                                                            aria-label="Default select example">
                                                     </select>
                                                 </div>
                                                 <div id="CRCODDDiv" class="alterID inVisible">
-                                                    <select id="CRCenterCodeDD" data-name="CenterCodes" data-name-text="CenterNames" 
+                                                    <select id="CRCenterCodeDD"
+                                                            data-name="CentreCodesDD" data-name-text="CentreNamesDD"
                                                             class="form-select alterID is-invalid"
                                                             onchange="CRCenterCodeDDChanged()"
-                                                            aria-label="Default select example">                                                        
+                                                            aria-label="Default select example">
                                                     </select>
                                                 </div>
                                             </td>
@@ -350,14 +384,15 @@
                                                 <div id="CRBranchCodeText" data-name="BranchNames"
                                                      class="alterID htmlVal">
                                                     -
-                                                </div>                                                
+                                                </div>
                                                 <div id="CRBRMultiDiv" class="alterID inVisible">
-                                                    <select id="CRBranchCodeMulti" data-name="BranchCodes" data-name-text="BranchNames" 
-                                                            class="form-select alterID clonemultiselect" 
+                                                    <select id="CRBranchCodeMulti"
+                                                            data-name="BranchCodesDD" data-name-text="BranchNamesDD"
+                                                            class="form-select alterID clonemultiselect"
                                                             onchange="CRBranchCodeMultiChanged()"
-                                                            aria-label="Default select example">                                                        
+                                                            aria-label="Default select example">
                                                     </select>
-                                                </div>                                                
+                                                </div>
                                             </td>
                                             <td class="text-center">
                                                 <span class="actionBtn d-block">
@@ -385,7 +420,7 @@
                         </div>
                         <div id="other_edit" class="inVisible">
                             <div class="table-responsive">
-                                <table class="table table-bordered w-100 btnalign" id="table">
+                                <table class="table table-bordered w-100 btnalign" id="tblOtherEdit">
                                     <thead>
                                         <tr>
                                             <th scope="col" style="text-align: left; vertical-align: middle;">SL. No.</th>
@@ -408,19 +443,27 @@
                                             foreach (var item in Model.DWTDetailsCurrent)
                                             {
                                                 <tr>
-                                                    <td>@sl</td>
-                                                    <td class="text-center">
+                                                    <td>
+                                                        @sl
+                                                    <div id="EditTagDivOE_@sl" data-name="EditRowTag"
+                                                         class="inVisible htmlVal"></div>
+                                                    <div data-name="SourceID"
+                                                         class="inVisible htmlVal">@item.SourceID</div>
+                                                    </td>
+                                                    <td class="text-center htmlVal" data-name="FromDate">
                                                         @item.SchFromDateDisplay
                                                     </td>
-                                                    <td class="text-center">
+                                                    <td class="text-center htmlVal" data-name="ToDate">
                                                         @item.SchToDateDisplay
                                                     </td>
-                                                    <td class="text-center">
+                                                    <td class="text-center htmlVal" data-name="EditToDate">
                                                         -
                                                     </td>
                                                     <td class="text-center">
-                                                        <select id="select7" multiple="multiple" 
-                                                                class="form-select  example-getting-started" 
+                                                        <select id="OETourCategory_@sl" multiple="multiple"
+                                                                class="form-select example-getting-started"
+                                                                onchange="OETourCategoryChanged()"
+                                                                data-name="TourCategoryIDs" data-name-text="TourCategoryNames"
                                                                 aria-label="Default select example">
                                                             <option value="1"> Center Visit </option>
                                                             <option value="2"> Branch & Center Visit </option>
@@ -431,40 +474,38 @@
                                                         </select>
                                                     </td>
                                                     <td class="text-center">
-                                                        <div class="pr-price7 m7">
+                                                        <div id="OECenterCodeText_@sl" data-name="CentreNames"
+                                                             class="htmlVal">
                                                             -
                                                         </div>
-                                                        <div class="pr-price7  m2">
-                                                            <select multiple="multiple" class="form-select example-getting-started" aria-label="Default select example">
-                                                                <option value="1">
-                                                                    01 / Nizamabad
-                                                                </option>
-                                                                <option value="2"> 01 / Koratla</option>
-                                                                <option value="3">02 / Nizamabad</option>
-                                                                <option value="4"> 02 / Koratla</option>
+                                                        <div id="OECOMultiDiv_@sl" class="alterID inVisible">
+                                                            <select id="OECenterCodeMulti_@sl"
+                                                                    data-name="CentreCodesMulti" data-name-text="CentreNamesMulti"
+                                                                    class="form-select clonemultiselect"
+                                                                    onchange="OECenterCodeMultiChanged()"
+                                                                    aria-label="Default select example">
                                                             </select>
                                                         </div>
-                                                        <div class="pr-price7  m3">
-                                                            <select class="form-select" aria-label="Default select example">
-                                                                <option selected="" value="01 / Production">01 / Production </option>
-                                                                <option value="01 / Koratla"> 01 / Koratla  </option>
-                                                                <option value="01 / Production "> 01 / Production  </option>
-                                                                <option value="01 / Production "> 01 / Production  </option>
+                                                        <div id="OECODDDiv_@sl" class="alterID inVisible">
+                                                            <select id="OECenterCodeDD_@sl"
+                                                                    data-name="CentreCodesDD" data-name-text="CentreNamesDD"
+                                                                    class="form-select"
+                                                                    onchange="OECenterCodeDDChanged()"
+                                                                    aria-label="Default select example">
                                                             </select>
                                                         </div>
                                                     </td>
                                                     <td class="text-center">
-                                                        <div class="pr-price7  m7">
+                                                        <div id="OEBranchCodeText_@sl" data-name="BranchNames"
+                                                             class="htmlVal">
                                                             -
                                                         </div>
-                                                        <div class="pr-price7  m3">
-                                                            <select multiple="multiple" class="form-select example-getting-started" aria-label="Default select example">
-                                                                <option value="1">
-                                                                    01 / Nizamabad
-                                                                </option>
-                                                                <option value="2"> 01 / Koratla</option>
-                                                                <option value="3">02 / Nizamabad</option>
-                                                                <option value="4"> 02 / Koratla</option>
+                                                        <div id="OEBRMultiDiv_@sl" class="alterID inVisible">
+                                                            <select id="OEBranchCodeMulti_@sl"
+                                                                    data-name="BranchCodesDD" data-name-text="BranchNamesDD"
+                                                                    class="form-select clonemultiselect"
+                                                                    onchange="OEBranchCodeMultiChanged()"
+                                                                    aria-label="Default select example">
                                                             </select>
                                                         </div>
                                                     </td>

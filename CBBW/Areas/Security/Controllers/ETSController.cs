@@ -42,6 +42,7 @@ namespace CBBW.Areas.Security.Controllers
             catch (Exception ex) { pMsg = ex.ToString(); }
 
         }
+      
         #region For Entry Process
         public ActionResult Index()
         {
@@ -127,15 +128,7 @@ namespace CBBW.Areas.Security.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
 
         }
-        public JsonResult GetVehicleEligibility(int EmployeeNumber)
-        {
-            CustomComboOptions result = _master.getVehicleEligibility(EmployeeNumber, ref pMsg);
-            if (result == null) 
-            {
-            result = new CustomComboOptions() { ID = 0, DisplayText = "NA" };  
-            }
-            return Json(result, JsonRequestBehavior.AllowGet);
-        }
+       
         [HttpPost]
         public ActionResult SetTravelingPersonDetails(ETSHeaderEntryVM modelvm)
         {
@@ -795,6 +788,15 @@ namespace CBBW.Areas.Security.Controllers
         }
         #endregion
         #region For Common use data
+        public JsonResult GetVehicleEligibility(int EmployeeNumber)
+        {
+            CustomComboOptions result = _master.getVehicleEligibility(EmployeeNumber, ref pMsg);
+            if (result == null)
+            {
+                result = new CustomComboOptions() { ID = 0, DisplayText = "NA" };
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
         public JsonResult GetDesgCodenName(int empID, int empType)
         {//empType : 2-driver, 1-Others
             return Json(_master.GetDesgCodenName(empID, empType), JsonRequestBehavior.AllowGet);
@@ -876,10 +878,13 @@ namespace CBBW.Areas.Security.Controllers
         {
             IEnumerable<CustomComboOptions> result = _master.getBranchType(CenterId, ref pMsg);
             return Json(result, JsonRequestBehavior.AllowGet);
-
+        }
+        public JsonResult getVehicleEligibilityStatement(int EligibleVT, int ProvidedVT)
+        {
+        
+            return Json(_master.getVehicleEligibilityStatement(EligibleVT, ProvidedVT, ref pMsg), JsonRequestBehavior.AllowGet);
 
         }
-
         //public JsonResult GetBranchCode(string CId)
         //{
         //    List<CustomComboOptions> result = new List<CustomComboOptions>();

@@ -14,21 +14,26 @@
                     <div class="heading_text_btn mb-3 mt-4">
                         <div class="leftButton">
                             @*<button type="button" id="btnBack" class="btn btn-primary me-2">
-                                    <i data-feather="arrow-left-circle"></i>
-                                    Back
-                                </button>*@
-                            <button type="submit" id="btnSubmit" class="btn btn-primary me-2">
+            <i data-feather="arrow-left-circle"></i>
+            Back
+        </button>*@
+
+                            @if (ViewBag.CBUID != 2)
+                            {
+
+
+                            <button id="btnSubmit" type="submit" class="btn btn-primary me-2">
                                 <i data-feather="arrow-left-circle"></i>
                                 Back
                             </button>
-
-                            @*@if (ViewBag.CBUID != 2)
-                                {*@
-                            @*<button id="btnSubmit" type="submit" class="btn btn-secondary me-2">
-                                    <i data-feather="check-circle"></i>
-                                    Save
-                                </button>*@
-                            @*}*@
+                            }
+                            else
+                            {
+                                <button type="button" id="btnBack" class="btn btn-primary me-2">
+                                    <i data-feather="arrow-left-circle"></i>
+                                    Back
+                                </button>
+                            }
 
                         </div>
                         <h2>Employees Travelling Schedule Details – RATIFICATION  (FOR NZB STAFF) </h2>
@@ -151,6 +156,12 @@
                                                             2 wheelar
 
                                                         </td>
+                                                    }
+                                                    else if (Model.travDetails.VehicleTypeProvided == 3)
+                                                    {
+
+
+                                                        <td class="text-center"> Public Transport</td>
                                                     }
 
 

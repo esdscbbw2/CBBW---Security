@@ -303,6 +303,39 @@ function CloneRowWithNoControls(sourceTBody, destinationTBody, rowid) {
         sl += 1;
     });
 };
+function CloneRowWithNoControlsReturningID(sourceTBody, destinationTBody, rowid) {
+    // Source table Body must have a row having (id="0" class="add-row")
+    //The controlls should have a class named "alterID";
+    //Use "htmlVal" class for a controll if the value will be picked from innerhtml.
+    //There should be "th" tag which may exclusively used for Serial Number Purpose.
+    //alert('CloneRow : ' + sourceTBody + " - " + destinationTBody + " - "+rowid);
+    var maxrows = 0, r = 0;
+    var sourcebody = $('#' + sourceTBody);
+    var destinationbody = $('#' + destinationTBody);
+    $('#' + destinationTBody + ' tr').each(function () {
+        var maxr = $(this).attr('id') * 1;
+        if (maxr > maxrows) { maxrows = maxr; }
+    });
+    if (maxrows >= 1) { r = maxrows + 1; } else { r = 1; }//Geting maximum row
+    var cloneready = sourcebody.find('tr').clone();
+    cloneready.attr("id", r);
+    cloneready.find('.alterID').each(function () {
+        that = $(this);
+        var mID = that.attr('id').split('_');
+        var newID = mID[0] + '_' + r;
+        that.attr('id', newID);
+    });
+    cloneready.find('.htmlVal').each(function () {
+        $(this).html('');
+    });
+    destinationbody.append(cloneready);
+    var sl = 2;
+    $('#' + destinationTBody + ' th').each(function () {
+        $(this).html(sl);
+        sl += 1;
+    });
+    return r;
+};
 function CloneRow(sourceTBody, destinationTBody, rowid, IsRemoveBtn, IsAddBtnEnable) {
     // Source table Body must have a row having (id="0" class="add-row")
     //The controlls should have a class named "alterID";
@@ -673,7 +706,8 @@ function getRecordsFromTableV2(tableName) {
             that = $(this);
             dataname = that.attr('data-name');
             if (that.hasClass('htmlVal')) {
-                datavalue = that.html();
+                datavalue = that.html().trim();
+                //datavalue = datavalue.replace('"', '');
             }
             else { datavalue = that.val(); }
             mrecord = mrecord + '"' + dataname + '":"' + datavalue + '",';
@@ -683,6 +717,39 @@ function getRecordsFromTableV2(tableName) {
             dataname = that.attr('data-name-text');
             thatid = that.attr('id');
             datavalue = $('#' + thatid+' option:selected').toArray().map(item => item.text).join();
+            mrecord = mrecord + '"' + dataname + '":"' + datavalue + '",';
+        });
+        mrecord = mrecord.replace(/,\s*$/, "");
+        schrecords = schrecords + '{' + mrecord + '},';
+        mrecord = '';
+    });
+    schrecords = schrecords.replace(/,\s*$/, "");
+    schrecords = '[' + schrecords + ']';
+    //alert(schrecords);
+    return schrecords;
+};
+function getRecordsFromTableV3(tableName) {
+    //The fields should have an attribute "data-name", Which is the property name of the MVC object
+    var schrecords = '';
+    var dataname;
+    var datavalue;
+    var mrecord = '';
+    $('#' + tableName + ' tbody tr').each(function () {
+        mRow = $(this);
+        mRow.find('[data-name]').each(function () {
+            that = $(this);
+            dataname = that.attr('data-name');
+            if (that.hasClass('htmlVal')) {
+                datavalue = that.html();
+            }
+            else { datavalue = that.val(); }
+            mrecord = mrecord + '"' + dataname + '":"' + datavalue + '",';
+        });
+        mRow.find('[data-name-text]').each(function () {
+            that = $(this);
+            dataname = that.attr('data-name-text');
+            thatid = that.attr('id');
+            datavalue = $('#' + thatid + ' option:selected').toArray().map(item => item.text).join();
             mrecord = mrecord + '"' + dataname + '":"' + datavalue + '",';
         });
         mrecord = mrecord.replace(/,\s*$/, "");
