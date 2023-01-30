@@ -90,12 +90,13 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
-        public List<EditDWTDetails> getCurrentDateWiseTour(string NoteNumber, int FieldTag, ref string pMsg) 
+        public List<EditDWTDetails> getCurrentDateWiseTour(string NoteNumber, int FieldTag,
+            int PersonType, int PersonID, string PersonName, ref string pMsg)
         {
             List<EditDWTDetails> result = new List<EditDWTDetails>();
             try
             {
-                ds = _ETSEditDataSync.getCurrentDateWiseTour(NoteNumber, FieldTag, ref pMsg);
+                ds = _ETSEditDataSync.getCurrentDateWiseTour(NoteNumber, FieldTag,PersonType,PersonID,PersonName, ref pMsg);
                 if (ds != null) 
                 {
                     dt = ds.Tables[0];
@@ -111,10 +112,35 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
-        public bool SetETSTourEdit(DWTTourDetailsForDB obj, ref string pMsg) 
+        public bool SetETSTourEdit(DWTTourDetailsForDB obj, int CentreCode, string CentreName, ref string pMsg) 
         {
             bool result = false;
-            _DBResponseMapper.Map_DBResponse(_ETSEditDataSync.SetETSTourEdit(obj, ref pMsg), ref pMsg, ref result);
+            _DBResponseMapper.Map_DBResponse(_ETSEditDataSync.SetETSTourEdit(obj, CentreCode, CentreName, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
+        public bool UpdateETSTourEdit(string NoteNumber, ref string pMsg) 
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_ETSEditDataSync.UpdateETSTourEdit(NoteNumber, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
+        public List<EditNoteList> GetETSEditNoteList(int DisplayLength, int DisplayStart, int SortColumn,
+            string SortDirection, string SearchText, int CentreCode, bool IsApprovedList, ref string pMsg)
+        {
+            List<EditNoteList> result = new List<EditNoteList>();
+            try
+            {
+                dt = _ETSEditDataSync.GetETSEditNoteList(DisplayLength,DisplayStart,
+                    SortColumn,SortDirection,SearchText,CentreCode,IsApprovedList, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        result.Add(_ETSEditDBMapper.Map_EditNoteList(dt.Rows[i]));
+                    }
+                }                
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
     }

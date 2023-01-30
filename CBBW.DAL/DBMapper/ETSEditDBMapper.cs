@@ -171,5 +171,39 @@ namespace CBBW.DAL.DBMapper
                 }                        
             return result;
         }
+        public EditNoteList Map_EditNoteList(DataRow dr) 
+        {
+            EditNoteList result = new EditNoteList();
+            try
+            {
+                if (dr != null)
+                {
+                    if (!DBNull.Value.Equals(dr["RowNum"]))
+                        result.RowNumber = int.Parse(dr["RowNum"].ToString());
+                    if (!DBNull.Value.Equals(dr["TotalCount"]))
+                        result.TotalCount = int.Parse(dr["TotalCount"].ToString());
+                    if (!DBNull.Value.Equals(dr["TotalRecords"]))
+                        result.TotalRecord = int.Parse(dr["TotalRecords"].ToString());
+                    if (!DBNull.Value.Equals(dr["NoteNumber"]))
+                        result.NoteNumber = dr["NoteNumber"].ToString();
+                    if (!DBNull.Value.Equals(dr["EditDate"]))
+                        result.EntryDate =DateTime.Parse(dr["EditDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["EditDateDispaly"]))
+                        result.EntryDateDisplay = dr["EditDateDispaly"].ToString();
+                    if (!DBNull.Value.Equals(dr["CentreCode"]))
+                        result.CenterCode =int.Parse(dr["CentreCode"].ToString());
+                    if (!DBNull.Value.Equals(dr["CenterName"]))
+                        result.CenterName = dr["CenterName"].ToString();
+                    if (!DBNull.Value.Equals(dr["EmpNo"]))
+                        result.EmployeeNumber = int.Parse(dr["EmpNo"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsApproved"]))
+                        result.IsApproved = bool.Parse(dr["IsApproved"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsLocked"]))
+                        result.IsLocked = bool.Parse(dr["IsLocked"].ToString());
+                }
+            }
+            catch { }
+            return result;
+        }
     }
 }

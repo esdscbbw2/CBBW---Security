@@ -11,11 +11,12 @@
         @Html.HiddenFor(m => m.IsExtensionAllowed)
         @Html.HiddenFor(m => m.ExtensionFromDate)
         @Html.HiddenFor(m => m.MaxSourceID)
+        @Html.HiddenFor(m => m.backbtnactive)
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
                     <div class="leftButton">
-                        <button type="submit" class="btn btn-primary me-2" onclick="window.location.href='emp_travelling_detail_edit_add.html';">
+                        <button id="btnBack" type="button" class="btn btn-primary me-2">
                             <i data-feather="arrow-left-circle"></i>
                             Back
                         </button>
@@ -326,7 +327,7 @@
                                     <tbody id="tbody1">
                                         <tr id="0" class="add-row">
                                             <th>
-                                                1                                                
+                                                1
                                             </th>
                                             <td id="FromDateLbl" data-name="FromDate"
                                                 class="text-center alterID htmlVal">
@@ -334,7 +335,7 @@
                                             </td>
                                             <td id="CRTodate" class="text-center alterID htmlVal">
                                                 -
-                                            </td>                                             
+                                            </td>
                                             <td class="text-center">
                                                 <div class="position-relative pointer" style="width:160px">
                                                     <input id="ToDate" type="date" data-name="EditToDate"
@@ -344,196 +345,196 @@
                                                            class="form-control pointer is-invalid alterID CustomDateFormatCloneRow todt valid">
                                                     <label id="lblToDate" style="width:110px" data-name="ToDate"
                                                            class="datelabel pointer alterID htmlVal">Select Date</label>
-                                                </div>                                                
+                                                </div>
                                                 <div id="CREditTagDiv" data-name="EditRowTag"
                                                      class="inVisible alterID htmlVal">1</div>
                                                 <div id="SourceIDDiv" data-name="SourceID"
-                                                     class="inVisible alterID htmlVal">@Model.MaxSourceID</div>                                                
-                                            </td>
-                                            <td class="text-center">
-                                                <select id="CRTourCategory"
-                                                        data-name="TourCategoryIDs" data-name-text="TourCategoryNames"
-                                                        class="form-select is-invalid alterID clonemultiselect"
-                                                        onchange="CRTourCategoryChanged()"
-                                                        aria-label="Default select example">
-                                                </select>
-                                            </td>
-                                            <td class="text-center">
-                                                <div id="CRCenterCodeText" data-name="CentreNames"
-                                                     class="alterID htmlVal">
-                                                    -
-                                                </div>
-                                                <div id="CRCOMultiDiv" class="alterID inVisible">
-                                                    <select id="CRCenterCodeMulti"
-                                                            data-name="CentreCodesMulti" data-name-text="CentreNamesMulti"
-                                                            class="form-select alterID is-invalid clonemultiselect"
-                                                            onchange="CRCenterCodeMultiChanged()"
+                                                     class="inVisible alterID htmlVal">@Model.MaxSourceID</div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <select id="CRTourCategory"
+                                                            data-name="TourCategoryIDs" data-name-text="TourCategoryNames"
+                                                            class="form-select is-invalid alterID clonemultiselect"
+                                                            onchange="CRTourCategoryChanged()"
                                                             aria-label="Default select example">
                                                     </select>
-                                                </div>
-                                                <div id="CRCODDDiv" class="alterID inVisible">
-                                                    <select id="CRCenterCodeDD"
-                                                            data-name="CentreCodesDD" data-name-text="CentreNamesDD"
-                                                            class="form-select alterID is-invalid"
-                                                            onchange="CRCenterCodeDDChanged()"
-                                                            aria-label="Default select example">
-                                                    </select>
-                                                </div>
-                                            </td>
-                                            <td class="text-center">
-                                                <div id="CRBranchCodeText" data-name="BranchNames"
-                                                     class="alterID htmlVal">
-                                                    -
-                                                </div>
-                                                <div id="CRBRMultiDiv" class="alterID inVisible">
-                                                    <select id="CRBranchCodeMulti"
-                                                            data-name="BranchCodesDD" data-name-text="BranchNamesDD"
-                                                            class="form-select alterID clonemultiselect"
-                                                            onchange="CRBranchCodeMultiChanged()"
-                                                            aria-label="Default select example">
-                                                    </select>
-                                                </div>
-                                            </td>
-                                            <td class="text-center">
-                                                <span class="actionBtn d-block">
-                                                    <button id="AddBtn" type="button"
-                                                            class="btn primaryLink alterID cloneBtn addBtn"
-                                                            data-toggle="tooltip"
-                                                            onclick="addCloneBtnClick()"
-                                                            data-placement="top" title="Add">
-                                                        <i data-feather="plus"></i>
-                                                    </button>
-                                                    <button id="DeleteBtn" type="button"
-                                                            class="btn secondaryLink inVisible alterID cloneBtn removeBtn"
-                                                            onclick="RemoveBtnClicked()"
-                                                            data-toggle="tooltip"
-                                                            data-placement="top" title="Delete">
-                                                        <i data-feather="x"></i>
-                                                    </button>
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                    <tbody id="tbody2"></tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div id="other_edit" class="inVisible">
-                            <div class="table-responsive">
-                                <table class="table table-bordered w-100 btnalign" id="tblOtherEdit">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col" style="text-align: left; vertical-align: middle;">SL. No.</th>
-                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="10%"> Scheduled Tour From Date</th>
-                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">Scheduled Tour To Date </th>
-                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">
-                                                EDITED Tour To Date
-                                            </th>
-                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="20%">Tour Category </th>
-                                            <th scope="col" style="text-align: center; vertical-align: middle;">
-                                                Center Code & Name
-                                            </th>
-                                            <th scope="col" style="text-align: center; vertical-align: middle;">Branch Code & Name </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if (Model.DWTDetailsCurrent != null && Model.DWTDetailsCurrent.Count > 0)
-                                        {
-                                            int sl = 1;
-                                            foreach (var item in Model.DWTDetailsCurrent)
-                                            {
-                                                <tr>
-                                                    <td>
-                                                        @sl
-                                                    <div id="EditTagDivOE_@sl" data-name="EditRowTag"
-                                                         class="inVisible htmlVal"></div>
-                                                    <div data-name="SourceID"
-                                                         class="inVisible htmlVal">@item.SourceID</div>
-                                                    </td>
-                                                    <td class="text-center htmlVal" data-name="FromDate">
-                                                        @item.SchFromDateDisplay
-                                                    </td>
-                                                    <td class="text-center htmlVal" data-name="ToDate">
-                                                        @item.SchToDateDisplay
-                                                    </td>
-                                                    <td class="text-center htmlVal" data-name="EditToDate">
+                                                </td>
+                                                <td class="text-center">
+                                                    <div id="CRCenterCodeText" data-name="CentreNames"
+                                                         class="alterID htmlVal">
                                                         -
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <select id="OETourCategory_@sl" multiple="multiple"
-                                                                class="form-select example-getting-started"
-                                                                onchange="OETourCategoryChanged()"
-                                                                data-name="TourCategoryIDs" data-name-text="TourCategoryNames"
+                                                    </div>
+                                                    <div id="CRCOMultiDiv" class="alterID inVisible">
+                                                        <select id="CRCenterCodeMulti"
+                                                                data-name="CentreCodesMulti" data-name-text="CentreNamesMulti"
+                                                                class="form-select alterID is-invalid clonemultiselect"
+                                                                onchange="CRCenterCodeMultiChanged()"
                                                                 aria-label="Default select example">
-                                                            <option value="1"> Center Visit </option>
-                                                            <option value="2"> Branch & Center Visit </option>
-                                                            <option value="4"> Branch  Visit  </option>
-                                                            <option value="5"> Un Known Destination  </option>
-                                                            <option value="3"> Other Place </option>
-                                                            <option value="6"> E.P. Tour </option>
                                                         </select>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <div id="OECenterCodeText_@sl" data-name="CentreNames"
-                                                             class="htmlVal">
-                                                            -
-                                                        </div>
-                                                        <div id="OECOMultiDiv_@sl" class="alterID inVisible">
-                                                            <select id="OECenterCodeMulti_@sl"
-                                                                    data-name="CentreCodesMulti" data-name-text="CentreNamesMulti"
-                                                                    class="form-select clonemultiselect"
-                                                                    onchange="OECenterCodeMultiChanged()"
-                                                                    aria-label="Default select example">
-                                                            </select>
-                                                        </div>
-                                                        <div id="OECODDDiv_@sl" class="alterID inVisible">
-                                                            <select id="OECenterCodeDD_@sl"
-                                                                    data-name="CentreCodesDD" data-name-text="CentreNamesDD"
-                                                                    class="form-select"
-                                                                    onchange="OECenterCodeDDChanged()"
-                                                                    aria-label="Default select example">
-                                                            </select>
-                                                        </div>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <div id="OEBranchCodeText_@sl" data-name="BranchNames"
-                                                             class="htmlVal">
-                                                            -
-                                                        </div>
-                                                        <div id="OEBRMultiDiv_@sl" class="alterID inVisible">
-                                                            <select id="OEBranchCodeMulti_@sl"
-                                                                    data-name="BranchCodesDD" data-name-text="BranchNamesDD"
-                                                                    class="form-select clonemultiselect"
-                                                                    onchange="OEBranchCodeMultiChanged()"
-                                                                    aria-label="Default select example">
-                                                            </select>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                sl += 1;
-                                            }
-                                        }
-                                    </tbody>
-                                </table>
+                                                    </div>
+                                                    <div id="CRCODDDiv" class="alterID inVisible">
+                                                        <select id="CRCenterCodeDD"
+                                                                data-name="CentreCodesDD" data-name-text="CentreNamesDD"
+                                                                class="form-select alterID is-invalid"
+                                                                onchange="CRCenterCodeDDChanged()"
+                                                                aria-label="Default select example">
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div id="CRBranchCodeText" data-name="BranchNames"
+                                                         class="alterID htmlVal">
+                                                        -
+                                                    </div>
+                                                    <div id="CRBRMultiDiv" class="alterID inVisible">
+                                                        <select id="CRBranchCodeMulti"
+                                                                data-name="BranchCodesDD" data-name-text="BranchNamesDD"
+                                                                class="form-select alterID clonemultiselect"
+                                                                onchange="CRBranchCodeMultiChanged()"
+                                                                aria-label="Default select example">
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span class="actionBtn d-block">
+                                                        <button id="AddBtn" type="button"
+                                                                class="btn primaryLink alterID cloneBtn addBtn"
+                                                                data-toggle="tooltip"
+                                                                onclick="addCloneBtnClick()"
+                                                                data-placement="top" title="Add">
+                                                            <i data-feather="plus"></i>
+                                                        </button>
+                                                        <button id="DeleteBtn" type="button"
+                                                                class="btn secondaryLink inVisible alterID cloneBtn removeBtn"
+                                                                onclick="RemoveBtnClicked()"
+                                                                data-toggle="tooltip"
+                                                                data-placement="top" title="Delete">
+                                                            <i data-feather="x"></i>
+                                                        </button>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody id="tbody2"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div id="other_edit" class="inVisible">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered w-100 btnalign" id="tblOtherEdit">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" style="text-align: left; vertical-align: middle;">SL. No.</th>
+                                                <th scope="col" style="text-align: center; vertical-align: middle;" width="10%"> Scheduled Tour From Date</th>
+                                                <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">Scheduled Tour To Date </th>
+                                                <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">
+                                                    EDITED Tour To Date
+                                                </th>
+                                                <th scope="col" style="text-align: center; vertical-align: middle;" width="20%">Tour Category </th>
+                                                <th scope="col" style="text-align: center; vertical-align: middle;">
+                                                    Center Code & Name
+                                                </th>
+                                                <th scope="col" style="text-align: center; vertical-align: middle;">Branch Code & Name </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (Model.DWTDetailsCurrent != null && Model.DWTDetailsCurrent.Count > 0)
+                                            {
+                                                int sl = 1;
+                                                foreach (var item in Model.DWTDetailsCurrent)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @sl
+                                                            <div id="EditTagDivOE_@sl" data-name="EditRowTag"
+                                                                 class="inVisible htmlVal"></div>
+                                                            <div data-name="SourceID"
+                                                                 class="inVisible htmlVal">@item.SourceID</div>
+                                                            </td>
+                                                            <td class="text-center htmlVal" data-name="FromDate">
+                                                                @item.SchFromDateDisplay
+                                                            </td>
+                                                            <td class="text-center htmlVal" data-name="ToDate">
+                                                                @item.SchToDateDisplay
+                                                            </td>
+                                                            <td class="text-center htmlVal" data-name="EditToDate">
+                                                                -
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <select id="OETourCategory_@sl" multiple="multiple"
+                                                                        class="form-select example-getting-started"
+                                                                        onchange="OETourCategoryChanged()"
+                                                                        data-name="TourCategoryIDs" data-name-text="TourCategoryNames"
+                                                                        aria-label="Default select example">
+                                                                    <option value="1"> Center Visit </option>
+                                                                    <option value="2"> Branch & Center Visit </option>
+                                                                    <option value="4"> Branch  Visit  </option>
+                                                                    <option value="5"> Un Known Destination  </option>
+                                                                    <option value="3"> Other Place </option>
+                                                                    <option value="6"> E.P. Tour </option>
+                                                                </select>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <div id="OECenterCodeText_@sl" data-name="CentreNames"
+                                                                     class="htmlVal">
+                                                                    -
+                                                                </div>
+                                                                <div id="OECOMultiDiv_@sl" class="alterID inVisible">
+                                                                    <select id="OECenterCodeMulti_@sl"
+                                                                            data-name="CentreCodesMulti" data-name-text="CentreNamesMulti"
+                                                                            class="form-select clonemultiselect"
+                                                                            onchange="OECenterCodeMultiChanged()"
+                                                                            aria-label="Default select example">
+                                                                    </select>
+                                                                </div>
+                                                                <div id="OECODDDiv_@sl" class="alterID inVisible">
+                                                                    <select id="OECenterCodeDD_@sl"
+                                                                            data-name="CentreCodesDD" data-name-text="CentreNamesDD"
+                                                                            class="form-select"
+                                                                            onchange="OECenterCodeDDChanged()"
+                                                                            aria-label="Default select example">
+                                                                    </select>
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <div id="OEBranchCodeText_@sl" data-name="BranchNames"
+                                                                     class="htmlVal">
+                                                                    -
+                                                                </div>
+                                                                <div id="OEBRMultiDiv_@sl" class="alterID inVisible">
+                                                                    <select id="OEBranchCodeMulti_@sl"
+                                                                            data-name="BranchCodesDD" data-name-text="BranchNamesDD"
+                                                                            class="form-select clonemultiselect"
+                                                                            onchange="OEBranchCodeMultiChanged()"
+                                                                            aria-label="Default select example">
+                                                                    </select>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        sl += 1;
+                                                    }
+                                                }
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="bgColor mt-4 bg-transparent content text-left border-red">
-                    <ul style="list-style:none;">
-                        <li style="font-size: 16px;">
-                            It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
-                            <select class="form-select content border-red" aria-label="Default select example" id="paragraphSpaceOPtion">
-                                <option selected="">-</option>
-                                <option value="1">Yes</option>
-                                <option value="1">No</option>
-                            </select>
-                        </li>
-                    </ul>
+                    <div class="bgColor mt-4 bg-transparent content text-left border-red">
+                        <ul style="list-style:none;">
+                            <li style="font-size: 16px;">
+                                It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
+                                <select class="form-select content border-red" aria-label="Default select example" id="paragraphSpaceOPtion">
+                                    <option selected="">-</option>
+                                    <option value="1">Yes</option>
+                                    <option value="1">No</option>
+                                </select>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
-    }
+        }
 </div>
 @section headers
 {

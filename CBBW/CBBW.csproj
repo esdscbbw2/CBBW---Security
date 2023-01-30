@@ -143,6 +143,8 @@
     <Compile Include="Areas\Security\Controllers\MaterialGatePassController.cs" />
     <Compile Include="Areas\Security\Controllers\TADARulesController.cs" />
     <Compile Include="Areas\Security\Controllers\TourRuleController.cs" />
+    <Compile Include="Areas\Security\Helpers\EditHistory.cs" />
+    <Compile Include="Areas\Security\ViewModel\ETSEdit\TourCancelVM.cs" />
     <Compile Include="Areas\Security\SecurityAreaRegistration.cs" />
     <Compile Include="Areas\Security\ViewModel\CTVApprovalVM.cs" />
     <Compile Include="Areas\Security\ViewModel\CTVHdrEntryVM.cs" />
@@ -151,6 +153,7 @@
     <Compile Include="Areas\Security\ViewModel\EHG\EHGHeaderEntryVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EHG\EHGNotApprovalVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EHG\EHGTravellingPersonsVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\ETSEdit\EditHistoryVM.cs" />
     <Compile Include="Areas\Security\ViewModel\ETSEdit\ETSEditCreateVM.cs" />
     <Compile Include="Areas\Security\ViewModel\ETS\ETSHeaderEntryVM.cs" />
     <Compile Include="Areas\Security\ViewModel\ETS\ETSNoteApproveVM.cs" />
@@ -317,6 +320,7 @@
     <Content Include="UIContent\JS\CustomePage\EHGDateWiseTourDtl.js" />
     <Content Include="UIContent\JS\CustomePage\EHGNoteApproval.js" />
     <Content Include="UIContent\JS\CustomePage\EHGVehicleAllotment.js" />
+    <Content Include="UIContent\JS\CustomePage\ETSEdit\ETSEditCreateIndividualTourEdit.js" />
     <Content Include="UIContent\JS\CustomePage\ETSEdit\ETSEditCreateJS.js" />
     <Content Include="UIContent\JS\CustomePage\ETSEdit\ETSEditCreateTourEdit.js" />
     <Content Include="UIContent\JS\CustomePage\ETS\ETSEntry.js" />
@@ -419,6 +423,10 @@
     <Content Include="Areas\Security\Views\ETSEdit\Create.cshtml" />
     <Content Include="Areas\Security\Views\ETSEdit\TourEdit.cshtml" />
     <Content Include="Areas\Security\Views\ETSEdit\IndividualEdit.cshtml" />
+    <Content Include="Areas\Security\Views\ETSEdit\Index.cshtml" />
+    <Content Include="Areas\Security\Views\ETSEdit\_IndividualEditHistory.cshtml" />
+    <Content Include="Areas\Security\Views\ETSEdit\_TourCancel.cshtml" />
+    <Content Include="Areas\Security\Views\ETSEdit\_TourOtherEdit.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />

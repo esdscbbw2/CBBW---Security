@@ -13,14 +13,17 @@ namespace CBBW.BOL.ETSEdit
         public string ReasonForEdit { get; set; }
         public List<DWTourDetailsFromTable> DWTDetails { get; set; }
     }
-    public class DWTTourDetailsForDB : DWTTourDetailsForEdit
-    {
-        public int UserID { get; set; }
-        public string UserName { get; set; }
-        public bool IsIndividualEdit { get; set; }
+    public class DWTIndTourDetailsForEdit : DWTTourDetailsForEdit
+    {        
         public int PersonType { get; set; }
         public int PersonID { get; set; }
         public string PersonName { get; set; }
+    }
+    public class DWTTourDetailsForDB : DWTIndTourDetailsForEdit
+    {
+        public bool IsIndividualEdit { get; set; }
+        public int UserID { get; set; }
+        public string UserName { get; set; }        
     }
     public class DWTourDetailsFromTable
     {        

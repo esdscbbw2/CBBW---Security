@@ -34,7 +34,33 @@
             });
         }
     });
+    $('#backbtnactive').val(1);
 };
 $(document).ready(function () {
     NotenumberChanged();
+    $('#btnBack').click(function () {
+        var backbtnactive = $('#BackBtnActive').val();
+        var backurl = "/Security/ETSEdit/Index";
+        if (backbtnactive == 1) {
+            Swal.fire({
+                title: 'Confirmation',
+                text: "Are You Sure Want to Go Back?",
+                icon: 'question',
+                customClass: 'swal-wide',
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                cancelButtonClass: 'btn-cancel',
+                confirmButtonColor: '#2527a2',
+                showCancelButton: true,
+            }).then(callback);
+            function callback(result) {
+                if (result.value) {
+                    window.location.href = backurl;
+                }
+            }
+        }
+        else {
+            window.location.href = backurl;
+        }
+    });
 });

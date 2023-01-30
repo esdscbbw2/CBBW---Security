@@ -34,5 +34,9 @@ namespace CBBW.Areas.Security.ViewModel.ETSEdit
         public DateTime ExtensionFromDate { get; set; }
         public int IsExtensionAllowed { get; set; }
         public int MaxSourceID { get; set; }
+        public int backbtnactive { get; set; }
+        public int SelectedPersonType { get; set; }
+        public int SelectedPersonID { get; set; }
+        public string SelectedPersonName { get; set; }
     }
 }

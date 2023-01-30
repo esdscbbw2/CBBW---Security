@@ -1,0 +1,105 @@
+﻿@model CBBW.Areas.Security.ViewModel.ETSEdit.TourCancelVM
+@{
+    Layout = null;
+}
+<div class="table-responsive ">
+    <table class="table table-bordered w-100 btnalign" id="tblTourCancel">
+        <thead>
+            <tr>
+                <th scope="col" style="text-align: left; vertical-align: middle;">SL. No.</th>
+                <th scope="col" style="text-align: center; vertical-align: middle;" width="10%"> Scheduled Tour From Date</th>
+                <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">Scheduled Tour To Date </th>
+                <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">EDITED Tour To Date</th>
+                <th scope="col" style="text-align: center; vertical-align: middle;" width="20%">Tour Category </th>
+                <th scope="col" style="text-align: center; vertical-align: middle;">Center Code & Name</th>
+                <th scope="col" style="text-align: center; vertical-align: middle;">Branch Code & Name </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.DWTDetailsCurrent != null && Model.DWTDetailsCurrent.Count > 0)
+            {
+                int sl = 1;
+                foreach (var item in Model.DWTDetailsCurrent)
+                {
+                    <tr>
+                        <td>
+                            @sl
+                            <div id="EditTagDiv_@sl" data-name="EditRowTag"
+                                 class="inVisible htmlVal"></div>
+                            @*Injecting Extra data for Table records sync*@
+                            <div data-name="SourceID"
+                                 class="inVisible htmlVal">@item.SourceID</div>
+                                <div data-name="CentreCodesMulti"
+                                     class="inVisible htmlVal"></div>
+                                <div data-name="CentreNamesMulti"
+                                     class="inVisible htmlVal"></div>
+                                <div data-name="CentreCodesDD"
+                                     class="inVisible htmlVal"></div>
+                                <div data-name="CentreNamesDD"
+                                     class="inVisible htmlVal"></div>
+                                <div data-name="BranchCodesDD"
+                                     class="inVisible htmlVal"></div>
+                                <div data-name="BranchNamesDD"
+                                     class="inVisible htmlVal"></div>
+                                <div class="htmlVal inVisible" data-name="BranchCodes">@item.BranchCodes</div>
+                                <div class="htmlVal inVisible" data-name="TourCategoryIDs">@item.TourCategoryIds</div>
+                                <div class="htmlVal inVisible" data-name="CentreCodes">@item.TourCenterCodeIds</div>
+                            </td>
+                            <td class="text-center htmlVal" data-name="FromDate">
+                                @item.SchFromDateDisplay
+                            </td>
+                            <td class="text-center htmlVal" data-name="ToDate">
+                                @item.SchToDateDisplay
+                            </td>
+                            <td class="text-center">
+                                <div class="position-relative pointer" style="width:200px">
+                                    <input id="FromDate_@sl" type="date"
+                                           data-name="EditToDate"
+                                           onchange="ValidateEditDateCtrl()"
+                                           max="@item.SchToDate.ToString("yyyy-MM-dd")"
+                                           min="@item.SchFromDate.ToString("yyyy-MM-dd")"
+                                           class="form-control pointer CustomDateFormatCloneRow valid CancelDate">
+                                    <label id="lblFromDate_@sl" style="width:100px"
+                                           class="datelabel pointer">Select Date</label>
+                                </div>
+                            </td>
+                            <td class="text-center htmlVal" data-name="TourCategoryNames">
+                                @item.TourCategoryNames.Trim()
+                            </td>
+                            <td class="text-center htmlVal" data-name="CentreNames">
+                                @item.TourCenterNames.Trim()
+                            </td>
+                            <td class="text-center htmlVal" data-name="BranchNames">
+                                @item.BranchNames.Trim()
+                            </td>
+                        </tr>
+                        sl += 1;
+                    }
+                }
+        </tbody>
+    </table>
+</div>
+<script>
+    $.fn.CustomDateFormatCloneRow = function () {
+        var that = this;
+        var parentid = that.attr('id');
+        var lblid = 'lbl' + parentid;
+        var dt = this.val();
+        var e = dt;
+        if (dt.indexOf('/') != -1) {
+            var e = dt.split('/').reverse().join('/');
+        }
+        else {
+            var e = dt.split('-').reverse().join('/');
+        }
+        $('#' + lblid).html(e);
+        //that.addClass('is-valid').removeClass('is-invalid')
+    };
+    $(document).ready(function () {
+        $('.CustomDateFormatCloneRow').each(function () {
+            $(this).change(function () {
+                $(this).CustomDateFormatCloneRow();
+            });
+        });
+    });
+</script>

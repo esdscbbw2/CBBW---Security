@@ -1,0 +1,134 @@
+﻿@model CBBW.Areas.Security.ViewModel.ETSEdit.TourCancelVM
+@{
+    Layout = null;
+}
+<div class="table-responsive">
+    <table class="table table-bordered w-100 btnalign" id="tblOtherEdit">
+        <thead>
+            <tr>
+                <th scope="col" style="text-align: left; vertical-align: middle;">SL. No.</th>
+                <th scope="col" style="text-align: center; vertical-align: middle;" width="10%"> Scheduled Tour From Date</th>
+                <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">Scheduled Tour To Date </th>
+                <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">
+                    EDITED Tour To Date
+                </th>
+                <th scope="col" style="text-align: center; vertical-align: middle;" width="20%">Tour Category </th>
+                <th scope="col" style="text-align: center; vertical-align: middle;">
+                    Center Code & Name
+                </th>
+                <th scope="col" style="text-align: center; vertical-align: middle;">Branch Code & Name </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.DWTDetailsCurrent != null && Model.DWTDetailsCurrent.Count > 0)
+            {
+                int sl = 1;
+                foreach (var item in Model.DWTDetailsCurrent)
+                {
+                    <tr>
+                        <td>
+                            @sl
+                            <div id="EditTagDivOE_@sl" data-name="EditRowTag"
+                                 class="inVisible htmlVal"></div>
+                            <div data-name="SourceID"
+                                 class="inVisible htmlVal">@item.SourceID</div>
+                            </td>
+                            <td class="text-center htmlVal" data-name="FromDate">
+                                @item.SchFromDateDisplay
+                            </td>
+                            <td class="text-center htmlVal" data-name="ToDate">
+                                @item.SchToDateDisplay
+                            </td>
+                            <td class="text-center htmlVal" data-name="EditToDate">
+                                -
+                            </td>
+                            <td class="text-center">
+                                <select id="OETourCategory_@sl" multiple="multiple"
+                                        class="form-select example-getting-started"
+                                        onchange="OETourCategoryChanged()"
+                                        data-name="TourCategoryIDs" data-name-text="TourCategoryNames"
+                                        aria-label="Default select example">
+                                    <option value="1"> Center Visit </option>
+                                    <option value="2"> Branch & Center Visit </option>
+                                    <option value="4"> Branch  Visit  </option>
+                                    <option value="5"> Un Known Destination  </option>
+                                    <option value="3"> Other Place </option>
+                                    <option value="6"> E.P. Tour </option>
+                                </select>
+                            </td>
+                            <td class="text-center">
+                                <div id="OECenterCodeText_@sl" data-name="CentreNames"
+                                     class="htmlVal">
+                                    -
+                                </div>
+                                <div id="OECOMultiDiv_@sl" class="alterID inVisible">
+                                    <select id="OECenterCodeMulti_@sl"
+                                            data-name="CentreCodesMulti" data-name-text="CentreNamesMulti"
+                                            class="form-select clonemultiselect"
+                                            onchange="OECenterCodeMultiChanged()"
+                                            aria-label="Default select example">
+                                    </select>
+                                </div>
+                                <div id="OECODDDiv_@sl" class="alterID inVisible">
+                                    <select id="OECenterCodeDD_@sl"
+                                            data-name="CentreCodesDD" data-name-text="CentreNamesDD"
+                                            class="form-select"
+                                            onchange="OECenterCodeDDChanged()"
+                                            aria-label="Default select example">
+                                    </select>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div id="OEBranchCodeText_@sl" data-name="BranchNames"
+                                     class="htmlVal">
+                                    -
+                                </div>
+                                <div id="OEBRMultiDiv_@sl" class="alterID inVisible">
+                                    <select id="OEBranchCodeMulti_@sl"
+                                            data-name="BranchCodesDD" data-name-text="BranchNamesDD"
+                                            class="form-select clonemultiselect"
+                                            onchange="OEBranchCodeMultiChanged()"
+                                            aria-label="Default select example">
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        sl += 1;
+                    }
+                }
+        </tbody>
+    </table>
+</div>
+<script>
+    $.fn.CustomDateFormatCloneRow = function () {
+        var that = this;
+        var parentid = that.attr('id');
+        var lblid = 'lbl' + parentid;
+        var dt = this.val();
+        var e = dt;
+        if (dt.indexOf('/') != -1) {
+            var e = dt.split('/').reverse().join('/');
+        }
+        else {
+            var e = dt.split('-').reverse().join('/');
+        }
+        $('#' + lblid).html(e);
+        //that.addClass('is-valid').removeClass('is-invalid')
+    };
+    $(document).ready(function () {
+        $('.CustomDateFormatCloneRow').each(function () {
+            $(this).change(function () {
+                $(this).CustomDateFormatCloneRow();
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('.example-getting-started').multiselect({
+            templates: {
+                button: '<button type="button" class="multiselect dropdown-toggle btn btn-primary w-100 selectBox" data-bs-toggle="dropdown" aria-expanded="false"><span class="multiselect-selected-text"></span></button>',
+            },
+        });
+    });
+</script>

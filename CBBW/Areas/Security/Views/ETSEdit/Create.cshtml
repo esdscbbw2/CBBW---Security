@@ -4,20 +4,21 @@
     ViewBag.Title = "Employees Travelling Schedule Details – EDIT";
 }
 <div class="row newTable">
-    @using(Html.BeginForm())
+    @using (Html.BeginForm())
     {
         @Html.HiddenFor(m => m.btnIndividualEdit)
         @Html.HiddenFor(m => m.btnTourEdit)
+        @Html.HiddenFor(m => m.backbtnactive)
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
                     <div class="leftButton">
-                        <button type="submit" 
+                        <button id="btnBack" type="button"
                                 class="btn btn-primary me-2">
                             <i data-feather="arrow-left-circle"></i>
                             Back
                         </button>
-                        <button type="submit" name="Submit" value="create" 
+                        <button type="submit" name="Submit" value="create"
                                 class="btn btn-secondary me-2">
                             <i data-feather="upload"></i>
                             Submit
@@ -183,6 +184,37 @@
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
     <script src="~/UIContent/JS/CustomePage/ETSEdit/ETSEditCreateJS.js"></script>
     <script>
-        
+        if ('@ViewBag.ErrMsg' != '') {
+                Swal.fire({
+                    title: 'Failed to submit',
+                    text: "@ViewBag.ErrMsg",
+                    icon: 'warning',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        //cancel: 'Cancel',
+                        confirm: 'Ok'
+                    },
+                    //cancelButtonClass: 'btn-cancel',
+                    confirmButtonColor: '#2527a2',
+                });
+            };
+        if ('@ViewBag.Msg' != '') {
+                Swal.fire({
+                    title: 'Confirmation',
+                    text: "@ViewBag.Msg",
+                    icon: 'success',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        confirm: 'Ok'
+                    },
+                    confirmButtonColor: '#2527a2',
+                }).then(callback);
+                function callback(result) {
+                    if (result.value) {
+                        var url = "/Security/ETSEdit/Index";
+                        window.location.href = url;
+                    }
+                }
+            };
     </script>
 }

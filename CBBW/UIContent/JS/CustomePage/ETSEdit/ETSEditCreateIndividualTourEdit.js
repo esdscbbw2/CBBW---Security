@@ -1,4 +1,39 @@
-﻿function ValidateEditDateCtrl() {
+﻿function ShowHistoryBtnClicked() {
+    var PType=$('#SelectedPersonType').val();
+    var PID=$('#SelectedPersonID').val();
+    var PName = $('#SelectedPersonName').val();
+    var Notenumber = $("#NoteNumber").val();
+    var iDiv = $('#IndHistoryDiv');
+    var modalDiv = $('#HistoryModal');
+    var dataSourceURL = '/ETSEdit/ShowIndEditHistory?NoteNumber='
+        + Notenumber + '&PersonType=' + PType + '&PersonID=' + PID + '&PersonName=' + PName;    
+    $.ajax({
+        url: dataSourceURL,
+        contentType: 'application/html; charset=utf-8',
+        type: 'GET',
+        dataType: 'html',
+        success:function(result) {
+            iDiv.html(result);
+            modalDiv.modal('show');
+        },
+        error: function (xhr, status) {
+                       
+        }
+    })
+};
+function PersonSelectionChanged() {
+    var targetCtrl = $(PersonSelectionChanged.caller.arguments[0].target);
+    var mID = targetCtrl.attr('id');    
+    var tblPTypeCtrl = $('#PersonType_' + mID);
+    var tblPIDCtrl = $('#PersonID_' + mID);
+    var tblPNameCtrl = $('#PersonName_' + mID);
+    $('#SelectedPersonType').val(tblPTypeCtrl.html());
+    $('#SelectedPersonID').val(tblPIDCtrl.html());
+    $('#SelectedPersonName').val(tblPNameCtrl.html());
+    //alert($('#SelectedPersonType').val() + ' - ' + $('#SelectedPersonID').val() + ' - ' + $('#SelectedPersonName').val());
+
+};
+function ValidateEditDateCtrl() {
     var targetCtrl = $(ValidateEditDateCtrl.caller.arguments[0].target);
     var tblRowid = targetCtrl.attr('id').split('_')[1];
     var ctrl1 = $('#EditTagDiv_' + tblRowid);
@@ -11,39 +46,52 @@ function ValidatePurposeOfEdit() {
     var poeCtrl = $('#PurposeOfEdit');
     if (poeCtrl.val() != '') {
         if (WordCount(poeCtrl.val()) <= 20) {
-            poeCtrl.isValid();            
+            poeCtrl.isValid();
         } else { poeCtrl.isInvalid(); }
     } else { poeCtrl.isInvalid(); }
     $('#backbtnactive').val(1);
 };
 function EditTagChanged() {
+    var PType = $('#SelectedPersonType').val();
+    var PID = $('#SelectedPersonID').val();
+    var PName = $('#SelectedPersonName').val();
+    var Notenumber = $("#NoteNumber").val();
     var editTagCtrl = $('#EditTag');
     var editTag = editTagCtrl.val();
     if (editTag > 0) {
         editTagCtrl.isValid(); $('#backbtnactive').val(1);
         if (editTag == 1) {
             togleDiv('tour_cancel');
-        } else if (editTag == 2) {
-            togleDiv('other_edit');
-        } else if (editTag == 3) {
-            //if ($('#IsExtensionAllowed').val() == 1) {
-                togleDiv('tour_extension');
-            //}
-            //else {
-            //    Swal.fire({
-            //        title: 'Error',
-            //        text: 'Extension Of Tour Can Be Allowed After Commencement & Before Completion.',
-            //        icon: 'error',
-            //        customClass: 'swal-wide',
-            //        buttons: {
-            //            confirm: 'Ok'
-            //        },
-            //        confirmButtonColor: '#2527a2',
-            //    });
-            //}            
+            var iDiv = $('#TCPartialView');
+            var dataSourceURL = '/ETSEdit/TourCancelPartialView?NoteNumber='
+                + Notenumber + '&PersonType=' + PType + '&PersonID=' + PID + '&PersonName=' + PName;
+            $.ajax({
+                url: dataSourceURL,
+                contentType: 'application/html; charset=utf-8',
+                type: 'GET',
+                dataType: 'html',
+                success: function (result) {
+                    iDiv.html(result);
+                }
+            })
         }
+        else if (editTag == 2) {
+            togleDiv('other_edit');
+            var iDiv = $('#OEPartialView');
+            var dataSourceURL = '/ETSEdit/TourCancelPartialView?NoteNumber='
+                + Notenumber + '&PersonType=' + PType + '&PersonID=' + PID + '&PersonName=' + PName +'&Edittagid=2';
+            $.ajax({
+                url: dataSourceURL,
+                contentType: 'application/html; charset=utf-8',
+                type: 'GET',
+                dataType: 'html',
+                success: function (result) {
+                    iDiv.html(result);
+                }
+            })
+        }        
     }
-    else { editTagCtrl.isInvalid(); }    
+    else { editTagCtrl.isInvalid(); }
 };
 function togleDiv(divID) {
     var tourCancelDiv = $('#tour_cancel');
@@ -54,12 +102,12 @@ function togleDiv(divID) {
     tourOtherDiv.addClass('inVisible');
     $('#' + divID).removeClass('inVisible');
 };
-function CRTourCategoryChangedReUsable(targetCtrl, tblRowid,mTag) {
-    var CtrlMulti = mTag+'CenterCodeMulti';
-    var CtrlDD = mTag+'CenterCodeDD';
+function CRTourCategoryChangedReUsable(targetCtrl, tblRowid, mTag) {
+    var CtrlMulti = mTag + 'CenterCodeMulti';
+    var CtrlDD = mTag + 'CenterCodeDD';
     if (tblRowid > 0) {
-        CtrlMulti = mTag+'CenterCodeMulti_' + tblRowid;
-        CtrlDD = mTag+'CenterCodeDD_' + tblRowid;
+        CtrlMulti = mTag + 'CenterCodeMulti_' + tblRowid;
+        CtrlDD = mTag + 'CenterCodeDD_' + tblRowid;
     }
     var CatCodes = targetCtrl.val();
     var mValid = true;
@@ -105,14 +153,14 @@ function CRTourCategoryChangedReUsable(targetCtrl, tblRowid,mTag) {
         });
         targetCtrl.isInvalid();
     }
-    else { targetCtrl.isValid(); $('#backbtnactive').val(1);}
+    else { targetCtrl.isValid(); $('#backbtnactive').val(1); }
 };
 function CRTourCategoryChanged() {
     var target = CRTourCategoryChanged.caller.arguments[0].target;
     var tblRow = $(target.closest('.add-row'));
     var tblRowid = tblRow.attr('id');
     var targetCtrl = $(target);
-    CRTourCategoryChangedReUsable(targetCtrl, tblRowid,'CR');
+    CRTourCategoryChangedReUsable(targetCtrl, tblRowid, 'CR');
     EnableAddBtnInCloneRow(tblRow, 'AddBtn');
 };
 function OETourCategoryChanged() {
@@ -124,18 +172,18 @@ function OETourCategoryChanged() {
     var EditTagCtrl = $('#EditTagDivOE_' + tblRowid);
     if (targetCtrl.val() != '') { EditTagCtrl.html(1); } else { EditTagCtrl.html(0); }
 };
-function CRCenterCodeDDChangedReUsable(targetCtrl, tblRowid,mTag) {
-    var Ctrl1 = mTag+'BranchCodeMulti';
-    var Ctrl2 = $('#' + mTag+'CenterCodeMulti');
+function CRCenterCodeDDChangedReUsable(targetCtrl, tblRowid, mTag) {
+    var Ctrl1 = mTag + 'BranchCodeMulti';
+    var Ctrl2 = $('#' + mTag + 'CenterCodeMulti');
     var mVal = targetCtrl.val();
     if (tblRowid > 0) {
-        Ctrl1 = mTag+'BranchCodeMulti_' + tblRowid;
-        Ctrl2 = $('#' + mTag+'CenterCodeMulti' + tblRowid);
+        Ctrl1 = mTag + 'BranchCodeMulti_' + tblRowid;
+        Ctrl2 = $('#' + mTag + 'CenterCodeMulti' + tblRowid);
     }
     (async function () {
         const r1 = await getMultiselectData(Ctrl1, '/Security/ETS/getBranchType?CenterId=' + mVal);
     })();
-    
+
     if (mVal > 0) {
         targetCtrl.isValid();
         Ctrl2.isValid();
@@ -147,18 +195,18 @@ function CRCenterCodeDDChanged() {
     var tblRow = $(target.closest('.add-row'));
     var tblRowid = tblRow.attr('id');
     var targetCtrl = $(target);
-    CRCenterCodeDDChangedReUsable(targetCtrl, tblRowid,'CR');
+    CRCenterCodeDDChangedReUsable(targetCtrl, tblRowid, 'CR');
     EnableAddBtnInCloneRow(tblRow, 'AddBtn');
 };
 function OECenterCodeDDChanged() {
     var target = OECenterCodeDDChanged.caller.arguments[0].target;
     var targetCtrl = $(target);
     var tblRowid = targetCtrl.attr('id').split('_')[1];
-    CRCenterCodeDDChangedReUsable(targetCtrl, tblRowid,'OE');
+    CRCenterCodeDDChangedReUsable(targetCtrl, tblRowid, 'OE');
 };
-function CRCenterCodeMultiChangedReUsable(targetCtrl, tblRowid,mTag) {
-    var Ctrl1 = $('#' + mTag+'CenterCodeDD');
-    if (tblRowid > 0) { Ctrl1 = $('#' + mTag+'CenterCodeDD_' + tblRowid);}
+function CRCenterCodeMultiChangedReUsable(targetCtrl, tblRowid, mTag) {
+    var Ctrl1 = $('#' + mTag + 'CenterCodeDD');
+    if (tblRowid > 0) { Ctrl1 = $('#' + mTag + 'CenterCodeDD_' + tblRowid); }
     if (targetCtrl.val() != '') {
         targetCtrl.isValid();
         Ctrl1.isValid(); $('#backbtnactive').val(1);
@@ -169,14 +217,14 @@ function CRCenterCodeMultiChanged() {
     var tblRow = $(target.closest('.add-row'));
     var tblRowid = tblRow.attr('id');
     var targetCtrl = $(target);
-    CRCenterCodeMultiChangedReUsable(targetCtrl, tblRowid,'CR');
+    CRCenterCodeMultiChangedReUsable(targetCtrl, tblRowid, 'CR');
     EnableAddBtnInCloneRow(tblRow, 'AddBtn');
 };
 function OECenterCodeMultiChanged() {
     var target = OECenterCodeMultiChanged.caller.arguments[0].target;
     var targetCtrl = $(target);
     var tblRowid = targetCtrl.attr('id').split('_')[1];
-    CRCenterCodeMultiChangedReUsable(targetCtrl, tblRowid,'OE');
+    CRCenterCodeMultiChangedReUsable(targetCtrl, tblRowid, 'OE');
 };
 function ToDateChanged() {
     var target = ToDateChanged.caller.arguments[0].target;
@@ -214,16 +262,16 @@ function OEBranchCodeMultiChanged() {
     } else { targetCtrl.isInvalid(); }
 };
 function toggleCentreDiv(divID, rowID, divText, mTag) {
-    var ccTextCtrl = $('#' + mTag+'CenterCodeText');
-    var ccMulCtrl = $('#' + mTag+'COMultiDiv');
-    var ccDDCtrl = $('#' + mTag+'CODDDiv');
+    var ccTextCtrl = $('#' + mTag + 'CenterCodeText');
+    var ccMulCtrl = $('#' + mTag + 'COMultiDiv');
+    var ccDDCtrl = $('#' + mTag + 'CODDDiv');
     var mCTRL = $('#' + divID);
     var Ctrl1 = $('#' + mTag + 'CenterCodeMulti');
     var Ctrl2 = $('#' + mTag + 'CenterCodeDD');
     if (rowID > 0) {
-        ccTextCtrl = $('#' + mTag+'CenterCodeText_' + rowID);
-        ccMulCtrl = $('#' + mTag+'COMultiDiv_' + rowID);
-        ccDDCtrl = $('#' + mTag+'CODDDiv_' + rowID);
+        ccTextCtrl = $('#' + mTag + 'CenterCodeText_' + rowID);
+        ccMulCtrl = $('#' + mTag + 'COMultiDiv_' + rowID);
+        ccDDCtrl = $('#' + mTag + 'CODDDiv_' + rowID);
         mCTRL = $('#' + divID + '_' + rowID);
         Ctrl1 = $('#' + mTag + 'CenterCodeMulti_' + rowID);
         Ctrl2 = $('#' + mTag + 'CenterCodeDD_' + rowID);
@@ -242,21 +290,21 @@ function toggleCentreDiv(divID, rowID, divText, mTag) {
     } else { Ctrl2.isValid(); }
 };
 function toggleBranchDiv(divID, rowID, divText, mTag) {
-    var ccTextCtrl = $('#' + mTag+'BranchCodeText');
-    var ccMulCtrl = $('#' + mTag+'BRMultiDiv');
-    var Ctrl1 = $('#' + mTag+'BranchCodeMulti');
+    var ccTextCtrl = $('#' + mTag + 'BranchCodeText');
+    var ccMulCtrl = $('#' + mTag + 'BRMultiDiv');
+    var Ctrl1 = $('#' + mTag + 'BranchCodeMulti');
     var mCTRL = $('#' + divID);
     if (rowID > 0) {
-        ccTextCtrl = $('#' + mTag+'BranchCodeText_' + rowID);
-        ccMulCtrl = $('#' + mTag+'BRMultiDiv_' + rowID);
-        Ctrl1 = $('#' + mTag+'BranchCodeMulti_' + rowID);
+        ccTextCtrl = $('#' + mTag + 'BranchCodeText_' + rowID);
+        ccMulCtrl = $('#' + mTag + 'BRMultiDiv_' + rowID);
+        Ctrl1 = $('#' + mTag + 'BranchCodeMulti_' + rowID);
         mCTRL = $('#' + divID + '_' + rowID);
     }
     ccTextCtrl.addClass('inVisible');
     ccMulCtrl.addClass('inVisible');
     mCTRL.removeClass('inVisible');
     ccTextCtrl.html(divText);
-    if (divID == mTag+'BRMultiDiv') { Ctrl1.isInvalid(); } else { Ctrl1.isValid(); }
+    if (divID == mTag + 'BRMultiDiv') { Ctrl1.isInvalid(); } else { Ctrl1.isValid(); }
 };
 function EnableSubmitBtn() {
 
@@ -288,6 +336,9 @@ function addCloneBtnClick() {
     //$('#CRTodate_' + clonerowid).html('-');
 };
 function btnSubmitClicked() {
+    var PType = $('#SelectedPersonType').val();
+    var PID = $('#SelectedPersonID').val();
+    var PName = $('#SelectedPersonName').val();
     var editTag = $('#EditTag').val();
     var editPurpose = $('#PurposeOfEdit').val();
     var notenumber = $('#NoteNumber').val();
@@ -302,18 +353,21 @@ function btnSubmitClicked() {
     var x = '{"NoteNumber":"' + notenumber
         + '","EditTag":"' + editTag
         + '","ReasonForEdit":"' + editPurpose
+        + '","PersonType":"' + PType
+        + '","PersonID":"' + PID
+        + '","PersonName":"' + PName
         + '","DWTDetails":'
         + tblRecords + '}';
-    alert(tblRecords);
+    //alert(tblRecords);
     $.ajax({
         method: 'POST',
-        url: '/ETSEdit/SetDWTForTourEdit',
+        url: '/ETSEdit/SetDWTForIndividualTourEdit',
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         data: x,
         success: function (data) {
             $(data).each(function (index, item) {
-                if (item.bResponseBool == true) {                    
+                if (item.bResponseBool == true) {
                     var url = "/Security/ETSEdit/Create";
                     window.location.href = url;
                 } else {

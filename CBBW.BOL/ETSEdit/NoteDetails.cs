@@ -20,6 +20,8 @@ namespace CBBW.BOL.ETSEdit
         public int CenterCode { get; set; }
         public string CenterName { get; set; }
         public int EmployeeNumber { get; set; }
+        public bool IsApproved { get; set; }
+        public bool IsLocked { get; set; }
     }
     public class EditNoteDetails : EditNoteList
     {
@@ -28,7 +30,6 @@ namespace CBBW.BOL.ETSEdit
         public string POAText { get; set; }
         public int EPTour { get; set; }
         public string EPTourText { get; set; }
-        public bool IsApproved { get; set; }
         public string IsApprovedDisplay { get; set; }
         public DateTime AppDateTime { get; set; }
         public string AppDateTimeDisplay { get; set; }

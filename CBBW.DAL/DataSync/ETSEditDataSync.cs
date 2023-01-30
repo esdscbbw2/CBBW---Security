@@ -11,6 +11,35 @@ namespace CBBW.DAL.DataSync
 {
     public class ETSEditDataSync
     {
+        public DataTable GetETSEditNoteList(int DisplayLength, int DisplayStart, int SortColumn,
+            string SortDirection, string SearchText, int CentreCode, bool IsApprovedList, ref string pMsg)
+        {
+            try
+            {
+                SortDirection = SortDirection.Substring(0, 1).ToUpper();
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[7];
+                para[paracount] = new SqlParameter("@DisplayLength", SqlDbType.Int);
+                para[paracount++].Value = DisplayLength;
+                para[paracount] = new SqlParameter("@DisplayStart", SqlDbType.Int);
+                para[paracount++].Value = DisplayStart;
+                para[paracount] = new SqlParameter("@sortCol", SqlDbType.Int);
+                para[paracount++].Value = SortColumn;
+                para[paracount] = new SqlParameter("@SortDir", SqlDbType.NVarChar, 1);
+                para[paracount++].Value = SortDirection;
+                para[paracount] = new SqlParameter("@Search", SqlDbType.NVarChar, 250);
+                para[paracount++].Value = SearchText;
+                para[paracount] = new SqlParameter("@CentreCode", SqlDbType.Int);
+                para[paracount++].Value = CentreCode;
+                para[paracount] = new SqlParameter("@IsApprovedList", SqlDbType.Bit);
+                para[paracount++].Value = IsApprovedList;
+                using (SQLHelper sql = new SQLHelper("[ETS].[GetETSEditNoteList]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
         public DataTable getEditSL(string NoteNumber, ref string pMsg)
         {
             try
@@ -59,16 +88,23 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-        public DataSet getCurrentDateWiseTour(string NoteNumber,int FieldTag, ref string pMsg)
+        public DataSet getCurrentDateWiseTour(string NoteNumber,int FieldTag, 
+            int PersonType,int PersonID,string PersonName, ref string pMsg)
         {
             try
             {
                 int paracount = 0;
-                SqlParameter[] para = new SqlParameter[2];
+                SqlParameter[] para = new SqlParameter[5];
                 para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
                 para[paracount++].Value = NoteNumber;
                 para[paracount] = new SqlParameter("@FieldTag", SqlDbType.Int);
                 para[paracount++].Value = FieldTag;
+                para[paracount] = new SqlParameter("@PersonType", SqlDbType.Int);
+                para[paracount++].Value = PersonType;
+                para[paracount] = new SqlParameter("@PersonID", SqlDbType.Int);
+                para[paracount++].Value = PersonID;
+                para[paracount] = new SqlParameter("@PersonName", SqlDbType.NVarChar,100);
+                para[paracount++].Value = PersonName;
                 using (SQLHelper sql = new SQLHelper("[ETS].[getCurrentDateWiseTour]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataSet(para, ref pMsg);
@@ -76,13 +112,13 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-        public DataTable SetETSTourEdit(DWTTourDetailsForDB obj, ref string pMsg)
+        public DataTable SetETSTourEdit(DWTTourDetailsForDB obj,int CentreCode,string CentreName, ref string pMsg)
         {
             try
             {
                 CommonTable dtl = new CommonTable(obj.DWTDetails);
                 int paracount = 0;
-                SqlParameter[] para = new SqlParameter[10];
+                SqlParameter[] para = new SqlParameter[12];
                 para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
                 para[paracount++].Value = obj.NoteNumber;
                 para[paracount] = new SqlParameter("@EditUserID", SqlDbType.Int);
@@ -101,6 +137,10 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = obj.PersonID;
                 para[paracount] = new SqlParameter("@PersonIDText", SqlDbType.NVarChar);
                 para[paracount++].Value = obj.PersonName;
+                para[paracount] = new SqlParameter("@CentreCode", SqlDbType.Int);
+                para[paracount++].Value =CentreCode;
+                para[paracount] = new SqlParameter("@CentreCodeName", SqlDbType.NVarChar,100);
+                para[paracount++].Value = CentreName;
                 para[paracount] = new SqlParameter("@DateWiseTourDtls", SqlDbType.Structured);
                 para[paracount++].Value = dtl.UDTable;
                 using (SQLHelper sql = new SQLHelper("[ETS].[SetETSTourEdit]", CommandType.StoredProcedure))
@@ -110,6 +150,20 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-
+        public DataTable UpdateETSTourEdit(string NoteNumber,ref string pMsg) 
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[1];
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
+                para[paracount++].Value = NoteNumber;                
+                using (SQLHelper sql = new SQLHelper("[ETS].[UpdateETSTourEdit]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
     }
 }

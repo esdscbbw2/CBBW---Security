@@ -1,0 +1,77 @@
+﻿@model CBBW.Areas.Security.ViewModel.ETSEdit.EditHistoryVM
+@{
+    Layout = null;
+}
+<h6 class="pb-2 text-center">Tour Edit - Previous Details</h6>
+<div class="row d-flex align-items-center pt-3 pb-4">
+    <div class="col-form-label col-md-2">
+        <label>Person Type  :</label>
+    </div>
+    <div class="col-md-4">
+        <input type="text" class="form-control" value="@Model.PersonType" disabled="">
+
+    </div>
+    <div class="col-form-label col-md-2">
+        <label>Employee No. & Name :</label>
+    </div>
+    <div class="col-md-4">
+        <input type="text" class="form-control" value="@Model.EmpNoNName" disabled="">
+    </div>
+
+</div>
+<div class="table-responsive vertical-scroll-table">
+    @if (Model.EditSequence != null)
+    {
+        foreach (int s in Model.EditSequence)
+        {
+            <table class="table table-bordered w-100 btnalign" id="table">
+                <thead>
+                    <tr>
+                        <th scope="col" style="text-align: left; vertical-align: middle;">SL. No.</th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;" width="10%"> Scheduled Tour From Date</th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">Scheduled Tour To Date </th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">EDITED Tour To Date</th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;" width="20%">Tour Category </th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;">Center Code & Name</th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;">Branch Code & Name </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.DWTDetailsHistory.Where(o => o.EditSL == s) != null)
+                    {
+                        int sl = 1;
+                        foreach (var item in Model.DWTDetailsHistory.Where(o => o.EditSL == s))
+                        {
+                            <tr class="previous-details">
+                                <td>
+                                    @sl
+                                </td>
+                                <td class="text-center">
+                                    @item.SchFromDateDisplay
+                                </td>
+                                <td class="text-center">
+                                    @item.SchToDateDisplay
+                                </td>
+                                <td class="text-center">
+                                    @item.EditedTourToDateDisplay
+                                </td>
+                                <td class="text-center">
+                                    @item.TourCategoryNames
+
+                                </td>
+                                <td class="text-center">
+                                    @item.TourCenterNames
+                                </td>
+                                <td class="text-center">
+                                    @item.BranchNames
+                                </td>
+                            </tr>
+                            sl += 1;
+                        }
+                    }
+                </tbody>
+            </table>
+        }
+    }
+
+</div>

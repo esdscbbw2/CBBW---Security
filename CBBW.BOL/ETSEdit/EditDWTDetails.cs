@@ -5,7 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace CBBW.BOL.ETSEdit
-{    
+{
+    public class EHGEditDetails 
+    {
+        public List<EditDWTDetails> DateWiseTourHistory { get; set; }
+        public List<EditDWTDetails> DateWiseTourCurrent { get; set; }
+    }
     public class EditDWTDetails: EditNoteNumber
     {
         public DateTime SchFromDate { get; set; }
