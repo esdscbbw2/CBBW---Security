@@ -28,7 +28,33 @@ namespace CBBW.Areas.Security.Controllers
             ViewBag.LogInUser = user.UserName;
             _IETSEdit = IETSEdit;
         }
-        // GET: Security/ETSEdit
+        public JsonResult BackButtonClicked()
+        {
+            string url = _iUser.GetCallBackUrl();
+            return Json(url, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult ClearBtnClicked(int PageID = 0)
+        {
+            model = CastEHGEditTempData();
+            if (PageID == 1)
+            {
+                return RedirectToAction("TourEdit");
+            }
+            else if (PageID == 2)
+            {
+                return RedirectToAction("IndividualEdit");
+            }
+            //else if (PageID == 3)
+            //{
+            //    //TempData["EHGApp"] = null;
+            //    //return RedirectToAction("ApproveNote");
+            //}
+            else
+            {
+                TempData["EHGEdit"] = null;
+                return RedirectToAction("Create");
+            }            
+        }
         public ActionResult AddNote(int ID)
         {
             TempData["EHGEdit"] = null;
@@ -39,6 +65,89 @@ namespace CBBW.Areas.Security.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+        public ActionResult ViewNote(string NoteNumber, int CanDelete = 0, int CBUID = 0) 
+        {
+            if (CBUID == 0) { ViewBag.HeaderText = "- EDIT"; _iUser.RecordCallBack("/Security/ETSEdit/Index"); }
+            else if (CBUID == 1) { ViewBag.HeaderText = "EDIT - APPROVAL"; }
+            else if (CBUID == 2) { ViewBag.HeaderText = "EDIT - RATIFICATION"; }
+            ETSEditViewVM modelobj = new ETSEditViewVM();
+            modelobj.DeleteBtn = CanDelete;
+            modelobj.CBUID = CBUID;
+            modelobj.NoteNumber = NoteNumber;
+            if (!string.IsNullOrEmpty(NoteNumber)) 
+            {
+                string notetag = NoteNumber.Substring(7, 3);
+                switch (notetag)
+                {
+                    case "EHG":
+                        modelobj.NoteDescription = "Ref. Employee’s Travelling  Details & Vehicle Allotment (By HG)  –  ENTRY Note No.";
+                        break;
+                    case "EZB":
+                        modelobj.NoteDescription = "Ref. Employees Travelling  Schedule Details – ENTRY (FOR NZB STAFF) Note No.";
+                        break;
+                    case "EMN":
+                        modelobj.NoteDescription = "Ref. Employees Travelling  Schedule Details – ENTRY (FOR MFG. CENTERS RECORDED AT NZB) Note No.";
+                        break;
+                    default:
+                        modelobj.NoteDescription = "Ref. Employees Travelling  Schedule Details – ENTRY (FOR MFG. CENTERS) Note No.";
+                        break;
+                }
+                modelobj.NoteDetails = _IETSEdit.getEditNoteHdr(NoteNumber, ref pMsg);
+            }            
+            return View(modelobj);
+        }
+        [HttpPost]
+        public ActionResult ViewNote(ETSEditViewVM modelobj, string Submit) 
+        {
+            string baseUrl = "/Security/ETSEdit/ViewNote?NoteNumber=" + modelobj.NoteNumber + "&CanDelete=" + modelobj.DeleteBtn + "&CBUID=" + modelobj.CBUID;
+            if (Submit == "Delete")
+            {
+                modelobj.NoteDetails = _IETSEdit.getEditNoteHdr(modelobj.NoteNumber, ref pMsg);
+                if (_IETSEdit.RemoveETSEditNote(modelobj.NoteNumber,1, ref pMsg))
+                {
+                    ViewBag.Msg = "Note Number " + modelobj.NoteNumber + " Deleted Successfully.";
+                }
+                else { ViewBag.ErrMsg = "Failed To Delete Note Number " + modelobj.NoteNumber + ". Because It Is Under Process Of Approval."; }
+            }
+            else if (Submit == "TourEditBtn")
+            {
+                _iUser.RecordCallBack(baseUrl);
+                return RedirectToAction("ViewTourEdit", "ETSEdit", new { NoteNumber = modelobj.NoteNumber, CBUID = modelobj.CBUID });
+            }
+            else if (Submit == "IndividualEditBtn") 
+            {
+                _iUser.RecordCallBack(baseUrl);
+                return RedirectToAction("ViewIndividualEdit", "ETSEdit", new { NoteNumber = modelobj.NoteNumber, CBUID = modelobj.CBUID });
+            }
+            return View(modelobj);
+        }
+        public ActionResult ViewTourEdit(string NoteNumber,int CBUID) 
+        {
+            ViewBag.HeaderText = CBUID == 0 ? "- EDIT" : CBUID==1?"EDIT - APPROVAL":"EDIT - RATIFICATION";
+            ETSEditViewVM modelobj = new ETSEditViewVM();
+            if (!string.IsNullOrEmpty(NoteNumber)) 
+            {
+                modelobj.TravelingPersonDetails=_IETSEdit.getEditTPDetails(NoteNumber, ref pMsg);
+                modelobj.DWTDetailsHistory= _IETSEdit.getDateWiseTourHistory(NoteNumber, 0, 0, 0, " ", ref pMsg);
+                if (modelobj.DWTDetailsHistory != null && modelobj.DWTDetailsHistory.Count > 0) 
+                {
+                    modelobj.BaseDWTDetailsHistory = modelobj.DWTDetailsHistory.Where(o => o.EditSL == 0).ToList();
+                    modelobj.EditSequence = modelobj.DWTDetailsHistory.OrderBy(o=>o.EditSL).Select(o => o.EditSL).Distinct().ToList();
+                    modelobj.MaxRowID = modelobj.DWTDetailsHistory.Max(o => o.EditSL);
+                }
+            }
+            return View(modelobj);
+        }
+        public ActionResult ViewIndividualEdit(string NoteNumber, int CBUID)
+        {
+            ViewBag.HeaderText = CBUID == 0 ? "- EDIT" : CBUID == 1 ? "EDIT - APPROVAL" : "EDIT - RATIFICATION";
+            ETSEditViewVM modelobj = new ETSEditViewVM();
+            if (!string.IsNullOrEmpty(NoteNumber)) 
+            {
+                modelobj.TravelingPersonDetails = _IETSEdit.getEditTPDetails(NoteNumber, ref pMsg);
+            }
+            return View(modelobj);
         }
         public ActionResult TourEdit() 
         {
@@ -146,6 +255,10 @@ namespace CBBW.Areas.Security.Controllers
             {
                 result.bResponseBool=_IETSEdit.SetETSTourEdit(obj,user.CentreCode,user.CentreName, ref pMsg);
                 result.sResponseString = pMsg;
+                
+                model = CastEHGEditTempData();
+                model.btnTourEdit = 1;
+                TempData["EHGEdit"] = model;
             }
             //return RedirectToAction("index");
             return Json(result, JsonRequestBehavior.AllowGet);
@@ -169,15 +282,18 @@ namespace CBBW.Areas.Security.Controllers
             {
                 result.bResponseBool = _IETSEdit.SetETSTourEdit(obj, user.CentreCode, user.CentreName, ref pMsg);
                 result.sResponseString = pMsg;
+
+                model = CastEHGEditTempData();
+                model.btnIndividualEdit = 1;
+                TempData["EHGEdit"] = model;
             }
             //return RedirectToAction("index");
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
         public JsonResult getNoteList(int iDisplayLength, int iDisplayStart, int iSortCol_0,
             string sSortDir_0, string sSearch)
         {
-            List<EditNoteList> noteList = _IETSEdit.GetETSEditNoteList(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, user.CentreCode, false, ref pMsg);
+            List<EditNoteList> noteList = _IETSEdit.GetETSEditNoteList(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, user.CentreCode, 0, ref pMsg);
             var result = new
             {
                 iTotalRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
@@ -187,7 +303,35 @@ namespace CBBW.Areas.Security.Controllers
                 aaData = noteList
             };
             return Json(result, JsonRequestBehavior.AllowGet);
-        }        
+        }
+        public JsonResult getAppNoteList(int iDisplayLength, int iDisplayStart, int iSortCol_0,
+            string sSortDir_0, string sSearch)
+        {
+            List<EditNoteList> noteList = _IETSEdit.GetETSEditNoteList(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, user.CentreCode,1, ref pMsg);
+            var result = new
+            {
+                iTotalRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
+                iTotalDisplayRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
+                iDisplayLength = iDisplayLength,
+                iDisplayStart = iDisplayStart,
+                aaData = noteList
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getRatNoteList(int iDisplayLength, int iDisplayStart, int iSortCol_0,
+            string sSortDir_0, string sSearch)
+        {
+            List<EditNoteList> noteList = _IETSEdit.GetETSEditNoteList(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, user.CentreCode, 2, ref pMsg);
+            var result = new
+            {
+                iTotalRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
+                iTotalDisplayRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
+                iDisplayLength = iDisplayLength,
+                iDisplayStart = iDisplayStart,
+                aaData = noteList
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult ShowIndEditHistory(string NoteNumber,int PersonType,int PersonID,string PersonName) 
         {
             PersonName = PersonName.Trim();
@@ -200,6 +344,22 @@ namespace CBBW.Areas.Security.Controllers
                 modelobj.EditSequence = modelobj.DWTDetailsHistory.Select(o => o.EditSL).Distinct().ToList();
             }
             return View("~/Areas/Security/Views/ETSEdit/_IndividualEditHistory.cshtml",modelobj);
+        }
+        public ActionResult IndEditHistoryView(string NoteNumber, int PersonType, int PersonID, string PersonName)
+        {
+            PersonName = PersonName.Trim();
+            ETSEditViewVM modelobj = new ETSEditViewVM();
+            if (!string.IsNullOrEmpty(NoteNumber))
+            {
+                modelobj.DWTDetailsHistory = _IETSEdit.getDateWiseTourHistory(NoteNumber,0,PersonType,PersonID,PersonName,ref pMsg);
+                if (modelobj.DWTDetailsHistory != null && modelobj.DWTDetailsHistory.Count > 0)
+                {
+                    modelobj.BaseDWTDetailsHistory = modelobj.DWTDetailsHistory.Where(o => o.EditSL == 0).ToList();
+                    modelobj.EditSequence = modelobj.DWTDetailsHistory.OrderBy(o => o.EditSL).Select(o => o.EditSL).Distinct().ToList();
+                    modelobj.MaxRowID = modelobj.DWTDetailsHistory.Max(o => o.EditSL);
+                }
+            }            
+            return View("~/Areas/Security/Views/ETSEdit/_IndHistoryView.cshtml", modelobj);
         }
         public ActionResult TourCancelPartialView(string NoteNumber, int PersonType, 
             int PersonID, string PersonName,int Edittagid=1)

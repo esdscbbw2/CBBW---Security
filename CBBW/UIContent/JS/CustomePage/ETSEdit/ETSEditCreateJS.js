@@ -1,13 +1,31 @@
-﻿function NotenumberChanged() {
+﻿function ActivateSubmitButton() {
+    var btnSubmit = $('#SubmitBtn');
+    var isenabled = false;
+    if ($('#btnIndividualEdit').val() == 1 || $('#btnTourEdit').val() == 1)
+    {
+        if ($('#MainDiv').find('.is-invalid').length <= 0) { isenabled = true; }
+    }
+    if (isenabled) { btnSubmit.makeEnabled(); } else { btnSubmit.makeDisable();}
+};
+function AsPerPolicyOptionChanged() {
+    var targetCtrl = $(AsPerPolicyOptionChanged.caller.arguments[0].target);
+    if (targetCtrl.val() == 1) { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
+    ActivateSubmitButton();
+};
+function NotenumberChanged() {
+    var TEBtn = $('#TourEditBtn');
+    var IEBtn = $('#IndEditBtn');
     var notenumberCtrl = $('#NoteNumber');
     var notenumber = notenumberCtrl.val();
     var lblNoteDesc = $('#lblNoteDesc');
     var notetype = notenumber.substring(7, 10);
     if (notetype == 'EHG') {
         lblNoteDesc.html('Ref. Employee’s Travelling  Details & Vehicle Allotment (By HG)  –  ENTRY Note No.');
-    } else if (notetype == 'EZB') {
+    }
+    else if (notetype == 'EZB') {
         lblNoteDesc.html('Ref. Employees Travelling  Schedule Details – ENTRY (FOR NZB STAFF) Note No.');
-    } else if (notetype == 'EMN') {
+    }
+    else if (notetype == 'EMN') {
         lblNoteDesc.html('Ref. Employees Travelling  Schedule Details – ENTRY (FOR MFG. CENTERS RECORDED AT NZB) Note No.');
     }
     else { lblNoteDesc.html('Ref. Employees Travelling  Schedule Details – ENTRY (FOR MFG. CENTERS) Note No.'); }
@@ -30,11 +48,29 @@
                 $('#ratStat').val(item.IsRatifiedDisplay);
                 $('#RatDT').val(item.RetDateTimeDisplay);
                 $('#ratReason').val(item.RetReason);
-                
+                $('#IndEditDiv').html(item.IsIndividualEdit);
+                if (item.IsIndividualEdit == 1) {
+                    TEBtn.makeDisable();
+                    IEBtn.makeEnabled();
+                } else {
+                    if ($('#btnIndividualEdit').val() == 1) {
+                        TEBtn.makeDisable();
+                        IEBtn.makeEnabled();
+                    }
+                    else if ($('#btnTourEdit').val() == 1) {
+                        TEBtn.makeEnabled();
+                        IEBtn.makeDisable();
+                    }
+                    else {
+                        TEBtn.makeEnabled();
+                        IEBtn.makeEnabled();
+                    }
+                }
             });
         }
     });
     $('#backbtnactive').val(1);
+    ActivateSubmitButton();
 };
 $(document).ready(function () {
     NotenumberChanged();

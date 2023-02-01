@@ -22,6 +22,7 @@ namespace CBBW.BOL.ETSEdit
         public int EmployeeNumber { get; set; }
         public bool IsApproved { get; set; }
         public bool IsLocked { get; set; }
+        public int IsIndividualEdit { get; set; }
     }
     public class EditNoteDetails : EditNoteList
     {

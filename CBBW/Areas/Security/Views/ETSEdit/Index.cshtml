@@ -3,7 +3,6 @@
 @{
 
 }
-
 <div class="row newTable">
     <div class="fixedElement">
         <div class="col-md-12" style="position: relative;">
@@ -108,7 +107,7 @@
         function FnViewNote(ctrl) {
             var notenumber = $(ctrl).attr('id');
             var btnType = $(ctrl).attr('data-btn');
-            var destinationurl = '/Security/EHG/ViewNote?NoteNumber=' + notenumber+'&CBUID=0' ;
+            var destinationurl = '/Security/ETSEdit/ViewNote?NoteNumber=' + notenumber+'&CBUID=0' ;
             if (btnType == 'D') { destinationurl = destinationurl + '&CanDelete=1'; }
             window.location.href = destinationurl;
             //$.ajax({

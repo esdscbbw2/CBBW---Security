@@ -144,6 +144,7 @@
     <Compile Include="Areas\Security\Controllers\TADARulesController.cs" />
     <Compile Include="Areas\Security\Controllers\TourRuleController.cs" />
     <Compile Include="Areas\Security\Helpers\EditHistory.cs" />
+    <Compile Include="Areas\Security\ViewModel\ETSEdit\ETSEditViewVM.cs" />
     <Compile Include="Areas\Security\ViewModel\ETSEdit\TourCancelVM.cs" />
     <Compile Include="Areas\Security\SecurityAreaRegistration.cs" />
     <Compile Include="Areas\Security\ViewModel\CTVApprovalVM.cs" />
@@ -427,6 +428,10 @@
     <Content Include="Areas\Security\Views\ETSEdit\_IndividualEditHistory.cshtml" />
     <Content Include="Areas\Security\Views\ETSEdit\_TourCancel.cshtml" />
     <Content Include="Areas\Security\Views\ETSEdit\_TourOtherEdit.cshtml" />
+    <Content Include="Areas\Security\Views\ETSEdit\ViewNote.cshtml" />
+    <Content Include="Areas\Security\Views\ETSEdit\ViewTourEdit.cshtml" />
+    <Content Include="Areas\Security\Views\ETSEdit\ViewIndividualEdit.cshtml" />
+    <Content Include="Areas\Security\Views\ETSEdit\_IndHistoryView.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />

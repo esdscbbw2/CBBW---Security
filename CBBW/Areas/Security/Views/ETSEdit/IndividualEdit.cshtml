@@ -24,13 +24,14 @@
                             <i data-feather="arrow-left-circle"></i>
                             Back
                         </button>
-                        <button type="button" id="btnSubmit"
+                        <button type="button" id="btnSubmit" disabled
                                 onclick="btnSubmitClicked()"
                                 class="btn btn-secondary me-2">
                             <i data-feather="check-circle"></i>
                             Save
                         </button>
-                        <button type="submit" class="btn btn-white">
+                        <button type="button" class="btn btn-white"
+                                onclick="window.location.href='/Security/ETSEdit/ClearBtnClicked?PageID=2';">
                             <i data-feather="x-circle"></i>
                             Clear
                         </button>
@@ -135,7 +136,7 @@
                                 See Previous Details
                             </button>                            
                         </div>
-                        <div class="row d-flex align-items-center">
+                        <div id="mHdrDiv" class="row d-flex align-items-center">
                             <div class="col-form-label col-md-2">
                                 <label>EDIT Required :</label>
                             </div>
@@ -199,14 +200,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="bgColor mt-4 bg-transparent content text-left border-red">
+                    <div id="mOptionDiv" class="bgColor mt-4 bg-transparent content text-left border-red">
                         <ul style="list-style:none;">
                             <li style="font-size: 16px;">
                                 It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
-                                <select class="form-select content border-red" aria-label="Default select example" id="paragraphSpaceOPtion">
+                                <select class="form-select content border-red is-invalid" 
+                                        aria-label="Default select example" 
+                                        id="Option1" onchange="Option1Changed()">
                                     <option selected="">-</option>
                                     <option value="1">Yes</option>
-                                    <option value="1">No</option>
+                                    <option value="0">No</option>
                                 </select>
                             </li>
                         </ul>

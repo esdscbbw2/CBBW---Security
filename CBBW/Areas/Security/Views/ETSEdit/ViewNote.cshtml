@@ -1,35 +1,27 @@
 ﻿@using CBBW.Areas.Security.ViewModel.ETSEdit;
-@model ETSEditCreateVM
+@model ETSEditViewVM
 @{
     ViewBag.Title = "Employees Travelling Schedule Details – EDIT";
 }
-<div id="IndEditDiv" class="inVisible">
-
-</div>
-<div class="row newTable" id="MainDiv">
+<div class="row newTable">
     @using (Html.BeginForm())
     {
-        @Html.HiddenFor(m => m.btnIndividualEdit)
-        @Html.HiddenFor(m => m.btnTourEdit)
-        @Html.HiddenFor(m => m.backbtnactive)
+        @Html.HiddenFor(m => m.NoteNumber)
+        @Html.HiddenFor(m => m.DeleteBtn)
+        @Html.HiddenFor(m => m.CBUID)
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
                     <div class="leftButton">
-                        <button id="btnBack" type="button"
+                        <button id="btnBack" type="button" 
                                 class="btn btn-primary me-2">
                             <i data-feather="arrow-left-circle"></i>
                             Back
                         </button>
-                        <button id="SubmitBtn" type="submit" name="Submit" value="create" disabled
-                                class="btn btn-secondary me-2">
-                            <i data-feather="upload"></i>
-                            Submit
-                        </button>
-                        <button type="button" class="btn btn-white"
-                                onclick="window.location.href='/Security/ETSEdit/ClearBtnClicked';">
-                            <i data-feather="x-circle"></i>
-                            Clear
+                        <button type="submit" name="Submit" value="Delete"
+                                class="btn btn-primary me-2">
+                            <i data-feather="trash-2"></i>
+                            Delete
                         </button>
                     </div>
                     <h2>Employees Travelling  Schedule Details – EDIT  </h2>
@@ -37,7 +29,7 @@
             </div>
         </div>
         <div class="col-md-12">
-            <div class="text-center  pt-2 pb-2">
+            <div class="text-center pt-2 pb-2">
                 <div class="upper-tab-buttons">
                     <button type="button" class="btn btn-primary me-2" onclick="window.location.href='#';">
                         To Check  “Tour Rules”   Click Here
@@ -53,52 +45,47 @@
                 <div class="card-body approvalForm">
                     <div class="row d-flex align-items-center mb-4">
                         <div class="col-md-4">
-                            @Html.DropDownListFor(m => m.NoteNumber,
-                            new SelectList(Model.ToBeEditNoteList, "NoteNumber", "NoteNumber"), "Select Ref. Note No.",
-                            htmlAttributes: new
-                            {
-                                @class = "form-select pointer is-invalid",
-                                onchange = "NotenumberChanged()"
-                            })
+                            <input type="text" class="form-control" disabled value="@Model.NoteDetails.NoteNumber">
                         </div>
                         <div class="col-md-8">
-                            <div>
+                            <div id="NZB_staff">
                                 <div class="row">
-                                    <label id="lblNoteDesc" class="col-form-label col-md-5">
+                                    <label class="col-form-label col-md-5">
+                                        @Model.NoteDescription
                                     </label>
                                     <label class="col-form-label col-md-1">
                                         Date  :
                                     </label>
                                     <div class="col-md-2">
-                                        <input id="NoteEntryDate" type="text" class="form-control" disabled>
+                                        <input type="text" class="form-control" value="@Model.NoteDetails.EntryDateDisplay" disabled>
                                     </div>
                                     <label class="col-form-label col-md-1">
                                         Time  :
                                     </label>
                                     <div class="col-md-2">
-                                        <input id="NoteEntryTime" type="text" class="form-control" disabled>
+                                        <input type="text" class="form-control" value="@Model.NoteDetails.EntryTime" disabled>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <div class="row d-flex align-items-center mb-4">
-                            <label class="col-form-label col-md-2">Center Code & Name : </label>
-                            <div class="col-md-6">
-                                <input id="CentreCodenName" type="text" class="form-control" disabled>
-                            </div>
+                    <div class="row d-flex align-items-center mb-4">
+                        <label class="col-form-label col-md-2">Center Code & Name : </label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" value="@Model.NoteDetails.CenterName" disabled>
                         </div>
+                    </div>
+                    <div id="by_HG_tour_purpose">
                         <div class="row d-flex align-items-center mb-4 mr-15">
                             <label class="col-form-label col-md-2">Tour “Purpose Of Allotment” : </label>
                             <div class="col-md-6">
-                                <input id="TripPurpose" type="text" class="form-control" disabled>
+                                <input type="text" class="form-control" value="@Model.NoteDetails.POAText" disabled>
                             </div>
                         </div>
                         <div class="row d-flex align-items-center mb-4 mr-15">
                             <label class="col-form-label col-md-2">Is E.P Tour : </label>
                             <div class="col-md-6">
-                                <input id="EPTourStatus" type="text" class="form-control" disabled>
+                                <input type="text" class="form-control" value="@Model.NoteDetails.EPTourText" disabled>
                             </div>
                         </div>
                     </div>
@@ -111,21 +98,20 @@
                             <label>Approved :</label>
                         </div>
                         <div class="col-md-2">
-                            <input id="AppStat" type="text" class="form-control" disabled="">
+                            <input type="text" class="form-control" value="@Model.NoteDetails.IsApprovedDisplay" disabled="">
                         </div>
                         <div class="col-md-2 col-form-label">
                             <label>Date &amp; Time Of Approval :</label>
                         </div>
                         <div class="col-md-2">
-                            <input id="AppDateTime" type="text" class="form-control" disabled="">
+                            <input type="text" class="form-control" value="@Model.NoteDetails.AppDateTimeDisplay" disabled="">
                         </div>
                         <div class="col-md-2 col-form-label">
                             <label>Reason If Not Approved :</label>
                         </div>
                         <div class="col-md-2">
-                            <textarea name="" id="AppReason" cols="10" rows="2" class="form-control" disabled></textarea>
+                            <textarea name="" id="" cols="10" rows="2" class="form-control" disabled>@Model.NoteDetails.NotAppReason</textarea>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -136,48 +122,40 @@
                             <label>Ratified :</label>
                         </div>
                         <div class="col-md-2">
-                            <input id="ratStat" type="text" class="form-control" disabled>
+                            <input type="text" class="form-control" value="@Model.NoteDetails.IsRatifiedDisplay" disabled="">
                         </div>
                         <div class="col-md-2 col-form-label">
                             <label>Date & Time Of  Ratification :</label>
                         </div>
                         <div class="col-md-2">
-                            <input id="RatDT" type="text" class="form-control" disabled="">
+                            <input type="text" class="form-control" value="@Model.NoteDetails.RetDateTimeDisplay" disabled="">
                         </div>
                         <div class="col-md-2 col-form-label">
                             <label>Reason If Not Ratified :</label>
                         </div>
                         <div class="col-md-2">
-                            <textarea name="" id="ratReason" cols="10" rows="2" class="form-control" disabled>-</textarea>
+                            <textarea name="" id="" cols="10" rows="2" class="form-control" disabled>@Model.NoteDetails.RetReason</textarea>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="d-flex justify-content-center mt-4">
-                    <button id="TourEditBtn" disabled 
-                            type="submit" name="Submit" value="TED"
+                    <button type="submit" name="Submit" value="TourEditBtn"
                             class="btn btn-primary me-2">
                         Tour EDIT Details
                     </button>
-                    <button id="IndEditBtn" disabled
-                            type="submit" name="Submit" value="IED"
+                    <button type="submit" name="Submit" value="IndividualEditBtn"
                             class="btn btn-primary me-2">
                         Individual EDIT Details
                     </button>
                 </div>
             </div>
-            <div class="bgColor mt-4 bg-transparent content border-red text-center">
+            <div class="bgColor mt-4 bg-transparent text-center">
                 <ul style="list-style:none;">
                     <li style="font-size: 16px;">
                         The EDIT Is Done As Per Policy & As Required :
-                        <select class="form-select content border-red is-invalid"
-                                onchange="AsPerPolicyOptionChanged()"
-                                aria-label="Default select example">
-                            <option selected="">-</option>
-                            <option value="1">Yes</option>
-                            <option value="0">No</option>
-                        </select>
+                        <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
                     </li>
                 </ul>
             </div>
@@ -189,14 +167,22 @@
 
 }
 @section scripts{
-    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
-    <script src="~/UIContent/JS/CustomePage/ETSEdit/ETSEditCreateJS.js"></script>
     <script>
-        if ('@ViewBag.ErrMsg' != '') {
+        $('#btnBack').click(function () {
+            $.ajax({
+                url: "/Security/ETSEdit/BackButtonClicked",
+                success: function (result) { window.location.href = result; }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            //var mymsg = '@ViewBag.ErrMsg';
+            if ('@ViewBag.ErrMsg' != '') {
                 Swal.fire({
-                    title: 'Failed to submit',
+                    title: 'Failed To Delete',
                     text: "@ViewBag.ErrMsg",
-                    icon: 'warning',
+                    icon: 'error',
                     customClass: 'swal-wide',
                     buttons: {
                         //cancel: 'Cancel',
@@ -206,7 +192,7 @@
                     confirmButtonColor: '#2527a2',
                 });
             };
-        if ('@ViewBag.Msg' != '') {
+            if ('@ViewBag.Msg' != '') {
                 Swal.fire({
                     title: 'Confirmation',
                     text: "@ViewBag.Msg",
@@ -224,5 +210,6 @@
                     }
                 }
             };
+        });
     </script>
 }

@@ -28,6 +28,10 @@ namespace CBBW.BLL.Repository
         {
             return _ETSEditEntities.getETSNoteListToBeEdited(CentreCode, ref pMsg);
         }
+        public List<EditNoteNumber> getETSEditNoteListForDropDown(int CentreCode, int mStatus, ref string pMsg) 
+        {
+            return _ETSEditEntities.getETSEditNoteListForDropDown(CentreCode, mStatus, ref pMsg);
+        }
         public IEnumerable<EditTPDetails> getEditTPDetails(string NoteNumber, ref string pMsg) 
         {
             return _ETSEditEntities.getEditTPDetails(NoteNumber, ref pMsg);
@@ -53,11 +57,25 @@ namespace CBBW.BLL.Repository
         {
             return _ETSEditEntities.UpdateETSTourEdit(NoteNumber, ref pMsg);
         }
-        public List<EditNoteList> GetETSEditNoteList(int DisplayLength, int DisplayStart, int SortColumn, string SortDirection, string SearchText, int CentreCode, bool IsApprovedList, ref string pMsg)
+        public List<EditNoteList> GetETSEditNoteList(int DisplayLength, int DisplayStart, int SortColumn, string SortDirection, string SearchText, int CentreCode, int IsApprovedList, ref string pMsg)
         {
             return _ETSEditEntities.GetETSEditNoteList(DisplayLength, DisplayStart, SortColumn, SortDirection, SearchText, CentreCode, IsApprovedList, ref pMsg);
         }
-
-
+        public bool RemoveETSEditNote(string NoteNumber, int ActiveTag, ref string pMsg)
+        {
+            return _ETSEditEntities.RemoveETSEditNote(NoteNumber, ActiveTag, ref pMsg);
+        }
+        public bool SetETSEditRatificationStatus(string NoteNumber, bool IsRatified, string RatReason, int ApproverID, ref string pMsg)
+        {
+            return _ETSEditEntities.SetETSEditRatificationStatus(NoteNumber, IsRatified, RatReason, ApproverID,ref pMsg);
+        }
+        public bool SetETSEditAppStatus(string NoteNumber, bool IsApproved, string ReasonForDisApproval, int ApproverID, ref string pMsg)
+        {
+            return _ETSEditEntities.SetETSEditAppStatus(NoteNumber, IsApproved, ReasonForDisApproval, ApproverID,ref pMsg);
+        }
+        public EditNoteDetails getETSEditHdr(string NoteNumber, int LockStatus, ref string pMsg)
+        {
+            return _ETSEditEntities.getETSEditHdr(NoteNumber, LockStatus, ref pMsg);
+        }
     }
 }

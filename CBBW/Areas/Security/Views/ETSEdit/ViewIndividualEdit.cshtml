@@ -1,0 +1,154 @@
+﻿@using System.Globalization;
+@using CBBW.Areas.Security.ViewModel.ETSEdit;
+@model ETSEditViewVM
+@{
+    ViewBag.Title = "Employees Travelling Schedule Details – EDIT";
+}
+@Html.HiddenFor(m => m.NoteNumber)
+@Html.HiddenFor(m => m.SelectedPersonType)
+@Html.HiddenFor(m => m.SelectedPersonID)
+@Html.HiddenFor(m => m.SelectedPersonName)
+<div class="row newTable">
+    <div class="fixedElement">
+        <div class="col-md-12">
+            <div class="heading_text_btn mb-3 mt-4">
+                <div class="leftButton">
+                    <button id="btnBack" type="button"
+                            class="btn btn-primary me-2">
+                        <i data-feather="arrow-left-circle"></i>
+                        Back
+                    </button>
+                </div>
+                <h2>Employees Travelling  Schedule Details @ViewBag.HeaderText </h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="heading_text_btn2 d-block mt-4">
+            <h2 class="text-left"> Individual EDIT Details:</h2>
+        </div>
+        <div class="heading_text_btn2 d-block mb-2">
+            <h2 class="text-center">Travelling Person – Details (I) </h2>
+        </div>
+    </div>
+    <div class="col-md-12 mb-4">
+        <div class="col-md-12 pt-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered w-100 btnalign " id="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="text-align: center; vertical-align: middle; background-color: transparent;">&nbsp;</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">SL  No.</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">Person Type </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="12%"> Employee No. & Name </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="14%">Designation Code & Name </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="13%">Center Code & Name </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">
+                                        Eligible  Vehicle Type
+                                    </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">Ref. E.P Note No. & Date </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="9%">
+                                        T.A & D.A Denied
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.TravelingPersonDetails != null)
+                                {
+                                    int sl = 1;
+                                    foreach (var item in Model.TravelingPersonDetails)
+                                    {
+                                        <tr>
+                                            <td class="text-center">
+                                                <div class="form-check">
+                                                    <input id="@sl" onchange="PersonSelectionChanged()" class="form-check-input" type="radio"
+                                                           value='valuable' name="thing">
+                                                </div>
+                                                <div id="PersonType_@sl" class="inVisible">
+                                                    @item.PersonType
+                                                </div>
+                                                <div id="PersonID_@sl" class="inVisible">
+                                                    @item.EmployeeNo
+                                                </div>
+                                            </td>
+                                            <td>
+                                                @sl
+                                            </td>
+                                            <td class="text-center">
+                                                @item.PersonTypeText
+                                            </td>
+                                            <td id="PersonName_@sl" class="text-center">
+                                                @item.EmployeeNonName
+                                            </td>
+                                            <td class="text-center">
+                                                @item.DesignationCodenName
+                                            </td>
+                                            <td class="text-center">
+                                                @item.CenterName
+                                            </td>
+                                            <td class="text-center">
+                                                @item.EligibleVehicleTypeName
+                                            </td>
+                                            <td class="text-center">
+                                                @(item.EPNoteDate.Year==1?"-":item.EPNoteNumber+" / "+ item.EPNoteDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture))
+                                            </td>
+                                            <td class="text-center">
+                                                @(item.TADADenied?"Yes":"No")
+                                            </td>
+                                        </tr>
+                                        sl += 1;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div id="HistoryDiv" class="inVisible">
+                aaa
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#btnBack').click(function () {
+                $.ajax({
+                    url: "/Security/ETSEdit/BackButtonClicked",
+                    success: function (result) { window.location.href = result; }
+                });
+            });
+        });
+    </script>
+    <script>
+        function PersonSelectionChanged() {
+            var targetCtrl = $(PersonSelectionChanged.caller.arguments[0].target);
+            var mID = targetCtrl.attr('id');
+            var PType = $('#PersonType_' + mID).html();
+            var PID = $('#PersonID_' + mID).html();
+            var PName = $('#PersonName_' + mID).html();
+            var Notenumber = $('#NoteNumber').val();
+            var HistoryDiv = $('#HistoryDiv');
+            HistoryDiv.removeClass('inVisible');
+            var dataSourceURL = '/ETSEdit/IndEditHistoryView?NoteNumber='
+                + Notenumber + '&PersonType=' + PType + '&PersonID=' + PID + '&PersonName=' + PName;
+            $.ajax({
+                url: dataSourceURL,
+                contentType: 'application/html; charset=utf-8',
+                type: 'GET',
+                dataType: 'html',
+                success: function (result) {
+                    HistoryDiv.html(result);
+                },
+                error: function (xhr, status) {
+                    HistoryDiv.html(xhr.responseText);
+                }
+            })
+
+        };
+    </script>
+}

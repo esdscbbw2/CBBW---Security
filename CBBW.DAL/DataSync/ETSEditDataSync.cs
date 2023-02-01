@@ -12,7 +12,7 @@ namespace CBBW.DAL.DataSync
     public class ETSEditDataSync
     {
         public DataTable GetETSEditNoteList(int DisplayLength, int DisplayStart, int SortColumn,
-            string SortDirection, string SearchText, int CentreCode, bool IsApprovedList, ref string pMsg)
+            string SortDirection, string SearchText, int CentreCode, int IsApprovedList, ref string pMsg)
         {
             try
             {
@@ -31,7 +31,7 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = SearchText;
                 para[paracount] = new SqlParameter("@CentreCode", SqlDbType.Int);
                 para[paracount++].Value = CentreCode;
-                para[paracount] = new SqlParameter("@IsApprovedList", SqlDbType.Bit);
+                para[paracount] = new SqlParameter("@IsApprovedList", SqlDbType.Int);
                 para[paracount++].Value = IsApprovedList;
                 using (SQLHelper sql = new SQLHelper("[ETS].[GetETSEditNoteList]", CommandType.StoredProcedure))
                 {
@@ -55,11 +55,39 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+        public DataTable getETSEditHdr(string NoteNumber,int LockStatus, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[2];
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
+                para[paracount++].Value = NoteNumber;
+                para[paracount] = new SqlParameter("@LockStatus", SqlDbType.Int);
+                para[paracount++].Value = LockStatus;
+                using (SQLHelper sql = new SQLHelper("[ETS].[getETSEditHdr]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
         public DataTable getETSNoteListToBeEdited(int CentreCode,ref string pMsg)
         {
             try
             {
                 using (SQLHelper sql = new SQLHelper("select * from [ETS].[getETSNoteListToBeEdited]("+ CentreCode + ")", CommandType.Text))
+                {
+                    return sql.GetDataTable();
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable getETSEditNoteListForDropDown(int CentreCode,int mStatus, ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("select * from [ETS].[getETSEditNoteListForDropDown](" + CentreCode + ","+ mStatus + ")", CommandType.Text))
                 {
                     return sql.GetDataTable();
                 }
@@ -165,5 +193,65 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+        public DataTable RemoveETSEditNote(string NoteNumber,int ActiveTag, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[2];
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
+                para[paracount++].Value = NoteNumber;
+                para[paracount] = new SqlParameter("@ActiveTag", SqlDbType.Int);
+                para[paracount++].Value = ActiveTag;
+                using (SQLHelper sql = new SQLHelper("[ETS].[RemoveETSEditNote]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable SetETSEditRatificationStatus(string NoteNumber, bool IsApproved,string ReasonForDisApproval,int ApproverID, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[4];
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
+                para[paracount++].Value = NoteNumber;
+                para[paracount] = new SqlParameter("@IsApproved", SqlDbType.Bit);
+                para[paracount++].Value = IsApproved;
+                para[paracount] = new SqlParameter("@ReasonForDisApproval", SqlDbType.NVarChar);
+                para[paracount++].Value = ReasonForDisApproval;
+                para[paracount] = new SqlParameter("@ApproverID", SqlDbType.Int);
+                para[paracount++].Value = ApproverID;
+                using (SQLHelper sql = new SQLHelper("[ETS].[SetETSEditRatificationStatus]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable SetETSEditAppStatus(string NoteNumber, bool IsApproved, string ReasonForDisApproval, int ApproverID, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[4];
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
+                para[paracount++].Value = NoteNumber;
+                para[paracount] = new SqlParameter("@IsApproved", SqlDbType.Bit);
+                para[paracount++].Value = IsApproved;
+                para[paracount] = new SqlParameter("@ReasonForDisApproval", SqlDbType.NVarChar);
+                para[paracount++].Value = ReasonForDisApproval;
+                para[paracount] = new SqlParameter("@ApproverID", SqlDbType.Int);
+                para[paracount++].Value = ApproverID;
+                using (SQLHelper sql = new SQLHelper("[ETS].[SetETSEditAppStatus]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+
     }
 }

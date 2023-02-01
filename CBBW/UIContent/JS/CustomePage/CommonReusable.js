@@ -164,6 +164,31 @@ function ChangeDateFormat(dt) {
     }
     return e;
 };
+function ChangeDateFormatV2(dt) {
+    //dt must be a string not a date
+    var e = '';
+    if (dt.indexOf('/') != -1) {
+        e = dt.split('/').reverse().join('-');
+    } else {
+        e = dt.split('-').reverse().join('-');
+    }
+    return e;
+};
+function CustomDateChange(firstDate, addDays, DisplaySeparator) {
+    first_date = new Date(firstDate);
+    output_f = new Date(first_date.setDate(first_date.getDate() + addDays)).toISOString().split('.');
+    output_s = output_f[0].split('T');
+    //$('#second_date').val(output_s[0]);
+    //$('#datetime').val(output_f[0]);
+    var result = output_s[0];
+    var e = result;
+    if (result.indexOf('/') != -1) {
+        e = result.split('/').reverse().join(DisplaySeparator);
+    } else {
+        e = result.split('-').reverse().join(DisplaySeparator);
+    }
+    return e;
+}
 function WordCount(value) {
     return $.trim(value).split(" ").length;
 };
@@ -779,21 +804,6 @@ function BackButtonClicked(backFunUrl) {
         success: function (result) { window.location.href = result; }
     });
 };
-function CustomDateChange(firstDate, addDays, DisplaySeparator) {
-    first_date = new Date(firstDate);
-    output_f = new Date(first_date.setDate(first_date.getDate() + addDays)).toISOString().split('.');
-    output_s = output_f[0].split('T');
-    //$('#second_date').val(output_s[0]);
-    //$('#datetime').val(output_f[0]);
-    var result = output_s[0];
-    var e = result;
-    if (result.indexOf('/') != -1) {
-        e = result.split('/').reverse().join(DisplaySeparator);
-    } else {
-        e = result.split('-').reverse().join(DisplaySeparator);
-    }
-    return e;
-}
 function EnableAddBtnInCloneRow(tblRow, addBtnBaseID) {
     var tblrow = $(tblRow);
     var rowid = tblrow.attr('id')

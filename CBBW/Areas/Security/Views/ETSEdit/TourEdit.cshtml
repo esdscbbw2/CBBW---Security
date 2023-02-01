@@ -16,17 +16,19 @@
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
                     <div class="leftButton">
-                        <button id="btnBack" type="button" class="btn btn-primary me-2">
+                        <button id="btnBack" type="button" 
+                                class="btn btn-primary me-2">
                             <i data-feather="arrow-left-circle"></i>
                             Back
                         </button>
-                        <button type="button" id="btnSubmit"
+                        <button type="button" id="btnSubmit" disabled
                                 onclick="btnSubmitClicked()"
                                 class="btn btn-secondary me-2">
                             <i data-feather="check-circle"></i>
                             Save
                         </button>
-                        <button type="submit" class="btn btn-white">
+                        <button type="button" class="btn btn-white"
+                                onclick="window.location.href='/Security/ETSEdit/ClearBtnClicked?PageID=1';">
                             <i data-feather="x-circle"></i>
                             Clear
                         </button>
@@ -116,7 +118,7 @@
                                 See Previous Details
                             </button>
                         </div>
-                        <div class="row d-flex align-items-center">
+                        <div id="mHdrDiv" class="row d-flex align-items-center">
                             <div class="col-form-label col-md-2">
                                 <label>EDIT Required :</label>
                             </div>
@@ -192,11 +194,7 @@
                                                                                         @item.EditedTourToDateDisplay
                                                                                     </td>
                                                                                     <td class="text-center">
-                                                                                        @item.TourCategoryNames
-                                                                                        @*<div class="position-relative">
-                                                                                                <div class="myDIV"><i data-feather="external-link"></i></div>
-                                                                                                <div class="hide">I am shown when someone<br /> hovers over the div above.</div>
-                                                                                            </div>*@
+                                                                                        @item.TourCategoryNames                                                                                        
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         @item.TourCenterNames
@@ -249,7 +247,7 @@
                                                     <td>
                                                         @sl
                                                         <div id="EditTagDiv_@sl" data-name="EditRowTag"
-                                                             class="inVisible htmlVal"></div>
+                                                             class="inVisible htmlVal mTCValidation"></div>
                                                         @*Injecting Extra data for Table records sync*@
                                                         <div data-name="SourceID"
                                                              class="inVisible htmlVal">@item.SourceID</div>
@@ -397,7 +395,7 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <span class="actionBtn d-block">
-                                                        <button id="AddBtn" type="button"
+                                                        <button id="AddBtn" type="button" disabled
                                                                 class="btn primaryLink alterID cloneBtn addBtn"
                                                                 data-toggle="tooltip"
                                                                 onclick="addCloneBtnClick()"
@@ -462,7 +460,7 @@
                                                             </td>
                                                             <td class="text-center">
                                                                 <select id="OETourCategory_@sl" multiple="multiple"
-                                                                        class="form-select example-getting-started"
+                                                                        class="form-select example-getting-started is-invalid"
                                                                         onchange="OETourCategoryChanged()"
                                                                         data-name="TourCategoryIDs" data-name-text="TourCategoryNames"
                                                                         aria-label="Default select example">
@@ -520,14 +518,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="bgColor mt-4 bg-transparent content text-left border-red">
+                    <div id="mOptionDiv" class="bgColor mt-4 bg-transparent content text-left border-red">
                         <ul style="list-style:none;">
                             <li style="font-size: 16px;">
                                 It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
-                                <select class="form-select content border-red" aria-label="Default select example" id="paragraphSpaceOPtion">
+                                <select class="form-select content border-red is-invalid" 
+                                        aria-label="Default select example" 
+                                        id="Option1" onchange="Option1Changed()">
                                     <option selected="">-</option>
                                     <option value="1">Yes</option>
-                                    <option value="1">No</option>
+                                    <option value="0">No</option>
                                 </select>
                             </li>
                         </ul>
@@ -544,6 +544,8 @@
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
     <script src="~/UIContent/JS/CustomePage/ETSEdit/ETSEditCreateTourEdit.js"></script>
     <script>
-
+        (async function () {
+            const r1 = await getMultiselectData('CRTourCategory', '/ETSEdit/GetTourCategories');
+        })();
     </script>
 }

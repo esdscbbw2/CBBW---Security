@@ -11,6 +11,7 @@ namespace CBBW.BLL.IRepository
     {
         int getEditSL(string NoteNumber, ref string pMsg);
         List<EditNoteNumber> getETSNoteListToBeEdited(int CentreCode, ref string pMsg);
+        List<EditNoteNumber> getETSEditNoteListForDropDown(int CentreCode, int mStatus, ref string pMsg);
         EditNoteDetails getEditNoteHdr(string NoteNumber, ref string pMsg);
         IEnumerable<EditTPDetails> getEditTPDetails(string NoteNumber, ref string pMsg);
         //List<EditDWTDetails> getCurrentDateWiseTour(string NoteNumber, int FieldTag, ref string pMsg);
@@ -18,6 +19,12 @@ namespace CBBW.BLL.IRepository
         bool SetETSTourEdit(DWTTourDetailsForDB obj, int CentreCode, string CentreName, ref string pMsg);
         bool UpdateETSTourEdit(string NoteNumber, ref string pMsg);
         List<EditNoteList> GetETSEditNoteList(int DisplayLength, int DisplayStart, int SortColumn,
-            string SortDirection, string SearchText, int CentreCode, bool IsApprovedList, ref string pMsg);
+            string SortDirection, string SearchText, int CentreCode, int IsApprovedList, ref string pMsg);
+        bool RemoveETSEditNote(string NoteNumber, int ActiveTag, ref string pMsg);
+        bool SetETSEditRatificationStatus(string NoteNumber, bool IsRatified, string RatReason, int ApproverID, ref string pMsg);
+        bool SetETSEditAppStatus(string NoteNumber, bool IsApproved, string ReasonForDisApproval, int ApproverID, ref string pMsg);
+        EditNoteDetails getETSEditHdr(string NoteNumber, int LockStatus, ref string pMsg);
+
+
     }
 }

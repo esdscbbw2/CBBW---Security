@@ -1,0 +1,269 @@
+﻿@using System.Globalization;
+@using CBBW.Areas.Security.ViewModel.ETSEdit;
+@model ETSEditViewVM
+@{
+    ViewBag.Title = "Employees Travelling Schedule Details – EDIT";
+}
+<div class="row newTable">
+    <div class="fixedElement">
+        <div class="col-md-12">
+            <div class="heading_text_btn mb-3 mt-4">
+                <div class="leftButton">
+                    <button id="btnBack" type="button" class="btn btn-primary me-2">
+                        <i data-feather="arrow-left-circle"></i>
+                        Back
+                    </button>
+                </div>
+                <h2>Employees Travelling  Schedule Details @ViewBag.HeaderText  </h2>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-12">
+        <div class="heading_text_btn2 d-block mt-4">
+            <h2 class="text-left"> Tour EDIT Details:</h2>
+        </div>
+        <div class="heading_text_btn2 d-block mb-2">
+            <h2 class="text-center">Travelling Person – Details (I) </h2>
+        </div>
+    </div>
+    <div class="col-md-12 mb-4">
+        <div class="col-md-12 pt-3">
+            <div class="card">
+                <div class="card-body sectionB">
+                    <div class="table-responsive">
+                        <table class="table table-bordered w-100 btnalign ">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">SL  No.</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">Person Type </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="12%"> Employee No. & Name </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="14%">Designation Code & Name </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="13%">Center Code & Name </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">
+                                        Eligible  Vehicle Type
+                                    </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">Ref. E.P Note No. & Date </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="9%">
+                                        T.A & D.A Denied
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.TravelingPersonDetails != null)
+                                {
+                                    int sl = 1;
+                                    foreach (var item in Model.TravelingPersonDetails)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @sl
+                                            </td>
+                                            <td class="text-center">
+                                                @item.PersonTypeText
+                                            </td>
+                                            <td class="text-center">
+                                                @item.EmployeeNonName
+                                            </td>
+                                            <td class="text-center">
+                                                @item.DesignationCodenName
+                                            </td>
+                                            <td class="text-center">
+                                                @item.CenterName
+                                            </td>
+                                            <td class="text-center">
+                                                @item.EligibleVehicleTypeName
+                                            </td>
+                                            <td class="text-center">
+                                                @(item.EPNoteDate.Year==1?"-":item.EPNoteNumber+" / "+ item.EPNoteDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture))
+                                            </td>
+                                            <td class="text-center">
+                                                @(item.TADADenied?"Yes":"No")
+                                            </td>
+                                        </tr>
+                                        sl += 1;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 pt-3 mt-3 pb-3">
+                <div class="heading_text_btn2 d-block mb-2">
+                    <h2 class="text-center">Date Wise Tour – Details (II) </h2>
+                </div>
+            </div>
+            @*Start - Note Entry Details*@
+            <div class="card sectionB">
+                <div class="card-body">
+                    <div id="tour_cancel">
+                        <div class="table-responsive">
+                            <table class="table table-bordered w-100 btnalign" id="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" style="text-align: left; vertical-align: middle;">SL. No.</th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="10%"> Scheduled Tour From Date</th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">Scheduled Tour To Date </th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">
+                                            EDITED Tour To Date
+                                        </th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="20%">Tour Category </th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">
+                                            Center Code & Name
+                                        </th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">Branch Code & Name </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.BaseDWTDetailsHistory != null)
+                                    {
+                                        int sl = 1;
+                                        foreach (var item in Model.BaseDWTDetailsHistory)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @sl
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.SchFromDateDisplay
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.SchToDateDisplay
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.EditedTourToDateDisplay
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.TourCategoryNames
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.TourCenterNames
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.BranchNames
+                                                </td>
+                                            </tr>
+                                            sl += 1;
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*End - Note Entry Details*@
+            @*Start - Edit Entry Details*@
+            @if (Model.EditSequence != null)
+            {
+                foreach (int s in Model.EditSequence)
+                {
+                    if (s > 0)
+                    {
+                        <div class="card @(Model.MaxRowID==s?"":"sectionB")">
+                            <div class="card-body">
+                                @if (Model.DWTDetailsHistory.Where(o => o.EditSL == s) != null)
+                                {
+                                    int sl2 = 1;
+                                    <form class="form-sample form-inline row ms-auto  mb-3">
+                                        <div class="row d-flex align-items-center">
+                                            <div class="col-form-label col-md-2">
+                                                <label>EDIT Required :</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control" value="@Model.DWTDetailsHistory.Where(o => o.EditSL == s).FirstOrDefault().EditTagText" disabled="">
+                                            </div>
+                                            <div class="col-form-label col-md-2">
+                                                <label>Reason For EDIT :</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <textarea cols="20" rows="2" class="form-control pointer-default"
+                                                          readonly="" data-toggle="tooltip"
+                                                          data-placement="bottom" title="" data-bs-original-title="">@Model.DWTDetailsHistory.Where(o => o.EditSL == s).FirstOrDefault().EditReason.Trim()</textarea>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div id="tour_cancel">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered w-100 btnalign" id="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col" style="text-align: left; vertical-align: middle;">SL. No.</th>
+                                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="10%"> Scheduled Tour From Date</th>
+                                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">Scheduled Tour To Date </th>
+                                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">
+                                                            EDITED Tour To Date
+                                                        </th>
+                                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="20%">Tour Category </th>
+                                                        <th scope="col" style="text-align: center; vertical-align: middle;">
+                                                            Center Code & Name
+                                                        </th>
+                                                        <th scope="col" style="text-align: center; vertical-align: middle;">Branch Code & Name </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item in Model.DWTDetailsHistory.Where(o => o.EditSL == s))
+                                                    {
+                                                        <tr class="previous-details">
+                                                            <td>
+                                                                @sl2
+                                                            </td>
+                                                            <td class="text-center">
+                                                                @item.SchFromDateDisplay
+                                                            </td>
+                                                            <td class="text-center">
+                                                                @item.SchToDateDisplay
+                                                            </td>
+                                                            <td class="text-center">
+                                                                @item.EditedTourToDateDisplay
+                                                            </td>
+                                                            <td class="text-center">
+                                                                @item.TourCategoryNames
+                                                            </td>
+                                                            <td class="text-center">
+                                                                @item.TourCenterNames
+                                                            </td>
+                                                            <td class="text-center">
+                                                                @item.BranchNames
+                                                            </td>
+                                                        </tr>
+                                                        sl2 += 1;
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                }
+
+                            </div>
+                        </div>
+                    }
+                }
+            }
+            @*End - Edit Entry Details*@
+            <div class="bgColor mt-4 bg-transparent text-left">
+                <ul style="list-style:none;">
+                    <li style="font-size: 16px;">
+                        It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
+                        <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#btnBack').click(function () {
+                $.ajax({
+                    url: "/Security/ETSEdit/BackButtonClicked",
+                    success: function (result) { window.location.href = result; }
+                });
+            });
+        });
+    </script>
+}

@@ -32,5 +32,8 @@ namespace CBBW.BOL.ETSEdit
         public string PersonIDnName { get; set; }
         public bool IsEdited { get; set; }
         public int EditSL { get; set; }
+        public int EditTag { get; set; }
+        public string EditTagText { get; set; }
+        public string EditReason { get; set; }
     }
 }

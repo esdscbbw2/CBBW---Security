@@ -59,6 +59,8 @@ namespace CBBW.DAL.DBMapper
                         result.RetDateTime =DateTime.Parse(dr["RetDateTime"].ToString());
                     if (!DBNull.Value.Equals(dr["RetReason"]))
                         result.RetReason = dr["RetReason"].ToString();
+                    if (!DBNull.Value.Equals(dr["IsIndividualEdit"]))
+                        result.IsIndividualEdit = int.Parse(dr["IsIndividualEdit"].ToString());
                     if (result.POA == 0)
                         result.POAText = "NA";
                     else if (result.POA == 1)
@@ -132,6 +134,7 @@ namespace CBBW.DAL.DBMapper
         }
         public EditDWTDetails Map_EditDWTDetails(DataRow dr) 
         {
+            EHGMaster master = EHGMaster.GetInstance;
             EditDWTDetails result = new EditDWTDetails();
             if (dr != null)
                 {
@@ -163,6 +166,13 @@ namespace CBBW.DAL.DBMapper
                         result.EditSL = int.Parse(dr["EditSL"].ToString());
                 if (!DBNull.Value.Equals(dr["SourceID"]))
                     result.SourceID = int.Parse(dr["SourceID"].ToString());
+                if (!DBNull.Value.Equals(dr["EditTag"])) 
+                {
+                    result.EditTag = int.Parse(dr["EditTag"].ToString());
+                    result.EditTagText = master.EditTag.Where(o => o.ID == result.EditTag).FirstOrDefault().DisplayText;
+                }                    
+                if (!DBNull.Value.Equals(dr["ReasonForEdit"]))
+                    result.EditReason = dr["ReasonForEdit"].ToString();
 
                 result.SchFromDateDisplay = result.SchFromDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
                     result.SchToDateDisplay = result.SchToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);

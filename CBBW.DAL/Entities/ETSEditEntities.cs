@@ -59,6 +59,23 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
+        public List<EditNoteNumber> getETSEditNoteListForDropDown(int CentreCode, int mStatus, ref string pMsg) 
+        {
+            List<EditNoteNumber> result = new List<EditNoteNumber>();
+            try
+            {
+                dt = _ETSEditDataSync.getETSEditNoteListForDropDown(CentreCode, mStatus, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        result.Add(_ETSEditDBMapper.Map_EditNoteNumber(dt.Rows[i]));
+                    }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
         public EditNoteDetails getEditNoteHdr(string NoteNumber, ref string pMsg) 
         {
             try
@@ -72,6 +89,20 @@ namespace CBBW.DAL.Entities
             }
             catch (Exception ex)
             { pMsg =ex.Message; return null; }
+        }
+        public EditNoteDetails getETSEditHdr(string NoteNumber, int LockStatus, ref string pMsg)
+        {
+            try
+            {
+                dt = _ETSEditDataSync.getETSEditHdr(NoteNumber, LockStatus, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    return _ETSEditDBMapper.Map_EditNoteDetails(dt.Rows[0]);
+                }
+                return null;
+            }
+            catch (Exception ex)
+            { pMsg = ex.Message; return null; }
         }
         public List<EditTPDetails> getEditTPDetails(string NoteNumber, ref string pMsg) 
         {
@@ -124,8 +155,14 @@ namespace CBBW.DAL.Entities
             _DBResponseMapper.Map_DBResponse(_ETSEditDataSync.UpdateETSTourEdit(NoteNumber, ref pMsg), ref pMsg, ref result);
             return result;
         }
+        public bool RemoveETSEditNote(string NoteNumber, int ActiveTag, ref string pMsg)
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_ETSEditDataSync.RemoveETSEditNote(NoteNumber, ActiveTag, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
         public List<EditNoteList> GetETSEditNoteList(int DisplayLength, int DisplayStart, int SortColumn,
-            string SortDirection, string SearchText, int CentreCode, bool IsApprovedList, ref string pMsg)
+            string SortDirection, string SearchText, int CentreCode, int IsApprovedList, ref string pMsg)
         {
             List<EditNoteList> result = new List<EditNoteList>();
             try
@@ -143,5 +180,19 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
+        public bool SetETSEditRatificationStatus(string NoteNumber, bool IsRatified, string RatReason, int ApproverID, ref string pMsg) 
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_ETSEditDataSync.SetETSEditRatificationStatus(NoteNumber, IsRatified, RatReason, ApproverID, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
+        public bool SetETSEditAppStatus(string NoteNumber, bool IsApproved, string ReasonForDisApproval, int ApproverID, ref string pMsg)
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_ETSEditDataSync.SetETSEditAppStatus(NoteNumber, IsApproved, ReasonForDisApproval, ApproverID, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
+
+
     }
 }

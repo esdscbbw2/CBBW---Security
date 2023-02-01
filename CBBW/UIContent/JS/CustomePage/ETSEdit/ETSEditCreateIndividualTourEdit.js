@@ -1,4 +1,9 @@
-﻿function ShowHistoryBtnClicked() {
+﻿function Option1Changed() {
+    var targetCtrl = $(Option1Changed.caller.arguments[0].target);
+    if (targetCtrl.val() == 1) { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
+    EnableSubmitBtn();
+};
+function ShowHistoryBtnClicked() {
     var PType=$('#SelectedPersonType').val();
     var PID=$('#SelectedPersonID').val();
     var PName = $('#SelectedPersonName').val();
@@ -31,7 +36,7 @@ function PersonSelectionChanged() {
     $('#SelectedPersonID').val(tblPIDCtrl.html());
     $('#SelectedPersonName').val(tblPNameCtrl.html());
     //alert($('#SelectedPersonType').val() + ' - ' + $('#SelectedPersonID').val() + ' - ' + $('#SelectedPersonName').val());
-
+    EnableSubmitBtn();
 };
 function ValidateEditDateCtrl() {
     var targetCtrl = $(ValidateEditDateCtrl.caller.arguments[0].target);
@@ -41,6 +46,7 @@ function ValidateEditDateCtrl() {
         targetCtrl.isValid(); ctrl1.html(1);
     } else { targetCtrl.isInvalid(); ctrl1.html(0); }
     $('#backbtnactive').val(1);
+    EnableSubmitBtn();
 };
 function ValidatePurposeOfEdit() {
     var poeCtrl = $('#PurposeOfEdit');
@@ -50,6 +56,7 @@ function ValidatePurposeOfEdit() {
         } else { poeCtrl.isInvalid(); }
     } else { poeCtrl.isInvalid(); }
     $('#backbtnactive').val(1);
+    EnableSubmitBtn();
 };
 function EditTagChanged() {
     var PType = $('#SelectedPersonType').val();
@@ -92,6 +99,7 @@ function EditTagChanged() {
         }        
     }
     else { editTagCtrl.isInvalid(); }
+    EnableSubmitBtn();
 };
 function togleDiv(divID) {
     var tourCancelDiv = $('#tour_cancel');
@@ -161,7 +169,9 @@ function CRTourCategoryChanged() {
     var tblRowid = tblRow.attr('id');
     var targetCtrl = $(target);
     CRTourCategoryChangedReUsable(targetCtrl, tblRowid, 'CR');
+    if (targetCtrl.val() == '') { targetCtrl.isInvalid(); }
     EnableAddBtnInCloneRow(tblRow, 'AddBtn');
+    EnableSubmitBtn();
 };
 function OETourCategoryChanged() {
     var target = OETourCategoryChanged.caller.arguments[0].target;
@@ -170,7 +180,8 @@ function OETourCategoryChanged() {
     var tblRowid = targetCtrl.attr('id').split('_')[1];
     CRTourCategoryChangedReUsable(targetCtrl, tblRowid, 'OE');
     var EditTagCtrl = $('#EditTagDivOE_' + tblRowid);
-    if (targetCtrl.val() != '') { EditTagCtrl.html(1); } else { EditTagCtrl.html(0); }
+    if (targetCtrl.val() != '') { EditTagCtrl.html(1); } else { EditTagCtrl.html(0); targetCtrl.isInvalid(); }
+    EnableSubmitBtn();
 };
 function CRCenterCodeDDChangedReUsable(targetCtrl, tblRowid, mTag) {
     var Ctrl1 = mTag + 'BranchCodeMulti';
@@ -203,6 +214,7 @@ function OECenterCodeDDChanged() {
     var targetCtrl = $(target);
     var tblRowid = targetCtrl.attr('id').split('_')[1];
     CRCenterCodeDDChangedReUsable(targetCtrl, tblRowid, 'OE');
+    EnableSubmitBtn();
 };
 function CRCenterCodeMultiChangedReUsable(targetCtrl, tblRowid, mTag) {
     var Ctrl1 = $('#' + mTag + 'CenterCodeDD');
@@ -225,6 +237,7 @@ function OECenterCodeMultiChanged() {
     var targetCtrl = $(target);
     var tblRowid = targetCtrl.attr('id').split('_')[1];
     CRCenterCodeMultiChangedReUsable(targetCtrl, tblRowid, 'OE');
+    EnableSubmitBtn();
 };
 function ToDateChanged() {
     var target = ToDateChanged.caller.arguments[0].target;
@@ -243,6 +256,7 @@ function ToDateChanged() {
         //crtodtCtrl.html(lbltodtCtrl.val());
     } else { targetCtrl.isInvalid(); }
     EnableAddBtnInCloneRow(tblRow, 'AddBtn');
+    EnableSubmitBtn();
 };
 function CRBranchCodeMultiChanged() {
     var target = CRBranchCodeMultiChanged.caller.arguments[0].target;
@@ -260,6 +274,7 @@ function OEBranchCodeMultiChanged() {
     if (targetCtrl.val() != '') {
         targetCtrl.isValid();
     } else { targetCtrl.isInvalid(); }
+    EnableSubmitBtn();
 };
 function toggleCentreDiv(divID, rowID, divText, mTag) {
     var ccTextCtrl = $('#' + mTag + 'CenterCodeText');
@@ -307,7 +322,21 @@ function toggleBranchDiv(divID, rowID, divText, mTag) {
     if (divID == mTag + 'BRMultiDiv') { Ctrl1.isInvalid(); } else { Ctrl1.isValid(); }
 };
 function EnableSubmitBtn() {
-
+    var btnSubmit = $('#btnSubmit');
+    var isenable = false;
+    var editTag = $('#EditTag').val();
+    if (editTag == 1) {
+        $('.mTCValidation').each(function () {
+            if ($(this).html() == 1) { isenable = true; }
+        });
+    } else if (editTag == 2) {
+        if (getDivInvalidCount('other_edit') <= 0) { isenable = true; }
+    } 
+    if (isenable) {
+        if (getDivInvalidCount('mHdrDiv') > 0) { isenable = false; }
+        if (getDivInvalidCount('mOptionDiv') > 0) { isenable = false; }
+    }
+    if (isenable) { btnSubmit.makeEnabled(); } else { btnSubmit.makeDisable(); }
 };
 function RemoveBtnClicked() {
     var tblRow = RemoveBtnClicked.caller.arguments[0].target.closest('.add-row');
@@ -386,11 +415,6 @@ function btnSubmitClicked() {
         },
     });
 };
-$(document).ready(function () {
-    (async function () {
-        const r1 = await getMultiselectData('CRTourCategory', '/ETSEdit/GetTourCategories');
-    })();
-});
 $(document).ready(function () {
     $('#btnBack').click(function () {
         var backbtnactive = $('#BackBtnActive').val();
