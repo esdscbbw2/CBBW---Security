@@ -44,11 +44,14 @@ namespace CBBW.Areas.Security.Controllers
             {
                 return RedirectToAction("IndividualEdit");
             }
-            //else if (PageID == 3)
-            //{
-            //    //TempData["EHGApp"] = null;
-            //    //return RedirectToAction("ApproveNote");
-            //}
+            else if (PageID == 3)
+            {
+                return RedirectToAction("ApproveNote");
+            }
+            else if (PageID == 4)
+            {
+                return RedirectToAction("RatNote");
+            }
             else
             {
                 TempData["EHGEdit"] = null;
@@ -58,13 +61,194 @@ namespace CBBW.Areas.Security.Controllers
         public ActionResult AddNote(int ID)
         {
             TempData["EHGEdit"] = null;
-            TempData["EHGEditApp"] = null;
+            //TempData["EHGEditApp"] = null;
             if (ID == 0) { return RedirectToAction("Create"); }
-            else { return RedirectToAction("ApproveNote"); }
+            else if (ID == 1) { return RedirectToAction("ApproveNote"); }
+            else { return RedirectToAction("RatNote"); }
+        }
+        public ActionResult RatNote() 
+        {
+            model = CastEHGEditRatTempData();
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult RatNote(ETSEditCreateVM modelobj, string Submit)
+        {
+            model = CastEHGEditRatTempData();
+            modelobj.ToBeEditNoteList = model.ToBeEditNoteList;
+            modelobj.backbtnactive = 0;
+            if (Submit == "TED")
+            {
+                modelobj.btnTourEdit = 1;
+                TempData["EHGEdit"] = modelobj;
+                _iUser.RecordCallBack("/Security/ETSEdit/RatNote");
+                return RedirectToAction("ViewTourEdit", "ETSEdit", new { NoteNumber = modelobj.NoteNumber, CBUID = 2 });
+            }
+            else if (Submit == "IED")
+            {
+                modelobj.btnIndividualEdit = 1;
+                TempData["EHGEdit"] = modelobj;
+                _iUser.RecordCallBack("/Security/ETSEdit/RatNote");
+                return RedirectToAction("ViewIndividualEdit", "ETSEdit", new { NoteNumber = modelobj.NoteNumber, CBUID = 2 });
+            }
+            else if (Submit == "create")
+            {
+                if (_IETSEdit.SetETSEditRatificationStatus(modelobj.NoteNumber, modelobj.IsApproved == 1 ? true : false, modelobj.AppReason, user.EmployeeNumber, ref pMsg))
+                {
+                    ViewBag.Msg = "Note Number " + modelobj.NoteNumber + " Ratified Successfully.";
+                    TempData["EHGEdit"] = null;
+                }
+                else
+                {
+                    ViewBag.ErrMsg = "Ratification Failed For Note Number " + modelobj.NoteNumber;
+                    TempData["EHGEdit"] = modelobj;
+                }
+            }
+            return View(modelobj);
+        }
+        public ActionResult ApproveNote() 
+        {
+            model = CastEHGEditAppTempData();
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult ApproveNote(ETSEditCreateVM modelobj, string Submit)
+        {
+            model = CastEHGEditTempData();
+            modelobj.ToBeEditNoteList = model.ToBeEditNoteList;
+            modelobj.backbtnactive = 0;            
+            if (Submit == "TED")
+            {
+                modelobj.btnTourEdit = 1;
+                TempData["EHGEdit"] = modelobj;
+                _iUser.RecordCallBack("/Security/ETSEdit/ApproveNote");
+                return RedirectToAction("ViewTourEdit", "ETSEdit", new { NoteNumber = modelobj.NoteNumber, CBUID = 1 });
+            }
+            else if (Submit == "IED")
+            {
+                modelobj.btnIndividualEdit = 1;
+                TempData["EHGEdit"] = modelobj;
+                _iUser.RecordCallBack("/Security/ETSEdit/ApproveNote");
+                return RedirectToAction("ViewIndividualEdit", "ETSEdit", new { NoteNumber = modelobj.NoteNumber, CBUID = 1 });
+            }
+            else if (Submit == "create")
+            {
+                if (_IETSEdit.SetETSEditAppStatus(modelobj.NoteNumber,modelobj.IsApproved==1?true:false,modelobj.AppReason,user.EmployeeNumber, ref pMsg))
+                {
+                    ViewBag.Msg = "Note Number " + modelobj.NoteNumber + " Approved Successfully.";
+                    TempData["EHGEdit"] = null;
+                }
+                else
+                {
+                    ViewBag.ErrMsg = "Approval Failed For Note Number " + modelobj.NoteNumber;
+                    TempData["EHGEdit"] = modelobj;
+                }
+            }            
+            return View(modelobj);
         }
         public ActionResult Index()
         {
             return View();
+        }
+        public ActionResult ApprovalIndex() 
+        {
+            return View();
+        }
+        public ActionResult RatificationIndex()
+        {
+            return View();
+        }
+        public ActionResult ViewNoteRat(string NoteNumber, int CBUID = 0) 
+        {
+            if (CBUID == 0) { ViewBag.HeaderText = "- EDIT"; _iUser.RecordCallBack("/Security/ETSEdit/RatificationIndex"); }
+            else if (CBUID == 1) { ViewBag.HeaderText = "EDIT - APPROVAL"; }
+            else if (CBUID == 2) { ViewBag.HeaderText = "EDIT - RATIFICATION"; }
+            ETSEditViewVM modelobj = new ETSEditViewVM();
+            modelobj.CBUID = CBUID;
+            modelobj.NoteNumber = NoteNumber;
+            if (!string.IsNullOrEmpty(NoteNumber))
+            {
+                string notetag = NoteNumber.Substring(7, 3);
+                switch (notetag)
+                {
+                    case "EHG":
+                        modelobj.NoteDescription = "Ref. Employee’s Travelling  Details & Vehicle Allotment (By HG)  –  ENTRY Note No.";
+                        break;
+                    case "EZB":
+                        modelobj.NoteDescription = "Ref. Employees Travelling  Schedule Details – ENTRY (FOR NZB STAFF) Note No.";
+                        break;
+                    case "EMN":
+                        modelobj.NoteDescription = "Ref. Employees Travelling  Schedule Details – ENTRY (FOR MFG. CENTERS RECORDED AT NZB) Note No.";
+                        break;
+                    default:
+                        modelobj.NoteDescription = "Ref. Employees Travelling  Schedule Details – ENTRY (FOR MFG. CENTERS) Note No.";
+                        break;
+                }
+                modelobj.NoteDetails = _IETSEdit.getEditNoteHdr(NoteNumber, ref pMsg);
+            }
+            return View(modelobj);
+        }
+        [HttpPost]
+        public ActionResult ViewNoteRat(ETSEditViewVM modelobj, string Submit)
+        {
+            string baseUrl = "/Security/ETSEdit/ViewNoteRat?NoteNumber=" + modelobj.NoteNumber + "&CBUID=" + modelobj.CBUID;
+            if (Submit == "TourEditBtn")
+            {
+                _iUser.RecordCallBack(baseUrl);
+                return RedirectToAction("ViewTourEdit", "ETSEdit", new { NoteNumber = modelobj.NoteNumber, CBUID = modelobj.CBUID });
+            }
+            else if (Submit == "IndividualEditBtn")
+            {
+                _iUser.RecordCallBack(baseUrl);
+                return RedirectToAction("ViewIndividualEdit", "ETSEdit", new { NoteNumber = modelobj.NoteNumber, CBUID = modelobj.CBUID });
+            }
+            return View(modelobj);
+        }
+        public ActionResult ViewNoteApp(string NoteNumber, int CBUID = 0) 
+        {
+            if (CBUID == 0) { ViewBag.HeaderText = "- EDIT"; _iUser.RecordCallBack("/Security/ETSEdit/ApprovalIndex"); }
+            else if (CBUID == 1) { ViewBag.HeaderText = "EDIT - APPROVAL"; }
+            else if (CBUID == 2) { ViewBag.HeaderText = "EDIT - RATIFICATION"; }
+            ETSEditViewVM modelobj = new ETSEditViewVM();
+            modelobj.CBUID = CBUID;
+            modelobj.NoteNumber = NoteNumber;
+            if (!string.IsNullOrEmpty(NoteNumber))
+            {
+                string notetag = NoteNumber.Substring(7, 3);
+                switch (notetag)
+                {
+                    case "EHG":
+                        modelobj.NoteDescription = "Ref. Employee’s Travelling  Details & Vehicle Allotment (By HG)  –  ENTRY Note No.";
+                        break;
+                    case "EZB":
+                        modelobj.NoteDescription = "Ref. Employees Travelling  Schedule Details – ENTRY (FOR NZB STAFF) Note No.";
+                        break;
+                    case "EMN":
+                        modelobj.NoteDescription = "Ref. Employees Travelling  Schedule Details – ENTRY (FOR MFG. CENTERS RECORDED AT NZB) Note No.";
+                        break;
+                    default:
+                        modelobj.NoteDescription = "Ref. Employees Travelling  Schedule Details – ENTRY (FOR MFG. CENTERS) Note No.";
+                        break;
+                }
+                modelobj.NoteDetails = _IETSEdit.getEditNoteHdr(NoteNumber, ref pMsg);
+            }
+            return View(modelobj);
+        }
+        [HttpPost]
+        public ActionResult ViewNoteApp(ETSEditViewVM modelobj, string Submit) 
+        {
+            string baseUrl = "/Security/ETSEdit/ViewNoteApp?NoteNumber=" + modelobj.NoteNumber + "&CBUID=" + modelobj.CBUID;
+            if (Submit == "TourEditBtn")
+            {
+                _iUser.RecordCallBack(baseUrl);
+                return RedirectToAction("ViewTourEdit", "ETSEdit", new { NoteNumber = modelobj.NoteNumber, CBUID = modelobj.CBUID });
+            }
+            else if (Submit == "IndividualEditBtn")
+            {
+                _iUser.RecordCallBack(baseUrl);
+                return RedirectToAction("ViewIndividualEdit", "ETSEdit", new { NoteNumber = modelobj.NoteNumber, CBUID = modelobj.CBUID });
+            }
+            return View(modelobj);
         }
         public ActionResult ViewNote(string NoteNumber, int CanDelete = 0, int CBUID = 0) 
         {
@@ -220,7 +404,7 @@ namespace CBBW.Areas.Security.Controllers
                 }
                 else 
                 {
-                    ViewBag.ErrMsg = "Updation Failed For Note Number " + modelobj.NoteNumber;
+                    ViewBag.ErrMsg = "Updation Failed For Note Number " + modelobj.NoteNumber+ " Due To : "+ pMsg;
                 }
             }
             return View(modelobj);
@@ -395,6 +579,38 @@ namespace CBBW.Areas.Security.Controllers
             if (model.ToBeEditNoteList == null)
                 model.ToBeEditNoteList = _IETSEdit.getETSNoteListToBeEdited(user.CentreCode, ref pMsg);
             
+            TempData["EHGEdit"] = model;
+            return model;
+        }
+        private ETSEditCreateVM CastEHGEditAppTempData()
+        {
+            if (TempData["EHGEdit"] != null)
+            {
+                model = TempData["EHGEdit"] as ETSEditCreateVM;
+            }
+            else
+            {
+                model = new ETSEditCreateVM();
+            }
+            if (model.ToBeEditNoteList == null)
+                model.ToBeEditNoteList = _IETSEdit.getETSEditNoteListForDropDown(user.CentreCode,1, ref pMsg);
+
+            TempData["EHGEdit"] = model;
+            return model;
+        }
+        private ETSEditCreateVM CastEHGEditRatTempData()
+        {
+            if (TempData["EHGEdit"] != null)
+            {
+                model = TempData["EHGEdit"] as ETSEditCreateVM;
+            }
+            else
+            {
+                model = new ETSEditCreateVM();
+            }
+            if (model.ToBeEditNoteList == null)
+                model.ToBeEditNoteList = _IETSEdit.getETSEditNoteListForDropDown(user.CentreCode, 2, ref pMsg);
+
             TempData["EHGEdit"] = model;
             return model;
         }

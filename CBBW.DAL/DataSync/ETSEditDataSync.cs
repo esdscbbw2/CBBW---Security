@@ -221,7 +221,7 @@ namespace CBBW.DAL.DataSync
                 para[paracount] = new SqlParameter("@IsApproved", SqlDbType.Bit);
                 para[paracount++].Value = IsApproved;
                 para[paracount] = new SqlParameter("@ReasonForDisApproval", SqlDbType.NVarChar);
-                para[paracount++].Value = ReasonForDisApproval;
+                para[paracount++].Value = string.IsNullOrEmpty(ReasonForDisApproval) ? " " : ReasonForDisApproval;
                 para[paracount] = new SqlParameter("@ApproverID", SqlDbType.Int);
                 para[paracount++].Value = ApproverID;
                 using (SQLHelper sql = new SQLHelper("[ETS].[SetETSEditRatificationStatus]", CommandType.StoredProcedure))
@@ -242,7 +242,7 @@ namespace CBBW.DAL.DataSync
                 para[paracount] = new SqlParameter("@IsApproved", SqlDbType.Bit);
                 para[paracount++].Value = IsApproved;
                 para[paracount] = new SqlParameter("@ReasonForDisApproval", SqlDbType.NVarChar);
-                para[paracount++].Value = ReasonForDisApproval;
+                para[paracount++].Value = string.IsNullOrEmpty(ReasonForDisApproval)?" ": ReasonForDisApproval;
                 para[paracount] = new SqlParameter("@ApproverID", SqlDbType.Int);
                 para[paracount++].Value = ApproverID;
                 using (SQLHelper sql = new SQLHelper("[ETS].[SetETSEditAppStatus]", CommandType.StoredProcedure))

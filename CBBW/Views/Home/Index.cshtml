@@ -134,12 +134,52 @@
                             @Html.ActionLink("ETS-NZB-RATIFICATION", "RTFNIndex", "ETS", new { area = "Security" }, null)
                         </td>
                     </tr>
+			<tr>
+                        <td style="border:1px solid black">
+                            EMN-FOR MFG.CENTERS RECORDED AT NZB
+                        </td>
+                        <td style="border:1px solid black">
+                            @Html.ActionLink("EMN-NZB-Entry", "Index", "EMN", new { area = "Security" }, null)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black">
+                            EMN-MFG.CENTERS NZB-Approval
+                        </td>
+                        <td style="border:1px solid black">
+                            @Html.ActionLink("EMN-NZB-Approval", "EMNNoteApproveList", "EMN", new { area = "Security" }, null)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black">
+                            EMN-MFG.CENTERS NZB-RATIFICATION
+                        </td>
+                        <td style="border:1px solid black">
+                            @Html.ActionLink("EMN-NZB-RATIFICATION", "RTFNIndex", "EMN", new { area = "Security" }, null)
+                        </td>
+                    </tr>
                     <tr>
                         <td style="border:1px solid black">
                             ETS-Edit Notes
                         </td>
                         <td style="border:1px solid black">
                             @Html.ActionLink("ETS-Edit", "Index", "ETSEdit", new { area = "Security" }, null)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black">
+                            ETS-Edit Notes
+                        </td>
+                        <td style="border:1px solid black">
+                            @Html.ActionLink("ETS-Edit Approval", "ApprovalIndex", "ETSEdit", new { area = "Security" }, null)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black">
+                            ETS-Edit Notes
+                        </td>
+                        <td style="border:1px solid black">
+                            @Html.ActionLink("ETS-Edit Ratification", "RatificationIndex", "ETSEdit", new { area = "Security" }, null)
                         </td>
                     </tr>
                 </table>

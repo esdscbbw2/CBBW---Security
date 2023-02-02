@@ -1,0 +1,263 @@
+﻿@using System.Globalization;
+@using CBBW.Areas.Security.ViewModel.ETSEdit;
+@model ETSEditCreateVM
+@{
+    ViewBag.Title = "Employees Travelling Schedule Details – EDIT";
+}
+<div id="IndEditDiv" class="inVisible">
+
+</div>
+<div class="row newTable" id="MainDiv">
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(m => m.btnIndividualEdit)
+        @Html.HiddenFor(m => m.btnTourEdit)
+        @Html.HiddenFor(m => m.backbtnactive)
+        <div class="fixedElement">
+            <div class="col-md-12">
+                <div class="heading_text_btn mb-3 mt-4">
+                    <div class="leftButton">
+                        <button id="btnBack" type="button"
+                                class="btn btn-primary me-2">
+                            <i data-feather="arrow-left-circle"></i>
+                            Back
+                        </button>
+                        <button id="SubmitBtn" type="submit" name="Submit" value="create" disabled
+                                class="btn btn-secondary me-2">
+                            <i data-feather="upload"></i>
+                            Submit
+                        </button>
+                        <button type="button" class="btn btn-white"
+                                onclick="window.location.href='/Security/ETSEdit/ClearBtnClicked?PageID=3';">
+                            <i data-feather="x-circle"></i>
+                            Clear
+                        </button>
+                    </div>
+                    <h2>Employees Travelling  Schedule Details EDIT - APPROVAL  </h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="text-center  pt-2 pb-2">
+                <div class="upper-tab-buttons">
+                    <button type="button" class="btn btn-primary me-2" onclick="window.location.href='#';">
+                        To Check  “Tour Rules”   Click Here
+                    </button>
+                    <button type="button" class="btn btn-primary " onclick="window.location.href='#';">
+                        To Check “TA & DA Rules”   Click Here
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 mb-4">
+            <div class="card mb-4 mt-4">
+                <div class="card-body approvalForm">
+                    <div class="row d-flex align-items-center mb-4">
+                        <div class="col-md-4">
+                            @Html.DropDownListFor(m => m.NoteNumber,
+                            new SelectList(Model.ToBeEditNoteList, "NoteNumber", "NoteNumber"), "Select Ref. Note No.",
+                            htmlAttributes: new
+                            {
+                                @class = "form-select pointer is-invalid",
+                                onchange = "NotenumberChanged()"
+                            })
+                        </div>
+                        <div class="col-md-8">
+                            <div>
+                                <div class="row">
+                                    <label id="lblNoteDesc" class="col-form-label col-md-5">
+                                    </label>
+                                    <label class="col-form-label col-md-1">
+                                        Date  :
+                                    </label>
+                                    <div class="col-md-2">
+                                        <input id="NoteEntryDate" type="text" class="form-control" disabled>
+                                    </div>
+                                    <label class="col-form-label col-md-1">
+                                        Time  :
+                                    </label>
+                                    <div class="col-md-2">
+                                        <input id="NoteEntryTime" type="text" class="form-control" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="row d-flex align-items-center mb-4">
+                            <label class="col-form-label col-md-2">Center Code & Name : </label>
+                            <div class="col-md-6">
+                                <input id="CentreCodenName" type="text" class="form-control" disabled>
+                            </div>
+                        </div>
+                        <div class="row d-flex align-items-center mb-4 mr-15">
+                            <label class="col-form-label col-md-2">Tour “Purpose Of Allotment” : </label>
+                            <div class="col-md-6">
+                                <input id="TripPurpose" type="text" class="form-control" disabled>
+                            </div>
+                        </div>
+                        <div class="row d-flex align-items-center mb-4 mr-15">
+                            <label class="col-form-label col-md-2">Is E.P Tour : </label>
+                            <div class="col-md-6">
+                                <input id="EPTourStatus" type="text" class="form-control" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-4 mt-4">
+                <div class="card-body approvalForm alert alert-danger text-dark">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-md-2 col-form-label">
+                            <label>Ratified :</label>
+                        </div>
+                        <div class="col-md-2">
+                            <input id="ratStat" type="text" class="form-control" disabled>
+                        </div>
+                        <div class="col-md-2 col-form-label">
+                            <label>Date & Time Of  Ratification :</label>
+                        </div>
+                        <div class="col-md-2">
+                            <input id="RatDT" type="text" class="form-control" disabled="">
+                        </div>
+                        <div class="col-md-2 col-form-label">
+                            <label>Reason If Not Ratified :</label>
+                        </div>
+                        <div class="col-md-2">
+                            <textarea name="" id="ratReason" cols="10" rows="2" class="form-control" disabled>-</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="d-flex justify-content-center mt-4">
+                    <button id="TourEditBtn" disabled
+                            type="submit" name="Submit" value="TED"
+                            class="btn btn-primary me-2">
+                        Tour EDIT Details
+                    </button>
+                    <button id="IndEditBtn" disabled
+                            type="submit" name="Submit" value="IED"
+                            class="btn btn-primary me-2">
+                        Individual EDIT Details
+                    </button>
+                </div>
+            </div>
+            <div class="bgColor mt-4 bg-transparent text-left">
+                <ul style="list-style:none;">
+                    <li style="font-size: 16px;">
+                        It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
+                        <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                    </li>
+                </ul>
+            </div>
+            <div class="bgColor mt-4 bg-transparent text-left">
+                <ul style="list-style:none;">
+                    <li style="font-size: 16px;">
+                        The EDIT Is Done As Per Policy & As Required :
+                        <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                    </li>
+                </ul>
+            </div>
+            <div id="Option1Div" class="bgColor mt-4 bg-transparent content border-red text-left">
+                <ul style="list-style:none;">
+                    <li style="font-size: 16px;">
+                        The EDITED Tour Schedule Is Approved / Rejected After Written Information & Consent Of COO. When Ever Required, Mail Shall Be Produced:
+                        <select class="form-select content is-invalid" 
+                                aria-label="Default select example" 
+                                onchange="AsPerPolicyOptionChanged()">
+                            <option selected=""> -</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
+            <div id="YNOptionDiv" class="card mt-4 mb-4">
+                <div class="card-body alert alert-danger  approvalForm text-dark ">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-md-2 col-form-label">
+                            <label>Approved :</label>
+                        </div>
+                        <div class="col-md-2">
+                            @Html.DropDownListFor(m => m.IsApproved,
+                       new[] {
+                           new SelectListItem { Text = "-", Value = "-1" },
+                           new SelectListItem { Text = "Yes", Value = "1" },
+                           new SelectListItem { Text = "No", Value = "0" }},
+                       htmlAttributes: new
+                       {
+                           @class = "form-select pointer is-invalid",
+                           @onchange = "ValidateAppStatus()",
+                           //disabled = "disabled"
+                       })
+                        </div>
+                        <div class="col-md-2 col-form-label">
+                            <label>Date &amp; Time Of Approval :</label>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" value="@DateTime.Now.ToString("dd/MM/yyyy hh:mm tt",CultureInfo.InvariantCulture)" disabled="">
+                        </div>
+                        <div class="col-md-2 col-form-label">
+                            <label>Reason If Not Approved :</label>
+                        </div>
+                        <div class="col-md-2">
+                            @Html.TextAreaFor(m => m.AppReason,
+                            htmlAttributes: new
+                            {
+                                @class = "form-control",
+                                rows = "3",
+                                type = "text",
+                                onblur = "ValidateAppReason()",
+                                disabled = "disabled"
+                            })
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@section headers
+{
+
+}
+@section scripts{
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/ETSEdit/ETSEditApprovalJS.js"></script>
+    <script>
+        if ('@ViewBag.ErrMsg' != '') {
+                Swal.fire({
+                    title: 'Failed to submit',
+                    text: "@ViewBag.ErrMsg",
+                    icon: 'warning',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        //cancel: 'Cancel',
+                        confirm: 'Ok'
+                    },
+                    //cancelButtonClass: 'btn-cancel',
+                    confirmButtonColor: '#2527a2',
+                });
+            };
+        if ('@ViewBag.Msg' != '') {
+                Swal.fire({
+                    title: 'Confirmation',
+                    text: "@ViewBag.Msg",
+                    icon: 'success',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        confirm: 'Ok'
+                    },
+                    confirmButtonColor: '#2527a2',
+                }).then(callback);
+                function callback(result) {
+                    if (result.value) {
+                        var url = "/Security/ETSEdit/ApprovalIndex";
+                        window.location.href = url;
+                    }
+                }
+            };
+    </script>
+}

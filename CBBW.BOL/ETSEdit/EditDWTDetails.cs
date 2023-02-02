@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CBBW.BOL.CustomModels;
 
 namespace CBBW.BOL.ETSEdit
 {
@@ -35,5 +36,7 @@ namespace CBBW.BOL.ETSEdit
         public int EditTag { get; set; }
         public string EditTagText { get; set; }
         public string EditReason { get; set; }
+        public List<CustomComboOptions> TourCategories { get; set; }
+        public int IsEditable { get; set; }
     }
 }

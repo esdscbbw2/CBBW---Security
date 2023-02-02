@@ -18,5 +18,8 @@ namespace CBBW.Areas.Security.ViewModel.ETSEdit
         public List<EditDWTDetails> BaseDWTDetailsHistory { get; set; }
         public List<int> EditSequence { get; set; }
         public int MaxRowID { get; set; }
+        public int SelectedPersonType { get; set; }
+        public int SelectedPersonID { get; set; }
+        public string SelectedPersonName { get; set; }
     }
 }

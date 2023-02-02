@@ -17,6 +17,7 @@ namespace CBBW.Areas.Security.ViewModel.ETSEdit
             TourCategoryForEdit = master.TourCategoryForEdit;
             EditTags = master.EditTag;
             IndividualEditTags = master.IndividualEditTag;
+            IsApproved = -1;
         }  
         public string NoteNumber { get; set; }
         public int EditTag { get; set; }
@@ -38,5 +39,7 @@ namespace CBBW.Areas.Security.ViewModel.ETSEdit
         public int SelectedPersonType { get; set; }
         public int SelectedPersonID { get; set; }
         public string SelectedPersonName { get; set; }
+        public int IsApproved { get; set; }
+        public string AppReason { get; set; }
     }
 }

@@ -1,0 +1,196 @@
+﻿@using CBBW.Areas.Security.ViewModel.ETSEdit;
+@model ETSEditViewVM
+@{
+    ViewBag.Title = "Employees Travelling Schedule Details – EDIT";
+}
+<div class="row newTable">
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(m => m.NoteNumber)
+        @Html.HiddenFor(m => m.DeleteBtn)
+        @Html.HiddenFor(m => m.CBUID)
+        <div class="fixedElement">
+            <div class="col-md-12">
+                <div class="heading_text_btn mb-3 mt-4">
+                    <div class="leftButton">
+                        <button id="btnBack" type="button"
+                                class="btn btn-primary me-2">
+                            <i data-feather="arrow-left-circle"></i>
+                            Back
+                        </button>
+                        @*<button type="submit" name="Submit" value="Delete"
+                                class="btn btn-primary me-2">
+                            <i data-feather="trash-2"></i>
+                            Delete
+                        </button>*@
+                    </div>
+                    <h2>Employees Travelling  Schedule Details @ViewBag.HeaderText </h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="text-center pt-2 pb-2">
+                <div class="upper-tab-buttons">
+                    <button type="button" class="btn btn-primary me-2" onclick="window.location.href='#';">
+                        To Check  “Tour Rules”   Click Here
+                    </button>
+                    <button type="button" class="btn btn-primary " onclick="window.location.href='#';">
+                        To Check “TA & DA Rules”   Click Here
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 mb-4">
+            <div class="card mb-4 mt-4">
+                <div class="card-body approvalForm">
+                    <div class="row d-flex align-items-center mb-4">
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" disabled value="@Model.NoteDetails.NoteNumber">
+                        </div>
+                        <div class="col-md-8">
+                            <div id="NZB_staff">
+                                <div class="row">
+                                    <label class="col-form-label col-md-5">
+                                        @Model.NoteDescription
+                                    </label>
+                                    <label class="col-form-label col-md-1">
+                                        Date  :
+                                    </label>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control" value="@Model.NoteDetails.EntryDateDisplay" disabled>
+                                    </div>
+                                    <label class="col-form-label col-md-1">
+                                        Time  :
+                                    </label>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control" value="@Model.NoteDetails.EntryTime" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center mb-4">
+                        <label class="col-form-label col-md-2">Center Code & Name : </label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" value="@Model.NoteDetails.CenterName" disabled>
+                        </div>
+                    </div>
+                    <div id="by_HG_tour_purpose">
+                        <div class="row d-flex align-items-center mb-4 mr-15">
+                            <label class="col-form-label col-md-2">Tour “Purpose Of Allotment” : </label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" value="@Model.NoteDetails.POAText" disabled>
+                            </div>
+                        </div>
+                        <div class="row d-flex align-items-center mb-4 mr-15">
+                            <label class="col-form-label col-md-2">Is E.P Tour : </label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" value="@Model.NoteDetails.EPTourText" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-4 mt-4">
+                <div class="card-body approvalForm alert alert-danger text-dark">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-md-2 col-form-label">
+                            <label>Ratified :</label>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" value="@Model.NoteDetails.IsRatifiedDisplay" disabled="">
+                        </div>
+                        <div class="col-md-2 col-form-label">
+                            <label>Date & Time Of  Ratification :</label>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" value="@Model.NoteDetails.RetDateTimeDisplay" disabled="">
+                        </div>
+                        <div class="col-md-2 col-form-label">
+                            <label>Reason If Not Ratified :</label>
+                        </div>
+                        <div class="col-md-2">
+                            <textarea name="" id="" cols="10" rows="2" class="form-control" disabled>@Model.NoteDetails.RetReason</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="d-flex justify-content-center mt-4">
+                    <button type="submit" name="Submit" value="TourEditBtn"
+                            class="btn btn-primary me-2">
+                        Tour EDIT Details
+                    </button>
+                    <button type="submit" name="Submit" value="IndividualEditBtn"
+                            class="btn btn-primary me-2">
+                        Individual EDIT Details
+                    </button>
+                </div>
+            </div>
+            <div class="bgColor mt-4 bg-transparent text-left">
+                <ul style="list-style:none;">
+                    <li style="font-size: 16px;">
+                        It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
+                        <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                    </li>
+                </ul>
+            </div>
+            <div class="bgColor mt-4 bg-transparent text-left">
+                <ul style="list-style:none;">
+                    <li style="font-size: 16px;">
+                        The EDIT Is Done As Per Policy & As Required :
+                        <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                    </li>
+                </ul>
+            </div>
+            <div class="bgColor mt-4 bg-transparent text-left">
+                <ul style="list-style:none;">
+                    <li style="font-size: 16px;">
+                        The EDITED Tour Schedule Is Approved / Rejected After Written Information & Consent Of COO. When Ever Required, Mail Shall Be Produced:
+                        <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card mt-4 mb-4">
+                <div class="card-body alert alert-danger approvalForm text-dark ">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-md-2 col-form-label">
+                            <label>Approved :</label>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" value="@Model.NoteDetails.IsApprovedDisplay" disabled="">
+                        </div>
+                        <div class="col-md-2 col-form-label">
+                            <label>Date &amp; Time Of Approval :</label>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" value="@Model.NoteDetails.AppDateTimeDisplay" disabled="">
+                        </div>
+                        <div class="col-md-2 col-form-label">
+                            <label>Reason If Not Approved :</label>
+                        </div>
+                        <div class="col-md-2">
+                            <textarea name="" id="" cols="10" rows="2" class="form-control" disabled>@Model.NoteDetails.NotAppReason</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+</div>
+@section headers
+{
+
+}
+@section scripts{
+    <script>
+        $('#btnBack').click(function () {
+            $.ajax({
+                url: "/Security/ETSEdit/BackButtonClicked",
+                success: function (result) { window.location.href = result; }
+            });
+        });
+    </script>    
+}

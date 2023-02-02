@@ -1,0 +1,314 @@
+﻿@using System.Globalization;
+@using CBBW.Areas.Security.ViewModel.EMN;
+@model EMNTravellingDetailsVM
+@{
+
+}
+@Html.HiddenFor(x => x.travDetails.VehicleTypeProvided)
+@Html.HiddenFor(x => x.travDetails.EmpNoName)
+<div class="container">
+    <div class="row newTable">
+        <div class="fixedElement">
+            <div class="col-md-12">
+                <div class="heading_text_btn mb-3 mt-4">
+                    <div class="leftButton">
+                        <button type="button" id="btnBack" class="btn btn-primary me-2">
+                            <i data-feather="arrow-left-circle"></i>
+                            Back
+                        </button>
+                    </div>
+                    <h2>Employees Travelling Schedule Details – Approval (FOR MFG. CENTERS RECORDED AT NZB)</h2>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-12">
+            <div class="heading_text_btn2 d-block mt-4">
+                <h2 class="text-left"> Travelling Details</h2>
+            </div>
+            <div class="heading_text_btn2 d-block mb-2">
+                <h2 class="text-center"> Travelling Details (I) </h2>
+            </div>
+        </div>
+
+        <div class="col-md-12 mb-4">
+            <div class="col-md-12 pt-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive max-content">
+                            <table class="table table-bordered w-100 btnalign" id="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                            Public Transport
+                                        </th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="12%">
+                                            Request For Company Vehicle Type
+
+                                        </th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="10%">
+                                            Reason For Company Vehicle Type Request
+                                        </th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                            Vehicle Type Provided
+                                        </th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="10%">Reason For Vehicle Provided </th>
+                                        <th scope="col" colspan="2" style="text-align: center; vertical-align: middle;">
+                                            Scheduled Tour From
+                                        </th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="9%">
+                                            Scheduled Tour To Date
+                                        </th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="12%">Purpose Of Visit </th>
+
+                                    </tr>
+                                    <tr>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="9%">Date</th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="9%">Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+                                        if (Model.travDetails != null)
+                                        {
+
+
+                                            <tr>
+
+                                                @if (Model.travDetails.PublicTransports == true)
+                                                {
+
+
+                                                    <td class="text-center">Yes</td>
+                                                }
+                                                else
+                                                {
+                                                    <td class="text-center">No</td>
+                                                }
+                                                @if (Model.travDetails.VehicleType == 0)
+                                                {
+                                                    <td class="text-center">
+                                                        NA
+
+                                                    </td>
+                                                }
+                                                else if (Model.travDetails.VehicleType == 1)
+                                                {
+
+
+                                                    <td class="text-center">
+                                                        LV
+
+                                                    </td>
+                                                }
+                                                else if (Model.travDetails.VehicleType == 2)
+                                                {
+                                                    <td class="text-center">
+                                                        2 wheeler
+
+                                                    </td>
+                                                }
+
+                                                <td class="text-center">
+                                                    @Model.travDetails.ReasonVehicleReq
+
+                                                </td>
+
+                                                @if (Model.travDetails.VehicleTypeProvided == 1)
+                                                {
+
+
+                                                    <td class="text-center">LV</td>
+                                                }
+                                                else if (Model.travDetails.VehicleTypeProvided == 2)
+                                                {
+
+
+                                                    <td class="text-center"> 2 wheeler</td>
+                                                }
+                                                else if (Model.travDetails.VehicleTypeProvided == 3)
+                                                {
+
+
+                                                    <td class="text-center"> Public Transport</td>
+                                                }
+                                                else
+                                                {
+                                                    <td class="text-center"> NA</td>
+                                                }
+
+
+                                                <td class="text-center">@Model.travDetails.ReasonVehicleProvided</td>
+
+                                                <td class="text-center">
+                                                    @Model.travDetails.SchFromDateDisplay
+
+                                                </td>
+                                                <td class="text-center">
+                                                    @Model.travDetails.SchFromTime
+
+                                                </td>
+                                                <td class="text-center">
+                                                    @Model.travDetails.SchTourToDateDisplay
+                                                </td>
+                                                <td class="text-center">
+                                                    <textarea name="" id="" cols="20" rows="2" class="form-control pointer-default" readonly data-toggle="tooltip" data-placement="bottom">@Model.travDetails.PurposeOfVisit   </textarea>
+                                                </td>
+
+                                            </tr>
+                                        }
+                                    }
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <form class="form-sample form-inline row ms-auto mt-4 pt-3 mb-2">
+                            <div class="row d-flex align-items-center">
+                                <div class="col-form-label col-md-3">
+                                    <label>Authorized Employee No. & Name :</label>
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control" value="@Model.travDetails.EmpNoName" disabled="">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="bgColor mt-4 bg-transparent text-left" id="dateDetails">
+                    <ul style="list-style:none;">
+                        <li style="font-size: 16px;" id="EV">
+                            Even Tough The Person Is Not Eligible For The Vehicle Type As Displayed In The Screen But Still You Are Providing Higher Class Vehicle Type? Are You Sure To Continue With The Vehicle Allotment:
+                            <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                        </li>
+
+                        <li style="font-size: 16px;" id="VA">
+                            Even Tough The Person Is Eligible For Public Transport But Still You Are Providing Company Vehicle? Are You Sure To Continue With The Vehicle Allotment:
+                            <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-md-12 pt-3 mt-3 pb-3">
+                    <div class="heading_text_btn2 d-block mb-2">
+                        <h2 class="text-center">Date Wise Tour – Details (II) </h2>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered w-100 btnalign" id="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" style="text-align: left; vertical-align: middle;">SL. No.</th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="10%"> Scheduled Tour From Date</th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">Scheduled Tour To Date </th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="20%">Tour Category </th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">Center Code & Name </th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">Branch Code & Name </th>
+
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+
+                                    @if (Model != null)
+                                    {
+                                        if (Model.dateTour.Count > 0)
+                                        {
+                                            var sl = 1;
+                                            foreach (var item in Model.dateTour)
+                                            {
+                                                <tr>
+                                                    <td>@sl</td>
+                                                    <td class="text-center">
+                                                        @item.DDSchFromDate
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.DDSchToDate
+
+                                                    </td>
+                                                    <td class="text-center">
+
+                                                        @item.TourCategory
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.CenterCodeName
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.BranchCodeName
+
+                                                    </td>
+
+
+
+                                                </tr>
+                                                sl++;
+                                            }
+                                        }
+                                    }
+
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#btnBack').click(function () {
+                var url = "@ViewBag.BackUrls";
+                var urlbk = url.replace(/&amp;/g, '&');
+                window.location.href = urlbk;
+            });
+        });
+
+        $(document).ready(function () {
+            var emp = $('#travDetails_EmpNoName').val();
+            if ($.trim(emp) == "NA") { emp = 0; }
+            var EmpNo = parseInt($.trim(emp));
+           
+            var mUrl = "/ETS/GetVehicleEligibility?EmployeeNumber=" + EmpNo;
+            $.ajax({
+                url: mUrl,
+                success: function (result) {
+                    GetStatement(result.ID);
+                
+                }
+            });
+        });
+        function GetStatement(EmpNo) {
+            var pVT = $('#travDetails_VehicleTypeProvided').val();
+            var VA = $('#VA');
+            var EV = $('#EV');
+            var dateDetails = $('#dateDetails');
+            dateDetails.show();
+            var mUrl = "/ETS/getVehicleEligibilityStatement?EligibleVT=" + $.trim(EmpNo) + "&ProvidedVT=" + $.trim(pVT);
+            $.ajax({
+                url: mUrl,
+                success: function (result) {
+                   
+                    if ($.trim(result.CStatement) == "1") {
+                        VA.hide();
+                    } else if (result.CStatement == null) {
+                        dateDetails.hide();
+                    }
+                }
+            });
+
+        };
+    </script>
+}

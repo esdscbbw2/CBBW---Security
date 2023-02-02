@@ -35,6 +35,14 @@ $.fn.isValid = function () {
     var that = this;
     that.addClass('is-valid valid').removeClass('is-invalid');
 };
+$.fn.isRed = function () {
+    var that = this;
+    that.addClass('border-red').removeClass('border-green');
+};
+$.fn.isGreen = function () {
+    var that = this;
+    that.addClass('border-green').removeClass('border-red');
+};
 $.fn.makeVisible = function () {
     var that = this;
     that.removeClass('inVisible');

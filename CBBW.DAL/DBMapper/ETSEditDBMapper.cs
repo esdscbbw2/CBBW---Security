@@ -137,33 +137,33 @@ namespace CBBW.DAL.DBMapper
             EHGMaster master = EHGMaster.GetInstance;
             EditDWTDetails result = new EditDWTDetails();
             if (dr != null)
-                {
-                    if (!DBNull.Value.Equals(dr["NoteNumber"]))
-                        result.NoteNumber = dr["NoteNumber"].ToString();
-                    if (!DBNull.Value.Equals(dr["SchFromDate"]))
-                        result.SchFromDate = DateTime.Parse(dr["SchFromDate"].ToString());
-                    if (!DBNull.Value.Equals(dr["SchToDate"]))
-                        result.SchToDate = DateTime.Parse(dr["SchToDate"].ToString());
-                    if (!DBNull.Value.Equals(dr["EditedTourToDate"]))
-                        result.EditedTourToDate = DateTime.Parse(dr["EditedTourToDate"].ToString());
-                    if (!DBNull.Value.Equals(dr["TourCategoryIds"]))
-                        result.TourCategoryIds = dr["TourCategoryIds"].ToString();
-                    if (!DBNull.Value.Equals(dr["TourCategoryNames"]))
-                        result.TourCategoryNames = dr["TourCategoryNames"].ToString();
-                    if (!DBNull.Value.Equals(dr["TourCenterCodeIds"]))
-                        result.TourCenterCodeIds = dr["TourCenterCodeIds"].ToString();
-                    if (!DBNull.Value.Equals(dr["TourCenterNames"]))
-                        result.TourCenterNames = dr["TourCenterNames"].ToString();
-                    else
-                        result.TourCenterNames = "NA";
-                    if (!DBNull.Value.Equals(dr["BranchCodes"]))
-                        result.BranchCodes = dr["BranchCodes"].ToString();
-                    if (!DBNull.Value.Equals(dr["BranchNames"]))
-                        result.BranchNames = dr["BranchNames"].ToString();
-                    else
-                        result.BranchNames = "NA";
-                    if (!DBNull.Value.Equals(dr["EditSL"]))
-                        result.EditSL = int.Parse(dr["EditSL"].ToString());
+            {
+                if (!DBNull.Value.Equals(dr["NoteNumber"]))
+                    result.NoteNumber = dr["NoteNumber"].ToString();
+                if (!DBNull.Value.Equals(dr["SchFromDate"]))
+                    result.SchFromDate = DateTime.Parse(dr["SchFromDate"].ToString());
+                if (!DBNull.Value.Equals(dr["SchToDate"]))
+                    result.SchToDate = DateTime.Parse(dr["SchToDate"].ToString());
+                if (!DBNull.Value.Equals(dr["EditedTourToDate"]))
+                    result.EditedTourToDate = DateTime.Parse(dr["EditedTourToDate"].ToString());
+                if (!DBNull.Value.Equals(dr["TourCategoryIds"]))
+                    result.TourCategoryIds = dr["TourCategoryIds"].ToString();
+                if (!DBNull.Value.Equals(dr["TourCategoryNames"]))
+                    result.TourCategoryNames = dr["TourCategoryNames"].ToString();
+                if (!DBNull.Value.Equals(dr["TourCenterCodeIds"]))
+                    result.TourCenterCodeIds = dr["TourCenterCodeIds"].ToString();
+                if (!DBNull.Value.Equals(dr["TourCenterNames"]))
+                    result.TourCenterNames = dr["TourCenterNames"].ToString();
+                else
+                    result.TourCenterNames = "NA";
+                if (!DBNull.Value.Equals(dr["BranchCodes"]))
+                    result.BranchCodes = dr["BranchCodes"].ToString();
+                if (!DBNull.Value.Equals(dr["BranchNames"]))
+                    result.BranchNames = dr["BranchNames"].ToString();
+                else
+                    result.BranchNames = "NA";
+                if (!DBNull.Value.Equals(dr["EditSL"]))
+                    result.EditSL = int.Parse(dr["EditSL"].ToString());
                 if (!DBNull.Value.Equals(dr["SourceID"]))
                     result.SourceID = int.Parse(dr["SourceID"].ToString());
                 if (!DBNull.Value.Equals(dr["EditTag"])) 
@@ -175,10 +175,11 @@ namespace CBBW.DAL.DBMapper
                     result.EditReason = dr["ReasonForEdit"].ToString();
 
                 result.SchFromDateDisplay = result.SchFromDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
-                    result.SchToDateDisplay = result.SchToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
-                    result.EditedTourToDateDisplay = result.EditedTourToDate.Year==1?"-":result.EditedTourToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
-                    result.EditedTourToDateStr = result.EditedTourToDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
-                }                        
+                result.SchToDateDisplay = result.SchToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+                result.EditedTourToDateDisplay = result.EditedTourToDate.Year==1?"-":result.EditedTourToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+                result.EditedTourToDateStr = result.EditedTourToDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+            
+            }                        
             return result;
         }
         public EditNoteList Map_EditNoteList(DataRow dr) 

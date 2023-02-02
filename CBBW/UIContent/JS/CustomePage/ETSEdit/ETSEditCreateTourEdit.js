@@ -1,6 +1,9 @@
 ﻿function Option1Changed() {
     var targetCtrl = $(Option1Changed.caller.arguments[0].target);
-    if (targetCtrl.val() == 1) { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
+    var optionDiv = $('#mOptionDiv');
+    if (targetCtrl.val() == 1) {
+        targetCtrl.isValid(); optionDiv.isGreen();
+    } else { targetCtrl.isInvalid(); optionDiv.isRed(); }
     EnableSubmitBtn();
 };
 function ValidateEditDateCtrl() {

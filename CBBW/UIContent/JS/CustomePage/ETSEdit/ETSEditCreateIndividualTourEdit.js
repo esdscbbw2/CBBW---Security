@@ -1,6 +1,9 @@
 ﻿function Option1Changed() {
     var targetCtrl = $(Option1Changed.caller.arguments[0].target);
-    if (targetCtrl.val() == 1) { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
+    var optionDiv = $('#mOptionDiv');
+    if (targetCtrl.val() == 1) {
+        targetCtrl.isValid(); optionDiv.isGreen();
+    } else { targetCtrl.isInvalid(); optionDiv.isRed(); }
     EnableSubmitBtn();
 };
 function ShowHistoryBtnClicked() {
@@ -330,8 +333,10 @@ function EnableSubmitBtn() {
             if ($(this).html() == 1) { isenable = true; }
         });
     } else if (editTag == 2) {
+        //alert(getDivInvalidCount('other_edit'));
         if (getDivInvalidCount('other_edit') <= 0) { isenable = true; }
-    } 
+    }
+    //alert(isenable);
     if (isenable) {
         if (getDivInvalidCount('mHdrDiv') > 0) { isenable = false; }
         if (getDivInvalidCount('mOptionDiv') > 0) { isenable = false; }
