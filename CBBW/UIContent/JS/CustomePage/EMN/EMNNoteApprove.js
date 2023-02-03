@@ -1,7 +1,6 @@
 ﻿$(document).ready(function () {
     $('#NoteNumber').change(function () {
         Notenumberchanged($(this).val());
-
     });
 
     Notenumberchanged($('#NoteNumber').val());
@@ -17,13 +16,13 @@
 });
 function GetEmployeeList(notenumber) {
     (async function () {
-        const r2 = await getDropDownDataWithSelectedValue('CenterCN', 'All Centers', '/Security/EMN/getCenterCodeListFromTravellingPerson?NoteNumber=' + notenumber, 0);
+        const r2 = await getDropDownDataWithSelectedValue('CenterCN', 'All Centers', '/Security/EMN/getCenterCodeListFromTravellingPerson?NoteNumber=' + notenumber, '-1');
     })();
 }
 function Notenumberchanged(notenumber) {
     var noteCtrl = $('#NoteNumber');
     if (notenumber != '') { noteCtrl.isValid(); } else { noteCtrl.isInvalid(); }
-    $('#tbody2').empty();
+    TPTableClear();
     $.ajax({
         url: '/EMN/GetEMNHdrDetails',
         method: 'GET',
@@ -34,13 +33,26 @@ function Notenumberchanged(notenumber) {
                 $('#CenterCodeName').val(item.emnHeader.CenterCodeName);
                 $('#AttachFile').val(item.emnHeader.AttachFile);
                // if ($('#CenterCodeName').val() != "") { $('#btnTravDetails').makeEnabled();}
-                
+                getTravellingPersonData('-1');
             });
         }
     });
     GetEmployeeList(notenumber);
 };
+function TPTableClear() {
+    $("#tbody2").empty();
+    var DDPersonType = $('#DDPersonType');
+    var EmployeeNo = $('#EmployeeNo');
+    var DesgCodenName = $('#DesgCodenName');
+    var EgblVehicleTypeName = $('#EgblVehicleTypeName');
+    var TaDaDenied = $('#TaDaDenied');
+    DDPersonType.html('');
+    EmployeeNo.html('');
+    DesgCodenName.html('');
+    EgblVehicleTypeName.html('');
+    TaDaDenied.html('');
 
+};
 $(document).ready(function () {
     $('#btnViewDoc').click(function () {
         var docfilename = $('#AttachFile').val();
@@ -188,8 +200,6 @@ function SaveDataClicked() {
     });
 
 };
-
-
 function CenterCNChanged() {
     var target = CenterCNChanged.caller.arguments[0].target;
     var targetCtrl = $(target);
@@ -197,7 +207,7 @@ function CenterCNChanged() {
     getTravellingPersonData(mValue);
 };
 async function getTravellingPersonData(CenterCode) {
-    $("#tbody2").empty();
+    TPTableClear();
     $('#btnTravDetails').makeDisable();
     var rowid = 0;
     var TaDa;
@@ -207,12 +217,7 @@ async function getTravellingPersonData(CenterCode) {
     var DesgCodenName = $('#DesgCodenName');
     var EgblVehicleTypeName = $('#EgblVehicleTypeName');
     var TaDaDenied = $('#TaDaDenied');
-    DDPersonType.html('');
-    EmployeeNo.html('');
-    DesgCodenName.html('');
-    EgblVehicleTypeName.html('');
-    TaDaDenied.html('');
-    
+
     $.ajax({
         url: '/EMN/GetTravellingPersonForEMN?NoteNumber=' + NoteNumber + '&CenterCode=' + CenterCode,
         method: 'GET',

@@ -7,27 +7,41 @@
     EnableSubmitBtn();
 };
 function ShowHistoryBtnClicked() {
-    var PType=$('#SelectedPersonType').val();
-    var PID=$('#SelectedPersonID').val();
-    var PName = $('#SelectedPersonName').val();
-    var Notenumber = $("#NoteNumber").val();
-    var iDiv = $('#IndHistoryDiv');
-    var modalDiv = $('#HistoryModal');
-    var dataSourceURL = '/ETSEdit/ShowIndEditHistory?NoteNumber='
-        + Notenumber + '&PersonType=' + PType + '&PersonID=' + PID + '&PersonName=' + PName;    
-    $.ajax({
-        url: dataSourceURL,
-        contentType: 'application/html; charset=utf-8',
-        type: 'GET',
-        dataType: 'html',
-        success:function(result) {
-            iDiv.html(result);
-            modalDiv.modal('show');
-        },
-        error: function (xhr, status) {
-                       
-        }
-    })
+    var PType = $('#SelectedPersonType').val();
+    if (PType > 0) {
+        var PID = $('#SelectedPersonID').val();
+        var PName = $('#SelectedPersonName').val();
+        var Notenumber = $("#NoteNumber").val();
+        var iDiv = $('#IndHistoryDiv');
+        var modalDiv = $('#HistoryModal');
+        var dataSourceURL = '/ETSEdit/ShowIndEditHistory?NoteNumber='
+            + Notenumber + '&PersonType=' + PType + '&PersonID=' + PID + '&PersonName=' + PName;
+        $.ajax({
+            url: dataSourceURL,
+            contentType: 'application/html; charset=utf-8',
+            type: 'GET',
+            dataType: 'html',
+            success: function (result) {
+                iDiv.html(result);
+                modalDiv.modal('show');
+            },
+            error: function (xhr, status) {
+
+            }
+        })
+    }
+    else {
+        Swal.fire({
+            title: 'Error',
+            text: 'Select A Person To View Tour History.',
+            icon: 'error',
+            customClass: 'swal-wide',
+            buttons: {
+                confirm: 'Ok'
+            },
+            confirmButtonColor: '#2527a2',
+        });
+    }    
 };
 function PersonSelectionChanged() {
     var targetCtrl = $(PersonSelectionChanged.caller.arguments[0].target);
@@ -62,46 +76,78 @@ function ValidatePurposeOfEdit() {
     EnableSubmitBtn();
 };
 function EditTagChanged() {
-    var PType = $('#SelectedPersonType').val();
-    var PID = $('#SelectedPersonID').val();
-    var PName = $('#SelectedPersonName').val();
-    var Notenumber = $("#NoteNumber").val();
     var editTagCtrl = $('#EditTag');
-    var editTag = editTagCtrl.val();
-    if (editTag > 0) {
-        editTagCtrl.isValid(); $('#backbtnactive').val(1);
-        if (editTag == 1) {
-            togleDiv('tour_cancel');
-            var iDiv = $('#TCPartialView');
-            var dataSourceURL = '/ETSEdit/TourCancelPartialView?NoteNumber='
-                + Notenumber + '&PersonType=' + PType + '&PersonID=' + PID + '&PersonName=' + PName;
-            $.ajax({
-                url: dataSourceURL,
-                contentType: 'application/html; charset=utf-8',
-                type: 'GET',
-                dataType: 'html',
-                success: function (result) {
-                    iDiv.html(result);
+    var PType = $('#SelectedPersonType').val();
+    if (PType > 0) {
+        var PID = $('#SelectedPersonID').val();
+        var PName = $('#SelectedPersonName').val();
+        var Notenumber = $("#NoteNumber").val();
+        var editTag = editTagCtrl.val();
+        if (editTag > 0) {
+            editTagCtrl.isValid(); $('#backbtnactive').val(1);
+            if (editTag == 1) {
+                if ($('#IsCancelled').val() == 1) {
+                    editTagCtrl.val('0').isInvalid();
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Tour Can Be Cancelled Only Once.',
+                        icon: 'error',
+                        customClass: 'swal-wide',
+                        buttons: {
+                            confirm: 'Ok'
+                        },
+                        confirmButtonColor: '#2527a2',
+                    });
+                    togleDiv('AllDisable');
                 }
-            })
+                else {
+                    togleDiv('tour_cancel');
+                    var iDiv = $('#TCPartialView');
+                    var dataSourceURL = '/ETSEdit/TourCancelPartialView?NoteNumber='
+                        + Notenumber + '&PersonType=' + PType + '&PersonID=' + PID + '&PersonName=' + PName;
+                    $.ajax({
+                        url: dataSourceURL,
+                        contentType: 'application/html; charset=utf-8',
+                        type: 'GET',
+                        dataType: 'html',
+                        success: function (result) {
+                            iDiv.html(result);
+                        }
+                    })
+                }
+
+            }
+            else if (editTag == 2) {
+                togleDiv('other_edit');
+                var iDiv = $('#OEPartialView');
+                var dataSourceURL = '/ETSEdit/TourCancelPartialView?NoteNumber='
+                    + Notenumber + '&PersonType=' + PType + '&PersonID=' + PID + '&PersonName=' + PName + '&Edittagid=2';
+                $.ajax({
+                    url: dataSourceURL,
+                    contentType: 'application/html; charset=utf-8',
+                    type: 'GET',
+                    dataType: 'html',
+                    success: function (result) {
+                        iDiv.html(result);
+                    }
+                })
+            }
         }
-        else if (editTag == 2) {
-            togleDiv('other_edit');
-            var iDiv = $('#OEPartialView');
-            var dataSourceURL = '/ETSEdit/TourCancelPartialView?NoteNumber='
-                + Notenumber + '&PersonType=' + PType + '&PersonID=' + PID + '&PersonName=' + PName +'&Edittagid=2';
-            $.ajax({
-                url: dataSourceURL,
-                contentType: 'application/html; charset=utf-8',
-                type: 'GET',
-                dataType: 'html',
-                success: function (result) {
-                    iDiv.html(result);
-                }
-            })
-        }        
+        else { editTagCtrl.isInvalid(); }
     }
-    else { editTagCtrl.isInvalid(); }
+    else {
+        togleDiv('AllDisable');
+        Swal.fire({
+            title: 'Error',
+            text: 'Select A Person To Proceed Further.',
+            icon: 'error',
+            customClass: 'swal-wide',
+            buttons: {
+                confirm: 'Ok'
+            },
+            confirmButtonColor: '#2527a2',
+        });
+    }    
     EnableSubmitBtn();
 };
 function togleDiv(divID) {
@@ -332,9 +378,13 @@ function EnableSubmitBtn() {
         $('.mTCValidation').each(function () {
             if ($(this).html() == 1) { isenable = true; }
         });
-    } else if (editTag == 2) {
-        //alert(getDivInvalidCount('other_edit'));
-        if (getDivInvalidCount('other_edit') <= 0) { isenable = true; }
+    }
+    else if (editTag == 2) {
+        var x = 0;
+        $('.mEditStatTag').each(function () {
+            if ($(this).html() == 1) { x = 1; }
+        });
+        if (x==1 && getDivInvalidCount('other_edit') <= 0) { isenable = true; }
     }
     //alert(isenable);
     if (isenable) {

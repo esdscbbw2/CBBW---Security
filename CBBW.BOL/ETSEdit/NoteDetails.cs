@@ -40,5 +40,6 @@ namespace CBBW.BOL.ETSEdit
         public DateTime RetDateTime { get; set; }
         public string RetDateTimeDisplay { get; set; }
         public string RetReason { get; set; }
+        public int IsCancelled { get; set; }
     }
 }

@@ -48,13 +48,14 @@ function DDPersonTypeChanged() {
     var tblRow = target.closest('.add-row');
     var targetCtrl = $(target);
     var docname = $('#emnHeader_AttachFile').val();
+    var CenterCN = $('#CenterCN').val();
     if (docname != '') {
     var targetindexid = target.closest('.add-row');
     var targetid = targetCtrl.attr('id');
     var mValue = targetCtrl.val();
         var selectvalue = 0;
         var Empval = "";
-        GetDDPersonTypeChanged(targetid, mValue, selectvalue, Empval);
+        GetDDPersonTypeChanged(targetid, mValue, selectvalue, Empval, CenterCN);
     if (mValue > 0) { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
         EnableAddBtn(tblRow, 'AddBtn');
     } else {
@@ -72,14 +73,16 @@ function DDPersonTypeChanged() {
     }
 
 };
-function GetDDPersonTypeChanged(targetid, mValue, selectedvalue, Empval) {
+function GetDDPersonTypeChanged(targetid, mValue, selectedvalue, Empval,mCentreCode) {
     var cmbCtrl = $('#cmb' + targetid);
     var txtCtrl = $('#txt' + targetid);
+    var centreCode = mCentreCode;
+    if (centreCode < 0) { centreCode = $('#CenterCN').val();}     
     switch (mValue*1) {
         case 1:
             cmbCtrl.removeClass('inVisible').addClass('pickPersonName').isInvalid();
             txtCtrl.addClass('inVisible').removeClass('pickPersonNametxt').clearValidateClass();
-            getDropDownDataWithSelectedValue('cmb' + targetid, 'Select Employee', '/EHG/GetStaffList', selectedvalue);
+            getDropDownDataWithSelectedValue('cmb' + targetid, 'Select Employee', '/EMN/GetStaffList?CentreCode=' + centreCode, selectedvalue);
             //getDropDownData('cmb' + targetid, 'Select Employee', '/EHG/GetStaffList');
             break;
         case 2:
@@ -149,15 +152,21 @@ function DDPickPersonChanged(x) {
    
 };
 $(document).ready(function () {
+    var centercode = -1;
+    var status = 1;
     var NoteNumber = $('#emnHeader_NoteNumber').val();
     if ($('#Btnsubmit').val() == 0) {
         GetAllCenterCodeList();
     } else if ($('#Btnsubmit').val() == 1) {
-        GetSavedCenterCodeList(NoteNumber);
+
+        GetSavedCenterCodeList(NoteNumber, centercode);
+        $('#CenterCN').isValid();
+        getInitialData(centercode, status);
+
     }
    
     (async function () {
-        const r1 = await getDropDownDataWithSelectedValue('DDPersonType', 'select Person Type', '/Security/ETS/GetPersonTypes', 0);;
+        const r1 = await getDropDownDataWithSelectedValue('DDPersonType', 'select Person Type', '/Security/EMN/GetPersonTypes', 0);;
     })();
     EnableTravellingBtn();
   
@@ -167,10 +176,10 @@ async function GetAllCenterCodeList() {
         const r2 = await getDropDownDataWithSelectedValue('CenterCN', 'select Center Code', '/Security/EMN/GetCenterCodeList', 0);
     })();
 };
-async function GetSavedCenterCodeList(NoteNumber) {
+async function GetSavedCenterCodeList(NoteNumber, centercode) {
 
     (async function () {
-        const r3 = await getDropDownDataWithSelectedValue('CenterCN', 'select Center Code', '/Security/EMN/getCenterCodeListFromTravellingPersonNotActive?NoteNumber='+NoteNumber, 0);
+        const r3 = await getDropDownDataWithSelectedValue('CenterCN', 'Center Codes', '/Security/EMN/getCenterCodeListFromTravellingPersonNotActive?NoteNumber=' + NoteNumber, centercode);
     })();
 };
 function ValidateControl() {
@@ -271,7 +280,8 @@ function getDivInvalidCount(mdivID) {
     //alert(mdivID + ' - ' + x);
     return x;
 };
-function getDesgnCode(rowid, empCode) {
+async function getDesgnCode(rowid, empCode) {
+    
     var actualempcode = 0
     if ($.isNumeric(empCode)) { actualempcode = empCode; }
     var desgCtrl = $('#DesgCodenName');
@@ -294,7 +304,8 @@ function getDesgnCode(rowid, empCode) {
         desgCtrl.html('');
     }
 };
-function GetVehicleEligibility(rowid, empCode) {
+async function GetVehicleEligibility(rowid, empCode) {
+    
     var actualempcode = 0
     if ($.isNumeric(empCode)) { actualempcode = empCode; }
     var VTypeCtrl = $('#EgblVehicleType');
@@ -305,7 +316,7 @@ function GetVehicleEligibility(rowid, empCode) {
         typeCtrlname = $('#EgblVehicleTypeName_' + rowid);
         persontypeCtrl = $('#DDPersonType_' + rowid);
     }
-    var mValue = persontypeCtrl.val() * 1;
+    var mValue = persontypeCtrl.val();
     if (mValue <= 4 && mValue > 0)  {
         var mUrl = "/ETS/GetVehicleEligibility?EmployeeNumber=" + actualempcode;
         $.ajax({
@@ -315,7 +326,6 @@ function GetVehicleEligibility(rowid, empCode) {
                 VTypeCtrl.html(result.ID);
             }
         });
-        
     }
     else {
         typeCtrlname.html('');
@@ -424,39 +434,33 @@ function SaveFinalSubmit() {
             });
         },
     });
-}
-$('#btnBack').click(function () {
-    var backbtnactive = $('#BackBtnActive').val(1);
-    var backurl = "/Security/ETS/Index";
-    if (backbtnactive == 1) {
-        Swal.fire({
-            title: 'Confirmation',
-            text: "Are You Sure Want to Go Back?",
-            icon: 'question',
-            customClass: 'swal-wide',
-            confirmButtonText: "Yes",
-            cancelButtonText: "No",
-            cancelButtonClass: 'btn-cancel',
-            confirmButtonColor: '#2527a2',
-            showCancelButton: true,
-        }).then(callback);
-        function callback(result) {
-            if (result.value) {
-                window.location.href = backurl;
-            }
-        }
-    }
-    else {
-        window.location.href = backurl;
-    }
-});
-$(document).ready(function () {
-    (async function () {
-      //  const r1 = await getInitialData();
-    })();
-
-});
-async function getInitialData(CenterCode) {
+};
+//$('#btnBack').click(function () {
+//    var backbtnactive = $('#BackBtnActive').val(1);
+//    var backurl = "/Security/EMN/Index";
+//    if (backbtnactive == 1) {
+//        Swal.fire({
+//            title: 'Confirmation',
+//            text: "Are You Sure Want to Go Back?",
+//            icon: 'question',
+//            customClass: 'swal-wide',
+//            confirmButtonText: "Yes",
+//            cancelButtonText: "No",
+//            cancelButtonClass: 'btn-cancel',
+//            confirmButtonColor: '#2527a2',
+//            showCancelButton: true,
+//        }).then(callback);
+//        function callback(result) {
+//            if (result.value) {
+//                window.location.href = backurl;
+//            }
+//        }
+//    }
+//    else {
+//        window.location.href = backurl;
+//    }
+//});
+async function getInitialData(CenterCode, status) {
     $("#tbody2").empty();
     var rowid = 0;
     var TaDa;
@@ -470,13 +474,11 @@ async function getInitialData(CenterCode) {
     var TaDaDenied = $('#TaDaDenied');
     var AddBtn = $('#AddBtn');
     $.ajax({
-        url: '/EMN/GetTraveelingPersonReverseData?NoteNumber=' + NoteNumber+'&CenterCode='+CenterCode,
+        url: '/EMN/GetTraveelingPersonReverseData?NoteNumber=' + NoteNumber + '&CenterCode=' + CenterCode + '&status=' + status,
         method: 'GET',
         dataType: 'json',
         success: function (data) {
-          
             $(data).each(function (index, item) {
-               
                     if (item.PersonDtls.length!=0) {
                     $(item.PersonDtls).each(function (indexs, Peritem) {
                         if (indexs > 0) {
@@ -491,17 +493,22 @@ async function getInitialData(CenterCode) {
                             AddBtn = $('#AddBtn_' + rowid);
                         }
 
-                        getDropDownDataWithSelectedValue(DDPersonType.attr('id'), 'select Person Type', '/Security/EHG/GetPersonTypes', Peritem.PersonType);
+                        getDropDownDataWithSelectedValue(DDPersonType.attr('id'), 'select Person Type', '/Security/EMN/GetPersonTypes', Peritem.PersonType);
                         DDPersonType.val(Peritem.PersonType).isValid();
-                        GetDDPersonTypeChanged(DDPersonType.attr('id'), Peritem.PersonType, Peritem.EmployeeNo, Peritem.EmployeeNonName)
+                        GetDDPersonTypeChanged(DDPersonType.attr('id'), Peritem.PersonType, Peritem.EmployeeNo, Peritem.EmployeeNonName, Peritem.CenterCode)
                         cmbDDPersonType.isValid();
                         txtDDPersonType.isValid();
-                        //alert(Peritem.EmployeeNonName);
-                        getDesgnCode(rowid, Peritem.EmployeeNo);
-
-                        GetVehicleEligibility(rowid, Peritem.EmployeeNo);
+                        DesgCodenName.html(Peritem.DesignationCodenName);
+                        EgblVehicleType.html(Peritem.EligibleVehicleType);
+                        EgblVehicleTypeName.html(Peritem.EligibleVehicleTypeName);
+                        //(async function () {
+                        //    const r5 = await getDesgnCode(rowid, Peritem.EmployeeNo);
+                        //})();
                         if (Peritem.TADADenieds == true) { TaDa = 1 } else { TaDa = 0 };
                         TaDaDenied.val(TaDa).isValid();
+                        //(async function () {
+                        //    const r6 = await GetVehicleEligibility(rowid, Peritem.EmployeeNo);
+                        //})();
                         AddBtn.makeDisable();
                         EnableTravellingBtn();
                         EnableTavPersonBtn();
@@ -533,7 +540,7 @@ $('#btnClear').click(function () {
     $('#carryLaptop').val('');
     $('#Policy').val('');
     DDPersonType.val('').isInvalid();
-    GetDDPersonTypeChanged(DDPersonType.attr('id'), mValue, selectvalue, Empval);
+    GetDDPersonTypeChanged(DDPersonType.attr('id'), mValue, selectvalue, Empval,0);
     getDesgnCode(0, 0);
     GetVehicleEligibility(0,0);
     TaDaDenied.val('').isInvalid();
@@ -547,8 +554,12 @@ function CenterCNChanged() {
     var targetCtrl = $(target);
     var mValue = targetCtrl.val();
     var Btnsubmit = $('#Btnsubmit').val();
-    
-    getInitialData(mValue);
+    var status = 0;
+    if (mValue=='-1') {
+        status = 1;
+    }
+   
+    getInitialData(mValue, status);
    // EnableTravellingBtn();
   
 
@@ -560,7 +571,7 @@ function EmptyTPTable() {
     var DDPersonType = $('#DDPersonType');
     var TaDaDenied = $('#TaDaDenied');
     DDPersonType.val('').isInvalid();
-    GetDDPersonTypeChanged(DDPersonType.attr('id'), mValue, selectvalue, Empval);
+    GetDDPersonTypeChanged(DDPersonType.attr('id'), mValue, selectvalue, Empval,0);
     getDesgnCode(0, 0);
     GetVehicleEligibility(0, 0);
     TaDaDenied.val('').isInvalid();

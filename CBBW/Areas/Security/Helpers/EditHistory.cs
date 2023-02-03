@@ -18,7 +18,7 @@ namespace CBBW.Areas.Security.Helpers
             string pMsg="";
             EditHistoryVM model = new EditHistoryVM();
             ETSEditRepository _editRepo = new ETSEditRepository();
-            model.DWTDetailsHistory=_editRepo.getDateWiseTourHistory(NoteNumber, FieldTag, PersonType, PersonID, PersonName, ref pMsg);
+            model.DWTDetailsHistory=_editRepo.getDateWiseTourHistory(NoteNumber, FieldTag, PersonType, PersonID, PersonName, ref pMsg,true);
             if (model.DWTDetailsHistory != null && model.DWTDetailsHistory.Count > 0)
             {
                 model.EditSequence = model.DWTDetailsHistory.Select(o => o.EditSL).Distinct().ToList();                

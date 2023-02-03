@@ -117,12 +117,12 @@ namespace CBBW.DAL.DataSync
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
         public DataSet getCurrentDateWiseTour(string NoteNumber,int FieldTag, 
-            int PersonType,int PersonID,string PersonName, ref string pMsg)
+            int PersonType,int PersonID,string PersonName, ref string pMsg,bool IsActive)
         {
             try
             {
                 int paracount = 0;
-                SqlParameter[] para = new SqlParameter[5];
+                SqlParameter[] para = new SqlParameter[6];
                 para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
                 para[paracount++].Value = NoteNumber;
                 para[paracount] = new SqlParameter("@FieldTag", SqlDbType.Int);
@@ -133,6 +133,8 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = PersonID;
                 para[paracount] = new SqlParameter("@PersonName", SqlDbType.NVarChar,100);
                 para[paracount++].Value = PersonName;
+                para[paracount] = new SqlParameter("@IsActive", SqlDbType.Bit);
+                para[paracount++].Value = true;
                 using (SQLHelper sql = new SQLHelper("[ETS].[getCurrentDateWiseTour]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataSet(para, ref pMsg);

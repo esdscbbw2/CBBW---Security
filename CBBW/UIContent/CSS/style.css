@@ -95,10 +95,11 @@ strong.listingIcon {
 }
 
 .heading_text_btn h2 {
-    font-size: 20px;
+    font-size: 15px;
     margin: 0;
     padding: 0;
     display: block;
+    margin-left: 6rem;
     text-align: center;
 }
 
@@ -1578,4 +1579,7 @@ input[type="date"].valid::before {
     right: 3px;
     bottom: 0px;
     cursor: pointer;
+}
+.max-content-input {
+     width: max-content !important;
 }

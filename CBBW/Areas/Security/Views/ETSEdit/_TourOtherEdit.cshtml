@@ -25,11 +25,11 @@
                 int sl = 1;
                 foreach (var item in Model.DWTDetailsCurrent)
                 {
-                    <tr>
+                    <tr class="@(item.IsEditable==0?"mDivDisable":"")">
                         <td>
                             @sl
                             <div id="EditTagDivOE_@sl" data-name="EditRowTag"
-                                 class="inVisible htmlVal"></div>
+                                 class="inVisible htmlVal mEditStatTag"></div>
                             <div data-name="SourceID"
                                  class="inVisible htmlVal">@item.SourceID</div>
                             </td>
@@ -44,16 +44,23 @@
                             </td>
                             <td class="text-center">
                                 <select id="OETourCategory_@sl" multiple="multiple"
-                                        class="form-select example-getting-started"
+                                        class="form-select example-getting-started form-multi"
                                         onchange="OETourCategoryChanged()"
                                         data-name="TourCategoryIDs" data-name-text="TourCategoryNames"
                                         aria-label="Default select example">
-                                    <option value="1"> Center Visit </option>
-                                    <option value="2"> Branch & Center Visit </option>
-                                    <option value="4"> Branch  Visit  </option>
-                                    <option value="5"> Un Known Destination  </option>
-                                    <option value="3"> Other Place </option>
-                                    <option value="6"> E.P. Tour </option>
+                                    @if (item.TourCategories != null && item.TourCategories.Count > 0)
+                                    {
+                                        foreach (var moption in item.TourCategories)
+                                        {
+                                            <option value="@moption.ID"> @moption.DisplayText</option>
+                                        }
+                                    }
+                                    @*<option value="1"> Center Visit </option>
+        <option value="2"> Branch & Center Visit </option>
+        <option value="4"> Branch  Visit  </option>
+        <option value="5"> Un Known Destination  </option>
+        <option value="3"> Other Place </option>
+        <option value="6"> E.P. Tour </option>*@
                                 </select>
                             </td>
                             <td class="text-center">
@@ -129,6 +136,15 @@
             templates: {
                 button: '<button type="button" class="multiselect dropdown-toggle btn btn-primary w-100 selectBox" data-bs-toggle="dropdown" aria-expanded="false"><span class="multiselect-selected-text"></span></button>',
             },
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $(".mDivDisable").each(function () {
+            $(this).find('.form-select').makeDisable();
+            $(this).find('.form-control').makeDisable();
+            $(this).find('.form-multi').multiselect("disable");
         });
     });
 </script>

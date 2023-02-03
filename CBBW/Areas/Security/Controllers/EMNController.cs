@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using CBBW.Areas.Security.ViewModel.EHG;
 using CBBW.Areas.Security.ViewModel.EMN;
 using CBBW.BLL.IRepository;
 using CBBW.BOL.CTV;
@@ -57,7 +58,8 @@ namespace CBBW.Areas.Security.Controllers
             var result = new
             {
                 iTotalRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
-                iTotalDisplayRecords = noteList.Count(),
+                //iTotalDisplayRecords = noteList.Count(),
+                iTotalDisplayRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
                 iDisplayLength = iDisplayLength,
                 iDisplayStart = iDisplayStart,
                 aaData = noteList
@@ -279,14 +281,14 @@ namespace CBBW.Areas.Security.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
 
         }
-        public JsonResult GetTraveelingPersonReverseData(string NoteNumber,int CenterCode)
+        public JsonResult GetTraveelingPersonReverseData(string NoteNumber,int CenterCode,int status=0)
         {
             EMNHeaderEntryVM modelhdr = new EMNHeaderEntryVM();
             CustomAjaxResponse result = new CustomAjaxResponse();
             List<EMNTravellingPerson> modelTP = new List<EMNTravellingPerson>();
             try
             {
-                modelhdr.PersonDtls = _iEMN.GetEMNTravellingPerson(NoteNumber, CenterCode, ref pMsg);  
+                modelhdr.PersonDtls = _iEMN.GetEMNTravellingPerson(NoteNumber, CenterCode, status, ref pMsg);  
             }
             catch (Exception ex)
             {
@@ -307,7 +309,7 @@ namespace CBBW.Areas.Security.Controllers
                     TdModel = TempData["EMNData"] as EMNTravellingDetailsVM;
                     if (TdModel.btnSubmit == 1)
                     {
-                        TempData["ETSData"] = TdModel;
+                        TempData["EMNData"] = TdModel;
                         TdModel.travDetails = _iEMN.GetEMNTravellingDetails(TdModel.NoteNumber, ref pMsg);
                         TdModel.travDetails.SchFromDateStr = TdModel.travDetails.SchFromDate.ToString("yyyy-MM-dd");
                         TdModel.travDetails.SchTourToDateStr = TdModel.travDetails.SchTourToDate.ToString("yyyy-MM-dd");
@@ -497,11 +499,11 @@ namespace CBBW.Areas.Security.Controllers
             return View(modelvms);
 
         }
-        public JsonResult GetEmployeeNoName(string NoteNo)
+        public JsonResult GetEmployeeNoName(string NoteNo,int status=0)
         {
             EMNHeaderEntryVM result = new EMNHeaderEntryVM();
             List<CustomComboOptionsWithString> resulmn = new List<CustomComboOptionsWithString>();
-            result.PersonDtls = _iEMN.GetEMNTravellingPerson(NoteNo,-1, ref pMsg);
+            result.PersonDtls = _iEMN.GetEMNTravellingPerson(NoteNo,-1, status, ref pMsg);
 
             if (result.PersonDtls != null)
             {
@@ -746,6 +748,13 @@ namespace CBBW.Areas.Security.Controllers
         }
         #endregion
         #region Common Use
+        public JsonResult GetStaffList(int CentreCode)
+        {
+            IEnumerable<CustomComboOptions> result;
+            EHGHeaderEntryVM tempobj = new EHGHeaderEntryVM(true);
+            result = tempobj.getStaffList(CentreCode);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
         public JsonResult GetVehicleTypes(int TypeVal = 0, string PT = null)
         {
             List<CustomComboOptions> result = new List<CustomComboOptions>();
@@ -780,11 +789,19 @@ namespace CBBW.Areas.Security.Controllers
             result.emnHeader = _iEMN.GetEMNHdrEntry(NoteNumber, ref pMsg);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult GetTravellingPersonForEMN(string NoteNumber,int CenterCode)
+        public JsonResult GetTravellingPersonForEMN(string NoteNumber,int CenterCode,int status=0)
         {
             EMNHeaderEntryVM modelhdr = new EMNHeaderEntryVM();
-            modelhdr.PersonDtls = _iEMN.GetEMNTravellingPerson(NoteNumber, CenterCode, ref pMsg);
+            modelhdr.PersonDtls = _iEMN.GetEMNTravellingPerson(NoteNumber, CenterCode, status, ref pMsg);
             return Json(modelhdr.PersonDtls, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetPersonTypes()
+        {
+            List<CustomComboOptions> result = new List<CustomComboOptions>();
+
+            EHGMaster master = EHGMaster.GetInstance;
+            result = master.PersonType.Where(x=> x.ID != 4).ToList();
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult getCenterCodeListFromTravellingPerson(string NoteNumber)
         {

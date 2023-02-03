@@ -104,16 +104,18 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-        public DataTable GetEMNTravellingPerson(string NoteNumber,int CenterCode, ref string pMsg)
+        public DataTable GetEMNTravellingPerson(string NoteNumber,int CenterCode,int status, ref string pMsg)
         {
             try
             {
                 int paracount = 0;
-                SqlParameter[] para = new SqlParameter[2];
+                SqlParameter[] para = new SqlParameter[3];
                 para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
                 para[paracount++].Value = NoteNumber;
                 para[paracount] = new SqlParameter("@CenterCode", SqlDbType.Int);
                 para[paracount++].Value = CenterCode;
+                para[paracount] = new SqlParameter("@status", SqlDbType.Int);
+                para[paracount++].Value = status;
 
                 using (SQLHelper sql = new SQLHelper("[EMN].[getEMNTravellingPerson]", CommandType.StoredProcedure))
                 {

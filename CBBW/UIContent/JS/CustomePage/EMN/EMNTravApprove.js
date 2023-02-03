@@ -33,6 +33,7 @@ async function GetAuthEmployee(selectedval, Vtype) {
     dateDetails.show();
     DropdownCtrl.makeEnabled();
     DropdownCtrl.val('');
+   // DropdownCtrl.isInvalid();
     if (Vtype == "") {
         if (pubTran == 'False') {
             getDropDownDataWithSelectedValue(DropdownCtrl.attr('id'), 'Select', '/Security/EMN/GetEmployeeNoName?Noteno=' + NoteNo, selectedval)
@@ -56,7 +57,7 @@ async function GetAuthEmployee(selectedval, Vtype) {
         EligibleVeh.isValid();
         dateDetails.hide();
     } else {
-        DropdownCtrl.isInvalid();
+       // DropdownCtrl.isInvalid();
         getDropDownDataWithSelectedValue(DropdownCtrl.attr('id'), 'Select', '/Security/EMN/GetEmployeeNoName?Noteno=' + NoteNo, selectedval)
     }
     //  EnableSubmitBtnActive();
@@ -214,20 +215,19 @@ async function getInitialData() {
     var VehicleAlloc = $('#VehicleAlloc');
     var btnSubmit = $('#btnSubmit');
     if (VehicleTypeProvided.val() > 0) {
-        debugger;
         btnSubmit.makeDisable();
         $('#ReasonVehicleProvideds').val(ReasonVehicleProvided.val());
         $('#ReasonVehicleProvideds').isValid();
-
         (async function () {
             const r1 = await GetVechileType(VehicleTypeProvided.val());
             const r2 = await GetAuthEmployee($.trim(EmpNoName.val()), VehicleTypeProvided.val());
         })();
-        EmployeeNonName.isValid();
+       
         GetEmpEligibilty(parseInt($.trim(EmpNoName.val())), VehicleTypeProvided.val());
         VehicleTypeProvideds.isValid();
         EligibleVeh.val('1').isValid();
         VehicleAlloc.val('1').isValid();
+        EmployeeNonName.isValid();
 
     } else {
         (async function () {
@@ -246,8 +246,13 @@ $(function () {
     $("#VehicleTypeProvideds").change(function () {
         var Vtype = $('option:selected', this).val();
         GetAuthEmployee(selectedval, Vtype);
-        EligibleVeh.val(''); EligibleVeh.isInvalid();
-        VehicleAlloc.val(''); VehicleAlloc.isInvalid();
+        EligibleVeh.val('');
+        EligibleVeh.isInvalid();
+        VehicleAlloc.val('');
+        VehicleAlloc.isInvalid();
+        if (Vtype != 3) {
+            $('#EmployeeNonName').isInvalid();
+        }
     });
 });
 $(function () {

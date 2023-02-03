@@ -19,7 +19,7 @@
                     <div class="col-md-12">
                         <div class="heading_text_btn mb-3 mt-4">
                             <div class="leftButton">
-                                <button id="btnBack" type="button" class="btn btn-primary me-2">
+                                <button id="btnBacks" type="button" class="btn btn-primary me-2">
                                     <i data-feather="arrow-left-circle"></i>
                                     Back
                                 </button>
@@ -205,7 +205,7 @@
                                                 <th scope="col" style="text-align: center; vertical-align: middle;">
                                                     T.A & D.A Denied
                                                 </th>
-                                                <th scope="col" style="text-align: center; vertical-align: middle;background-color: pink;color: #000;width: 11%;">
+                                                <th scope="col" style="text-align: center; vertical-align: middle; background-color: pink; color: #000; width: 11%;">
                                                     Actions
                                                 </th>
                                             </tr>
@@ -222,13 +222,13 @@
                                                     </select>
                                                 </td>
                                                 <td class="text-center">
-                                                    <select class="form-select alterID inValidTag pickPersonName xPerson"
+                                                    <select class="form-select max-content-input alterID inValidTag pickPersonName xPerson"
                                                             data-name="EmployeeNo" data-name-text="EmployeeNonNamecmb"
                                                             aria-label="Default select example"
                                                             onchange="DDPickPersonChanged(0)"
                                                             id="cmbDDPersonType">
                                                     </select>
-                                                    <input type="text" maxlength="20" data-name="EmployeeNonName"
+                                                    <input type="text" maxlength="20" style="width: 100%;" data-name="EmployeeNonName"
                                                            class="form-control w-200 inVisible alterID pickPersonNametxt xPerson"
                                                            onblur="DDPickPersonChanged(1)"
                                                            id="txtDDPersonType">
@@ -420,20 +420,15 @@
     </script>
 
     <script>
-        $(document).ready(function () {
-            $('#btnBack').click(function () {
-                var url = "/Security/EMN/Index";
+      
+        $('#btnBacks').click(function () {
+            var url = "/Security/EMN/Index";
                 if ($('#emnHeader_CenterCodeName').val() != "") {
                     Swal.fire({
                         title: 'Confirmation Message',
                         text: "Are You Sure Want to Go Back?",
                         icon: 'question',
                         customClass: 'swal-wide',
-                        setTimeout: 5000,
-                        //buttons: {
-                        //    cancel: 'No',
-                        //    confirm: 'Yes'
-                        //},
                         confirmButtonText: "Yes",
                         cancelButtonText: "No",
                         cancelButtonClass: 'btn-cancel',
@@ -441,27 +436,23 @@
                         showCancelButton: true,
                     }).then(callback);
                     function callback(result) {
-                        if (result.value) {
+                        if (result.value) { 
+                           
                             window.location.href = url;
-                        } else {
-                            // second variant
                         }
+                        
                     }
                 } else {
+                   
                     window.location.href = url;
                 };
             });
-        });
+       
         $(document).ready(function () {
             $('#btnTourRule').click(function () {
                 var url = "/Security/TourRule/ViewRedirection?CBUID=1";
                 window.open(url);
             });
-
-          
-
-            
-
         });
         
     </script>

@@ -15,7 +15,7 @@
 function Notenumberchanged(notenumber) {
     var noteCtrl = $('#NoteNumber');
     if (notenumber != '') { noteCtrl.isValid(); } else { noteCtrl.isInvalid(); }
-    $('#tbody2').empty();
+    TPTableClear();
    
     $.ajax({
         url: '/EMN/GetEMNHdrDetails',
@@ -38,7 +38,7 @@ function Notenumberchanged(notenumber) {
                     $('#ApprovedReason').val(item.emnHeader.ApprovedReason);
                 }
                
-
+                getTravellingPersonData('-1')
                // if ($('#CenterCodeName').val() != "") { $('#btnTravDetails').makeEnabled(); }
 
             });
@@ -48,7 +48,7 @@ function Notenumberchanged(notenumber) {
 };
 function GetEmployeeList(notenumber) {
     (async function () {
-        const r2 = await getDropDownDataWithSelectedValue('CenterCN', 'All Centers', '/Security/EMN/getCenterCodeListFromTravellingPerson?NoteNumber=' + notenumber, 0);
+        const r2 = await getDropDownDataWithSelectedValue('CenterCN', 'All Centers', '/Security/EMN/getCenterCodeListFromTravellingPerson?NoteNumber=' + notenumber, '-1');
     })();
 }
 $(document).ready(function () {
@@ -203,12 +203,8 @@ function CenterCNChanged() {
     var mValue = targetCtrl.val();
     getTravellingPersonData(mValue);
 };
-async function getTravellingPersonData(CenterCode) {
+function TPTableClear() {
     $("#tbody2").empty();
-    $('#btnTravDetails').makeDisable();
-    var rowid = 0;
-    var TaDa;
-    var NoteNumber = $('#NoteNumber').val();
     var DDPersonType = $('#DDPersonType');
     var EmployeeNo = $('#EmployeeNo');
     var DesgCodenName = $('#DesgCodenName');
@@ -219,7 +215,19 @@ async function getTravellingPersonData(CenterCode) {
     DesgCodenName.html('');
     EgblVehicleTypeName.html('');
     TaDaDenied.html('');
-    debugger;
+
+};
+async function getTravellingPersonData(CenterCode) {
+    TPTableClear();
+    $('#btnTravDetails').makeDisable();
+    var rowid = 0;
+    var TaDa;
+    var NoteNumber = $('#NoteNumber').val();
+    var DDPersonType = $('#DDPersonType');
+    var EmployeeNo = $('#EmployeeNo');
+    var DesgCodenName = $('#DesgCodenName');
+    var EgblVehicleTypeName = $('#EgblVehicleTypeName');
+    var TaDaDenied = $('#TaDaDenied');
     $.ajax({
         url: '/EMN/GetTravellingPersonForEMN?NoteNumber=' + NoteNumber + '&CenterCode=' + CenterCode,
         method: 'GET',

@@ -14,7 +14,7 @@ namespace CBBW.DAL.Entities
    public class EMNEntities
     {
         DataTable dt = null;
-        DataSet ds = null;
+        //DataSet ds = null;
         EMNDataSync _datasync;
         EMNDBMapper _DBMapper;
         DBResponseMapper _DBResponseMapper;
@@ -88,12 +88,12 @@ namespace CBBW.DAL.Entities
             _DBResponseMapper.Map_DBResponse(_datasync.setEMNTravDetailsNTourDetails(NoteNumber, TDdata, DWTdata, ref pMsg), ref pMsg, ref result);
             return result;
         }
-        public List<EMNTravellingPerson> GetEMNTravellingPerson(string Notenumber,int CenterCode, ref string pMsg)
+        public List<EMNTravellingPerson> GetEMNTravellingPerson(string Notenumber,int CenterCode,int status, ref string pMsg)
         {
             List<EMNTravellingPerson> result = new List<EMNTravellingPerson>();
             try
             {
-                dt = _datasync.GetEMNTravellingPerson(Notenumber, CenterCode, ref pMsg);
+                dt = _datasync.GetEMNTravellingPerson(Notenumber, CenterCode, status, ref pMsg);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     for (int i = 0; i < dt.Rows.Count; i++)

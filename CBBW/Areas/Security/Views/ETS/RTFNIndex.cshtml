@@ -40,17 +40,17 @@
                         <th scope="col">&nbsp;</th>
                         <th scope="col">
                             <div class="form-group">
-                                <input id="filterNoteno" type="text" class="form-control" placeholder="Search...">
+                                <input id="filterNoteno" type="text" class="form-control tblSearch" placeholder="Search...">
                             </div>
                         </th>
                         <th scope="col">
                             <div class="form-group">
-                                <input id="filterDate" type="text" class="form-control" placeholder="Search...">
+                                <input id="filterDate" type="text" class="form-control tblSearch" placeholder="Search...">
                             </div>
                         </th>
                         <th scope="col">
                             <div class="form-group">
-                                <input id="filterCenterCN" type="text" class="form-control" placeholder="Search...">
+                                <input id="filterCenterCN" type="text" class="form-control tblSearch" placeholder="Search...">
                             </div>
                         </th>
 
@@ -104,7 +104,7 @@
 @section scripts{
     <script>
         $(document).ready(function () {
-            $('#tblmgp').dataTable({
+            var dtinstance =$('#tblmgp').dataTable({
                 columns: [
                     { 'data': 'RowNumber' },
                     { 'data': 'NoteNumber' },
@@ -128,6 +128,13 @@
                 sAjaxSource: '/Security/ETS/GetETSRTFCNforListPage',
                 "pagingType": "input"
             });
+            $('.tblSearch').on('keyup change', function () {
+                dtinstance.search(this.value).draw();
+            });
+            $('.tblSearch').on('click', function (e) {
+                e.stopPropagation();
+            });
+
         });
 
         function FnViewNote(ctrl) {

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using CBBW.BOL.EHG;
 using CBBW.BOL.ETSEdit;
 using System.Globalization;
+using CBBW.BOL.CustomModels;
 
 namespace CBBW.DAL.DBMapper
 {
@@ -61,6 +62,8 @@ namespace CBBW.DAL.DBMapper
                         result.RetReason = dr["RetReason"].ToString();
                     if (!DBNull.Value.Equals(dr["IsIndividualEdit"]))
                         result.IsIndividualEdit = int.Parse(dr["IsIndividualEdit"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsCancelled"]))
+                        result.IsCancelled = int.Parse(dr["IsCancelled"].ToString());
                     if (result.POA == 0)
                         result.POAText = "NA";
                     else if (result.POA == 1)
@@ -178,7 +181,56 @@ namespace CBBW.DAL.DBMapper
                 result.SchToDateDisplay = result.SchToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
                 result.EditedTourToDateDisplay = result.EditedTourToDate.Year==1?"-":result.EditedTourToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
                 result.EditedTourToDateStr = result.EditedTourToDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
-            
+                List<CustomComboOptions> mTC = new List<CustomComboOptions>();
+                if (result.TourCategoryIds.IndexOf("1") >= 0) 
+                {
+                    mTC.Add(new CustomComboOptions { ID = 2, DisplayText = "Branch & Center Visit" });
+                }
+                if (result.TourCategoryIds.IndexOf("2") >= 0)
+                {
+                    mTC.Add(new CustomComboOptions { ID = 1, DisplayText = "Center Visit" });
+                }
+                if (result.TourCategoryIds.IndexOf("3") >= 0 || result.TourCategoryIds.IndexOf("4") >= 0)
+                {
+                    mTC.Add(new CustomComboOptions { ID = 1, DisplayText = "Center Visit" });
+                    mTC.Add(new CustomComboOptions { ID = 2, DisplayText = "Branch & Center Visit" });
+                }
+                if (result.TourCategoryIds.IndexOf("5") >= 0)
+                {
+                    mTC.Add(new CustomComboOptions { ID = 5, DisplayText = "Unknown Destination" });
+                }
+                if (result.TourCategoryIds.IndexOf("6") >= 0)
+                {
+                    mTC.Add(new CustomComboOptions { ID = 6, DisplayText = "E.P. Tour" });
+                }
+                if (result.TourCategoryIds.IndexOf("7") >= 0)
+                {
+                    mTC.Add(new CustomComboOptions { ID = 7, DisplayText = "Management" });
+                }
+                result.TourCategories = mTC.GroupBy(o=>o.ID).Select(o=>o.FirstOrDefault()).ToList();
+                TimeSpan timeLimit = TimeSpan.Parse("16:00");
+                TimeSpan now = DateTime.Now.TimeOfDay;
+
+                if (result.SchFromDate > DateTime.Today)
+                {
+                    result.IsEditable = 1;
+                    result.TourCancelMinDate = result.SchFromDate;
+                }
+                else if (result.SchFromDate == DateTime.Today && now <= timeLimit)
+                {
+                    result.IsEditable = 1;
+                    result.TourCancelMinDate = result.SchFromDate;
+                }
+                else 
+                {
+                    if(now <= timeLimit)
+                        result.TourCancelMinDate = DateTime.Today;
+                    else
+                        result.TourCancelMinDate = DateTime.Today.AddDays(1);
+                }
+                result.TourCancelMaxDate = result.SchToDate.AddDays(-1);
+                result.TourCancelMinDateStr = result.TourCancelMinDate.ToString("yyyy-MM-dd");
+                result.TourCancelMaxDateStr = result.TourCancelMaxDate.ToString("yyyy-MM-dd");
             }                        
             return result;
         }

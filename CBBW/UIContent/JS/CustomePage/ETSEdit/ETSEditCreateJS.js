@@ -49,6 +49,7 @@ function NotenumberChanged() {
                 $('#RatDT').val(item.RetDateTimeDisplay);
                 $('#ratReason').val(item.RetReason);
                 $('#IndEditDiv').html(item.IsIndividualEdit);
+                $('#IsCancelled').val(item.IsCancelled);
                 if (item.IsIndividualEdit == 1) {
                     TEBtn.makeDisable();
                     IEBtn.makeEnabled();

@@ -14,7 +14,7 @@ namespace CBBW.DAL.Entities
     public class EHGEntities
     {
         DataTable dt = null;
-        DataSet ds = null;
+        //DataSet ds = null;
         EHGDataSync _datasync;
         EHGDBMapper _DBMapper;
         DBResponseMapper _DBResponseMapper;

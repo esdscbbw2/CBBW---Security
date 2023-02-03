@@ -38,5 +38,9 @@ namespace CBBW.BOL.ETSEdit
         public string EditReason { get; set; }
         public List<CustomComboOptions> TourCategories { get; set; }
         public int IsEditable { get; set; }
+        public DateTime TourCancelMinDate { get; set; }
+        public string TourCancelMinDateStr { get; set; }
+        public DateTime TourCancelMaxDate { get; set; }
+        public string TourCancelMaxDateStr { get; set; }
     }
 }

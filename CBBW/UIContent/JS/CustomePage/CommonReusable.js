@@ -88,8 +88,12 @@ $(document).ready(function () {
             if (keyCode != 46) { return false; }                    
         } else {
         }
+    });    
+    $(".mDivDisable").each(function () {
+        $(this).find('.form-select').makeDisable();
+        $(this).find('.form-control').makeDisable();
+        $(this).find('.form-multi').multiselect("disable");
     });
-
 });
 function CompareTime(fromTime, toTime) {
     var ft = convertTime12To24int(fromTime);

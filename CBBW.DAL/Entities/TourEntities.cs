@@ -186,6 +186,19 @@ namespace CBBW.DAL.Entities
             _dbResponseMapper.Map_DBResponse(_datasync.IsValidTourRule(trd, ref pMsg), ref pMsg, ref result);
             return result;
         }
-        
+        public TourRuleSaveInfo GetTourInfoForServiceType(string ServiceTypes, ref string pMsg) 
+        {
+            TourRuleSaveInfo Result = new TourRuleSaveInfo();
+            try
+            {
+                dt = _datasync.GetTourInfoForServiceType(ServiceTypes, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    Result=_mapper.Map_TourRuleSaveInfo(dt.Rows[0]);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return Result;
+        }
     }
 }

@@ -41,5 +41,6 @@ namespace CBBW.Areas.Security.ViewModel.ETSEdit
         public string SelectedPersonName { get; set; }
         public int IsApproved { get; set; }
         public string AppReason { get; set; }
+        public int IsCancelled { get; set; }
     }
 }

@@ -16,6 +16,7 @@
         @Html.HiddenFor(m => m.SelectedPersonType)
         @Html.HiddenFor(m => m.SelectedPersonID)
         @Html.HiddenFor(m => m.SelectedPersonName)
+        @Html.HiddenFor(m => m.IsCancelled)
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
@@ -43,7 +44,7 @@
         </div>
         <div class="col-md-12">
             <div class="heading_text_btn2 d-block mt-4">
-                <h2 class="text-left"> Tour EDIT Details:</h2>
+                <h2 class="text-left"> Individual EDIT Details:</h2>
             </div>
             <div class="heading_text_btn2 d-block mb-2">
                 <h2 class="text-center">Travelling Person – Details (I) </h2>
@@ -129,12 +130,12 @@
                     <div class="card-body">
                         <div class="col-md-12 pt-3 pb-2 text-end">
                             <!-- Button trigger modal -->
-                            <button id="ShowHistoryBtn" type="button" 
+                            <button id="ShowHistoryBtn" type="button"
                                     class="btn btn-primary"
                                     onclick="ShowHistoryBtnClicked()"
                                     @*data-bs-toggle="modal" data-bs-target="#HistoryModal"*@>
                                 See Previous Details
-                            </button>                            
+                            </button>
                         </div>
                         <div id="mHdrDiv" class="row d-flex align-items-center">
                             <div class="col-form-label col-md-2">
@@ -163,7 +164,7 @@
                             </div>
                         </div>
                         <!-- Modal -->
-                        <div class="modal modal-previous-details fade" id="HistoryModal" tabindex="-1" 
+                        <div class="modal modal-previous-details fade" id="HistoryModal" tabindex="-1"
                              aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
                                 <div class="modal-content">
@@ -175,8 +176,8 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div id="IndHistoryDiv">
-                                                    
-                                                    
+
+
                                                 </div>
                                             </div>
                                         </div>
@@ -190,33 +191,31 @@
                         </div>
                         <div id="tour_cancel" class="inVisible">
                             <div id="TCPartialView">
-
                             </div>
                         </div>
-                            <div id="other_edit" class="inVisible">
-                                <div id="OEPartialView">
-
-                                </div>                                
+                        <div id="other_edit" class="inVisible">
+                            <div id="OEPartialView">
                             </div>
                         </div>
-                    </div>
-                    <div id="mOptionDiv" class="bgColor mt-4 bg-transparent content text-left border-red">
-                        <ul style="list-style:none;">
-                            <li style="font-size: 16px;">
-                                It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
-                                <select class="form-select content border-red is-invalid" 
-                                        aria-label="Default select example" 
-                                        id="Option1" onchange="Option1Changed()">
-                                    <option selected="">-</option>
-                                    <option value="1">Yes</option>
-                                    <option value="0">No</option>
-                                </select>
-                            </li>
-                        </ul>
                     </div>
                 </div>
+                <div id="mOptionDiv" class="bgColor mt-4 bg-transparent content text-left border-red">
+                    <ul style="list-style:none;">
+                        <li style="font-size: 16px;">
+                            It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
+                            <select class="form-select content border-red is-invalid"
+                                    aria-label="Default select example"
+                                    id="Option1" onchange="Option1Changed()">
+                                <option selected="">-</option>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        }
+        </div>
+    }
 </div>
 @section headers
 {
@@ -226,6 +225,12 @@
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
     <script src="~/UIContent/JS/CustomePage/ETSEdit/ETSEditCreateIndividualTourEdit.js"></script>
     <script>
-
+        $(document).ready(function () {
+            $(".mDivDisable").each(function () {
+                $(this).find('.form-select').makeDisable();
+                $(this).find('.form-control').makeDisable();
+                $(this).find('.form-multi').multiselect("disable");
+            });
+        });
     </script>
 }

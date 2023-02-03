@@ -79,15 +79,15 @@ function ValidateControl() {
     
     if (targetid == "SchFromDate") { Datechange($(target).val());}
     if (targetid == "SchTourToDate") { SetDatechange($(target).val()); } else {
-        $('#SchToDate').val('');
-        $('#SchToDate').isInvalid()
-        $('#SchToDate').makeDisable();
-        $('#lblSchToDate').html('Select Date');
+        //$('#SchToDate').val('');
+        //$('#SchToDate').isInvalid()
+        //$('#SchToDate').makeDisable();
+        //$('#lblSchToDate').html('Select Date');
        
     }
     
-    $('#SchToDate').val('');
-    $('#SchToDate').isInvalid();
+    //$('#SchToDate').val('');
+    //$('#SchToDate').isInvalid();
    
     $("#tbody2").empty();
     ClearallDropdownData(0);
@@ -178,6 +178,10 @@ function validatectrl(targetid, value, rowid) {
         case "BranchCodeName":
             isvalid = validatectrl_ValidateLength(value);
             break;
+        case "PurposeOfVisit":
+            isvalid = validatectrl_ValidateLength(value);
+            break;
+            
     }
    
     return isvalid;
@@ -580,7 +584,7 @@ async function getInitialData() {
                         DDSchFromDate.html(travitem.DDSchFromDate).isValid();
                         SchToDate.val(travitem.SchToDatestr).isValid();
                         lblSchToDate.html(travitem.DDSchToDate);
-                        getMultiselectDataWithSelectedValues(TourCategory.attr('id'), '/ETS/GetTourCategories?PTval=' + PT, travitem.TourCategoryId);
+                        getMultiselectDataWithSelectedValues(TourCategory.attr('id'), '/EMN/GetTourCategories?PTval=' + PT, travitem.TourCategoryId);
                         TourCategory.isValid();
                         TourDateWiseDropdownvalue(rowid, travitem.TourCategoryId, travitem.TourCategoryId, travitem.CenterCode);
                         CenterCodeName.isValid();

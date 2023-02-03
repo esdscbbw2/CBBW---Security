@@ -313,7 +313,7 @@ namespace CBBW.Areas.Security.Controllers
             if (!string.IsNullOrEmpty(NoteNumber)) 
             {
                 modelobj.TravelingPersonDetails=_IETSEdit.getEditTPDetails(NoteNumber, ref pMsg);
-                modelobj.DWTDetailsHistory= _IETSEdit.getDateWiseTourHistory(NoteNumber, 0, 0, 0, " ", ref pMsg);
+                modelobj.DWTDetailsHistory= _IETSEdit.getDateWiseTourHistory(NoteNumber, 0, 0, 0, " ", ref pMsg,true);
                 if (modelobj.DWTDetailsHistory != null && modelobj.DWTDetailsHistory.Count > 0) 
                 {
                     modelobj.BaseDWTDetailsHistory = modelobj.DWTDetailsHistory.Where(o => o.EditSL == 0).ToList();
@@ -337,7 +337,7 @@ namespace CBBW.Areas.Security.Controllers
         {
             model = CastEHGEditTempData();
             model.TravelingPersonDetails = _IETSEdit.getEditTPDetails(model.NoteNumber, ref pMsg);
-            model.DWTDetailsHistory = _IETSEdit.getDateWiseTourHistory(model.NoteNumber, 0,0,0," ", ref pMsg);
+            model.DWTDetailsHistory = _IETSEdit.getDateWiseTourHistory(model.NoteNumber, 0,0,0," ", ref pMsg,true);
             if (model.DWTDetailsHistory != null && model.DWTDetailsHistory.Count>0) 
             { 
                 model.EditSequence = model.DWTDetailsHistory.Select(o => o.EditSL).Distinct().ToList();
@@ -358,7 +358,7 @@ namespace CBBW.Areas.Security.Controllers
         {
             model = CastEHGEditTempData();
             model.TravelingPersonDetails = _IETSEdit.getEditTPDetails(model.NoteNumber, ref pMsg);
-            model.DWTDetailsHistory = _IETSEdit.getDateWiseTourHistory(model.NoteNumber, 0, 0, 0, " ", ref pMsg);
+            model.DWTDetailsHistory = _IETSEdit.getDateWiseTourHistory(model.NoteNumber, 0, 0, 0, " ", ref pMsg,true);
             if (model.DWTDetailsHistory != null && model.DWTDetailsHistory.Count > 0)
             {
                 model.EditSequence = model.DWTDetailsHistory.Select(o => o.EditSL).Distinct().ToList();
@@ -413,6 +413,11 @@ namespace CBBW.Areas.Security.Controllers
         public JsonResult GetNoteInfo(string NoteNumber)
         {
             EditNoteDetails result = _IETSEdit.getEditNoteHdr(NoteNumber, ref pMsg);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetNoteInfonLock(string NoteNumber)
+        {
+            EditNoteDetails result = _IETSEdit.getETSEditHdr(NoteNumber,1, ref pMsg);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetTourCategories()
@@ -522,7 +527,7 @@ namespace CBBW.Areas.Security.Controllers
             EditHistoryVM modelobj = new EditHistoryVM();
             modelobj.PersonType = _EHGmaster.PersonType.Where(o=>o.ID==PersonType).FirstOrDefault().DisplayText;
             modelobj.EmpNoNName = PersonName;
-            modelobj.DWTDetailsHistory = _IETSEdit.getDateWiseTourHistory(NoteNumber, 0, PersonType, PersonID, PersonName, ref pMsg);
+            modelobj.DWTDetailsHistory = _IETSEdit.getDateWiseTourHistory(NoteNumber, 0, PersonType, PersonID, PersonName, ref pMsg,true);
             if (modelobj.DWTDetailsHistory != null && modelobj.DWTDetailsHistory.Count > 0)
             {
                 modelobj.EditSequence = modelobj.DWTDetailsHistory.Select(o => o.EditSL).Distinct().ToList();
@@ -535,7 +540,7 @@ namespace CBBW.Areas.Security.Controllers
             ETSEditViewVM modelobj = new ETSEditViewVM();
             if (!string.IsNullOrEmpty(NoteNumber))
             {
-                modelobj.DWTDetailsHistory = _IETSEdit.getDateWiseTourHistory(NoteNumber,0,PersonType,PersonID,PersonName,ref pMsg);
+                modelobj.DWTDetailsHistory = _IETSEdit.getDateWiseTourHistory(NoteNumber,0,PersonType,PersonID,PersonName,ref pMsg,true);
                 if (modelobj.DWTDetailsHistory != null && modelobj.DWTDetailsHistory.Count > 0)
                 {
                     modelobj.BaseDWTDetailsHistory = modelobj.DWTDetailsHistory.Where(o => o.EditSL == 0).ToList();
@@ -550,7 +555,7 @@ namespace CBBW.Areas.Security.Controllers
         {
             PersonName = PersonName.Trim();
             TourCancelVM modelobj = new TourCancelVM();
-            modelobj.DWTDetailsHistory = _IETSEdit.getDateWiseTourHistory(NoteNumber,0,PersonType, PersonID,PersonName,ref pMsg);
+            modelobj.DWTDetailsHistory = _IETSEdit.getDateWiseTourHistory(NoteNumber,0,PersonType, PersonID,PersonName,ref pMsg,true);
             //modelobj.DWTDetailsCurrent = _IETSEdit.getDateWiseTourHistory(NoteNumber, 0, PersonType, PersonID, PersonName, ref pMsg);
             if (modelobj.DWTDetailsHistory != null && modelobj.DWTDetailsHistory.Count > 0)
             {

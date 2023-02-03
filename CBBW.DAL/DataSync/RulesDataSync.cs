@@ -106,6 +106,21 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+        public DataTable GetTourInfoForServiceType(string ServiceTypes, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[1];
+                para[paracount] = new SqlParameter("@ServiceTypeCode", SqlDbType.NVarChar,10);
+                para[paracount++].Value = ServiceTypes;
+                using (SQLHelper sql = new SQLHelper("[RUL].[getTourInfoForServiceType]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
         public DataTable getLastTourInfoFromServiceTypeCodes(string serviceTypeCodes, int IsView, DateTime EffectiveDate, ref string pMsg) 
         {
             try

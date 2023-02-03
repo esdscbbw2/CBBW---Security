@@ -44,9 +44,9 @@ namespace CBBW.BLL.Repository
         //    List<EditDWTDetails> result = objlist.Where(o => o.EditSL == maxrowid).ToList();
         //    return result;
         //}
-        public List<EditDWTDetails> getDateWiseTourHistory(string NoteNumber, int FieldTag, int PersonType, int PersonID, string PersonName, ref string pMsg)
+        public List<EditDWTDetails> getDateWiseTourHistory(string NoteNumber, int FieldTag, int PersonType, int PersonID, string PersonName, ref string pMsg, bool IsActive)
         {
-            List<EditDWTDetails> objlist = _ETSEditEntities.getCurrentDateWiseTour(NoteNumber, FieldTag,PersonType,PersonID,PersonName,ref pMsg);
+            List<EditDWTDetails> objlist = _ETSEditEntities.getCurrentDateWiseTour(NoteNumber, FieldTag,PersonType,PersonID,PersonName,ref pMsg,IsActive);
             return objlist;
         }
         public bool SetETSTourEdit(DWTTourDetailsForDB obj, int CentreCode, string CentreName, ref string pMsg) 

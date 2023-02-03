@@ -52,9 +52,9 @@ namespace CBBW.BLL.Repository
         {
             return _EMNEntities.setEMNTravDetailsNTourDetails(NoteNumber, TDdata, DWTdata, ref pMsg);
         }
-        public List<EMNTravellingPerson> GetEMNTravellingPerson(string Notenumber, int CenterCode, ref string pMsg)
+        public List<EMNTravellingPerson> GetEMNTravellingPerson(string Notenumber, int CenterCode, int status, ref string pMsg)
         {
-            return _EMNEntities.GetEMNTravellingPerson(Notenumber, CenterCode, ref pMsg);
+            return _EMNEntities.GetEMNTravellingPerson(Notenumber, CenterCode, status, ref pMsg);
         }
         public bool SetEMNDetailsFinalSubmit(EMNHeader hdrmodel, ref string pMsg)
         {

@@ -56,8 +56,8 @@
                                     <input id="FromDate_@sl" type="date"
                                            data-name="EditToDate"
                                            onchange="ValidateEditDateCtrl()"
-                                           max="@item.SchToDate.ToString("yyyy-MM-dd")"
-                                           min="@item.SchFromDate.ToString("yyyy-MM-dd")"
+                                           max="@item.TourCancelMaxDateStr"
+                                           min="@item.TourCancelMinDateStr"
                                            class="form-control pointer CustomDateFormatCloneRow valid CancelDate">
                                     <label id="lblFromDate_@sl" style="width:100px"
                                            class="datelabel pointer">Select Date</label>

@@ -12,11 +12,12 @@
         @Html.HiddenFor(m => m.ExtensionFromDate)
         @Html.HiddenFor(m => m.MaxSourceID)
         @Html.HiddenFor(m => m.backbtnactive)
+        @Html.HiddenFor(m => m.IsCancelled)
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
                     <div class="leftButton">
-                        <button id="btnBack" type="button" 
+                        <button id="btnBack" type="button"
                                 class="btn btn-primary me-2">
                             <i data-feather="arrow-left-circle"></i>
                             Back
@@ -194,7 +195,7 @@
                                                                                         @item.EditedTourToDateDisplay
                                                                                     </td>
                                                                                     <td class="text-center">
-                                                                                        @item.TourCategoryNames                                                                                        
+                                                                                        @item.TourCategoryNames
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         @item.TourCenterNames
@@ -278,8 +279,8 @@
                                                                 <input id="FromDate_@sl" type="date"
                                                                        data-name="EditToDate"
                                                                        onchange="ValidateEditDateCtrl()"
-                                                                       max="@item.SchToDate.ToString("yyyy-MM-dd")"
-                                                                       min="@item.SchFromDate.ToString("yyyy-MM-dd")"
+                                                                       max="@item.TourCancelMaxDateStr"
+                                                                       min="@item.TourCancelMinDateStr"
                                                                        class="form-control pointer CustomDateFormatCloneRow valid CancelDate">
                                                                 <label id="lblFromDate_@sl" style="width:100px"
                                                                        class="datelabel pointer">Select Date</label>
@@ -441,11 +442,11 @@
                                                 int sl = 1;
                                                 foreach (var item in Model.DWTDetailsCurrent)
                                                 {
-                                                    <tr>
+                                                    <tr class="@(item.IsEditable==0?"mDivDisable":"")">
                                                         <td>
                                                             @sl
                                                             <div id="EditTagDivOE_@sl" data-name="EditRowTag"
-                                                                 class="inVisible htmlVal"></div>
+                                                                 class="inVisible htmlVal mEditStatTag"></div>
                                                             <div data-name="SourceID"
                                                                  class="inVisible htmlVal">@item.SourceID</div>
                                                             </td>
@@ -460,16 +461,23 @@
                                                             </td>
                                                             <td class="text-center">
                                                                 <select id="OETourCategory_@sl" multiple="multiple"
-                                                                        class="form-select example-getting-started is-invalid"
+                                                                        class="form-select example-getting-started form-multi"
                                                                         onchange="OETourCategoryChanged()"
                                                                         data-name="TourCategoryIDs" data-name-text="TourCategoryNames"
                                                                         aria-label="Default select example">
-                                                                    <option value="1"> Center Visit </option>
-                                                                    <option value="2"> Branch & Center Visit </option>
-                                                                    <option value="4"> Branch  Visit  </option>
-                                                                    <option value="5"> Un Known Destination  </option>
-                                                                    <option value="3"> Other Place </option>
-                                                                    <option value="6"> E.P. Tour </option>
+                                                                    @if (item.TourCategories != null && item.TourCategories.Count > 0)
+                                                                    {
+                                                                        foreach (var moption in item.TourCategories)
+                                                                        {
+                                                                            <option value="@moption.ID"> @moption.DisplayText</option>
+                                                                        }
+                                                                    }
+                                                                    @*<option value="1"> Center Visit </option>
+                                                                        <option value="2"> Branch & Center Visit </option>
+                                                                        <option value="4"> Branch  Visit  </option>
+                                                                        <option value="5"> Un Known Destination  </option>
+                                                                        <option value="3"> Other Place </option>
+                                                                        <option value="6"> E.P. Tour </option>*@
                                                                 </select>
                                                             </td>
                                                             <td class="text-center">
@@ -522,8 +530,8 @@
                         <ul style="list-style:none;">
                             <li style="font-size: 16px;">
                                 It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
-                                <select class="form-select content border-red is-invalid" 
-                                        aria-label="Default select example" 
+                                <select class="form-select content border-red is-invalid"
+                                        aria-label="Default select example"
                                         id="Option1" onchange="Option1Changed()">
                                     <option selected="">-</option>
                                     <option value="1">Yes</option>
@@ -547,5 +555,14 @@
         (async function () {
             const r1 = await getMultiselectData('CRTourCategory', '/ETSEdit/GetTourCategories');
         })();
+    </script>
+    <script>
+        $(document).ready(function () {
+            $(".mDivDisable").each(function () {
+                $(this).find('.form-select').makeDisable();
+                $(this).find('.form-control').makeDisable();
+                $(this).find('.form-multi').multiselect("disable");
+            });
+        });
     </script>
 }

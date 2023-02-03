@@ -12,6 +12,7 @@
         @Html.HiddenFor(m => m.btnIndividualEdit)
         @Html.HiddenFor(m => m.btnTourEdit)
         @Html.HiddenFor(m => m.backbtnactive)
+        @Html.HiddenFor(m => m.IsCancelled)
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
@@ -155,7 +156,7 @@
             </div>
             <div class="col-md-12">
                 <div class="d-flex justify-content-center mt-4">
-                    <button id="TourEditBtn" disabled 
+                    <button id="TourEditBtn" disabled
                             type="submit" name="Submit" value="TED"
                             class="btn btn-primary me-2">
                         Tour EDIT Details

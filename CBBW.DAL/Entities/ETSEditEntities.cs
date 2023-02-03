@@ -122,12 +122,12 @@ namespace CBBW.DAL.Entities
             return result;
         }
         public List<EditDWTDetails> getCurrentDateWiseTour(string NoteNumber, int FieldTag,
-            int PersonType, int PersonID, string PersonName, ref string pMsg)
+            int PersonType, int PersonID, string PersonName, ref string pMsg, bool IsActive)
         {
             List<EditDWTDetails> result = new List<EditDWTDetails>();
             try
             {
-                ds = _ETSEditDataSync.getCurrentDateWiseTour(NoteNumber, FieldTag,PersonType,PersonID,PersonName, ref pMsg);
+                ds = _ETSEditDataSync.getCurrentDateWiseTour(NoteNumber, FieldTag,PersonType,PersonID,PersonName, ref pMsg,IsActive);
                 if (ds != null) 
                 {
                     dt = ds.Tables[0];

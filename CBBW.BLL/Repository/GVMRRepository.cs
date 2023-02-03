@@ -13,8 +13,8 @@ namespace CBBW.BLL.Repository
     {
 
         GVMREntities _GVMREntities;
-        MasterEntities _MasterEntities;
-        UserRepository _user;
+        //MasterEntities _MasterEntities;
+        //UserRepository _user;
         public GVMRRepository()
         {
             _GVMREntities = new GVMREntities();

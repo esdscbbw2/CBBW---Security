@@ -32,25 +32,54 @@ function EditTagChanged() {
     if (editTag > 0) {
         editTagCtrl.isValid(); $('#backbtnactive').val(1);
         if (editTag == 1) {
-            togleDiv('tour_cancel');
+            if ($('#IsCancelled').val() == 1) {
+                editTagCtrl.val('0').isInvalid();
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Tour Can Be Cancelled Only Once.',
+                    icon: 'error',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        confirm: 'Ok'
+                    },
+                    confirmButtonColor: '#2527a2',
+                });
+                togleDiv('AllDisable');
+            } else { togleDiv('tour_cancel');}            
         } else if (editTag == 2) {
             togleDiv('other_edit');
         } else if (editTag == 3) {
-            //if ($('#IsExtensionAllowed').val() == 1) {
-                togleDiv('tour_extension');
-            //}
-            //else {
-            //    Swal.fire({
-            //        title: 'Error',
-            //        text: 'Extension Of Tour Can Be Allowed After Commencement & Before Completion.',
-            //        icon: 'error',
-            //        customClass: 'swal-wide',
-            //        buttons: {
-            //            confirm: 'Ok'
-            //        },
-            //        confirmButtonColor: '#2527a2',
-            //    });
-            //}            
+            if ($('#IsExtensionAllowed').val() == 1) {
+                if ($('#IsCancelled').val() == 1) {
+                    editTagCtrl.val('0').isInvalid();
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Tour Extension Can Not Be Done After Cancellation.',
+                        icon: 'error',
+                        customClass: 'swal-wide',
+                        buttons: {
+                            confirm: 'Ok'
+                        },
+                        confirmButtonColor: '#2527a2',
+                    });
+                    togleDiv('AllDisable');
+                }
+                else { togleDiv('tour_extension'); }                
+            }
+            else {
+                editTagCtrl.val('0').isInvalid();
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Extension Of Tour Can Be Allowed After Commencement & Before Completion.',
+                    icon: 'error',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        confirm: 'Ok'
+                    },
+                    confirmButtonColor: '#2527a2',
+                });
+                togleDiv('AllDisable');
+            }            
         }
     }
     else { editTagCtrl.isInvalid(); }
@@ -287,8 +316,13 @@ function EnableSubmitBtn() {
         $('.mTCValidation').each(function () {
             if ($(this).html() == 1) { isenable = true;}
         });
-    } else if (editTag == 2) {
-        if (getDivInvalidCount('other_edit') <= 0) { isenable = true;}
+    }
+    else if (editTag == 2) {
+        var x = 0;
+        $('.mEditStatTag').each(function () {
+            if ($(this).html() == 1) { x = 1; }
+        });
+        if (x==1 && getDivInvalidCount('other_edit') <= 0) { isenable = true;}
     } else if (editTag == 3) {
         if (getDivInvalidCount('tour_extension') <= 0) { isenable = true; }
     }

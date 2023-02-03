@@ -16,7 +16,7 @@ namespace CBBW.DAL.Entities
     public class MasterEntities
     {        
         DataTable dt;
-        DataSet ds;
+        //DataSet ds;
         MasterDBMapper _mapper;
         DBResponseMapper _dbresmapper;
         MasterDataSync _datasync;

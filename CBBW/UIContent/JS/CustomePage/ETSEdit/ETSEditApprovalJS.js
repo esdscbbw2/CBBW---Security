@@ -17,7 +17,7 @@
     else { lblNoteDesc.html('Ref. Employees Travelling  Schedule Details – ENTRY (FOR MFG. CENTERS) Note No.'); }
     if (notenumber != '') { notenumberCtrl.isValid(); } else { notenumberCtrl.isInvalid(); }
     $.ajax({
-        url: '/ETSEdit/GetNoteInfo',
+        url: '/ETSEdit/GetNoteInfonLock',
         method: 'GET',
         data: { NoteNumber: notenumber },
         dataType: 'json',
@@ -90,6 +90,7 @@ function ActivateSubmitButton() {
         if ($('#MainDiv').find('.is-invalid').length <= 0) {
             if ($('#YNOptionDiv').find('.is-invalid').length <= 0) {
                 isenabled = true;
+            }
         }
     }
     if (isenabled) { btnSubmit.makeEnabled(); } else { btnSubmit.makeDisable(); }

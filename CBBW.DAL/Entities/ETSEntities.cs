@@ -13,7 +13,7 @@ namespace CBBW.DAL.Entities
     public class ETSEntities
     {
         DataTable dt = null;
-        DataSet ds = null;
+        //DataSet ds = null;
         ETSDataSync _datasync;
        ETSDBMapper _DBMapper;
         DBResponseMapper _DBResponseMapper;
