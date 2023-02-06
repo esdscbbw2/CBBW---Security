@@ -1,8 +1,9 @@
 ﻿$(document).ready(function () {
     var NoteNo = $('#emnHeader_NoteNumber').val();
     (async function () {
-        const r1 = await getDropDownDataWithSelectedValue('CenterCN', 'All Centers', '/Security/EMN/getCenterCodeListFromTravellingPerson?NoteNumber=' + NoteNo, 0);
+        const r1 = await getDropDownDataWithSelectedValue('CenterCN', 'All Centers', '/Security/EMN/getCenterCodeListFromTravellingPerson?NoteNumber=' + NoteNo, '-1');
     })();
+    getTravellingPersonData('-1')
 });
 function CenterCNChanged() {
     var target = CenterCNChanged.caller.arguments[0].target;

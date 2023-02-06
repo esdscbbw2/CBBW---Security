@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.EMN;
+using CBBW.BOL.Tour;
 
 namespace CBBW.BLL.IRepository
 {
@@ -25,5 +26,6 @@ namespace CBBW.BLL.IRepository
         List<EMNNote> GetEMNNoteListToBeApproved(int CentreCode, int status, ref string pMsg);
         bool SetEMNApprovalData(EMNApproveTravDetails model, ref string pMsg);
         bool SetEMNRatifiedData(EMNRatified model, ref string pMsg);
+        TourRuleSaveInfo GetTourInfoForServiceType(string ServiceTypes, ref string pMsg);
     }
 }

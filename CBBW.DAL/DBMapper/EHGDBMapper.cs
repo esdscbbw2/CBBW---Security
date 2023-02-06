@@ -112,7 +112,9 @@ namespace CBBW.DAL.DBMapper
                     if (!DBNull.Value.Equals(dr["KMIn"]))
                         result.KMIn = int.Parse(dr["KMIn"].ToString());
                     if (!DBNull.Value.Equals(dr["IsActive"]))
-                        result.IsActive =bool.Parse(dr["IsActive"].ToString());                    
+                        result.IsActive =bool.Parse(dr["IsActive"].ToString());
+                    if (!DBNull.Value.Equals(dr["EntryDateTime"]))
+                        result.EntryDate = DateTime.Parse(dr["EntryDateTime"].ToString());
                 }
             }
             catch { }

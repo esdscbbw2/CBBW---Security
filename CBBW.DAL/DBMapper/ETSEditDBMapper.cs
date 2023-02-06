@@ -268,5 +268,110 @@ namespace CBBW.DAL.DBMapper
             catch { }
             return result;
         }
+        public EntryINoteList Map_EntryINoteList(DataRow dr)
+        {
+            EntryINoteList result = new EntryINoteList();
+            try
+            {
+                if (dr != null)
+                {
+                    if (!DBNull.Value.Equals(dr["RowNum"]))
+                        result.RowNumber = int.Parse(dr["RowNum"].ToString());
+                    if (!DBNull.Value.Equals(dr["TotalCount"]))
+                        result.TotalCount = int.Parse(dr["TotalCount"].ToString());
+                    if (!DBNull.Value.Equals(dr["TotalRecords"]))
+                        result.TotalRecord = int.Parse(dr["TotalRecords"].ToString());
+                    if (!DBNull.Value.Equals(dr["NoteNumber"]))
+                        result.NoteNumber = dr["NoteNumber"].ToString();
+                    if (!DBNull.Value.Equals(dr["EntryDate"]))
+                        result.EntryDate = DateTime.Parse(dr["EntryDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["EntryDateDispaly"]))
+                        result.EntryDateDisplay = dr["EntryDateDispaly"].ToString();
+                    if (!DBNull.Value.Equals(dr["CentreCode"]))
+                        result.CenterCode = int.Parse(dr["CentreCode"].ToString());
+                    if (!DBNull.Value.Equals(dr["CenterName"]))
+                        result.CenterName = dr["CenterName"].ToString();
+                    if (!DBNull.Value.Equals(dr["VehicleNumber"]))
+                        result.VehicleNumber = dr["VehicleNumber"].ToString();
+                    
+                    result.CanDelete= result.EntryDateDisplay == DateTime.Today.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)?true:false;
+                }
+            }
+            catch { }
+            return result;
+        }
+        public EntryITDetails Map_EntryITDetails(DataRow dr) 
+        {
+            EntryITDetails result = new EntryITDetails();
+            try
+            {
+                if (dr != null)
+                {
+                    if (!DBNull.Value.Equals(dr["PublicTransport"]))
+                        result.PublicTransport = bool.Parse(dr["PublicTransport"].ToString());
+                    if (!DBNull.Value.Equals(dr["VehicleType"]))
+                        result.VehicleType = int.Parse(dr["VehicleType"].ToString());
+                    if (!DBNull.Value.Equals(dr["ReasonVehicleReq"]))
+                        result.ReasonVehicleReq = dr["ReasonVehicleReq"].ToString();
+                    if (!DBNull.Value.Equals(dr["VehicleTypeProvided"]))
+                        result.VehicleTypeProvided = int.Parse(dr["VehicleTypeProvided"].ToString());
+                    if (!DBNull.Value.Equals(dr["ReasonVehicleProvided"]))
+                        result.ReasonVehicleProvided = dr["ReasonVehicleProvided"].ToString();
+                    if (!DBNull.Value.Equals(dr["SchFromDate"]))
+                        result.SchFromDate = DateTime.Parse(dr["SchFromDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["SchFromTime"]))
+                        result.SchFromTime = dr["SchFromTime"].ToString();
+                    if (!DBNull.Value.Equals(dr["SchTourToDate"]))
+                        result.SchToDate = DateTime.Parse(dr["SchTourToDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["PurposeOfVisit"]))
+                        result.PurposeOfVisit = dr["PurposeOfVisit"].ToString();
+                    if (!DBNull.Value.Equals(dr["IsActive"]))
+                        result.IsActive = bool.Parse(dr["IsActive"].ToString());
+                    result.SchFromDateDisplay = result.SchFromDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture);
+                    result.SchToDateDisplay = result.SchToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    result.PublicTransportText = result.PublicTransport ? "Yes" : "No";
+                    EHGMaster _master = new EHGMaster();                    
+                    result.VehicleTypeText = result.VehicleType>0?_master.VehicleTypes.Where(o => o.ID == result.VehicleType).FirstOrDefault().DisplayText:"NA";
+                    result.VehicleTypeProvidedText= result.VehicleTypeProvided>0? _master.VehicleTypes.Where(o => o.ID == result.VehicleTypeProvided).FirstOrDefault().DisplayText:"NA";
+                }
+            }
+            catch (Exception ex) { ex.ToString(); }
+            return result;
+        }
+        public EntryIDWDetails Map_EntryIDWDetails(DataRow dr) 
+        {
+            EntryIDWDetails result = new EntryIDWDetails();
+            try
+            {
+                if (dr != null)
+                {
+                    if (!DBNull.Value.Equals(dr["SchFromDate"]))
+                        result.SchFromDate = DateTime.Parse(dr["SchFromDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["SchToDate"]))
+                        result.SchToDate = DateTime.Parse(dr["SchToDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["TourCategoryIds"]))
+                        result.TourCategoryIds = dr["TourCategoryIds"].ToString();
+                    if (!DBNull.Value.Equals(dr["TourCategoryNames"]))
+                        result.TourCategoryNames = dr["TourCategoryNames"].ToString();
+                    if (!DBNull.Value.Equals(dr["TourCenterCodeIds"]))
+                        result.TourCenterCodeIds = dr["TourCenterCodeIds"].ToString();
+                    if (!DBNull.Value.Equals(dr["TourCenterNames"]))
+                        result.TourCenterNames = dr["TourCenterNames"].ToString();
+                    else
+                        result.TourCenterNames = "NA";
+                    if (!DBNull.Value.Equals(dr["BranchCodes"]))
+                        result.BranchCodes = dr["BranchCodes"].ToString();
+                    if (!DBNull.Value.Equals(dr["BranchNames"]))
+                        result.BranchNames = dr["BranchNames"].ToString();
+                    else
+                        result.BranchNames = "NA";                    
+                    result.SchFromDateDisplay = result.SchFromDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    result.SchToDateDisplay = result.SchToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);                    
+                }
+            }
+            catch (Exception ex) { ex.ToString(); }
+            return result;
+        }
+    
     }
 }

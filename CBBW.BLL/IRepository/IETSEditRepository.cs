@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CBBW.BOL.EHG;
 using CBBW.BOL.ETSEdit;
 
 namespace CBBW.BLL.IRepository
@@ -24,7 +25,13 @@ namespace CBBW.BLL.IRepository
         bool SetETSEditRatificationStatus(string NoteNumber, bool IsRatified, string RatReason, int ApproverID, ref string pMsg);
         bool SetETSEditAppStatus(string NoteNumber, bool IsApproved, string ReasonForDisApproval, int ApproverID, ref string pMsg);
         EditNoteDetails getETSEditHdr(string NoteNumber, int LockStatus, ref string pMsg);
-
-
+        bool SetETSVehicleAllotmentDetails(VehicleAllotmentDetails mData, int CentreCode, string CentreName, ref string pMsg);
+        VehicleAllotmentDetails GetVehicleAllotmentDetails(string Notenumber, int IsActive, ref string pMsg);
+        EntryITourDetails GetEntryITourData(string Notenumber, int IsActive, ref string pMsg);
+        EditNoteDetails GetNoteHdrForEntryI(string NoteNumber, int LockStatus, ref string pMsg);
+        List<EditNoteNumber> GetNoteListForEntryI(int CentreCode, ref string pMsg);
+        List<EntryINoteList> GetEntryINoteList(int DisplayLength, int DisplayStart, int SortColumn,
+            string SortDirection, string SearchText, int CentreCode, ref string pMsg);
+        bool RemoveEntryINote(string NoteNumber, bool ActiveTag, ref string pMsg);
     }
 }

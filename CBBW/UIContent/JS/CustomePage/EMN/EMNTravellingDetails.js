@@ -36,7 +36,10 @@ function MakevalueReset() {
     $("#SchFromDate").val('').isInvalid();
     $("#SchFromTime").val('').isInvalid();
     $("#SchTourToDate").val('').isInvalid();
+    $('#lblSchTourToDate').html('Select Date');
     $("#SchTourToDate,#SchToDate").makeDisable();
+    $('#lblSchFromDate').html('Select Date');
+    
  
    
 };
@@ -63,7 +66,6 @@ $(document).ready(function () {
     $('#SchToDate').makeDisable();
 });
 function ValidateControl() {
-    debugger;
     var target = ValidateControl.caller.arguments[0].target;
     var targetid = $(target).attr('id');
     var tblRow = target.closest('.add-row');
@@ -78,11 +80,13 @@ function ValidateControl() {
     //}
     
     if (targetid == "SchFromDate") { Datechange($(target).val());}
-    if (targetid == "SchTourToDate") { SetDatechange($(target).val()); } else {
-        //$('#SchToDate').val('');
-        //$('#SchToDate').isInvalid()
-        //$('#SchToDate').makeDisable();
-        //$('#lblSchToDate').html('Select Date');
+    if (targetid == "SchTourToDate") { SetDatechange($(target).val()); } else if (targetid !="PurposeOfVisit") {
+        $("#SchTourToDate").val('').isInvalid();
+        $('#lblSchTourToDate').html('Select Date');
+        $('#SchToDate').val('');
+        $('#SchToDate').isInvalid()
+        $('#SchToDate').makeDisable();
+        $('#lblSchToDate').html('Select Date');
        
     }
     

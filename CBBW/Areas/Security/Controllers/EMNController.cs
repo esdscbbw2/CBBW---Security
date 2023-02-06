@@ -58,7 +58,6 @@ namespace CBBW.Areas.Security.Controllers
             var result = new
             {
                 iTotalRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
-                //iTotalDisplayRecords = noteList.Count(),
                 iTotalDisplayRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
                 iDisplayLength = iDisplayLength,
                 iDisplayStart = iDisplayStart,
@@ -193,7 +192,7 @@ namespace CBBW.Areas.Security.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
 
         }
-        public ActionResult TravellingDetails(int Btnsubmit = 0,string NoteNumber=null)
+        public ActionResult TravellingDetails(int Btnsubmit = 0,string NoteNumber=null,string ServiceTypeCode="1")
         {
             EMNTravellingDetailsVM modeltravvm = new EMNTravellingDetailsVM();
             try
@@ -212,6 +211,10 @@ namespace CBBW.Areas.Security.Controllers
                         modeltravvm.NoteNumber = model.NoteNumber;
                         modeltravvm.AttachFile = model.AttachFile;
                         modeltravvm.CenterCodenName = model.CenterCodeName;
+                        
+                        var DateNo = _iEMN.GetTourInfoForServiceType(ServiceTypeCode, ref pMsg);
+                        int totalsDays= DateNo.MaxDayAllowed;
+                        modeltravvm.TourFromdateStr = DateTime.Today.AddDays(totalsDays).ToString("yyyy-MM-dd");
                         modeltravvm.TodateStr = DateTime.Today.AddDays(3).ToString("yyyy-MM-dd");
                         modeltravvm.FromdateStr = DateTime.Today.ToString("yyyy-MM-dd");
 
@@ -414,7 +417,7 @@ namespace CBBW.Areas.Security.Controllers
             var result = new
             {
                 iTotalRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
-                iTotalDisplayRecords = noteList.Count(),
+                iTotalDisplayRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
                 iDisplayLength = iDisplayLength,
                 iDisplayStart = iDisplayStart,
                 aaData = noteList
@@ -613,7 +616,7 @@ namespace CBBW.Areas.Security.Controllers
             var result = new
             {
                 iTotalRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
-                iTotalDisplayRecords = noteList.Count(),
+                iTotalDisplayRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
                 iDisplayLength = iDisplayLength,
                 iDisplayStart = iDisplayStart,
                 aaData = noteList

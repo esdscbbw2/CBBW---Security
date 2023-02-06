@@ -25,5 +25,7 @@ namespace CBBW.BOL.EHG
         public string OtherVehicleModelName { get; set; }
         public bool IsActive { get; set; }
         public string VehicleBelongsToText { get; set; }
+        public DateTime EntryDate { get; set; }
     }
+    
 }

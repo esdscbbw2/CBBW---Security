@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CBBW.BLL.IRepository;
+using CBBW.BOL.EHG;
 using CBBW.BOL.ETSEdit;
 using CBBW.DAL.Entities;
 
@@ -76,6 +77,34 @@ namespace CBBW.BLL.Repository
         public EditNoteDetails getETSEditHdr(string NoteNumber, int LockStatus, ref string pMsg)
         {
             return _ETSEditEntities.getETSEditHdr(NoteNumber, LockStatus, ref pMsg);
+        }
+        public bool SetETSVehicleAllotmentDetails(VehicleAllotmentDetails mData, int CentreCode, string CentreName, ref string pMsg)
+        {
+            return _ETSEditEntities.SetETSVehicleAllotmentDetails(mData, CentreCode, CentreName, ref pMsg);
+        }
+        public VehicleAllotmentDetails GetVehicleAllotmentDetails(string Notenumber, int IsActive, ref string pMsg)
+        {
+            return _ETSEditEntities.GetVehicleAllotmentDetails(Notenumber, IsActive, ref pMsg);
+        }
+        public EntryITourDetails GetEntryITourData(string Notenumber, int IsActive, ref string pMsg)
+        {
+            return _ETSEditEntities.GetEntryITourData(Notenumber, IsActive,ref pMsg);
+        }
+        public EditNoteDetails GetNoteHdrForEntryI(string NoteNumber, int LockStatus, ref string pMsg)
+        {
+            return _ETSEditEntities.GetNoteHdrForEntryI(NoteNumber, LockStatus, ref pMsg);
+        }
+        public List<EditNoteNumber> GetNoteListForEntryI(int CentreCode, ref string pMsg)
+        {
+            return _ETSEditEntities.GetNoteListForEntryI(CentreCode, ref pMsg);
+        }
+        public List<EntryINoteList> GetEntryINoteList(int DisplayLength, int DisplayStart, int SortColumn, string SortDirection, string SearchText, int CentreCode, ref string pMsg)
+        {
+            return _ETSEditEntities.GetEntryINoteList(DisplayLength, DisplayStart, SortColumn, SortDirection, SearchText, CentreCode, ref pMsg);
+        }
+        public bool RemoveEntryINote(string NoteNumber, bool ActiveTag, ref string pMsg)
+        {
+            return _ETSEditEntities.RemoveEntryINote(NoteNumber, ActiveTag, ref pMsg);
         }
     }
 }

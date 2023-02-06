@@ -42,6 +42,23 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message;return 0; }
             return result;
         }
+        public List<EditNoteNumber> GetNoteListForEntryI(int CentreCode, ref string pMsg) 
+        {
+            List<EditNoteNumber> result = new List<EditNoteNumber>();
+            try
+            {
+                dt = _ETSEditDataSync.GetNoteListForEntryI(CentreCode, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        result.Add(_ETSEditDBMapper.Map_EditNoteNumber(dt.Rows[i]));
+                    }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
         public List<EditNoteNumber> getETSNoteListToBeEdited(int CentreCode, ref string pMsg)
         {
             List<EditNoteNumber> result = new List<EditNoteNumber>();
@@ -95,6 +112,20 @@ namespace CBBW.DAL.Entities
             try
             {
                 dt = _ETSEditDataSync.getETSEditHdr(NoteNumber, LockStatus, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    return _ETSEditDBMapper.Map_EditNoteDetails(dt.Rows[0]);
+                }
+                return null;
+            }
+            catch (Exception ex)
+            { pMsg = ex.Message; return null; }
+        }
+        public EditNoteDetails GetNoteHdrForEntryI(string NoteNumber, int LockStatus, ref string pMsg) 
+        {
+            try
+            {
+                dt = _ETSEditDataSync.GetNoteHdrForEntryI(NoteNumber, LockStatus, ref pMsg);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     return _ETSEditDBMapper.Map_EditNoteDetails(dt.Rows[0]);
@@ -180,6 +211,25 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
+        public List<EntryINoteList> GetEntryINoteList(int DisplayLength, int DisplayStart, int SortColumn,
+            string SortDirection, string SearchText, int CentreCode, ref string pMsg)
+        {
+            List<EntryINoteList> result = new List<EntryINoteList>();
+            try
+            {
+                dt = _ETSEditDataSync.GetEntryINoteList(DisplayLength, DisplayStart,
+                    SortColumn, SortDirection, SearchText, CentreCode, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        result.Add(_ETSEditDBMapper.Map_EntryINoteList(dt.Rows[i]));
+                    }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
         public bool SetETSEditRatificationStatus(string NoteNumber, bool IsRatified, string RatReason, int ApproverID, ref string pMsg) 
         {
             bool result = false;
@@ -192,7 +242,61 @@ namespace CBBW.DAL.Entities
             _DBResponseMapper.Map_DBResponse(_ETSEditDataSync.SetETSEditAppStatus(NoteNumber, IsApproved, ReasonForDisApproval, ApproverID, ref pMsg), ref pMsg, ref result);
             return result;
         }
-
-
+        public bool SetETSVehicleAllotmentDetails(VehicleAllotmentDetails mData, int CentreCode, string CentreName, ref string pMsg) 
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_ETSEditDataSync.SetETSVehicleAllotmentDetails(mData, CentreCode, CentreName, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
+        public VehicleAllotmentDetails GetVehicleAllotmentDetails(string Notenumber, int IsActive, ref string pMsg) 
+        {
+            try
+            {
+                dt = _ETSEditDataSync.GetVehicleAllotmentDetails(Notenumber, IsActive, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    EHGDBMapper _EHGDBMapper = new EHGDBMapper();
+                    return _EHGDBMapper.Map_VehicleAllotmentDetails(dt.Rows[0]);
+                }
+                return null;
+            }
+            catch (Exception ex)
+            { pMsg = ex.Message; return null; }
+        }
+        public EntryITourDetails GetEntryITourData(string Notenumber, int IsActive, ref string pMsg) 
+        {
+            EntryITourDetails result = new EntryITourDetails();
+            result.NoteNumber = Notenumber;
+            try
+            {
+                ds = _ETSEditDataSync.GetEntryITourData(Notenumber, IsActive, ref pMsg);
+                if (ds != null)
+                {
+                    dt = ds.Tables[0];
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        result.TravellingDetails = _ETSEditDBMapper.Map_EntryITDetails(dt.Rows[0]);
+                    }
+                    List<EntryIDWDetails> DWT = new List<EntryIDWDetails>();
+                    dt = ds.Tables[1];
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+                            DWT.Add(_ETSEditDBMapper.Map_EntryIDWDetails(dt.Rows[i]));
+                        }
+                    }
+                    result.DateWiseDetails = DWT;
+                }
+            }
+            catch { }
+            return result;
+        }
+        public bool RemoveEntryINote(string NoteNumber, bool ActiveTag, ref string pMsg)
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_ETSEditDataSync.RemoveEntryINote(NoteNumber, ActiveTag, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
     }
 }

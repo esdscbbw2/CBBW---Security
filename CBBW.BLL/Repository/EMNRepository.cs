@@ -7,6 +7,7 @@ using CBBW.BLL.IRepository;
 using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.EMN;
+using CBBW.BOL.Tour;
 using CBBW.DAL.Entities;
 
 namespace CBBW.BLL.Repository
@@ -18,8 +19,10 @@ namespace CBBW.BLL.Repository
         UserRepository _user;
         UserInfo user;
         EMNEntities _EMNEntities;
+        TourEntities _tourEntities;
         public EMNRepository()
         {
+            _tourEntities = new TourEntities();
             _MasterEntities = new MasterEntities();
             _user = new UserRepository();
             _EMNEntities = new EMNEntities();
@@ -93,5 +96,9 @@ namespace CBBW.BLL.Repository
             return _EMNEntities.SetEMNRatifiedData(model, ref pMsg);
         }
 
+        public TourRuleSaveInfo GetTourInfoForServiceType(string ServiceTypes, ref string pMsg)
+        {
+            return _tourEntities.GetTourInfoForServiceType(ServiceTypes, ref pMsg);
+        }
     }
 }

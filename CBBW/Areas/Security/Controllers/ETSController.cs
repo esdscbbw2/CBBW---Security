@@ -403,7 +403,7 @@ namespace CBBW.Areas.Security.Controllers
             var result = new
             {
                 iTotalRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
-                iTotalDisplayRecords = noteList.Count(),
+                iTotalDisplayRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
                 iDisplayLength = iDisplayLength,
                 iDisplayStart = iDisplayStart,
                 aaData = noteList
@@ -420,7 +420,7 @@ namespace CBBW.Areas.Security.Controllers
             var result = new
             {
                 iTotalRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
-                iTotalDisplayRecords = noteList.Count(),
+                iTotalDisplayRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
                 iDisplayLength = iDisplayLength,
                 iDisplayStart = iDisplayStart,
                 aaData = noteList
@@ -652,7 +652,7 @@ namespace CBBW.Areas.Security.Controllers
             var result = new
             {
                 iTotalRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
-                iTotalDisplayRecords = noteList.Count(),
+                iTotalDisplayRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
                 iDisplayLength = iDisplayLength,
                 iDisplayStart = iDisplayStart,
                 aaData = noteList
@@ -814,7 +814,7 @@ namespace CBBW.Areas.Security.Controllers
                 }
                 else
                 {
-                    result = master.VehicleTypes.Where(x => x.ID != 3).ToList(); ;
+                    result = master.VehicleTypes.Where(x => x.ID != 3).ToList(); 
                 }
             }
             else

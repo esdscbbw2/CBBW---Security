@@ -72,6 +72,7 @@
     <Compile Include="ETSEdit\DWTourDetailsFromTable.cs" />
     <Compile Include="ETSEdit\EditDWTDetails.cs" />
     <Compile Include="ETSEdit\EditTPDetails.cs" />
+    <Compile Include="ETSEdit\EntryIDetails.cs" />
     <Compile Include="ETSEdit\NoteDetails.cs" />
     <Compile Include="ETS\ETSDateWiseTour.cs" />
     <Compile Include="ETS\ETSNote.cs" />
