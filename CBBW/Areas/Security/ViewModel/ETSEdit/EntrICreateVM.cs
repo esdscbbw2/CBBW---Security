@@ -1,0 +1,33 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using CBBW.BOL.CTV;
+using CBBW.BOL.CustomModels;
+using CBBW.BOL.EHG;
+using CBBW.BOL.ETSEdit;
+
+namespace CBBW.Areas.Security.ViewModel.ETSEdit
+{
+    public class EntrICreateVM
+    {
+        public EntrICreateVM()
+        {
+            EHGMaster master = EHGMaster.GetInstance;
+            this.VehicleBelongsTo = master.VehicleBelongsTo;
+        }
+        public string NoteNumber { get; set; }
+        public int VehicleType { get; set; }
+        public string AuthorisedEmpNonName { get; set; }
+        public string DesgCodenNameOfAE { get; set; }
+        public List<CustomComboOptions> VehicleBelongsTo { get; set; }
+        public IEnumerable<EditNoteNumber> DropDownNoteList { get; set; }
+        public List<VehicleNo> VehicleList { get; set; }
+        public IEnumerable<NoteDriver> DriverList { get; set; }
+        public VehicleAllotmentDetails VADetails { get; set; }
+        public int VABackBtnActive { get; set; }
+        public int IsBtn { get; set; }
+        public int VASubmitBtnActive { get; set; }
+        public int IsVABtnEnabled { get; set; }
+    }
+}

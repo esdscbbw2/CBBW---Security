@@ -402,5 +402,20 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+        public DataTable UpdateETSVehicleAllotmentDetails(string NoteNumber, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[1];
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
+                para[paracount++].Value = NoteNumber;
+                using (SQLHelper sql = new SQLHelper("[ETS].[UpdateETSVehicleAllotmentDetails]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
     }
 }

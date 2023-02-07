@@ -1,0 +1,223 @@
+﻿@using CBBW.Areas.Security.ViewModel.ETSEdit;
+@model EntrICreateVM
+@{
+    ViewBag.Title = "Entry I";
+}
+<div class="row newTable">
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(m => m.VehicleType)
+        @Html.HiddenFor(m => m.AuthorisedEmpNonName)
+        @Html.HiddenFor(m => m.DesgCodenNameOfAE)
+        @Html.HiddenFor(m => m.VASubmitBtnActive)
+        @Html.HiddenFor(m => m.IsVABtnEnabled)
+        <div class="fixedElement">
+            <div class="col-md-12">
+                <div class="heading_text_btn mb-3 mt-4">
+                    <div class="leftButton">
+                        <button id="btnBack" type="button" class="btn btn-primary me-2">
+                            <i data-feather="arrow-left-circle"></i>
+                            Back
+                        </button>
+                        <button id="btnSubmit" type="submit" name="Submit"
+                                value="Save" disabled
+                                class="btn btn-secondary me-2">
+                            <i data-feather="upload"></i>
+                            Submit
+                        </button>
+                        <button type="button" class="btn btn-white"
+                                onclick="window.location.href='/Security/EntryI/ClearBtnClicked';">
+                            <i data-feather="x-circle"></i>
+                            Clear
+                        </button>
+                    </div>
+                    <h2>Employee’s Travelling  Details & Vehicle Allotment – ENTRY (I) </h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="text-center pt-2 pb-2">
+                <div class="upper-tab-buttons text-center">
+                    <button type="button" class="btn btn-primary me-2" onclick="window.location.href='#';">
+                        To Check  “Tour Rules”   Click Here
+                    </button>
+                    <button type="button" class="btn btn-primary " onclick="window.location.href='#';">
+                        To Check “TA & DA Rules”   Click Here
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 mb-4">
+            <div class="card mb-4 mt-4">
+                <div class="card-body approvalForm">
+                    @*<form class="form-sample form-inline row ms-auto">*@
+                    <div class="row d-flex align-items-center mb-4">
+                        <label id="lblNoteDesc" class="col-form-label col-md-5"></label>
+                        <div class="col-md-4">
+                            @Html.DropDownListFor(m => m.NoteNumber,
+                            new SelectList(Model.DropDownNoteList, "NoteNumber", "NoteNumber"), "Select Ref. Note No.",
+                            htmlAttributes: new
+                            {
+                                @class = "form-select pointer is-invalid",
+                                onchange = "NotenumberChanged()"
+                            })
+                        </div>
+                        <div class="col-md-4">
+                            <div>
+                                <div class="row">
+                                    <label class="col-form-label col-md-2">
+                                        Date  :
+                                    </label>
+                                    <div class="col-md-4">
+                                        <input id="NoteEntryDate" type="text"
+                                               class="form-control"
+                                               disabled>
+                                    </div>
+                                    <label class="col-form-label col-md-2">
+                                        Time  :
+                                    </label>
+                                    <div class="col-md-4">
+                                        <input id="NoteEntryTime" type="text"
+                                               class="form-control"
+                                               disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center mb-4">
+                        <label class="col-form-label col-md-2">Center Code & Name : </label>
+                        <div class="col-md-6">
+                            <input id="CentreCodenName" type="text" class="form-control" disabled>
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center mb-4 mr-15">
+                        <label class="col-form-label col-md-2">Is E.P Tour : </label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" value="No" disabled>
+                        </div>
+                    </div>
+                    @*</form>*@
+                </div>
+            </div>
+            <div class="card mt-4 mb-4">
+                <div class="card-body  alert alert-danger text-dark approvalForm">
+                    @*<form class="form-sample form-inline row ms-auto">*@
+                    <div class="row d-flex align-items-center">
+                        <div class="col-md-2 col-form-label">
+                            <label>Approved :</label>
+                        </div>
+                        <div class="col-md-2">
+                            <input id="AppStat" type="text" class="form-control" disabled>
+                        </div>
+                        <div class="col-md-2 col-form-label">
+                            <label>Date &amp; Time Of Approval :</label>
+                        </div>
+                        <div class="col-md-2">
+                            <input id="AppDateTime" type="text" class="form-control" disabled>
+                        </div>
+                        <div class="col-md-2 col-form-label">
+                            <label>Reason If Not Approved :</label>
+                        </div>
+                        <div class="col-md-2">
+                            <textarea id="AppReason" name="" class="form-control  pointer-default" cols="20" rows="2" disabled></textarea>
+                        </div>
+                    </div>
+                    @*</form>*@
+                </div>
+            </div>
+            <div class="card mb-4 mt-4">
+                <div class="card-body  alert alert-danger text-dark approvalForm">
+                    @*<form class="form-sample form-inline row ms-auto">*@
+                    <div class="row d-flex align-items-center">
+                        <div class="col-md-2 col-form-label">
+                            <label>Ratified :</label>
+                        </div>
+                        <div class="col-md-2">
+                            <input id="ratStat" type="text" class="form-control" disabled>
+                        </div>
+                        <div class="col-md-2 col-form-label pe-0">
+                            <label>Date & Time Of Ratification :</label>
+                        </div>
+                        <div class="col-md-2">
+                            <input id="RatDT" type="text" class="form-control" disabled="">
+                        </div>
+                        <div class="col-md-2 col-form-label">
+                            <label>Reason If Not Ratified :</label>
+                        </div>
+                        <div class="col-md-2">
+                            <textarea id="ratReason" name="" class="form-control pointer-default" cols="20" rows="2" disabled></textarea>
+                        </div>
+                    </div>
+                    @*</form>*@
+                </div>
+            </div>
+
+            <div id="TPDiv" class="inVisible">
+            </div>
+            <div class="col-md-12">
+                <div class="d-flex justify-content-center mt-4">
+                    <button id="TravelingDtlBtn"
+                            type="submit" name="Submit" value="TDBtn" disabled
+                            class="btn btn-primary me-2">
+                        Travelling Details
+                    </button>
+                    <button id="VABtn"
+                            type="submit" name="Submit" value="VABtn" disabled
+                            class="btn btn-primary me-2">
+                        Vehicle Allotment - Details
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-12 mt-4">
+                <div class="text-center pt-2 pb-2">
+                    <span class="prompt-div">
+                        PROMPT & STOP Required Active
+                    </span>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@section headers
+{
+
+}
+@section scripts{
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/ETSEdit/EntryICreate.js"></script>
+    <script>
+        if ('@ViewBag.ErrMsg' != '') {
+                Swal.fire({
+                    title: 'Failed to submit',
+                    text: "@ViewBag.ErrMsg",
+                    icon: 'warning',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        //cancel: 'Cancel',
+                        confirm: 'Ok'
+                    },
+                    //cancelButtonClass: 'btn-cancel',
+                    confirmButtonColor: '#2527a2',
+                });
+            };
+        if ('@ViewBag.Msg' != '') {
+                Swal.fire({
+                    title: 'Confirmation',
+                    text: "@ViewBag.Msg",
+                    icon: 'success',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        confirm: 'Ok'
+                    },
+                    confirmButtonColor: '#2527a2',
+                }).then(callback);
+                function callback(result) {
+                    if (result.value) {
+                        var url = "/Security/EntryI/Index";
+                        window.location.href = url;
+                    }
+                }
+            };
+    </script>
+}

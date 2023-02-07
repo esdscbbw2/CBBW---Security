@@ -64,6 +64,12 @@ namespace CBBW.DAL.DBMapper
                         result.IsIndividualEdit = int.Parse(dr["IsIndividualEdit"].ToString());
                     if (!DBNull.Value.Equals(dr["IsCancelled"]))
                         result.IsCancelled = int.Parse(dr["IsCancelled"].ToString());
+                    if (!DBNull.Value.Equals(dr["AuthorisedEmpNonName"]))
+                        result.AuthorisedEmpNonName = dr["AuthorisedEmpNonName"].ToString();
+                    if (!DBNull.Value.Equals(dr["DesgCodenNameOfAE"]))
+                        result.DesgCodenNameOfAE = dr["DesgCodenNameOfAE"].ToString();
+                    if (!DBNull.Value.Equals(dr["VehicleType"]))
+                        result.VehicleType = int.Parse(dr["VehicleType"].ToString());
                     if (result.POA == 0)
                         result.POAText = "NA";
                     else if (result.POA == 1)
@@ -372,6 +378,39 @@ namespace CBBW.DAL.DBMapper
             catch (Exception ex) { ex.ToString(); }
             return result;
         }
-    
+        public IEnumerable<NoteDriver> Map_DriverDetails(DataTable dt)
+        {
+            List<NoteDriver> results = new List<NoteDriver>();
+            try
+            {
+                if (dt != null && dt.Rows.Count > 0) 
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++) 
+                    {
+                        DataRow dr = dt.Rows[i];
+                        NoteDriver result = new NoteDriver();
+                        if (dr != null)
+                        {
+                            if (!DBNull.Value.Equals(dr["PersonType"]))
+                                result.PersonType = int.Parse(dr["PersonType"].ToString());
+                            if (!DBNull.Value.Equals(dr["EmployeeNo"]))
+                                result.PersonID = int.Parse(dr["EmployeeNo"].ToString());
+                            if (!DBNull.Value.Equals(dr["EmployeeNonName"]))
+                                result.PersonName = dr["EmployeeNonName"].ToString();                           
+                        }
+                        results.Add(result);
+                    }
+                }
+                int x = results.Where(o => o.PersonType == 2).Count();
+                if (x > 0)
+                {
+                    results = results.Where(o => o.PersonType == 2).ToList();
+                }
+            }
+            catch { }            
+            return results;
+        }
+
+
     }
 }

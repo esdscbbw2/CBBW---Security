@@ -1,0 +1,177 @@
+﻿@using CBBW.BOL.ETSEdit;
+@model EntryITourDetails
+@{
+    ViewBag.Title = "Entry I";
+}
+<div class="row newTable">
+    @using (Html.BeginForm())
+    {
+        <div class="fixedElement">
+            <div class="col-md-12">
+                <div class="heading_text_btn mb-3 mt-4">
+                    <div class="leftButton">
+                        <button id="btnBack" type="button"
+                                class="btn btn-primary me-2">
+                            <i data-feather="arrow-left-circle"></i>
+                            Back
+                        </button>
+                    </div>
+                    <h2>Employee’s Travelling  Details & Vehicle Allotment – ENTRY (I) </h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="heading_text_btn2 d-block mt-4">
+                <h2 class="text-left"> Travelling Details:</h2>
+            </div>
+            <div class="heading_text_btn2 d-block mb-2">
+                <h2 class="text-center">Travelling Details (I) </h2>
+            </div>
+        </div>
+        <div class="col-md-12 mb-4">
+            <div class="col-md-12 pt-3">
+                <div class="card">
+                    <div class="card-body ">
+                        <div class="table-responsive">
+                            <table class="table table-bordered w-100 btnalign" id="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">Public Transport</th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">Request For Company Vehicle Type  </th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="12%">
+                                            Reason  For Company Vehicle Type Request
+                                        </th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="14%">
+                                            Vehicle Type Provided
+                                        </th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="13%">
+                                            Reason For Vehicle Provided
+                                        </th>
+                                        <th scope="col" colspan="2" style="text-align: center; vertical-align: middle;">
+                                            Scheduled Tour From
+                                        </th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                            Scheduled Tour To Date
+                                        </th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="9%">
+                                            Purpose Of Visit
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">Date</th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="9%">Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.TravellingDetails != null)
+                                    {
+                                        <tr>
+                                            <td class="text-center">
+                                                @Model.TravellingDetails.PublicTransportText
+                                            </td>
+                                            <td class="text-center">
+                                                @Model.TravellingDetails.VehicleTypeText
+                                            </td>
+                                            <td class="text-center">
+                                                @Model.TravellingDetails.ReasonVehicleReq
+                                            </td>
+                                            <td class="text-center">
+                                                @Model.TravellingDetails.VehicleTypeProvidedText
+                                            </td>
+                                            <td class="text-center">
+                                                @Model.TravellingDetails.ReasonVehicleProvided
+                                            </td>
+                                            <td class="text-center">
+                                                @Model.TravellingDetails.SchFromDateDisplay
+                                            </td>
+                                            <td class="text-center">
+                                                @Model.TravellingDetails.SchFromTime
+                                            </td>
+                                            <td class="text-center">
+                                                @Model.TravellingDetails.SchToDateDisplay
+                                            </td>
+                                            <td class="text-center">
+                                                @Model.TravellingDetails.PurposeOfVisit
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 pt-3 mt-3 pb-3">
+                    <div class="heading_text_btn2 d-block mb-2">
+                        <h2 class="text-center">
+                            Date Wise Tour Details Entry (II)
+                        </h2>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div id="tour_extension d-block">
+                            <div class="table-responsive">
+                                <table class="table table-bordered w-100 btnalign">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" style="text-align: left; vertical-align: middle;">SL. No.</th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">
+                                                Scheduled Tour From Date
+                                            </th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">
+                                                Scheduled Tour To Date
+                                            </th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="20%">Tour Category </th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;">
+                                                Center Code & Name
+                                            </th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;">Branch Code & Name </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model.DateWiseDetails != null && Model.DateWiseDetails.Count > 0)
+                                        {
+                                            int sl = 1;
+                                            foreach (var item in Model.DateWiseDetails)
+                                            {
+                                                <tr>
+                                                    <td>@sl</td>
+                                                    <td class="text-center">
+                                                        @item.SchFromDateDisplay
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.SchToDateDisplay
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.TourCategoryNames
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.TourCenterNames
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.BranchNames
+                                                    </td>
+                                                </tr>
+                                                sl += 1;
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@section scripts{
+    <script>
+        $('#btnBack').click(function () {
+            $.ajax({
+                url: "/Security/EntryI/BackButtonClicked",
+                success: function (result) { window.location.href = result; }
+            });
+        });
+    </script>    
+}

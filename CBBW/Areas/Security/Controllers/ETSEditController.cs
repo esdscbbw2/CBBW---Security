@@ -10,7 +10,6 @@ using CBBW.BOL.CTV;
 using CBBW.BOL.ETSEdit;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.EHG;
-
 namespace CBBW.Areas.Security.Controllers
 {
     public class ETSEditController : Controller
@@ -27,6 +26,7 @@ namespace CBBW.Areas.Security.Controllers
             user = iUser.getLoggedInUser();
             ViewBag.LogInUser = user.UserName;
             _IETSEdit = IETSEdit;
+            pMsg = "";
         }
         public JsonResult BackButtonClicked()
         {

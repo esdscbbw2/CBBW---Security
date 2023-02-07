@@ -9,7 +9,6 @@ using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.EHG;
 using System.Globalization;
-
 namespace CBBW.Areas.Security.Controllers
 {
     public class EHGController : Controller
@@ -33,7 +32,6 @@ namespace CBBW.Areas.Security.Controllers
             user = iUser.getLoggedInUser();
             ViewBag.LogInUser = user.UserName;            
         }
-        
         [HttpPost]
         public ActionResult ApproveNote(EHGNotApprovalVM modelobj, string Submit)
         {
@@ -288,7 +286,6 @@ namespace CBBW.Areas.Security.Controllers
             if (ID == 0) { return RedirectToAction("Create"); }
             else { return RedirectToAction("ApproveNote"); }
         }
-
         #region AjaxCalling 
         public JsonResult GetNoteHdrTPD(string NoteNumber)
         {

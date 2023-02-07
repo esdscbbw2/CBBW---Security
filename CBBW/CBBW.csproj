@@ -137,6 +137,7 @@
     <Compile Include="Areas\Security\Controllers\CTVController.cs" />
     <Compile Include="Areas\Security\Controllers\EHGController.cs" />
     <Compile Include="Areas\Security\Controllers\EMNController.cs" />
+    <Compile Include="Areas\Security\Controllers\EntryIController.cs" />
     <Compile Include="Areas\Security\Controllers\ETSController.cs" />
     <Compile Include="Areas\Security\Controllers\ETSEditController.cs" />
     <Compile Include="Areas\Security\Controllers\GVMRController.cs" />
@@ -148,6 +149,7 @@
     <Compile Include="Areas\Security\ViewModel\EMN\EMNHeaderEntryVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EMN\EMNNoteApproveVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EMN\EMNTravellingDetailsVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\ETSEdit\EntrICreateVM.cs" />
     <Compile Include="Areas\Security\ViewModel\ETSEdit\ETSEditViewVM.cs" />
     <Compile Include="Areas\Security\ViewModel\ETSEdit\TourCancelVM.cs" />
     <Compile Include="Areas\Security\SecurityAreaRegistration.cs" />
@@ -331,6 +333,8 @@
     <Content Include="UIContent\JS\CustomePage\EMN\EMNRatified.js" />
     <Content Include="UIContent\JS\CustomePage\EMN\EMNTravApprove.js" />
     <Content Include="UIContent\JS\CustomePage\EMN\EMNTravellingDetails.js" />
+    <Content Include="UIContent\JS\CustomePage\ETSEdit\EntryICreate.js" />
+    <Content Include="UIContent\JS\CustomePage\ETSEdit\EntryIVehicleAllotment.js" />
     <Content Include="UIContent\JS\CustomePage\ETSEdit\ETSEditApprovalJS.js" />
     <Content Include="UIContent\JS\CustomePage\ETSEdit\ETSEditCreateIndividualTourEdit.js" />
     <Content Include="UIContent\JS\CustomePage\ETSEdit\ETSEditCreateJS.js" />
@@ -464,6 +468,12 @@
     <Content Include="Areas\Security\Views\ETSEdit\RatNote.cshtml" />
     <Content Include="Areas\Security\Views\ETSEdit\ViewNoteApp.cshtml" />
     <Content Include="Areas\Security\Views\ETSEdit\ViewNoteRat.cshtml" />
+    <Content Include="Areas\Security\Views\EntryI\Index.cshtml" />
+    <Content Include="Areas\Security\Views\EntryI\_TravelingPersonDetails.cshtml" />
+    <Content Include="Areas\Security\Views\EntryI\Create.cshtml" />
+    <Content Include="Areas\Security\Views\EntryI\TravelingDetailsView.cshtml" />
+    <Content Include="Areas\Security\Views\EntryI\VehicleAllotment.cshtml" />
+    <Content Include="Areas\Security\Views\EntryI\ViewNote.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />

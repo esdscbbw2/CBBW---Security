@@ -298,5 +298,17 @@ namespace CBBW.DAL.Entities
             _DBResponseMapper.Map_DBResponse(_ETSEditDataSync.RemoveEntryINote(NoteNumber, ActiveTag, ref pMsg), ref pMsg, ref result);
             return result;
         }
+        public IEnumerable<NoteDriver> GETDriverList(string NoteNumber, ref string pMsg)
+        {
+            dt = _ETSEditDataSync.getEditTPDetails(NoteNumber, ref pMsg);
+            return _ETSEditDBMapper.Map_DriverDetails(dt);
+        }
+        public bool UpdateETSVehicleAllotmentDetails(string NoteNumber, ref string pMsg) 
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_ETSEditDataSync.UpdateETSVehicleAllotmentDetails(NoteNumber, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
+
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CBBW.BLL.IRepository;
+using CBBW.BOL;
 using CBBW.BOL.EHG;
 using CBBW.BOL.ETSEdit;
 using CBBW.DAL.Entities;
@@ -80,6 +81,10 @@ namespace CBBW.BLL.Repository
         }
         public bool SetETSVehicleAllotmentDetails(VehicleAllotmentDetails mData, int CentreCode, string CentreName, ref string pMsg)
         {
+            mData.AuthorisedEmpNumber = MyCodeHelper.GetEmpNoFromString(mData.AuthorisedEmpName);
+            mData.DesignationCode = MyCodeHelper.GetEmpNoFromString(mData.DesignationText);
+            mData.VehicleNumber = mData.VehicleBelongsTo==1 ? mData.VehicleNumber : mData.OtherVehicleNumber;
+            mData.ModelName = mData.VehicleBelongsTo == 1 ? mData.ModelName : "NA";
             return _ETSEditEntities.SetETSVehicleAllotmentDetails(mData, CentreCode, CentreName, ref pMsg);
         }
         public VehicleAllotmentDetails GetVehicleAllotmentDetails(string Notenumber, int IsActive, ref string pMsg)
@@ -105,6 +110,14 @@ namespace CBBW.BLL.Repository
         public bool RemoveEntryINote(string NoteNumber, bool ActiveTag, ref string pMsg)
         {
             return _ETSEditEntities.RemoveEntryINote(NoteNumber, ActiveTag, ref pMsg);
+        }
+        public IEnumerable<NoteDriver> GETDriverList(string NoteNumber, ref string pMsg)
+        {
+            return _ETSEditEntities.GETDriverList(NoteNumber, ref pMsg);
+        }
+        public bool UpdateETSVehicleAllotmentDetails(string NoteNumber, ref string pMsg)
+        {
+            return _ETSEditEntities.UpdateETSVehicleAllotmentDetails(NoteNumber, ref pMsg);
         }
     }
 }

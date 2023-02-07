@@ -1,0 +1,69 @@
+﻿@using System.Globalization;
+@using CBBW.BOL.ETSEdit;
+@model IEnumerable<EditTPDetails>
+@{
+    Layout = null;
+}
+<div class="col-md-12 mt-4 pt-3">
+    <div class="heading_text_btn2 d-block mb-4">
+        <h2>
+            Travelling Person Details:
+        </h2>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive btnalign">
+                <table class="table table-bordered w-100" id="table">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="vertical-align: middle;">SL.No.</th>
+                            <th scope="col" style="text-align: center; vertical-align: middle;">
+                                Person Type
+                            </th>
+                            <th scope="col" style="text-align: center; vertical-align: middle;">Employee No. & Name</th>
+                            <th scope="col" style="text-align: center; vertical-align: middle;">
+                                Designation Code & Name
+                            </th>
+                            <th scope="col" style="text-align: center; vertical-align: middle;">
+                                Eligible  Vehicle Type
+                            </th>
+                            <th scope="col" style="text-align: center; vertical-align: middle;">
+                                T.A & D.A Denied
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            int sl = 1;
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @sl
+                                    </td>
+                                    <td class="text-center">
+                                        @item.PersonTypeText
+                                    </td>
+                                    <td id="PersonName_@sl" class="text-center">
+                                        @item.EmployeeNonName
+                                    </td>
+                                    <td class="text-center">
+                                        @item.DesignationCodenName
+                                    </td>
+                                    <td class="text-center">
+                                        @item.EligibleVehicleTypeName
+                                    </td>
+                                    <td class="text-center">
+                                        @(item.TADADenied?"Yes":"No")
+                                    </td>
+                                </tr>
+                                sl += 1;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

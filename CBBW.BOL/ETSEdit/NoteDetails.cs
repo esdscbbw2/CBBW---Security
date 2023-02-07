@@ -41,5 +41,8 @@ namespace CBBW.BOL.ETSEdit
         public string RetDateTimeDisplay { get; set; }
         public string RetReason { get; set; }
         public int IsCancelled { get; set; }
+        public string AuthorisedEmpNonName { get; set; }
+        public string DesgCodenNameOfAE { get; set; }
+        public int VehicleType { get; set; }
     }
 }
