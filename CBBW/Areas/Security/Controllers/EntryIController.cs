@@ -34,9 +34,45 @@ namespace CBBW.Areas.Security.Controllers
             string url = _iUser.GetCallBackUrl();
             return Json(url, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult VehicleAllotmentView(string NoteNumber) 
+        {
+            model = CastEntryITempData();
+            model.VADetails = _IETSEdit.GetVehicleAllotmentDetails(NoteNumber, 1, ref pMsg);
+            TempData["EntryI"] = model;
+            return View(model);
+        }
         public ActionResult ViewNote(string NoteNumber, int CanDelete = 0, int CBUID = 0) 
         {
-            return View();
+            model = new EntrICreateVM();
+            model.NoteNumber = NoteNumber;
+            model.CanDelete = CanDelete;
+            TempData["EntryI"] = model;
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult ViewNote(EntrICreateVM modelobj, string Submit) 
+        {
+            string baseUrl = "/Security/EntryI/ViewNote?NoteNumber=" + modelobj.NoteNumber + "&CanDelete=" + modelobj.CanDelete;
+            TempData["EntryI"] = modelobj;
+            if (Submit == "TDBtn")
+            {
+                _iUser.RecordCallBack(baseUrl);
+                return RedirectToAction("TravelingDetailsView", "EntryI", new { NoteNumber = modelobj.NoteNumber });
+            }
+            else if (Submit == "VABtn")
+            {
+                _iUser.RecordCallBack(baseUrl);
+                return RedirectToAction("VehicleAllotmentView", "EntryI", new { NoteNumber = modelobj.NoteNumber });
+            }
+            else if (Submit == "Delete")
+            {
+                if (_IETSEdit.RemoveEntryINote(modelobj.NoteNumber, true, ref pMsg)) 
+                {
+                    ViewBag.Msg = "Note Number " + modelobj.NoteNumber + " Deleted Successfully.";
+                }
+                else { ViewBag.ErrMsg = "Failed To Delete Note Number " + modelobj.NoteNumber ; }
+            }
+            return View(modelobj);
         }
         public ActionResult ClearBtnClicked(int PageID = 0,string NoteNumber="")
         {
@@ -149,7 +185,12 @@ namespace CBBW.Areas.Security.Controllers
         #region - Ajax calling
         public JsonResult GetNoteInfo(string NoteNumber)
         {
-            EditNoteDetails result = _IETSEdit.getEditNoteHdr(NoteNumber, ref pMsg);
+            EditNoteDetails result= _IETSEdit.getEditNoteHdr(NoteNumber, ref pMsg);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetNoteInfoForView(string NoteNumber)
+        {
+            EditNoteDetails result= _IETSEdit.GetNoteHdrForEntryI(NoteNumber, 0, ref pMsg); ;
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult getNoteList(int iDisplayLength, int iDisplayStart, int iSortCol_0,
@@ -186,7 +227,7 @@ namespace CBBW.Areas.Security.Controllers
             if (model.DropDownNoteList == null)
                 model.DropDownNoteList = _IETSEdit.GetNoteListForEntryI(user.CentreCode, ref pMsg);
 
-            TempData["EHGEdit"] = model;
+            TempData["EntryI"] = model;
             return model;
         }
         #endregion

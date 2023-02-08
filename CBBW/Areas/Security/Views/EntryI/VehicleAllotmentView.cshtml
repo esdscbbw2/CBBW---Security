@@ -1,0 +1,201 @@
+﻿@using System.Globalization;
+@using CBBW.Areas.Security.ViewModel.ETSEdit;
+@model EntrICreateVM
+@{
+
+}
+<div class="row newTable">
+    <div class="fixedElement">
+        <div class="col-md-12">
+            <div class="heading_text_btn mb-3 mt-4">
+                <div class="leftButton">
+                    <button id="btnBack" type="button"
+                            class="btn btn-primary me-2">
+                        <i data-feather="arrow-left-circle"></i>
+                        Back
+                    </button>
+
+                </div>
+                <h2>Employee’s Travelling  Details & Vehicle Allotment – ENTRY (I) </h2>
+
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-12">
+        <div class="heading_text_btn2 d-block mb-2 pt-2">
+            <h2 class="text-center"> Vehicle Allotment – Details:</h2>
+        </div>
+    </div>
+
+    <div class="col-md-12 mb-4">
+        <div class="col-md-12 pt-3">
+            <div class="card mb-4">
+                <div class="card-body approvalForm">
+                    <form class="form-sample form-inline row ms-auto">
+                        <div class="row d-flex align-items-center mb-4">
+                            <label class="col-form-label col-md-3">
+                                Entry Date :
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" value="@Model.VADetails.EntryDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)" disabled>
+                            </div>
+
+                            <label class="col-form-label col-md-3">
+                                Time  :
+                            </label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" value="@Model.VADetails.EntryDate.ToString("hh:mm tt")" disabled>
+                            </div>
+                        </div>
+                        <div class="row d-flex align-items-center mb-4">
+                            <label class="col-form-label col-md-3">
+                                Authorized Employee No. &nbsp; & Name :
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" value="@Model.VADetails.AuthorisedEmpName" disabled>
+                            </div>
+
+                            <label class="col-form-label col-md-3">
+                                Designation Code & Name  :
+                            </label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" value="@Model.VADetails.DesignationText" disabled>
+                            </div>
+                        </div>
+                        <div class="row d-flex  align-items-center">
+                            <label class="col-form-label col-md-3">
+                                Carrying Out Any Material  :
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" value="@(Model.VADetails.MaterialStatus==1?"Yes":"No")" disabled>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-body approvalForm">
+                    <form class="form-sample form-inline row ms-auto">
+                        <div class="row d-flex  align-items-center ">
+                            <label class="col-form-label col-md-3">
+                                Vehicle Belongs To  :
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" value="@(Model.VADetails.VehicleBelongsTo==1?"Company Vehicle":"Other Vehicle")" disabled>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-body approvalForm">
+                    <form class="form-sample form-inline row ms-auto">
+                        <div id="for_company_vehicle" style="display:block;">
+                            <div class="row d-flex  align-items-center mb-4 mr-15 ">
+                                <label class="col-form-label col-md-3">
+                                    Vehicle No. :
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" value="@Model.VADetails.VehicleNumber" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex  align-items-center mb-4 ">
+                            <label class="col-form-label col-md-3">
+                                Vehicle Type :
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" value="@Model.VADetails.VehicleType" class="form-control" disabled>
+                            </div>
+                        </div>
+                        <div id="for_company_vehicle_model_name" style="display:block;">
+                            <div class="row d-flex  align-items-center mb-4 mr-15 ">
+                                <label class="col-form-label col-md-3">
+                                    Model Name  :
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" value="@Model.VADetails.ModelName" class="form-control" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex  align-items-center mb-4">
+                            <label class="col-form-label col-md-3">
+                                Driver No. & Name :
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" value="@Model.VADetails.DriverName" class="form-control" disabled>
+
+                            </div>
+                        </div>
+                        <div class="row d-flex  align-items-center mb-4">
+                            <label class="col-form-label col-md-3">
+                                K.M Out
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" value="@Model.VADetails.KMOut" class="form-control" disabled>
+                            </div>
+                            <label class="col-form-label col-md-3">
+                                K.M In
+                            </label>
+                            <div class="col-md-3">
+                                <input type="text" value="@Model.VADetails.KMIn" class="form-control" disabled>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="bgColor mt-4 bg-transparent content border-green text-left">
+                <ul style="list-style:none;">
+                    <li style="font-size: 16px;">
+                        Even Tough The Person Is Not Eligible For The Vehicle Type As Displayed In The Screen But Still You Are Providing Higher Class Vehicle Type? Are You Sure To Continue With The Vehicle Allotment:
+                        <input type="text" class="form-control content border-green width-85 pointer-none" value="Yes" disabled="">
+                    </li>
+                </ul>
+            </div>
+            <div class="bgColor mt-4 bg-transparent content border-green text-left">
+                <ul style="list-style:none;">
+                    <li style="font-size: 16px;">
+                        Even Tough The Person Is Eligible For Public Transport But Still You Are Providing Company Vehicle? Are You Sure To Continue With The Vehicle Allotment:
+                        <input type="text" class="form-control content border-green width-85 pointer-none" value="Yes" disabled="">
+                    </li>
+                </ul>
+            </div>
+            <div class="bgColor mt-4 bg-transparent content border-green text-left">
+                <ul style="list-style:none;">
+                    <li style="font-size: 16px;">
+                        It Is Ensured That This Person Is Carrying Laptop As Provided To Him. The Same Has Been Confirmed(as per leave rules):
+                        <input type="text" class="form-control content border-green width-85 pointer-none" value="Yes" disabled="">
+                    </li>
+                </ul>
+            </div>
+            <div class="bgColor mt-4 bg-transparent content border-green text-left">
+                <ul style="list-style:none;">
+                    <li style="font-size: 16px;">
+                        The Vehicle Allotment Is Done Per Policy And Is Done With Written Information To DIC – ADMIN. When Ever Required,
+                        VB Document Shall Be Produced:
+                        <input type="text" class="form-control content border-green width-85 pointer-none" value="Yes" disabled="">
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+@section scripts{
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/ETSEdit/EntryICreate.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#btnBack').click(function () {
+                $.ajax({
+                    url: "/Security/EntryI/BackButtonClicked",
+                    success: function (result) { window.location.href = result; }
+                });
+            });
+        });
+    </script>
+}

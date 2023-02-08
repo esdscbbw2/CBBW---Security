@@ -335,6 +335,7 @@
     <Content Include="UIContent\JS\CustomePage\EMN\EMNTravellingDetails.js" />
     <Content Include="UIContent\JS\CustomePage\ETSEdit\EntryICreate.js" />
     <Content Include="UIContent\JS\CustomePage\ETSEdit\EntryIVehicleAllotment.js" />
+    <Content Include="UIContent\JS\CustomePage\ETSEdit\EntryIView.js" />
     <Content Include="UIContent\JS\CustomePage\ETSEdit\ETSEditApprovalJS.js" />
     <Content Include="UIContent\JS\CustomePage\ETSEdit\ETSEditCreateIndividualTourEdit.js" />
     <Content Include="UIContent\JS\CustomePage\ETSEdit\ETSEditCreateJS.js" />
@@ -474,6 +475,7 @@
     <Content Include="Areas\Security\Views\EntryI\TravelingDetailsView.cshtml" />
     <Content Include="Areas\Security\Views\EntryI\VehicleAllotment.cshtml" />
     <Content Include="Areas\Security\Views\EntryI\ViewNote.cshtml" />
+    <Content Include="Areas\Security\Views\EntryI\VehicleAllotmentView.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />

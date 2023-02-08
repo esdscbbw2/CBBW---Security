@@ -29,5 +29,8 @@ namespace CBBW.Areas.Security.ViewModel.ETSEdit
         public int IsBtn { get; set; }
         public int VASubmitBtnActive { get; set; }
         public int IsVABtnEnabled { get; set; }
+        public int CanDelete { get; set; }
+        public string EntryDateDisplay { get; set; }
+        public string EntryTime { get; set; }
     }
 }

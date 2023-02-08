@@ -27,7 +27,7 @@ namespace CBBW.DAL.DBMapper
             catch { }
             return result;
         }
-        public EditNoteDetails Map_EditNoteDetails(DataRow dr)
+        public EditNoteDetails Map_EditNoteDetails(DataRow dr,int mtag=0)
         {
             EditNoteDetails result = new EditNoteDetails();
             try
@@ -79,7 +79,11 @@ namespace CBBW.DAL.DBMapper
                     if (result.EPTour == 0)
                         result.EPTourText = "NA";
                     //Else part is pending for the required module.
-                    result.EntryDateDisplay = result.EntryDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture);
+                    result.EntryDateDisplay = result.EntryDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    if (mtag == 1) 
+                    {
+                        result.EntryTime = result.EntryDate.ToString("hh:mm:ss tt");
+                    }
                     result.AppDateTimeDisplay =result.AppDateTime.Year==1?"-":result.AppDateTime.ToString("dd/MM/yyyy hh:mm ss tt",CultureInfo.InvariantCulture);
                     result.RetDateTimeDisplay = result.RetDateTime.Year == 1 ? "-" : result.RetDateTime.ToString("dd/MM/yyyy hh:mm:ss tt", CultureInfo.InvariantCulture);
                     //result.AppDateTimeDisplay = result.AppDateTimeDisplay.Trim() == "01/01/0001 12:00:00 AM" ? "-" : result.AppDateTimeDisplay;

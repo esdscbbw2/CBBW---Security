@@ -128,7 +128,7 @@ namespace CBBW.DAL.Entities
                 dt = _ETSEditDataSync.GetNoteHdrForEntryI(NoteNumber, LockStatus, ref pMsg);
                 if (dt != null && dt.Rows.Count > 0)
                 {
-                    return _ETSEditDBMapper.Map_EditNoteDetails(dt.Rows[0]);
+                    return _ETSEditDBMapper.Map_EditNoteDetails(dt.Rows[0],1);
                 }
                 return null;
             }

@@ -1,4 +1,14 @@
-﻿function ValidateControl() {
+﻿function Option1Changed() {
+    var OptCtrl = $('#Option1');
+    var OptDiv = $('#Option1Div');
+    if (OptCtrl.val() == 1) {
+        OptCtrl.isValid(); OptDiv.isGreen();
+    } else {
+        OptCtrl.isInvalid(); OptDiv.isRed();
+    }
+    EnableSubmitBtn();
+};
+function ValidateControl() {
     var target = ValidateControl.caller.arguments[0].target;
     var targetid = $(target).attr('id');
     var isvalid = validatectrl(targetid, $(target).val());
@@ -126,7 +136,7 @@ function VehicleBelongsToChanged(mVal) {
     EnableSubmitBtn();
 };
 function EnableSubmitBtn() {
-    var x = getDivInvalidCount('HdrDiv');
+    var x = getDivInvalidCount('HdrDiv') + getDivInvalidCount('Option1Div');
     var SubmitBtn = $('#btnSubmit');
     if (x <= 0 && $('#IsBtn').val() == 1) {
         SubmitBtn.makeEnabled();
