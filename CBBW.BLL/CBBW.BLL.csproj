@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="IRepository\ICTVRepository.cs" />
     <Compile Include="IRepository\IEHGRepository.cs" />
+    <Compile Include="IRepository\IEMCRepository.cs" />
     <Compile Include="IRepository\IEMNRepository.cs" />
     <Compile Include="IRepository\IETSEditRepository.cs" />
     <Compile Include="IRepository\IETSRepository.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\CTVRepository.cs" />
     <Compile Include="Repository\EHGRepository.cs" />
+    <Compile Include="Repository\EMCRepository.cs" />
     <Compile Include="Repository\EMNRepository.cs" />
     <Compile Include="Repository\ETSEditRepository.cs" />
     <Compile Include="Repository\ETSRepository.cs" />

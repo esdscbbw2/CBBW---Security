@@ -50,23 +50,30 @@ function NotenumberChanged() {
                 $('#ratReason').val(item.RetReason);
                 $('#IndEditDiv').html(item.IsIndividualEdit);
                 $('#IsCancelled').val(item.IsCancelled);
-                if (item.IsIndividualEdit == 1) {
-                    TEBtn.makeDisable();
-                    IEBtn.makeEnabled();
-                } else {
-                    if ($('#btnIndividualEdit').val() == 1) {
+                if (item.POA == 1) {
+                    TEBtn.makeEnabled();
+                    IEBtn.makeDisable();
+                }
+                else {
+                    if (item.IsIndividualEdit == 1) {
                         TEBtn.makeDisable();
                         IEBtn.makeEnabled();
                     }
-                    else if ($('#btnTourEdit').val() == 1) {
-                        TEBtn.makeEnabled();
-                        IEBtn.makeDisable();
-                    }
                     else {
-                        TEBtn.makeEnabled();
-                        IEBtn.makeEnabled();
+                        if ($('#btnIndividualEdit').val() == 1) {
+                            TEBtn.makeDisable();
+                            IEBtn.makeEnabled();
+                        }
+                        else if ($('#btnTourEdit').val() == 1) {
+                            TEBtn.makeEnabled();
+                            IEBtn.makeDisable();
+                        }
+                        else {
+                            TEBtn.makeEnabled();
+                            IEBtn.makeEnabled();
+                        }
                     }
-                }
+                }                
             });
         }
     });

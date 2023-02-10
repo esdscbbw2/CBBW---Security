@@ -27,14 +27,19 @@ function validatectrl(targetid, value) {
         case "VADetails_MaterialStatus":
             if (value >= 0) { isvalid = true; }
             break;
-        case "VADetails_DriverNumber":
-            if (value >= 0) {
-                var x = $('#VADetails_DriverNumber option:selected').text();
-                $('#VADetails_DriverName').val(x);
+        case "mDriverName":
+            if (value !='') {
                 isvalid = true;
             }
-            //alert(value+' - '+isvalid);
             break;
+        //case "VADetails_DriverNumber":
+        //    if (value >= 0) {
+        //        var x = $('#VADetails_DriverNumber option:selected').text();
+        //        $('#VADetails_DriverName').val(x);
+        //        isvalid = true;
+        //    }
+        //    //alert(value+' - '+isvalid);
+        //    break;
         case "VADetails_OtherVehicleModelName":
             if (value.length > 0) { isvalid = true; }
             break;

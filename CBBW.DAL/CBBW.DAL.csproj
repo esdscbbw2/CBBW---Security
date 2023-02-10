@@ -46,6 +46,7 @@
     <Compile Include="DataSync\CommonTableUser2.cs" />
     <Compile Include="DataSync\CTVDataSync.cs" />
     <Compile Include="DataSync\EHGDataSync.cs" />
+    <Compile Include="DataSync\EMCDataSync.cs" />
     <Compile Include="DataSync\EMNDataSync.cs" />
     <Compile Include="DataSync\ETSDataSync.cs" />
     <Compile Include="DataSync\ETSEditDataSync.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="DBMapper\CTVDBMapper.cs" />
     <Compile Include="DBMapper\DBResponseMapper.cs" />
     <Compile Include="DBMapper\EHGDBMapper.cs" />
+    <Compile Include="DBMapper\EMCDBMapper.cs" />
     <Compile Include="DBMapper\EMNDBMapper.cs" />
     <Compile Include="DBMapper\ETSDBMapper.cs" />
     <Compile Include="DBMapper\ETSEditDBMapper.cs" />
@@ -67,6 +69,7 @@
     <Compile Include="DBMapper\RulesDBMapper.cs" />
     <Compile Include="Entities\CTVEntities.cs" />
     <Compile Include="Entities\EHGEntities.cs" />
+    <Compile Include="Entities\EMCEntities.cs" />
     <Compile Include="Entities\EMNEntities.cs" />
     <Compile Include="Entities\ETSEditEntities.cs" />
     <Compile Include="Entities\ETSEntities.cs" />

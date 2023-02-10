@@ -16,7 +16,7 @@
         }
     })
 };
-function NotenumberChanged() {
+function NotenumberChanged(mVal) {
     //var TEBtn = $('#TourEditBtn');
     var TDBtn = $('#TravelingDtlBtn');
     var notenumberCtrl = $('#NoteNumber');
@@ -79,6 +79,7 @@ function NotenumberChanged() {
     EnableSubmitBtn();
     $('#VASubmitBtnActive').val();
     $('#IsVABtnEnabled').val();
+    if (mVal == 1) { $('#IsVABtnEnabled').val(0); $('#VABtn').makeDisable(); }
 };
 function EnableSubmitBtn() {
     var submitBtn = $('#btnSubmit');
@@ -91,7 +92,7 @@ function EnableSubmitBtn() {
     if (isenabled) { submitBtn.makeEnabled(); } else { submitBtn.makeDisable(); }
 };
 $(document).ready(function () {
-    NotenumberChanged();
+    NotenumberChanged(0);
     $('#btnBack').click(function () {
         var backbtnactive = $('#VASubmitBtnActive').val();
         var backurl = "/Security/EntryI/Index";

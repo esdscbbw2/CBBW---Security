@@ -1,0 +1,331 @@
+﻿@using CBBW.Areas.Security.ViewModel.EMC;
+@model EMCHeaderEntryVM
+@{
+    ViewBag.Title = "Employees Travelling Schedule Details – APPROVAL (FOR MFG. CENTERS)";
+}
+<div class="container">
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(m => m.NoteNumber)
+        @Html.HiddenFor(m => m.CanDelete)
+        @Html.HiddenFor(m => m.CBUID)
+        @Html.HiddenFor(m => m.emnHeader.AttachFile)
+        @Html.HiddenFor(m => m.emnHeader.CenterCodeName)
+        @Html.HiddenFor(m => m.emnHeader.NoteNumber)
+        @Html.HiddenFor(m => m.HeaderText)
+
+
+        <div class="row newTable">
+            <div class="fixedElement">
+                <div class="col-md-12">
+                    <div class="heading_text_btn mb-3 mt-4">
+                        <div class="leftButton">
+                            <button type="button" id="btnBack" class="btn btn-primary me-2">
+                                <i data-feather="arrow-left-circle"></i>
+                                Back
+                            </button>
+                            @if (Model.CanDelete == 1)
+                            {
+                                <button id="btnDelete" type="submit" name="Submit" value="Delete"
+                                        class="btn btn-primary me-2">
+                                    <i data-feather="trash-2"></i>
+                                    Delete
+                                </button>
+                            }
+                        </div>
+                        <h2>Employees Travelling Schedule Details –@Model.HeaderText (FOR MFG. CENTERS)</h2>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-md-12 d-flex justify-content-between">
+                <div class="text-left pt-2 pb-2">
+                    <button id="btnViewDoc" type="button" class="btn btn-light-green">
+                        To Check Attached “Travelling Request Form”
+                        Click Here
+                    </button>
+                </div>
+                <div class="text-right pt-2 pb-2">
+                    <div class="upper-tab-buttons">
+                        <button type="button" class="btn btn-primary me-2" id="btnTourRule">
+                            To Check  “Tour Rules”   Click Here
+                        </button>
+                        <button type="button" class="btn btn-primary " onclick="window.location.href='#';">
+                            To Check “TA & DA Rules”   Click Here
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-4">
+                <div class="card mb-4 mt-4">
+                    <div class="card-body approvalForm">
+                        <form class="form-sample form-inline row ms-auto">
+                            <div class="row d-flex align-items-center mb-4">
+                                <label class="col-form-label col-md-2">
+                                    Note No. :
+                                </label>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" value="@Model.emnHeader.NoteNumber" disabled>
+                                </div>
+                                <label class="col-form-label col-md-1">
+                                    Date  :
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" value="@Model.emnHeader.EntryDateDisplay" disabled>
+                                </div>
+                                <label class="col-form-label col-md-1">
+                                    Time  :
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" value="@Model.emnHeader.EntryTime" disabled>
+                                </div>
+                            </div>
+                            <div class="row d-flex align-items-center mb-4">
+                                <label class="col-form-label col-md-2">
+                                    Center Code & Name  :
+                                </label>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" value="@Model.emnHeader.CenterCodeName" disabled>
+                                </div>
+                            </div>
+                            <div class="row d-flex align-items-center mb-4">
+                                <label class="col-form-label col-md-2">
+                                    Is E.P Tour  :
+                                </label>
+                                <div class="col-md-6">
+                                    @if (Model.emnHeader.IsEPTour == true)
+                                    {
+
+
+                                        <input type="text" class="form-control" value="Yes" disabled>
+                                    }
+                                    else
+                                    {
+                                        <input type="text" class="form-control" value="No" disabled>
+                                    }
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+                <div class="col-md-12 mt-4 pt-3">
+                    <div class="heading_text_btn2 d-block mb-4">
+                        <h2>
+                            Travelling Person - Details
+                        </h2>
+                    </div>
+                    <div class="card" id="TravellingPerson">
+                        <div class="card-body">
+
+                            <div class="table-responsive btnalign">
+                                <table class="table table-bordered w-100" id="Traveltbl">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" style="vertical-align: middle;">SL.No.</th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;">
+                                                Person Type
+                                            </th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;">Employee No. & Name</th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;">
+                                                Designation Code & Name
+                                            </th>
+                                            <!-- <th scope="col" style="text-align: center; vertical-align: middle;"> Is He Back With Vehicle</th> -->
+                                            <th scope="col" style="text-align: center; vertical-align: middle;">
+                                                Eligible Company Vehicle Type
+                                            </th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;">
+                                                Ref. E.P Note No. & Date
+                                            </th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;">
+                                                T.A & D.A Denied
+                                            </th>
+
+                                        </tr>
+
+                                    </thead>
+                                    <tbody id="tbody1">
+                                        <tr id="0" class="add-row">
+                                            <th scope="row" class="text-center">1</th>
+                                            <td class="text-center"><div id="DDPersonType" class="htmlVal alterID"></div></td>
+                                            <td class="text-center"><div id="EmployeeNo" class="htmlVal alterID"></div></td>
+                                            <td class="text-center"><div id="DesgCodenName" class="htmlVal alterID"></div> </td>
+                                            <td class="text-center"> <div id="EgblVehicleTypeName" class="htmlVal alterID"></div> </td>
+                                            <td>
+                                                <span id="EPNoteNumber" data-name="EPNoteNumber"
+                                                      class="text-center alterID htmlVal"></span><br />
+                                                <span id="NoteDate" data-name="NoteDate"
+                                                      class="text-center alterID htmlVal"></span>
+                                            </td>
+                                            <td class="text-center"><div id="TaDaDenied" class="htmlVal alterID"></div></td>
+
+                                        </tr>
+                                    </tbody>
+                                    <tbody id="tbody2"></tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="d-flex justify-content-center mt-4">
+                        <button type="submit" id="btnTravDetails" value="DTD" name="submit" class="btn btn-primary me-2">
+                            Travelling Details
+                        </button>
+                    </div>
+                </div>
+                <div class="bgColor mt-4 bg-transparent content border-green text-left">
+                    <ul style="list-style:none;">
+                        <li style="font-size: 16px;">
+                            The Entry Is Done As Per Policy & As Required:
+                            <input type="text" class="form-control width-85 pointer-none content border-green" value="Yes" disabled="">
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="TravDetails" class="bgColor mt-4 bg-transparent content2 border-red  text-left">
+                    <ul style="list-style:none;">
+                        <li style="font-size: 16px;">
+                            Tour Is Approved / Rejected After Written Information & Consent Of COO. When Ever Required, VB Document Shall Be Produced:
+                            <input type="text" class="form-control width-85 pointer-none content border-green" value="Yes" disabled="">
+                        </li>
+                    </ul>
+                </div>
+
+
+                <div class="card mt-4 mb-4">
+                    <div class="card-body alert alert-success approvalForm text-dark ">
+                        <div class="row d-flex align-items-center">
+                            <div class="col-md-2 col-form-label">
+                                <label>Approved :</label>
+                            </div>
+                            <div class="col-md-2">
+                                @if (Model.emnHeader.IsApproved == true)
+                                {
+                                    <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                                }
+                                else
+                                {
+                                    <input type="text" class="form-control width-85 pointer-none" value="No" disabled="">
+                                }
+
+                            </div>
+                            <div class="col-md-2 col-form-label">
+                                <label>Date &amp; Time Of Approval :</label>
+                            </div>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" value="@Model.emnHeader.ApproveDatestr @Model.emnHeader.ApproveTime" disabled>
+                            </div>
+                            <div class="col-md-2 col-form-label">
+                                <label>Reason If Not Approved :</label>
+                            </div>
+
+                            <div class="col-md-2">
+                                <textarea name="" id="" cols="20" rows="2" class="form-control pointer-default" readonly data-toggle="tooltip" data-placement="bottom">   @Model.emnHeader.ApprovedReason</textarea>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    }
+</div>
+
+
+@section headers
+{
+
+}
+@section scripts{
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/EMC/EMCEntryDetailsJS.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#btnViewDoc').click(function () {
+                var docfilename = $('#emnHeader_AttachFile').val();
+                var filepath = "/Upload/Forms/" + docfilename;
+                if (docfilename.length > 2) { window.open(filepath); }
+                else {
+                    Swal.fire({
+                        title: 'Information',
+                        text: "No Document Found For This Note",
+                        icon: 'warning',
+                        customClass: 'swal-wide',
+                        buttons: {
+                            //cancel: 'Cancel',
+                            confirm: 'Ok'
+                        },
+                        //cancelButtonClass: 'btn-cancel',
+                        confirmButtonColor: '#2527a2',
+                    });
+                }
+            });
+        });
+    </script>
+    <script>
+         $(document).ready(function () {
+            //var mymsg = '@ViewBag.ErrMsg';
+            if ('@ViewBag.ErrMsg' != '') {
+                Swal.fire({
+                    title: 'Failed To Submit',
+                    text: "@ViewBag.ErrMsg",
+                    icon: 'warning',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        //cancel: 'Cancel',
+                        confirm: 'Ok'
+                    },
+                    //cancelButtonClass: 'btn-cancel',
+                    confirmButtonColor: '#2527a2',
+                });
+            };
+            if ('@ViewBag.Msg' != '') {
+                Swal.fire({
+                    title: 'Confirmation',
+                    text: "@ViewBag.Msg",
+                    icon: 'success',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        confirm: 'Ok'
+                    },
+                    confirmButtonColor: '#2527a2',
+                }).then(callback);
+                function callback(result) {
+                    if (result.value) {
+                        var url = "/Security/ETS/ETSNoteApproveList";
+                        window.location.href = url;
+                    }
+                }
+            };
+            @*if ('@ViewBag.BtnActive' != '') {
+                $('#BackBtnActive').val(1);
+            };
+            alert('@ViewBag.BtnActive');*@
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#btnBack').click(function () {
+                var url = "/Security/EMC/EMCNoteApproveList";
+                window.location.href = url;
+            });
+        });
+        $(document).ready(function () {
+            $('#btnTourRule').click(function () {
+                var url = "/Security/TourRule/ViewRedirection?CBUID=1";
+                window.open(url);
+            });
+        });
+    </script>
+}

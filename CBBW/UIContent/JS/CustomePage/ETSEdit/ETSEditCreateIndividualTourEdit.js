@@ -1,4 +1,21 @@
-﻿function Option1Changed() {
+﻿function Option1Visible() {
+    var isvisible = false;
+    var optionDiv = $('#mOptionDiv');
+    var optionCtrl = $('#Option1');
+    var edittag = $('#EditTag').val();
+    if (edittag == 3) {
+        $('#tour_extension').find('.tourcat').each(function () {
+            if ($(this).val().indexOf('3') >= 0) { isvisible = true; }
+        });
+    }
+    if (isvisible) {
+        optionDiv.makeVisible(); if (optionCtrl.val() != 1) { optionCtrl.isInvalid() };
+    }
+    else {
+        optionCtrl.removeClass('is-invalid'); optionDiv.addClass('inVisible');
+    }
+};
+function Option1Changed() {
     var targetCtrl = $(Option1Changed.caller.arguments[0].target);
     var optionDiv = $('#mOptionDiv');
     if (targetCtrl.val() == 1) {
@@ -374,6 +391,7 @@ function EnableSubmitBtn() {
     var btnSubmit = $('#btnSubmit');
     var isenable = false;
     var editTag = $('#EditTag').val();
+    Option1Visible();
     if (editTag == 1) {
         $('.mTCValidation').each(function () {
             if ($(this).html() == 1) { isenable = true; }
@@ -452,8 +470,22 @@ function btnSubmitClicked() {
         success: function (data) {
             $(data).each(function (index, item) {
                 if (item.bResponseBool == true) {
-                    var url = "/Security/ETSEdit/Create";
-                    window.location.href = url;
+                    Swal.fire({
+                        title: 'Confirmation',
+                        text: 'Data Saved Successfully.',
+                        icon: 'success',
+                        customClass: 'swal-wide',
+                        buttons: {
+                            confirm: 'Ok'
+                        },
+                        confirmButtonColor: '#2527a2',
+                    }).then(callback);
+                    function callback(result) {
+                        if (result.value) {
+                            var url = "/Security/ETSEdit/Create";
+                            window.location.href = url;
+                        }
+                    }
                 } else {
                     Swal.fire({
                         title: 'Confirmation',

@@ -21,5 +21,6 @@ namespace CBBW.BOL.ETSEdit
         public string EPNoteNumber { get; set; }
         public DateTime EPNoteDate { get; set; }
         public bool TADADenied { get; set; }
+        public int Isdriver { get; set; }
     }
 }

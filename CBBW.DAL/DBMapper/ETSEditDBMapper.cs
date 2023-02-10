@@ -139,7 +139,8 @@ namespace CBBW.DAL.DBMapper
                     else { result.EPNoteNumber = "-"; }
                     if (!DBNull.Value.Equals(dr["TADADenied"]))
                         result.TADADenied =bool.Parse(dr["TADADenied"].ToString());
-                    
+                    if (!DBNull.Value.Equals(dr["Isdriver"]))
+                        result.Isdriver = int.Parse(dr["Isdriver"].ToString());
                 }
             }
             catch { }

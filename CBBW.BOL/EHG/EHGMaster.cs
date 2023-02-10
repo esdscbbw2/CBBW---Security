@@ -22,7 +22,13 @@ namespace CBBW.BOL.EHG
             getTourCategory();
             getVehicleBelongsTo();
             getEditTag();
-        }
+            getBranchCode();
+        }        
+        private void getBranchCode()
+        {
+            GetBranchCodeForEMC = new List<CustomComboOptions>(){
+            new CustomComboOptions{ ID = 15, DisplayText = "15/SHOLAPUR" }};
+        }        
         private void getVehicleBelongsTo()
         {
             VehicleBelongsTo = new List<CustomComboOptions>()
@@ -46,7 +52,8 @@ namespace CBBW.BOL.EHG
                 new CustomComboOptions{ ID = 2, DisplayText = "Branch & Center Visit" },
                 new CustomComboOptions{ ID = 4, DisplayText = "Branch Visit" },
                 new CustomComboOptions{ ID = 5, DisplayText = "Unknown Visit" },
-                new CustomComboOptions{ ID = 3, DisplayText = "Others" }
+                new CustomComboOptions{ ID = 3, DisplayText = "Others" },
+                new CustomComboOptions{ ID = 6, DisplayText = "EP Tour" }
             };
             TourCategoryForEdit = new List<CustomComboOptions>()
             {
@@ -107,6 +114,7 @@ namespace CBBW.BOL.EHG
                 new CustomComboOptions{ ID = 2, DisplayText = "Other EDIT " }
             };
         }
+        public List<CustomComboOptions> GetBranchCodeForEMC { get; set; }
         public List<CustomComboOptions> VehicleTypes { get; set; }
         public List<CustomComboOptions> VehicleTypesForHg { get; set; }
         public List<CustomComboOptions> PurposeOfAllotment { get; set; }

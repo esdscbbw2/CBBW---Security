@@ -193,10 +193,20 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = PersonName;
                 para[paracount] = new SqlParameter("@IsActive", SqlDbType.Bit);
                 para[paracount++].Value = true;
-                using (SQLHelper sql = new SQLHelper("[ETS].[getCurrentDateWiseTour]", CommandType.StoredProcedure))
+                if (IsActive) 
                 {
-                    return sql.GetDataSet(para, ref pMsg);
-                }
+                    using (SQLHelper sql = new SQLHelper("[ETS].[getCurrentDateWiseTourV3]", CommandType.StoredProcedure))
+                    {
+                        return sql.GetDataSet(para, ref pMsg);
+                    }
+                } 
+                else 
+                {
+                    using (SQLHelper sql = new SQLHelper("[ETS].[getCurrentDateWiseTour]", CommandType.StoredProcedure))
+                    {
+                        return sql.GetDataSet(para, ref pMsg);
+                    }
+                }                
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }

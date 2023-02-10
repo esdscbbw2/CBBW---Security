@@ -353,7 +353,7 @@
                                                 <td class="text-center">
                                                     <select id="CRTourCategory"
                                                             data-name="TourCategoryIDs" data-name-text="TourCategoryNames"
-                                                            class="form-select is-invalid alterID clonemultiselect"
+                                                            class="form-select is-invalid alterID clonemultiselect tourcat"
                                                             onchange="CRTourCategoryChanged()"
                                                             aria-label="Default select example">
                                                     </select>
@@ -461,7 +461,7 @@
                                                             </td>
                                                             <td class="text-center">
                                                                 <select id="OETourCategory_@sl" multiple="multiple"
-                                                                        class="form-select example-getting-started form-multi"
+                                                                        class="form-select example-getting-started form-multi tourcat"
                                                                         onchange="OETourCategoryChanged()"
                                                                         data-name="TourCategoryIDs" data-name-text="TourCategoryNames"
                                                                         aria-label="Default select example">
@@ -526,11 +526,11 @@
                             </div>
                         </div>
                     </div>
-                    <div id="mOptionDiv" class="bgColor mt-4 bg-transparent content text-left border-red">
+                    <div id="mOptionDiv" class="bgColor mt-4 bg-transparent content text-left border-red inVisible">
                         <ul style="list-style:none;">
                             <li style="font-size: 16px;">
                                 It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
-                                <select class="form-select content border-red is-invalid"
+                                <select class="form-select content border-red"
                                         aria-label="Default select example"
                                         id="Option1" onchange="Option1Changed()">
                                     <option selected="">-</option>

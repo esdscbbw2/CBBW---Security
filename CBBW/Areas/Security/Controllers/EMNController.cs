@@ -213,8 +213,8 @@ namespace CBBW.Areas.Security.Controllers
                         modeltravvm.CenterCodenName = model.CenterCodeName;
                         
                         var DateNo = _iEMN.GetTourInfoForServiceType(ServiceTypeCode, ref pMsg);
-                        int totalsDays= DateNo.MaxDayAllowed;
-                        modeltravvm.TourFromdateStr = DateTime.Today.AddDays(totalsDays).ToString("yyyy-MM-dd");
+                      
+                        modeltravvm.TourFromdateStr = DateTime.Today.AddDays(DateNo.MaxDayAllowed).ToString("yyyy-MM-dd");
                         modeltravvm.TodateStr = DateTime.Today.AddDays(3).ToString("yyyy-MM-dd");
                         modeltravvm.FromdateStr = DateTime.Today.ToString("yyyy-MM-dd");
 

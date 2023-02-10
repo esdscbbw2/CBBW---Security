@@ -31,7 +31,7 @@ namespace CBBW.Areas.Security.Controllers
         public ActionResult ViewRedirection(int CBUID, string NoteNumber = "") 
         {            
             string mEffectiveDate = _iTADARules.GetAffectedRuleID(ref pMsg).ToString("dd-MM-yyyy");
-            return RedirectToAction("ViewRule", new { id = 0, isDelete = false });
+            return RedirectToAction("ViewRule", new { id = 1, isDelete = false });
         }
         public ActionResult ViewRule(int id, bool isDelete)
         {

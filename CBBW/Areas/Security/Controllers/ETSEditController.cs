@@ -74,6 +74,7 @@ namespace CBBW.Areas.Security.Controllers
         [HttpPost]
         public ActionResult RatNote(ETSEditCreateVM modelobj, string Submit)
         {
+            string baseUrl = "/Security/ETSEdit/ApproveNote";
             model = CastEHGEditRatTempData();
             modelobj.ToBeEditNoteList = model.ToBeEditNoteList;
             modelobj.backbtnactive = 0;
@@ -104,6 +105,18 @@ namespace CBBW.Areas.Security.Controllers
                     TempData["EHGEdit"] = modelobj;
                 }
             }
+            else if (Submit == "TourRule")
+            {
+                TempData["EHGEdit"] = modelobj;
+                _iUser.RecordCallBack(baseUrl);
+                return RedirectToAction("ViewRedirection", "TourRule", new { Area = "Security", CBUID = 1 });
+            }
+            else if (Submit == "TADARule")
+            {
+                TempData["EHGEdit"] = modelobj;
+                _iUser.RecordCallBack(baseUrl);
+                return RedirectToAction("ViewRedirection", "TADARules", new { Area = "Security", CBUID = 1 });
+            }
             return View(modelobj);
         }
         public ActionResult ApproveNote() 
@@ -114,6 +127,7 @@ namespace CBBW.Areas.Security.Controllers
         [HttpPost]
         public ActionResult ApproveNote(ETSEditCreateVM modelobj, string Submit)
         {
+            string baseUrl = "/Security/ETSEdit/ApproveNote";
             model = CastEHGEditTempData();
             modelobj.ToBeEditNoteList = model.ToBeEditNoteList;
             modelobj.backbtnactive = 0;            
@@ -143,7 +157,19 @@ namespace CBBW.Areas.Security.Controllers
                     ViewBag.ErrMsg = "Approval Failed For Note Number " + modelobj.NoteNumber;
                     TempData["EHGEdit"] = modelobj;
                 }
-            }            
+            }
+            else if (Submit == "TourRule")
+            {
+                TempData["EHGEdit"] = modelobj;
+                _iUser.RecordCallBack(baseUrl);
+                return RedirectToAction("ViewRedirection", "TourRule", new { Area = "Security", CBUID = 1 });
+            }
+            else if (Submit == "TADARule")
+            {
+                TempData["EHGEdit"] = modelobj;
+                _iUser.RecordCallBack(baseUrl);
+                return RedirectToAction("ViewRedirection", "TADARules", new { Area = "Security", CBUID = 1 });
+            }
             return View(modelobj);
         }
         public ActionResult Index()
@@ -202,6 +228,16 @@ namespace CBBW.Areas.Security.Controllers
                 _iUser.RecordCallBack(baseUrl);
                 return RedirectToAction("ViewIndividualEdit", "ETSEdit", new { NoteNumber = modelobj.NoteNumber, CBUID = modelobj.CBUID });
             }
+            else if (Submit == "TourRule")
+            {
+                _iUser.RecordCallBack(baseUrl);
+                return RedirectToAction("ViewRedirection", "TourRule", new { Area = "Security", CBUID = 1 });
+            }
+            else if (Submit == "TADARule")
+            {
+                _iUser.RecordCallBack(baseUrl);
+                return RedirectToAction("ViewRedirection", "TADARules", new { Area = "Security", CBUID = 1 });
+            }
             return View(modelobj);
         }
         public ActionResult ViewNoteApp(string NoteNumber, int CBUID = 0) 
@@ -247,6 +283,16 @@ namespace CBBW.Areas.Security.Controllers
             {
                 _iUser.RecordCallBack(baseUrl);
                 return RedirectToAction("ViewIndividualEdit", "ETSEdit", new { NoteNumber = modelobj.NoteNumber, CBUID = modelobj.CBUID });
+            }
+            else if (Submit == "TourRule")
+            {
+                _iUser.RecordCallBack(baseUrl);
+                return RedirectToAction("ViewRedirection", "TourRule", new { Area = "Security", CBUID = 1 });
+            }
+            else if (Submit == "TADARule")
+            {
+                _iUser.RecordCallBack(baseUrl);
+                return RedirectToAction("ViewRedirection", "TADARules", new { Area = "Security", CBUID = 1 });
             }
             return View(modelobj);
         }
@@ -303,6 +349,16 @@ namespace CBBW.Areas.Security.Controllers
             {
                 _iUser.RecordCallBack(baseUrl);
                 return RedirectToAction("ViewIndividualEdit", "ETSEdit", new { NoteNumber = modelobj.NoteNumber, CBUID = modelobj.CBUID });
+            }
+            else if (Submit == "TourRule")
+            {
+                _iUser.RecordCallBack(baseUrl);
+                return RedirectToAction("ViewRedirection", "TourRule", new { Area = "Security", CBUID = 1 });
+            }
+            else if (Submit == "TADARule")
+            {
+                _iUser.RecordCallBack(baseUrl);
+                return RedirectToAction("ViewRedirection", "TADARules", new { Area = "Security", CBUID = 1 });
             }
             return View(modelobj);
         }
@@ -395,17 +451,27 @@ namespace CBBW.Areas.Security.Controllers
             {
                 return RedirectToAction("IndividualEdit");
             }
-            else if (Submit == "create") 
+            else if (Submit == "create")
             {
                 if (_IETSEdit.UpdateETSTourEdit(modelobj.NoteNumber, ref pMsg))
                 {
                     ViewBag.Msg = "Note Number " + modelobj.NoteNumber + " Submited Successfully.";
                     TempData["EHGEdit"] = null;
                 }
-                else 
+                else
                 {
-                    ViewBag.ErrMsg = "Updation Failed For Note Number " + modelobj.NoteNumber+ " Due To : "+ pMsg;
+                    ViewBag.ErrMsg = "Updation Failed For Note Number " + modelobj.NoteNumber + " Due To : " + pMsg;
                 }
+            }
+            else if (Submit == "TourRule") 
+            {
+                _iUser.RecordCallBack("/Security/ETSEdit/Create");
+                return RedirectToAction("ViewRedirection", "TourRule", new { Area = "Security", CBUID = 1 });
+            }
+            else if (Submit == "TADARule")
+            {
+                _iUser.RecordCallBack("/Security/ETSEdit/Create");
+                return RedirectToAction("ViewRedirection", "TADARules", new { Area = "Security", CBUID = 1 });
             }
             return View(modelobj);
         }

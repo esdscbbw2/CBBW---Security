@@ -1,0 +1,441 @@
+﻿@using System.Globalization;
+@using CBBW.Areas.Security.ViewModel.EMC;
+@model EMCHeaderEntryVM
+@{
+    ViewBag.Title = "Employees Travelling  Schedule Details – ENTRY (FOR MFG. CENTERS) ";
+}
+<div class="row newTable">
+    @using (Html.BeginForm("Create", "EMC", FormMethod.Post))
+    {
+        @Html.HiddenFor(m => m.emnHeader.NoteNumber)
+        @Html.HiddenFor(m => m.emnHeader.AttachFile)
+        @Html.HiddenFor(m => m.emnHeader.CenterCode)
+        @Html.HiddenFor(m => m.emnHeader.CenterName)
+        @Html.HiddenFor(m => m.emnHeader.CenterCodeName)
+        @Html.HiddenFor(m => m.emnHeader.IsEPTour)
+        
+        @Html.HiddenFor(m => m.Btnsubmit)
+        <div class="container">
+            <div class="row newTable">
+                <div class="fixedElement">
+                    <div class="col-md-12">
+                        <div class="heading_text_btn mb-3 mt-4">
+                            <div class="leftButton">
+                                <button id="btnBack" type="button" class="btn btn-primary me-2">
+                                    <i data-feather="arrow-left-circle"></i>
+                                    Back
+                                </button>
+                                <button id="btnSubmited" type="button" name="Submit" value="create"
+                                        class="btn btn-secondary me-2" onclick="SaveFinalSubmit()" disabled>
+                                    <i data-feather="upload"></i>
+                                    Submit
+                                </button>
+                                <button type="button" id="btnClear"
+                                        class="btn btn-white">
+                                    <i data-feather="x-circle"></i>
+                                    Clear
+                                </button>
+                            </div>
+
+                            <h2>@ViewBag.Title</h2>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-md-12 d-flex justify-content-between">
+                    <div class="text-left pt-2 pb-2">
+                        <button type="button" class="btn btn-light-green" onclick="fireSweetAlert()">
+                            Scan & Attach
+                            “Travelling Request Form”
+                        </button>
+                    </div>
+                    <div class="text-right pt-2 pb-2">
+                        <div class="upper-tab-buttons">
+                            <button type="button" id="btnTourRule" class="btn btn-primary me-2">
+                                To Check  “Tour Rules”   Click Here
+                            </button>
+                            <button type="button" class="btn btn-primary " onclick="window.location.href='#';">
+                                To Check “TA & DA Rules”   Click Here
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 mb-4">
+                    <div class="card mb-4 mt-4" id="HdrDiv">
+                        <div class="card-body approvalForm">
+                            <form class="form-sample form-inline row ms-auto">
+                                <div class="row d-flex align-items-center mb-4">
+                                    <label class="col-form-label col-md-2">
+                                        Note No. :
+                                    </label>
+                                    <div class="col-md-3">
+                                        @Html.TextBoxFor(m => m.emnHeader.NoteNumber,
+      htmlAttributes: new
+      {
+          @class = "form-control",
+          disabled = "disabled",
+          id = "Noteno2"
+      })
+
+                                    </div>
+                                    <label class="col-form-label col-md-1">
+                                        Date  :
+                                    </label>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control" value="@DateTime.Today.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)" disabled>
+                                    </div>
+                                    <label class="col-form-label col-md-1">
+                                        Time  :
+                                    </label>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control" value="@DateTime.Now.ToString("hh:mm tt")" disabled>
+                                    </div>
+                                </div>
+                                <div class="row d-flex align-items-center mb-4">
+                                    <label class="col-form-label col-md-2">
+                                        Center Code & Name  :
+                                    </label>
+                                    <div class="col-md-6">
+                                        @Html.TextBoxFor(m => m.emnHeader.CenterCodeName,
+         htmlAttributes: new
+         {
+             @class = "form-control",
+             disabled = "disabled"
+         })
+                                    </div>
+                                </div>
+
+                                <div class="row d-flex align-items-center mb-4">
+                                    <label class="col-form-label col-md-2">
+                                        Is E.P Tour  :
+                                    </label>
+                                    <div class="col-md-6">
+                                        <select onchange="ValidateControl();EPTourChange();" class="form-select EPTourSelector1 is-invalid" aria-label="Default select example" id="IsEPTour">
+                                            <option selected value="-1">-</option>
+                                            <option value="1">Yes</option>
+                                            <option value="0">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card mb-4 mt-4">
+                        <div class="card-body  alert alert-danger text-dark approvalForm">
+                            <form class="form-sample form-inline row ms-auto">
+                                <div class="row d-flex align-items-center">
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Approved :</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control" value="-" disabled="">
+                                    </div>
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Date &amp; Time Of Approval :</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control" value="" disabled="">
+                                    </div>
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Reason If Not Approved :</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <textarea name="" id="" cols="10" rows="2" class="form-control pointer-default" readonly></textarea>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+
+                    <div class="col-md-12 mt-4 pt-3" id="TPTable">
+                        <div class="heading_text_btn2 d-block mb-4">
+                            <h2>
+                                Travelling Person - Details
+                            </h2>
+                        </div>
+
+                        <div class="card" id="TravellingPerson">
+                            <div class="card-body">
+
+                                <div class="table-responsive btnalign">
+                                    <table class="table table-bordered w-100" id="Traveltbl">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" style="vertical-align: middle;">SL.No.</th>
+                                                <th scope="col" style="text-align: center; vertical-align: middle;">
+                                                    Person Type
+                                                </th>
+                                                <th scope="col" style="text-align: center; vertical-align: middle;">Employee No. & Name</th>
+                                                <th scope="col" style="text-align: center; vertical-align: middle;">
+                                                    Designation Code & Name
+                                                </th>
+
+                                                <th scope="col" style="text-align: center; vertical-align: middle;">
+                                                    Eligible Company Vehicle Type
+                                                </th>
+                                                <th scope="col" style="text-align: center; vertical-align: middle;"> Ref. E.P Note No. & Date </th>
+                                                <th scope="col" style="text-align: center; vertical-align: middle;">
+                                                    T.A & D.A Denied
+                                                </th>
+                                                <th scope="col" style="text-align: center; vertical-align: middle; background-color: pink; color: #000; width: 11%;">
+                                                    Actions
+                                                </th>
+                                            </tr>
+
+                                        </thead>
+                                        <tbody id="tbody1">
+                                            <tr id="0" class="add-row">
+                                                <th scope="row" class="text-center">1</th>
+                                                <td class="text-center">
+                                                    <select class="form-select is-invalid alterID inValidTag"
+                                                            data-name="PersonType" data-name-text="PersonTypeName"
+                                                            aria-label="Default select example"
+                                                            id="DDPersonType" onchange="DDPersonTypeChanged()">
+                                                    </select>
+                                                </td>
+                                                <td class="text-center">
+                                                    <select class="form-select max-content-input alterID inValidTag pickPersonName xPerson"
+                                                            data-name="EmployeeNo" data-name-text="EmployeeNonNamecmb"
+                                                            aria-label="Default select example"
+                                                            onchange="DDPickPersonChanged(0)"
+                                                            id="cmbDDPersonType">
+                                                    </select>
+                                                    <input type="text" maxlength="20" data-name="EmployeeNonName"
+                                                           class="form-control w-200 inVisible alterID pickPersonNametxt xPerson"
+                                                           onblur="DDPickPersonChanged(1)"
+                                                           id="txtDDPersonType">
+                                                </td>
+                                                <td id="DesgCodenName" data-name="DesignationCodenName" class="text-center alterID htmlVal"> </td>
+
+                                                <td id="EgblVehicleType" hidden data-name="EligibleVehicleType"
+                                                    class="text-center alterID htmlVal"> </td>
+                                                <td id="EgblVehicleTypeName" data-name="EligibleVehicleTypeName"
+                                                    class="text-center alterID htmlVal"> </td>
+
+                                                <td>
+                                                    <span id="EPNoteNumber" data-name="EPNoteNumber"
+                                                          class="text-center alterID htmlVal"></span><br />
+                                                    <span id="NoteDate" data-name="NoteDate"
+                                                          class="text-center alterID htmlVal"></span>
+                                                </td>
+
+                                                <td class="text-center">
+                                                    <select id="TaDaDenied" style="width: 110px;" class="form-select is-invalid alterID inValidTag"
+                                                            data-name="TADADenied"
+                                                            onchange="ValidateCloneRowCtrl()"
+                                                            aria-label="Default select example">
+                                                        <option selected value="-1">-</option>
+                                                        <option value="1"> Yes</option>
+                                                        <option value="0"> No </option>
+                                                    </select>
+
+                                                </td>
+                                                <td class="text-center">
+                                                    <span class="actionBtn d-block">
+                                                        <button id="AddBtn" type="button" disabled
+                                                                class="btn primaryLink alterID cloneBtn addBtn"
+                                                                onclick="AddClonebtn()"
+                                                                data-toggle="tooltip"
+                                                                data-placement="top" title="Add">
+                                                            <i data-feather="plus"></i>
+                                                        </button>
+                                                        <button id="DeleteBtn" type="button"
+                                                                class="btn secondaryLink inVisible alterID cloneBtn removeBtn"
+                                                                onclick="removeClonebtn()"
+                                                                data-toggle="tooltip"
+                                                                data-placement="top" title="Delete">
+                                                            <i data-feather="x"></i>
+                                                        </button>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody id="tbody2"></tbody>
+                                    </table>
+                                </div>
+                                @*<div class="text-center">
+                                    <button type="button" id="SaveTP" onclick="TravellingPersonBtnSave()" disabled class="btn btn-secondary btn-green  me-2" onclick="window.location.href='#';">
+                                        <i data-feather="check-circle"></i>
+                                        Save
+                                    </button>
+                                </div>*@
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+                    <div class="col-md-12">
+                        <div class="d-flex justify-content-center mt-4">
+                            <button id="VADBtn" type="submit" class="btn btn-primary" disabled
+                                    name="Submit" value="VAD" onclick="TravellingPersonBtnSave()">
+                                Travelling Details
+                            </button>
+
+                        </div>
+                    </div>
+
+                    <div class="bgColor mt-4 bg-transparent text-center" id="Questions">
+                        <ul style="list-style:none;">
+                            <li style="font-size: 16px;">
+                                The Entry Is Done As Per Policy & As Required:
+                                <select id="Policy" style="width: 110px;" class="form-select is-invalid" onchange="ValidateControl()" aria-label="Default select example">
+                                    <option selected value="">-</option>
+                                    <option value="0">Yes</option>
+                                    <option value="1">No</option>
+                                </select>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@section headers
+    {
+    <style>
+        .inVisible {
+            display: none;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
+
+}
+
+
+
+@section scripts{
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/EMC/EMCEntry.js"></script>
+    <script>
+        function fireSweetAlert() {
+            Swal.fire({
+                title: 'Attach Travelling Request Form',
+                text: "Are you sure you want to delete this?",
+                icon: 'success',
+                html: `<div style="text-align:left;">
+                                                                <div class="form-group">
+                                                                    <label class="swal-label">Attach File (Only Pdf,Png & Jpg Files)</label>
+                                                                    <input type="file" id="uploadCtrl" name="uploadCtrl" class="form-control" placeholder="">
+                                                                </div>
+                                                            </div>`,
+                cancelButtonClass: 'btn-cancel',
+                cancelButtonText: 'Cancel',
+                confirmButtonText: 'Submit',
+                confirmButtonColor: '#2527a2',
+                showCancelButton: true,
+            }).then(callback);
+            function callback(result) {
+                if (result.value) {
+                    //var url = "/Security/EHG/Index";
+                    //window.location.href = url;
+                    var data = new FormData();
+                    var files = $("#uploadCtrl").get(0).files;
+                    if (files.length > 0) {
+                        data.append("MyImages", files[0]);
+                        $.ajax({
+                            url: "/Common/UploadFile",
+                            type: "POST",
+                            processData: false,
+                            contentType: false,
+                            data: data,
+                            success: function (response) {
+                                $(response).each(function (index, item) {
+                                    if (item.ResponseStat == 1) {
+                                        $('#emnHeader_AttachFile').val(item.FileName);
+                                        var filepath = "/Upload/Forms/" + item.FileName;
+                                        window.open(filepath);
+                                    }
+                                    else {
+                                        Swal.fire({
+                                            title: 'Failed To Upload File.',
+                                            text: item.ResponseMsg,
+                                            icon: 'error',
+                                            customClass: 'swal-wide',
+                                            buttons: {
+                                                confirm: 'Ok'
+                                            },
+                                            confirmButtonColor: '#2527a2',
+                                        });
+                                    }
+                                });
+                                //code after success
+                                //$('#ehgHeader_DocFileName').val(response);
+                                //var filepath = "/Upload/Forms/" + response;
+                                //VehicleTypeChanged();
+                                //window.open(filepath);
+                            },
+                            error: function (er) {
+                                //alert(er);
+                            }
+                        });
+                    }
+                    else {
+                        Swal.fire({
+                            title: 'No Files Selected.',
+                            text: 'Select Only Pdf,Png & Jpg Files.',
+                            icon: 'error',
+                            customClass: 'swal-wide',
+                            buttons: {
+                                confirm: 'Ok'
+                            },
+                            confirmButtonColor: '#2527a2',
+                        });
+                    }
+                }
+            }
+        }
+    </script>
+
+    <script>
+
+        $('#btnBack').click(function () {
+            if ($('#emnHeader_CenterCodeName').val() != "") {
+                Swal.fire({
+                    title: 'Confirmation Message',
+                    text: "Are You Sure Want to Go Back?",
+                    icon: 'question',
+                    customClass: 'swal-wide',
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                    cancelButtonClass: 'btn-cancel',
+                    confirmButtonColor: '#2527a2',
+                    showCancelButton: true,
+                }).then(callback);
+                function callback(result) {
+                    if (result.value) {
+                        var url = "/Security/EMC/Index";
+                        window.location.href = url;
+                    }
+
+                }
+            } else {
+                var url = "/Security/EMN/Index";
+                window.location.href = url;
+            };
+        });
+
+        $(document).ready(function () {
+            $('#btnTourRule').click(function () {
+                var url = "/Security/TourRule/ViewRedirection?CBUID=1";
+                window.open(url);
+            });
+        });
+
+    </script>
+}
+
+
+
+
+
+

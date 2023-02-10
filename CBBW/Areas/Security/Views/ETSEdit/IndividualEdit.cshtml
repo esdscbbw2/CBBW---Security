@@ -75,44 +75,47 @@
                                         int sl = 1;
                                         foreach (var item in Model.TravelingPersonDetails)
                                         {
-                                            <tr>
-                                                <td class="text-center">
-                                                    <div class="form-check">
-                                                        <input id="@sl" onchange="PersonSelectionChanged()" class="form-check-input" type="radio"
-                                                               value='valuable' name="thing">
-                                                    </div>
-                                                    <div id="PersonType_@sl" class="inVisible">
-                                                        @item.PersonType
-                                                    </div>
-                                                    <div id="PersonID_@sl" class="inVisible">
-                                                        @item.EmployeeNo
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    @sl
-                                                </td>
-                                                <td class="text-center">
-                                                    @item.PersonTypeText
-                                                </td>
-                                                <td id="PersonName_@sl" class="text-center">
-                                                    @item.EmployeeNonName
-                                                </td>
-                                                <td class="text-center">
-                                                    @item.DesignationCodenName
-                                                </td>
-                                                <td class="text-center">
-                                                    @item.CenterName
-                                                </td>
-                                                <td class="text-center">
-                                                    @item.EligibleVehicleTypeName
-                                                </td>
-                                                <td class="text-center">
-                                                    @(item.EPNoteDate.Year==1?"-":item.EPNoteNumber+" / "+ item.EPNoteDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture))
-                                                </td>
-                                                <td class="text-center">
-                                                    @(item.TADADenied?"Yes":"No")
-                                                </td>
-                                            </tr>
+                                    <tr class="@(item.Isdriver == 1?"sectionB":"")">
+                                        <td class="text-center">
+                                            @if (item.Isdriver != 1)
+                                            {
+                                                <div class="form-check">
+                                                    <input id="@sl" onchange="PersonSelectionChanged()" class="form-check-input" type="radio"
+                                                           value='valuable' name="thing">
+                                                </div>
+                                            }
+                                            <div id="PersonType_@sl" class="inVisible">
+                                                @item.PersonType
+                                            </div>
+                                            <div id="PersonID_@sl" class="inVisible">
+                                                @item.EmployeeNo
+                                            </div>
+                                        </td>
+                                            <td>
+                                                @sl
+                                            </td>
+                                            <td class="text-center">
+                                                @item.PersonTypeText
+                                            </td>
+                                            <td id="PersonName_@sl" class="text-center">
+                                                @item.EmployeeNonName
+                                            </td>
+                                            <td class="text-center">
+                                                @item.DesignationCodenName
+                                            </td>
+                                            <td class="text-center">
+                                                @item.CenterName
+                                            </td>
+                                            <td class="text-center">
+                                                @item.EligibleVehicleTypeName
+                                            </td>
+                                            <td class="text-center">
+                                                @(item.EPNoteDate.Year==1?"-":item.EPNoteNumber+" / "+ item.EPNoteDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture))
+                                            </td>
+                                            <td class="text-center">
+                                                @(item.TADADenied?"Yes":"No")
+                                            </td>
+                                        </tr>
                                             sl += 1;
                                         }
                                     }

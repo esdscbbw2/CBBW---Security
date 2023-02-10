@@ -136,6 +136,7 @@
     <Compile Include="Areas\Security\Controllers\CommonController.cs" />
     <Compile Include="Areas\Security\Controllers\CTVController.cs" />
     <Compile Include="Areas\Security\Controllers\EHGController.cs" />
+    <Compile Include="Areas\Security\Controllers\EMCController.cs" />
     <Compile Include="Areas\Security\Controllers\EMNController.cs" />
     <Compile Include="Areas\Security\Controllers\EntryIController.cs" />
     <Compile Include="Areas\Security\Controllers\ETSController.cs" />
@@ -146,6 +147,9 @@
     <Compile Include="Areas\Security\Controllers\TADARulesController.cs" />
     <Compile Include="Areas\Security\Controllers\TourRuleController.cs" />
     <Compile Include="Areas\Security\Helpers\EditHistory.cs" />
+    <Compile Include="Areas\Security\ViewModel\EMC\EMCHeaderEntryVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\EMC\EMCNoteApproveVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\EMC\EMCTravellingDetailsVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EMN\EMNHeaderEntryVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EMN\EMNNoteApproveVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EMN\EMNTravellingDetailsVM.cs" />
@@ -327,6 +331,11 @@
     <Content Include="UIContent\JS\CustomePage\EHGDateWiseTourDtl.js" />
     <Content Include="UIContent\JS\CustomePage\EHGNoteApproval.js" />
     <Content Include="UIContent\JS\CustomePage\EHGVehicleAllotment.js" />
+    <Content Include="UIContent\JS\CustomePage\EMC\EMCEntry.js" />
+    <Content Include="UIContent\JS\CustomePage\EMC\EMCEntryDetailsJS.js" />
+    <Content Include="UIContent\JS\CustomePage\EMC\EMCNoteApprove.js" />
+    <Content Include="UIContent\JS\CustomePage\EMC\EMCTravApprove.js" />
+    <Content Include="UIContent\JS\CustomePage\EMC\EMCTravellingDetails.js" />
     <Content Include="UIContent\JS\CustomePage\EMN\EMNEntry.js" />
     <Content Include="UIContent\JS\CustomePage\EMN\EMNEntryDetailsJS.js" />
     <Content Include="UIContent\JS\CustomePage\EMN\EMNNoteApprove.js" />
@@ -476,6 +485,16 @@
     <Content Include="Areas\Security\Views\EntryI\VehicleAllotment.cshtml" />
     <Content Include="Areas\Security\Views\EntryI\ViewNote.cshtml" />
     <Content Include="Areas\Security\Views\EntryI\VehicleAllotmentView.cshtml" />
+    <Content Include="Areas\Security\Views\EMC\ApprovalDetails.cshtml" />
+    <Content Include="Areas\Security\Views\EMC\ApprovalTravellingDetailsView.cshtml" />
+    <Content Include="Areas\Security\Views\EMC\Create.cshtml" />
+    <Content Include="Areas\Security\Views\EMC\Details.cshtml" />
+    <Content Include="Areas\Security\Views\EMC\EMCApprovedTravDetails.cshtml" />
+    <Content Include="Areas\Security\Views\EMC\EMCApproveNote.cshtml" />
+    <Content Include="Areas\Security\Views\EMC\EMCNoteApproveList.cshtml" />
+    <Content Include="Areas\Security\Views\EMC\Index.cshtml" />
+    <Content Include="Areas\Security\Views\EMC\TravellingDetails.cshtml" />
+    <Content Include="Areas\Security\Views\EMC\TravellingDetailsView.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />

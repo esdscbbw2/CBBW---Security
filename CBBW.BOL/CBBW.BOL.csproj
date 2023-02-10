@@ -65,6 +65,10 @@
     <Compile Include="EHG\EHGNoteList.cs" />
     <Compile Include="EHG\EHGTravelingPersondtls.cs" />
     <Compile Include="EHG\VehicleAllotmentDetails.cs" />
+    <Compile Include="EMC\EMCDateWiseTour.cs" />
+    <Compile Include="EMC\EMCNote.cs" />
+    <Compile Include="EMC\EMCTravellingDetails.cs" />
+    <Compile Include="EMC\EMCTravellingPerson.cs" />
     <Compile Include="EMN\EMNDateWiseTour.cs" />
     <Compile Include="EMN\EMNNote.cs" />
     <Compile Include="EMN\EMNTravellingDetails.cs" />
