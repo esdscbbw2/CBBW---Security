@@ -49,6 +49,7 @@
     <Compile Include="IRepository\IEHGRepository.cs" />
     <Compile Include="IRepository\IEMCRepository.cs" />
     <Compile Include="IRepository\IEMNRepository.cs" />
+    <Compile Include="IRepository\IEntryIIRepository.cs" />
     <Compile Include="IRepository\IETSEditRepository.cs" />
     <Compile Include="IRepository\IETSRepository.cs" />
     <Compile Include="IRepository\IGVMRRepository.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Repository\EHGRepository.cs" />
     <Compile Include="Repository\EMCRepository.cs" />
     <Compile Include="Repository\EMNRepository.cs" />
+    <Compile Include="Repository\EntryIIRepository.cs" />
     <Compile Include="Repository\ETSEditRepository.cs" />
     <Compile Include="Repository\ETSRepository.cs" />
     <Compile Include="Repository\GVMRRepository.cs" />

@@ -76,8 +76,8 @@ namespace CBBW.DAL.DBMapper
                         result.POAText = "For Management";
                     else if (result.POA==2)
                         result.POAText = "For Office Work";
-                    if (result.EPTour == 0)
-                        result.EPTourText = "NA";
+                    
+                    result.EPTourText =result.EPTour==1?"Yes":result.NoteNumber.Substring(7,3)=="EMC"?"No":"NA";
                     //Else part is pending for the required module.
                     result.EntryDateDisplay = result.EntryDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
                     if (mtag == 1) 
@@ -91,7 +91,7 @@ namespace CBBW.DAL.DBMapper
                     result.NotAppReason = string.IsNullOrEmpty(result.NotAppReason)||result.NotAppReason.Trim() == "NA"  ? "-" : result.NotAppReason;
                     result.RetReason = string.IsNullOrEmpty(result.RetReason)||result.RetReason.Trim() == "NA" ? "-" : result.RetReason;
                     result.IsApprovedDisplay = result.IsApproved ? "Yes" : "No";
-                    result.IsRatifiedDisplay = result.IsRatified ? "Yes":"No";
+                    result.IsRatifiedDisplay = result.IsRatified ? "Yes":result.RetDateTime.Year==1?"-":"No";
                 }
             }
             catch { }
@@ -216,7 +216,7 @@ namespace CBBW.DAL.DBMapper
                 }
                 if (result.TourCategoryIds.IndexOf("7") >= 0)
                 {
-                    mTC.Add(new CustomComboOptions { ID = 7, DisplayText = "Management" });
+                    mTC.Add(new CustomComboOptions { ID = 7, DisplayText = "NA" });
                 }
                 result.TourCategories = mTC.GroupBy(o=>o.ID).Select(o=>o.FirstOrDefault()).ToList();
                 TimeSpan timeLimit = TimeSpan.Parse("16:00");

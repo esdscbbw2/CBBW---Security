@@ -8,22 +8,25 @@
     {
         @Html.HiddenFor(m => m.NoteNumber)
         @Html.HiddenFor(m => m.DeleteBtn)
-        @Html.HiddenFor(m => m.CBUID)<div class="fixedElement">
+        @Html.HiddenFor(m => m.CBUID)
+        @Html.HiddenFor(m => m.NoteDetails.IsIndividualEdit)
+        <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
                     <div class="leftButton">
-                        <button id="btnBack" type="button" 
+                        <button id="btnBack" type="button"
                                 class="btn btn-primary me-2">
                             <i data-feather="arrow-left-circle"></i>
                             Back
                         </button>
-                        @if (Model.DeleteBtn == 1) { 
-                        <button type="submit" name="Submit" value="Delete"
-                                class="btn btn-primary me-2">
-                            <i data-feather="trash-2"></i>
-                            Delete
-                        </button>
-                        }                        
+                        @if (Model.DeleteBtn == 1)
+                        {
+                            <button type="submit" name="Submit" value="Delete"
+                                    class="btn btn-primary me-2">
+                                <i data-feather="trash-2"></i>
+                                Delete
+                            </button>
+                        }
                     </div>
                     <h2>Employees Travelling  Schedule Details – EDIT  </h2>
                 </div>
@@ -144,11 +147,11 @@
             </div>
             <div class="col-md-12">
                 <div class="d-flex justify-content-center mt-4">
-                    <button type="submit" name="Submit" value="TourEditBtn"
+                    <button id="TEBtn" type="submit" name="Submit" value="TourEditBtn"
                             class="btn btn-primary me-2">
                         Tour EDIT Details
                     </button>
-                    <button type="submit" name="Submit" value="IndividualEditBtn"
+                    <button id="IEBtn" type="submit" name="Submit" value="IndividualEditBtn"
                             class="btn btn-primary me-2">
                         Individual EDIT Details
                     </button>
@@ -177,6 +180,18 @@
                 success: function (result) { window.location.href = result; }
             });
         });
+
+        var TEditBtn = $('#TEBtn');
+        var IEditBtn = $('#IEBtn');
+        var ind = $('#NoteDetails_IsIndividualEdit').val();
+        if (ind == 1) {
+            TEditBtn.attr('disabled', 'disabled');
+            IEditBtn.removeAttr('disabled');
+        }
+        else {
+            IEditBtn.attr('disabled', 'disabled');
+            TEditBtn.removeAttr('disabled');
+        }
     </script>
     <script>
         $(document).ready(function () {

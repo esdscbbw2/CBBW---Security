@@ -50,6 +50,8 @@ function NotenumberChanged() {
                 $('#ratReason').val(item.RetReason);
                 $('#IndEditDiv').html(item.IsIndividualEdit);
                 $('#IsCancelled').val(item.IsCancelled);
+                $('#POA').val(item.POA);
+                $('#EPTour').val(item.EPTour);
                 if (item.POA == 1) {
                     TEBtn.makeEnabled();
                     IEBtn.makeDisable();

@@ -139,6 +139,7 @@
     <Compile Include="Areas\Security\Controllers\EMCController.cs" />
     <Compile Include="Areas\Security\Controllers\EMNController.cs" />
     <Compile Include="Areas\Security\Controllers\EntryIController.cs" />
+    <Compile Include="Areas\Security\Controllers\EntryIIController.cs" />
     <Compile Include="Areas\Security\Controllers\ETSController.cs" />
     <Compile Include="Areas\Security\Controllers\ETSEditController.cs" />
     <Compile Include="Areas\Security\Controllers\GVMRController.cs" />
@@ -153,6 +154,7 @@
     <Compile Include="Areas\Security\ViewModel\EMN\EMNHeaderEntryVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EMN\EMNNoteApproveVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EMN\EMNTravellingDetailsVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\EntryII\DCDetailsVM.cs" />
     <Compile Include="Areas\Security\ViewModel\ETSEdit\EntrICreateVM.cs" />
     <Compile Include="Areas\Security\ViewModel\ETSEdit\ETSEditViewVM.cs" />
     <Compile Include="Areas\Security\ViewModel\ETSEdit\TourCancelVM.cs" />
@@ -495,6 +497,9 @@
     <Content Include="Areas\Security\Views\EMC\Index.cshtml" />
     <Content Include="Areas\Security\Views\EMC\TravellingDetails.cshtml" />
     <Content Include="Areas\Security\Views\EMC\TravellingDetailsView.cshtml" />
+    <Content Include="Areas\Security\Views\EntryII\_ItemWiseDetails.cshtml" />
+    <Content Include="Areas\Security\Views\EntryII\_RefDCDetailsView.cshtml" />
+    <Content Include="Areas\Security\Views\EntryII\_RefDCDetails.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />

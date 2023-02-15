@@ -62,7 +62,7 @@ function AsPerPolicyOptionChanged() {
 function ValidateAppStatus() {
     var targetCtrl = $(ValidateAppStatus.caller.arguments[0].target);
     var AppReasonCtrl = $('#AppReason');
-    alert(targetCtrl.val());
+    //alert(targetCtrl.val());
     if (targetCtrl.val() >= 0) {
         targetCtrl.isValid();
         if (targetCtrl.val() == 0) {

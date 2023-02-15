@@ -21,5 +21,7 @@ namespace CBBW.Areas.Security.ViewModel.ETSEdit
         public int SelectedPersonType { get; set; }
         public int SelectedPersonID { get; set; }
         public string SelectedPersonName { get; set; }
+        public int IsOtherPlaceEdited { get; set; }
+
     }
 }

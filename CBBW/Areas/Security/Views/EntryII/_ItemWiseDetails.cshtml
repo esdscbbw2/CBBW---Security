@@ -1,0 +1,49 @@
+﻿@using CBBW.BOL.MGP;
+@model List<MGPItemWiseDetails>
+<div class="heading_text_btn2 d-block mb-3">
+    <h2 class="text-center">
+        Item wise Details
+    </h2>
+</div>
+<div class="table-responsive newTable">
+    <div id="div_A">
+        <table class="table table-bordered btnalign">
+            <thead>
+                <tr>
+                    <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                        Item Type
+                    </th>
+                    <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                        Item Code & Name
+                    </th>
+                    <th style="text-align: center; vertical-align: middle;" scope="col" rowspan="2">
+                        UOM
+                    </th>
+                    <th scope="col" style="text-align: center; vertical-align: middle;" colspan="2">
+                        DC Quantity
+                    </th>
+                </tr>
+                <tr>
+                    <th scope="col" style="text-align: center; vertical-align: middle;">BAGs</th>
+                    <th scope="col" style="text-align: center; vertical-align: middle; ">KGs</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Count > 0)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <th scope="row" class="text-center">@item.ItemTypeText</th>
+                            <td class="text-center">@item.ItemCodeName</td>
+                            <td class="text-center">@item.UOM</td>
+                            <td class="text-center">@item.ItemQtyinBags</td>
+                            <td class="text-center">@item.ItemQtyInKgs</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

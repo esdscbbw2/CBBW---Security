@@ -78,6 +78,10 @@ function ValidateEditDateCtrl() {
     var ctrl1 = $('#EditTagDiv_' + tblRowid);
     if (targetCtrl.val() != '') {
         targetCtrl.isValid(); ctrl1.html(1);
+        $('.CancelDate').each(function () {
+            $(this).makeDisable();
+        });
+        targetCtrl.makeEnabled();
     } else { targetCtrl.isInvalid(); ctrl1.html(0); }
     $('#backbtnactive').val(1);
     EnableSubmitBtn();
@@ -234,7 +238,25 @@ function CRTourCategoryChanged() {
     var tblRow = $(target.closest('.add-row'));
     var tblRowid = tblRow.attr('id');
     var targetCtrl = $(target);
-    CRTourCategoryChangedReUsable(targetCtrl, tblRowid, 'CR');
+    var mEPTour = $('#EPTour').val();
+    if (mEPTour == 1 && targetCtrl.val() != 6) {
+        targetCtrl.multiselect('clearSelection');
+        Swal.fire({
+            title: 'Error',
+            text: 'Only EP Tour Can Be Selected As Tour Category For This Note.',
+            icon: 'error',
+            customClass: 'swal-wide',
+            buttons: {
+                confirm: 'Ok'
+            },
+            confirmButtonColor: '#2527a2',
+        });
+        targetCtrl.isInvalid();
+    }
+    else {
+        CRTourCategoryChangedReUsable(targetCtrl, tblRowid, 'CR');
+    }
+    //CRTourCategoryChangedReUsable(targetCtrl, tblRowid, 'CR');
     if (targetCtrl.val() == '') { targetCtrl.isInvalid(); }
     EnableAddBtnInCloneRow(tblRow, 'AddBtn');
     EnableSubmitBtn();

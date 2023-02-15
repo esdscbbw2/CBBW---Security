@@ -73,6 +73,8 @@
     <Compile Include="EMN\EMNNote.cs" />
     <Compile Include="EMN\EMNTravellingDetails.cs" />
     <Compile Include="EMN\EMNTravellingPerson.cs" />
+    <Compile Include="EntryII\EntryIIDateWiseTourData.cs" />
+    <Compile Include="EntryII\EntryIIDCDetails.cs" />
     <Compile Include="ETSEdit\DWTourDetailsFromTable.cs" />
     <Compile Include="ETSEdit\EditDWTDetails.cs" />
     <Compile Include="ETSEdit\EditTPDetails.cs" />

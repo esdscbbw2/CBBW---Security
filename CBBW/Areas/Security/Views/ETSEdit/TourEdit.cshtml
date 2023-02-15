@@ -13,6 +13,8 @@
         @Html.HiddenFor(m => m.MaxSourceID)
         @Html.HiddenFor(m => m.backbtnactive)
         @Html.HiddenFor(m => m.IsCancelled)
+        @Html.HiddenFor(m => m.POA)
+        @Html.HiddenFor(m => m.EPTour)
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
@@ -119,7 +121,7 @@
                                 See Previous Details
                             </button>
                         </div>
-                        <div id="mHdrDiv" class="row d-flex align-items-center">
+                        <div id="mHdrDiv" class="row d-flex align-items-center mb-2">
                             <div class="col-form-label col-md-2">
                                 <label>EDIT Required :</label>
                             </div>
@@ -163,23 +165,43 @@
                                                         {
                                                             foreach (int s in Model.EditSequence)
                                                             {
-                                                                <table class="table table-bordered w-100 btnalign" id="table">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th scope="col" style="text-align: left; vertical-align: middle;">SL. No.</th>
-                                                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="10%"> Scheduled Tour From Date</th>
-                                                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">Scheduled Tour To Date </th>
-                                                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">EDITED Tour To Date</th>
-                                                                            <th scope="col" style="text-align: center; vertical-align: middle;" width="20%">Tour Category </th>
-                                                                            <th scope="col" style="text-align: center; vertical-align: middle;">Center Code & Name</th>
-                                                                            <th scope="col" style="text-align: center; vertical-align: middle;">Branch Code & Name </th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        @if (Model.DWTDetailsHistory.Where(o => o.EditSL == s) != null)
-                                                                        {
-                                                                            int sl = 1;
-                                                                            foreach (var item in Model.DWTDetailsHistory.Where(o => o.EditSL == s))
+
+                                                                if (Model.DWTDetailsHistory.Where(o => o.EditSL == s) != null)
+                                                                {
+                                                                    int sl = 1;
+                                                                    if (s > 0)
+                                                                    {
+                                                                        <div class="row d-flex align-items-center">
+                                                                            <div class="col-form-label col-md-2">
+                                                                                <label>EDIT Required :</label>
+                                                                            </div>
+                                                                            <div class="col-md-4">
+                                                                                <input type="text" class="form-control" value="@Model.DWTDetailsHistory.Where(o => o.EditSL == s).FirstOrDefault().EditTagText" disabled="">
+                                                                            </div>
+                                                                            <div class="col-form-label col-md-2">
+                                                                                <label>Reason For EDIT :</label>
+                                                                            </div>
+                                                                            <div class="col-md-4">
+                                                                                <textarea cols="20" rows="2" class="form-control pointer-default"
+                                                                                          readonly="" data-toggle="tooltip"
+                                                                                          data-placement="bottom" title="" data-bs-original-title="">@Model.DWTDetailsHistory.Where(o => o.EditSL == s).FirstOrDefault().EditReason.Trim()</textarea>
+                                                                            </div>
+                                                                        </div>
+                                                                    }
+                                                                    <table class="table table-bordered w-100 btnalign" id="table">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th scope="col" style="text-align: left; vertical-align: middle;">SL. No.</th>
+                                                                                <th scope="col" style="text-align: center; vertical-align: middle;" width="10%"> Scheduled Tour From Date</th>
+                                                                                <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">Scheduled Tour To Date </th>
+                                                                                <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">EDITED Tour To Date</th>
+                                                                                <th scope="col" style="text-align: center; vertical-align: middle;" width="20%">Tour Category </th>
+                                                                                <th scope="col" style="text-align: center; vertical-align: middle;">Center Code & Name</th>
+                                                                                <th scope="col" style="text-align: center; vertical-align: middle;">Branch Code & Name </th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            @foreach (var item in Model.DWTDetailsHistory.Where(o => o.EditSL == s))
                                                                             {
                                                                                 <tr class="previous-details">
                                                                                     <td>
@@ -206,9 +228,10 @@
                                                                                 </tr>
                                                                                 sl += 1;
                                                                             }
-                                                                        }
-                                                                    </tbody>
-                                                                </table>
+                                                                        </tbody>
+                                                                    </table>
+                                                                }
+
                                                             }
                                                         }
 

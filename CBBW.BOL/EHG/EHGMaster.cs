@@ -63,7 +63,7 @@ namespace CBBW.BOL.EHG
                 new CustomComboOptions{ ID = 5, DisplayText = "Unknown Destination" },
                 new CustomComboOptions{ ID = 3, DisplayText = "Others" },
                 new CustomComboOptions{ ID = 6, DisplayText = "E.P. Tour" },
-                new CustomComboOptions{ ID = 7, DisplayText = "Management" }
+                new CustomComboOptions{ ID = 7, DisplayText = "NA" }
             };
         }
         private void getPersonType()

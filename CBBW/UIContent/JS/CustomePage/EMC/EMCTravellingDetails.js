@@ -309,7 +309,8 @@ function RemoveAllDataFromDropdown(CenterCode, BranchCode) {
 function removeClonebtn() {
     var tblRow = removeClonebtn.caller.arguments[0].target.closest('.add-row');
     removeBtnClickFromCloneRow(tblRow, 'tbody2');
-
+    EnableAddBtn(tblRow, 'AddBtn');
+    EnableSubmitBtn();
 };
 function ValueClears() {
     Datechange(0);

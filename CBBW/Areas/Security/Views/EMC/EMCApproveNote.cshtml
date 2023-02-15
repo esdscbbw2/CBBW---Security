@@ -8,7 +8,7 @@
 @using (Html.BeginForm())
 {
     @Html.HiddenFor(x => x.btnDisplay)
-    
+
 
     <div class="container">
         <div class="row newTable">
@@ -16,7 +16,7 @@
                 <div class="col-md-12">
                     <div class="heading_text_btn mb-3 mt-4">
                         <div class="leftButton">
-                            <button type="button" id="btnBack"  class="btn btn-primary me-2" >
+                            <button type="button" id="btnBack" class="btn btn-primary me-2">
                                 <i data-feather="arrow-left-circle"></i>
                                 Back
                             </button>
@@ -167,7 +167,7 @@
                 </div>
                 <div class="col-md-12">
                     <div class="d-flex justify-content-center mt-4">
-                        <button type="submit"  name="Submit" value="btnTravDetails" id="btnTravDetails" disabled class="btn btn-primary me-2">
+                        <button type="submit" name="Submit" value="btnTravDetails" id="btnTravDetails" disabled class="btn btn-primary me-2">
                             Travelling Details
                         </button>
                     </div>
@@ -262,13 +262,13 @@
                 }).then(callback);
                 function callback(result) {
                     if (result.value) {
-                        
+
                         window.location.href = url;
                     }
 
                 }
             } else {
-               
+
                 window.location.href = url;
             };
         });
@@ -278,6 +278,16 @@
                 window.open(url);
             });
         });
+    </script>
+    <script>
+           $('#APPRej').change(function () {
+            if ($('#APPRej').val() == "1") {
+                $("#TravDetails").addClass("border-green").removeClass("border-red");
+            }else {
+                $("#TravDetails").addClass("border-red").removeClass("border-green");
+                }
+        });
+        
     </script>
 
 }

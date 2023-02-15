@@ -29,6 +29,10 @@ function ValidateEditDateCtrl() {
     var ctrl1 = $('#EditTagDiv_' + tblRowid);
     if (targetCtrl.val() != '') {
         targetCtrl.isValid(); ctrl1.html(1);
+        $('.CancelDate').each(function () {
+            $(this).makeDisable();
+        });
+        targetCtrl.makeEnabled();
     } else { targetCtrl.isInvalid(); ctrl1.html(0); }
     $('#backbtnactive').val(1);
     EnableSubmitBtn();
@@ -46,6 +50,7 @@ function ValidatePurposeOfEdit() {
 function EditTagChanged() {
     var editTagCtrl = $('#EditTag');
     var editTag = editTagCtrl.val();
+    var mPOA = $('#POA').val();
     if (editTag > 0) {
         editTagCtrl.isValid(); $('#backbtnactive').val(1);
         if (editTag == 1) {
@@ -63,9 +68,24 @@ function EditTagChanged() {
                 });
                 togleDiv('AllDisable');
             } else { togleDiv('tour_cancel');}            
-        } else if (editTag == 2) {
-            togleDiv('other_edit');
-        } else if (editTag == 3) {
+        }
+        else if (editTag == 2) {
+            if (mPOA == 1) {
+                editTagCtrl.val('0').isInvalid();
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Other Edit Can Not Be Allowed When Purpose Of Allotment Is For Management.',
+                    icon: 'error',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        confirm: 'Ok'
+                    },
+                    confirmButtonColor: '#2527a2',
+                });
+                togleDiv('AllDisable');
+            } else { togleDiv('other_edit');}            
+        }
+        else if (editTag == 3) {
             if ($('#IsExtensionAllowed').val() == 1) {
                 if ($('#IsCancelled').val() == 1) {
                     editTagCtrl.val('0').isInvalid();
@@ -169,7 +189,67 @@ function CRTourCategoryChanged() {
     var tblRow = $(target.closest('.add-row'));
     var tblRowid = tblRow.attr('id');
     var targetCtrl = $(target);
-    CRTourCategoryChangedReUsable(targetCtrl, tblRowid, 'CR');
+    var mPOA = $('#POA').val();
+    var mEPTour = $('#EPTour').val();
+    if (mPOA == 1 && targetCtrl.val() != 7) {
+        targetCtrl.multiselect('clearSelection');
+        Swal.fire({
+            title: 'Error',
+            text: 'Only NA Can Be Selected As Tour Category For This Note.',
+            icon: 'error',
+            customClass: 'swal-wide',
+            buttons: {
+                confirm: 'Ok'
+            },
+            confirmButtonColor: '#2527a2',
+        });
+        targetCtrl.isInvalid();
+    }
+    else if (mPOA == 0 && targetCtrl.val() == 7) {
+        targetCtrl.multiselect('clearSelection');
+        Swal.fire({
+            title: 'Error',
+            text: 'NA Can Not Be Selected As Tour Category For This Note.',
+            icon: 'error',
+            customClass: 'swal-wide',
+            buttons: {
+                confirm: 'Ok'
+            },
+            confirmButtonColor: '#2527a2',
+        });
+        targetCtrl.isInvalid();
+    }
+    else if (mEPTour == 1 && targetCtrl.val() != 6){
+        targetCtrl.multiselect('clearSelection');
+        Swal.fire({
+            title: 'Error',
+            text: 'Only EP Tour Can Be Selected As Tour Category For This Note.',
+            icon: 'error',
+            customClass: 'swal-wide',
+            buttons: {
+                confirm: 'Ok'
+            },
+            confirmButtonColor: '#2527a2',
+        });
+        targetCtrl.isInvalid();
+    }
+    else if (mEPTour == 0 && targetCtrl.val() == 6) {
+        targetCtrl.multiselect('clearSelection');
+        Swal.fire({
+            title: 'Error',
+            text: 'EP Tour Can Not Be Selected As Tour Category For This Note.',
+            icon: 'error',
+            customClass: 'swal-wide',
+            buttons: {
+                confirm: 'Ok'
+            },
+            confirmButtonColor: '#2527a2',
+        });
+        targetCtrl.isInvalid();
+    }
+    else {
+        CRTourCategoryChangedReUsable(targetCtrl, tblRowid, 'CR');
+    }    
     if (targetCtrl.val() == '') { targetCtrl.isInvalid(); }
     EnableAddBtnInCloneRow(tblRow, 'AddBtn');
     EnableSubmitBtn();
@@ -388,9 +468,11 @@ function btnSubmitClicked() {
     var tblRecords = '';
     if (editTag == 1) {
         tblRecords = getRecordsFromTableV2('tblTourCancel');
-    } else if (editTag == 2) {
+    }
+    else if (editTag == 2) {
         tblRecords = getRecordsFromTableV2('tblOtherEdit');
-    } else if (editTag == 3) {
+    }
+    else if (editTag == 3) {
         tblRecords = getRecordsFromTableV2('tblTourExtension');
     }
     var x = '{"NoteNumber":"' + notenumber

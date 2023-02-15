@@ -14,7 +14,8 @@
 function removeClonebtn() {
     var tblRow = removeClonebtn.caller.arguments[0].target.closest('.add-row');
     removeBtnClickFromCloneRow(tblRow, 'tbody2');
-    //EnableTavPersonBtn();
+    EnableAddBtn(tblRow, 'AddBtn');
+    EnableSubmitBtn();
     EnableTravellingBtn();
 };
 function EnableTravellingBtn() {
@@ -198,16 +199,10 @@ function validatectrl(targetid, value) {
     switch (targetid) {
         case "TaDaDenied":
             isvalid = validatectrl_YesNoCombo(value);
-            
-            break;
-        case "otherplace":
-            isvalid = validatectrl_YesOrNo(value);
-            break;
-        case "carryLaptop":
-            isvalid = validatectrl_YesOrNo(value);
             break;
         case "Policy":
             isvalid = validatectrl_YesOrNo(value);
+            break;
         case "IsEPTour":
             isvalid = validatectrl_ValidatestringLength(value);
             break;
@@ -225,14 +220,14 @@ function validatectrl_ValidatestringLength(value) {
     } else { return false; }
 };
 function validatectrl_YesNoCombo(value) {
-
+   
     if (value * 1 >= 0) {
         return true;
     } else { return false; }
 }
 function validatectrl_YesOrNo(value) {
-    
-    if (value * 1 ==0) {
+
+    if (value * 1 > 0) {
         return true;
     } else { return false; }
 }
@@ -257,11 +252,13 @@ function EnableSubmitBtn() {
     var z = getDivInvalidCount('Questions');
     var btn = $('#Btnsubmit').val();
     var SubmitBtn = $('#btnSubmited');
-   // alert(z + ' - ' + btn);
+   //alert(z + ' - ' + btn);
    
-    if (z <= 0 && btn==1) {
+    if ((z * 1) <= 0 && btn == 1) {
         SubmitBtn.makeEnabled();
         //alert(btn);
+    } else {
+        SubmitBtn.makeDisable();
     }
 };
 function getDivInvalidCount(mdivID) {
@@ -505,6 +502,8 @@ async function getInitialData() {
     });
 };
 $('#btnClear').click(function () {
+    var Btnsubmit = $('#Btnsubmit').val();
+    if (Btnsubmit != 1) {
     var selectvalue = 0;
     var Empval = "";
     var mValue = 0;
@@ -513,21 +512,28 @@ $('#btnClear').click(function () {
     var EPNoteNumber = $('#EPNoteNumber');
     var NoteDate = $('#NoteDate');
     var IsEPTour = $('#IsEPTour');
-    $('#etsHeader_AttachFile').val('');
+    var Policy = $('#Policy');
+    Policy.val('');
+    Policy.isInvalid();
+    $('#emnHeader_AttachFile').val('');
     $('#otherplace').val('');
     $('#carryLaptop').val('');
     $('#Policy').val('');
     IsEPTour.val('').isInvalid();
+    IsEPTour.makeEnabled();
+    $('#Btnsubmit').val(0);
     $("#tbody2").empty();
     EPNoteNumber.html('');
     NoteDate.html('');
+    DDPersonType.makeEnabled();
     DDPersonType.val('').isInvalid();
     GetDDPersonTypeChanged(DDPersonType.attr('id'), mValue, selectvalue, Empval,0);
     getDesgnCode(0, 0);
     GetVehicleEligibility(0,0);
     TaDaDenied.val('').isInvalid();
-    
     EnableTravellingBtn();
+    EnableSubmitBtn();
+    }
 
 });
 function EmptyTPTable() {

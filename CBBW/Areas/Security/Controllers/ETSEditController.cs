@@ -375,6 +375,7 @@ namespace CBBW.Areas.Security.Controllers
                     modelobj.BaseDWTDetailsHistory = modelobj.DWTDetailsHistory.Where(o => o.EditSL == 0).ToList();
                     modelobj.EditSequence = modelobj.DWTDetailsHistory.OrderBy(o=>o.EditSL).Select(o => o.EditSL).Distinct().ToList();
                     modelobj.MaxRowID = modelobj.DWTDetailsHistory.Max(o => o.EditSL);
+                    modelobj.IsOtherPlaceEdited = modelobj.DWTDetailsHistory.Where(o => o.EditSL == modelobj.MaxRowID && o.TourCategoryIds == "3").ToList().Count()>0?1:0;
                 }
             }
             return View(modelobj);
@@ -393,7 +394,7 @@ namespace CBBW.Areas.Security.Controllers
         {
             model = CastEHGEditTempData();
             model.TravelingPersonDetails = _IETSEdit.getEditTPDetails(model.NoteNumber, ref pMsg);
-            model.DWTDetailsHistory = _IETSEdit.getDateWiseTourHistory(model.NoteNumber, 0,0,0," ", ref pMsg,true);
+            model.DWTDetailsHistory = _IETSEdit.getDateWiseTourHistory(model.NoteNumber, 0,0,0," ", ref pMsg,false);
             if (model.DWTDetailsHistory != null && model.DWTDetailsHistory.Count>0) 
             { 
                 model.EditSequence = model.DWTDetailsHistory.Select(o => o.EditSL).Distinct().ToList();
@@ -596,7 +597,7 @@ namespace CBBW.Areas.Security.Controllers
             modelobj.DWTDetailsHistory = _IETSEdit.getDateWiseTourHistory(NoteNumber, 0, PersonType, PersonID, PersonName, ref pMsg,true);
             if (modelobj.DWTDetailsHistory != null && modelobj.DWTDetailsHistory.Count > 0)
             {
-                modelobj.EditSequence = modelobj.DWTDetailsHistory.Select(o => o.EditSL).Distinct().ToList();
+                modelobj.EditSequence = modelobj.DWTDetailsHistory.OrderBy(o=>o.EditSL).Select(o => o.EditSL).Distinct().ToList();                
             }
             return View("~/Areas/Security/Views/ETSEdit/_IndividualEditHistory.cshtml",modelobj);
         }
@@ -612,6 +613,7 @@ namespace CBBW.Areas.Security.Controllers
                     modelobj.BaseDWTDetailsHistory = modelobj.DWTDetailsHistory.Where(o => o.EditSL == 0).ToList();
                     modelobj.EditSequence = modelobj.DWTDetailsHistory.OrderBy(o => o.EditSL).Select(o => o.EditSL).Distinct().ToList();
                     modelobj.MaxRowID = modelobj.DWTDetailsHistory.Max(o => o.EditSL);
+                    modelobj.IsOtherPlaceEdited = modelobj.DWTDetailsHistory.Where(o => o.EditSL == modelobj.MaxRowID && o.TourCategoryIds == "3").ToList().Count() > 0 ? 1 : 0;
                 }
             }            
             return View("~/Areas/Security/Views/ETSEdit/_IndHistoryView.cshtml", modelobj);
@@ -680,7 +682,7 @@ namespace CBBW.Areas.Security.Controllers
                 model = new ETSEditCreateVM();
             }
             if (model.ToBeEditNoteList == null)
-                model.ToBeEditNoteList = _IETSEdit.getETSEditNoteListForDropDown(user.CentreCode, 2, ref pMsg);
+                model.ToBeEditNoteList = _IETSEdit.getETSEditNoteListForDropDown(user.CentreCode,2, ref pMsg);
 
             TempData["EHGEdit"] = model;
             return model;
