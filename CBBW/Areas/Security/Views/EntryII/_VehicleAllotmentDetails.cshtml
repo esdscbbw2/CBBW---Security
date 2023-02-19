@@ -1,0 +1,141 @@
+﻿@using System.Globalization;
+@using CBBW.BOL.EHG;
+@model VehicleAllotmentDetails
+@{
+    Layout = null;
+}
+@if (Model != null)
+{
+    <div class="col-md-12">
+        <div class="heading_text_btn2 d-block mb-2 pt-2">
+            <h2 class="text-center"> Vehicle Allotment – Details:</h2>
+        </div>
+    </div>
+    <div class="col-md-12 mb-4">
+        <div class="col-md-12 pt-3">
+            <div class="card mb-4">
+                <div class="card-body approvalForm">
+                    <form class="form-sample form-inline row ms-auto">
+                        <div class="row d-flex align-items-center mb-4">
+                            <label class="col-form-label col-md-3">
+                                Entry Date :
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" value="@Model.EntryDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)" disabled>
+                            </div>
+
+                            <label class="col-form-label col-md-3">
+                                Time  :
+                            </label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" value="@Model.EntryTime" disabled>
+                            </div>
+                        </div>
+                        <div class="row d-flex align-items-center mb-4">
+                            <label class="col-form-label col-md-3">
+                                Authorized Employee No. &nbsp; & Name :
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" value="@Model.AuthorisedEmpName" disabled>
+                            </div>
+
+                            <label class="col-form-label col-md-3">
+                                Designation Code & Name  :
+                            </label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" value="@Model.DesignationText" disabled>
+                            </div>
+                        </div>
+                        <div class="row d-flex  align-items-center">
+                            <label class="col-form-label col-md-3">
+                                Carrying Out Any Material  :
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" value="@(Model.MaterialStatus == 1 ? "Yes" : "No")" disabled>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-body approvalForm">
+                    <form class="form-sample form-inline row ms-auto">
+                        <div class="row d-flex  align-items-center ">
+                            <label class="col-form-label col-md-3">
+                                Vehicle Belongs To  :
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" value="@(Model.VehicleBelongsTo == 1 ? "Company Vehicle" : "Other Vehicle")" disabled>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-body approvalForm">
+                    <form class="form-sample form-inline row ms-auto">
+                        <div id="for_company_vehicle" style="display:block;">
+                            <div class="row d-flex  align-items-center mb-4 mr-15 ">
+                                <label class="col-form-label col-md-3">
+                                    Vehicle No. :
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" value="@Model.VehicleNumber" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex  align-items-center mb-4 ">
+                            <label class="col-form-label col-md-3">
+                                Vehicle Type :
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" value="@Model.VehicleType" class="form-control" disabled>
+                            </div>
+                        </div>
+                        <div id="for_company_vehicle_model_name" style="display:block;">
+                            <div class="row d-flex  align-items-center mb-4 mr-15 ">
+                                <label class="col-form-label col-md-3">
+                                    Model Name  :
+                                </label>
+                                <div class="col-md-4">
+                                    <input type="text" value="@Model.ModelName" class="form-control" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex  align-items-center mb-4">
+                            <label class="col-form-label col-md-3">
+                                Driver No. & Name :
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" value="@Model.DriverName" class="form-control" disabled>
+
+                            </div>
+                        </div>
+                        <div class="row d-flex  align-items-center mb-4">
+                            <label class="col-form-label col-md-3">
+                                K.M Out
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" value="@Model.KMOut" class="form-control" disabled>
+                            </div>
+                            <label class="col-form-label col-md-3">
+                                K.M In
+                            </label>
+                            <div class="col-md-3">
+                                <input type="text" value="@Model.KMIn" class="form-control" disabled>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="heading_text_btn2 d-block mb-2 pt-2">
+        <h3 class="text-center"> Vehicle Allotment – Details Not Found In Entry - I</h3>
+    </div>
+}
+

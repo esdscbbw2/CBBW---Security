@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CBBW.BLL.IRepository;
+using CBBW.BOL.EHG;
 using CBBW.BOL.EntryII;
+using CBBW.BOL.ETSEdit;
 using CBBW.BOL.MGP;
 using CBBW.DAL.Entities;
 
@@ -13,9 +15,13 @@ namespace CBBW.BLL.Repository
     public class EntryIIRepository : IEntryIIRepository
     {
         MGPEntities _MGPEntities;
+        EntryIIEntities _EntryIIEntities;
+        ETSEditEntities _ETSEditEntities;
         public EntryIIRepository()
         {
             _MGPEntities = new MGPEntities();
+            _EntryIIEntities = new EntryIIEntities();
+            _ETSEditEntities = new ETSEditEntities();
         }
         public List<MGPReferenceDCDetails> GetMatOutDCDetails(string VehicleNo, DateTime FromDT, DateTime ToDT, ref string pMsg)
         {
@@ -85,8 +91,25 @@ namespace CBBW.BLL.Repository
         {
             return _MGPEntities.getItemWiseInDetails(NoteNumber, ref pMsg);
         }
-
-
-
+        public List<EntryIINote> GetEntryIINotes(int CentreCode, bool IsMainLocation, ref string pMsg) 
+        {
+            return _EntryIIEntities.GetEntryIINotes(CentreCode, IsMainLocation, ref pMsg);
+        }
+        public List<EntryIIList> GetEntryIINoteList(int DisplayLength, int DisplayStart, int SortColumn, string SortDirection, string SearchText, int CentreCode, bool IsMainLocation, ref string pMsg)
+        {
+            return _EntryIIEntities.GetEntryIINoteList(DisplayLength,DisplayStart,SortColumn,SortDirection,SearchText,CentreCode,IsMainLocation,ref pMsg);
+        }
+        public EditNoteDetails GetEditNoteHdr(string NoteNumber, ref string pMsg)
+        {
+            return _ETSEditEntities.getEditNoteHdr(NoteNumber, ref pMsg);
+        }
+        public List<EntryIITravelingDetails> GetEntryIITravellingDetails(string NoteNumber, ref string pMsg)
+        {
+            return _EntryIIEntities.GetEntryIITravellingDetails(NoteNumber, ref pMsg);
+        }
+        public VehicleAllotmentDetails GetEntryIIVehicleAllotmentDetails(string Notenumber, ref string pMsg)
+        {
+            return _EntryIIEntities.GetEntryIIVehicleAllotmentDetails(Notenumber,ref pMsg);
+        }
     }
 }

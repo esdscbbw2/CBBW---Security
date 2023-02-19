@@ -840,6 +840,23 @@ function OpenDocument(pathid, docName) {
 function FireSweetAlert() {
 
 };
+function GetNoteDescription(notetype)
+{
+    var notedesc = "";
+    if (notetype == 'EHG') {
+        notedesc='Ref. Employee’s Travelling  Details & Vehicle Allotment (By HG)  –  ENTRY Note No.';
+    }
+    else if (notetype == 'EZB') {
+        notedesc='Ref. Employees Travelling  Schedule Details – ENTRY (FOR NZB STAFF) Note No.';
+    }
+    else if (notetype == 'EMN') {
+        notedesc='Ref. Employees Travelling  Schedule Details – ENTRY (FOR MFG. CENTERS RECORDED AT NZB) Note No.';
+    }
+    else {
+        notedesc = 'Ref. Employees Travelling  Schedule Details – ENTRY (FOR MFG. CENTERS) Note No.';
+    }
+    return notedesc;
+};
 
 
 

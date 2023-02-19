@@ -6,13 +6,14 @@
 }
 <div class="row newTable">
     @using (Html.BeginForm())
-    {        
+    {
         @Html.HiddenFor(m => m.VADetails.ModelName)
         @Html.HiddenFor(m => m.VADetails.NoteNumber)
         @Html.HiddenFor(m => m.VADetails.AuthorisedEmpName)
         @Html.HiddenFor(m => m.VADetails.DesignationText)
         @Html.HiddenFor(m => m.VADetails.VehicleType)
-        @*@Html.HiddenFor(m => m.VADetails.DriverName)*@
+        @Html.HiddenFor(m => m.VehicleType)
+        @Html.HiddenFor(m => m.VADetails.AuthorisedEmpNumber)
         @Html.HiddenFor(m => m.VABackBtnActive)
         @Html.HiddenFor(m => m.IsBtn)
         <div class="fixedElement">
@@ -245,7 +246,7 @@
                         @*</form>*@
                     </div>
                 </div>
-                <div class="bgColor mt-4 bg-transparent content border-green text-left">
+                <div id="EV" class="bgColor mt-4 bg-transparent content border-green text-left">
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
                             Even Tough The Person Is Not Eligible For The Vehicle Type As Displayed In The Screen But Still You Are Providing Higher Class Vehicle Type? Are You Sure To Continue With The Vehicle Allotment:
@@ -253,7 +254,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="bgColor mt-4 bg-transparent content border-green text-left">
+                <div id="VA" class="bgColor mt-4 bg-transparent content border-green text-left">
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
                             Even Tough The Person Is Eligible For Public Transport But Still You Are Providing Company Vehicle? Are You Sure To Continue With The Vehicle Allotment:
@@ -274,7 +275,7 @@
                         <li style="font-size: 16px;">
                             The Vehicle Allotment Is Done Per Policy And Is Done With Written Information To DIC – ADMIN. When Ever Required,
                             VB Document Shall Be Produced:
-                            <select class="form-select content border-red is-invalid" 
+                            <select class="form-select content border-red is-invalid"
                                     aria-label="Default select example"
                                     onchange="Option1Changed()"
                                     id="Option1">

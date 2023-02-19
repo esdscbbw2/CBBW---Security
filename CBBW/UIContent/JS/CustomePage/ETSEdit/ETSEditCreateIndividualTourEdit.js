@@ -494,16 +494,20 @@ function btnSubmitClicked() {
                 if (item.bResponseBool == true) {
                     Swal.fire({
                         title: 'Confirmation',
-                        text: 'Data Saved Successfully.',
-                        icon: 'success',
+                        text: 'Data Saved Successfully. Do You Want To Edit Another Person?',
+                        icon: 'question',
                         customClass: 'swal-wide',
-                        buttons: {
-                            confirm: 'Ok'
-                        },
+                        confirmButtonText: "Yes",
+                        cancelButtonText: "No",
+                        cancelButtonClass: 'btn-cancel',
                         confirmButtonColor: '#2527a2',
+                        showCancelButton: true,
                     }).then(callback);
                     function callback(result) {
                         if (result.value) {
+                            
+                        }
+                        else {
                             var url = "/Security/ETSEdit/Create";
                             window.location.href = url;
                         }

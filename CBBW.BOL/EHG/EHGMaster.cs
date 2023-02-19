@@ -97,6 +97,13 @@ namespace CBBW.BOL.EHG
                 new CustomComboOptions{ ID = 1, DisplayText = "LV" },
                 new CustomComboOptions{ ID = 2, DisplayText = "2 Wheeler" }
             };
+            VehicleTypesForEntryII = new List<CustomComboOptions>()
+            {
+                new CustomComboOptions{ ID = 1, DisplayText = "LV" },
+                new CustomComboOptions{ ID = 2, DisplayText = "2 Wheeler" },
+                new CustomComboOptions{ ID = 3, DisplayText = "Public Transport" },
+                new CustomComboOptions{ ID = 0, DisplayText = "NA" }
+            };
         }
         private void getEditTag() 
         {
@@ -116,6 +123,7 @@ namespace CBBW.BOL.EHG
         }
         public List<CustomComboOptions> GetBranchCodeForEMC { get; set; }
         public List<CustomComboOptions> VehicleTypes { get; set; }
+        public List<CustomComboOptions> VehicleTypesForEntryII { get; set; }
         public List<CustomComboOptions> VehicleTypesForHg { get; set; }
         public List<CustomComboOptions> PurposeOfAllotment { get; set; }
         public List<CustomComboOptions> PersonType { get; set; }

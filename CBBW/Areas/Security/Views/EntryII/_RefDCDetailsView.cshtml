@@ -1,6 +1,9 @@
 ﻿@using System.Globalization;
 @using CBBW.Areas.Security.ViewModel.EntryII;
 @model DCDetailsVM
+@{
+    Layout = null;
+}
 <div class="heading_text_btn2 d-block mb-3">
     <h2 class="text-center">Reference DC Details</h2>
 </div>
@@ -27,7 +30,7 @@
             </tr>
         </thead>
         <tbody>
-            @if(Model.DCNoteDetailsFromEntryII!=null && Model.DCNoteDetailsFromEntryII.Count > 0)
+            @if (Model.DCNoteDetailsFromEntryII != null && Model.DCNoteDetailsFromEntryII.Count > 0)
             {
                 foreach (var item in Model.DCNoteDetailsFromEntryII)
                 {
@@ -36,12 +39,12 @@
                             @item.NoteNumber
                         </td>
                         <td class="text-center">
-                            @item.NoteDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)
+                            @item.NoteDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)
                         </td>
                         <td class="text-center">@item.FromLocationCodeName</td>
                         <td class="text-center">@item.ToLocationCodeName</td>
                         <td class="text-center">
-                            <textarea name="" id="" cols="20" rows="2" disabled 
+                            <textarea name="" id="" cols="20" rows="2" disabled
                                       class="form-control pointer-default">
                             @item.NoteRemarks
                             </textarea>
@@ -49,7 +52,7 @@
                         <td class="text-center">
                             <span class="actionBtn d-block">
                                 <a href="#div_A">
-                                    <button type="button id="@item.NoteNumber" 
+                                    <button type="button id="@item.NoteNumber"
                                             class="btn primaryLink"
                                             onclick="GetItemDetails(this)"
                                             data-toggle="tooltip" data-placement="top"
@@ -60,8 +63,8 @@
                             </span>
                         </td>
                     </tr>
-                }
-            }
-        </tbody>
-    </table>
-</div>
+                    }
+                    }
+                </tbody>
+            </table>
+        </div>

@@ -51,28 +51,31 @@
                 <div class="card-body approvalForm">
                     <div class="row d-flex align-items-center mb-4">
                         <div class="col-md-4">
-                            <input type="text" class="form-control" disabled value="@Model.NoteDetails.NoteNumber">
+                            <label class="col-form-label">
+                                @Model.NoteDescription
+                            </label>
+                            
                         </div>
                         <div class="col-md-8">
                             <div id="NZB_staff">
                                 <div class="row">
-                                    <label class="col-form-label col-md-5">
-                                        @Model.NoteDescription
-                                    </label>
-                                    <label class="col-form-label col-md-1">
-                                        Date  :
-                                    </label>
-                                    <div class="col-md-2">
-                                        <input type="text" class="form-control" value="@Model.NoteDetails.EntryDateDisplay" disabled>
-                                    </div>
-                                    <label class="col-form-label col-md-1">
-                                        Time  :
-                                    </label>
-                                    <div class="col-md-2">
-                                        <input type="text" class="form-control" value="@Model.NoteDetails.EntryTime" disabled>
+                                    <div class="col-md-5">
+                                        <input type="text" class="form-control" disabled value="@Model.NoteDetails.NoteNumber">
+                                        </div>
+                                        <label class="col-form-label col-md-1">
+                                            Date  :
+                                        </label>
+                                        <div class="col-md-2">
+                                            <input type="text" class="form-control" value="@Model.NoteDetails.EntryDateDisplay" disabled>
+                                        </div>
+                                        <label class="col-form-label col-md-1">
+                                            Time  :
+                                        </label>
+                                        <div class="col-md-2">
+                                            <input type="text" class="form-control" value="@Model.NoteDetails.EntryTime" disabled>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                         </div>
                     </div>
                     <div class="row d-flex align-items-center mb-4">

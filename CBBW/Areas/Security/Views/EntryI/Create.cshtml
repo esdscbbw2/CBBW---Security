@@ -52,53 +52,55 @@
                 <div class="card-body approvalForm">
                     @*<form class="form-sample form-inline row ms-auto">*@
                     <div class="row d-flex align-items-center mb-4">
-                        <label id="lblNoteDesc" class="col-form-label col-md-5"></label>
-                        <div class="col-md-4">
-                            @Html.DropDownListFor(m => m.NoteNumber,
-                            new SelectList(Model.DropDownNoteList, "NoteNumber", "NoteNumber"), "Select Ref. Note No.",
-                            htmlAttributes: new
-                            {
-                                @class = "form-select pointer is-invalid",
-                                onchange = "NotenumberChanged(1)"
-                            })
-                        </div>
-                        <div class="col-md-4">
-                            <div>
-                                <div class="row">
-                                    <label class="col-form-label col-md-2">
-                                        Date  :
-                                    </label>
-                                    <div class="col-md-4">
-                                        <input id="NoteEntryDate" type="text"
-                                               class="form-control"
-                                               disabled>
-                                    </div>
-                                    <label class="col-form-label col-md-2">
-                                        Time  :
-                                    </label>
-                                    <div class="col-md-4">
-                                        <input id="NoteEntryTime" type="text"
-                                               class="form-control"
-                                               disabled>
+                            <div class="col-md-4">
+                                <label id="lblNoteDesc" class="col-form-label"></label>
+                            </div>
+                            <div class="col-md-8">
+                                <div>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            @Html.DropDownListFor(m => m.NoteNumber,
+                                            new SelectList(Model.DropDownNoteList, "NoteNumber", "NoteNumber"), "Select Ref. Note No.",
+                                            htmlAttributes: new
+                                            {
+                                                @class = "form-select pointer is-invalid",
+                                                onchange = "NotenumberChanged(1)"
+                                            })
+                                        </div>
+                                        <label class="col-form-label col-md-1">
+                                            Date :
+                                        </label>
+                                        <div class="col-md-2">
+                                            <input id="NoteEntryDate" type="text"
+                                                   class="form-control"
+                                                   disabled>
+                                        </div>
+                                        <label class="col-form-label col-md-1">
+                                            Time  :
+                                        </label>
+                                        <div class="col-md-2">
+                                            <input id="NoteEntryTime" type="text"
+                                                   class="form-control"
+                                                   disabled>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row d-flex align-items-center mb-4">
-                        <label class="col-form-label col-md-2">Center Code & Name : </label>
-                        <div class="col-md-6">
-                            <input id="CentreCodenName" type="text" class="form-control" disabled>
+                        <div class="row d-flex align-items-center mb-4">
+                            <label class="col-form-label col-md-2">Center Code & Name : </label>
+                            <div class="col-md-6">
+                                <input id="CentreCodenName" type="text" class="form-control" disabled>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row d-flex align-items-center mb-4 mr-15">
-                        <label class="col-form-label col-md-2">Is E.P Tour : </label>
-                        <div class="col-md-6">
-                            <input type="text" class="form-control" value="No" disabled>
+                        <div class="row d-flex align-items-center mb-4 mr-15">
+                            <label class="col-form-label col-md-2">Is E.P Tour : </label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" value="No" disabled>
+                            </div>
                         </div>
+                        @*</form>*@
                     </div>
-                    @*</form>*@
-                </div>
             </div>
             <div class="card mt-4 mb-4">
                 <div class="card-body  alert alert-danger text-dark approvalForm">

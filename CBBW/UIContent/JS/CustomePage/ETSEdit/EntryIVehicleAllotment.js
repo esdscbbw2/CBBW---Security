@@ -202,3 +202,34 @@ $(document).ready(function () {
         }
     });
 });
+$(document).ready(function () {
+    var actualempcode = $('#VADetails_AuthorisedEmpNumber').val();
+    var VtypeProvided = $('#VehicleType').val();
+    GetEmpEligibilty(actualempcode, VtypeProvided);
+});
+function GetEmpEligibilty(actualempcode, VtypeProvided) {    
+    var mUrl = "/ETS/GetVehicleEligibility?EmployeeNumber=" + actualempcode;
+    $.ajax({
+        url: mUrl,
+        success: function (result) {
+            GetStatement(result.ID, VtypeProvided);
+        }
+    });
+}
+async function GetStatement(EligibleVT, VtypeProvided) {    
+    var VA = $('#VA');
+    var EV = $('#EV');
+    var mUrl = "/ETS/getVehicleEligibilityStatement?EligibleVT=" + EligibleVT + "&ProvidedVT=" + VtypeProvided;
+    $.ajax({
+        url: mUrl,
+        success: function (result) {
+            if ($.trim(result.CStatement) == "1") {
+                VA.addClass('inVisible');
+            } else if (result.CStatement == null) {
+                EV.addClass('inVisible');
+                VA.addClass('inVisible');
+            }
+        }
+    });
+
+};

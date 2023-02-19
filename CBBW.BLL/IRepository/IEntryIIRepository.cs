@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CBBW.BOL.EHG;
 using CBBW.BOL.EntryII;
+using CBBW.BOL.ETSEdit;
 using CBBW.BOL.MGP;
 
 namespace CBBW.BLL.IRepository
@@ -16,7 +18,12 @@ namespace CBBW.BLL.IRepository
         MGPReferenceDCDetails GetDCDetails(string NoteNumber, string VehicleNo, DateTime FromDT, DateTime ToDT, bool IsMatOut, ref string pMsg);
         List<MGPItemWiseDetails> GetMatOutItemWiseDetails(string NoteNumber, ref string pMsg);
         List<MGPItemWiseDetails> GetMatInItemWiseDetails(string NoteNumber, ref string pMsg);
-
+        List<EntryIINote> GetEntryIINotes(int CentreCode, bool IsMainLocation, ref string pMsg);
+        List<EntryIIList> GetEntryIINoteList(int DisplayLength, int DisplayStart, int SortColumn,
+            string SortDirection, string SearchText, int CentreCode,bool IsMainLocation, ref string pMsg);
+        EditNoteDetails GetEditNoteHdr(string NoteNumber, ref string pMsg);
+        List<EntryIITravelingDetails> GetEntryIITravellingDetails(string NoteNumber, ref string pMsg);
+        VehicleAllotmentDetails GetEntryIIVehicleAllotmentDetails(string Notenumber, ref string pMsg);
 
     }
 }

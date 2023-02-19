@@ -594,7 +594,7 @@ namespace CBBW.Areas.Security.Controllers
             EditHistoryVM modelobj = new EditHistoryVM();
             modelobj.PersonType = _EHGmaster.PersonType.Where(o=>o.ID==PersonType).FirstOrDefault().DisplayText;
             modelobj.EmpNoNName = PersonName;
-            modelobj.DWTDetailsHistory = _IETSEdit.getDateWiseTourHistory(NoteNumber, 0, PersonType, PersonID, PersonName, ref pMsg,true);
+            modelobj.DWTDetailsHistory = _IETSEdit.getDateWiseTourHistory(NoteNumber, 0, PersonType, PersonID, PersonName, ref pMsg,false);
             if (modelobj.DWTDetailsHistory != null && modelobj.DWTDetailsHistory.Count > 0)
             {
                 modelobj.EditSequence = modelobj.DWTDetailsHistory.OrderBy(o=>o.EditSL).Select(o => o.EditSL).Distinct().ToList();                

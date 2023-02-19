@@ -29,6 +29,7 @@ namespace CBBW
             container.RegisterType<IEMNRepository, EMNRepository>();
             container.RegisterType<IETSEditRepository, ETSEditRepository>();
             container.RegisterType<IEMCRepository, EMCRepository>();
+            container.RegisterType<IEntryIIRepository, EntryIIRepository>();
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }
     }

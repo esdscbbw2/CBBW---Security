@@ -274,6 +274,7 @@ namespace CBBW.DAL.DBMapper
                         result.IsApproved = bool.Parse(dr["IsApproved"].ToString());
                     if (!DBNull.Value.Equals(dr["IsLocked"]))
                         result.IsLocked = bool.Parse(dr["IsLocked"].ToString());
+                    result.CanDelete = result.EntryDate.ToString("dd-MM-yyyy") == DateTime.Today.ToString("dd-MM-yyyy") ? result.IsApproved?0:result.IsLocked?0:1 : 0;
                 }
             }
             catch { }

@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using CBBW.Areas.Security.ViewModel.ETSEdit;
 using CBBW.BLL.IRepository;
+using CBBW.BOL;
 using CBBW.BOL.CTV;
 using CBBW.BOL.EHG;
 using CBBW.BOL.ETSEdit;
@@ -119,6 +120,7 @@ namespace CBBW.Areas.Security.Controllers
                 model.VADetails.NoteNumber = NoteNumber;
                 model.VADetails.MaterialStatus = -1;
                 model.VADetails.AuthorisedEmpName = model.AuthorisedEmpNonName;
+                model.VADetails.AuthorisedEmpNumber = MyCodeHelper.GetEmpNoFromString(model.AuthorisedEmpNonName);
                 model.VADetails.DesignationText = model.DesgCodenNameOfAE;
                 model.VADetails.VehicleType = model.VehicleType == 2 ? "2 Wheeler" : model.VehicleType == 1 ? "LV" : "NA";
             }

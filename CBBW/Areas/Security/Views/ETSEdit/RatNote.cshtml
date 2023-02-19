@@ -56,33 +56,35 @@
                 <div class="card-body approvalForm">
                     <div class="row d-flex align-items-center mb-4">
                         <div class="col-md-4">
-                            @Html.DropDownListFor(m => m.NoteNumber,
-                            new SelectList(Model.ToBeEditNoteList, "NoteNumber", "NoteNumber"), "Select Ref. Note No.",
-                            htmlAttributes: new
-                            {
-                                @class = "form-select pointer is-invalid",
-                                onchange = "NotenumberChanged()"
-                            })
+                            <label id="lblNoteDesc" class="col-form-label">
+                            </label>
                         </div>
                         <div class="col-md-8">
                             <div>
                                 <div class="row">
-                                    <label id="lblNoteDesc" class="col-form-label col-md-5">
-                                    </label>
-                                    <label class="col-form-label col-md-1">
-                                        Date  :
-                                    </label>
-                                    <div class="col-md-2">
-                                        <input id="NoteEntryDate" type="text" class="form-control" disabled>
-                                    </div>
-                                    <label class="col-form-label col-md-1">
-                                        Time  :
-                                    </label>
-                                    <div class="col-md-2">
-                                        <input id="NoteEntryTime" type="text" class="form-control" disabled>
+                                    <div class="col-md-5">
+                                        @Html.DropDownListFor(m => m.NoteNumber,
+                                new SelectList(Model.ToBeEditNoteList, "NoteNumber", "NoteNumber"), "Select Ref. Note No.",
+                                htmlAttributes: new
+                                {
+                                    @class = "form-select pointer is-invalid",
+                                    onchange = "NotenumberChanged()"
+                                })
+                                        </div>
+                                        <label class="col-form-label col-md-1">
+                                            Date  :
+                                        </label>
+                                        <div class="col-md-2">
+                                            <input id="NoteEntryDate" type="text" class="form-control" disabled>
+                                        </div>
+                                        <label class="col-form-label col-md-1">
+                                            Time  :
+                                        </label>
+                                        <div class="col-md-2">
+                                            <input id="NoteEntryTime" type="text" class="form-control" disabled>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                         </div>
                     </div>
                     <div>

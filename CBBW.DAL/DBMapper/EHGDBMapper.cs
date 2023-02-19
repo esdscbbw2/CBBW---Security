@@ -115,6 +115,10 @@ namespace CBBW.DAL.DBMapper
                         result.IsActive =bool.Parse(dr["IsActive"].ToString());
                     if (!DBNull.Value.Equals(dr["EntryDateTime"]))
                         result.EntryDate = DateTime.Parse(dr["EntryDateTime"].ToString());
+                    if (!DBNull.Value.Equals(dr["EntryTime"]))
+                        result.EntryTime = dr["EntryTime"].ToString();
+                    else
+                        result.EntryTime = result.EntryDate.ToString("hh:mm ss");
                 }
             }
             catch { }

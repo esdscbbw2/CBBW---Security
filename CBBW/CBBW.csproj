@@ -155,6 +155,7 @@
     <Compile Include="Areas\Security\ViewModel\EMN\EMNNoteApproveVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EMN\EMNTravellingDetailsVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EntryII\DCDetailsVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\EntryII\EntryIIHdrVM.cs" />
     <Compile Include="Areas\Security\ViewModel\ETSEdit\EntrICreateVM.cs" />
     <Compile Include="Areas\Security\ViewModel\ETSEdit\ETSEditViewVM.cs" />
     <Compile Include="Areas\Security\ViewModel\ETSEdit\TourCancelVM.cs" />
@@ -344,6 +345,7 @@
     <Content Include="UIContent\JS\CustomePage\EMN\EMNRatified.js" />
     <Content Include="UIContent\JS\CustomePage\EMN\EMNTravApprove.js" />
     <Content Include="UIContent\JS\CustomePage\EMN\EMNTravellingDetails.js" />
+    <Content Include="UIContent\JS\CustomePage\EntryII\EntryIICreateML.js" />
     <Content Include="UIContent\JS\CustomePage\ETSEdit\EntryICreate.js" />
     <Content Include="UIContent\JS\CustomePage\ETSEdit\EntryIVehicleAllotment.js" />
     <Content Include="UIContent\JS\CustomePage\ETSEdit\EntryIView.js" />
@@ -500,6 +502,14 @@
     <Content Include="Areas\Security\Views\EntryII\_ItemWiseDetails.cshtml" />
     <Content Include="Areas\Security\Views\EntryII\_RefDCDetailsView.cshtml" />
     <Content Include="Areas\Security\Views\EntryII\_RefDCDetails.cshtml" />
+    <Content Include="Areas\Security\Views\EntryII\Index.cshtml" />
+    <Content Include="Areas\Security\Views\EntryII\LocationWiseIndex.cshtml" />
+    <Content Include="Areas\Security\Views\EntryII\MLCreate.cshtml" />
+    <Content Include="Areas\Security\Views\EntryII\LWCreate.cshtml" />
+    <Content Include="Areas\Security\Views\EntryII\ViewMLNote.cshtml" />
+    <Content Include="Areas\Security\Views\EntryII\ViewLWNote.cshtml" />
+    <Content Include="Areas\Security\Views\EntryII\_TravellingDetails.cshtml" />
+    <Content Include="Areas\Security\Views\EntryII\_VehicleAllotmentDetails.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />
