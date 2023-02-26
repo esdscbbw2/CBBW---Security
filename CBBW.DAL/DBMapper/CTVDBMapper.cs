@@ -71,6 +71,8 @@ namespace CBBW.DAL.DBMapper
                         result.EmployeeName = dr["EmployeeName"].ToString();
                     if (!DBNull.Value.Equals(dr["UserName"]))
                         result.UserName = dr["UserName"].ToString();
+                    if (!DBNull.Value.Equals(dr["IsOffline"]))
+                        result.IsOffline =bool.Parse(dr["IsOffline"].ToString());
                 }
             }
             catch { }

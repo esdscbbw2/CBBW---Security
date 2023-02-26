@@ -146,6 +146,7 @@
     <Compile Include="Areas\Security\Controllers\HomeController.cs" />
     <Compile Include="Areas\Security\Controllers\MaterialGatePassController.cs" />
     <Compile Include="Areas\Security\Controllers\TADARulesController.cs" />
+    <Compile Include="Areas\Security\Controllers\TFDController.cs" />
     <Compile Include="Areas\Security\Controllers\TourRuleController.cs" />
     <Compile Include="Areas\Security\Helpers\EditHistory.cs" />
     <Compile Include="Areas\Security\ViewModel\EMC\EMCHeaderEntryVM.cs" />
@@ -156,6 +157,7 @@
     <Compile Include="Areas\Security\ViewModel\EMN\EMNTravellingDetailsVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EntryII\DCDetailsVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EntryII\EntryIIHdrVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\EntryII\MLInnerPageVM.cs" />
     <Compile Include="Areas\Security\ViewModel\ETSEdit\EntrICreateVM.cs" />
     <Compile Include="Areas\Security\ViewModel\ETSEdit\ETSEditViewVM.cs" />
     <Compile Include="Areas\Security\ViewModel\ETSEdit\TourCancelVM.cs" />
@@ -180,6 +182,8 @@
     <Compile Include="Areas\Security\ViewModel\OtherTripSchDisplayVM.cs" />
     <Compile Include="Areas\Security\ViewModel\OtherTripScheduleEntryVM.cs" />
     <Compile Include="Areas\Security\ViewModel\TADATransViewModel.cs" />
+    <Compile Include="Areas\Security\ViewModel\TFD\TFDHdrVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\TFD\TourFeedBackDetailsVM.cs" />
     <Compile Include="Areas\Security\ViewModel\TourRulesViewModel.cs" />
     <Compile Include="Areas\Security\ViewModel\TrialViewModel.cs" />
     <Compile Include="Class1.cs" />
@@ -345,6 +349,7 @@
     <Content Include="UIContent\JS\CustomePage\EMN\EMNRatified.js" />
     <Content Include="UIContent\JS\CustomePage\EMN\EMNTravApprove.js" />
     <Content Include="UIContent\JS\CustomePage\EMN\EMNTravellingDetails.js" />
+    <Content Include="UIContent\JS\CustomePage\EntryII\EntryIICreateLW.js" />
     <Content Include="UIContent\JS\CustomePage\EntryII\EntryIICreateML.js" />
     <Content Include="UIContent\JS\CustomePage\ETSEdit\EntryICreate.js" />
     <Content Include="UIContent\JS\CustomePage\ETSEdit\EntryIVehicleAllotment.js" />
@@ -367,6 +372,12 @@
     <Content Include="UIContent\JS\CustomePage\OtherTripSchEdit.js" />
     <Content Include="UIContent\JS\CustomePage\OtherTripSchedule.js" />
     <Content Include="UIContent\JS\CustomePage\SecurityRuleValidation.js" />
+    <Content Include="UIContent\JS\CustomePage\TFD\ApprovalDetails.js" />
+    <Content Include="UIContent\JS\CustomePage\TFD\ApprovalEntry.js" />
+    <Content Include="UIContent\JS\CustomePage\TFD\TFDDetails.js" />
+    <Content Include="UIContent\JS\CustomePage\TFD\TFDHdrEntry.js" />
+    <Content Include="UIContent\JS\CustomePage\TFD\TourFBDetailsApp.js" />
+    <Content Include="UIContent\JS\CustomePage\TFD\TourFeedBackDetails.js" />
     <Content Include="UIContent\JS\CustomePage\TourRule.js" />
     <Content Include="UIContent\JS\CustomLayout.js" />
     <Content Include="UIContent\JS\DataTablePagingInput.js" />
@@ -510,6 +521,21 @@
     <Content Include="Areas\Security\Views\EntryII\ViewLWNote.cshtml" />
     <Content Include="Areas\Security\Views\EntryII\_TravellingDetails.cshtml" />
     <Content Include="Areas\Security\Views\EntryII\_VehicleAllotmentDetails.cshtml" />
+    <Content Include="Areas\Security\Views\EntryII\_VehicleInOutDetails.cshtml" />
+    <Content Include="Areas\Security\Views\EntryII\MLOutIn.cshtml" />
+    <Content Include="Areas\Security\Views\TFD\ApprovalCreate.cshtml" />
+    <Content Include="Areas\Security\Views\TFD\ApprovalDetails.cshtml" />
+    <Content Include="Areas\Security\Views\TFD\ApprovalIndex.cshtml" />
+    <Content Include="Areas\Security\Views\TFD\Create.cshtml" />
+    <Content Include="Areas\Security\Views\TFD\Details.cshtml" />
+    <Content Include="Areas\Security\Views\TFD\HomeCenterVisitingDetails.cshtml" />
+    <Content Include="Areas\Security\Views\TFD\Index.cshtml" />
+    <Content Include="Areas\Security\Views\TFD\TourFBDetailsApproval.cshtml" />
+    <Content Include="Areas\Security\Views\TFD\TourFeedBackDetails.cshtml" />
+    <Content Include="Areas\Security\Views\TFD\TourFeedBackDetailsView.cshtml" />
+    <Content Include="Areas\Security\Views\TFD\_DateWiseTourDataApproval.cshtml" />
+    <Content Include="Areas\Security\Views\TFD\_DateWiseTourDataDetails.cshtml" />
+    <Content Include="Areas\Security\Views\TFD\_TravellingPersonDetails.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />

@@ -13,6 +13,7 @@ namespace CBBW.BOL.CTV
         public int EmployeeNumber { get; set; }
         public string EmployeeName { get; set; }
         public string UserName { get; set; }
+        public bool IsOffline { get; set; }
         public UserInfo()
         {
 

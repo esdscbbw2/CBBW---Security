@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.EHG;
+using CBBW.BOL.EntryII;
 using CBBW.BOL.ETSEdit;
 using CBBW.BOL.Master;
 using CBBW.BOL.MGP;
@@ -76,6 +77,22 @@ namespace CBBW.DAL.DataSync
                 {
                     DataRow dr = UDTable.NewRow();
                     dr["iCommonID"] = obj;
+                    UDTable.Rows.Add(dr);
+                }
+            }
+        }
+        public CommonTable(List<EmpDate> customoptions)
+        {
+            UDTable = new DataTable();
+            UDTable.Columns.Add("dPunchDate", typeof(DateTime));
+            UDTable.Columns.Add("iEmployeeNumber", typeof(int));            
+            if (customoptions != null && customoptions.Count > 0)
+            {
+                foreach (var obj in customoptions)
+                {
+                    DataRow dr = UDTable.NewRow();
+                    dr["dPunchDate"] = obj.PunchDate;
+                    dr["iEmployeeNumber"] = obj.EmpNumber;
                     UDTable.Rows.Add(dr);
                 }
             }

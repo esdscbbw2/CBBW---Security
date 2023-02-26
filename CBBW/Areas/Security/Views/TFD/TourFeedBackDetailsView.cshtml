@@ -1,0 +1,122 @@
+﻿@using System.Globalization;
+@using CBBW.Areas.Security.ViewModel.TFD;
+@model TourFeedBackDetailsVM
+@{
+
+}
+<div class="container">
+    @using (Html.BeginForm("TourFeedBackDetails", "TFD", FormMethod.Post))
+    {
+        @Html.HiddenFor(x => x.NoteNumber)
+
+        <div class="row newTable">
+            <div class="fixedElement">
+                <div class="col-md-12">
+                    <div class="heading_text_btn mb-3 mt-4">
+                        <div class="leftButton">
+                            <button type="button" id="BackButton" onclick="BackUrls();" class="btn btn-primary me-2">
+                                <i data-feather="arrow-left-circle"></i>
+                                Back
+                            </button>
+
+                        </div>
+                        <h2>Tour Information & Feed Back Details - ENTRY  </h2>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-12">
+                <div class="heading_text_btn2 d-block mt-4">
+                    <h2 class="text-left">Tour Feed Back Details: </h2>
+                </div>
+            </div>
+            <div class="col-md-12 mb-4" id="FeedBackDetails">
+                <div class="col-md-12 pt-3">
+                    <div class="card">
+                        <div class="card-body ">
+                            <div class="table-responsive">
+                                <table class="table table-bordered w-100 btnalign " id="tblFeedBack">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">Sl. No.</th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">Tour Category</th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="12%"> Location Code & Name  </th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="20%">Tour Feed Back Details</th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="13%">Action To Be Taken </th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="25%">
+                                                Concern Department
+                                                Code & Name
+                                            </th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody1">
+                                        @if (Model != null)
+                                        {
+                                            var sl = 1;
+                                            foreach (var item in Model.tfdfbdetails)
+                                            {
+                                                <tr>
+                                                    <td class="text-center">@sl</td>
+                                                    <td class="text-center">@item.TourCategoryText</td>
+                                                    <td class="text-center">@item.CenterCodeNametxt</td>
+                                                    <td class="text-center">@item.TourFeedBack</td>
+                                                    @if (@item.ActionTakens == true)
+                                                    {<td class="text-center">Yes</td>}else {<td class="text-center">No</td>}
+
+                                                    <td class="text-center">@item.ConcernDeptName</td>
+                                                </tr>
+                                                sl++;
+                                            }
+
+                                        }
+
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="bgColor mt-4 bg-transparent content border-green text-left">
+                        <ul style="list-style:none;">
+                            <li style="font-size: 16px;">
+                                All Tasks Mentioned Above & Require Action To Be Taken Are Assigned To The Concern DIC Task Sheet For Further Action:
+                                <input type="text" class="form-control content border-green width-85 pointer-none" value="Yes" disabled="">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section headers
+    {
+    <style>
+        .inVisible {
+            display: none;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
+
+}
+
+@section scripts{
+    <script>
+
+            function BackUrls() {
+                var url = "@ViewBag.BackUrl";
+                var urlbk = url.replace(/&amp;/g, '&');
+                
+                window.location.href = urlbk;
+            };
+
+    </script>
+}

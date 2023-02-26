@@ -20,6 +20,10 @@
                     <td> Centre :</td>
                     <td>@Model.CentreCode / @Model.CentreName</td>
                 </tr>
+                <tr>
+                    <td> Status :</td>
+                    <td>@(Model.IsOffline?"Offline":"Online")</td>
+                </tr>
             </table>
         </td>
     </tr>
@@ -220,6 +224,22 @@
                         </td>
                         <td style="border:1px solid black">
                             @Html.ActionLink("Entry - II(Location Wise)", "LocationWiseIndex", "EntryII", new { area = "Security" }, null)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black">
+                            Tour Feed Back
+                        </td>
+                        <td style="border:1px solid black">
+                            @Html.ActionLink("Tour Feed Back(Entry)", "Index", "TFD", new { area = "Security" }, null)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black">
+                            Tour Feed Back
+                        </td>
+                        <td style="border:1px solid black">
+                            @Html.ActionLink("Tour Feed Back(Approval)", "ApprovalIndex", "TFD", new { area = "Security" }, null)
                         </td>
                     </tr>
                 </table>

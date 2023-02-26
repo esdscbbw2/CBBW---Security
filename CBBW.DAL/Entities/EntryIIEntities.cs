@@ -15,6 +15,7 @@ namespace CBBW.DAL.Entities
         EntryIIDataSync _EntryIIDataSync;
         EntryIIDBMapper _EntryIIDBMapper;
         DataTable dt;
+        DataSet ds;
         public EntryIIEntities()
         {
             _EntryIIDataSync = new EntryIIDataSync();
@@ -87,8 +88,165 @@ namespace CBBW.DAL.Entities
             catch (Exception ex)
             { pMsg = ex.Message; return null; }
         }
-
-
+        public List<PunchInDetails> GetLastPunchingOfaPerson(int EmployeeNumber, DateTime PunchDate, ref string pMsg) 
+        {
+            List<PunchInDetails> result = new List<PunchInDetails>();
+            try
+            {
+                dt = _EntryIIDataSync.GetLastPunchingOfaPerson(EmployeeNumber, PunchDate, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        result.Add(_EntryIIDBMapper.Map_PunchInDetails(dt.Rows[i]));
+                    }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
+        public LastCentrePunchOut GetLastPunchingCentreOfaPerson(int EmployeeNumber, DateTime PunchDate, int CurrentCentreCode, ref string pMsg)
+        {
+            LastCentrePunchOut result = new LastCentrePunchOut();
+            try
+            {
+                dt = _EntryIIDataSync.GetLastPunchingCentreOfaPerson(EmployeeNumber, PunchDate, CurrentCentreCode, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    return _EntryIIDBMapper.Map_LastCentrePunchOut(dt.Rows[0]);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
+        public PunchInDetails GetPunchingDetails(int EmployeeNumber, DateTime PunchDate, int CentreCode, string RFIDNumber, ref string pMsg) 
+        {
+            PunchInDetails result = new PunchInDetails();
+            try
+            {
+                dt = _EntryIIDataSync.GetPunchingDetails(EmployeeNumber, PunchDate, CentreCode, RFIDNumber, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    return _EntryIIDBMapper.Map_PunchInDetails(dt.Rows[0]);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
+        public int GetRequiredTimeInMinutesForEmployee(int EmployeeNumber, bool IsVehicleProvided, int FromCentreCode, int ToCentreCode, ref string pMsg) 
+        {
+            int result = 0;
+            try
+            {
+                dt = _EntryIIDataSync.GetRequiredTimeInMinutesForEmployee(EmployeeNumber,IsVehicleProvided,FromCentreCode,ToCentreCode, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    if (!DBNull.Value.Equals(dt.Rows[0]["RequiredTimeInMinutes"]))
+                        result = int.Parse(dt.Rows[0]["RequiredTimeInMinutes"].ToString());
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
+        public List<PunchInDetails> GetPunchingsV2(DateTime PunchDate, int CentreCode, string EmployeeIDs, ref string pMsg)
+        {
+            List<PunchInDetails> result = new List<PunchInDetails>();
+            try
+            {
+                dt = _EntryIIDataSync.GetPunchingsV2(PunchDate,CentreCode,EmployeeIDs, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        result.Add(_EntryIIDBMapper.Map_PunchInDetails(dt.Rows[i]));
+                    }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
+        public List<LastCentrePunchOutWithEmpNo> GetLastPunchingCentresV2(DateTime PunchDate, int CentreCode, string EmployeeIDs, ref string pMsg)
+        {
+            List<LastCentrePunchOutWithEmpNo> result = new List<LastCentrePunchOutWithEmpNo>();
+            try
+            {
+                dt = _EntryIIDataSync.GetLastPunchingCentresV2(PunchDate, CentreCode, EmployeeIDs, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        result.Add(_EntryIIDBMapper.Map_LastCentrePunchOutWithEmpNo(dt.Rows[i]));
+                    }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
+        public List<PunchInDetails> GetPunchingsV3(int CentreCode, List<EmpDate> dtldata, ref string pMsg) 
+        {
+            List<PunchInDetails> result = new List<PunchInDetails>();
+            try
+            {
+                dt = _EntryIIDataSync.GetPunchingsV3(CentreCode, dtldata, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        result.Add(_EntryIIDBMapper.Map_PunchInDetails(dt.Rows[i]));
+                    }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
+        public List<LastCentrePunchOutWithDistance> GetLastPunchingCentresV3(int CentreCode, List<EmpDate> dtldata, ref string pMsg)
+        {
+            List<LastCentrePunchOutWithDistance> result = new List<LastCentrePunchOutWithDistance>();
+            try
+            {
+                dt = _EntryIIDataSync.GetLastPunchingCentresV3(CentreCode, dtldata, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        result.Add(_EntryIIDBMapper.Map_LastCentrePunchOutWithDistance(dt.Rows[i]));
+                    }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
+        public List<MainLocationPersons> GetMainLocationTPs(string NoteNumber, ref string pMsg)
+        {
+            List<MainLocationPersons> result = new List<MainLocationPersons>();
+            try
+            {
+                ds = _EntryIIDataSync.GetEntryIITPOutInDetails(NoteNumber, ref pMsg);
+                if (ds != null)
+                {
+                    dt = ds.Tables[0];
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+                            result.Add(_EntryIIDBMapper.Map_MainLocationPersons(dt.Rows[i]));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            { pMsg = ex.Message; return null; }
+            return result;
+        }
+        public LocationWiseTPDetails GetLocationWiseTPs(string NoteNumber,int CentreCode, ref string pMsg)
+        {
+            try
+            {
+                return _EntryIIDBMapper.Map_LocationWiseTPDetails(_EntryIIDataSync.GetEntryIITPOutInDetailsLW(NoteNumber, CentreCode, ref pMsg));                
+            }
+            catch (Exception ex)
+            { pMsg = ex.Message; return null; }
+        }
 
 
     }

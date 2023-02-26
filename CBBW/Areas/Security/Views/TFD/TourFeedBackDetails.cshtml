@@ -1,0 +1,168 @@
+﻿@using System.Globalization;
+@using CBBW.Areas.Security.ViewModel.TFD;
+@model TourFeedBackDetailsVM
+@{
+
+}
+<div class="container">
+    @using (Html.BeginForm("TourFeedBackDetails", "TFD", FormMethod.Post))
+    {
+        @Html.HiddenFor(x => x.NoteNumber)
+        @Html.HiddenFor(x => x.RefNoteNumber)
+        @Html.HiddenFor(x => x.submitcount)
+        <div class="row newTable">
+            <div class="fixedElement">
+                <div class="col-md-12">
+                    <div class="heading_text_btn mb-3 mt-4">
+                        <div class="leftButton">
+                            <button type="button" id="BackButton" onclick="BackUrls();" class="btn btn-primary me-2">
+                                <i data-feather="arrow-left-circle"></i>
+                                Back
+                            </button>
+                            <button type="button" id="btnSubmits" disabled class="btn btn-secondary me-2" onclick="SaveDataClicked();">
+                                <i data-feather="check-circle"></i>
+                                Save
+                            </button>
+                        </div>
+                        <h2>Tour Information & Feed Back Details - ENTRY  </h2>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-12">
+                <div class="heading_text_btn2 d-block mt-4">
+                    <h2 class="text-left">Tour Feed Back Details: </h2>
+                </div>
+            </div>
+            <div class="col-md-12 mb-4" id="FeedBackDetails">
+                <div class="col-md-12 pt-3">
+                    <div class="card">
+                        <div class="card-body ">
+                            <div class="table-responsive">
+                                <table class="table table-bordered w-100 btnalign " id="tblFeedBack">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">Sl. No.</th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">Tour Category</th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="12%"> Location Code & Name  </th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="20%">Tour Feed Back Details</th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="13%">Action To Be Taken </th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="25%">
+                                                Concern Department
+                                                Code & Name
+                                            </th>
+                                            <th scope="col" rowspan="2" width="10%" style="text-align: center; vertical-align: middle;background: pink;color: #000;">
+                                                Action
+
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody1">
+                                        <tr id="0" class="add-row">
+                                            <th scope="row" class="text-center">1</th>
+                                            <td class="text-center">
+                                                <select id="TourCategory" data-name="TourCategory" data-name-text="TourCategoryText"
+                                                        onchange="GetCenterCode(); ValidateCloneRowCtrl();"
+                                                        class="form-select is-invalid alterID clonemultiselect CtrlTC"
+                                                        aria-label="Default select example">
+                                                </select>
+                                            </td>
+                                            <td class="text-center">
+                                                @*<div id="CentcodeNAdiv" class="alterID htmlVal inVisibles">
+                                                        -
+                                                    </div>*@
+                                                <div id="CenterDiv" class="alterID ">
+                                                    <select id="CenterCodeName" data-name="CenterCodeName" data-name-text="CenterCodeNametxt"
+                                                            onchange="ValidateCloneRowCtrl()"
+                                                            class="form-select is-invalid alterID clonemultiselect"
+                                                            aria-label="Default select example">
+                                                    </select>
+
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <textarea id="TourFeedBack" maxlength="100" onchange="ValidateCloneRowCtrl()" data-name="TourFeedBack" class="form-control alterID inValidTag clear is-invalid" cols="10" rows="2"></textarea>
+                                            </td>
+                                            <td class="text-center">
+                                                <select id="ActionTaken" style="width: 110px;" class="form-select is-invalid alterID inValidTag"
+                                                        data-name="ActionTaken"
+                                                        onchange="ValidateCloneRowCtrl()"
+                                                        aria-label="Default select example">
+                                                    <option selected value="-1">-</option>
+                                                    <option value="1"> Yes</option>
+                                                    <option value="0"> No </option>
+                                                </select>
+                                            </td>
+                                            <td class="text-center">
+                                                -
+                                            </td>
+                                            <td class="text-center btnalign">
+                                                <span class="actionBtn d-block">
+                                                    <button id="AddBtn" type="button" disabled
+                                                            class="btn primaryLink alterID cloneBtn addBtn"
+                                                            onclick="AddClonebtn()"
+                                                            data-toggle="tooltip"
+                                                            data-placement="top" title="Add">
+                                                        <i data-feather="plus"></i>
+                                                    </button>
+                                                    <button id="DeleteBtn" type="button"
+                                                            class="btn secondaryLink inVisible alterID cloneBtn removeBtn"
+                                                            onclick="removeClonebtn()"
+                                                            data-toggle="tooltip"
+                                                            data-placement="top" title="Delete">
+                                                        <i data-feather="x"></i>
+                                                    </button>
+                                                </span>
+                                            </td>
+
+                                        </tr>
+
+                                    </tbody>
+                                    <tbody id="tbody2"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="bgColor mt-4 bg-transparent content border-green text-left">
+                        <ul style="list-style:none;">
+                            <li style="font-size: 16px;">
+                                All Tasks Mentioned Above & Require Action To Be Taken Are Assigned To The Concern DIC Task Sheet For Further Action:
+                                <input type="text" class="form-control content border-green width-85 pointer-none" value="-" disabled="">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section headers
+    {
+    <style>
+        .inVisible {
+            display: none;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
+
+}
+
+@section scripts{
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/TFD/TourFeedBackDetails.js"></script>
+    <script>
+
+            function BackUrls() {
+                var url = "@ViewBag.BackUrl";
+                var urlbk = url.replace(/&amp;/g, '&');
+                window.location.href = urlbk;
+            };
+
+    </script>
+}

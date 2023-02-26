@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CBBW.BOL.EntryII;
 
 namespace CBBW.DAL.DataSync
 {
@@ -86,8 +87,183 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-
-
+        
+        public DataTable GetLastPunchingOfaPerson(int EmployeeNumber,DateTime PunchDate, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[2];
+                para[paracount] = new SqlParameter("@EmployeeNumber", SqlDbType.Int);
+                para[paracount++].Value = EmployeeNumber;
+                para[paracount] = new SqlParameter("@PunchDate", SqlDbType.Date);
+                para[paracount++].Value = PunchDate;
+                using (SQLHelper sql = new SQLHelper("[ENT].[GetLastPunchingOfaPerson]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable GetLastPunchingCentreOfaPerson(int EmployeeNumber, DateTime PunchDate,int CurrentCentreCode, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[3];
+                para[paracount] = new SqlParameter("@EmployeeNumber", SqlDbType.Int);
+                para[paracount++].Value = EmployeeNumber;
+                para[paracount] = new SqlParameter("@PunchDate", SqlDbType.Date);
+                para[paracount++].Value = PunchDate;
+                para[paracount] = new SqlParameter("@CentreCode", SqlDbType.Int);
+                para[paracount++].Value = CurrentCentreCode;
+                using (SQLHelper sql = new SQLHelper("[ENT].[GetLastPunchingCentreOfaPerson]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable GetPunchingDetails(int EmployeeNumber, DateTime PunchDate, int CentreCode,string RFIDNumber, ref string pMsg) 
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[4];
+                para[paracount] = new SqlParameter("@EmployeeNumber", SqlDbType.Int);
+                para[paracount++].Value = EmployeeNumber;
+                para[paracount] = new SqlParameter("@CentreCode", SqlDbType.Int);
+                para[paracount++].Value = CentreCode;
+                para[paracount] = new SqlParameter("@PunchDate", SqlDbType.Date);
+                para[paracount++].Value = PunchDate;
+                para[paracount] = new SqlParameter("@RFIDNumber", SqlDbType.NVarChar);
+                para[paracount++].Value = RFIDNumber;
+                using (SQLHelper sql = new SQLHelper("[ENT].[GetPunchingDetails]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable GetRequiredTimeInMinutesForEmployee(int EmployeeNumber,bool IsVehicleProvided,int FromCentreCode,int ToCentreCode,ref string pMsg) 
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("select RequiredTimeInMinutes from [ENT].[GetRequiredTimeInForEmployee](" + EmployeeNumber + ","+ IsVehicleProvided + ","+ FromCentreCode + ","+ ToCentreCode + ")", CommandType.Text))
+                {
+                    return sql.GetDataTable();
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable GetPunchingsV2(DateTime PunchDate, int CentreCode,string EmployeeIDs,  ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[3];
+                para[paracount] = new SqlParameter("@PunchDate", SqlDbType.Date);
+                para[paracount++].Value = PunchDate;
+                para[paracount] = new SqlParameter("@CentreCode", SqlDbType.Int);
+                para[paracount++].Value = CentreCode;
+                para[paracount] = new SqlParameter("@EmployeeIDs", SqlDbType.NVarChar);
+                para[paracount++].Value = EmployeeIDs;
+                using (SQLHelper sql = new SQLHelper("[ENT].[GetPunchingsV2]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable GetLastPunchingCentresV2(DateTime PunchDate, int CentreCode, string EmployeeIDs, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[3];
+                para[paracount] = new SqlParameter("@PunchDate", SqlDbType.Date);
+                para[paracount++].Value = PunchDate;
+                para[paracount] = new SqlParameter("@CentreCode", SqlDbType.Int);
+                para[paracount++].Value = CentreCode;
+                para[paracount] = new SqlParameter("@EmployeeNumbers", SqlDbType.NVarChar);
+                para[paracount++].Value = EmployeeIDs;
+                using (SQLHelper sql = new SQLHelper("[ENT].[GetLastPunchingCentresV2]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable GetPunchingsV3(int CentreCode, List<EmpDate> dtldata, ref string pMsg)
+        {
+            try
+            {
+                CommonTable dtl = new CommonTable(dtldata);
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[2];                
+                para[paracount] = new SqlParameter("@CentreCode", SqlDbType.Int);
+                para[paracount++].Value = CentreCode;
+                para[paracount] = new SqlParameter("@PunchEmpDate", SqlDbType.Structured);
+                para[paracount++].Value = dtl.UDTable;
+                using (SQLHelper sql = new SQLHelper("[ENT].[GetPunchingsV3]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable GetLastPunchingCentresV3(int CentreCode, List<EmpDate> dtldata, ref string pMsg)
+        {
+            try
+            {
+                CommonTable dtl = new CommonTable(dtldata);
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[2];
+                para[paracount] = new SqlParameter("@CentreCode", SqlDbType.Int);
+                para[paracount++].Value = CentreCode;
+                para[paracount] = new SqlParameter("@PunchEmpDate", SqlDbType.Structured);
+                para[paracount++].Value = dtl.UDTable;
+                using (SQLHelper sql = new SQLHelper("[ENT].[GetLastPunchingCentresV3]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataSet GetEntryIITPOutInDetails(string NoteNumber, ref string pMsg, int CentreCode = 0)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[2];
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NVarChar, 25);
+                para[paracount++].Value = NoteNumber;
+                para[paracount] = new SqlParameter("@CentreCode", SqlDbType.Int);
+                para[paracount++].Value = CentreCode;
+                using (SQLHelper sql = new SQLHelper("[ENT].[GetEntryIITPOutInDetails]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataSet(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataSet GetEntryIITPOutInDetailsLW(string NoteNumber, int CentreCode, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[2];
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NVarChar, 25);
+                para[paracount++].Value = NoteNumber;
+                para[paracount] = new SqlParameter("@CentreCode", SqlDbType.Int);
+                para[paracount++].Value = CentreCode;
+                using (SQLHelper sql = new SQLHelper("[ENT].[GetEntryIITPOutInDetailsLW]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataSet(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
 
 
     }

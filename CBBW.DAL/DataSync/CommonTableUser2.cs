@@ -13,12 +13,14 @@ using CBBW.BOL.ETS;
 using CBBW.BOL.Master;
 using CBBW.BOL.MGP;
 using CBBW.BOL.TADA;
+using CBBW.BOL.TFD;
 using CBBW.DAL.DBLogic;
 
 namespace CBBW.DAL.DataSync
 {
     public partial class CommonTable
     {
+       
         public CommonTable(List<ETSTravellingPerson> customoptions)
         {
             UDTable = new DataTable();
@@ -320,5 +322,92 @@ namespace CBBW.DAL.DataSync
                 }
             }
         }
+        public CommonTable(List<TFDTourFeedBackDetails> customoptions)
+        {
+            UDTable = new DataTable();
+            UDTable.Columns.Add("sTourCategoryId", typeof(string));
+            UDTable.Columns.Add("sTourCategory", typeof(string));
+            UDTable.Columns.Add("sLocationCode", typeof(string));
+            UDTable.Columns.Add("sLocationCodeName", typeof(string));
+            UDTable.Columns.Add("sTourFeedBack", typeof(string));
+            UDTable.Columns.Add("bActionTaken", typeof(bool));
+            UDTable.Columns.Add("iConcernDeptCode", typeof(int));
+            UDTable.Columns.Add("sConcernDeptName", typeof(string));
+
+            if (customoptions != null && customoptions.Count > 0)
+            {
+                foreach (TFDTourFeedBackDetails obj in customoptions)
+                {
+                    DataRow dr = UDTable.NewRow();
+                  
+                    dr["sTourCategoryId"] = obj.TourCategory != null ? obj.TourCategory : "NA";
+                    dr["sTourCategory"] = obj.TourCategoryText != null ? obj.TourCategoryText : "NA";
+                    dr["sLocationCode"] = obj.CenterCodeName != null ? obj.CenterCodeName : "NA";
+                    dr["sLocationCodeName"] = obj.CenterCodeNametxt != null ? obj.CenterCodeNametxt : "NA";
+                    dr["sTourFeedBack"] = obj.TourFeedBack != null ? obj.TourFeedBack : "NA";
+                    dr["bActionTaken"] = obj.ActionTaken ==1 ? true : false;
+                    dr["iConcernDeptCode"] = 0;
+                    dr["sConcernDeptName"] = null;
+                    UDTable.Rows.Add(dr);
+                }
+            }
+        }
+        public CommonTable(List<TFDTourFBApproval> customoptions)
+        {
+            UDTable = new DataTable();
+            UDTable.Columns.Add("iID", typeof(int));
+            UDTable.Columns.Add("sNoteNumber", typeof(string));
+            UDTable.Columns.Add("iConcernDeptCode", typeof(int));
+            UDTable.Columns.Add("sConcernDeptName", typeof(string));
+
+            if (customoptions != null && customoptions.Count > 0)
+            {
+                foreach (TFDTourFBApproval obj in customoptions)
+                {
+                    DataRow dr = UDTable.NewRow();
+
+                    dr["iID"] = obj.ID != 0 ? obj.ID : 0;
+                    dr["sNoteNumber"] = obj.NoteNumber != null ? obj.NoteNumber : "NA";
+                    dr["iConcernDeptCode"] = obj.ConcernDeptCode != 0 ? obj.ConcernDeptCode : 0;
+                    dr["sConcernDeptName"] = obj.ConcernDeptName != null ? obj.ConcernDeptName : "NA";
+                    UDTable.Rows.Add(dr);
+                }
+            }
+        }
+        public CommonTable(List<TFDDateWiseTourData> customoptions)
+        {
+            UDTable = new DataTable();
+            UDTable.Columns.Add("iTourCategoryCodes", typeof(int));
+            UDTable.Columns.Add("iCentreCode", typeof(int));
+            UDTable.Columns.Add("dSchFromDate", typeof(DateTime));
+            UDTable.Columns.Add("iPersonID", typeof(int));
+            UDTable.Columns.Add("sCenterCodeName", typeof(string));
+            UDTable.Columns.Add("sTourCategoryText", typeof(string));
+            UDTable.Columns.Add("sActualTourInTime", typeof(string));
+            UDTable.Columns.Add("sActualTourOutTime", typeof(string));
+            UDTable.Columns.Add("bIsApproval", typeof(bool));
+            UDTable.Columns.Add("sApprovalRemark", typeof(string));
+
+            if (customoptions != null && customoptions.Count > 0)
+            {
+                foreach (TFDDateWiseTourData obj in customoptions)
+                {
+                    DataRow dr = UDTable.NewRow();
+                    dr["iTourCategoryCodes"] = obj.TourCategoryCodes;
+                    dr["iCentreCode"] = obj.CentreCode;
+                    dr["dSchFromDate"] = obj.SchFromDate;
+                    dr["iPersonID"] = obj.PersonID;
+                    dr["sCenterCodeName"] = obj.CentreCodeName != null ? obj.CentreCodeName : "NA";
+                    dr["sTourCategoryText"] = obj.TourCategoryText != null ? obj.TourCategoryText : "NA";
+                    dr["sActualTourInTime"] = obj.ActualTourInTime != null ? obj.ActualTourInTime : "NA";
+                    dr["sActualTourOutTime"] = obj.ActualTourOutTime != null ? obj.ActualTourOutTime : "NA";
+                    dr["bIsApproval"] = obj.IsApprovals == "1" ? true : false;
+                    dr["sApprovalRemark"] =obj.ApprovalRemark != null ? obj.ApprovalRemark : "NA";
+
+                    UDTable.Rows.Add(dr);
+                }
+            }
+        }
+
     }
 }

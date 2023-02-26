@@ -9,7 +9,6 @@ using CBBW.BOL.CTV;
 using CBBW.BOL.EHG;
 using CBBW.BOL.EntryII;
 using CBBW.BOL.ETSEdit;
-
 namespace CBBW.Areas.Security.Controllers
 {
     public class EntryIIController : Controller
@@ -84,10 +83,35 @@ namespace CBBW.Areas.Security.Controllers
         {
             return View();
         }
+        public ActionResult MLOutIn(string NoteNumber) 
+        {
+            MLInnerPageVM modelobj = new MLInnerPageVM();
+            modelobj.TPDetails = _iEntryIIRepository.GetMainLocationTPs(NoteNumber, ref pMsg);
+            modelobj.DefaultPersonID = modelobj.TPDetails.FirstOrDefault().PersonID;
+            return View(modelobj);
+        }
         public ActionResult MLCreate() 
         {
             model = CastEntryIITempData(true);
             return View(model); 
+        }
+        [HttpPost]
+        public ActionResult MLCreate(EntryIIHdrVM modelobj,string Submit)
+        {
+            model = CastEntryIITempData(true);
+            modelobj.EntryIINotes = model.EntryIINotes;
+            TempData["EntryII"] = modelobj;
+            if (Submit == "MLOutInBtn")
+            {
+                string baseUrl = "/Security/EntryII/MLCreate";
+                _iUser.RecordCallBack(baseUrl);
+                return RedirectToAction("MLOutIn", "EntryII",new { NoteNumber=modelobj.NoteNumber });
+            }
+            else if (Submit == "Save") 
+            {
+            
+            }
+            return View(model);
         }
         public ActionResult LWCreate()
         {
@@ -140,6 +164,11 @@ namespace CBBW.Areas.Security.Controllers
             VehicleAllotmentDetails modelobj = _iEntryIIRepository.GetEntryIIVehicleAllotmentDetails(NoteNumber, ref pMsg);
             return View("~/Areas/Security/Views/EntryII/_VehicleAllotmentDetails.cshtml", modelobj);
         }
+        public ActionResult VIODetails(string NoteNumber)
+        {
+            VehicleAllotmentDetails modelobj = _iEntryIIRepository.GetEntryIIVehicleAllotmentDetails(NoteNumber, ref pMsg);
+            return View("~/Areas/Security/Views/EntryII/_VehicleInOutDetails.cshtml", modelobj);
+        }
 
 
 
@@ -158,7 +187,6 @@ namespace CBBW.Areas.Security.Controllers
             }
             if (model.EntryIINotes == null)
                 model.EntryIINotes = _iEntryIIRepository.GetEntryIINotes(user.CentreCode, IsMainLocation, ref pMsg);
-
             TempData["EntryII"] = model;
             return model;
         }

@@ -1,0 +1,314 @@
+﻿@using System.Globalization;
+@using CBBW.Areas.Security.ViewModel.TFD;
+@model TFDHdrVM
+@{
+
+}
+@using (Html.BeginForm("ApprovalCreate", "TFD", FormMethod.Post))
+{
+    @Html.HiddenFor(x => x.tfdHdr.AuthEmployeeCode)
+    @Html.HiddenFor(x => x.submitcount)
+    @Html.HiddenFor(x => x.EmployeeNo)
+    <div class="container">
+        <div class="row newTable" id="AllData">
+            <div class="fixedElement">
+                <div class="col-md-12">
+                    <div class="heading_text_btn mb-3 mt-4">
+                        <div class="leftButton">
+                            <button type="button" id="btnBacks" class="btn btn-primary me-2">
+                                <i data-feather="arrow-left-circle"></i>
+                                Back
+                            </button>
+                            <button type="button" id="SubmitBtn" disabled class="btn btn-secondary me-2" onclick="SaveDataClicked();">
+                                <i data-feather="check-circle"></i>
+                                Submit
+                            </button>
+                            <button type="submit" class="btn btn-white">
+                                <i data-feather="x-circle"></i>
+                                Clear
+                            </button>
+                        </div>
+                        <h2>Tour Information & Feed Back Details - APPROVAL </h2>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="col-md-12 mb-4">
+                <div class="card mt-4 mb-4">
+                    <div class="card-body approvalForm">
+                        <form class="form-sample form-inline row ms-auto">
+                            <div class="row d-flex align-items-center mb-4">
+                                <label class="col-form-label col-md-4">
+                                    <div id="NZB_staff1">
+                                        Ref. Tour Information & Feed Back Details – ENTRY Note No.:
+                                    </div>
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.DropDownListFor(m => m.tfdHdr.NoteNumber,
+new SelectList(Model.Notelist, "NoteNumber", "NoteNumber"),
+"Select Note Number",
+htmlAttributes: new
+{
+    @class = "form-select pointer",
+    id = "NoteNumber"
+})
+                                </div>
+                                <div class="col-md-4">
+                                    <div id="NZB_staff">
+                                        <div class="row">
+
+
+                                            <label class="col-form-label col-md-2">
+                                                Date  :
+                                            </label>
+                                            <div class="col-md-4">
+                                                @Html.TextBoxFor(x => x.tfdHdr.EntryDatestr, new { @class = "form-control", @readonly = "readonly" })
+                                            </div>
+                                            <label class="col-form-label col-md-2">
+                                                Time  :
+                                            </label>
+                                            <div class="col-md-4">
+                                                @Html.TextBoxFor(x => x.tfdHdr.EntryTime, new { @class = "form-control", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row d-flex align-items-center mb-4">
+                                <label class="col-form-label col-md-4">
+                                    <div>
+                                        Ref. Employees Travelling  Schedule Details – ENTRY Note No.:
+                                    </div>
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.TextBoxFor(x => x.tfdHdr.RefNoteNumber, new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                                <div class="col-md-4">
+                                    <div id="NZB_staff">
+                                        <div class="row">
+                                            <label class="col-form-label col-md-2">
+                                                Date  :
+                                            </label>
+                                            <div class="col-md-4">
+                                                @Html.TextBoxFor(x => x.tfdHdr.EntEntryDatestr, new { @class = "form-control", @readonly = "readonly" })
+                                            </div>
+                                            <label class="col-form-label col-md-2">
+                                                Time  :
+                                            </label>
+                                            <div class="col-md-4">
+                                                @Html.TextBoxFor(x => x.tfdHdr.EntEntryTime, new { @class = "form-control", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row d-flex align-items-center mb-4">
+                                <div class="col-md-4 col-form-label">
+                                    <label>Feed Back By Employee No. & Name: </label>
+                                </div>
+                                <div class="col-md-4">
+
+                                    @Html.TextBoxFor(x => x.tfdHdr.AuthEmployeeName, new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                            <div class="row d-flex align-items-center mb-4">
+                                <div class="col-md-4 col-form-label">
+                                    <label>Tour From Date:</label>
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.TextBoxFor(x => x.tfdHdr.TourFromDatestr, new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                                <div class="col-md-1 col-form-label">
+                                    <label>Tour To Date:</label>
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.TextBoxFor(x => x.tfdHdr.TourToDatestr, new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                                <div class="col-md-1 col-form-label">
+                                    <label>Purpose Of Visit :</label>
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.TextBoxFor(x => x.tfdHdr.PurposeOfVisit, new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-12 mt-4 pt-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive btnalign">
+                                <div id="TPDiv" class="inVisible">
+                                </div>
+                                <div id="TourDiv" class="inVisible">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="d-flex justify-content-center mt-4">
+                        <button type="submit" name="Submit" disabled value="HCVD" id="HCVD" class="btn btn-primary me-2">
+                            Home Center Visiting Details
+                        </button>
+                        <button type="submit" name="Submit" disabled value="TFBD" id="TFBD" class="btn btn-primary me-2">
+                            Tour Feed Back Details
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="bgColor mt-4 bg-transparent content border-green text-left">
+                        <ul style="list-style:none;">
+                            <li style="font-size: 16px;">
+                                The “Tour Feed Back Details” Are Entered With The Best Of Knowledge, The Details Entered Are Correct & As Required:
+                                <input type="text" class="form-control content border-green width-85 pointer-none" value="Yes" disabled="">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="card mt-4 mb-4">
+                        <div class="card-body alert alert-success text-dark approvalForm">
+                            <form class="form-sample form-inline row ms-auto">
+                                <div class="row d-flex align-items-center">
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Approved :</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <select id="IsApproves" data-name="IsApproves" data-name-text="IsApprove"
+                                                onchange="ValidateControl()"
+                                                class="form-select is-invalid clear"
+                                                aria-label="Default select example">
+                                            <option selected value="-1"> -</option>
+                                            <option value="1">Yes</option>
+                                            <option value="0">No</option>
+                                        </select>
+
+                                    </div>
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Date &amp; Time Of Approval :</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control" value="@DateTime.Today.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture) @DateTime.Now.ToString("hh:mm tt")" disabled>
+                                    </div>
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Reason If not Approved :</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <textarea maxlength="200" id="ApproveReason" onchange="ValidateControl()" data-name="ApproveReason" class="form-control is-invalid clear" cols="10" rows="2"></textarea>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-12">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-md-12">
+                            <div class="text-left pt-2 pb-2">
+                                <span class="prompt-div">
+                                    PROMPT & STOP Required Active
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section headers
+{
+    <style>
+        .inVisible {
+            display: none;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
+}
+@section scripts{
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/TFD/ApprovalEntry.js"></script>
+    <script>
+        function VisibleRows(EmpNo) {
+            alert(EmpNo);
+            //$('.allperson').each(function () {
+            //    $(this).makeInVisible();
+            //});
+            $('#EmployeeNo').val(EmpNo);
+            $('#DateTbl').makeVisible();
+            $('.' + EmpNo).each(function () {
+                $(this).makeVisible();
+            });
+            $('#HCVD').makeEnabled();
+            $('#TFBD').makeEnabled();
+        }
+        //function PersonSelectionChanged() {
+
+
+        //    var targetCtrl = $(PersonSelectionChanged.caller.arguments[0].target);
+        //    var mID = targetCtrl.attr('id');
+        //    var PType = $('#PersonType_' + mID).html();
+        //    var EmployeeNo = $('#AuthEmployeeCode_' + mID).html();
+        //    // var PName = $('#PersonName_' + mID).html();
+        //    var PersonCentre = $('#PersonCentre_' + mID).html();
+        //    var NoteNo = $('#tfdHdr_RefNoteNumber').val();
+
+        //    var TourDetailsDiv = $('#TourDiv');
+        //    TourDetailsDiv.removeClass('inVisible');
+
+        //    var dataSourceURL = '/TFD/DateWiseTourView?NoteNumbers=' + $.trim(NoteNo) + '&PersonType=' + $.trim(PType) + '&EmployeeNo=' + $.trim(EmployeeNo) + '&PersonCentre=' + $.trim(PersonCentre);
+        //    $.ajax({
+        //        url: dataSourceURL,
+        //        contentType: 'application/html; charset=utf-8',
+        //        type: 'GET',
+        //        dataType: 'html',
+        //        success: function (result) {
+        //            TourDetailsDiv.html(result);
+        //        },
+        //        error: function (xhr, status) {
+        //            TourDetailsDiv.html(xhr.responseText);
+        //        }
+        //    })
+        //};
+
+
+    </script>
+    <script>
+        $('#btnBacks').click(function () {
+            var url = "/Security/TFD/ApprovalIndex";
+            if ($('#NoteNumber').val() != "") {
+                Swal.fire({
+                    title: 'Confirmation Message',
+                    text: "Are You Sure Want to Go Back?",
+                    icon: 'question',
+                    customClass: 'swal-wide',
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                    cancelButtonClass: 'btn-cancel',
+                    confirmButtonColor: '#2527a2',
+                    showCancelButton: true,
+                }).then(callback);
+                function callback(result) {
+                    if (result.value) {
+
+                        window.location.href = url;
+                    }
+
+                }
+            } else {
+
+                window.location.href = url;
+            };
+        });
+    </script>
+}

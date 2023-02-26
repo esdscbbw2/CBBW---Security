@@ -24,6 +24,8 @@ namespace CBBW.BLL.Repository
             UserInfo user= _CTVEntities.getLogInUserInfo(UserName, ref pMsg);
             if (user != null && user.EmployeeNumber > 0)
             {
+                //Should be removed for production
+                user.IsOffline = user.EmployeeNumber == 2002563 ? false : user.IsOffline;
                 setUser(user);
                 return true;
             }

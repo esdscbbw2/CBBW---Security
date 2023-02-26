@@ -111,5 +111,38 @@ namespace CBBW.BLL.Repository
         {
             return _EntryIIEntities.GetEntryIIVehicleAllotmentDetails(Notenumber,ref pMsg);
         }
+        public List<MainLocationPersons> GetMainLocationTPs(string NoteNumber, ref string pMsg)
+        {
+            PunchInDetails punch;
+            LastCentrePunchOut lastCentrePunch;
+            DateTime RequiredTimeIn;
+            List<MainLocationPersons> result = _EntryIIEntities.GetMainLocationTPs(NoteNumber,ref pMsg);
+            if (result != null && result.Count > 0) 
+            {
+                foreach (var item in result) 
+                {
+                    lastCentrePunch = _EntryIIEntities.GetLastPunchingCentreOfaPerson(item.PersonID, item.SchToDate, item.MainLocationCode, ref pMsg);
+                    int CalcMinutes=_EntryIIEntities.GetRequiredTimeInMinutesForEmployee(item.PersonID, item.IsVehicleProvided, item.MainLocationCode, lastCentrePunch.LocationCode, ref pMsg);
+                    RequiredTimeIn = lastCentrePunch.PunchOut.AddMinutes(CalcMinutes);
+                    item.RequiredTourInTime = RequiredTimeIn != null ? RequiredTimeIn : DateTime.Now;
+
+                    punch = _EntryIIEntities.GetPunchingDetails(item.PersonID,item.SchFromDate,item.MainLocationCode," ",ref pMsg);
+                    item.ActualTourOutDate = punch.PunchDate == null || punch.PunchDate.Year==1? item.SchFromDate: punch.PunchDate;
+                    item.ActualTourOutTime = punch.PunchOut != null ? punch.PunchOut : DateTime.Parse(item.SchFromTime);
+                    
+                    punch = _EntryIIEntities.GetPunchingDetails(item.PersonID, item.SchToDate, item.MainLocationCode, " ", ref pMsg);
+                    item.ActualTourInDate = punch.PunchDate != null ? punch.PunchDate : item.SchToDate;
+                    item.ActualTourInTime= punch.PunchIn != null ? punch.PunchIn : item.RequiredTourInTime;
+
+                    item.TourStatus = item.SchToDate <= DateTime.Today ? 1 : 0;
+                }
+            }
+
+            return result;
+        }
+        public LocationWiseTPDetails GetLocationWiseTPs(string NoteNumber, int CentreCode, ref string pMsg)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

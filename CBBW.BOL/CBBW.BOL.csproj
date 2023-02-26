@@ -73,10 +73,13 @@
     <Compile Include="EMN\EMNNote.cs" />
     <Compile Include="EMN\EMNTravellingDetails.cs" />
     <Compile Include="EMN\EMNTravellingPerson.cs" />
+    <Compile Include="EntryII\EmpDate.cs" />
     <Compile Include="EntryII\EntryIIDateWiseTourData.cs" />
     <Compile Include="EntryII\EntryIIDCDetails.cs" />
     <Compile Include="EntryII\EntryIIList.cs" />
+    <Compile Include="EntryII\EntryIITPDetails.cs" />
     <Compile Include="EntryII\EntryIITravelingDetails.cs" />
+    <Compile Include="EntryII\PunchInDetails.cs" />
     <Compile Include="ETSEdit\DWTourDetailsFromTable.cs" />
     <Compile Include="ETSEdit\EditDWTDetails.cs" />
     <Compile Include="ETSEdit\EditTPDetails.cs" />
@@ -110,6 +113,10 @@
     <Compile Include="TADA\TADAPubTransOption.cs" />
     <Compile Include="TADA\TADARule.cs" />
     <Compile Include="TADA\TADARuleDetails.cs" />
+    <Compile Include="TFD\TFDDateWiseTourData.cs" />
+    <Compile Include="TFD\TFDHdr.cs" />
+    <Compile Include="TFD\TFDTourFeedBackDetails.cs" />
+    <Compile Include="TFD\TFDTravellingPerson.cs" />
     <Compile Include="Tour\TourRule.cs" />
     <Compile Include="Tour\TourRuleDetails.cs" />
   </ItemGroup>

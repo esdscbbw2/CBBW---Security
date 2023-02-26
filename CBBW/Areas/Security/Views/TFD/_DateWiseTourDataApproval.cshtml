@@ -1,0 +1,74 @@
+﻿@using System.Globalization;
+@using CBBW.BOL.TFD;
+@model IEnumerable<TFDDateWiseTourData>
+@{
+    Layout = null;
+}
+
+
+<div id="DateTbl" class="table-responsive  btnalign mt-4 pt-3 inVisible">
+    <div class="newTable  table-height">
+        <table class="table table-bordered w-100">
+            <thead> 
+                <tr>
+                    <th scope="col" style="text-align: center;">
+                        Sl.No
+                    </th>
+                    <th scope="col" style="text-align: center;">
+                        Tour Category
+                    </th>
+                    <th scope="col" style="text-align: center; vertical-align: middle;">
+                        Location  Code & Name
+                    </th>
+                    <th scope="col" style="text-align: center; vertical-align: middle;">Tour Date </th>
+                    <th scope="col" style="text-align: center; vertical-align: middle;">Time In </th>
+                    <th scope="col" style="text-align: center;">Time Out</th>
+                    <th scope="col" style="text-align: center;">Approved</th>
+                    <th scope="col" style="text-align: center;">Reamrk</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    int sl = 1;
+                    foreach (var item in Model)
+                    {
+                        <tr class="@item.PersonID inVisible allperson">
+                            <th class="text-center" scope="row">
+                                @sl
+                                <div class="text-center inVisible alterID htmlVal" data-name="TourCategoryCodes" id="TourCategoryCodes">@item.TourCategoryCodes</div>
+                                <div class="text-center inVisible alterID htmlVal" data-name="CentreCode" id="CentreCode">@item.CentreCode</div>
+                                <div class="text-center inVisible alterID htmlVal" data-name="SchFromDate" id="SchFromDate">@item.SchFromDate</div>
+                                <div class="text-center inVisible alterID htmlVal" data-name="PersonID" id="PersonID">@item.PersonID</div>
+                            </th>
+                            <th class="text-center alterID htmlVal" data-name="TourCategoryText" id="TourCategoryText" scope="row">@item.TourCategoryText</th>
+                            <td class="text-center alterID htmlVal" data-name="CentreCodeName" id="CentreCodeName"> @item.CentreCodeName</td>
+                            <td class="text-center alterID htmlVal" data-name="" id=""> @item.SchFromDatestr</td>
+                            <td class="text-center alterID htmlVal" data-name="ActualTourInTime" id="ActualTourInTime"> @item.ActualTourInTime</td>
+                            <td class="text-center alterID htmlVal" data-name="ActualTourOutTime" id="ActualTourOutTime"> @item.ActualTourOutTime</td>
+
+                            <td class="text-center">
+                                <select id="IsApprovals_@sl" style="width: 110px;" class="form-select is-invalid alterID inValidTag"
+                                        data-name="IsApprovals"
+                                        onchange="ValidateCloneRowCtrl()"
+                                        aria-label="Default select example">
+                                    <option selected value="-1">-</option>
+                                    <option value="1"> Yes</option>
+                                    <option value="0"> No </option>
+                              </select>
+                            </td>
+                            <td class="text-center">
+                                <textarea id="ApprovalRemark_@sl" data-name="ApprovalRemark" maxlength="100" onchange="ValidateCloneRowCtrl()" class="form-control alterID inValidTag clear is-invalid" cols="10" rows="2"></textarea>
+                               
+                            </td>
+                        </tr>
+                        sl += 1;
+
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+

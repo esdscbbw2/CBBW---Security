@@ -1,0 +1,191 @@
+﻿@using System.Globalization;
+@using CBBW.Areas.Security.ViewModel.TFD;
+@model TourFeedBackDetailsVM
+@{
+
+}
+
+<div class="container">
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(x => x.NoteNumber)
+
+        <div class="row newTable" id="FeedBackDetails">
+            <div class="fixedElement">
+                <div class="col-md-12">
+                    <div class="heading_text_btn mb-3 mt-4">
+                        <div class="leftButton">
+                            <button type="button" class="btn btn-primary me-2" onclick="BackUrls();">
+                                <i data-feather="arrow-left-circle"></i>
+                                Back
+                            </button>
+                            <button id="btnSubmits" type="button" disabled class="btn btn-secondary me-2" onclick="SaveDataClicked();">
+                                <i data-feather="check-circle"></i>
+                                Save
+                            </button>
+                        </div>
+                        <h2>Tour Information & Feed Back Details - APPROVAL  </h2>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-12">
+                <div class="heading_text_btn2 d-block mt-4">
+                    <h2 class="text-left">Tour Feed Back Details: </h2>
+                </div>
+            </div>
+            <div class="col-md-12 mb-4">
+                <div class="col-md-12 pt-3">
+                    <div class="card">
+                        <div class="card-body ">
+                            <div class="table-responsive">
+                                <table class="table table-bordered w-100 btnalign " id="TravdtlTbl">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">Sl. No.</th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">Tour Category</th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="12%"> Location Code & Name  </th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="30%">Tour Feed Back Details</th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="13%">Action To Be Taken </th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="25%">
+                                                Concern Department
+                                                Code & Name
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody1">
+                                            <tr id="0" class="add-row">
+                                                <th scope="row" class="text-center">1</th>
+                                                <td class="text-center alterID htmlVal" id="TourCategory"></td>
+                                                <td class="text-center alterID htmlVal" id="CenterCodeName"></td>
+                                                <td class="text-center alterID htmlVal" id="TourFeedBack"></td>
+                                                <td class="text-center alterID htmlVal" id="ActionTakens"></td>
+                                                <td class="text-center">
+                                                    <select id="ConcernDeptCode" data-name="ConcernDeptCode" data-name-text="ConcernDeptName"
+                                                            onchange="ValidateCloneRowCtrl();"
+                                                            class="form-select is-invalid alterID CtrlTC"
+                                                            aria-label="Default select example">
+                                                    </select>
+                                                </td>
+                                                <td id="IDs" hidden data-name="ID"
+                                                    class="text-center alterID htmlVal"> </td>
+                                                <td id="NoteNumberid" hidden data-name="NoteNumber"
+                                                    class="text-center alterID htmlVal"> </td>
+
+
+
+
+
+                                            </tr>
+
+                                        </tbody>
+                                        <tbody id="tbody2"></tbody>
+
+                                    @*<tbody>
+                                        @if (Model != null)
+                                        {
+                                            var sl = 1;
+                                            foreach (var item in Model.tfdfbdetails)
+                                            {
+                                                <tr>
+
+
+                                                    <td class="text-center">
+                                                        @sl
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.TourCategoryText
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.CenterCodeNametxt
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <textarea name="" class="form-control pointer-default" cols="20" rows="2" data-toggle="tooltip" data-placement="bottom" title="" data-bs-original-title="Lorem ipsum dolor sit amet" readonly="">@item.TourFeedBack</textarea>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @(item.ActionTakens==true? "Yes":"No")
+
+
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class="inVisible" id="Noteno_@sl">@item.NoteNumber</div>
+                                                        <div class="inVisible" id="ID">@item.ID</div>
+                                                        <div>
+                                                            @Html.DropDownListFor(m => m.ConcDept,
+new SelectList(Model.ConDeptList, "ConcDept", "ConcDept"),
+"Select",
+htmlAttributes: new
+{
+    @class = "form-select pointer  is-invalid alterID",
+    id = "ConcernDeptCode"
+})
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+                                                sl++;
+                                            }
+                                        }
+
+
+                                    </tbody>*@
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bgColor mt-4 bg-transparent content border-red text-left">
+                <ul style="list-style:none;">
+                    <li style="font-size: 16px;">
+                        All Tasks Mentioned Above & Require Action To Be Taken Are Assigned To The Concern DIC / C.I / G.I Task Sheet For Further Action:
+                        <select onchange="ValidateControl();" class="form-select is-invalid content border-red" aria-label="Default select example" id="CIGI">
+                            <option selected="" value="-1">-</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-12">
+                <div class="row d-flex align-items-center ">
+                    <div class="col-md-12 mt-4 mb-4">
+                        <div class="text-center pt-2 pb-2">
+                            <span class="prompt-div">
+                                PROMPT & STOP Required Active
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section headers
+    {
+    <style>
+        .inVisible {
+            display: none;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
+
+}
+
+@section scripts{
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/TFD/TourFBDetailsApp.js"></script>
+    <script>
+
+            function BackUrls() {
+                var url = "@ViewBag.BackUrl";
+                var urlbk = url.replace(/&amp;/g, '&');
+                window.location.href = urlbk;
+            };
+
+    </script>
+}

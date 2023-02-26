@@ -1,22 +1,4 @@
-﻿function VisiblePersonRow(personid) {
-    $('#TPDtlTable tbody tr').each(function () {
-        $(this).addClass('inVisible');
-    });
-    $('#M_' + personid).each(function () {
-        $(this).removeClass('inVisible');
-    });
-    $('#TPTable tbody tr').each(function () {
-        $(this).removeClass('selected-row');
-    });
-    $('#tr_' + personid).each(function () {
-        $(this).addClass('selected-row');
-    });
-};
-function TPSelected() {
-    var targetCtrl = $(TPSelected.caller.arguments[0].target);
-    VisiblePersonRow(targetCtrl.attr('id'));
-};
-function MakeButtonsEnable(BtnID) {
+﻿function MakeButtonsEnable(BtnID) {
     var TPDBtn = $('#TPDBtn');
     var TDBtn = $('#TDBtn');
     var VADBtn = $('#VADBtn');
@@ -38,7 +20,7 @@ function MakeButtonsEnable(BtnID) {
         EnableBtn.makeEnabled();
     }
 };
-function NotenumberChanged(mVal) {    
+function NotenumberChanged(mVal) {
     var notenumberCtrl = $('#NoteNumber');
     var notenumber = notenumberCtrl.val();
     var notetype = notenumber.substring(7, 10);
@@ -61,7 +43,7 @@ function NotenumberChanged(mVal) {
                 $('#AppReason').val(item.NotAppReason);
                 $('#ratStat').val(item.IsRatifiedDisplay);
                 $('#RatDT').val(item.RetDateTimeDisplay);
-                $('#ratReason').val(item.RetReason);                
+                $('#ratReason').val(item.RetReason);
             });
         }
     });
@@ -139,7 +121,7 @@ function TDBtnClicked() {
 };
 function TPDBtnClicked() {
     var notenumber = $('#NoteNumber').val();
-    if (notenumber!='') {
+    if (notenumber != '') {
         var iDiv = $('#TPDModalDiv');
         var modalDiv = $('#TPDModal');
         var dataSourceURL = '/EntryI/TPView?NoteNumber=' + notenumber;
@@ -199,12 +181,3 @@ $(document).ready(function () {
     NotenumberChanged(0);
 
 });
-$(document).ready(function () {
-    var defPerson = $('#DefaultPersonID').val();
-    $('#' + defPerson).attr('checked', true);
-    VisiblePersonRow(defPerson);
-});
-
-function RFIDChanged() {
-    alert($('#ORFID').val());
-};

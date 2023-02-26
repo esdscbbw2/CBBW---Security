@@ -1,0 +1,70 @@
+﻿@using System.Globalization;
+@using CBBW.BOL.TFD;
+@model IEnumerable<TFDDateWiseTourData>
+@{
+    Layout = null;
+}
+
+
+                    <div id="record1_div" class="table-responsive  btnalign mt-4 pt-3">
+                        <div class="newTable  table-height">
+                            <table class="table table-bordered w-100">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" style="text-align: center;">
+                                            Sl.No
+                                        </th>
+                                        <th scope="col" style="text-align: center;">
+                                            Tour Category
+                                        </th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">
+                                            Location  Code & Name
+                                        </th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">Tour Date </th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">Time In </th>
+                                        <th scope="col" style="text-align: center;">Time Out</th>
+                                        <th scope="col" style="text-align: center;">Approved</th>
+                                        <th scope="col" style="text-align: center;">Reamrk</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+                                        int sl = 1;
+                                        foreach (var item in Model)
+                                        {
+                                    <tr class="@item.PersonID">
+                                        <th class="text-center" scope="row">@sl</th>
+                                        <th class="text-center" scope="row">@item.TourCategoryText</th>
+                                        <td class="text-center">
+                                            @item.CentreCodeName
+                                        </td>
+                                        <td class="text-center">
+                                            @item.SchFromDatestr
+                                        </td>
+                                        <td class="text-center">
+                                            @item.ActualTourInTime
+                                        </td>
+                                        <td class="text-center">
+                                            @item.ActualTourOutTime
+                                        </td>
+
+                                        <td class="text-center">
+                                           @if (item.IsApproval == null) {<p>-</p> } else { 
+                                            @(item.IsApproval == true? "Yes":"No")
+                                           }
+                                        </td>
+                                        <td class="text-center">
+                                            @item.ApprovalRemark
+                                        </td>
+                                    </tr>
+                                            sl += 1;
+
+                                        }
+                                    }
+                                        </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+            

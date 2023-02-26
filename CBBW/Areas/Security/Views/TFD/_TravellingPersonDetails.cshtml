@@ -1,0 +1,68 @@
+﻿
+@using System.Globalization;
+@using CBBW.BOL.TFD;
+@model IEnumerable<TFDTravellingPerson>
+@{
+    Layout = null;
+}
+
+
+                <div class="newTable">
+                    <table class="table table-bordered " id="table">
+                        <thead>
+                            <tr>
+                                
+                                <th scope="col" style="text-align: center; vertical-align: middle;"></th>
+                                <th scope="col" style="text-align: center; vertical-align: middle;">Sl.No</th>
+                                <th scope="col" style="text-align: center; vertical-align: middle;">Center Code &amp; Name</th>
+                                <th scope="col" style="text-align: center; vertical-align: middle;">
+                                    Person Type
+                                </th>
+                                <th scope="col" style="text-align: center; vertical-align: middle;">Employee No. & Name</th>
+                                <th scope="col" style="text-align: center; vertical-align: middle;">
+                                    Designation Code & Name
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                int sl = 1;
+                                foreach (var item in Model)
+                                {
+                            <tr>
+                                <th class="text-center">
+                                    <div class="form-check ms-3">
+                                        <input class="form-check-input" id="@sl" onchange="VisibleRows(@item.AuthEmployeeCode)" type="radio" value='valuable' name="thing" id="bank1" onchange="changeColor(this)">
+                                    </div>
+                                    <div id="PersonType_@sl" class="inVisible">
+                                        @item.PersonType
+                                    </div>
+                                    <div id="AuthEmployeeCode_@sl" class="inVisible">
+                                        @item.AuthEmployeeCode
+                                    </div>
+                                    <div id="PersonCentre_@sl" class="inVisible">
+                                        @item.PersonCentre
+                                    </div>
+                                </th>
+                                <td>@sl</td>
+
+                                <th class="text-center" scope="row">@item.PersonCentreName</th>
+                                <td class="text-center">
+                                    @item.PersonIDName
+                                </td>
+                                <td class="text-center">
+                                    @item.AuthEmployeeCodeName
+                                </td>
+                                <td class="text-center">
+                                    @item.DesignationCodeText
+                                </td>
+                            </tr>
+                                    sl += 1;
+                                }
+                            }
+
+                                </tbody>
+                    </table>
+                </div>
+            

@@ -1,0 +1,107 @@
+﻿@using System.Globalization;
+@using CBBW.BOL.TFD;
+@model IEnumerable<TFDDateWiseTourData>
+@{
+
+}
+<div class="container">
+    <div class="row newTable">
+        <div class="fixedElement">
+            <div class="col-md-12">
+                <div class="heading_text_btn mb-3 mt-4">
+                    <div class="leftButton">
+                        <button type="button" class="btn btn-primary me-2" onclick="BackUrls();">
+                            <i data-feather="arrow-left-circle"></i>
+                            Back
+                        </button>
+
+                    </div>
+                    <h2>Tour Information & Feed Back Details - APPROVAL  </h2>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-12">
+            <div class="heading_text_btn2 d-block mt-4">
+                <h2 class="text-left"> Home Centre Visiting Details: </h2>
+            </div>
+            <div class="heading_text_btn2 d-block mb-2">
+                <h2 class="text-center">Date and Timing Details</h2>
+            </div>
+        </div>
+        <div class="col-md-12 mb-4">
+            <div class="col-md-12 pt-3">
+                <div class="card">
+                    <div class="card-body ">
+                        <div class="table-responsive">
+                            <table class="table table-bordered w-100 btnalign " id="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">Sl. No.</th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">Tour Date</th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="30%"> Time In </th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="30%">Time Out</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+                                        var sl = 1;
+                                        foreach (var item in Model)
+                                        {
+                                    <tr>
+
+                                        <td class="text-center">
+                                           @sl
+                                        </td>
+                                        <td class="text-center">
+                                           @item.SchFromDatestr
+                                        </td>
+                                        <td class="text-center">
+                                           @item.ActualTourInTime
+                                        </td>
+                                        <td class="text-center">
+                                            @item.ActualTourOutTime
+                                        </td>
+
+                                    </tr>
+                                            sl++;
+                                        }
+                                    }
+                                    
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section headers
+    {
+    <style>
+        .inVisible {
+            display: none;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
+
+}
+
+@section scripts{
+    <script>
+            function BackUrls() {
+                var url = "@ViewBag.BackUrl";
+                var urlbk = url.replace(/&amp;/g, '&');
+                window.location.href = urlbk;
+            };
+
+    </script>
+}

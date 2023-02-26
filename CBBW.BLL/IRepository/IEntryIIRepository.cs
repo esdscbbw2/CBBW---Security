@@ -24,6 +24,7 @@ namespace CBBW.BLL.IRepository
         EditNoteDetails GetEditNoteHdr(string NoteNumber, ref string pMsg);
         List<EntryIITravelingDetails> GetEntryIITravellingDetails(string NoteNumber, ref string pMsg);
         VehicleAllotmentDetails GetEntryIIVehicleAllotmentDetails(string Notenumber, ref string pMsg);
-
+        List<MainLocationPersons> GetMainLocationTPs(string NoteNumber, ref string pMsg);
+        LocationWiseTPDetails GetLocationWiseTPs(string NoteNumber, int CentreCode, ref string pMsg);
     }
 }

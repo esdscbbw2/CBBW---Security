@@ -1,0 +1,193 @@
+﻿@{
+    Layout = null;
+}
+<div class="card">
+    <div class="card-body">
+        <form class="form-sample form-inline row ms-auto">
+            <div class="row d-flex align-items-center mb-3">
+                <div class="col-md-2 col-form-label">
+                    <label>Driver Name :</label>
+                </div>
+                <div class="col-md-6 text-left">
+                    <input type="text" class="form-control" value=" Md. Ismail" disabled="">
+                </div>
+            </div>
+        </form>
+        <div class="table-responsive">
+            <table class="table table-bordered w-100" id="">
+                <thead>
+                    <tr>
+                        <th colspan="3" style="text-align: center; vertical-align: middle;" scope="col">
+                            Vehicle Details
+                        </th>
+                        <th colspan="4" style="text-align: center; vertical-align: middle;" scope="col">
+                            Actual Tour IN
+                        </th>
+                        <th colspan="4" style="text-align: center; vertical-align: middle;" scope="col">
+                            Actual Tour OUT
+                        </th>
+                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="10%">Remarks</th>
+                    </tr>
+                    <tr>
+                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="5%">Vehicle No. </th>
+                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="5%">Vehicle Type</th>
+                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                            Model Name
+                        </th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">
+                            RFID Card No.
+                        </th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;" width="8%">Date</th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;" width="8%">Time</th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;">KM IN</th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">
+                            RFID Card No.
+                        </th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;" width="8%">Date</th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;" width="8%">Time</th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;">
+                            KM OUT
+                        </th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center">
+                            TS01
+                        </td>
+                        <td class="text-center">SUV </td>
+                        <td class="text-center">Bolero </td>
+                        <td class="text-center">
+                            <select onchange="RFIDChanged()" class="form-select" id="ORFID"
+                                    aria-label="Default select example">
+                                <option value="1">RFID001</option>
+                                <option value="2">RFID006</option>
+                                <option value="3">RFID009</option>
+                                <option value="4">NA</option>
+                            </select>
+                        </td>
+                        <td class="text-center">02/01/2023</td>
+                        <td class="text-center">09:00 AM</td>
+                        <td class="text-center">
+                            12400
+                        </td>
+                        <td class="text-center">
+                            <select class="form-select" aria-label="Default select example">
+                                <option value="1">RFID001</option>
+                                <option value="2">RFID006</option>
+                                <option value="3">RFID009</option>
+                                <option value="4">NA</option>
+                            </select>
+                        </td>
+                        <td class="text-center">05/01/2023 </td>
+                        <td class="text-center">3:15 PM</td>
+                        <td class="text-center">
+                            12400
+                        </td>
+
+                        <td class="text-center">
+                            <textarea name="" id="" cols="20" rows="2" class="form-control pointer-default">   </textarea>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-responsive mt-2">
+            <table class="table table-bordered w-100" id="">
+                <thead>
+                    <tr>
+                        <th colspan="3" style="text-align: center; vertical-align: middle;" scope="col">
+                            Vehicle Details
+                        </th>
+                        <th colspan="4" style="text-align: center; vertical-align: middle;" scope="col">
+                            Actual Tour IN
+                        </th>
+                        <th colspan="4" style="text-align: center; vertical-align: middle;" scope="col">
+                            Actual Tour OUT
+                        </th>
+                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="25%">Remarks</th>
+                    </tr>
+                    <tr>
+                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="5%">Vehicle No. </th>
+                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="5%">Vehicle Type</th>
+                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                            Model Name
+                        </th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">
+                            RFID Card No.
+                        </th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;" width="8%">Date</th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;" width="25%">Time</th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;">KM IN</th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">
+                            RFID Card No.
+                        </th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;" width="8%">Date</th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;" width="25%">Time</th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;">
+                            KM OUT
+                        </th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center">
+                            TS01
+                        </td>
+                        <td class="text-center">SUV </td>
+                        <td class="text-center">Bolero </td>
+                        <td class="text-center">
+                            NA
+                        </td>
+                        <td class="text-center">
+                            <div class="position-relative pointer">
+                                <input type="date" class="form-control pointer" id="customDate">
+                                <label id="customDatelbl" class="datelabel pointer">Select Date</label>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <div class="input-group date pointer position-static placeholder-dark">
+                                <input id="" type="text" class="form-control timePicker" placeholder="Select Time">
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            12350
+                        </td>
+                        <td class="text-center">
+                            NA
+                        </td>
+                        <td class="text-center">
+                            <div class="position-relative pointer">
+                                <input type="date" class="form-control pointer" id="customDate1">
+                                <label id="customDate1lbl" class="datelabel pointer">Select Date</label>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <div class="input-group date pointer position-static placeholder-dark">
+                                <input id="" type="text" class="form-control timePicker" placeholder="Select Time">
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            12350
+                        </td>
+                        <td class="text-center">
+                            <textarea name="" id="" cols="20" rows="2" class="form-control pointer-default" data-placement="bottom" title="Test">  </textarea>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
+<script src="~/UIContent/JS/CustomePage/EntryII/EntryIICreateML.js"></script>
+<script>
+    //function RFIDChanged() {
+    //    alert($('#ORFID').val());
+    //};
+</script>
+
