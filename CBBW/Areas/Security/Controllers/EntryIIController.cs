@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using CBBW.Areas.Security.ViewModel.EntryII;
 using CBBW.BLL.IRepository;
 using CBBW.BOL.CTV;
+using CBBW.BOL.CustomModels;
 using CBBW.BOL.EHG;
 using CBBW.BOL.EntryII;
 using CBBW.BOL.ETSEdit;
@@ -90,6 +91,17 @@ namespace CBBW.Areas.Security.Controllers
             modelobj.DefaultPersonID = modelobj.TPDetails.FirstOrDefault().PersonID;
             return View(modelobj);
         }
+        public ActionResult LWOutIn(string NoteNumber)
+        {
+            LWInnerPageVM modelobj = new LWInnerPageVM();
+            //modelobj.IsOffline = user.IsOffline;
+            modelobj.IsOffline = true;
+            LocationWiseTPDetails obj1 = _iEntryIIRepository.GetLocationWiseTPs(NoteNumber, user.CentreCode, ref pMsg);
+            modelobj.PersonDetails = obj1.PersonDetails;
+            modelobj.PersonDateWiseDetails = obj1.PersonDateWiseDetails;
+            modelobj.DefaultPersonID = modelobj.PersonDetails.FirstOrDefault().PersonID;
+            return View(modelobj);
+        }        
         public ActionResult MLCreate() 
         {
             model = CastEntryIITempData(true);
@@ -118,8 +130,24 @@ namespace CBBW.Areas.Security.Controllers
             model = CastEntryIITempData(false);
             return View(model);
         }
-        
+        [HttpPost]
+        public ActionResult LWCreate(EntryIIHdrVM modelobj, string Submit) 
+        {
+            model = CastEntryIITempData(false);
+            modelobj.EntryIINotes = model.EntryIINotes;
+            TempData["EntryII"] = modelobj;
+            if (Submit == "LWOutInBtn")
+            {
+                string baseUrl = "/Security/EntryII/LWCreate";
+                _iUser.RecordCallBack(baseUrl);
+                return RedirectToAction("LWOutIn", "EntryII", new { NoteNumber = modelobj.NoteNumber });
+            }
+            else if (Submit == "Save")
+            {
 
+            }
+            return View(model);
+        }
         #region - Ajax Calling
         public JsonResult getMainLocationNoteList(int iDisplayLength, int iDisplayStart,
             int iSortCol_0,string sSortDir_0, string sSearch)
@@ -169,6 +197,27 @@ namespace CBBW.Areas.Security.Controllers
             VehicleAllotmentDetails modelobj = _iEntryIIRepository.GetEntryIIVehicleAllotmentDetails(NoteNumber, ref pMsg);
             return View("~/Areas/Security/Views/EntryII/_VehicleInOutDetails.cshtml", modelobj);
         }
+        [HttpPost]
+        public ActionResult SaveLWOutIn(SaveLWInnerPageVM modelobj)
+        {
+            model = CastEntryIITempData(false);
+            CustomAjaxResponse result = new CustomAjaxResponse();
+            result.bResponseBool = _iEntryIIRepository.SetEntryIIData(modelobj.NoteNumber, false, user.CentreCode,user.IsOffline, modelobj.TPersons, modelobj.DateWiseDetails, ref pMsg);
+            result.sResponseString = pMsg;
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public ActionResult SaveMLOutIn(SaveLWInnerPageVM modelobj)
+        {
+            model = CastEntryIITempData(true);
+            CustomAjaxResponse result = new CustomAjaxResponse();
+            result.bResponseBool = _iEntryIIRepository.SetEntryIIData(modelobj.NoteNumber, true, user.CentreCode,user.IsOffline, modelobj.TPersons, modelobj.DateWiseDetails, ref pMsg);
+            result.sResponseString = pMsg;
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
 
 
 

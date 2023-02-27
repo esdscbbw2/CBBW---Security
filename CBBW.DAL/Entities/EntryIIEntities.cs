@@ -14,12 +14,14 @@ namespace CBBW.DAL.Entities
     {
         EntryIIDataSync _EntryIIDataSync;
         EntryIIDBMapper _EntryIIDBMapper;
+        DBResponseMapper _DBResponseMapper;
         DataTable dt;
         DataSet ds;
         public EntryIIEntities()
         {
             _EntryIIDataSync = new EntryIIDataSync();
             _EntryIIDBMapper = new EntryIIDBMapper();
+            _DBResponseMapper = new DBResponseMapper();
         }
         public List<EntryIINote> GetEntryIINotes(int CentreCode, bool IsMainLocation, ref string pMsg)
         {
@@ -216,8 +218,11 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
-        public List<MainLocationPersons> GetMainLocationTPs(string NoteNumber, ref string pMsg)
+        public MLPersonsInfo GetMainLocationTPs(string NoteNumber, ref string pMsg)
         {
+            MLPersonsInfo robj = new MLPersonsInfo();
+            List<EmpDate> forPunching = new List<EmpDate>();
+            List<EmpDate> forReq = new List<EmpDate>();
             List<MainLocationPersons> result = new List<MainLocationPersons>();
             try
             {
@@ -229,14 +234,25 @@ namespace CBBW.DAL.Entities
                     {
                         for (int i = 0; i < dt.Rows.Count; i++)
                         {
-                            result.Add(_EntryIIDBMapper.Map_MainLocationPersons(dt.Rows[i]));
+                            MainLocationPersons personinfo = _EntryIIDBMapper.Map_MainLocationPersons(dt.Rows[i]);
+                            EmpDate forobj1 = new EmpDate() { PunchDate=personinfo.SchFromDate, EmpNumber= personinfo.PersonID };
+                            EmpDate forobj2 = new EmpDate() { PunchDate = personinfo.SchToDate, EmpNumber = personinfo.PersonID };
+                            result.Add(personinfo);
+                            forReq.Add(forobj2);
+                            forPunching.Add(forobj1);
+                            forPunching.Add(forobj2);
                         }
                     }
                 }
             }
             catch (Exception ex)
             { pMsg = ex.Message; return null; }
-            return result;
+            //forReq = forReq.Distinct().ToList();
+            forPunching = forPunching.Distinct().ToList();
+            robj.EmpDatesForPunching = forPunching;
+            robj.EmpDatesForReq = forReq;
+            robj.PersonInfo = result;
+            return robj;
         }
         public LocationWiseTPDetails GetLocationWiseTPs(string NoteNumber,int CentreCode, ref string pMsg)
         {
@@ -247,6 +263,14 @@ namespace CBBW.DAL.Entities
             catch (Exception ex)
             { pMsg = ex.Message; return null; }
         }
+        public bool SetEntryIIData(string NoteNumber, bool IsMainLocation,
+            int CentreCode,bool IsOffline, List<SaveTPDetails> Persons, List<SaveTPDWDetails> DWTour, ref string pMsg)
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_EntryIIDataSync.SetEntryIIData(NoteNumber, IsMainLocation, CentreCode, IsOffline, Persons, DWTour, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
+
 
 
     }

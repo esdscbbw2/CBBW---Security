@@ -26,5 +26,9 @@ namespace CBBW.BLL.IRepository
         VehicleAllotmentDetails GetEntryIIVehicleAllotmentDetails(string Notenumber, ref string pMsg);
         List<MainLocationPersons> GetMainLocationTPs(string NoteNumber, ref string pMsg);
         LocationWiseTPDetails GetLocationWiseTPs(string NoteNumber, int CentreCode, ref string pMsg);
+        bool SetEntryIIData(string NoteNumber, bool IsMainLocation,
+                int CentreCode,bool IsOffline, List<SaveTPDetails> Persons, List<SaveTPDWDetails> DWTour, ref string pMsg);
+
+
     }
 }

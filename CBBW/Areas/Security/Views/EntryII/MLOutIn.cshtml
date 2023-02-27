@@ -1,8 +1,10 @@
 ﻿@using System.Globalization;
 @using CBBW.Areas.Security.ViewModel.EntryII;
-@model MLInnerPageVM 
+@model MLInnerPageVM
 
-@Html.HiddenFor(m=>m.DefaultPersonID)
+@Html.HiddenFor(m => m.NoteNumber)
+@Html.HiddenFor(m => m.DefaultPersonID)
+@Html.HiddenFor(m => m.IsOffline)
 <div class="row newTable">
     <div class="fixedElement">
         <div class="col-md-12" style="position: relative;">
@@ -13,8 +15,12 @@
                         <i data-feather="arrow-left-circle"></i>
                         Back
                     </button>
-
-
+                    <button id="btnSubmit" type="button" name="Submit"
+                            value="Save"
+                            class="btn btn-secondary me-2">
+                        <i data-feather="check-circle"></i>
+                        Save
+                    </button>
                 </div>
                 <h2>Employee’s Travelling Details & Vehicle Allotment – ENTRY (II) </h2>
             </div>
@@ -74,18 +80,39 @@
                                         <tr id="tr_@item.PersonID">
                                             <th class="text-center">
                                                 <div class="form-check ms-3">
-                                                    <input class="form-check-input" type="radio" 
-                                                           value='valuable' name="x" id="@item.PersonID" 
+                                                    <input class="form-check-input" type="radio"
+                                                           value='valuable' name="x" id="@item.PersonID"
                                                            onchange="TPSelected()">
+                                                </div>
+                                                <div class="inVisible htmlVal" data-name="PersonType">
+                                                    @item.PersonType
+                                                </div>
+                                                <div class="inVisible htmlVal" data-name="PersonID">
+                                                    @item.PersonID
+                                                </div>
+                                                <div class="inVisible htmlVal" data-name="DesignationCode">
+                                                    @item.DesignationCode
+                                                </div>
+                                                <div class="inVisible htmlVal" data-name="PersonCenterCode">
+                                                    @item.PersonCenterCode
+                                                </div>
+                                                <div class="inVisible htmlVal" data-name="TADADenied">
+                                                    @item.TADADenied
+                                                </div>
+                                                <div class="inVisible htmlVal" data-name="Isdriver">
+                                                    @item.Isdriver
+                                                </div>
+                                                <div class="inVisible htmlVal" data-name="IsVehicleProvided">
+                                                    @item.IsVehicleProvided
                                                 </div>
                                             </th>
                                             <th scope="row" class="text-center"> @SL</th>
-                                            <th scope="row" class="text-center">@item.PersonTypeText</th>
-                                            <th scope="row" class="text-center"> @item.PersonIdnName </th>
-                                            <td class="text-center"> @item.DesignationCodenName</td>
-                                            <td class="text-center">@item.PersonCenterName</td>
-                                            <td class="text-center">@item.AuthorisedEmpNoName</td>
-                                            <td class="text-center">@item.TourCategoryText</td>
+                                            <th scope="row" class="text-center htmlVal" data-name="PersonTypeText">@item.PersonTypeText</th>
+                                            <th scope="row" class="text-center htmlVal" data-name="PersonIdnName"> @item.PersonIdnName </th>
+                                            <td class="text-center htmlVal" data-name="DesignationCodenName"> @item.DesignationCodenName</td>
+                                            <td class="text-center htmlVal" data-name="PersonCenterName">@item.PersonCenterName</td>
+                                            <td class="text-center htmlVal" data-name="AuthorisedEmpNoName">@item.AuthorisedEmpNoName</td>
+                                            <td class="text-center htmlVal">@item.TourCategoryText</td>
                                         </tr>
                                         SL += 1;
                                     }
@@ -128,19 +155,27 @@
                             <tbody>
                                 @if (Model.TPDetails != null && Model.TPDetails.Count > 0)
                                 {
-                                    foreach (var item in Model.TPDetails) 
+                                    foreach (var item in Model.TPDetails)
                                     {
                                         <tr id="@("M_"+item.PersonID)">
-                                            <th scope="row" class="text-center">@(item.SchFromDate.Year==1?"-":item.SchFromDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture))</th>
-                                            <td class="text-center">@item.SchFromTime</td>
-                                            <td class="text-center">@(item.ActualTourOutDate.Year==1?"-": item.ActualTourOutDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture))</td>
-                                            <td class="text-center">@(item.ActualTourOutTime.Hour==0?"-": item.ActualTourOutTime.ToString("hh:mm tt"))</td>
-                                            <td class="text-center">@(item.SchToDate.Year==1?"-":item.SchToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture))</td>
-                                            <td class="text-center">@(item.RequiredTourInDate.Year==1?"-": item.RequiredTourInDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture))</td>
-                                            <td class="text-center">@(item.RequiredTourInTime.Hour==0?"-": item.RequiredTourInTime.ToString("hh:mm tt"))</td>
-                                            <td class="text-center">@(item.ActualTourInDate.Year==1?"-": item.ActualTourInDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture))</td>
-                                            <td class="text-center">@(item.ActualTourInTime.Hour==0?"-": item.ActualTourInTime.ToString("hh:mm tt"))</td>
-                                            <td class="text-center">@(item.TourStatus==1?"Completed":"Continue")</td>
+                                            <th scope="row" class="text-center htmlVal" data-name="DWFromDate">@(item.SchFromDate.Year==1?"-":item.SchFromDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture))</th>
+                                            <td class="text-center htmlVal" data-name="SchFromTime">@item.SchFromTime</td>
+                                            <td class="text-center htmlVal" data-name="ActualTourOutDate">@(item.ActualTourOutDate.Year==1?"-": item.ActualTourOutDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture))</td>
+                                            <td class="text-center htmlVal" data-name="ActualTourOutTime">@(item.ActualTourOutTime.Hour==0?"-": item.ActualTourOutTime.ToString("hh:mm tt"))</td>
+                                            <td class="text-center htmlVal" data-name="DWToDate">@(item.SchToDate.Year==1?"-":item.SchToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture))</td>
+                                            <td class="text-center htmlVal" data-name="RequiredTourInDate">@(item.RequiredTourInDate.Year==1?"-": item.RequiredTourInDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture))</td>
+                                            <td class="text-center htmlVal" data-name="RequiredTourInTime">@(item.RequiredTourInTime.Hour==0?"-": item.RequiredTourInTime.ToString("hh:mm tt"))</td>
+                                            <td class="text-center htmlVal" data-name="ActualTourInDate">@(item.ActualTourInDate.Year==1?"-": item.ActualTourInDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture))</td>
+                                            <td class="text-center htmlVal" data-name="ActualTourInTime">@(item.ActualTourInTime.Hour==0?"-": item.ActualTourInTime.ToString("hh:mm tt"))</td>
+                                            <td class="text-center">
+                                                @(item.TourStatus==1?"Completed":"Continue")
+                                                <div class="inVisible htmlVal" data-name="PersonID">
+                                                    @item.PersonID
+                                                </div>                                                
+                                                <div class="inVisible htmlVal" data-name="TourStatus">
+                                                    @item.TourStatus
+                                                </div>
+                                            </td>
                                         </tr>
                                     }
                                 }
@@ -650,7 +685,7 @@
 }
 @section scripts{
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
-    <script src="~/UIContent/JS/CustomePage/EntryII/EntryIICreateML.js"></script>
+    <script src="~/UIContent/JS/CustomePage/EntryII/EntrIIInnerML.js"></script>
     <script>
         if ('@ViewBag.ErrMsg' != '') {
                 Swal.fire({

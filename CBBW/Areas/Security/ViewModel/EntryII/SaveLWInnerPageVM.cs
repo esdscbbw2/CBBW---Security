@@ -6,11 +6,12 @@ using CBBW.BOL.EntryII;
 
 namespace CBBW.Areas.Security.ViewModel.EntryII
 {
-    public class MLInnerPageVM
+    public class SaveLWInnerPageVM
     {
         public string NoteNumber { get; set; }
-        public int DefaultPersonID { get; set; }
-        public bool IsOffline { get; set; }
-        public List<MainLocationPersons> TPDetails { get; set; }
+        public List<SaveTPDetails> TPersons { get; set; }
+        public List<SaveTPDWDetails> DateWiseDetails { get; set; }
+
+
     }
 }

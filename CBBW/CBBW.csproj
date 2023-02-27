@@ -157,7 +157,9 @@
     <Compile Include="Areas\Security\ViewModel\EMN\EMNTravellingDetailsVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EntryII\DCDetailsVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EntryII\EntryIIHdrVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\EntryII\LWInnerPageVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EntryII\MLInnerPageVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\EntryII\SaveLWInnerPageVM.cs" />
     <Compile Include="Areas\Security\ViewModel\ETSEdit\EntrICreateVM.cs" />
     <Compile Include="Areas\Security\ViewModel\ETSEdit\ETSEditViewVM.cs" />
     <Compile Include="Areas\Security\ViewModel\ETSEdit\TourCancelVM.cs" />
@@ -349,6 +351,8 @@
     <Content Include="UIContent\JS\CustomePage\EMN\EMNRatified.js" />
     <Content Include="UIContent\JS\CustomePage\EMN\EMNTravApprove.js" />
     <Content Include="UIContent\JS\CustomePage\EMN\EMNTravellingDetails.js" />
+    <Content Include="UIContent\JS\CustomePage\EntryII\EntrIIInnerLW.js" />
+    <Content Include="UIContent\JS\CustomePage\EntryII\EntrIIInnerML.js" />
     <Content Include="UIContent\JS\CustomePage\EntryII\EntryIICreateLW.js" />
     <Content Include="UIContent\JS\CustomePage\EntryII\EntryIICreateML.js" />
     <Content Include="UIContent\JS\CustomePage\ETSEdit\EntryICreate.js" />
@@ -536,6 +540,7 @@
     <Content Include="Areas\Security\Views\TFD\_DateWiseTourDataApproval.cshtml" />
     <Content Include="Areas\Security\Views\TFD\_DateWiseTourDataDetails.cshtml" />
     <Content Include="Areas\Security\Views\TFD\_TravellingPersonDetails.cshtml" />
+    <Content Include="Areas\Security\Views\EntryII\LWOutIn.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />

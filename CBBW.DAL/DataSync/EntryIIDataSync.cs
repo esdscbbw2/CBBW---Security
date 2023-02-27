@@ -87,7 +87,6 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-        
         public DataTable GetLastPunchingOfaPerson(int EmployeeNumber,DateTime PunchDate, ref string pMsg)
         {
             try
@@ -264,6 +263,35 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+        public DataTable SetEntryIIData(string NoteNumber,bool IsMainLocation,
+            int CentreCode, bool IsOffline, List<SaveTPDetails> Persons, List<SaveTPDWDetails> DWTour,ref string pMsg) 
+        {
+            try
+            {
+                CommonTable TP = new CommonTable(Persons);
+                CommonTable DWT = new CommonTable(DWTour);
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[6];
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NVarChar,25);
+                para[paracount++].Value = NoteNumber;
+                para[paracount] = new SqlParameter("@IsMainLocation", SqlDbType.Bit);
+                para[paracount++].Value = IsMainLocation;
+                para[paracount] = new SqlParameter("@CentreCode", SqlDbType.Int);
+                para[paracount++].Value = CentreCode;
+                para[paracount] = new SqlParameter("@IsOffline", SqlDbType.Bit);
+                para[paracount++].Value = IsOffline;
+                para[paracount] = new SqlParameter("@EntryIIDateWise", SqlDbType.Structured);
+                para[paracount++].Value = DWT.UDTable;
+                para[paracount] = new SqlParameter("@EntryIITPersons", SqlDbType.Structured);
+                para[paracount++].Value = TP.UDTable;
+                using (SQLHelper sql = new SQLHelper("[ENT].[SetEntryIIData]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+
 
 
     }

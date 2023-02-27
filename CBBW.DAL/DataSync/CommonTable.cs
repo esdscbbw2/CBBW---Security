@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CBBW.BOL;
 using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.EHG;
@@ -411,5 +412,97 @@ namespace CBBW.DAL.DataSync
                 }
             }
         }
+        public CommonTable(List<SaveTPDetails> customoptions)
+        {
+            UDTable = new DataTable();
+            UDTable.Columns.Add("iPersonType", typeof(int));
+            UDTable.Columns.Add("sPersonTypeText", typeof(string));
+            UDTable.Columns.Add("iPersonID", typeof(int));
+            UDTable.Columns.Add("sPersonIDName", typeof(string));
+            UDTable.Columns.Add("iDesignationCode", typeof(int));
+            UDTable.Columns.Add("sDesignationCodeText", typeof(string));
+            UDTable.Columns.Add("iPersonCentre", typeof(int));
+            UDTable.Columns.Add("sPersonCentreName", typeof(string));
+            UDTable.Columns.Add("iAuthEmployeeCode", typeof(int));
+            UDTable.Columns.Add("sAuthEmployeeCodeName", typeof(string));
+            UDTable.Columns.Add("bIsVehicleProvided", typeof(bool));
+            UDTable.Columns.Add("bTADADenied", typeof(bool));
+            UDTable.Columns.Add("bIsDriver", typeof(int));
+            UDTable.Columns.Add("sTourCategoryText", typeof(string));
+            if (customoptions != null && customoptions.Count > 0)
+            {
+                foreach (var obj in customoptions)
+                {
+                    DataRow dr = UDTable.NewRow();
+                    dr["iPersonType"] = obj.PersonType;
+                    dr["sPersonTypeText"] = obj.PersonTypeText;
+                    dr["iPersonID"] = obj.PersonID;
+                    dr["sPersonIDName"] = obj.PersonIdnName;
+                    dr["iDesignationCode"] = obj.DesignationCode;
+                    dr["sDesignationCodeText"] = obj.DesignationCodenName;
+                    dr["iPersonCentre"] = obj.PersonCenterCode;
+                    dr["sPersonCentreName"] = obj.PersonCenterName;
+                    dr["iAuthEmployeeCode"] = MyCodeHelper.GetEmpNoFromString(obj.AuthorisedEmpNoName);
+                    dr["sAuthEmployeeCodeName"] = obj.AuthorisedEmpNoName;
+                    dr["bIsVehicleProvided"] = obj.IsVehicleProvided;
+                    dr["bTADADenied"] = obj.TADADenied;
+                    dr["bIsDriver"] = obj.Isdriver;
+                    dr["sTourCategoryText"] = obj.TourCategoryText;
+                    UDTable.Rows.Add(dr);
+                }
+            }
+        }
+        public CommonTable(List<SaveTPDWDetails> customoptions)
+        {
+            UDTable = new DataTable();
+            UDTable.Columns.Add("iPersonID", typeof(int));
+            UDTable.Columns.Add("sTourCategoryCodes", typeof(string));
+            UDTable.Columns.Add("sTourCategoryText", typeof(string));
+            UDTable.Columns.Add("sCentreCodes", typeof(string));
+            UDTable.Columns.Add("sCentreCodeName", typeof(string));
+            UDTable.Columns.Add("sBranchCodes", typeof(string));
+            UDTable.Columns.Add("sBranchNames", typeof(string));
+            UDTable.Columns.Add("dSchFromDate", typeof(DateTime));
+            UDTable.Columns.Add("dRequiredTourInDate", typeof(DateTime));
+            UDTable.Columns.Add("sRequiredTourInTime", typeof(string));
+            UDTable.Columns.Add("dActualTourInDate", typeof(DateTime));
+            UDTable.Columns.Add("sActualTourInTime", typeof(string));
+            UDTable.Columns.Add("dSchToDate", typeof(DateTime));
+            UDTable.Columns.Add("dActualTourOutDate", typeof(DateTime));
+            UDTable.Columns.Add("sActualTourOutTime", typeof(string));
+            UDTable.Columns.Add("iStatus", typeof(int));
+            UDTable.Columns.Add("sLNPunchStatus", typeof(string));
+            UDTable.Columns.Add("sEMPunchStatus", typeof(string));
+            UDTable.Columns.Add("sSchFromTime", typeof(string));
+            if (customoptions != null && customoptions.Count > 0)
+            {
+                foreach (var obj in customoptions)
+                {
+                    DataRow dr = UDTable.NewRow();
+                    dr["iPersonID"] = obj.PersonID;
+                    dr["sTourCategoryCodes"] = obj.DWTourCategoryIds;
+                    dr["sTourCategoryText"] = obj.DWTourCategoryNames;
+                    dr["sCentreCodes"] = obj.DWTourCenterCodeIds;
+                    dr["sCentreCodeName"] = obj.DWTourCenterNames;
+                    dr["sBranchCodes"] = obj.DWBranchCodes;
+                    dr["sBranchNames"] = obj.DWBranchNames;
+                    dr["dSchFromDate"] = obj.DWFromDate;
+                    dr["dRequiredTourInDate"] = obj.RequiredTourInDate;
+                    dr["sRequiredTourInTime"] = obj.RequiredTourInTime.ToString("hh:mm:ss tt");
+                    dr["dActualTourInDate"] = obj.ActualTourInDate;
+                    dr["sActualTourInTime"] = obj.ActualTourInTime.ToString("hh:mm:ss tt");
+                    dr["dSchToDate"] = obj.DWToDate;
+                    dr["dActualTourOutDate"] = obj.ActualTourOutDate;
+                    dr["sActualTourOutTime"] = obj.ActualTourOutTime.ToString("hh:mm:ss tt");
+                    dr["iStatus"] = obj.TourStatus;
+                    dr["sLNPunchStatus"] = obj.LNPunchStatus;
+                    dr["sEMPunchStatus"] = obj.EMPunchStatus;
+                    dr["sSchFromTime"] = obj.SchFromTime.ToString("hh:mm:ss tt"); ;
+                    UDTable.Rows.Add(dr);
+                }
+            }
+        }
+
+
     }
 }

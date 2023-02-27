@@ -199,11 +199,7 @@ $(document).ready(function () {
     NotenumberChanged(0);
 
 });
-$(document).ready(function () {
-    var defPerson = $('#DefaultPersonID').val();
-    $('#' + defPerson).attr('checked', true);
-    VisiblePersonRow(defPerson);
-});
+
 
 function RFIDChanged() {
     alert($('#ORFID').val());

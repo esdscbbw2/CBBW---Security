@@ -8,12 +8,14 @@ using CBBW.BOL.EntryII;
 using CBBW.BOL.ETSEdit;
 using System.Globalization;
 using CBBW.BOL.EHG;
+using CBBW.DAL.Entities;
 
 namespace CBBW.DAL.DBMapper
 {
     public class EntryIIDBMapper
     {
         EHGMaster master = EHGMaster.GetInstance;
+        //EntryIIEntities x = new EntryIIEntities();
         public EntryIINote Map_EntryIINote(DataRow dr)
         {
             EntryIINote result = new EntryIINote();
@@ -379,6 +381,7 @@ namespace CBBW.DAL.DBMapper
             LocationWiseTPDetails result = new LocationWiseTPDetails();
             List<EntryIIPersons> resultPersons = new List<EntryIIPersons>();
             List<LocationWisePersons> resultDateWise = new List<LocationWisePersons>();
+            List<EmpDate> forPunching = new List<EmpDate>();
             if (ds != null)
             {
                 DataTable dt = ds.Tables[0];
@@ -395,12 +398,17 @@ namespace CBBW.DAL.DBMapper
                 {
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
-                        resultDateWise.Add(Map_LocationWisePersons(dt.Rows[i]));
+                        LocationWisePersons personinfo = Map_LocationWisePersons(dt.Rows[i]);
+                        EmpDate forobj1 = new EmpDate() { PunchDate = personinfo.MCurDate, EmpNumber = personinfo.PersonID };
+                        resultDateWise.Add(personinfo);
+                        forPunching.Add(forobj1);
                     }
                 }
             }
+            forPunching = forPunching.Distinct().ToList();
             result.PersonDetails = resultPersons;
             result.PersonDateWiseDetails = resultDateWise;
+            result.EmpDatesForPunching = forPunching;
             return result;
         }
 

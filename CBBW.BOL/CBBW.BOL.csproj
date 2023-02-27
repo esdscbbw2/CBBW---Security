@@ -79,7 +79,9 @@
     <Compile Include="EntryII\EntryIIList.cs" />
     <Compile Include="EntryII\EntryIITPDetails.cs" />
     <Compile Include="EntryII\EntryIITravelingDetails.cs" />
+    <Compile Include="EntryII\MLPersonsInfo.cs" />
     <Compile Include="EntryII\PunchInDetails.cs" />
+    <Compile Include="EntryII\SaveTPDetails.cs" />
     <Compile Include="ETSEdit\DWTourDetailsFromTable.cs" />
     <Compile Include="ETSEdit\EditDWTDetails.cs" />
     <Compile Include="ETSEdit\EditTPDetails.cs" />

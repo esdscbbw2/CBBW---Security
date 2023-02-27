@@ -37,6 +37,8 @@ namespace CBBW.BOL.EntryII
         public int TourStatus { get; set; }
         public int LNPunchRequired { get; set; }
         public int EMPunchRequired { get; set; }
+        public string LNPunchStatus { get; set; }
+        public string EMPunchStatus { get; set; }
         public DateTime LNPunchTime { get; set; }
         public DateTime EMPunchTime { get; set; }
         public DateTime MainLocationGenTimeIn { get; set; }
@@ -44,6 +46,7 @@ namespace CBBW.BOL.EntryII
         public int LastPunchOutLocationCode { get; set; }
         public DateTime LastLocationPunchOutTime { get; set; }
         public string EmployeeIDs { get; set; }
+        public string ErrorMsg { get; set; }
     }
     public class MainLocationPersons:EntryIITPDetails
     {
@@ -68,6 +71,7 @@ namespace CBBW.BOL.EntryII
     {
         public List<EntryIIPersons> PersonDetails { get; set; }
         public List<LocationWisePersons> PersonDateWiseDetails { get; set; }
+        public List<EmpDate> EmpDatesForPunching { get; set; }
     }
     
 }

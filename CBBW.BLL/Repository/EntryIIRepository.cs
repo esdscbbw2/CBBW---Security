@@ -113,36 +113,123 @@ namespace CBBW.BLL.Repository
         }
         public List<MainLocationPersons> GetMainLocationTPs(string NoteNumber, ref string pMsg)
         {
-            PunchInDetails punch;
-            LastCentrePunchOut lastCentrePunch;
-            DateTime RequiredTimeIn;
-            List<MainLocationPersons> result = _EntryIIEntities.GetMainLocationTPs(NoteNumber,ref pMsg);
-            if (result != null && result.Count > 0) 
+            int CentreCode;
+            List<PunchInDetails> Punchings=new List<PunchInDetails>();
+            List<LastCentrePunchOutWithDistance> LastPunchings=new List<LastCentrePunchOutWithDistance>();
+            MLPersonsInfo result = _EntryIIEntities.GetMainLocationTPs(NoteNumber,ref pMsg);
+            if (result != null && result.PersonInfo!=null) 
             {
-                foreach (var item in result) 
+                CentreCode = result.PersonInfo.FirstOrDefault().MainLocationCode;
+                if (result.EmpDatesForPunching != null) 
                 {
-                    lastCentrePunch = _EntryIIEntities.GetLastPunchingCentreOfaPerson(item.PersonID, item.SchToDate, item.MainLocationCode, ref pMsg);
-                    int CalcMinutes=_EntryIIEntities.GetRequiredTimeInMinutesForEmployee(item.PersonID, item.IsVehicleProvided, item.MainLocationCode, lastCentrePunch.LocationCode, ref pMsg);
-                    RequiredTimeIn = lastCentrePunch.PunchOut.AddMinutes(CalcMinutes);
-                    item.RequiredTourInTime = RequiredTimeIn != null ? RequiredTimeIn : DateTime.Now;
-
-                    punch = _EntryIIEntities.GetPunchingDetails(item.PersonID,item.SchFromDate,item.MainLocationCode," ",ref pMsg);
-                    item.ActualTourOutDate = punch.PunchDate == null || punch.PunchDate.Year==1? item.SchFromDate: punch.PunchDate;
-                    item.ActualTourOutTime = punch.PunchOut != null ? punch.PunchOut : DateTime.Parse(item.SchFromTime);
-                    
-                    punch = _EntryIIEntities.GetPunchingDetails(item.PersonID, item.SchToDate, item.MainLocationCode, " ", ref pMsg);
-                    item.ActualTourInDate = punch.PunchDate != null ? punch.PunchDate : item.SchToDate;
-                    item.ActualTourInTime= punch.PunchIn != null ? punch.PunchIn : item.RequiredTourInTime;
-
+                    Punchings = _EntryIIEntities.GetPunchingsV3(CentreCode, result.EmpDatesForPunching, ref pMsg);
+                }
+                if (result.EmpDatesForReq != null)
+                {
+                    LastPunchings = _EntryIIEntities.GetLastPunchingCentresV3(CentreCode, result.EmpDatesForReq, ref pMsg);
+                }
+                foreach (var item in result.PersonInfo) 
+                {
+                    PunchInDetails PunchOut = Punchings.Where(o => o.EmployeeNumber == item.PersonID && o.PunchDate == item.SchFromDate).FirstOrDefault();
+                    PunchInDetails PunchIn = Punchings.Where(o => o.EmployeeNumber == item.PersonID && o.PunchDate == item.SchToDate).FirstOrDefault();
+                    LastCentrePunchOutWithDistance LastPunching= LastPunchings.Where(o=>o.EmployeeNumber==item.PersonID && o.PunchDate==item.SchToDate).FirstOrDefault();
+                    item.RequiredTourInDate = item.SchToDate;
+                    if (LastPunching != null) 
+                        item.RequiredTourInTime = item.IsVehicleProvided ? LastPunching.ComVehRequiredPunchIn:LastPunching.PubTransRequiredPunchIn;
+                    if (PunchOut != null)
+                    {
+                        if (item.Isdriver != 1)
+                            PunchOut.PunchOut = PunchOut.LateNightPunch.Hour>0 ? PunchOut.LateNightPunch : PunchOut.PunchOut;
+                        item.ActualTourOutDate = PunchOut.PunchDate == null || PunchOut.PunchDate.Year == 1 ? item.SchFromDate : PunchOut.PunchDate;
+                        item.ActualTourOutTime = PunchOut.PunchOut.Hour>0 ? PunchOut.PunchOut :DateTime.Parse(item.SchFromTime);
+                    }
+                    else 
+                    { 
+                        item.ActualTourOutDate = item.SchFromDate;
+                        item.ActualTourOutTime = DateTime.Parse(item.SchFromTime);
+                    }
+                    if (PunchIn != null)
+                    {
+                        if (item.Isdriver != 1)
+                            PunchIn.PunchIn = PunchIn.EarlyMorningPunch != null ? PunchIn.EarlyMorningPunch : PunchIn.PunchIn;
+                        item.ActualTourInDate = PunchIn.PunchDate == null || PunchIn.PunchDate.Year == 1 ? item.SchToDate : PunchIn.PunchDate;
+                        item.ActualTourInTime = PunchIn.PunchIn;
+                    }
+                    else
+                        item.ActualTourInDate = item.SchToDate;
                     item.TourStatus = item.SchToDate <= DateTime.Today ? 1 : 0;
                 }
             }
-
-            return result;
+            
+            return result.PersonInfo;
         }
         public LocationWiseTPDetails GetLocationWiseTPs(string NoteNumber, int CentreCode, ref string pMsg)
         {
-            throw new NotImplementedException();
+            //Dummy Code
+            CentreCode = 7;
+            //Dummy Code END
+            List<PunchInDetails> Punchings = new List<PunchInDetails>();
+            List<LastCentrePunchOutWithDistance> LastPunchings = new List<LastCentrePunchOutWithDistance>();
+            LocationWiseTPDetails result = _EntryIIEntities.GetLocationWiseTPs(NoteNumber, CentreCode, ref pMsg);
+            if (result != null && result.PersonDetails != null && result.PersonDateWiseDetails!=null) 
+            {
+                if (result.EmpDatesForPunching != null)
+                {
+                    Punchings = _EntryIIEntities.GetPunchingsV3(CentreCode, result.EmpDatesForPunching, ref pMsg);
+                    LastPunchings = _EntryIIEntities.GetLastPunchingCentresV3(CentreCode, result.EmpDatesForPunching, ref pMsg);
+                }
+                foreach (var item in result.PersonDateWiseDetails) 
+                {
+                    PunchInDetails Punching = Punchings.Where(o => o.EmployeeNumber == item.PersonID && o.PunchDate == item.MCurDate).FirstOrDefault();
+                    LastCentrePunchOutWithDistance LastPunching = LastPunchings.Where(o => o.EmployeeNumber == item.PersonID && o.PunchDate == item.MCurDate).FirstOrDefault();
+                    if (Punching != null)
+                    {
+                        if (item.Isdriver != 1)
+                        {
+                            Punching.PunchOut = Punching.LateNightPunch.Hour >0 ? Punching.LateNightPunch : Punching.PunchOut;
+                            Punching.PunchIn = Punching.EarlyMorningPunch.Hour>0 ? Punching.EarlyMorningPunch : Punching.PunchIn;
+                        }
+                        else 
+                        {
+                            item.LNPunchTime = Punching.LateNightPunch;
+                            item.EMPunchTime = Punching.EarlyMorningPunch;
+                        }
+                        if (Punching.PunchIn != Punching.PunchOut)
+                            item.ActualTourOutTime = Punching.PunchOut;                        
+                        item.ActualTourInTime = Punching.PunchIn;
+                    }
+                    item.ActualTourOutDate = item.MCurDate;
+                    item.ActualTourInDate = item.MCurDate;
+                    item.RequiredTourInDate= item.MCurDate;
+                    if (LastPunching != null)
+                    {
+                        item.RequiredTourInTime = item.IsVehicleProvided ? LastPunching.ComVehRequiredPunchIn : LastPunching.PubTransRequiredPunchIn;
+                    }
+                    else 
+                    {
+                        if (item.DWTourCategoryIds.IndexOf("3") > 0)
+                            item.RequiredTourInTime = item.MainLocationGenTimeIn;
+                        else if (item.DWTourCategoryIds.IndexOf("4") > 0)
+                            item.RequiredTourInTime = item.ActualTourInTime;
+                        else
+                            item.RequiredTourInTime = item.CentreTimeIn;
+                        item.EMPunchRequired =item.Isdriver==1?1:0;
+                    }
+                    item.TourStatus = item.MCurDate < item.SchToDate ? 0 : 1;
+                    item.LNPunchRequired = item.Isdriver == 1?item.TourStatus == 0 ? 1 : 0:0;
+                    item.EMPunchStatus =item.Isdriver==1?item.EMPunchRequired == 1 ? item.EMPunchTime!=null?"Yes":"Required But Not Entered" : "NR":"No";
+                    item.LNPunchStatus = item.Isdriver == 1 ? item.LNPunchRequired == 1 ? item.LNPunchTime != null ? "Yes" : "Required But Not Entered" : "NR":"No";
+                
+                }
+            }
+            return result;
         }
+        public bool SetEntryIIData(string NoteNumber, bool IsMainLocation, int CentreCode,bool IsOffline, List<SaveTPDetails> Persons, List<SaveTPDWDetails> DWTour, ref string pMsg)
+        {
+            return _EntryIIEntities.SetEntryIIData(NoteNumber, IsMainLocation, CentreCode,IsOffline, Persons, DWTour,ref pMsg);
+        }
+
+
+
     }
 }
