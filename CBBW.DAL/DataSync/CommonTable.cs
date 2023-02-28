@@ -474,6 +474,8 @@ namespace CBBW.DAL.DataSync
             UDTable.Columns.Add("sLNPunchStatus", typeof(string));
             UDTable.Columns.Add("sEMPunchStatus", typeof(string));
             UDTable.Columns.Add("sSchFromTime", typeof(string));
+            UDTable.Columns.Add("sDWLNPunch", typeof(string));
+            UDTable.Columns.Add("sDWEMPunch", typeof(string));
             if (customoptions != null && customoptions.Count > 0)
             {
                 foreach (var obj in customoptions)
@@ -497,7 +499,9 @@ namespace CBBW.DAL.DataSync
                     dr["iStatus"] = obj.TourStatus;
                     dr["sLNPunchStatus"] = obj.LNPunchStatus;
                     dr["sEMPunchStatus"] = obj.EMPunchStatus;
-                    dr["sSchFromTime"] = obj.SchFromTime.ToString("hh:mm:ss tt"); ;
+                    dr["sSchFromTime"] = obj.SchFromTime.ToString("hh:mm:ss tt");
+                    dr["sDWLNPunch"] = obj.DWLNPunch.ToString("hh:mm:ss tt");
+                    dr["sDWEMPunch"] = obj.DWEMPunch.ToString("hh:mm:ss tt");
                     UDTable.Rows.Add(dr);
                 }
             }

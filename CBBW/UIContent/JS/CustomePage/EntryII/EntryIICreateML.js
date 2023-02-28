@@ -170,6 +170,14 @@ function TPDBtnClicked() {
         });
     }
 };
+function ATIBlured() {
+    var targetCtrl = $(ATIBlured.caller.arguments[0].target);
+    var timerid = targetCtrl.attr('id');
+    var datadivid = 'V' + timerid;
+    $('#' + datadivid).html(targetCtrl.val());
+    //LNfireSweetAlert();
+    //alert(mvalue);
+};
 $(document).ready(function () {
     $('#btnBack').click(function () {
         var backbtnactive = $('#IsBackButtonActive').val();

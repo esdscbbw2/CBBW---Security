@@ -90,6 +90,21 @@ namespace CBBW.DAL.Entities
             catch (Exception ex)
             { pMsg = ex.Message; return null; }
         }
+        public VehicleAllotmentDetails GetEntryIIVehicleAllotmentDetails(string NoteNumber, DateTime FromDate, DateTime ToDate, int CentreCode, bool IsMainLocation, ref string pMsg) 
+        {
+            try
+            {
+                dt = _EntryIIDataSync.GetEntryIIVehicleAllotmentDetails(NoteNumber,FromDate,ToDate,CentreCode,IsMainLocation, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    EHGDBMapper _EHGDBMapper = new EHGDBMapper();
+                    return _EHGDBMapper.Map_VehicleAllotmentDetails(dt.Rows[0]);
+                }
+                return null;
+            }
+            catch (Exception ex)
+            { pMsg = ex.Message; return null; }
+        }
         public List<PunchInDetails> GetLastPunchingOfaPerson(int EmployeeNumber, DateTime PunchDate, ref string pMsg) 
         {
             List<PunchInDetails> result = new List<PunchInDetails>();
@@ -270,8 +285,17 @@ namespace CBBW.DAL.Entities
             _DBResponseMapper.Map_DBResponse(_EntryIIDataSync.SetEntryIIData(NoteNumber, IsMainLocation, CentreCode, IsOffline, Persons, DWTour, ref pMsg), ref pMsg, ref result);
             return result;
         }
-
-
+        public bool UpdateEntryIIData(string NoteNumber, int CentreCode, string CentreName, bool IsEPTour,
+            bool IsMainLocation, ref string pMsg)
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_EntryIIDataSync.UpdateEntryIIData(NoteNumber, CentreCode,CentreName,IsEPTour,IsMainLocation, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
+        public int GetTravelKmsOfANote(string NoteNumber, DateTime TillDate, int FromLocation, ref string pMsg)
+        {
+            return _EntryIIDataSync.GetTravelKmsOfANote(NoteNumber, TillDate, FromLocation,ref pMsg);
+        }
 
     }
 }

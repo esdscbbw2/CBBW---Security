@@ -12,6 +12,7 @@ namespace CBBW.BLL.IRepository
 {
     public interface IEntryIIRepository
     {
+        List<RFID> GetRFIDCards(ref string pMsg);
         List<MGPReferenceDCDetails> GetMatOutDCDetails(string VehicleNo, DateTime FromDT, DateTime ToDT, ref string pMsg);
         List<MGPReferenceDCDetails> GetMatInDCDetails(string VehicleNo, DateTime FromDT, DateTime ToDT, ref string pMsg);
         IEnumerable<EntryIINote>GetDCNotes(string VehicleNo, DateTime FromDT, DateTime ToDT,bool IsMatOut, ref string pMsg);
@@ -24,11 +25,14 @@ namespace CBBW.BLL.IRepository
         EditNoteDetails GetEditNoteHdr(string NoteNumber, ref string pMsg);
         List<EntryIITravelingDetails> GetEntryIITravellingDetails(string NoteNumber, ref string pMsg);
         VehicleAllotmentDetails GetEntryIIVehicleAllotmentDetails(string Notenumber, ref string pMsg);
+        VehicleAllotmentDetails GetEntryIIVehicleAllotmentDetails(string NoteNumber, DateTime FromDate, DateTime ToDate, int CentreCode, bool IsMainLocation, ref string pMsg);
         List<MainLocationPersons> GetMainLocationTPs(string NoteNumber, ref string pMsg);
         LocationWiseTPDetails GetLocationWiseTPs(string NoteNumber, int CentreCode, ref string pMsg);
         bool SetEntryIIData(string NoteNumber, bool IsMainLocation,
                 int CentreCode,bool IsOffline, List<SaveTPDetails> Persons, List<SaveTPDWDetails> DWTour, ref string pMsg);
-
-
+        bool UpdateEntryIIData(string NoteNumber, int CentreCode, string CentreName, bool IsEPTour,
+            bool IsMainLocation, ref string pMsg);
+        PunchInDetails GetPunchingDetails(int EmployeeNumber, DateTime PunchDate, int CentreCode, string RFIDNumber, ref string pMsg);
+        int GetTravelKmsOfANote(string NoteNumber, DateTime TillDate, int FromLocation, ref string pMsg);
     }
 }

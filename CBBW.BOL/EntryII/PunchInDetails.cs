@@ -22,6 +22,8 @@ namespace CBBW.BOL.EntryII
         public DateTime PunchIn { get; set; }        
         public DateTime EarlyMorningPunch { get; set; }
         public DateTime LateNightPunch { get; set; }
+        public string PunchInStr { get; set; }
+        public string PunchOutStr { get; set; }
     }
     public class LastCentrePunchOutWithDistance : PunchInDetails 
     {

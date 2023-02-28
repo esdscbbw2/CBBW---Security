@@ -89,6 +89,12 @@ namespace CBBW.Areas.Security.Controllers
             MLInnerPageVM modelobj = new MLInnerPageVM();
             modelobj.TPDetails = _iEntryIIRepository.GetMainLocationTPs(NoteNumber, ref pMsg);
             modelobj.DefaultPersonID = modelobj.TPDetails.FirstOrDefault().PersonID;
+            modelobj.SchFromDate = modelobj.TPDetails.Min(o => o.SchFromDate);
+            modelobj.SchToDate = modelobj.TPDetails.Max(o => o.SchToDate);
+            modelobj.RFIDCardList = _iEntryIIRepository.GetRFIDCards(ref pMsg);
+            modelobj.VehicleDetails = _iEntryIIRepository.GetEntryIIVehicleAllotmentDetails(NoteNumber, modelobj.SchFromDate, modelobj.SchToDate, user.CentreCode, true, ref pMsg);
+            modelobj.IsVehicleProvided = modelobj.TPDetails.FirstOrDefault().IsVehicleProvided;
+            modelobj.RequiredKMIn = modelobj.VehicleDetails.KMOut + _iEntryIIRepository.GetTravelKmsOfANote(NoteNumber, modelobj.SchToDate, user.CentreCode, ref pMsg);
             return View(modelobj);
         }
         public ActionResult LWOutIn(string NoteNumber)
@@ -100,6 +106,10 @@ namespace CBBW.Areas.Security.Controllers
             modelobj.PersonDetails = obj1.PersonDetails;
             modelobj.PersonDateWiseDetails = obj1.PersonDateWiseDetails;
             modelobj.DefaultPersonID = modelobj.PersonDetails.FirstOrDefault().PersonID;
+            modelobj.SchFromDate = obj1.PersonDateWiseDetails.Min(o => o.DWFromDate);
+            modelobj.SchToDate = obj1.PersonDateWiseDetails.Max(o => o.DWToDate);
+            modelobj.RFIDCardList = _iEntryIIRepository.GetRFIDCards(ref pMsg);
+            modelobj.VehicleDetails = _iEntryIIRepository.GetEntryIIVehicleAllotmentDetails(NoteNumber,modelobj.SchFromDate,modelobj.SchToDate,user.CentreCode,false,ref pMsg);
             return View(modelobj);
         }        
         public ActionResult MLCreate() 
@@ -121,7 +131,16 @@ namespace CBBW.Areas.Security.Controllers
             }
             else if (Submit == "Save") 
             {
-            
+                EditNoteDetails noteinfo = _iEntryIIRepository.GetEditNoteHdr(modelobj.NoteNumber, ref pMsg);
+                if (_iEntryIIRepository.UpdateEntryIIData(modelobj.NoteNumber, noteinfo.CenterCode, noteinfo.CenterName, noteinfo.EPTour == 1 ? true : false, true, ref pMsg))
+                {
+                    ViewBag.Msg = "Note Number " + modelobj.NoteNumber + " Submited Successfully.";
+                    TempData["EntryII"] = null;
+                }
+                else 
+                {
+                    ViewBag.ErrMsg = "Updation Failed For Note Number " + modelobj.NoteNumber + " Due To : " + pMsg;
+                }
             }
             return View(model);
         }
@@ -144,7 +163,16 @@ namespace CBBW.Areas.Security.Controllers
             }
             else if (Submit == "Save")
             {
-
+                EditNoteDetails noteinfo = _iEntryIIRepository.GetEditNoteHdr(modelobj.NoteNumber, ref pMsg);
+                if (_iEntryIIRepository.UpdateEntryIIData(modelobj.NoteNumber, noteinfo.CenterCode, noteinfo.CenterName, noteinfo.EPTour == 1 ? true : false, false, ref pMsg))
+                {
+                    ViewBag.Msg = "Note Number " + modelobj.NoteNumber + " Submited Successfully.";
+                    TempData["EntryII"] = null;
+                }
+                else
+                {
+                    ViewBag.ErrMsg = "Updation Failed For Note Number " + modelobj.NoteNumber + " Due To : " + pMsg;
+                }
             }
             return View(model);
         }
@@ -217,7 +245,12 @@ namespace CBBW.Areas.Security.Controllers
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
+        public JsonResult GetRFIDPunchTime(string RFIDNumber,string PunchDate)
+        {
+            //PunchInDetails result = new PunchInDetails();
+            PunchInDetails result = _iEntryIIRepository.GetPunchingDetails(0, DateTime.Parse(PunchDate),user.CentreCode, RFIDNumber, ref pMsg);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
 
 
 

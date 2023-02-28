@@ -27,6 +27,8 @@ namespace CBBW.BOL.EntryII
         public string LNPunchStatus { get; set; }
         public string EMPunchStatus { get; set; }
         public DateTime SchFromTime { get; set; }
+        public DateTime DWLNPunch { get; set; }
+        public DateTime DWEMPunch { get; set; }
     }
     public class SaveTPDetails
     {

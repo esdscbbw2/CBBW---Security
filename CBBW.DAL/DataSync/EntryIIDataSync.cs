@@ -87,6 +87,29 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+        public DataTable GetEntryIIVehicleAllotmentDetails(string NoteNumber,DateTime FromDate,DateTime ToDate,int CentreCode,bool IsMainLocation, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[5];
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NVarChar, 25);
+                para[paracount++].Value = NoteNumber;
+                para[paracount] = new SqlParameter("@SchFromDate", SqlDbType.Date);
+                para[paracount++].Value = FromDate;
+                para[paracount] = new SqlParameter("@SchToDate", SqlDbType.Date);
+                para[paracount++].Value = ToDate;
+                para[paracount] = new SqlParameter("@CentreCode", SqlDbType.Int);
+                para[paracount++].Value = CentreCode;
+                para[paracount] = new SqlParameter("@IsMainLocation", SqlDbType.Bit);
+                para[paracount++].Value = IsMainLocation;
+                using (SQLHelper sql = new SQLHelper("[ENT].[GetEntryIIVehicleAllotmentDetailsV2]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
         public DataTable GetLastPunchingOfaPerson(int EmployeeNumber,DateTime PunchDate, ref string pMsg)
         {
             try
@@ -291,6 +314,42 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+        public DataTable UpdateEntryIIData(string NoteNumber,int CentreCode,string CentreName, bool IsEPTour,
+            bool IsMainLocation,  ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[5];
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NVarChar, 25);
+                para[paracount++].Value = NoteNumber;
+                para[paracount] = new SqlParameter("@CentreCode", SqlDbType.Int);
+                para[paracount++].Value = CentreCode;
+                para[paracount] = new SqlParameter("@CentreCodeName", SqlDbType.NVarChar,50);
+                para[paracount++].Value = CentreName;
+                para[paracount] = new SqlParameter("@IsEPTour", SqlDbType.Bit);
+                para[paracount++].Value = IsEPTour;
+                para[paracount] = new SqlParameter("@IsMainLocation", SqlDbType.Bit);
+                para[paracount++].Value = IsMainLocation;                
+                using (SQLHelper sql = new SQLHelper("[ENT].[UpdateEntryIIData]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public int GetTravelKmsOfANote(string NoteNumber,DateTime TillDate,int FromLocation,ref string pMsg) 
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("SELECT [ENT].[GetTravelKmsOfANote]('" + NoteNumber + "','"+ TillDate.ToString("yyyy-MM-dd") + "',"+ FromLocation + ")", CommandType.Text))
+                {
+                    return int.Parse(sql.ExecuteScaler(ref pMsg).ToString());
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return 0; }
+        }
+
 
 
 

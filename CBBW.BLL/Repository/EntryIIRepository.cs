@@ -23,6 +23,10 @@ namespace CBBW.BLL.Repository
             _EntryIIEntities = new EntryIIEntities();
             _ETSEditEntities = new ETSEditEntities();
         }
+        public List<RFID> GetRFIDCards(ref string pMsg)
+        {
+            return _MGPEntities.getRFIDCards(ref pMsg);
+        }
         public List<MGPReferenceDCDetails> GetMatOutDCDetails(string VehicleNo, DateTime FromDT, DateTime ToDT, ref string pMsg)
         {
             return _MGPEntities.getReferenceDCDetails(VehicleNo, FromDT, ToDT, ref pMsg);
@@ -215,10 +219,10 @@ namespace CBBW.BLL.Repository
                             item.RequiredTourInTime = item.CentreTimeIn;
                         item.EMPunchRequired =item.Isdriver==1?1:0;
                     }
-                    item.TourStatus = item.MCurDate < item.SchToDate ? 0 : 1;
+                    item.TourStatus = item.MCurDate < item.DWToDate ? 0 : 1;
                     item.LNPunchRequired = item.Isdriver == 1?item.TourStatus == 0 ? 1 : 0:0;
-                    item.EMPunchStatus =item.Isdriver==1?item.EMPunchRequired == 1 ? item.EMPunchTime!=null?"Yes":"Required But Not Entered" : "NR":"No";
-                    item.LNPunchStatus = item.Isdriver == 1 ? item.LNPunchRequired == 1 ? item.LNPunchTime != null ? "Yes" : "Required But Not Entered" : "NR":"No";
+                    item.EMPunchStatus =item.Isdriver==1?item.EMPunchRequired == 1 ? item.EMPunchTime.Hour>0?"Yes": "Required But Not Entered" : "NR":"No";
+                    item.LNPunchStatus = item.Isdriver == 1 ? item.LNPunchRequired == 1 ? item.LNPunchTime.Hour>0 ? "Yes" : "Required But Not Entered" : "NR":"No";
                 
                 }
             }
@@ -228,8 +232,21 @@ namespace CBBW.BLL.Repository
         {
             return _EntryIIEntities.SetEntryIIData(NoteNumber, IsMainLocation, CentreCode,IsOffline, Persons, DWTour,ref pMsg);
         }
-
-
-
+        public bool UpdateEntryIIData(string NoteNumber, int CentreCode, string CentreName, bool IsEPTour, bool IsMainLocation, ref string pMsg)
+        {
+            return _EntryIIEntities.UpdateEntryIIData(NoteNumber,CentreCode,CentreName,IsEPTour,IsMainLocation,ref pMsg);
+        }
+        public VehicleAllotmentDetails GetEntryIIVehicleAllotmentDetails(string NoteNumber, DateTime FromDate, DateTime ToDate, int CentreCode, bool IsMainLocation, ref string pMsg)
+        {
+            return _EntryIIEntities.GetEntryIIVehicleAllotmentDetails(NoteNumber,FromDate,ToDate,CentreCode,IsMainLocation, ref pMsg);
+        }
+        public PunchInDetails GetPunchingDetails(int EmployeeNumber, DateTime PunchDate, int CentreCode, string RFIDNumber, ref string pMsg)
+        {
+            return _EntryIIEntities.GetPunchingDetails(EmployeeNumber, PunchDate, CentreCode, RFIDNumber,ref pMsg);
+        }
+        public int GetTravelKmsOfANote(string NoteNumber, DateTime TillDate, int FromLocation, ref string pMsg)
+        {
+            return _EntryIIEntities.GetTravelKmsOfANote(NoteNumber, TillDate, FromLocation,ref pMsg);
+        }
     }
 }

@@ -1,4 +1,68 @@
-﻿function VisiblePersonRow(personid) {
+﻿function RFIDInChanged() {
+    var targetCtrl = $('#RFIDCardIn');
+    var divCtrl = $('#VTourInTimeCtrl');
+    var timCtrl = $('#TourInTimeCtrl');
+    var RFIDDate = $('#SchToDate').val();
+    var RFIDNo = targetCtrl.val();
+    if (targetCtrl.val() != '') {
+        targetCtrl.isValid();
+        divCtrl.removeClass('inVisible');
+        timCtrl.addClass('inVisible');
+        $.ajax({
+            url: '/EntryII/GetRFIDPunchTime',
+            method: 'GET',
+            data: { RFIDNumber: RFIDNo, PunchDate: RFIDDate },
+            dataType: 'json',
+            success: function (data) {
+                $(data).each(function (index, item) {
+                    divCtrl.html(item.PunchInStr);
+                });
+            }
+        });
+    }
+    else {
+        //targetCtrl.isInvalid();
+        divCtrl.addClass('inVisible');
+        timCtrl.removeClass('inVisible');
+    }
+};
+function RFIDOutChanged() {
+    var targetCtrl = $('#RFIDCardOut');
+    var divCtrl = $('#VTourOutTimeCtrl');
+    var timCtrl = $('#TourOutTimeCtrl');
+    var RFIDDate = $('#SchFromDate').val();
+    var RFIDNo = targetCtrl.val();
+    if (targetCtrl.val() != '') {
+        targetCtrl.isValid();
+        divCtrl.removeClass('inVisible');
+        timCtrl.addClass('inVisible');
+        $.ajax({
+            url: '/EntryII/GetRFIDPunchTime',
+            method: 'GET',
+            data: { RFIDNumber: RFIDNo, PunchDate: RFIDDate },
+            dataType: 'json',
+            success: function (data) {
+                $(data).each(function (index, item) {
+                    divCtrl.html(item.PunchOutStr);
+                });
+            }
+        });
+    }
+    else {
+        //targetCtrl.isInvalid();
+        divCtrl.addClass('inVisible');
+        timCtrl.removeClass('inVisible');
+    }
+};
+function TimeInCtrlBlured() {
+    var targetCtrl = $(TimeInCtrlBlured.caller.arguments[0].target);
+    var timerid = targetCtrl.attr('id');
+    var datadivid = 'V' + timerid;
+    $('#' + datadivid).html(targetCtrl.val());
+    //alert(targetCtrl.val());
+    if (targetCtrl.val() != '') { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
+}
+function VisiblePersonRow(personid) {
     $('#TPDtlTable tbody tr').each(function () {
         $(this).addClass('inVisible');
     });
@@ -20,6 +84,8 @@ $(document).ready(function () {
     var defPerson = $('#DefaultPersonID').val();
     $('#' + defPerson).attr('checked', true);
     VisiblePersonRow(defPerson);
+    RFIDInChanged();
+    RFIDOutChanged();
 });
 $(document).ready(function () {
     $('#btnSubmit').click(function () {

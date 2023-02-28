@@ -183,6 +183,8 @@ namespace CBBW.DAL.DBMapper
                         result.EarlyMorningPunch =DateTime.Parse(dr["EarlyMorningPunch"].ToString());
                     if (!DBNull.Value.Equals(dr["LateNightPunch"]))
                         result.LateNightPunch = DateTime.Parse(dr["LateNightPunch"].ToString());
+                    result.PunchInStr = result.PunchIn.Year==0?"-":result.PunchIn.ToString("hh:mm tt");
+                    result.PunchOutStr = result.PunchOut.Year==0?"-":result.PunchOut.ToString("hh:mm tt");
                 }
             }
             catch { }
