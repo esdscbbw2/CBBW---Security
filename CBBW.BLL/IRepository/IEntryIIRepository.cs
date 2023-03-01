@@ -29,7 +29,8 @@ namespace CBBW.BLL.IRepository
         List<MainLocationPersons> GetMainLocationTPs(string NoteNumber, ref string pMsg);
         LocationWiseTPDetails GetLocationWiseTPs(string NoteNumber, int CentreCode, ref string pMsg);
         bool SetEntryIIData(string NoteNumber, bool IsMainLocation,
-                int CentreCode,bool IsOffline, List<SaveTPDetails> Persons, List<SaveTPDWDetails> DWTour, ref string pMsg);
+                int CentreCode,bool IsOffline, List<SaveTPDetails> Persons, List<SaveTPDWDetails> DWTour, 
+                List<SaveVehicleDetails> VAData, ref string pMsg);
         bool UpdateEntryIIData(string NoteNumber, int CentreCode, string CentreName, bool IsEPTour,
             bool IsMainLocation, ref string pMsg);
         PunchInDetails GetPunchingDetails(int EmployeeNumber, DateTime PunchDate, int CentreCode, string RFIDNumber, ref string pMsg);

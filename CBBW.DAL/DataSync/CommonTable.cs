@@ -506,7 +506,52 @@ namespace CBBW.DAL.DataSync
                 }
             }
         }
-
+        public CommonTable(List<SaveVehicleDetails> customoptions)
+        {
+            UDTable = new DataTable();
+            UDTable.Columns.Add("iDriverNo", typeof(int));
+            UDTable.Columns.Add("sDriverNoName", typeof(string));
+            UDTable.Columns.Add("sVehicleNo", typeof(string));
+            UDTable.Columns.Add("sVehicleType", typeof(string));
+            UDTable.Columns.Add("sModelName", typeof(string));
+            UDTable.Columns.Add("sActualTourInRFID", typeof(string));
+            UDTable.Columns.Add("dActualTourInDate", typeof(DateTime));
+            UDTable.Columns.Add("sActualTourInTime", typeof(string));
+            UDTable.Columns.Add("iActualTourInKMIN", typeof(int));
+            UDTable.Columns.Add("dActualTourOutDate", typeof(DateTime));
+            UDTable.Columns.Add("sActualTourOutTime", typeof(string));
+            UDTable.Columns.Add("iActualTourOutKMOUT", typeof(int));
+            UDTable.Columns.Add("sRemarks", typeof(string));
+            UDTable.Columns.Add("sActualTourOutRFID", typeof(string));
+            UDTable.Columns.Add("iRequiredKMIn", typeof(int));
+            UDTable.Columns.Add("bIsCarryingMaterialIn", typeof(bool));
+            UDTable.Columns.Add("bIsCarryingMaterialOut", typeof(bool));            
+            if (customoptions != null && customoptions.Count > 0)
+            {
+                foreach (var obj in customoptions)
+                {
+                    DataRow dr = UDTable.NewRow();
+                    dr["iDriverNo"] = obj.DriverID;
+                    dr["sDriverNoName"] = obj.DriverName;
+                    dr["sVehicleNo"] = obj.VehicleNumber;
+                    dr["sVehicleType"] = obj.VehicleType;
+                    dr["sModelName"] = obj.ModelName;
+                    dr["sActualTourInRFID"] = obj.InRFIDCard;
+                    dr["dActualTourInDate"] = obj.ActualTourInDate;
+                    dr["sActualTourInTime"] = obj.ActualTourInTime.ToString("hh:mm:ss tt");
+                    dr["iActualTourInKMIN"] = obj.KMIn;
+                    dr["dActualTourOutDate"] = obj.ActualTourOutDate;
+                    dr["sActualTourOutTime"] = obj.ActualTourOutTime.ToString("hh:mm:ss tt");
+                    dr["iActualTourOutKMOUT"] = obj.KMOut;
+                    dr["sRemarks"] = obj.VRemarks;
+                    dr["sActualTourOutRFID"] = obj.OutRFIDCard;
+                    dr["iRequiredKMIn"] = obj.RequiredKMIn;
+                    dr["bIsCarryingMaterialIn"] =string.IsNullOrEmpty(obj.IsCarryingMaterialIn)?false:obj.IsCarryingMaterialIn.ToUpper()=="YES"?true:false;
+                    dr["bIsCarryingMaterialOut"] =string.IsNullOrEmpty(obj.IsCarryingMaterialOut)?false:obj.IsCarryingMaterialOut.ToUpper() == "YES" ? true : false;                     
+                    UDTable.Rows.Add(dr);
+                }
+            }
+        }
 
     }
 }

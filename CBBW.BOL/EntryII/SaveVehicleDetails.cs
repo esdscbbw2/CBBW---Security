@@ -23,7 +23,8 @@ namespace CBBW.BOL.EntryII
         public int KMOut { get; set; }
         public string VRemarks { get; set; }
         public int RequiredKMIn { get; set; }
-        public bool IsCarryingMaterial { get; set; }
+        public string IsCarryingMaterialIn { get; set; }
+        public string IsCarryingMaterialOut { get; set; }
 
     }
 }

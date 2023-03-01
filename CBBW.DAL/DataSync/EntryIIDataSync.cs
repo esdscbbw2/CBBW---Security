@@ -287,14 +287,16 @@ namespace CBBW.DAL.DataSync
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
         public DataTable SetEntryIIData(string NoteNumber,bool IsMainLocation,
-            int CentreCode, bool IsOffline, List<SaveTPDetails> Persons, List<SaveTPDWDetails> DWTour,ref string pMsg) 
+            int CentreCode, bool IsOffline, List<SaveTPDetails> Persons, List<SaveTPDWDetails> DWTour,
+            List<SaveVehicleDetails> VAData,ref string pMsg) 
         {
             try
             {
                 CommonTable TP = new CommonTable(Persons);
                 CommonTable DWT = new CommonTable(DWTour);
+                CommonTable VA = new CommonTable(VAData);
                 int paracount = 0;
-                SqlParameter[] para = new SqlParameter[6];
+                SqlParameter[] para = new SqlParameter[7];
                 para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NVarChar,25);
                 para[paracount++].Value = NoteNumber;
                 para[paracount] = new SqlParameter("@IsMainLocation", SqlDbType.Bit);
@@ -307,6 +309,8 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = DWT.UDTable;
                 para[paracount] = new SqlParameter("@EntryIITPersons", SqlDbType.Structured);
                 para[paracount++].Value = TP.UDTable;
+                para[paracount] = new SqlParameter("@EntryIIVADetails", SqlDbType.Structured);
+                para[paracount++].Value = VA.UDTable;
                 using (SQLHelper sql = new SQLHelper("[ENT].[SetEntryIIData]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataTable(para, ref pMsg);

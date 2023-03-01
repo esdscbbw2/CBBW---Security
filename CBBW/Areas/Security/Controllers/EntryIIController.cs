@@ -230,7 +230,7 @@ namespace CBBW.Areas.Security.Controllers
         {
             model = CastEntryIITempData(false);
             CustomAjaxResponse result = new CustomAjaxResponse();
-            result.bResponseBool = _iEntryIIRepository.SetEntryIIData(modelobj.NoteNumber, false, user.CentreCode,user.IsOffline, modelobj.TPersons, modelobj.DateWiseDetails, ref pMsg);
+            result.bResponseBool = _iEntryIIRepository.SetEntryIIData(modelobj.NoteNumber, false, user.CentreCode,user.IsOffline, modelobj.TPersons, modelobj.DateWiseDetails,modelobj.VDetails, ref pMsg);
             result.sResponseString = pMsg;
 
             return Json(result, JsonRequestBehavior.AllowGet);
@@ -240,7 +240,7 @@ namespace CBBW.Areas.Security.Controllers
         {
             model = CastEntryIITempData(true);
             CustomAjaxResponse result = new CustomAjaxResponse();
-            result.bResponseBool = _iEntryIIRepository.SetEntryIIData(modelobj.NoteNumber, true, user.CentreCode,user.IsOffline, modelobj.TPersons, modelobj.DateWiseDetails, ref pMsg);
+            result.bResponseBool = _iEntryIIRepository.SetEntryIIData(modelobj.NoteNumber, true, user.CentreCode,user.IsOffline, modelobj.TPersons, modelobj.DateWiseDetails,modelobj.VDetails, ref pMsg);
             result.sResponseString = pMsg;
 
             return Json(result, JsonRequestBehavior.AllowGet);

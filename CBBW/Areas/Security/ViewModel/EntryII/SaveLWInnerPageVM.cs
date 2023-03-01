@@ -11,7 +11,7 @@ namespace CBBW.Areas.Security.ViewModel.EntryII
         public string NoteNumber { get; set; }
         public List<SaveTPDetails> TPersons { get; set; }
         public List<SaveTPDWDetails> DateWiseDetails { get; set; }
-
+        public List<SaveVehicleDetails> VDetails { get; set; }
 
     }
 }

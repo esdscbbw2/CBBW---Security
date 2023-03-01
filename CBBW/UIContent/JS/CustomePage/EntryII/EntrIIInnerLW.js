@@ -6,6 +6,7 @@
     var RFIDNo = targetCtrl.val();
     if (targetCtrl.val() != '') {
         targetCtrl.isValid();
+        $('#RFIDInDiv').html(RFIDNo);
         divCtrl.removeClass('inVisible');
         timCtrl.addClass('inVisible');
         $.ajax({
@@ -22,6 +23,7 @@
     }
     else {
         //targetCtrl.isInvalid();
+        $('#RFIDInDiv').html('NA');
         divCtrl.addClass('inVisible');
         timCtrl.removeClass('inVisible');
     }
@@ -34,6 +36,7 @@ function RFIDOutChanged() {
     var RFIDNo = targetCtrl.val();
     if (targetCtrl.val() != '') {
         targetCtrl.isValid();
+        $('#RFIDOutDiv').html(targetCtrl.val());
         divCtrl.removeClass('inVisible');
         timCtrl.addClass('inVisible');
         $.ajax({
@@ -52,7 +55,9 @@ function RFIDOutChanged() {
         //targetCtrl.isInvalid();
         divCtrl.addClass('inVisible');
         timCtrl.removeClass('inVisible');
+        $('#RFIDOutDiv').html('NA');
     }
+    
 };
 function TimeInCtrlBlured(){
     var targetCtrl = $(TimeInCtrlBlured.caller.arguments[0].target);
@@ -140,11 +145,13 @@ $(document).ready(function () {
         var notenumber = $('#NoteNumber').val();
         var tblPersonRecords = '';
         var tblDateWiseRecords = '';
+        var tblVDtls = '';
         tblPersonRecords = getRecordsFromTableV2('TPTable');
         tblDateWiseRecords = getRecordsFromTableV2('TPDtlTable');
+        tblVDtls = getRecordsFromTableV2('VDTable');
         var x = '{"NoteNumber":"' + notenumber
             + '","DateWiseDetails":' + tblDateWiseRecords
-            + ',"TPersons":'
+            + ',"VDetails":' + tblVDtls+',"TPersons":'
             + tblPersonRecords + '}';
         //alert(tblDateWiseRecords);
         $.ajax({

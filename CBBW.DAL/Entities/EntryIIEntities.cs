@@ -279,10 +279,11 @@ namespace CBBW.DAL.Entities
             { pMsg = ex.Message; return null; }
         }
         public bool SetEntryIIData(string NoteNumber, bool IsMainLocation,
-            int CentreCode,bool IsOffline, List<SaveTPDetails> Persons, List<SaveTPDWDetails> DWTour, ref string pMsg)
+            int CentreCode,bool IsOffline, List<SaveTPDetails> Persons, List<SaveTPDWDetails> DWTour,
+            List<SaveVehicleDetails> VAData, ref string pMsg)
         {
             bool result = false;
-            _DBResponseMapper.Map_DBResponse(_EntryIIDataSync.SetEntryIIData(NoteNumber, IsMainLocation, CentreCode, IsOffline, Persons, DWTour, ref pMsg), ref pMsg, ref result);
+            _DBResponseMapper.Map_DBResponse(_EntryIIDataSync.SetEntryIIData(NoteNumber, IsMainLocation, CentreCode, IsOffline, Persons, DWTour,VAData, ref pMsg), ref pMsg, ref result);
             return result;
         }
         public bool UpdateEntryIIData(string NoteNumber, int CentreCode, string CentreName, bool IsEPTour,
