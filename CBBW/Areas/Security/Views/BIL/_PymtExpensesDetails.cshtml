@@ -1,0 +1,170 @@
+﻿@using System.Globalization;
+@using CBBW.BOL.BIL;
+@model TADABillGeneration
+@{
+    Layout = null;
+}
+
+
+
+<div class="col-md-12">
+    <div class="heading_text_btn2 d-block mt-4 pt-3">
+        <h2 class="text-left">Approved Expenses Detail:   </h2>
+    </div>
+</div>
+<div class="col-md-12 mt-4" id="AllData">
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive btnalign" id="record1_div">
+                <table class="table table-bordered w-100" id="table">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="vertical-align: middle;">Subject </th>
+                            <th scope="col" style="text-align: center; vertical-align: middle;">Eligible Daily Allowance Amount   </th>
+                            <th scope="col" style="text-align: center; vertical-align: middle;">T.A Amount  </th>
+                            <th scope="col" style="text-align: center; vertical-align: middle;">Local Conveyance Amount </th>
+                            <th scope="col" style="text-align: center; vertical-align: middle;">Lodging Expenses Amount</th>
+                            <th scope="col" style="text-align: center; vertical-align: middle;">Total Expenses</th>
+                            <th scope="col" style="text-align: center; vertical-align: middle;">
+                                Reasons If Less Amount Approved
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">
+                                Claimed
+                            </th>
+                            <td class="text-center">
+                                @Model.EDAllowance
+                            </td>
+                            <td class="text-center">
+                                @Model.TAAmount
+                            </td>
+                            <td class="text-center">
+                                @Model.LocalConveyance
+                            </td>
+                            <td class="text-center">
+                                @Model.Lodging
+                            </td>
+                            <td class="text-center">
+                                @Model.TotalExpenses
+                            </td>
+                            <td class="text-center">
+                                NA
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <th scope="row">
+                                Approved
+                            </th>
+                            <td class="text-center">
+                                @Model.AEDAmount
+                            </td>
+                            <td class="text-center">
+                                @Model.ATAAmount
+                            </td>
+                            <td class="text-center">
+                                @Model.ALocAmount
+                            </td>
+                            <td class="text-center">
+                                @Model.ALodAmount
+                            </td>
+                            <td class="text-center">
+                                @Model.ATotalAmount
+                            </td>
+                            <td class="text-center">
+                                @Model.AReamrk
+                            </td>
+
+                        </tr>
+                        <tr id="first-table-tr">
+                            <th scope="row">
+                                EDIT By I.A
+
+                            </th>
+                            <td class="text-center">
+                                <div class="qty mx-auto">
+                                    @Html.TextBoxFor(x => x.EEDAmount, new { @minlength = "0", @maxlength = Model.AEDAmount, @class = "form-control numberonly", onchange = "totalAmount();" })
+                                    <div class="qty_inc_dec">
+                                        <i class="increment" onclick="incrementQty(this); totalAmount();">
+                                            <i data-feather="chevron-up"></i>
+                                        </i><i class="decrement first-btn" onclick="decrementQty(this); totalAmount();">
+                                            <i data-feather="chevron-down"></i>
+                                        </i>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div class="qty mx-auto">
+                                    @Html.TextBoxFor(x => x.ETAAmount, new { @minlength = "0", @maxlength = Model.ATAAmount, @class = "form-control numberonly", onchange = "totalAmount();" })
+                                    <div class="qty_inc_dec">
+                                        <i class="increment" onclick="incrementQty(this); totalAmount();">
+                                            <i data-feather="chevron-up"></i>
+                                        </i><i class="decrement second-btn" onclick="decrementQty(this); totalAmount();">
+                                            <i data-feather="chevron-down"></i>
+                                        </i>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div class="qty mx-auto">
+                                    @Html.TextBoxFor(x => x.ELocAmount, new { @minlength = "0", @maxlength = Model.ALocAmount, @class = "form-control numberonly", onchange = "totalAmount();" })
+                                    <div class="qty_inc_dec">
+                                        <i class="increment" onclick="incrementQty(this); totalAmount();">
+                                            <i data-feather="chevron-up"></i>
+                                        </i><i class="decrement third-btn" onclick="decrementQty(this); totalAmount();">
+                                            <i data-feather="chevron-down"></i>
+                                        </i>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div class="qty mx-auto">
+                                    @Html.TextBoxFor(x => x.ELodAmount, new { @minlength = "0", @maxlength = Model.ALodAmount, @class = "form-control numberonly", onchange = "totalAmount();" })
+                                    <div class="qty_inc_dec">
+                                        <i class="increment" onclick="incrementQty(this); totalAmount();">
+                                            <i data-feather="chevron-up"></i>
+                                        </i><i class="decrement four-btn" onclick="decrementQty(this); totalAmount();">
+                                            <i data-feather="chevron-down"></i>
+                                        </i>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                @Html.TextBoxFor(x => x.ETotalAmount, new { @minlength = "0", @class = "form-control", @readonly = "readonly" })
+                            </td>
+                            <td class="text-center">
+                                @Html.TextAreaFor(x => x.EReamrk, new { @class = "form-control is-invalid", onchange = "ValidateControl();" })
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+           
+            <div class="col-md-12">
+                <div class="d-flex justify-content-center mt-2">
+                    <button type="button" id="TDBtn" class="btn btn-primary me-2" onclick="TDBtnClicked()">
+                        Travelling  Details
+                    </button>
+                    <button type="button" id="TPDBtn"
+                            onclick="TPDBtnClicked()"
+                            class="btn btn-primary me-2">
+                        Deductions From DA Detail
+                    </button>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button type="button" id="SubmitBtn" disabled onclick="SaveDetails();" class="btn btn-green mt-2  me-2">
+                    <i data-feather="check-circle"></i>
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+

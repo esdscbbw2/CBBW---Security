@@ -13,7 +13,8 @@ namespace CBBW.BOL
             int result = 0;
             try
             {
-                result = int.Parse(EmpNonName.Split('/')[0]);
+                if(EmpNonName!=null && EmpNonName.IndexOf("/")>=0)
+                    result = int.Parse(EmpNonName.Split('/')[0]);
             }
             catch { }
             return result;

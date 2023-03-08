@@ -1,0 +1,172 @@
+﻿
+@using System.Globalization;
+@using CBBW.Areas.Security.ViewModel.BIL;
+@model DaDetailsVM
+@{
+    Layout = null;
+}
+
+
+
+<div class="col-md-12">
+    <div class="heading_text_btn2 d-block mb-2 mt-2">
+        <h2 class="text-center">Deductions From DA Detail:</h2>
+    </div>
+</div>
+<div class="col-md-12 mb-4">
+    <div class="col-md-12 pt-3">
+        <div class="card">
+            <div class="card-body ">
+                <div class="table-responsive">
+                    <table class="table table-bordered w-100 btnalign " id="table">
+                        <thead>
+                            <tr>
+                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                    Tour Date
+                                </th>
+                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                    Hours Spent
+                                </th>
+                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                    DA Amount
+                                </th>
+                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                    Deducted Amount
+                                </th>
+                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                    Eligible DA Amount
+
+                                </th>
+                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                    DA Deduction Reasons
+
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                foreach (var item in Model.DADetailslist)
+                                {
+                                    <tr>
+
+                                        <td class="text-center">
+                                            @item.ActualTourInDatestr
+                                        </td>
+                                        <td class="text-center">
+                                            @item.TotalHours  Hours
+                                        </td>
+                                        <td class="text-center">
+                                            @item.DAAmount
+                                        </td>
+                                        <td class="text-center">
+                                            @item.DADeducted
+                                        </td>
+                                        <td class="text-center">
+                                            @item.EAmount
+                                        </td>
+                                        <td class="text-center">
+                                            @if (item.DADeducted > 0)
+                                            {
+
+
+                                                <textarea name="" id="" cols="20" rows="2" class="form-control pointer-default" readonly data-toggle="tooltip" data-placement="bottom" title=" Half Day  DA Deduction as per Rule  ">  Half Day  DA Deduction as per Rule  </textarea>
+                                            }
+                                            else
+                                            { <textarea name="" id="" cols="20" rows="2" class="form-control pointer-default" readonly data-toggle="tooltip" data-placement="bottom" title=""> -</textarea>}
+
+                                        </td>
+
+
+                                    </tr>
+                                }
+                                <tr>
+                                    <td class="text-center" colspan="2">
+                                        Total Amounts:
+                                    </td>
+                                    <td class="text-center">
+                                        @Model.TotalDA
+                                    </td>
+                                    <td class="text-center">
+                                        @Model.TotalDaDect
+                                    </td>
+                                    <td class="text-center">
+                                        @Model.TotalElg
+                                    </td>
+                                    <td class="text-center">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                            }
+
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+                <div class="table-responsive" id="DADection">
+                    <table class="table table-bordered w-100 btnalign " id="">
+                        <thead>
+                            <tr>
+                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                    Department  Code & Name
+                                </th>
+                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="25%">
+                                    Requisition No.  & Date
+                                </th>
+                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                    Prepared By No. & Name
+                                </th>
+                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                    Requisition Amount
+                                </th>
+                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                    Amount Paid
+                                </th>
+                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">Remarks  </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-center">
+                                    @Model.TadabollGen.DeptCode <span>/</span> @Model.TadabollGen.DeptName
+                                </td>
+                                <td class="text-center">
+                                    <div class="d-flex">
+                                        @Model.TadabollGen.RequisitionNo
+                                        <div class="position-relative pointer w-50">
+                                            @Model.TadabollGen.RequisitionDatestr
+                                            
+                                        </div>
+                                    </div>
+
+
+                                </td>
+                                <td class="text-center">
+                                    @Model.TadabollGen.PreparedEmpNo<span>/</span>@Model.TadabollGen.PreparedEmpName
+                                </td>
+                                <td class="text-center">
+                                    @Model.TadabollGen.RequisitionAmt
+                                </td>
+                                <td class="text-center">
+                                    @Model.TadabollGen.ATotalAmount
+                                </td>
+                                <td>
+                                   @Model.TadabollGen.Remark
+                                </td>
+                            </tr>
+
+
+                        </tbody>
+                    </table>
+                </div>
+               
+
+          
+        </div>
+    </div>
+</div>
+

@@ -23,5 +23,6 @@ namespace CBBW.BOL.TFD
         public bool IsApproval { get; set; }
         public string IsApprovals { get; set; }
         public string ApprovalRemark { get; set; }
+        public int IsApproved { get; set; }
     }
 }

@@ -297,6 +297,21 @@ namespace CBBW.DAL.Entities
         {
             return _EntryIIDataSync.GetTravelKmsOfANote(NoteNumber, TillDate, FromLocation,ref pMsg);
         }
+        public EntryIIInnerView GetEntryIIData(string NoteNumber, int CentreCode, bool IsMainlocation, ref string pMsg) 
+        {
+            EntryIIInnerView result = new EntryIIInnerView();
+            try
+            {
+                return _EntryIIDBMapper.Map_EntryIIInnerView(_EntryIIDataSync.GetEntryIIData(NoteNumber, CentreCode, IsMainlocation, ref pMsg));
+            }
+            catch (Exception ex)
+            { pMsg = ex.Message; }
+            return result;
+        }
+
+
+
+
 
     }
 }

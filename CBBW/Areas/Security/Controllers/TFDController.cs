@@ -68,15 +68,19 @@ namespace CBBW.Areas.Security.Controllers
         {
             TFDHdrVM model = new TFDHdrVM();
             try
+            
+            
             {
 
                 if (NoteNumber != null)
                 {
-                    model.Notelist = _iTFD.GetNoteNumberList(user.CentreCode, 1, ref pMsg);
+                   
                     model.tfdHdr.NoteNumber = NoteNumber;
+                    model.Notelist = _iTFD.GetNoteNumberList(user.CentreCode, 1, ref pMsg);
                     if (RefNoteNumber != "")
                     {
-                        model.NoteNumber = model.Notelist.Where(x => x.NoteNumber == RefNoteNumber).FirstOrDefault().NoteNumber;
+                        model.NoteNumber = RefNoteNumber.Trim();
+                      
                     }
 
                     if (TempData["BtnSubmit"] != null)
@@ -117,6 +121,8 @@ namespace CBBW.Areas.Security.Controllers
             try
             {
                 TempData["HdrTFD"] = hdrvm;
+                string baseUrl = "/Security/TFD/Create?NoteNumber=" + hdrvm.tfdHdr.NoteNumber + "&RefNoteNumber=" + hdrvm.NoteNumber;
+                TempData["Backurl"] = baseUrl;
                 if (Submit == "FBD")
                 {
                     //if (TempData["TFDDetails"] != null)
@@ -168,14 +174,20 @@ namespace CBBW.Areas.Security.Controllers
             IEnumerable<TFDTravellingPerson> modelobj = _iTFD.GetENTTravellingPerson(NoteNumber, user.CentreCode, 1, ref pMsg);
             return View("~/Areas/Security/Views/TFD/_TravellingPersonDetails.cshtml", modelobj);
         }
-        public ActionResult DateWiseTourView(string NoteNumbers, int PersonType=0, int EmployeeNo=0, int PersonCentre=0)
+        public ActionResult DateWiseTourView(string NoteNumbers, int PersonType=0, int EmployeeNo=0, int PersonCentre=0, string ApprovalTime=null)
         {
             int status = EmployeeNo == 0?2:1;
             string urlDetails = "~/Areas/Security/Views/TFD/_DateWiseTourDataDetails.cshtml";
             string urlapproval = "~/Areas/Security/Views/TFD/_DateWiseTourDataApproval.cshtml";
             string URl = status == 2 ? urlapproval : urlDetails;
-            
-            IEnumerable <TFDDateWiseTourData> modelobj = _iTFD.GetENTDateWiseTourData(NoteNumbers, PersonType, EmployeeNo, PersonCentre, status, ref pMsg);
+            IEnumerable<TFDDateWiseTourData> modelobj;
+            if (ApprovalTime == null) { 
+           modelobj = _iTFD.GetENTDateWiseTourData(NoteNumbers, PersonType, EmployeeNo, PersonCentre, status, ref pMsg);
+            }
+            else
+            {
+                modelobj = _iTFD.GetTFDDateWiseTourData(NoteNumbers, PersonType, EmployeeNo, PersonCentre, status, ref pMsg);
+            }
             return View(URl, modelobj);
         }
         public ActionResult ViewDateWiseTourView(string NoteNumbers, int PersonType = 0, int EmployeeNo = 0, int PersonCentre = 0)
@@ -196,8 +208,8 @@ namespace CBBW.Areas.Security.Controllers
             TourFeedBackDetailsVM obj = new TourFeedBackDetailsVM();
             obj.NoteNumber = NoteNumber;
             obj.RefNoteNumber = RefNoteNumber;
-            string baseUrl = "/Security/TFD/Create?NoteNumber=" + NoteNumber + "&RefNoteNumber=" + RefNoteNumber;
-            ViewBag.BackUrl = baseUrl;
+           
+            ViewBag.BackUrl = TempData["Backurl"];
 
             ViewBag.BtnClear = "/Security/TFD/TourFeedBackDetails?NoteNumber=" + NoteNumber + "&RefNoteNumber=" + RefNoteNumber;
 
@@ -263,6 +275,7 @@ namespace CBBW.Areas.Security.Controllers
             modelvm.CanDelete = CanDelete;
             modelvm.CBUID = CBUID;
             modelvm.tfdHdr = _iTFD.GetTFDHeaderDetails(NoteNumber, user.CentreCode, 1, ref pMsg);
+          
             return View(modelvm);
         }
         [HttpPost]
@@ -283,16 +296,17 @@ namespace CBBW.Areas.Security.Controllers
             else if (Submit == "FBD")
             {
                 TempData["BackUrl"] = baseUrl;
-                return RedirectToAction("TourFeedBackDetailsView", "TFD", new { NoteNumber = modelobj.tfdHdr.NoteNumber, CBUID = modelobj.CBUID });
+                return RedirectToAction("TourFeedBackDetailsView", "TFD", new { NoteNumber = modelobj.tfdHdr.NoteNumber, CBUID = modelobj.CBUID, ApprovalTime = modelobj.tfdHdr.ApprovalTime });
             }
 
             return View(modelobj);
         }
-        public ActionResult TourFeedBackDetailsView(string NoteNumber, int CBUID = 0)
+        public ActionResult TourFeedBackDetailsView(string NoteNumber, int CBUID = 0, string ApprovalTime=null)
         {
             ViewBag.BackUrl = TempData["BackUrl"];
             TourFeedBackDetailsVM fbmodel = new TourFeedBackDetailsVM();
             fbmodel.NoteNumber = NoteNumber;
+            fbmodel.ApprovalTime = ApprovalTime;
             fbmodel.tfdfbdetails = _iTFD.GetTFDTourFeedBackDetails(NoteNumber, user.CentreCode, 1, ref pMsg);
             return View(fbmodel);
         }

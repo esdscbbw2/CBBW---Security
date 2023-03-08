@@ -20,5 +20,6 @@ namespace CBBW.BOL.TFD
         public string AuthEmployeeCodeName { get; set; }
         public int CentreCode { get; set; }
         public string CentreCodeName { get; set; }
+        public string PersonTypeText { get; set; }
     }
 }

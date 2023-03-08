@@ -91,5 +91,22 @@ namespace CBBW.DAL.DBMapper
             }
             return result;
         }
+        public CustomOptionsWithString Map_CustomOptionsWithString(DataRow dr)
+        {
+            CustomOptionsWithString result = new CustomOptionsWithString();
+            if (dr != null)
+            {
+                if (!DBNull.Value.Equals(dr["ID"]))
+                    result.ID = dr["ID"].ToString();
+                if (!DBNull.Value.Equals(dr["DisplayText"]))
+                    result.DisplayText = dr["DisplayText"].ToString();
+                if (!DBNull.Value.Equals(dr["IsSelected"]))
+                    result.IsSelected = bool.Parse(dr["IsSelected"].ToString());
+            }
+            return result;
+        }
+
+
+
     }
 }

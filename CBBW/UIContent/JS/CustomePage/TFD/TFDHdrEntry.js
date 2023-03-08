@@ -1,23 +1,20 @@
 ﻿$(document).ready(function () {
-    $('#tfdHdr_EntEntryDate').val('');
-    $('#tfdHdr_EntEntryTime').val('');
-    $('#tfdHdr_TourFromDate').val('');
-    $('#tfdHdr_TourToDate').val('');
- 
-    $('#NoteNumber').change(function () {
+
+    
+    $('#NoteNumber2').change(function () {
         Notenumberchanged($(this).val());
     });
-    Notenumberchanged($('#NoteNumber').val());
+    Notenumberchanged($('#NoteNumber2').val());
     var btnDisplays = $('#submitcount').val();
     if (btnDisplays == 1) {
-        $('#NoteNumber').makeDisable();
+        $('#NoteNumber2').makeDisable();
     } else {
-        $('#NoteNumber').makeEnabled();
+        $('#NoteNumber2').makeEnabled();
     }
 });
 function Notenumberchanged(notenumber) {
     $('#TourFB').makeDisable();
-    var noteCtrl = $('#NoteNumber');
+    var noteCtrl = $('#NoteNumber2');
     var selectedvalue = 0;
     if (notenumber != '') { noteCtrl.isValid(); 
     $.ajax({
@@ -32,7 +29,7 @@ function Notenumberchanged(notenumber) {
                 $('#tfdHdr_TourFromDate').val(item.tfdHdr.TourFromDatestr);
                 $('#tfdHdr_TourToDate').val(item.tfdHdr.TourToDatestr);
                 $('#tfdHdr_PurposeOfVisit').val(item.tfdHdr.PurposeOfVisit);
-                $('#TourFB').makeEnabled();
+                
             });
         }
     });
@@ -48,7 +45,8 @@ function Notenumberchanged(notenumber) {
 async function GetEmployeeList(notenumber, selectedvalue) {
    getDropDownDataWithSelectedValue('EmployeeNo', 'Select Employee', '/Security/TFD/GetENTAuthEmployeeList?NoteNumber=' + notenumber, selectedvalue );
  
-}
+};
+
 async function GetTPDetails(notenumber) {
    // var notenumber = $('#NoteNumber').val();
     var TPDetailsDiv = $('#TPDiv');
@@ -61,6 +59,7 @@ async function GetTPDetails(notenumber) {
         success: function (result) {
             TPDetailsDiv.removeClass('inVisible');
             TPDetailsDiv.html(result);
+           
         },
         error: function (xhr, status) {
             TPDetailsDiv.html(xhr.responseText);
@@ -132,6 +131,7 @@ function ValidateControl() {
     } else {
         $(target).removeClass('is-valid').addClass('is-invalid');
     }
+   
     EnableSubmitBtn();
 
 };
@@ -167,6 +167,7 @@ function EnableSubmitBtn() {
         SubmitBtn.makeEnabled();
     }
 };
+
 
 
 

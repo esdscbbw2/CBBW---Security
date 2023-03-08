@@ -12,7 +12,9 @@
         <div class="col-md-12" style="position: relative;">
             <div class="heading_text_btn mb-4 mt-4">
                 <div class="leftButton">
-                    <button type="submit" class="btn btn-primary me-2" onclick="window.location.href='ETD_vehicle_allotment_entry_2_main_location_add.html';">
+                    <button id="btnBack" type="button"
+                            onclick="window.location.href='/Security/EntryII/MLCreate';"
+                            class="btn btn-primary me-2">
                         <i data-feather="arrow-left-circle"></i>
                         Back
                     </button>
@@ -31,149 +33,151 @@
         <div class="heading_text_btn2 d-block mb-3">
             <h2> Main Location Vehicle & Travelling Person OUT & IN Details:</h2>
         </div>
-        <div class="heading_text_btn2 d-block mb-4">
-            <h2 class="text-center">Vehicle OUT & IN Details </h2>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                @*<form class="form-sample form-inline row ms-auto">*@
-                <div class="row d-flex align-items-center mb-3">
-                    <div class="col-md-2 col-form-label">
-                        <label>Vehicle Provided :</label>
+        @if (Model.VehicleDetails != null)
+        {
+            <div class="heading_text_btn2 d-block mb-4">
+                <h2 class="text-center">Vehicle OUT & IN Details </h2>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    @*<form class="form-sample form-inline row ms-auto">*@
+                    <div class="row d-flex align-items-center mb-3">
+                        <div class="col-md-2 col-form-label">
+                            <label>Vehicle Provided :</label>
+                        </div>
+                        <div class="col-md-6 text-left">
+                            <input type="text" class="form-control" value="@(Model.IsVehicleProvided?"Yes":"No")" disabled="">
+                        </div>
                     </div>
-                    <div class="col-md-6 text-left">
-                        <input type="text" class="form-control" value="@(Model.IsVehicleProvided?"Yes":"No")" disabled="">
+                    <div class="row d-flex align-items-center mb-3">
+                        <div class="col-md-2 col-form-label">
+                            <label>Driver Name :</label>
+                        </div>
+                        <div class="col-md-6 text-left">
+                            <input type="text" class="form-control" value="@(Model.VehicleDetails!=null?Model.VehicleDetails.DriverName:"")" disabled="">
+                        </div>
                     </div>
-                </div>
-                <div class="row d-flex align-items-center mb-3">
-                    <div class="col-md-2 col-form-label">
-                        <label>Driver Name :</label>
-                    </div>
-                    <div class="col-md-6 text-left">
-                        <input type="text" class="form-control" value="@Model.VehicleDetails.DriverName" disabled="">
-                    </div>
-                </div>
-                @*</form>*@
-                <div class="table-responsive max-content">
-                    <table class="table table-bordered w-100" id="VDTable">
-                        <thead>
-                            <tr>
-                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="5%">Vehicle No. </th>
-                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="5%">Vehicle Type</th>
-                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
-                                    Model Name
-                                </th>
-                                <th colspan="5" style="text-align: center; vertical-align: middle;" scope="col">
-                                    Actual Tour OUT
-                                </th>
-                                <th colspan="6" style="text-align: center; vertical-align: middle;" scope="col">
-                                    Actual Tour IN
-                                </th>
-                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="10%">Remarks</th>
-                            </tr>
-                            <tr>
-                                <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">
-                                    RFID Card No.
-                                </th>
-                                <th scope="col" style="text-align: center; vertical-align: middle;" width="8%">Date</th>
-                                <th scope="col" style="text-align: center; vertical-align: middle;" width="8%">Time</th>
-                                <th scope="col" style="text-align: center; vertical-align: middle;">KM Out</th>
-                                <th scope="col" style="text-align: center; vertical-align: middle;">
-                                    Carrying Material Out?
-                                </th>
-                                <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">
-                                    RFID Card No.
-                                </th>
-                                <th scope="col" style="text-align: center; vertical-align: middle;" width="8%">Date</th>
-                                <th scope="col" style="text-align: center; vertical-align: middle;" width="8%">Time</th>
-                                <th scope="col" style="text-align: center; vertical-align: middle;">
-                                    Required KM IN
-                                </th>
-                                <th scope="col" style="text-align: center; vertical-align: middle;" width="8%">
-                                    Actual KM In
-                                </th>
-                                <th scope="col" style="text-align: center; vertical-align: middle;">
-                                    Carrying Material In Note No.
-                                </th>
-                            </tr>
-
-                        </thead>
-                        <tbody>
-                            @if (Model.VehicleDetails != null)
-                            {
+                    @*</form>*@
+                    <div class="table-responsive max-content">
+                        <table class="table table-bordered w-100" id="VDTable">
+                            <thead>
                                 <tr>
-                                    <td class="text-center htmlVal" data-name="VehicleNumber">@Model.VehicleDetails.VehicleNumber</td>
-                                    <td class="text-center htmlVal" data-name="VehicleType">@Model.VehicleDetails.VehicleType </td>
-                                    <td class="text-center htmlVal" data-name="ModelName">@Model.VehicleDetails.ModelName </td>
-                                    <td class="text-center">
-                                        <div id="RFIDOutDiv" class="inVisible htmlVal" data-name="OutRFIDCard"></div>
-                                        @Html.DropDownListFor(m => m.RFIDCardOut,
-                                                new SelectList(Model.RFIDCardList, "RFIDCardNo", "RFIDCardNo"), "NA",
-                                                htmlAttributes: new
-                                                {
-                                                    @class = "form-select pointer is-invalid",
-                                                    onchange = "RFIDOutChanged()"
-                                                })
-                                    </td>
-                                    <td class="text-center htmlVal" data-name="ActualTourOutDate">@Model.SchFromDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
-                                    <td class="text-center">
-                                        <div id="VTourOutTimeCtrl" class="htmlVal" data-name="ActualTourOutTime">-</div>
-                                        <div>
-                                            <input id="TourOutTimeCtrl" type="text"
-                                                   class="form-control timePicker"
-                                                   onblur="TimeInCtrlBlured()"
-                                                   placeholder="Select Time">
-                                        </div>
-                                    </td>
-                                    <td class="text-center htmlVal" data-name="KMOut">@Model.VehicleDetails.KMOut</td>
-                                    <td class="text-center htmlVal" data-name="IsCarryingMaterialOut">@(Model.VehicleDetails.MaterialStatus==1?"Yes":"No")</td>
-                                    <td class="text-center">
-                                        <div id="RFIDInDiv" class="inVisible htmlVal" data-name="InRFIDCard"></div>
-                                        @Html.DropDownListFor(m => m.RFIDCardIn,
-                                                new SelectList(Model.RFIDCardList, "RFIDCardNo", "RFIDCardNo"), "NA",
-                                                htmlAttributes: new
-                                                {
-                                                    @class = "form-select pointer is-invalid",
-                                                    onchange = "RFIDInChanged()"
-                                                })
-                                    </td>
-                                    <td class="text-center htmlVal" data-name="ActualTourInDate">@Model.SchToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
-                                    <td class="text-center">
-                                        <div id="VTourInTimeCtrl" class="htmlVal" data-name="ActualTourInTime">-</div>
-                                        <div>
-                                            <input id="TourInTimeCtrl" type="text" class="form-control timePicker"
-                                                   onblur="TimeInCtrlBlured()"
-                                                   placeholder="Select Time">
-                                        </div>
-                                    </td>
-                                    <td class="text-center htmlVal" data-name="RequiredKMIn">@Model.RequiredKMIn</td>
-                                    <td class="text-center">
-                                        <div class="qty">
-                                            <input data-name="KMIn" type="text" name="qty" maxlength="12" value="@(Math.Round(Model.RequiredKMIn*1.15,0))" title="" class="input-text">
-                                            <div class="qty_inc_dec">
-                                                <i class="increment" onclick="incrementQty()">
-                                                    <i data-feather="chevron-up"></i>
-                                                </i><i class="decrement" onclick="decrementQty()">
-                                                    <i data-feather="chevron-down"></i>
-                                                </i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="text-center htmlVal" data-name="IsCarryingMaterialIn">@(Model.VehicleDetails.MaterialStatus==1?"Yes":"No") </td>
-                                    <td class="text-center">
-                                        <textarea data-name="VRemarks" name="" id=""
-                                                  cols="20" rows="2"
-                                                  class="form-control pointer-default"></textarea>
-                                        <div class="inVisible htmlVal" data-name="DriverID">@Model.VehicleDetails.DriverNumber</div>
-                                        <div class="inVisible htmlVal" data-name="DriverName">@Model.VehicleDetails.DriverName</div>
-                                    </td>
+                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="5%">Vehicle No. </th>
+                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="5%">Vehicle Type</th>
+                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                        Model Name
+                                    </th>
+                                    <th colspan="5" style="text-align: center; vertical-align: middle;" scope="col">
+                                        Actual Tour OUT
+                                    </th>
+                                    <th colspan="6" style="text-align: center; vertical-align: middle;" scope="col">
+                                        Actual Tour IN
+                                    </th>
+                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="10%">Remarks</th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
+                                <tr>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">
+                                        RFID Card No.
+                                    </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="8%">Date</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="8%">Time</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">KM Out</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">
+                                        Carrying Material Out?
+                                    </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">
+                                        RFID Card No.
+                                    </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="8%">Date</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="8%">Time</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">
+                                        Required KM IN
+                                    </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="8%">
+                                        Actual KM In
+                                    </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">
+                                        Carrying Material In Note No.
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.VehicleDetails != null)
+                                {
+                                    <tr>
+                                        <td id="mVehicleNo" class="text-center htmlVal" data-name="VehicleNumber">@Model.VehicleDetails.VehicleNumber</td>
+                                        <td class="text-center htmlVal" data-name="VehicleType">@Model.VehicleDetails.VehicleType </td>
+                                        <td class="text-center htmlVal" data-name="ModelName">@Model.VehicleDetails.ModelName </td>
+                                        <td class="text-center">
+                                            <div id="RFIDOutDiv" class="inVisible htmlVal" data-name="OutRFIDCard"></div>
+                                            @Html.DropDownListFor(m => m.RFIDCardOut,
+                                                    new SelectList(Model.RFIDCardList, "RFIDCardNo", "RFIDCardNo"), "NA",
+                                                    htmlAttributes: new
+                                                    {
+                                                        @class = "form-select pointer",
+                                                        onchange = "RFIDOutChanged()"
+                                                    })
+                                        </td>
+                                        <td id="mFromDate" class="text-center htmlVal" data-name="ActualTourOutDate">@Model.SchFromDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
+                                        <td class="text-center">
+                                            <div id="VTourOutTimeCtrl" class="htmlVal" data-name="ActualTourOutTime">-</div>
+                                            <div>
+                                                <input id="TourOutTimeCtrl" type="text"
+                                                       class="form-control timePicker"
+                                                       onblur="TimeInCtrlBlured()"
+                                                       placeholder="Select Time">
+                                            </div>
+                                        </td>
+                                        <td class="text-center htmlVal" data-name="KMOut">@Model.VehicleDetails.KMOut</td>
+                                        <td class="text-center htmlVal" data-name="IsCarryingMaterialOut">@(Model.VehicleDetails.MaterialStatus==1?"Yes":"No")</td>
+                                        <td class="text-center">
+                                            <div id="RFIDInDiv" class="inVisible htmlVal" data-name="InRFIDCard"></div>
+                                            @Html.DropDownListFor(m => m.RFIDCardIn,
+                                                    new SelectList(Model.RFIDCardList, "RFIDCardNo", "RFIDCardNo"), "NA",
+                                                    htmlAttributes: new
+                                                    {
+                                                        @class = "form-select pointer",
+                                                        onchange = "RFIDInChanged()"
+                                                    })
+                                        </td>
+                                        <td id="mToDate" class="text-center htmlVal" data-name="ActualTourInDate">@Model.SchToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
+                                        <td class="text-center">
+                                            <div id="VTourInTimeCtrl" class="htmlVal" data-name="ActualTourInTime">-</div>
+                                            <div>
+                                                <input id="TourInTimeCtrl" type="text" class="form-control timePicker"
+                                                       onblur="TimeInCtrlBlured()"
+                                                       placeholder="Select Time">
+                                            </div>
+                                        </td>
+                                        <td class="text-center htmlVal" data-name="RequiredKMIn">@Model.RequiredKMIn</td>
+                                        <td class="text-center">
+                                            <div class="qty">
+                                                <input data-name="KMIn" type="text" name="qty" maxlength="12" value="@(Math.Round(Model.RequiredKMIn*1.15,0))" title="" class="input-text">
+                                                <div class="qty_inc_dec">
+                                                    <i class="increment" onclick="incrementQty()">
+                                                        <i data-feather="chevron-up"></i>
+                                                    </i><i class="decrement" onclick="decrementQty()">
+                                                        <i data-feather="chevron-down"></i>
+                                                    </i>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center htmlVal" data-name="IsCarryingMaterialIn">@(Model.VehicleDetails.MaterialStatus==1?"Yes":"No") </td>
+                                        <td class="text-center">
+                                            <textarea data-name="VRemarks" name="" id=""
+                                                      cols="20" rows="2"
+                                                      class="form-control pointer-default"></textarea>
+                                            <div class="inVisible htmlVal" data-name="DriverID">@Model.VehicleDetails.DriverNumber</div>
+                                            <div class="inVisible htmlVal" data-name="DriverName">@Model.VehicleDetails.DriverName</div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
+        }
     </div>
 </div>
 <div class="mt-4">
@@ -250,7 +254,7 @@
                                             <td class="text-center htmlVal" data-name="DesignationCodenName"> @item.DesignationCodenName</td>
                                             <td class="text-center htmlVal" data-name="PersonCenterName">@item.PersonCenterName</td>
                                             <td class="text-center htmlVal" data-name="AuthorisedEmpNoName">@item.AuthorisedEmpNoName</td>
-                                            <td class="text-center htmlVal">@item.TourCategoryText</td>
+                                            <td class="text-center htmlVal" data-name="TourCategoryText">@item.TourCategoryText</td>
                                         </tr>
                                         SL += 1;
                                     }
@@ -348,106 +352,13 @@
             </div>
         </div>
     </div>
-
     <div class="heading_text_btn2 d-block mb-3">
         <h2 class="text-center">Material Out Details </h2>
     </div>
     <div class="card mb-4">
         <div class="card-body">
             <div class="col-md-12">
-
-                <div class="heading_text_btn2 d-block mb-3">
-                    <h2 class="text-center">Reference DC Details</h2>
-                </div>
-                <div class="table-responsive newTable">
-                    <table class="table table-bordered btnalign inVisible" id="table">
-                        <thead>
-                            <tr>
-                                <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
-                                    Ref. Note No.
-                                </th>
-                                <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
-                                    Date
-                                </th>
-                                <th style="text-align: center; vertical-align: middle;" scope="col">
-                                    From Location Code & Name
-                                </th>
-                                <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
-                                    To Location Code & Name
-                                </th>
-                                <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">Remarks </th>
-                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;background: pink;color: #000;">
-                                    Action
-
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th class="text-center">
-                                    <select class="form-select" aria-label="Default select example">
-                                        <option value="1">MT001</option>
-                                        <option value="2">MT002</option>
-                                        <option value="3">MT003</option>
-                                        <option value="4">MT004</option>
-                                    </select>
-                                </th>
-                                <th class="text-center">
-                                    01/01/2023
-                                </th>
-                                <th class="text-center">
-                                    01/Nizambad
-                                </th>
-                                <th class="text-center"> 06/ Koratla</th>
-                                <td class="text-center">
-                                    <textarea name="" id="" cols="20" rows="2" class="form-control pointer-default">   </textarea>
-                                </td>
-                                <td class="text-center">
-                                    <span class="actionBtn d-block">
-                                        <a href="#div_A">
-                                            <button type="button" class="btn primaryLink" onclick="Content_A(); Hide_Content_B();" data-toggle="tooltip" data-placement="top"
-                                                    title="Details">
-                                                <i data-feather="eye"></i>
-                                            </button>
-                                        </a>
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="text-center">
-                                    <select class="form-select" aria-label="Default select example">
-                                        <option value="1">MT001</option>
-                                        <option value="2">MT002</option>
-                                        <option value="3">MT003</option>
-                                        <option value="4">MT004</option>
-                                    </select>
-                                </th>
-                                <th class="text-center">
-                                    01/01/2023
-                                </th>
-                                <th class="text-center">
-                                    01/Nizambad
-                                </th>
-                                <th class="text-center"> 06/ Koratla</th>
-                                <td class="text-center">
-                                    <textarea name="" id="" cols="20" rows="2" class="form-control pointer-default">   </textarea>
-                                </td>
-                                <td class="text-center">
-                                    <span class="actionBtn d-block">
-                                        <a href="#div_B">
-                                            <button type="button" class="btn primaryLink" onclick="Content_B(); Hide_Content_A();" data-toggle="tooltip" data-placement="top"
-                                                    title="Pending">
-                                                <i data-feather="eye"></i>
-                                            </button>
-                                        </a>
-                                    </span>
-                                </td>
-                            </tr>
-
-                        </tbody>
-                    </table>
-
-
+                <div id="RefDCOutDiv">
 
                 </div>
                 <div class="heading_text_btn2 d-block mb-3">
@@ -455,7 +366,6 @@
                         Item wise Details
                     </h2>
                 </div>
-
                 <div class="table-responsive newTable inVisible">
                     <div id="div_A">
                         <table class="table table-bordered btnalign">
@@ -587,7 +497,6 @@
                     </div>
                 </div>
 
-
             </div>
         </div>
     </div>
@@ -598,100 +507,7 @@
     <div class="card mb-4">
         <div class="card-body">
             <div class="col-md-12">
-                <div class="heading_text_btn2 d-block mb-3">
-                    <h2 class="text-center">Reference DC Details</h2>
-                </div>
-                <div class="table-responsive newTable">
-                    <table class="table table-bordered btnalign inVisible" id="table1">
-                        <thead>
-                            <tr>
-                                <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
-                                    Ref. Note No.
-                                </th>
-                                <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
-                                    Date
-                                </th>
-                                <th style="text-align: center; vertical-align: middle;" scope="col">
-                                    From Location Code & Name
-                                </th>
-                                <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
-                                    To Location Code & Name
-                                </th>
-                                <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">Remarks </th>
-                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;background: pink;color: #000;">
-                                    Action
-
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th class="text-center">
-                                    <select class="form-select" aria-label="Default select example">
-                                        <option value="1">MT001</option>
-                                        <option value="2">MT002</option>
-                                        <option value="3">MT003</option>
-                                        <option value="4">MT004</option>
-                                    </select>
-                                </th>
-                                <th class="text-center">
-                                    01/01/2023
-                                </th>
-                                <th class="text-center"> 06/ Koratla</th>
-                                <th class="text-center">
-                                    01/Nizambad
-                                </th>
-
-                                <td class="text-center">
-                                    <textarea name="" id="" cols="20" rows="2" class="form-control pointer-default">   </textarea>
-                                </td>
-                                <td class="text-center">
-                                    <span class="actionBtn d-block">
-                                        <a href="#div_C">
-                                            <button type="button" class="btn primaryLink" onclick="Content_C(); Hide_Content_D();" data-toggle="tooltip" data-placement="top"
-                                                    title="Pending">
-                                                <i data-feather="eye"></i>
-                                            </button>
-                                        </a>
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="text-center">
-                                    <select class="form-select" aria-label="Default select example">
-                                        <option value="1">MT001</option>
-                                        <option value="2">MT002</option>
-                                        <option value="3">MT003</option>
-                                        <option value="4">MT004</option>
-                                    </select>
-                                </th>
-                                <th class="text-center">
-                                    01/01/2023
-                                </th>
-                                <th class="text-center"> 06/ Koratla</th>
-                                <th class="text-center">
-                                    01/Nizambad
-                                </th>
-
-                                <td class="text-center">
-                                    <textarea name="" id="" cols="20" rows="2" class="form-control pointer-default">   </textarea>
-                                </td>
-                                <td class="text-center">
-                                    <span class="actionBtn d-block">
-                                        <a href="#div_D">
-                                            <button type="button" class="btn primaryLink" onclick="Content_D(); Hide_Content_C();" data-toggle="tooltip" data-placement="top"
-                                                    title="Pending">
-                                                <i data-feather="eye"></i>
-                                            </button>
-                                        </a>
-                                    </span>
-                                </td>
-                            </tr>
-
-                        </tbody>
-                    </table>
-
-
+                <div id="RefDCInDiv">
 
                 </div>
                 <div class="heading_text_btn2 d-block mb-3">
@@ -699,7 +515,6 @@
                         Item wise Details
                     </h2>
                 </div>
-
                 <div class="table-responsive newTable">
                     <div id="div_C">
                         <table class="table table-bordered btnalign inVisible">
@@ -764,77 +579,8 @@
 
                             </tbody>
                         </table>
-                    </div>
-                    <div id="div_D">
-                        <table class="table table-bordered btnalign inVisible">
-                            <thead>
-                                <tr>
-                                    <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
-                                        Item Type
-
-                                    </th>
-
-                                    <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
-                                        Item Code & Name
-
-                                    </th>
-                                    <th style="text-align: center; vertical-align: middle;" scope="col" rowspan="2">
-                                        UOM
-                                    </th>
-                                    <th scope="col" style="text-align: center; vertical-align: middle;" colspan="2">
-                                        DC Quantity
-                                    </th>
-
-                                </tr>
-                                <tr>
-                                    <th scope="col" style="text-align: center; vertical-align: middle;">BAGs</th>
-                                    <th scope="col" style="text-align: center; vertical-align: middle; ">KGs</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row" class="text-center">Paper</th>
-                                    <td class="text-center">
-                                        3234 / Karim
-                                    </td>
-
-                                    <td class="text-center">
-                                        KG
-                                    </td>
-                                    <td class="text-center">
-                                        56
-                                    </td>
-                                    <td class="text-center">
-                                        NA
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row" class="text-center">Glue</th>
-
-                                    <td class="text-center">
-                                        1566 / Bangla
-                                    </td>
-
-                                    <td class="text-center">
-                                        KG
-                                    </td>
-                                    <td class="text-center">
-                                        60
-                                    </td>
-                                    <td class="text-center">
-                                        NA
-                                    </td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-                    </div>
-
-
-
+                    </div>                    
                 </div>
-
-
             </div>
         </div>
     </div>
@@ -881,21 +627,44 @@
             };
     </script>
     <script>
-            //$(document).ready(function () {
-            //    var iDiv = $('#VIOViewDiv');
-            //    var dataSourceURL = '/EntryII/VIODetails?NoteNumber=1';
-            //    $.ajax({
-            //        url: dataSourceURL,
-            //        contentType: 'application/html; charset=utf-8',
-            //        type: 'GET',
-            //        dataType: 'html',
-            //        success: function (result) {
-            //            iDiv.html(result);
-            //        },
-            //        error: function (xhr, status) {
+        //$(document).ready(function () {
+        //    var vehicleno = 'abc';
+        //    var fromdate = '2023-01-11';
+        //    var todate = '2023-01-31';
+        //    var iDiv = $('#VIOViewDiv');
+        //    var dataSourceURL = '/EntryII/GetRefDCPartial?NoteNumber=1';
+        //    $.ajax({
+        //        url: dataSourceURL,
+        //        contentType: 'application/html; charset=utf-8',
+        //        type: 'GET',
+        //        dataType: 'html',
+        //        success: function (result) {
+        //            iDiv.html(result);
+        //        },
+        //        error: function (xhr, status) {
 
-            //        }
-            //    })
-            //});
+        //        }
+        //    })
+        //});
+    </script>
+    <script>
+        function incrementQty() {
+            var value = document.querySelector('input[name="qty"]').value;
+            var cardQty = document.querySelector(".cart-qty");
+            value = isNaN(value) ? 1 : value;
+            value++;
+            document.querySelector('input[name="qty"]').value = value;
+            cardQty.innerHTML = value;
+            cardQty.classList.add("rotate-x");
+        }
+        function decrementQty() {
+            var value = document.querySelector('input[name="qty"]').value;
+            var cardQty = document.querySelector(".cart-qty");
+            value = isNaN(value) ? 1 : value;
+            value > 1 ? value-- : value;
+            document.querySelector('input[name="qty"]').value = value;
+            cardQty.innerHTML = value;
+            cardQty.classList.add("rotate-x");
+        }
     </script>
 }

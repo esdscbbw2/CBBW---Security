@@ -8,6 +8,7 @@
     @using (Html.BeginForm("TourFeedBackDetails", "TFD", FormMethod.Post))
     {
         @Html.HiddenFor(x => x.NoteNumber)
+        @Html.HiddenFor(x => x.submitcount)
 
         <div class="row newTable">
             <div class="fixedElement">
@@ -62,7 +63,13 @@
                                                     <td class="text-center">@item.CenterCodeNametxt</td>
                                                     <td class="text-center">@item.TourFeedBack</td>
                                                     @if (@item.ActionTakens == true)
-                                                    {<td class="text-center">Yes</td>}else {<td class="text-center">No</td>}
+                                                    {
+                                                        <td class="text-center">Yes</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td class="text-center">No</td>
+                                                    }
 
                                                     <td class="text-center">@item.ConcernDeptName</td>
                                                 </tr>
@@ -84,7 +91,15 @@
                         <ul style="list-style:none;">
                             <li style="font-size: 16px;">
                                 All Tasks Mentioned Above & Require Action To Be Taken Are Assigned To The Concern DIC Task Sheet For Further Action:
-                                <input type="text" class="form-control content border-green width-85 pointer-none" value="Yes" disabled="">
+                                @if (Model.ApprovalTime != null)
+                                {
+                                    <input type="text" class="form-control content border-green width-85 pointer-none" value="Yes" disabled="">
+                                }
+                                else
+                                {
+                                    <input type="text" class="form-control content border-green width-85 pointer-none" value="-" disabled="">
+                                }
+
                             </li>
                         </ul>
                     </div>
@@ -114,7 +129,7 @@
             function BackUrls() {
                 var url = "@ViewBag.BackUrl";
                 var urlbk = url.replace(/&amp;/g, '&');
-                
+
                 window.location.href = urlbk;
             };
 

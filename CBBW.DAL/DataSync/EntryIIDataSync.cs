@@ -353,7 +353,25 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return 0; }
         }
-
+        public DataSet GetEntryIIData(string NoteNumber,int CentreCode,bool IsMainlocation, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[3];
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NVarChar, 25);
+                para[paracount++].Value = NoteNumber;
+                para[paracount] = new SqlParameter("@CentreCode", SqlDbType.Int);
+                para[paracount++].Value = CentreCode;
+                para[paracount] = new SqlParameter("@IsMainLocation", SqlDbType.Bit);
+                para[paracount++].Value = IsMainlocation;
+                using (SQLHelper sql = new SQLHelper("[ENT].[GetEntryIIData]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataSet(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
 
 
 

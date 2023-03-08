@@ -413,6 +413,176 @@ namespace CBBW.DAL.DBMapper
             result.EmpDatesForPunching = forPunching;
             return result;
         }
+        public SaveTPDetails Map_SaveTPDetails(DataRow dr) 
+        {
+            SaveTPDetails result = new SaveTPDetails();
+            try
+            {
+                if (dr != null)
+                {                    
+                    if (!DBNull.Value.Equals(dr["PersonType"]))
+                        result.PersonType = int.Parse(dr["PersonType"].ToString());
+                    if (!DBNull.Value.Equals(dr["PersonTypeText"]))
+                        result.PersonTypeText = dr["PersonTypeText"].ToString();
+                    if (!DBNull.Value.Equals(dr["PersonID"]))
+                        result.PersonID = int.Parse(dr["PersonID"].ToString());
+                    if (!DBNull.Value.Equals(dr["PersonIDName"]))
+                        result.PersonIdnName = dr["PersonIDName"].ToString();
+                    if (!DBNull.Value.Equals(dr["DesignationCode"]))
+                        result.DesignationCode = int.Parse(dr["DesignationCode"].ToString());
+                    if (!DBNull.Value.Equals(dr["DesignationCodeText"]))
+                        result.DesignationCodenName = dr["DesignationCodeText"].ToString();
+                    if (!DBNull.Value.Equals(dr["PersonCentre"]))
+                        result.PersonCenterCode = int.Parse(dr["PersonCentre"].ToString());
+                    if (!DBNull.Value.Equals(dr["PersonCentreName"]))
+                        result.PersonCenterName = dr["PersonCentreName"].ToString();
+                    if (!DBNull.Value.Equals(dr["AuthEmployeeCode"]))
+                        result.AuthorisedEmpNo = int.Parse(dr["AuthEmployeeCode"].ToString());
+                    if (!DBNull.Value.Equals(dr["AuthEmployeeCodeName"]))
+                        result.AuthorisedEmpNoName = dr["AuthEmployeeCodeName"].ToString();
+                    if (!DBNull.Value.Equals(dr["IsVehicleProvided"]))
+                        result.IsVehicleProvided = bool.Parse(dr["IsVehicleProvided"].ToString());
+                    if (!DBNull.Value.Equals(dr["TADADenied"]))
+                        result.TADADenied = bool.Parse(dr["TADADenied"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsDriver"]))
+                        result.Isdriver = int.Parse(dr["IsDriver"].ToString());
+                    if (!DBNull.Value.Equals(dr["TourCategoryText"]))
+                        result.TourCategoryText = dr["TourCategoryText"].ToString();
+                }
+            }
+            catch { }
+            return result;
+        }
+        public SaveTPDWDetails Map_SaveTPDWDetails(DataRow dr) 
+        {
+            SaveTPDWDetails result = new SaveTPDWDetails();
+            try
+            {
+                if (dr != null)
+                {
+                    if (!DBNull.Value.Equals(dr["PersonID"]))
+                        result.PersonID = int.Parse(dr["PersonID"].ToString());
+                    if (!DBNull.Value.Equals(dr["TourCategoryCodes"]))
+                        result.DWTourCategoryIds = dr["TourCategoryCodes"].ToString();
+                    if (!DBNull.Value.Equals(dr["TourCategoryText"]))
+                        result.DWTourCategoryNames = dr["TourCategoryText"].ToString();
+                    if (!DBNull.Value.Equals(dr["CentreCodes"]))
+                        result.DWTourCenterCodeIds = dr["CentreCodes"].ToString();
+                    if (!DBNull.Value.Equals(dr["CentreCodeName"]))
+                        result.DWTourCenterNames = dr["CentreCodeName"].ToString();
+                    if (!DBNull.Value.Equals(dr["BranchCodes"]))
+                        result.DWBranchCodes = dr["BranchCodes"].ToString();
+                    if (!DBNull.Value.Equals(dr["BranchNames"]))
+                        result.DWBranchNames = dr["BranchNames"].ToString();
+                    if (!DBNull.Value.Equals(dr["SchFromDate"]))
+                        result.DWFromDate =DateTime.Parse(dr["SchFromDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["RequiredTourInDate"]))
+                        result.RequiredTourInDate = DateTime.Parse(dr["RequiredTourInDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["RequiredTourInTime"]))
+                        result.RequiredTourInTime = DateTime.Parse(dr["RequiredTourInTime"].ToString());
+                    if (!DBNull.Value.Equals(dr["ActualTourInDate"]))
+                        result.ActualTourInDate = DateTime.Parse(dr["ActualTourInDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["ActualTourInTime"]))
+                        result.ActualTourInTime = DateTime.Parse(dr["ActualTourInTime"].ToString());
+                    if (!DBNull.Value.Equals(dr["SchToDate"]))
+                        result.DWToDate = DateTime.Parse(dr["SchToDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["ActualTourOutDate"]))
+                        result.ActualTourOutDate = DateTime.Parse(dr["ActualTourOutDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["ActualTourOutTime"]))
+                        result.ActualTourOutTime = DateTime.Parse(dr["ActualTourOutTime"].ToString());
+                    if (!DBNull.Value.Equals(dr["Status"]))
+                        result.TourStatus = int.Parse(dr["Status"].ToString());
+                    if (!DBNull.Value.Equals(dr["LNPunchStatus"]))
+                        result.LNPunchStatus = dr["LNPunchStatus"].ToString();
+                    if (!DBNull.Value.Equals(dr["EMPunchStatus"]))
+                        result.EMPunchStatus = dr["EMPunchStatus"].ToString();
+                    if (!DBNull.Value.Equals(dr["SchFromTime"]))
+                        result.SchFromTime =DateTime.Parse(dr["SchFromTime"].ToString());
+                }
+            }
+            catch { }
+            return result;
+        }
+        public SaveVehicleDetails Map_SaveVehicleDetails(DataRow dr) 
+        {
+            SaveVehicleDetails result = new SaveVehicleDetails();
+            try
+            {
+                if (dr != null)
+                {
+                    if (!DBNull.Value.Equals(dr["DriverNo"]))
+                        result.DriverID = int.Parse(dr["DriverNo"].ToString());
+                    if (!DBNull.Value.Equals(dr["DriverNoName"]))
+                        result.DriverName = dr["DriverNoName"].ToString();
+                    if (!DBNull.Value.Equals(dr["VehicleNo"]))
+                        result.VehicleNumber = dr["VehicleNo"].ToString();
+                    if (!DBNull.Value.Equals(dr["VehicleType"]))
+                        result.VehicleType = dr["VehicleType"].ToString();
+                    if (!DBNull.Value.Equals(dr["ModelName"]))
+                        result.ModelName = dr["ModelName"].ToString();
+                    if (!DBNull.Value.Equals(dr["ActualTourInRFID"]))
+                        result.InRFIDCard = dr["ActualTourInRFID"].ToString();
+                    if (!DBNull.Value.Equals(dr["ActualTourInDate"]))
+                        result.ActualTourInDate =DateTime.Parse(dr["ActualTourInDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["ActualTourInTime"]))
+                        result.ActualTourInTime = DateTime.Parse(dr["ActualTourInTime"].ToString());
+                    if (!DBNull.Value.Equals(dr["ActualTourInKMIN"]))
+                        result.KMIn = int.Parse(dr["ActualTourInKMIN"].ToString());
+                    if (!DBNull.Value.Equals(dr["ActualTourOutRFID"]))
+                        result.OutRFIDCard = dr["ActualTourOutRFID"].ToString();
+                    if (!DBNull.Value.Equals(dr["ActualTourOutDate"]))
+                        result.ActualTourOutDate = DateTime.Parse(dr["ActualTourOutDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["ActualTourOutTime"]))
+                        result.ActualTourOutTime = DateTime.Parse(dr["ActualTourOutTime"].ToString());
+                    if (!DBNull.Value.Equals(dr["ActualTourOutKMOUT"]))
+                        result.KMOut = int.Parse(dr["ActualTourOutKMOUT"].ToString());
+                    if (!DBNull.Value.Equals(dr["Remarks"]))
+                        result.VRemarks = dr["Remarks"].ToString();
+                    if (!DBNull.Value.Equals(dr["RequiredKMIn"]))
+                        result.RequiredKMIn =int.Parse(dr["RequiredKMIn"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsCarryingMaterialIn"]))
+                        result.IsCarryingMaterialIn = bool.Parse(dr["IsCarryingMaterialIn"].ToString())?"Yes":"No";
+                    if (!DBNull.Value.Equals(dr["IsCarryingMaterialOut"]))
+                        result.IsCarryingMaterialOut = bool.Parse(dr["IsCarryingMaterialOut"].ToString())?"Yes":"No";
+                }
+            }
+            catch { }
+            return result;
+        }
+        public EntryIIInnerView Map_EntryIIInnerView(DataSet ds) 
+        {
+            EntryIIInnerView result = new EntryIIInnerView();
+            if (ds != null) 
+            {   
+                DataTable dt = ds.Tables[0];
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    List<SaveTPDetails> TPersons = new List<SaveTPDetails>();
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        TPersons.Add(Map_SaveTPDetails(dt.Rows[i]));
+                    }
+                    result.Persons = TPersons;
+                }
+                dt = ds.Tables[1];
+                if (dt != null && dt.Rows.Count > 0) 
+                {
+                    List<SaveTPDWDetails> TDWDetails = new List<SaveTPDWDetails>();
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        TDWDetails.Add(Map_SaveTPDWDetails(dt.Rows[i]));
+                    }
+                    result.DWDetails = TDWDetails;
+                }
+                dt = ds.Tables[2];
+                if (dt != null && dt.Rows.Count > 0) 
+                {
+                    result.VehicleDetail= Map_SaveVehicleDetails(dt.Rows[0]);                    
+                }
+            }
+            return result;
+        }
+
 
     }
 }

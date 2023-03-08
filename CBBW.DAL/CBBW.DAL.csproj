@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataSync\BILDataSync.cs" />
     <Compile Include="DataSync\CommonTable.cs" />
     <Compile Include="DataSync\CommonTableUser2.cs" />
     <Compile Include="DataSync\CTVDataSync.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="DataSync\TFDDataSync.cs" />
     <Compile Include="DbConnectionString.cs" />
     <Compile Include="DBLogic\DBLogic.cs" />
+    <Compile Include="DBMapper\BILDBMapper.cs" />
     <Compile Include="DBMapper\CTVDBMapper.cs" />
     <Compile Include="DBMapper\DBResponseMapper.cs" />
     <Compile Include="DBMapper\EHGDBMapper.cs" />
@@ -71,6 +73,7 @@
     <Compile Include="DBMapper\MGPMapper.cs" />
     <Compile Include="DBMapper\RulesDBMapper.cs" />
     <Compile Include="DBMapper\TFDDBMapper.cs" />
+    <Compile Include="Entities\BILEntities.cs" />
     <Compile Include="Entities\CTVEntities.cs" />
     <Compile Include="Entities\EHGEntities.cs" />
     <Compile Include="Entities\EMCEntities.cs" />

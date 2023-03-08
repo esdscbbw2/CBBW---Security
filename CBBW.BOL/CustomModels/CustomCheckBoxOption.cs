@@ -10,4 +10,5 @@ namespace CBBW.BOL.CustomModels
     {        
         public bool IsSelected { get; set; }
     }
+    
 }

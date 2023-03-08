@@ -50,7 +50,7 @@
                                         </td>
 
                                         <td class="text-center">
-                                           @if (item.IsApproval == null) {<p>-</p> } else { 
+                                           @if (item.IsApproved == 0) {<p>-</p> } else { 
                                             @(item.IsApproval == true? "Yes":"No")
                                            }
                                         </td>

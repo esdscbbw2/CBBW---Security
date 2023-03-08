@@ -170,7 +170,7 @@ namespace CBBW.BLL.Repository
         public LocationWiseTPDetails GetLocationWiseTPs(string NoteNumber, int CentreCode, ref string pMsg)
         {
             //Dummy Code
-            CentreCode = 7;
+            //CentreCode = 7;
             //Dummy Code END
             List<PunchInDetails> Punchings = new List<PunchInDetails>();
             List<LastCentrePunchOutWithDistance> LastPunchings = new List<LastCentrePunchOutWithDistance>();
@@ -247,6 +247,10 @@ namespace CBBW.BLL.Repository
         public int GetTravelKmsOfANote(string NoteNumber, DateTime TillDate, int FromLocation, ref string pMsg)
         {
             return _EntryIIEntities.GetTravelKmsOfANote(NoteNumber, TillDate, FromLocation,ref pMsg);
+        }
+        public EntryIIInnerView GetEntryIIData(string NoteNumber, int CentreCode, bool IsMainlocation, ref string pMsg)
+        {
+            return _EntryIIEntities.GetEntryIIData(NoteNumber, CentreCode, IsMainlocation,ref pMsg);
         }
     }
 }

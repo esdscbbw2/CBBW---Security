@@ -133,6 +133,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
+    <Compile Include="Areas\Security\Controllers\BILController.cs" />
     <Compile Include="Areas\Security\Controllers\CommonController.cs" />
     <Compile Include="Areas\Security\Controllers\CTVController.cs" />
     <Compile Include="Areas\Security\Controllers\EHGController.cs" />
@@ -149,6 +150,9 @@
     <Compile Include="Areas\Security\Controllers\TFDController.cs" />
     <Compile Include="Areas\Security\Controllers\TourRuleController.cs" />
     <Compile Include="Areas\Security\Helpers\EditHistory.cs" />
+    <Compile Include="Areas\Security\ViewModel\BIL\BILExpensesVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\BIL\BILHdrVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\BIL\DaDetailsVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EMC\EMCHeaderEntryVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EMC\EMCNoteApproveVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EMC\EMCTravellingDetailsVM.cs" />
@@ -332,6 +336,9 @@
     <Content Include="UIContent\JS\bootstrap-datetimepicker.min.js" />
     <Content Include="UIContent\JS\bootstrap-multiselect.js" />
     <Content Include="UIContent\JS\bootstrap.bundle.min.js" />
+    <Content Include="UIContent\JS\CustomePage\BIL\BILApprovalEntry.js" />
+    <Content Include="UIContent\JS\CustomePage\BIL\BILEntry.js" />
+    <Content Include="UIContent\JS\CustomePage\BIL\BILPaymentEntry.js" />
     <Content Include="UIContent\JS\CustomePage\CommonReusable.js" />
     <Content Include="UIContent\JS\CustomePage\CreateRuleTADA.js" />
     <Content Include="UIContent\JS\CustomePage\CTVApproval.js" />
@@ -352,7 +359,9 @@
     <Content Include="UIContent\JS\CustomePage\EMN\EMNTravApprove.js" />
     <Content Include="UIContent\JS\CustomePage\EMN\EMNTravellingDetails.js" />
     <Content Include="UIContent\JS\CustomePage\EntryII\EntrIIInnerLW.js" />
+    <Content Include="UIContent\JS\CustomePage\EntryII\EntrIIInnerLWView.js" />
     <Content Include="UIContent\JS\CustomePage\EntryII\EntrIIInnerML.js" />
+    <Content Include="UIContent\JS\CustomePage\EntryII\EntrIIInnerMLView.js" />
     <Content Include="UIContent\JS\CustomePage\EntryII\EntryIICreateLW.js" />
     <Content Include="UIContent\JS\CustomePage\EntryII\EntryIICreateML.js" />
     <Content Include="UIContent\JS\CustomePage\ETSEdit\EntryICreate.js" />
@@ -541,6 +550,24 @@
     <Content Include="Areas\Security\Views\TFD\_DateWiseTourDataDetails.cshtml" />
     <Content Include="Areas\Security\Views\TFD\_TravellingPersonDetails.cshtml" />
     <Content Include="Areas\Security\Views\EntryII\LWOutIn.cshtml" />
+    <Content Include="Areas\Security\Views\EntryII\MLDetailsView.cshtml" />
+    <Content Include="Areas\Security\Views\EntryII\LWDetailsView.cshtml" />
+    <Content Include="Areas\Security\Views\BIL\ApprovalCreate.cshtml" />
+    <Content Include="Areas\Security\Views\BIL\ApprovalDetails.cshtml" />
+    <Content Include="Areas\Security\Views\BIL\ApprovalIndex.cshtml" />
+    <Content Include="Areas\Security\Views\BIL\Create.cshtml" />
+    <Content Include="Areas\Security\Views\BIL\DeductionsFromDA.cshtml" />
+    <Content Include="Areas\Security\Views\BIL\Details.cshtml" />
+    <Content Include="Areas\Security\Views\BIL\Index.cshtml" />
+    <Content Include="Areas\Security\Views\BIL\PaymentCreate.cshtml" />
+    <Content Include="Areas\Security\Views\BIL\PaymentDetails.cshtml" />
+    <Content Include="Areas\Security\Views\BIL\PaymentIndex.cshtml" />
+    <Content Include="Areas\Security\Views\BIL\_ExpensesDetails.cshtml" />
+    <Content Include="Areas\Security\Views\BIL\_PymtExpensesDetails.cshtml" />
+    <Content Include="Areas\Security\Views\BIL\_TravellingDetails.cshtml" />
+    <Content Include="Areas\Security\Views\BIL\_VDeductionFromDA.cshtml" />
+    <Content Include="Areas\Security\Views\BIL\_VPytmDeductionFromDA.cshtml" />
+    <Content Include="Areas\Security\Views\BIL\_VPytmDeductionFromDAView.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />
@@ -595,7 +622,7 @@
       <Name>CBBW.BOL</Name>
     </ProjectReference>
     <ProjectReference Include="..\CBBW.DAL\CBBW.DAL.csproj">
-      <Project>{B384A881-89E3-4A93-88E7-8F790FAE5F42}</Project>
+      <Project>{b384a881-89e3-4a93-88e7-8f790fae5f42}</Project>
       <Name>CBBW.DAL</Name>
     </ProjectReference>
   </ItemGroup>

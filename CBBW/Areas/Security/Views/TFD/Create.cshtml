@@ -8,10 +8,11 @@
 <div class="container">
     @using (Html.BeginForm("Create", "TFD", FormMethod.Post))
     {
-        @Html.HiddenFor(x => x.tfdHdr.NoteNumber)
+        @Html.HiddenFor(x => x.tfdHdr.NoteNumber, htmlAttributes: new{ id = "tfdHdr_NoteNumber" })
         @*@Html.HiddenFor(x => x.NoteNumber)*@
         @Html.HiddenFor(x => x.tfdHdr.AuthEmployeeCode)
         @Html.HiddenFor(x => x.submitcount)
+        
         <div class="row newTable">
             <div class="fixedElement">
                 <div class="col-md-12">
@@ -56,7 +57,7 @@ new SelectList(Model.Notelist, "NoteNumber", "NoteNumber"),
 htmlAttributes: new
 {
     @class = "form-select pointer",
-    id = "NoteNumber"
+    id = "NoteNumber2"
 })
                                 </div>
                                 <div class="col-md-4">
@@ -123,7 +124,7 @@ htmlAttributes: new
                                 </div>
                                 <div class="col-md-3">
 
-                                    <select class="form-select is-invalid max-content-input alterID inValidTag pickPersonName xPerson"
+                                    <select name="EmployeeNo" class="form-select is-invalid max-content-input alterID inValidTag pickPersonName xPerson"
                                             data-name="EmployeeNo" onchange="ValidateControl();" data-name-text="EmployeeNonNamecmb"
                                             aria-label="Default select example"
                                             id="EmployeeNo"></select>
@@ -279,13 +280,14 @@ htmlAttributes: new
 
     <script>
         function VisibleRows(EmpNo) {
+            $('#TourFB').makeEnabled();
             var targetCtrl = $(VisibleRows.caller.arguments[0].target);
             var mID = targetCtrl.attr('id');
             var PType = $('#PersonType_' + mID).html();
             var EmployeeNo = $('#AuthEmployeeCode_' + mID).html();
            // var PName = $('#PersonName_' + mID).html();
             var PersonCentre = $('#PersonCentre_' + mID).html();
-            var NoteNo = $('#NoteNumber :selected').val();
+            var NoteNo = $('#NoteNumber2 :selected').val();
             var TourDetailsDiv = $('#TourDiv');
             TourDetailsDiv.removeClass('inVisible');
             

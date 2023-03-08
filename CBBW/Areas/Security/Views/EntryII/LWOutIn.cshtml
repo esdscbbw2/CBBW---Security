@@ -8,13 +8,14 @@
     @Html.HiddenFor(m => m.DefaultPersonID)
     @Html.HiddenFor(m => m.IsOffline)
     @Html.HiddenFor(m => m.SchFromDate)
-    @Html.HiddenFor(m => m.SchToDate)
-    <div class="row newTable">
+    @Html.HiddenFor(m => m.SchToDate)<div class="row newTable">
         <div class="fixedElement">
             <div class="col-md-12" style="position: relative;">
                 <div class="heading_text_btn mb-4 mt-4">
                     <div class="leftButton">
-                        <button type="submit" class="btn btn-primary me-2" onclick="window.location.href='ETD_vehicle_allotment_entry_2_location_wise_add.html';">
+                        <button id="btnBack" type="button" 
+                                onclick="window.location.href='/Security/EntryII/LWCreate';"
+                                class="btn btn-primary me-2">
                             <i data-feather="arrow-left-circle"></i>
                             Back
                         </button>
@@ -33,123 +34,125 @@
             <div class="heading_text_btn2 d-block mb-3">
                 <h2> Location Wise Vehicle & Travelling Person IN & OUT Details:</h2>
             </div>
-            <div class="heading_text_btn2 d-block mb-4">
-                <h2 class="text-center">
-                    Date wise Vehicle IN & OUT Details
-                </h2>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    @*<form class="form-sample form-inline row ms-auto">*@
-                    <div class="row d-flex align-items-center mb-3">
-                        <div class="col-md-2 col-form-label">
-                            <label>Driver Name :</label>
+            @if (Model.VehicleDetails != null)
+            {
+                <div class="heading_text_btn2 d-block mb-4">
+                    <h2 class="text-center">
+                        Date wise Vehicle IN & OUT Details
+                    </h2>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        @*<form class="form-sample form-inline row ms-auto">*@
+                        <div class="row d-flex align-items-center mb-3">
+                            <div class="col-md-2 col-form-label">
+                                <label>Driver Name :</label>
+                            </div>
+                            <div class="col-md-6 text-left">
+                                <input type="text" class="form-control" value="@Model.VehicleDetails.DriverName" disabled="">
+                            </div>
                         </div>
-                        <div class="col-md-6 text-left">
-                            <input type="text" class="form-control" value="@Model.VehicleDetails.DriverName" disabled="">
-                        </div>
-                    </div>
-                    @*</form>*@
-                    <div class="table-responsive">
-                        <table class="table table-bordered w-100" id="VDTable">
-                            <thead>
-                                <tr>
-                                    <th colspan="3" style="text-align: center; vertical-align: middle;" scope="col">
-                                        Vehicle Details
-                                    </th>
-                                    <th colspan="4" style="text-align: center; vertical-align: middle;" scope="col">
-                                        Actual Tour IN
-                                    </th>
-                                    <th colspan="4" style="text-align: center; vertical-align: middle;" scope="col">
-                                        Actual Tour OUT
-                                    </th>
-                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="10%">Remarks</th>
-                                </tr>
-                                <tr>
-                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="5%">Vehicle No. </th>
-                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="5%">Vehicle Type</th>
-                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
-                                        Model Name
-                                    </th>
-                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">
-                                        RFID Card No.
-                                    </th>
-                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="8%">Date</th>
-                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="8%">Time</th>
-                                    <th scope="col" style="text-align: center; vertical-align: middle;">KM IN</th>
-                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">
-                                        RFID Card No.
-                                    </th>
-                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="8%">Date</th>
-                                    <th scope="col" style="text-align: center; vertical-align: middle;" width="8%">Time</th>
-                                    <th scope="col" style="text-align: center; vertical-align: middle;">
-                                        KM OUT
-                                    </th>
-                                </tr>
-
-                            </thead>
-                            <tbody>
-                                @if (Model.VehicleDetails != null)
-                                {
+                        @*</form>*@
+                        <div class="table-responsive">
+                            <table class="table table-bordered w-100" id="VDTable">
+                                <thead>
                                     <tr>
-                                        <td class="text-center htmlVal" data-name="VehicleNumber">@Model.VehicleDetails.VehicleNumber</td>
-                                        <td class="text-center htmlVal" data-name="VehicleType">@Model.VehicleDetails.VehicleType </td>
-                                        <td class="text-center htmlVal" data-name="ModelName">@Model.VehicleDetails.ModelName </td>
-                                        <td class="text-center">
-                                            <div id="RFIDInDiv" class="inVisible htmlVal" data-name="InRFIDCard"></div>
-                                            @Html.DropDownListFor(m => m.RFIDCardIn,
-                                            new SelectList(Model.RFIDCardList, "RFIDCardNo", "RFIDCardNo"), "NA",
-                                            htmlAttributes: new
-                                            {
-                                                @class = "form-select pointer",
-                                                onchange = "RFIDInChanged()"
-                                            })
-                                        </td>
-                                        <td class="text-center htmlVal" data-name="ActualTourInDate">@Model.SchFromDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
-                                        <td class="text-center">
-                                            <div id="VTourInTimeCtrl" class="htmlVal " data-name="ActualTourInTime">-</div>
-                                            <div>
-                                                <input id="TourInTimeCtrl" type="text" class="form-control timePicker"
-                                                       onblur="TimeInCtrlBlured()"
-                                                       placeholder="Select Time">
-                                            </div>
-                                        </td>
-                                        <td class="text-center htmlVal" data-name="KMIn">@Model.VehicleDetails.KMIn</td>
-                                        <td class="text-center">
-                                            <div id="RFIDOutDiv" class="inVisible htmlVal" data-name="OutRFIDCard"></div>
-                                            @Html.DropDownListFor(m => m.RFIDCardOut,
-                                            new SelectList(Model.RFIDCardList, "RFIDCardNo", "RFIDCardNo"), "NA",
-                                            htmlAttributes: new
-                                            {
-                                                @class = "form-select pointer",
-                                                onchange = "RFIDOutChanged()"
-                                            })
-                                        </td>
-                                        <td class="text-center htmlVal" data-name="ActualTourOutDate">@Model.SchToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
-                                        <td class="text-center" data-name="">
-                                            <div id="VTourOutTimeCtrl" class="htmlVal " data-name="ActualTourOutTime">-</div>
-                                            <div>
-                                                <input id="TourOutTimeCtrl" type="text" class="form-control timePicker"
-                                                       onblur="TimeInCtrlBlured()"
-                                                       placeholder="Select Time">
-                                            </div>
-                                        </td>
-                                        <td class="text-center htmlVal" data-name="KMOut">@Model.VehicleDetails.KMOut</td>
-                                        <td class="text-center">
-                                            <textarea data-name="VRemarks" name="" id=""
-                                                      cols="20" rows="2"
-                                                      class="form-control pointer-default"></textarea>
-                                            <div class="inVisible htmlVal" data-name="DriverID">@Model.VehicleDetails.DriverNumber</div>
-                                            <div class="inVisible htmlVal" data-name="DriverName">@Model.VehicleDetails.DriverName</div>
-                                        </td>
+                                        <th colspan="3" style="text-align: center; vertical-align: middle;" scope="col">
+                                            Vehicle Details
+                                        </th>
+                                        <th colspan="4" style="text-align: center; vertical-align: middle;" scope="col">
+                                            Actual Tour IN
+                                        </th>
+                                        <th colspan="4" style="text-align: center; vertical-align: middle;" scope="col">
+                                            Actual Tour OUT
+                                        </th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="10%">Remarks</th>
                                     </tr>
-                                }
-                            </tbody>
-                        </table>
+                                    <tr>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="5%">Vehicle No. </th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="5%">Vehicle Type</th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                            Model Name
+                                        </th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">
+                                            RFID Card No.
+                                        </th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="8%">Date</th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="8%">Time</th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">KM IN</th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">
+                                            RFID Card No.
+                                        </th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="8%">Date</th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;" width="8%">Time</th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">
+                                            KM OUT
+                                        </th>
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    @if (Model.VehicleDetails != null)
+                                    {
+                                        <tr>
+                                            <td class="text-center htmlVal" data-name="VehicleNumber">@Model.VehicleDetails.VehicleNumber</td>
+                                            <td class="text-center htmlVal" data-name="VehicleType">@Model.VehicleDetails.VehicleType </td>
+                                            <td class="text-center htmlVal" data-name="ModelName">@Model.VehicleDetails.ModelName </td>
+                                            <td class="text-center">
+                                                <div id="RFIDInDiv" class="inVisible htmlVal" data-name="InRFIDCard"></div>
+                                                @Html.DropDownListFor(m => m.RFIDCardIn,
+                                                new SelectList(Model.RFIDCardList, "RFIDCardNo", "RFIDCardNo"), "NA",
+                                                htmlAttributes: new
+                                                {
+                                                    @class = "form-select pointer",
+                                                    onchange = "RFIDInChanged()"
+                                                })
+                                            </td>
+                                            <td class="text-center htmlVal" data-name="ActualTourInDate">@Model.SchFromDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
+                                            <td class="text-center">
+                                                <div id="VTourInTimeCtrl" class="htmlVal " data-name="ActualTourInTime">-</div>
+                                                <div>
+                                                    <input id="TourInTimeCtrl" type="text" class="form-control timePicker"
+                                                           onblur="TimeInCtrlBlured()"
+                                                           placeholder="Select Time">
+                                                </div>
+                                            </td>
+                                            <td class="text-center htmlVal" data-name="KMIn">@Model.VehicleDetails.KMIn</td>
+                                            <td class="text-center">
+                                                <div id="RFIDOutDiv" class="inVisible htmlVal" data-name="OutRFIDCard"></div>
+                                                @Html.DropDownListFor(m => m.RFIDCardOut,
+                                                new SelectList(Model.RFIDCardList, "RFIDCardNo", "RFIDCardNo"), "NA",
+                                                htmlAttributes: new
+                                                {
+                                                    @class = "form-select pointer",
+                                                    onchange = "RFIDOutChanged()"
+                                                })
+                                            </td>
+                                            <td class="text-center htmlVal" data-name="ActualTourOutDate">@Model.SchToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
+                                            <td class="text-center" data-name="">
+                                                <div id="VTourOutTimeCtrl" class="htmlVal " data-name="ActualTourOutTime">-</div>
+                                                <div>
+                                                    <input id="TourOutTimeCtrl" type="text" class="form-control timePicker"
+                                                           onblur="TimeInCtrlBlured()"
+                                                           placeholder="Select Time">
+                                                </div>
+                                            </td>
+                                            <td class="text-center htmlVal" data-name="KMOut">@Model.VehicleDetails.KMOut</td>
+                                            <td class="text-center">
+                                                <textarea data-name="VRemarks" name="" id=""
+                                                          cols="20" rows="2"
+                                                          class="form-control pointer-default"></textarea>
+                                                <div class="inVisible htmlVal" data-name="DriverID">@Model.VehicleDetails.DriverNumber</div>
+                                                <div class="inVisible htmlVal" data-name="DriverName">@Model.VehicleDetails.DriverName</div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
-
+            }
         </div>
     </div>
     <div class="mt-4">
@@ -296,7 +299,7 @@
                                                 <th scope="row" class="text-center htmlVal" data-name="DWTourCategoryNames">@item.DWTourCategoryNames</th>
                                                 <td class="text-center htmlVal" data-name="DWTourCenterNames">@item.DWTourCenterNames</td>
                                                 <td class="text-center htmlVal" data-name="DWBranchNames">@(item.DWBranchNames==null?"NA": item.DWBranchNames)</td>
-                                                <td class="text-center htmlVal" data-name="DWFromDate">@item.SchFromDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
+                                                <td class="text-center htmlVal" data-name="DWFromDate">@item.DWFromDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
                                                 <td class="text-center htmlVal" data-name="RequiredTourInDate">@item.RequiredTourInDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
                                                 <td class="text-center htmlVal" data-name="RequiredTourInTime">@item.RequiredTourInTime.ToString("hh:mm tt")</td>
                                                 <td class="text-center">
@@ -324,7 +327,7 @@
                                                                placeholder="Select Time">
                                                     </div>
                                                 </td>
-                                                <td class="text-center htmlVal" data-name="DWToDate">@item.SchToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
+                                                <td class="text-center htmlVal" data-name="DWToDate">@item.DWToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
                                                 <td class="text-center htmlVal" data-name="ActualTourOutDate">@item.ActualTourOutDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
                                                 <td class="text-center">
                                                     <div id="VATO_@SL" class="@(Model.IsOffline?"inVisible":"") htmlVal" data-name="ActualTourOutTime">

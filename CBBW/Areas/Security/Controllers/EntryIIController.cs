@@ -65,16 +65,34 @@ namespace CBBW.Areas.Security.Controllers
             else
             {
                 TempData["EntryII"] = null;
-                return RedirectToAction("Create");
+                return RedirectToAction("Index");
             }
         }
-        public ActionResult ViewMLNote()
+        public ActionResult MLDetailsView(string NoteNumber) 
         {
-            return View();
+            EntryIIInnerView modelobj = _iEntryIIRepository.GetEntryIIData(NoteNumber, user.CentreCode, true, ref pMsg);
+            modelobj.NoteNumber = NoteNumber;
+            modelobj.DefaultPersonID = modelobj.Persons!=null? modelobj.Persons.FirstOrDefault().PersonID:0;
+            return View(modelobj);
         }
-        public ActionResult ViewLWNote()
+        public ActionResult LWDetailsView(string NoteNumber)
         {
-            return View();
+            EntryIIInnerView modelobj = _iEntryIIRepository.GetEntryIIData(NoteNumber, user.CentreCode, false, ref pMsg);
+            modelobj.NoteNumber = NoteNumber;
+            modelobj.DefaultPersonID = modelobj.Persons != null ? modelobj.Persons.FirstOrDefault().PersonID : 0;
+            return View(modelobj);
+        }
+        public ActionResult ViewMLNote(string NoteNumber)
+        {
+            EntryIIHdrVM modelobj = new EntryIIHdrVM();
+            modelobj.NoteNumber = NoteNumber;
+            return View(modelobj);
+        }
+        public ActionResult ViewLWNote(string NoteNumber)
+        {
+            EntryIIHdrVM modelobj = new EntryIIHdrVM();
+            modelobj.NoteNumber = NoteNumber;
+            return View(modelobj);
         }
         public ActionResult Index()
         {
@@ -87,29 +105,41 @@ namespace CBBW.Areas.Security.Controllers
         public ActionResult MLOutIn(string NoteNumber) 
         {
             MLInnerPageVM modelobj = new MLInnerPageVM();
-            modelobj.TPDetails = _iEntryIIRepository.GetMainLocationTPs(NoteNumber, ref pMsg);
-            modelobj.DefaultPersonID = modelobj.TPDetails.FirstOrDefault().PersonID;
-            modelobj.SchFromDate = modelobj.TPDetails.Min(o => o.SchFromDate);
-            modelobj.SchToDate = modelobj.TPDetails.Max(o => o.SchToDate);
-            modelobj.RFIDCardList = _iEntryIIRepository.GetRFIDCards(ref pMsg);
-            modelobj.VehicleDetails = _iEntryIIRepository.GetEntryIIVehicleAllotmentDetails(NoteNumber, modelobj.SchFromDate, modelobj.SchToDate, user.CentreCode, true, ref pMsg);
-            modelobj.IsVehicleProvided = modelobj.TPDetails.FirstOrDefault().IsVehicleProvided;
-            modelobj.RequiredKMIn = modelobj.VehicleDetails.KMOut + _iEntryIIRepository.GetTravelKmsOfANote(NoteNumber, modelobj.SchToDate, user.CentreCode, ref pMsg);
+            try
+            {
+                modelobj.TPDetails = _iEntryIIRepository.GetMainLocationTPs(NoteNumber, ref pMsg);
+                if (modelobj.TPDetails != null && modelobj.TPDetails.Count>0)
+                {
+                    modelobj.DefaultPersonID = modelobj.TPDetails.FirstOrDefault().PersonID;
+                    modelobj.SchFromDate = modelobj.TPDetails.Min(o => o.SchFromDate);
+                    modelobj.SchToDate = modelobj.TPDetails.Max(o => o.SchToDate);
+                    modelobj.IsVehicleProvided = modelobj.TPDetails.FirstOrDefault().IsVehicleProvided;
+                }
+                modelobj.RFIDCardList = _iEntryIIRepository.GetRFIDCards(ref pMsg);
+                modelobj.VehicleDetails = _iEntryIIRepository.GetEntryIIVehicleAllotmentDetails(NoteNumber, modelobj.SchFromDate, modelobj.SchToDate, user.CentreCode, true, ref pMsg);
+                int travelKMs = _iEntryIIRepository.GetTravelKmsOfANote(NoteNumber, modelobj.SchToDate, user.CentreCode, ref pMsg);
+                modelobj.RequiredKMIn = modelobj.VehicleDetails!=null? modelobj.VehicleDetails.KMOut + travelKMs :0;
+            }
+            catch { }
             return View(modelobj);
         }
         public ActionResult LWOutIn(string NoteNumber)
         {
             LWInnerPageVM modelobj = new LWInnerPageVM();
             //modelobj.IsOffline = user.IsOffline;
-            modelobj.IsOffline = true;
-            LocationWiseTPDetails obj1 = _iEntryIIRepository.GetLocationWiseTPs(NoteNumber, user.CentreCode, ref pMsg);
-            modelobj.PersonDetails = obj1.PersonDetails;
-            modelobj.PersonDateWiseDetails = obj1.PersonDateWiseDetails;
-            modelobj.DefaultPersonID = modelobj.PersonDetails.FirstOrDefault().PersonID;
-            modelobj.SchFromDate = obj1.PersonDateWiseDetails.Min(o => o.DWFromDate);
-            modelobj.SchToDate = obj1.PersonDateWiseDetails.Max(o => o.DWToDate);
-            modelobj.RFIDCardList = _iEntryIIRepository.GetRFIDCards(ref pMsg);
-            modelobj.VehicleDetails = _iEntryIIRepository.GetEntryIIVehicleAllotmentDetails(NoteNumber,modelobj.SchFromDate,modelobj.SchToDate,user.CentreCode,false,ref pMsg);
+            //modelobj.IsOffline = true;
+            try
+            {
+                LocationWiseTPDetails obj1 = _iEntryIIRepository.GetLocationWiseTPs(NoteNumber, user.CentreCode, ref pMsg);
+                modelobj.PersonDetails = obj1.PersonDetails;
+                modelobj.PersonDateWiseDetails = obj1.PersonDateWiseDetails;
+                modelobj.DefaultPersonID = modelobj.PersonDetails != null && modelobj.PersonDetails.Count>0 ? modelobj.PersonDetails.FirstOrDefault().PersonID : 0;
+                modelobj.SchFromDate = obj1.PersonDateWiseDetails.Min(o => o.DWFromDate);
+                modelobj.SchToDate = obj1.PersonDateWiseDetails.Max(o => o.DWToDate);
+                modelobj.RFIDCardList = _iEntryIIRepository.GetRFIDCards(ref pMsg);
+                modelobj.VehicleDetails = _iEntryIIRepository.GetEntryIIVehicleAllotmentDetails(NoteNumber, modelobj.SchFromDate, modelobj.SchToDate, user.CentreCode, false, ref pMsg);
+            }
+            catch { }
             return View(modelobj);
         }        
         public ActionResult MLCreate() 
@@ -224,6 +254,22 @@ namespace CBBW.Areas.Security.Controllers
         {
             VehicleAllotmentDetails modelobj = _iEntryIIRepository.GetEntryIIVehicleAllotmentDetails(NoteNumber, ref pMsg);
             return View("~/Areas/Security/Views/EntryII/_VehicleInOutDetails.cshtml", modelobj);
+        }
+        public ActionResult GetRefDCPartialOut(string VehicleNo,string FromDate,string ToDate)
+        {
+            DCDetailsVM modelobj = new DCDetailsVM();
+            modelobj.DCNoteList = _iEntryIIRepository.GetDCNotes(VehicleNo, DateTime.Parse(FromDate), DateTime.Parse(ToDate),true, ref pMsg);
+            modelobj.DCNoteDetails = _iEntryIIRepository.GetMatOutDCDetails(VehicleNo, DateTime.Parse(FromDate), DateTime.Parse(ToDate), ref pMsg);
+            
+            return View("~/Areas/Security/Views/EntryII/_RefDCDetails.cshtml", modelobj);
+        }
+        public ActionResult GetRefDCPartialIn(string VehicleNo, string FromDate, string ToDate)
+        {
+            DCDetailsVM modelobj = new DCDetailsVM();
+            modelobj.DCNoteList = _iEntryIIRepository.GetDCNotes(VehicleNo, DateTime.Parse(FromDate), DateTime.Parse(ToDate),false, ref pMsg);
+            modelobj.DCNoteDetails = _iEntryIIRepository.GetMatInDCDetails(VehicleNo, DateTime.Parse(FromDate), DateTime.Parse(ToDate), ref pMsg);
+
+            return View("~/Areas/Security/Views/EntryII/_RefDCDetails.cshtml", modelobj);
         }
         [HttpPost]
         public ActionResult SaveLWOutIn(SaveLWInnerPageVM modelobj)

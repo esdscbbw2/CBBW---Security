@@ -39,7 +39,7 @@
                                         @item.PersonType
                                     </div>
                                     <div id="AuthEmployeeCode_@sl" class="inVisible">
-                                        @item.AuthEmployeeCode
+                                        @item.PersonID
                                     </div>
                                     <div id="PersonCentre_@sl" class="inVisible">
                                         @item.PersonCentre
@@ -49,10 +49,11 @@
 
                                 <th class="text-center" scope="row">@item.PersonCentreName</th>
                                 <td class="text-center">
-                                    @item.PersonIDName
+                                    
+                                    @item.PersonTypeText
                                 </td>
                                 <td class="text-center">
-                                    @item.AuthEmployeeCodeName
+                                    @item.PersonIDName
                                 </td>
                                 <td class="text-center">
                                     @item.DesignationCodeText

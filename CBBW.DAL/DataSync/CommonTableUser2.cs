@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CBBW.BOL.BIL;
 using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.EHG;
@@ -404,6 +405,21 @@ namespace CBBW.DAL.DataSync
                     dr["bIsApproval"] = obj.IsApprovals == "1" ? true : false;
                     dr["sApprovalRemark"] =obj.ApprovalRemark != null ? obj.ApprovalRemark : "NA";
 
+                    UDTable.Rows.Add(dr);
+                }
+            }
+        }
+
+        public CommonTable(List<ApprovalNoteNo> customoptions)
+        {
+            UDTable = new DataTable();
+            UDTable.Columns.Add("sNoteNumber", typeof(string));
+            if (customoptions != null && customoptions.Count > 0)
+            {
+                foreach (ApprovalNoteNo obj in customoptions)
+                {
+                    DataRow dr = UDTable.NewRow();
+                    dr["sNoteNumber"] = obj.NoteNumbers;
                     UDTable.Rows.Add(dr);
                 }
             }

@@ -1,0 +1,272 @@
+﻿@using System.Globalization;
+@using CBBW.BOL.EntryII;
+@model EntryIIInnerView
+
+@Html.HiddenFor(m => m.DefaultPersonID)
+<div class="row newTable">
+    <div class="fixedElement">
+        <div class="col-md-12" style="position: relative;">
+            <div class="heading_text_btn mb-4 mt-4">
+                <div class="leftButton">
+                    <button type="button" class="btn btn-primary me-2"
+                            onclick="window.location.href='/Security/EntryII/ViewLWNote?NoteNumber=@Model.NoteNumber';">
+                        <i data-feather="arrow-left-circle"></i>
+                        Back
+                    </button>
+                </div>
+                <h2>Employee’s Travelling Details & Vehicle Allotment – ENTRY (II) </h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="heading_text_btn2 d-block mb-3">
+            <h2> Location Wise Vehicle & Travelling Person IN & OUT Details:</h2>
+        </div>
+        <div class="heading_text_btn2 d-block mb-4">
+            <h2 class="text-center">
+                Date Wise Vehicle IN & OUT Details
+            </h2>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                @*<form class="form-sample form-inline row ms-auto">*@
+                <div class="row d-flex align-items-center mb-3">
+                    <div class="col-md-2 col-form-label">
+                        <label>Driver Name :</label>
+                    </div>
+                    <div class="col-md-6 text-left">
+                        <input type="text" class="form-control" value="@(Model.VehicleDetail!=null?Model.VehicleDetail.DriverName:"")" disabled="">
+                    </div>
+                </div>
+                @*</form>*@
+                <div class="table-responsive">
+                    <table class="table table-bordered w-100" id="">
+                        <thead>
+                            <tr>
+                                <th colspan="3" style="text-align: center; vertical-align: middle;" scope="col">
+                                    Vehicle Details
+                                </th>
+                                <th colspan="4" style="text-align: center; vertical-align: middle;" scope="col">
+                                    Actual Tour IN
+                                </th>
+                                <th colspan="4" style="text-align: center; vertical-align: middle;" scope="col">
+                                    Actual Tour OUT
+                                </th>
+                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="10%">Remarks</th>
+                            </tr>
+                            <tr>
+                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="5%">Vehicle No. </th>
+                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="5%">Vehicle Type</th>
+                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                    Model Name
+                                </th>
+                                <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">
+                                    RFID Card No.
+                                </th>
+                                <th scope="col" style="text-align: center; vertical-align: middle;" width="8%">Date</th>
+                                <th scope="col" style="text-align: center; vertical-align: middle;" width="8%">Time</th>
+                                <th scope="col" style="text-align: center; vertical-align: middle;">KM IN</th>
+                                <th scope="col" style="text-align: center; vertical-align: middle;" width="10%">
+                                    RFID Card No.
+                                </th>
+                                <th scope="col" style="text-align: center; vertical-align: middle;" width="8%">Date</th>
+                                <th scope="col" style="text-align: center; vertical-align: middle;" width="8%">Time</th>
+                                <th scope="col" style="text-align: center; vertical-align: middle;">
+                                    KM OUT
+                                </th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            @if (Model.VehicleDetail != null)
+                            {
+                                <tr>
+                                    <td class="text-center">@Model.VehicleDetail.VehicleNumber</td>
+                                    <td class="text-center">@Model.VehicleDetail.VehicleType </td>
+                                    <td class="text-center">@Model.VehicleDetail.ModelName </td>
+                                    <td class="text-center">@Model.VehicleDetail.InRFIDCard</td>
+                                    <td class="text-center">@Model.VehicleDetail.ActualTourInDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
+                                    <td class="text-center">@(Model.VehicleDetail.ActualTourInTime.Hour==0?"-":Model.VehicleDetail.ActualTourInTime.ToString("hh:mm tt"))</td>
+                                    <td class="text-center">@Model.VehicleDetail.KMIn</td>
+                                    <td class="text-center">@Model.VehicleDetail.OutRFIDCard</td>
+                                    <td class="text-center">@Model.VehicleDetail.ActualTourOutDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
+                                    <td class="text-center">@(Model.VehicleDetail.ActualTourOutTime.Hour==0?"-":Model.VehicleDetail.ActualTourOutTime.ToString("hh:mm tt"))</td>
+                                    <td class="text-center">@Model.VehicleDetail.KMOut</td>
+                                    <td class="text-center">
+                                        <textarea name="" id="" cols="20" rows="2"
+                                                  class="form-control pointer-default" readonly
+                                                  data-toggle="tooltip" data-placement="bottom"
+                                                  title="@Model.VehicleDetail.VRemarks">  @Model.VehicleDetail.VRemarks</textarea>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mt-4">
+    <div class="heading_text_btn2 d-block mb-3">
+        <h2 class="text-center">
+            Date Wise Travelling Person IN & OUT Details
+        </h2>
+    </div>
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="col-md-12">
+                <div id="item-wise-table">
+                    <div class="table-responsive newTable">
+                        <table class="table table-bordered btnalign" id="TPTable">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                        &nbsp;
+                                    </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                        Sl No.
+                                    </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                        Person Type
+                                    </th>
+                                    <th style="text-align: center; vertical-align: middle;" scope="col">
+                                        Employee No. & Name
+                                    </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                        Designation Code & Name
+                                    </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">Employee Center Code & name </th>
+
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">Authorised Person </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                        Vehicle Provided
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.Persons != null)
+                                {
+                                    int SL = 1;
+                                    foreach (var item in Model.Persons)
+                                    {
+                                        <tr id="tr_@item.PersonID">
+                                            <th class="text-center">
+                                                <div class="form-check ms-3">
+                                                    <input class="form-check-input"
+                                                           type="radio" value='valuable'
+                                                           name="thing" id="@item.PersonID"
+                                                           onchange="TPSelected()">
+                                                </div>
+                                            </th>
+                                            <th scope="row" class="text-center">@SL</th>
+                                            <th scope="row" class="text-center">@item.PersonTypeText</th>
+                                            <th scope="row" class="text-center">@item.PersonIdnName</th>
+                                            <td class="text-center">@item.DesignationCodenName</td>
+                                            <td class="text-center">@item.PersonCenterName</td>
+                                            <td class="text-center">@item.AuthorisedEmpNoName</td>
+                                            <td class="text-center">@(item.IsVehicleProvided?"Yes":"No")</td>
+                                        </tr>
+                                        SL += 1;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="table-responsive max-content" id="record1_div">
+                    <div class="newTable">
+                        <table class="table table-bordered btnalign  table-height" id="TPDtlTable" disabled>
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" colspan="3">
+                                        Tour Destination Details
+                                    </th>
+                                    <th style="text-align: center; vertical-align: middle;" scope="col" rowspan="2">
+                                        Scheduled Tour From Date
+                                    </th>
+
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" colspan="2">
+                                        Required Tour IN
+                                    </th>
+                                    <th style="text-align: center; vertical-align: middle;" scope="col" rowspan="2">
+                                        Night Stay Early Morning Punch
+                                    </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" colspan="2"> Actual Tour IN </th>
+                                    <th style="text-align: center; vertical-align: middle;" scope="col" rowspan="2">
+                                        Scheduled Tour To Date
+                                    </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;" colspan="2">
+                                        Actual Tour OUT
+                                    </th>
+                                    <th style="text-align: center; vertical-align: middle;" scope="col" rowspan="2">
+                                        Night Stay Late Night Punch
+                                    </th>
+                                    <th style="text-align: center; vertical-align: middle;" scope="col" rowspan="2" width="10%">
+                                        Status
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">
+                                        Tour Category
+                                    </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">Center Code & Name</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">Branch Code & Name </th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">Date</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle; " width="124px">Time</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">Date</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle; " width="124px">Time</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle;">Date</th>
+                                    <th scope="col" style="text-align: center; vertical-align: middle; " width="124px">Time</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.DWDetails != null)
+                                {
+                                    foreach (var item in Model.DWDetails)
+                                    {
+                                        <tr class="@("M_"+item.PersonID)">
+                                            <th scope="row" class="text-center">@item.DWTourCategoryNames</th>
+                                            <td class="text-center">@item.DWTourCenterNames</td>
+                                            <td class="text-center">@item.DWBranchNames</td>
+                                            <td class="text-center">@item.DWFromDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
+                                            <td class="text-center">@item.RequiredTourInDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
+                                            <td class="text-center">@(item.RequiredTourInTime.Hour==0?"-":item.ActualTourOutTime.ToString("hh:mm tt"))</td>
+                                            <td class="text-center">@item.EMPunchStatus</td>
+                                            <td class="text-center">@item.ActualTourInDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
+                                            <td class="text-center">@(item.ActualTourInTime.Hour==0?"-":item.ActualTourOutTime.ToString("hh:mm tt"))</td>
+                                            <td class="text-center">@item.DWToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
+                                            <td class="text-center">@item.ActualTourOutDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
+                                            <td class="text-center">@(item.ActualTourOutTime.Hour==0?"-":item.ActualTourOutTime.ToString("hh:mm tt"))</td>
+                                            <td class="text-center">@item.LNPunchStatus</td>
+                                            <td class="text-center">@(item.TourStatus==1?"Completed":"Continue")</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="bgColor mt-4 bg-transparent content border-green text-left">
+                    <ul style="list-style:none;">
+                        <li style="font-size: 16px;">
+                            The “Location Wise Travelling Person & Vehicle Details Entered And Displayed Are Correct & As Required:
+                            <input type="text" class="form-control content border-green width-85 pointer-none" value="Yes" disabled="">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section headers
+{
+
+}
+@section scripts{
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/EntryII/EntrIIInnerLWView.js"></script>
+}

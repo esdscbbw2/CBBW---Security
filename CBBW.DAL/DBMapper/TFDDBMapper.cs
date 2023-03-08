@@ -73,6 +73,8 @@ namespace CBBW.DAL.DBMapper
                         result.CentreCode = int.Parse(dr["CentreCode"].ToString());
                     if (!DBNull.Value.Equals(dr["CentreCodeName"]))
                         result.CentreCodeName = dr["CentreCodeName"].ToString();
+                    if (!DBNull.Value.Equals(dr["PersonTypeText"]))
+                        result.PersonTypeText = dr["PersonTypeText"].ToString();
                 }
             }
             catch (Exception ex) { ex.ToString(); }
@@ -107,6 +109,8 @@ namespace CBBW.DAL.DBMapper
                         result.PersonIDName = dr["PersonIDName"].ToString();
                     if (!DBNull.Value.Equals(dr["PersonID"]))
                         result.PersonID = int.Parse(dr["PersonID"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsApprovals"]))
+                        result.IsApproved = int.Parse(dr["IsApprovals"].ToString());
                     result.SchFromDatestr = MyDBLogic.ConvertDateToString(result.SchFromDate);
 
                 }
@@ -220,7 +224,8 @@ namespace CBBW.DAL.DBMapper
                     result.TourFromDatestr = MyDBLogic.ConvertDateToString(result.TourFromDate);
                     result.TourToDatestr = MyDBLogic.ConvertDateToString(result.TourToDate);
                     result.EntryDatestr = MyDBLogic.ConvertDateToString(result.EntryDate);
-                    result.ApprovalDTstr = MyDBLogic.ConvertDateToString(result.EntryDate);
+                    result.ApprovalDTstr = MyDBLogic.ConvertDateToString(result.ApprovalDT);
+                    result.ApprovalDTstr = result.ApprovalDTstr == "01/01/0001" ? "-" : result.ApprovalDTstr;
                 }
             }
             catch (Exception ex) { ex.ToString(); }
@@ -255,7 +260,9 @@ namespace CBBW.DAL.DBMapper
                         result.IsApproval = bool.Parse(dr["IsApproval"].ToString());
                     if (!DBNull.Value.Equals(dr["ApprovalRemark"]))
                         result.ApprovalRemark = dr["ApprovalRemark"].ToString();
-                    
+                    if (!DBNull.Value.Equals(dr["IsApprovals"]))
+                        result.IsApproved = int.Parse(dr["IsApprovals"].ToString());
+
                     result.SchFromDatestr = MyDBLogic.ConvertDateToString(result.SchFromDate);
 
                 }

@@ -42,6 +42,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BIL\DADetails.cs" />
+    <Compile Include="BIL\TADABillGeneration.cs" />
+    <Compile Include="BIL\TADARuleData.cs" />
+    <Compile Include="BIL\TravellingDetails.cs" />
     <Compile Include="CTV\CTVHdrDtl.cs" />
     <Compile Include="CTV\LocVehSchFromMat.cs" />
     <Compile Include="CTV\LTSDriVerChange.cs" />
@@ -76,6 +80,7 @@
     <Compile Include="EntryII\EmpDate.cs" />
     <Compile Include="EntryII\EntryIIDateWiseTourData.cs" />
     <Compile Include="EntryII\EntryIIDCDetails.cs" />
+    <Compile Include="EntryII\EntryIIInnerView.cs" />
     <Compile Include="EntryII\EntryIIList.cs" />
     <Compile Include="EntryII\EntryIITPDetails.cs" />
     <Compile Include="EntryII\EntryIITravelingDetails.cs" />

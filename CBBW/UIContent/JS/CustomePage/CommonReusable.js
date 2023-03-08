@@ -623,6 +623,28 @@ async function getMultiselectData(multiselectID,dataSourceURL) {
         }
     });
 };
+async function getDropDownDataWithSelectedValueWithColor(DropDownID, defaultText, dataSourceURL, selectedValue) {
+    var DropdownCtrl = $('#' + DropDownID);
+    //alert(DropDownID + ' - ' + dataSourceURL);
+    $.ajax({
+        url: dataSourceURL,
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            DropdownCtrl.empty();
+            DropdownCtrl.append($('<option/>', { value: "-1", text: defaultText }));
+            $(data).each(function (index, item) {
+                if (item.IsSelected) {
+                    DropdownCtrl.append($('<option/>', { value: item.ID, text: item.DisplayText, class: 'Active' }));
+                } else {
+                    DropdownCtrl.append($('<option/>', { value: item.ID, text: item.DisplayText}));
+                }
+                });
+            DropdownCtrl.val(selectedValue);
+            //if (selectedValue.length > 0) { DropdownCtrl.isValid(); } else { DropdownCtrl.isInvalid(); }
+        }
+    });
+};
 async function getMultiselectDataWithSelectedValues(multiselectID, dataSourceURL, commaSeparatedSelectedValues) {
     var multiselectCtrl = $('#' + multiselectID);
     var i = commaSeparatedSelectedValues.indexOf(',');

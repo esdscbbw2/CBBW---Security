@@ -1,17 +1,237 @@
-﻿
+﻿@using System.Globalization;
+@using CBBW.Areas.Security.ViewModel.EntryII
+@model EntryIIHdrVM
 @{
-    Layout = null;
+
 }
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>ViewMLNote</title>
-</head>
-<body>
-    <div> 
+<div class="row newTable">
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(m => m.NoteNumber)
+        <div class="fixedElement">
+            <div class="col-md-12">
+                <div class="heading_text_btn mb-3 mt-4">
+                    <div class="leftButton">
+                        <button type="button" class="btn btn-primary me-2"
+                                onclick="window.location.href='/Security/EntryII/Index';">
+                            <i data-feather="arrow-left-circle"></i>
+                            Back
+                        </button>
+                        @*<button id="btnBack" type="button" class="btn btn-primary me-2">
+                                <i data-feather="arrow-left-circle"></i>
+                                Back
+                            </button>*@
+                    </div>
+                    <h2>Employee’s Travelling Details & Vehicle Allotment – ENTRY (II) </h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 ">
+            <div class="text-center pt-2 pb-2">
+                <div class="upper-tab-buttons">
+                    <button type="button" id="TPDBtnView"
+                            onclick="TPDBtnClicked()"
+                            class="btn btn-primary me-2">
+                        To Check “Travelling Person Details”
+                        Click Here
+                    </button>
+                    <button type="button" id="TDBtnView"
+                            onclick="TDBtnClicked()"
+                            class="btn btn-primary me-2">
+                        To Check “Travelling Details”
+                        Click Here
+                    </button>
+                    <button type="button" id="VADBtnView"
+                            onclick="VATBtnClicked()"
+                            class="btn btn-primary ">
+                        To Check “Vehicle Allotment Details”
+                        Click Here
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 mb-4">
+            <div class="card mb-4 mt-4">
+                <div class="card-body approvalForm">
+                    @*<form class="form-sample form-inline row ms-auto">*@
+                    <div class="row d-flex align-items-center mb-4">
+                        <div class="col-md-4">
+                            <label id="lblNoteDesc" class="col-form-label"></label>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" value="@Model.NoteNumber" disabled>
+                        </div>
+                        <div class="col-md-4">
+                            <div>
+                                <div class="row">
+                                    <label class="col-form-label col-md-2">
+                                        Date  :
+                                    </label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" value="@(DateTime.Today.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture))" disabled>
+                                    </div>
+                                    <label class="col-form-label col-md-2">
+                                        Time  :
+                                    </label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" value="@DateTime.Now.ToString("hh:mm tt")" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center mb-4">
+                        <label class="col-form-label col-md-2">Center Code & Name : </label>
+                        <div class="col-md-6">
+                            <input id="CentreCodenName" type="text" class="form-control" disabled>
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center mb-4 mr-15">
+                        <label class="col-form-label col-md-2">Is E.P Tour : </label>
+                        <div class="col-md-6">
+                            <input id="EPTourDesc" type="text" class="form-control" disabled>
+                        </div>
+                    </div>
+                    @*</form>*@
+                </div>
+            </div>
+            <div class="card mb-4 mt-4">
+                <div class="card-body  alert alert-success  text-dark approvalForm">
+                    @*<form class="form-sample form-inline row ms-auto">*@
+                    <div class="row d-flex align-items-center">
+                        <div class="col-md-2 col-form-label">
+                            <label>Approved :</label>
+                        </div>
+                        <div class="col-md-2">
+                            <input id="AppStat" type="text" class="form-control" disabled>
+                        </div>
+                        <div class="col-md-2 col-form-label">
+                            <label>Date &amp; Time Of Approval :</label>
+                        </div>
+                        <div class="col-md-2">
+                            <input id="AppDateTime" type="text" class="form-control" disabled>
+                        </div>
+                        <div class="col-md-2 col-form-label">
+                            <label>Reason If Not  Approved :</label>
+                        </div>
+                        <div class="col-md-2">
+                            <textarea name="" id="AppReason" cols="20" rows="2" class="form-control pointer-default" readonly data-toggle="tooltip" data-placement="bottom"></textarea>
+                        </div>
+                    </div>
+                    @*</form>*@
+                </div>
+            </div>
+            <div class="card mb-4 mt-4">
+                <div class="card-body  alert alert-success text-dark approvalForm">
+                    @*<form class="form-sample form-inline row ms-auto">*@
+                    <div class="row d-flex align-items-center">
+                        <div class="col-md-2 col-form-label">
+                            <label>Ratified :</label>
+                        </div>
+                        <div class="col-md-2">
+                            <input id="ratStat" type="text" class="form-control" disabled>
+                        </div>
+                        <div class="col-md-2 col-form-label">
+                            <label>Date & Time Of Ratification :</label>
+                        </div>
+                        <div class="col-md-2">
+                            <input id="RatDT" type="text" class="form-control" disabled>
+                        </div>
+                        <div class="col-md-2 col-form-label">
+                            <label>Reason If Not Ratified :</label>
+                        </div>
+                        <div class="col-md-2">
+                            <textarea name="" id="ratReason" cols="20" rows="2" class="form-control pointer-default" readonly data-toggle="tooltip" data-placement="bottom"></textarea>
+                        </div>
+                    </div>
+                    @*</form>*@
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="d-flex justify-content-center mt-4">
+                    <button type="button" name="Submit" 
+                            value="MLOutInBtn" id="InnerPageBtn"
+                            onclick="window.location.href='/Security/EntryII/MLDetailsView?NoteNumber=@Model.NoteNumber';"
+                            class="btn btn-primary me-2">
+                        Main Location Vehicle & Travelling Person OUT & IN Details
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="modal modal-previous-details fade" id="TPDModal" tabindex="-1"
+         aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="exampleModalLabel">Employees Travelling  Schedule Details – Entry II </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="TPDModalDiv">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
-</body>
-</html>
+    <div class="modal modal-previous-details fade" id="TDModal" tabindex="-1"
+         aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="exampleModalLabel">Employees Travelling  Schedule Details – Entry II </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="TDModalDiv">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal modal-previous-details fade" id="VAModal" tabindex="-1"
+         aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="exampleModalLabel">Employees Travelling  Schedule Details – Entry II </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="VAModalDiv">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section headers
+{
+
+}
+@section scripts{
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/EntryII/EntryIICreateLW.js"></script>
+
+}

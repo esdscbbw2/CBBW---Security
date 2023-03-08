@@ -115,7 +115,7 @@ function SaveDataClicked() {
     var NoteNumber = $('#NoteNumber').val();
     var TravD = getRecordsFromTableV2('TravdtlTbl');
     var x = '{"NoteNumber":"' + NoteNumber + '","tfdfApprovalbdetails":' + TravD + '}';
-    alert(x);
+   // alert(x);
     $.ajax({
         method: 'POST',
         url: '/TFD/SetApprovalFBDetails',

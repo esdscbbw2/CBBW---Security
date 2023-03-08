@@ -1,0 +1,388 @@
+﻿@using System.Globalization;
+@using CBBW.BOL.BIL;
+@model TADABillGeneration
+@{
+
+}
+
+
+<div class="container">
+    @using (Html.BeginForm())
+    {
+
+        @Html.HiddenFor(x => x.EmployeeNo)
+        @Html.HiddenFor(x => x.SubmitCount)
+        <div class="row newTable">
+            <div class="fixedElement">
+                <div class="col-md-12">
+                    <div class="heading_text_btn mb-3 mt-4">
+                        <div class="leftButton">
+                            <button type="button" id="btnBacks" class="btn btn-primary me-2">
+                                <i data-feather="arrow-left-circle"></i>
+                                Back
+                            </button>
+                            @if (Model.CanDelete == 1)
+                            {
+                                <button id="btnDelete" type="submit" name="Submit" value="Delete"
+                                        class="btn btn-primary me-2">
+                                    <i data-feather="trash-2"></i>
+                                    Delete
+                                </button>
+                            }
+
+                        </div>
+                        <h2>TA & DA Bill Generation Details – ENTRY    </h2>
+                        <div class="rightButton">
+                            <button type="submit" class="btn btn-white" onclick="window.location.href='#';">
+                                <i data-feather="printer"></i>
+                                Print / View
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="col-md-12">
+                <div class="text-center pt-2 pb-2">
+                    <div class="upper-tab-buttons text-center">
+                        <button type="button" class="btn btn-primary me-2" id="btnTourRule">
+                            To Check  “Tour Rules”   Click Here
+                        </button>
+                        <button type="button" class="btn btn-primary " onclick="window.location.href='#';">
+                            To Check “TA & DA Rules”   Click Here
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-4" id="AllData">
+                <div class="card mt-4">
+                    <div class="card-body approvalForm">
+                        <div class="form-sample form-inline row ms-auto">
+                            <div class="row d-flex align-items-center ">
+                                <label class="col-form-label col-md-4">
+                                    @*<div id="NZB_staff1">
+                                            Ref. Tour Information & Feed Back Details Note no.:
+                                        </div>*@
+                                    <div>
+                                        Ref. “Company Transport” Vehicle Trip Schedule – ENTRY Note No.:
+                                    </div>
+                                    @*<div id="by_HG1">
+                                            Ref. Driver Negative Point Recording – ENTRY Note No.:
+                                        </div>*@
+                                </label>
+                                <div class="col-md-4">
+                                    @Html.TextBoxFor(x => x.RefNoteNumber, new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                                <div class="col-md-4">
+
+
+                                    <div>
+                                        <div class="row">
+                                            <label class="col-form-label col-md-2">
+                                                Date  :
+                                            </label>
+                                            <div class="col-md-4">
+                                                @Html.TextBoxFor(x => x.RefEntryDatestr, new { @class = "form-control", @readonly = "readonly" })
+                                            </div>
+                                            <label class="col-form-label col-md-2">
+                                                Time  :
+                                            </label>
+                                            <div class="col-md-4">
+                                                @Html.TextBoxFor(x => x.RefEntryTime, new { @class = "form-control", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-4 mb-4">
+                    <div class="card-body approvalForm">
+                        <div class="form-sample form-inline row ms-auto">
+                            <div class="row d-flex align-items-center ">
+                                <div class="col-md-2 col-form-label">
+                                    <label>Employee Code & Name:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    @Html.TextBoxFor(m => m.EmployeeCodeName, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-4 mb-4">
+                    <div class="card-body approvalForm">
+                        <div class="form-sample form-inline row ms-auto">
+                            <div>
+                                <div class="row d-flex align-items-center mb-4">
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Bill No.:  </label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(m => m.NoteNumber, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="col-md-1 col-form-label">
+                                        <label>Date:</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control" value="@Model.EntryDatestr" disabled>
+                                    </div>
+                                    <div class="col-md-1 col-form-label">
+                                        <label>Time:</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control" value="@Model.EntryTime" disabled>
+                                    </div>
+                                </div>
+                                <div class="row d-flex align-items-center mb-4">
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Person Type:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(x => x.PersonTypetxt, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Centre Code & Name:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(x => x.CenterCodeName, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+
+                                </div>
+
+                                <div class="row d-flex align-items-center mb-4">
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Designation Code & Name:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(x => x.DesigCodeName, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Daily Allowance Amount:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(x => x.DAAmount, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                                <div class="row d-flex align-items-center mb-4">
+                                    <div class="col-md-2 col-form-label">
+                                        <label>DA Deducted Due To Non Compliance:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(x => x.DADeducted, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Eligible Daily Allowance:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(x => x.EDAllowance, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                                <div class="row d-flex align-items-center mb-4">
+                                    <div class="col-md-2 col-form-label">
+                                        <label>T.A Amount:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(x => x.TAAmount, new { @min = "0", @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Local Conveyance:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(x => x.LocalConveyance, new { @min = "0", @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                                <div class="row d-flex align-items-center mb-4">
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Lodging:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(x => x.Lodging, new { @min = "0", @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Total Expenses:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(x => x.TotalExpenses, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                                <div class="row d-flex align-items-center mb-4">
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Tour From Date & Time:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(x => x.TourFromDateNTime, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="col-md-2 col-form-label">
+                                        <label>To Date & Time:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(x => x.TourToDateNTime, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                                <div class="row d-flex align-items-center mb-4">
+                                    <div class="col-md-2 col-form-label">
+                                        <label>No. Of Days On Tour:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(x => x.NoOfDays, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Purpose Of Visit:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.TextAreaFor(x => x.PurposeOfVisit, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mt-4 mb-4">
+                            <div class="card-body  alert alert-success text-dark approvalForm">
+                                <div class="form-sample form-inline row ms-auto">
+                                    <div class="row d-flex align-items-center">
+                                        <div class="col-md-2 col-form-label">
+                                            <label>Approved :</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            @if (Model.ApprovalDatestr != "01/01/0001")
+                                            {
+                                                if (Model.IsApproved == true)
+                                                {
+                                                    <input type="text" class="form-control" value="Yes" disabled="">
+                                                }
+                                                else
+                                                {
+                                                    <input type="text" class="form-control" value="No" disabled="">
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <input type="text" class="form-control" value="" disabled="">
+                                            }
+                                        </div>
+                                        <div class="col-md-2 col-form-label">
+                                            <label>Date &amp; Time Of Approval :</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            @if (Model.ApprovalDatestr != "01/01/0001")
+                                            {
+                                                <input type="text" class="form-control" value="@Model.ApprovalDatestr @Model.ApprovalTime" disabled="">
+                                            }
+                                            else
+                                            {
+                                                <input type="text" class="form-control" value="" disabled="">
+                                            }
+                                        </div>
+                                        <div class="col-md-2 col-form-label">
+                                            <label>Reason If Not Approved :</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <textarea name="" id="" cols="20" rows="2" class="form-control pointer-default" readonly> @Model.ApprovalReason </textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="d-flex justify-content-center mt-4">
+                                <button id="Deducted" type="submit" name="Submit" value="DAD" class="btn btn-primary me-2">
+                                    Deductions From DA Detail
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="bgColor mt-4 bg-transparent content border-red text-left">
+                                <ul style="list-style:none;">
+                                    <li style="font-size: 16px;">
+                                        The Details Displayed & Entered Are As Per Rule & Policy Of The Company. Hence Entered & Saved The Transaction As Required:
+                                        <select disabled class="form-select content border-green" aria-label="Default select example" id="Policy">
+
+                                            <option selected value="1">Yes</option>
+
+
+                                        </select>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    }
+</div>
+@section headers
+{
+    <style>
+        .inVisible {
+            display: none;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
+}
+@section scripts{
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+
+    <script>
+         if ('@ViewBag.ErrMsg' != '') {
+                Swal.fire({
+                    title: 'Failed to submit',
+                    text: "@ViewBag.ErrMsg",
+                    icon: 'warning',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        //cancel: 'Cancel',
+                        confirm: 'Ok'
+                    },
+                    //cancelButtonClass: 'btn-cancel',
+                    confirmButtonColor: '#2527a2',
+                });
+            };
+        if ('@ViewBag.Msg' != '') {
+                Swal.fire({
+                    title: 'Confirmation',
+                    text: "@ViewBag.Msg",
+                    icon: 'success',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        confirm: 'Ok'
+                    },
+                    confirmButtonColor: '#2527a2',
+
+                }).then(callback);
+                function callback(result) {
+                    if (result.value) {
+                        var url = "/Security/BIL/Index";
+                        window.location.href = url;
+                    }
+                }
+
+        };
+        $('#btnBacks').click(function () {
+            var url = "/Security/BIL/Index";
+                window.location.href = url;
+        });
+
+        $(document).ready(function () {
+            $('#btnTourRule').click(function () {
+                var url = "/Security/TourRule/ViewRedirection?CBUID=1";
+                window.open(url);
+            });
+        });
+    </script>
+
+}

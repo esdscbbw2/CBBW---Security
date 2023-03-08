@@ -337,7 +337,7 @@ namespace CBBW.DAL.DataSync
                 para[paracount] = new SqlParameter("@DesignationCode", SqlDbType.Int);
                 para[paracount++].Value = mData.DesignationCode;
                 para[paracount] = new SqlParameter("@DesignationText", SqlDbType.NVarChar, 50);
-                para[paracount++].Value = mData.DesignationText;
+                para[paracount++].Value = string.IsNullOrEmpty(mData.DesignationText)?"NA": mData.DesignationText;
                 para[paracount] = new SqlParameter("@MaterialStatus", SqlDbType.Bit);
                 para[paracount++].Value = mData.MaterialStatus;
                 para[paracount] = new SqlParameter("@VehicleBelongsTo", SqlDbType.Int);

@@ -13,6 +13,7 @@
         @Html.HiddenFor(x => x.tfdHdr.AuthEmployeeCode)
         @Html.HiddenFor(m => m.CanDelete)
         @Html.HiddenFor(m => m.CBUID)
+        @Html.HiddenFor(m=>m.tfdHdr.ApprovalTime)
         <div class="row newTable">
             <div class="fixedElement">
                 <div class="col-md-12">
@@ -153,19 +154,36 @@
                                     <label>Approved :</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" value="Yes" disabled="">
+                                    @if (Model.tfdHdr.ApprovalTime != null)
+                                    {
+                                        if (Model.tfdHdr.IsApproved == true)
+                                        {
+                                            <input type="text" class="form-control" value="Yes" disabled="">
+                                        }
+                                        else if (Model.tfdHdr.IsApproved == false)
+                                        {
+                                            <input type="text" class="form-control" value="No" disabled="">
+                                        }
+
+
+                                    }
+                                    else
+                                    {
+                                        <input type="text" class="form-control" value="-" disabled="">
+                                    }
+
                                 </div>
                                 <div class="col-md-2 col-form-label">
                                     <label>Date &amp; Time Of Approval :</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" value="24/01/2023 05:34 PM" disabled="">
+                                    <input type="text" class="form-control" value="@Model.tfdHdr.ApprovalDTstr @Model.tfdHdr.ApprovalTime" disabled="">
                                 </div>
                                 <div class="col-md-2 col-form-label">
                                     <label>Reason If Not Approved :</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <textarea name="" id="" cols="30" rows="2" readonly class="form-control">-</textarea>
+                                    <textarea name="" id="" cols="30" rows="2" readonly class="form-control">@Model.tfdHdr.Remark</textarea>
                                 </div>
                             </div>
                         </form>
@@ -231,10 +249,10 @@
     <script src="~/UIContent/JS/CustomePage/TFD/TFDDetails.js"></script>
     <script>
         function BackUrls() {
-                var url = "/Security/TFD/Index";
-                var urlbk = url.replace(/&amp;/g, '&');
-                window.location.href = urlbk;
-            };
+            var url = "/Security/TFD/Index";
+            var urlbk = url.replace(/&amp;/g, '&');
+            window.location.href = urlbk;
+        };
     </script>
     <script>
         if ('@ViewBag.ErrMsg' != '') {
@@ -272,18 +290,26 @@
     </script>
 
     <script>
-        function PersonSelectionChanged() {
-            var targetCtrl = $(PersonSelectionChanged.caller.arguments[0].target);
+        function VisibleRows(EmpNo) {
+            var targetCtrl = $(VisibleRows.caller.arguments[0].target);
             var mID = targetCtrl.attr('id');
             var PType = $('#PersonType_' + mID).html();
             var EmployeeNo = $('#AuthEmployeeCode_' + mID).html();
-           // var PName = $('#PersonName_' + mID).html();
+            // var PName = $('#PersonName_' + mID).html();
             var PersonCentre = $('#PersonCentre_' + mID).html();
-            var NoteNo = $('#NoteNumber').val();
+            var NoteNo;
+            var ApprovalTime = $('#tfdHdr_ApprovalTime').val();
+            if (ApprovalTime == "") {
+                NoteNo = $('#NoteNumber').val();
+            } else {
+                NoteNo = $('#tfdHdr_NoteNumber').val();
+            }
+            
+
             var TourDetailsDiv = $('#TourDiv');
             TourDetailsDiv.removeClass('inVisible');
 
-            var dataSourceURL = '/TFD/DateWiseTourView?NoteNumbers='+$.trim(NoteNo)+'&PersonType=' + $.trim(PType) + '&EmployeeNo=' + $.trim(EmployeeNo) + '&PersonCentre=' + $.trim(PersonCentre);
+            var dataSourceURL = '/TFD/DateWiseTourView?NoteNumbers=' + $.trim(NoteNo) + '&PersonType=' + $.trim(PType) + '&EmployeeNo=' + $.trim(EmployeeNo) + '&PersonCentre=' + $.trim(PersonCentre) + '&ApprovalTime=' + ApprovalTime;
             $.ajax({
                 url: dataSourceURL,
                 contentType: 'application/html; charset=utf-8',
@@ -298,32 +324,5 @@
             })
         };
     </script>
-    <script>
-        $('#btnBacks').click(function () {
-            var url = "/Security/TFD/Index";
-            if ($('#NoteNumber').val() != "") {
-                Swal.fire({
-                    title: 'Confirmation Message',
-                    text: "Are You Sure Want to Go Back?",
-                    icon: 'question',
-                    customClass: 'swal-wide',
-                    confirmButtonText: "Yes",
-                    cancelButtonText: "No",
-                    cancelButtonClass: 'btn-cancel',
-                    confirmButtonColor: '#2527a2',
-                    showCancelButton: true,
-                }).then(callback);
-                function callback(result) {
-                    if (result.value) {
-
-                        window.location.href = url;
-                    }
-
-                }
-            } else {
-
-                window.location.href = url;
-            };
-        });
-    </script>
+    
 }

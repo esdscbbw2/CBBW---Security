@@ -84,6 +84,47 @@ function TPSelected() {
     var targetCtrl = $(TPSelected.caller.arguments[0].target);
     VisiblePersonRow(targetCtrl.attr('id'));
 };
+function GetOutDCDetails(vehicleno, fromdate, todate) {
+    var iDiv = $('#RefDCOutDiv');
+    var dataSourceURL = '/EntryII/GetRefDCPartialOut?VehicleNo=' + vehicleno + '&FromDate=' + fromdate + '&ToDate=' + todate ;
+    $.ajax({
+        url: dataSourceURL,
+        contentType: 'application/html; charset=utf-8',
+        type: 'GET',
+        dataType: 'html',
+        success: function (result) {
+            iDiv.html(result);
+            //GetInDCDetails(vehicleno, fromdate, todate);
+        },
+        error: function (xhr, status) {
+
+        }
+    })
+};
+function GetInDCDetails(vehicleno, fromdate, todate) {
+    var iDiv = $('#RefDCInDiv');
+    var dataSourceURL = '/EntryII/GetRefDCPartialIn?VehicleNo=' + vehicleno + '&FromDate=' + fromdate + '&ToDate=' + todate ;
+    $.ajax({
+        url: dataSourceURL,
+        contentType: 'application/html; charset=utf-8',
+        type: 'GET',
+        dataType: 'html',
+        success: function (result) {
+            iDiv.html(result);
+        },
+        error: function (xhr, status) {
+
+        }
+    })
+};
+$(document).ready(function () {
+    var vehicleno = $('#mVehicleNo').html();
+    var fromdate = $('#mFromDate').html();
+    var todate = $('#mToDate').html();
+    GetOutDCDetails(vehicleno, fromdate, todate);
+    GetInDCDetails(vehicleno, fromdate, todate);
+    //alert(vehicleno + ' ' + fromdate + ' ' + todate);
+});
 $(document).ready(function () {
     var defPerson = $('#DefaultPersonID').val();
     $('#' + defPerson).attr('checked', true);

@@ -1,0 +1,89 @@
+﻿@using System.Globalization;
+@using CBBW.Areas.Security.ViewModel.BIL;
+@model DaDetailsVM
+@{
+    Layout = null;
+}
+
+<div class="col-md-12">
+    <div class="heading_text_btn2 d-block mt-2">
+        <h2 class="text-left">  Travelling Details:</h2>
+    </div>
+</div>
+<div class="col-md-12">
+    <div class="heading_text_btn2 d-block mt-2">
+        <h2 class="text-center">
+            Date wise BAS Timing Details
+        </h2>
+    </div>
+</div>
+<div class="col-md-12 mb-4 mt-3">
+    <div class="table-responsive">
+        <table class="table table-bordered w-100 btnalign " id="table">
+            <thead>
+                <tr>
+                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                        Sl. No
+                    </th>
+                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                        Tour Date
+                    </th>
+                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                        Employee No. & Name
+                    </th>
+                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                        Centre Code & Name
+                    </th>
+                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                        BAS
+                        Time In
+                    </th>
+                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                        BAS
+                        Time Out
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    var sl = 1;
+                    foreach (var item in Model.TravDetails)
+                    {
+                        <tr>
+
+                            <td>
+                                @sl
+                            </td>
+                            <td class="text-center">
+                                @item.ActualTourInDatestr
+                            </td>
+                            <td class="text-center">
+                                @item.EmployeeCodeName
+                            </td>
+                            <td class="text-center">
+                                @item.CenterCodeName
+                            </td>
+                            <td class="text-center">
+                                @item.BASInTime
+                            </td>
+                            <td>
+                                @item.BASOutTime
+                            </td>
+                        </tr>
+                        sl++;
+                    }
+                }
+
+
+
+            </tbody>
+        </table>
+
+
+
+
+    </div>
+</div>
+

@@ -1,15 +1,5 @@
 ﻿$(document).ready(function () {
-
-    $('#tfdHdr_EntryDatestr').val('');
-    $('#tfdHdr_EntryTime').val('');
-    $('#tfdHdr_RefNoteNumber').val('');
-    $('#tfdHdr_AuthEmployeeName').val('');
-    $('#tfdHdr_EntEntryDatestr').val('');
-    $('#tfdHdr_EntEntryTime').val('');
-    $('#tfdHdr_TourFromDatestr').val('');
-    $('#tfdHdr_TourToDatestr').val('');
-    $('#tfdHdr_PurposeOfVisit').val('');
-    $('#tfdHdr_AuthEmployeeCode').val('');
+    allvalclear();
 
     $('#NoteNumber').change(function () {
         Notenumberchanged($(this).val());
@@ -22,12 +12,25 @@
         $('#NoteNumber').makeEnabled();
     }
 });
+function allvalclear() {
+    $('#tfdHdr_EntryDatestr').val('');
+    $('#tfdHdr_EntryTime').val('');
+    $('#tfdHdr_RefNoteNumber').val('');
+    $('#tfdHdr_AuthEmployeeName').val('');
+    $('#tfdHdr_EntEntryDatestr').val('');
+    $('#tfdHdr_EntEntryTime').val('');
+    $('#tfdHdr_TourFromDatestr').val('');
+    $('#tfdHdr_TourToDatestr').val('');
+    $('#tfdHdr_PurposeOfVisit').val('');
+    $('#tfdHdr_AuthEmployeeCode').val('');
+}
+
 function Notenumberchanged(notenumber) {
   //  $('#TourFB').makeDisable();
     var noteCtrl = $('#NoteNumber');
     var selectedvalue = 0;
     if (notenumber != '') {
-        noteCtrl.isValid();
+       
         $.ajax({
             url: '/TFD/GetTFDHdrData',
             method: 'GET',
@@ -45,7 +48,7 @@ function Notenumberchanged(notenumber) {
                     $('#tfdHdr_TourToDatestr').val(item.tfdHdr.TourToDatestr);
                     $('#tfdHdr_PurposeOfVisit').val(item.tfdHdr.PurposeOfVisit);
                     $('#tfdHdr_AuthEmployeeCode').val(item.tfdHdr.AuthEmployeeCode);
-
+                    noteCtrl.isValid();
                     // $('#TourFB').makeEnabled();
                     (async function () {
                         const r2 = await GetTPDetails(item.tfdHdr.RefNoteNumber);
@@ -104,7 +107,7 @@ function SaveDataClicked() {
     var NoteNumber = $('#NoteNumber').val();
     var TravD = getRecordsFromTableV2('DateTbl');
     var x = '{"ApproveReason":"' + ApproveReason + '","IsApproves":"' + IsApproves + '","NoteNumber":"' + NoteNumber + '","TFdDateWise":' + TravD + '}';
-    alert(x);
+  //  alert(x);
     $.ajax({
         method: 'POST',
         url: '/TFD/SetFinalApprovalSubmit',
@@ -233,3 +236,15 @@ function EnableSubmitBtn() {
         SubmitBtn.makeEnabled();
     }
 };
+function Btnclear() {
+    allvalclear();
+    $('#TourDiv').addClass('inVisible');
+    $('#TPDiv').addClass('inVisible');
+    $('#NoteNumber').val('').isInvalid();
+    $('#IsApproves').val('').isInvalid();
+    $('#ApproveReason').val('').isInvalid();
+    $('#ApproveReason').removeAttr('disabled');
+    $('#HCVD').makeDisable();
+    $('#TFBD').makeDisable();
+    Notenumberchanged($('#NoteNumber').val(''));
+}
