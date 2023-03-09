@@ -80,7 +80,8 @@ namespace CBBW.Areas.Security.Controllers
                     if (RefNoteNumber != "")
                     {
                         model.NoteNumber = RefNoteNumber.Trim();
-                      
+                        model.NoteNo = RefNoteNumber.Trim();
+
                     }
 
                     if (TempData["BtnSubmit"] != null)
@@ -99,6 +100,7 @@ namespace CBBW.Areas.Security.Controllers
                         TourFBVM = TempData["TFDDetails"] as TourFeedBackDetailsVM;
                         model.Notelist = _iTFD.GetNoteNumberList(user.CentreCode, 1, ref pMsg);
                         model.NoteNumber = model.Notelist.Where(x => x.NoteNumber == TourFBVM.RefNoteNumber).FirstOrDefault().NoteNumber;
+                        model.NoteNo = TourFBVM.RefNoteNumber;
                         model.tfdHdr.NoteNumber = TourFBVM.NoteNumber;
                         model.submitcount = TourFBVM.submitcount;
                         TempData["TFDDetails"] = TourFBVM;
@@ -165,7 +167,7 @@ namespace CBBW.Areas.Security.Controllers
         }
         public JsonResult GetENTAuthEmployeeList(string Notenumber)
         {
-            IEnumerable<CustomComboOptions> result;
+            IEnumerable<CustomCheckBoxOption> result;
             result = _iTFD.GetENTAuthEmployeeList(Notenumber, user.CentreCode, ref pMsg);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -200,7 +202,6 @@ namespace CBBW.Areas.Security.Controllers
             IEnumerable<TFDDateWiseTourData> modelobj = _iTFD.GetTFDDateWiseTourData(NoteNumbers, PersonType, EmployeeNo, PersonCentre, status, ref pMsg);
             return View(URl, modelobj);
         }
-
         [HttpGet]
         public ActionResult TourFeedBackDetails(string NoteNumber, string RefNoteNumber)
         {
@@ -241,7 +242,6 @@ namespace CBBW.Areas.Security.Controllers
             catch (Exception ex) { ex.ToString(); }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
         public JsonResult GetFDReverseData(string NoteNumber, int CenterCode = 0, int status = 0)
         {
 
@@ -267,8 +267,6 @@ namespace CBBW.Areas.Security.Controllers
             }
             return Json(fbmodel, JsonRequestBehavior.AllowGet);
         }
-
-
         public ActionResult Details(string NoteNumber, int CanDelete, int CBUID = 0)
         {
             TFDHdrVM modelvm = new TFDHdrVM();

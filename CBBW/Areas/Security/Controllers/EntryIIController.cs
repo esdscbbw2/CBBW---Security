@@ -138,6 +138,10 @@ namespace CBBW.Areas.Security.Controllers
                 modelobj.SchToDate = obj1.PersonDateWiseDetails.Max(o => o.DWToDate);
                 modelobj.RFIDCardList = _iEntryIIRepository.GetRFIDCards(ref pMsg);
                 modelobj.VehicleDetails = _iEntryIIRepository.GetEntryIIVehicleAllotmentDetails(NoteNumber, modelobj.SchFromDate, modelobj.SchToDate, user.CentreCode, false, ref pMsg);
+                if (modelobj.PersonDetails != null) 
+                {
+                   modelobj.IsManagementPerson= modelobj.PersonDetails.Where(o => o.PersonType == 3 || o.PersonType == 4).Count();
+                }
             }
             catch { }
             return View(modelobj);
@@ -194,7 +198,7 @@ namespace CBBW.Areas.Security.Controllers
             else if (Submit == "Save")
             {
                 EditNoteDetails noteinfo = _iEntryIIRepository.GetEditNoteHdr(modelobj.NoteNumber, ref pMsg);
-                if (_iEntryIIRepository.UpdateEntryIIData(modelobj.NoteNumber, noteinfo.CenterCode, noteinfo.CenterName, noteinfo.EPTour == 1 ? true : false, false, ref pMsg))
+                if (_iEntryIIRepository.UpdateEntryIIData(modelobj.NoteNumber, user.CentreCode, user.CentreCode.ToString().Trim()+"/"+user.CentreName, noteinfo.EPTour == 1 ? true : false, false, ref pMsg))
                 {
                     ViewBag.Msg = "Note Number " + modelobj.NoteNumber + " Submited Successfully.";
                     TempData["EntryII"] = null;
@@ -238,8 +242,9 @@ namespace CBBW.Areas.Security.Controllers
         public JsonResult GetNoteInfo(string NoteNumber) 
         {
             EditNoteDetails result = _iEntryIIRepository.GetEditNoteHdr(NoteNumber, ref pMsg);
+            if (result != null) { result.IsMLEntered = _iEntryIIRepository.IsMainLocationEntered(NoteNumber, ref pMsg); }
             return Json(result, JsonRequestBehavior.AllowGet);
-        }
+        }        
         public ActionResult TDView(string NoteNumber)
         {
             IEnumerable<EntryIITravelingDetails> modelobj = _iEntryIIRepository.GetEntryIITravellingDetails(NoteNumber, ref pMsg);

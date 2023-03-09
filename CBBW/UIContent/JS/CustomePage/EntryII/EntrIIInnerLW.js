@@ -1,4 +1,25 @@
-﻿function RFIDInChanged() {
+﻿function EnableSubmitBtn() {
+    var btnsubmit = $('#btnSubmit');
+    var opt1 = $('#Option1').val();
+    if (opt1 == 1) {
+        btnsubmit.makeEnabled();
+    } else {
+        btnsubmit.makeDisable();
+    }
+};
+function Option1Changed() {
+    var optiondiv = $('#Option1Div');
+    var optionCtrl = $('#Option1');
+    if (optionCtrl.val() == 1) {
+        optiondiv.isGreen();
+        optionCtrl.isValid();
+    } else {
+        optionCtrl.isInvalid();
+        optiondiv.isRed();
+    }
+    EnableSubmitBtn();
+};
+function RFIDInChanged() {
     var targetCtrl = $('#RFIDCardIn');
     var divCtrl = $('#VTourInTimeCtrl');
     var timCtrl = $('#TourInTimeCtrl');
@@ -94,6 +115,7 @@ function LNfireSweetAlert() {
     }
 }
 function VisiblePersonRow(personid) {
+    //alert(personid);
     $('#TPDtlTable tbody tr').each(function () {
         $(this).addClass('inVisible');
     });
@@ -195,4 +217,16 @@ $(document).ready(function () {
             },
         });
     });
+});
+$(document).ready(function () {
+    var ismanagement = $('#IsManagementPerson').val();
+    var RFIDInCtrl = $('#RFIDCardIn');
+    var RFIDOutCtrl = $('#RFIDCardOut');
+    if (ismanagement == 1) {
+        RFIDInCtrl.makeDisable();
+        RFIDOutCtrl.makeDisable();
+    } else {
+        RFIDInCtrl.makeEnabled();
+        RFIDOutCtrl.makeEnabled();
+    }
 });

@@ -372,7 +372,22 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-
+        public int IsMainLocationEntered(string NoteNumber, ref string pMsg)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(NoteNumber))
+                    return 0;
+                else 
+                {
+                    using (SQLHelper sql = new SQLHelper("SELECT [ENT].[IsMainLocationEntered]('" + NoteNumber + "')", CommandType.Text))
+                    {
+                        return int.Parse(sql.ExecuteScaler(ref pMsg).ToString());
+                    }
+                }                
+            }
+            catch (Exception ex) { pMsg = ex.Message; return 0; }
+        }
 
 
     }

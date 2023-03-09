@@ -8,6 +8,7 @@
     @using (Html.BeginForm())
     {
         @Html.HiddenFor(m => m.IsBackButtonActive)
+        @Html.HiddenFor(m=>m.IsMainLocationEntered)
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
@@ -163,8 +164,9 @@
             </div>
             <div class="col-md-12">
                 <div class="d-flex justify-content-center mt-4">
-                    <button type="submit" name="Submit" value="LWOutInBtn" id="InnerPageBtn"
-                            class="btn btn-primary me-2">
+                    <button type="submit" name="Submit" value="LWOutInBtn" 
+                            id="InnerPageBtn"
+                            class="btn btn-primary me-2" disabled>
                         Location Wise Vehicle & Travelling Person IN & OUT Details
                     </button>
                 </div>

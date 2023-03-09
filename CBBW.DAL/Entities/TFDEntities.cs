@@ -83,9 +83,9 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
-        public IEnumerable<CustomComboOptions> GetENTAuthEmployeeList(string Notenumber, int CentreCode, ref string pMsg)
+        public List<CustomCheckBoxOption> GetENTAuthEmployeeList(string Notenumber, int CentreCode, ref string pMsg)
         {
-            List<CustomComboOptions> result = new List<CustomComboOptions>();
+            List<CustomCheckBoxOption> result = new List<CustomCheckBoxOption>();
             try
             {
                 dt = _datasync.GetENTAuthEmployeeList(Notenumber, CentreCode, ref pMsg);
@@ -93,7 +93,7 @@ namespace CBBW.DAL.Entities
                 {
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
-                        result.Add(_DBResponseMapper.Map_CustomComboOptions(dt.Rows[i]));
+                        result.Add(_DBResponseMapper.Map_CustomCheckBoxOption(dt.Rows[i]));
                     }
                 }
             }

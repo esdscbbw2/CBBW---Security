@@ -23,5 +23,6 @@ namespace CBBW.Areas.Security.ViewModel.EntryII
         public string RFIDCardOut { get; set; }
         public int KMIn { get; set; }
         public int KMOut { get; set; }
+        public int IsManagementPerson { get; set; }
     }
 }

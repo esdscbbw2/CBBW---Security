@@ -14,6 +14,7 @@ namespace CBBW.Areas.Security.ViewModel.TFD
         {
             tfdHdr = new TFDHdr();
         }
+        public string NoteNo { get; set; }
         public string NoteNumber { get; set; }
         public int EmployeeNo { get; set; }
         public int submitcount { get; set; }

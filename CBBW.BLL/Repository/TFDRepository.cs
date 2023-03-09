@@ -51,12 +51,10 @@ namespace CBBW.BLL.Repository
         {
             return _TFDEntities.GetENTDateWiseTourData(NoteNumber, PersonType, EmployeeNo, PersonCentre, status, ref pMsg);
         }
-
-        public IEnumerable<CustomComboOptions> GetENTAuthEmployeeList(string Notenumber, int CentreCode, ref string pMsg)
+        public IEnumerable<CustomCheckBoxOption> GetENTAuthEmployeeList(string Notenumber, int CentreCode, ref string pMsg)
         {
             return _TFDEntities.GetENTAuthEmployeeList(Notenumber, CentreCode, ref pMsg);
         }
-
         public TFDHdr GetTFDHeaderData(string Notenumber, int CenterCode, int status, ref string pMsg)
         {
             return _TFDEntities.GetTFDHeaderData(Notenumber, CenterCode, status, ref pMsg);

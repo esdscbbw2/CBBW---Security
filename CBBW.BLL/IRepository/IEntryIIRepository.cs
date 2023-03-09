@@ -36,5 +36,6 @@ namespace CBBW.BLL.IRepository
         PunchInDetails GetPunchingDetails(int EmployeeNumber, DateTime PunchDate, int CentreCode, string RFIDNumber, ref string pMsg);
         int GetTravelKmsOfANote(string NoteNumber, DateTime TillDate, int FromLocation, ref string pMsg);
         EntryIIInnerView GetEntryIIData(string NoteNumber, int CentreCode, bool IsMainlocation, ref string pMsg);
+        int IsMainLocationEntered(string NoteNumber, ref string pMsg);
     }
 }

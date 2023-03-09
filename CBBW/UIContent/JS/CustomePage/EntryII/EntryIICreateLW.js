@@ -1,4 +1,5 @@
-﻿function MakeButtonsEnable(BtnID) {
+﻿
+function MakeButtonsEnable(BtnID) {
     var TPDBtn = $('#TPDBtn');
     var TDBtn = $('#TDBtn');
     var VADBtn = $('#VADBtn');
@@ -24,6 +25,7 @@ function NotenumberChanged(mVal) {
     var notenumberCtrl = $('#NoteNumber');
     var notenumber = notenumberCtrl.val();
     var notetype = notenumber.substring(7, 10);
+    var innerPageBtn = $('#InnerPageBtn');
     $('#lblNoteDesc').html(GetNoteDescription(notetype));
     if (notenumber != '') {
         notenumberCtrl.isValid();
@@ -44,6 +46,8 @@ function NotenumberChanged(mVal) {
                 $('#ratStat').val(item.IsRatifiedDisplay);
                 $('#RatDT').val(item.RetDateTimeDisplay);
                 $('#ratReason').val(item.RetReason);
+                //$('#IsMainLocationEntered').val(item.IsMLEntered);
+                if (item.IsMLEntered == 1) { innerPageBtn.makeEnabled(); } else { innerPageBtn.makeDisable(); }
             });
         }
     });

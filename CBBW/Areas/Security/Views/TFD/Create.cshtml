@@ -12,6 +12,7 @@
         @*@Html.HiddenFor(x => x.NoteNumber)*@
         @Html.HiddenFor(x => x.tfdHdr.AuthEmployeeCode)
         @Html.HiddenFor(x => x.submitcount)
+        @Html.HiddenFor(x=>x.NoteNo)
         
         <div class="row newTable">
             <div class="fixedElement">
@@ -278,34 +279,7 @@ htmlAttributes: new
             };
     </script>
 
-    <script>
-        function VisibleRows(EmpNo) {
-            $('#TourFB').makeEnabled();
-            var targetCtrl = $(VisibleRows.caller.arguments[0].target);
-            var mID = targetCtrl.attr('id');
-            var PType = $('#PersonType_' + mID).html();
-            var EmployeeNo = $('#AuthEmployeeCode_' + mID).html();
-           // var PName = $('#PersonName_' + mID).html();
-            var PersonCentre = $('#PersonCentre_' + mID).html();
-            var NoteNo = $('#NoteNumber2 :selected').val();
-            var TourDetailsDiv = $('#TourDiv');
-            TourDetailsDiv.removeClass('inVisible');
-            
-            var dataSourceURL = '/TFD/DateWiseTourView?NoteNumbers='+$.trim(NoteNo)+'&PersonType=' + $.trim(PType) + '&EmployeeNo=' + $.trim(EmployeeNo) + '&PersonCentre=' + $.trim(PersonCentre);
-            $.ajax({
-                url: dataSourceURL,
-                contentType: 'application/html; charset=utf-8',
-                type: 'GET',
-                dataType: 'html',
-                success: function (result) {
-                    TourDetailsDiv.html(result);
-                },
-                error: function (xhr, status) {
-                    TourDetailsDiv.html(xhr.responseText);
-                }
-            })
-        };
-    </script>
+   
     <script>
         $('#btnBacks').click(function () {
             var url = "/Security/TFD/Index";

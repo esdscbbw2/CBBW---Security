@@ -8,18 +8,20 @@
     @Html.HiddenFor(m => m.DefaultPersonID)
     @Html.HiddenFor(m => m.IsOffline)
     @Html.HiddenFor(m => m.SchFromDate)
-    @Html.HiddenFor(m => m.SchToDate)<div class="row newTable">
+    @Html.HiddenFor(m => m.SchToDate)
+    @Html.HiddenFor(m => m.IsManagementPerson)
+    <div class="row newTable">
         <div class="fixedElement">
             <div class="col-md-12" style="position: relative;">
                 <div class="heading_text_btn mb-4 mt-4">
                     <div class="leftButton">
-                        <button id="btnBack" type="button" 
+                        <button id="btnBack" type="button"
                                 onclick="window.location.href='/Security/EntryII/LWCreate';"
                                 class="btn btn-primary me-2">
                             <i data-feather="arrow-left-circle"></i>
                             Back
                         </button>
-                        <button id="btnSubmit" type="button" name="Submit"
+                        <button id="btnSubmit" type="button" name="Submit" disabled
                                 value="Save"
                                 class="btn btn-secondary me-2">
                             <i data-feather="check-circle"></i>
@@ -198,11 +200,11 @@
                                         int SL = 1;
                                         foreach (var item in Model.PersonDetails)
                                         {
-                                            <tr id="tr_@item.PersonID">
+                                            <tr id="tr_@(item.PersonID+"_"+item.PersonType)">
                                                 <th class="text-center">
                                                     <div class="form-check ms-3">
                                                         <input class="form-check-input" type="radio"
-                                                               value='valuable' name="x" id="@item.PersonID"
+                                                               value='valuable' name="x" id="@(item.PersonID.ToString()+"_"+@item.PersonType.ToString())"
                                                                onchange="TPSelected()">
                                                     </div>
                                                     <div class="inVisible htmlVal" data-name="PersonType">
@@ -295,7 +297,7 @@
                                         int SL = 1;
                                         foreach (var item in Model.PersonDateWiseDetails)
                                         {
-                                            <tr class="@("M_"+item.PersonID) ">
+                                            <tr class="@("M_"+item.PersonID+"_"+item.PersonType) ">
                                                 <th scope="row" class="text-center htmlVal" data-name="DWTourCategoryNames">@item.DWTourCategoryNames</th>
                                                 <td class="text-center htmlVal" data-name="DWTourCenterNames">@item.DWTourCenterNames</td>
                                                 <td class="text-center htmlVal" data-name="DWBranchNames">@(item.DWBranchNames==null?"NA": item.DWBranchNames)</td>
@@ -317,10 +319,10 @@
                                                 </td>
                                                 <td class="text-center htmlVal" data-name="ActualTourInDate">@item.ActualTourInDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
                                                 <td class="text-center">
-                                                    <div id="VATI_@SL" class="@(Model.IsOffline?"inVisible":"") htmlVal" data-name="ActualTourInTime">
+                                                    <div id="VATI_@SL" class="@(Model.IsOffline||item.PersonType==3||item.PersonType==4?"inVisible":"") htmlVal" data-name="ActualTourInTime">
                                                         @(item.ActualTourInTime.Hour>0?item.ActualTourInTime.ToString("hh:mm tt"):"-")
                                                     </div>
-                                                    <div class="input-group date pointer position-static placeholder-dark @(Model.IsOffline?"":"inVisible")">
+                                                    <div class="input-group date pointer position-static placeholder-dark @(Model.IsOffline||item.PersonType==3||item.PersonType==4?"":"inVisible")">
                                                         <input id="ATI_@SL" type="text" class="form-control timePicker"
                                                                value="@item.ActualTourInTime.ToString("hh:mm:ss tt").Trim()"
                                                                onblur="ATIBlured(1)"
@@ -330,10 +332,10 @@
                                                 <td class="text-center htmlVal" data-name="DWToDate">@item.DWToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
                                                 <td class="text-center htmlVal" data-name="ActualTourOutDate">@item.ActualTourOutDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
                                                 <td class="text-center">
-                                                    <div id="VATO_@SL" class="@(Model.IsOffline?"inVisible":"") htmlVal" data-name="ActualTourOutTime">
+                                                    <div id="VATO_@SL" class="@(Model.IsOffline||item.PersonType==3||item.PersonType==4?"inVisible":"") htmlVal" data-name="ActualTourOutTime">
                                                         @(item.ActualTourOutTime.Hour>0?item.ActualTourOutTime.ToString("hh:mm tt"):"-")
                                                     </div>
-                                                    <div class="input-group date pointer position-static placeholder-dark @(Model.IsOffline?"":"inVisible")">
+                                                    <div class="input-group date pointer position-static placeholder-dark @(Model.IsOffline||item.PersonType==3||item.PersonType==4?"":"inVisible")">
                                                         <input id="ATO_@SL" type="text" class="form-control timePicker"
                                                                value="@item.ActualTourOutTime.ToString("hh:mm:ss tt").Trim()"
                                                                onblur="ATIBlured(2)"
@@ -384,12 +386,15 @@
                 </div>
             </div>
             <div class="col-md-12">
-                <div class="bgColor mt-4 bg-transparent content border-red text-left">
+                <div id="Option1Div" class="bgColor mt-4 bg-transparent content border-red text-left">
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
                             The “Location Wise Travelling Person & Vehicle Details Entered And Displayed Are Correct & As Required:
-                            <select class="form-select content border-red" aria-label="Default select example" id="paragraphSpaceOPtion">
-                                <option selected="">-</option>
+                            <select class="form-select content border-red in-valid"
+                                    aria-label="Default select example"
+                                    onchange="Option1Changed()"
+                                    id="Option1">
+                                <option selected value="0">-</option>
                                 <option value="1">Yes</option>
                                 <option value="2">No</option>
                             </select>

@@ -29,7 +29,8 @@ function Notenumberchanged(notenumber) {
                 $('#tfdHdr_TourFromDate').val(item.tfdHdr.TourFromDatestr);
                 $('#tfdHdr_TourToDate').val(item.tfdHdr.TourToDatestr);
                 $('#tfdHdr_PurposeOfVisit').val(item.tfdHdr.PurposeOfVisit);
-                
+                $('#EmployeeNo').val('');
+                $('#EmployeeNo').isInvalid();
             });
         }
     });
@@ -50,6 +51,8 @@ async function GetEmployeeList(notenumber, selectedvalue) {
 async function GetTPDetails(notenumber) {
    // var notenumber = $('#NoteNumber').val();
     var TPDetailsDiv = $('#TPDiv');
+    var TourDetailsDiv = $('#TourDiv');
+    TourDetailsDiv.addClass('inVisible');
     var dataSourceURL = '/TFD/TPView?NoteNumber=' + notenumber;
     $.ajax({
         url: dataSourceURL,
@@ -66,6 +69,33 @@ async function GetTPDetails(notenumber) {
         }
     })
 };
+function VisibleRows(EmpNo) {
+    
+    var targetCtrl = $(VisibleRows.caller.arguments[0].target);
+    var mID = targetCtrl.attr('id');
+    var PType = $('#PersonType_' + mID).html();
+    var EmployeeNo = $('#AuthEmployeeCode_' + mID).html();
+    // var PName = $('#PersonName_' + mID).html();
+    var PersonCentre = $('#PersonCentre_' + mID).html();
+    var NoteNo = $('#NoteNumber2 :selected').val();
+    var TourDetailsDiv = $('#TourDiv');
+    TourDetailsDiv.removeClass('inVisible');
+
+    var dataSourceURL = '/TFD/DateWiseTourView?NoteNumbers=' + $.trim(NoteNo) + '&PersonType=' + $.trim(PType) + '&EmployeeNo=' + $.trim(EmployeeNo) + '&PersonCentre=' + $.trim(PersonCentre);
+    $.ajax({
+        url: dataSourceURL,
+        contentType: 'application/html; charset=utf-8',
+        type: 'GET',
+        dataType: 'html',
+        success: function (result) {
+            TourDetailsDiv.html(result);
+            $('#TourFB').makeEnabled();
+        },
+        error: function (xhr, status) {
+            TourDetailsDiv.html(xhr.responseText);
+        }
+    })
+};
 function FinalSavedata() {
     var EntEntryDate= $('#tfdHdr_EntEntryDate').val();
     var EntEntryTime=$('#tfdHdr_EntEntryTime').val();
@@ -75,8 +105,8 @@ function FinalSavedata() {
     var AuthEmployeeCode = $('#EmployeeNo').val();
     var AuthEmployeeName = $('#EmployeeNo option:selected').text();
     var NoteNumber=$('#tfdHdr_NoteNumber').val();
-    var RefNoteNumber = $('#NoteNumber').val();
-
+    var RefNoteNumber = $('#NoteNo').val();
+    alert(RefNoteNumber);
     var x = '{"NoteNumber":"' + NoteNumber + '","RefNoteNumber":"' + RefNoteNumber + '","EntEntryDate":"' + EntEntryDate + '","EntEntryTime": "' + EntEntryTime + '" ,"TourFromDate": "' + TourFromDate + '","TourToDate": "' + TourToDate + '", "PurposeOfVisit": "' + PurposeOfVisit + '", "AuthEmployeeCode": "' + AuthEmployeeCode + '", "AuthEmployeeName": "' + AuthEmployeeName + '"}';
     $.ajax({
         method: 'POST',

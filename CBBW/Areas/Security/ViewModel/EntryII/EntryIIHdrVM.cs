@@ -13,5 +13,6 @@ namespace CBBW.Areas.Security.ViewModel.EntryII
         public EditNoteDetails NoteDetails { get; set; }
         public List<EntryIINote> EntryIINotes { get; set; }
         public int IsBackButtonActive { get; set; }
+        public int IsMainLocationEntered { get; set; }
     }
 }

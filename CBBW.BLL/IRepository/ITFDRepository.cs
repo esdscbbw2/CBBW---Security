@@ -14,7 +14,7 @@ namespace CBBW.BLL.IRepository
         List<TFDNote> GetNoteNumberList(int CentreCode, int status, ref string pMsg);
         List<TFDTravellingPerson> GetENTTravellingPerson(string Notenumber, int CenterCode, int status, ref string pMsg);
         List<TFDDateWiseTourData> GetENTDateWiseTourData(string NoteNumber, int PersonType, int EmployeeNo, int PersonCentre,int status, ref string pMsg);
-        IEnumerable<CustomComboOptions> GetENTAuthEmployeeList(string Notenumber, int CentreCode, ref string pMsg);
+        IEnumerable<CustomCheckBoxOption> GetENTAuthEmployeeList(string Notenumber, int CentreCode, ref string pMsg);
         TFDHdr GetTFDHeaderData(string Notenumber, int CenterCode, int status, ref string pMsg);
         bool SetTFDFeedBackDetails(string NoteNumber, List<TFDTourFeedBackDetails> dtldata, ref string pMsg);
         bool SetTFDetailsFinalSubmit(TFDHdr hdrmodel, ref string pMsg);

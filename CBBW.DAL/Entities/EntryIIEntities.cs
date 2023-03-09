@@ -308,7 +308,10 @@ namespace CBBW.DAL.Entities
             { pMsg = ex.Message; }
             return result;
         }
-
+        public int IsMainLocationEntered(string NoteNumber, ref string pMsg) 
+        {
+            return _EntryIIDataSync.IsMainLocationEntered(NoteNumber, ref pMsg);
+        }
 
 
 

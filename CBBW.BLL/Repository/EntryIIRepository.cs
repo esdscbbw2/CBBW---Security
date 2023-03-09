@@ -172,6 +172,7 @@ namespace CBBW.BLL.Repository
             //Dummy Code
             //CentreCode = 7;
             //Dummy Code END
+            DateTime FirstDayTour;
             List<PunchInDetails> Punchings = new List<PunchInDetails>();
             List<LastCentrePunchOutWithDistance> LastPunchings = new List<LastCentrePunchOutWithDistance>();
             LocationWiseTPDetails result = _EntryIIEntities.GetLocationWiseTPs(NoteNumber, CentreCode, ref pMsg);
@@ -182,6 +183,7 @@ namespace CBBW.BLL.Repository
                     Punchings = _EntryIIEntities.GetPunchingsV3(CentreCode, result.EmpDatesForPunching, ref pMsg);
                     LastPunchings = _EntryIIEntities.GetLastPunchingCentresV3(CentreCode, result.EmpDatesForPunching, ref pMsg);
                 }
+                FirstDayTour=result.PersonDateWiseDetails.Min(o=>o.MCurDate);
                 foreach (var item in result.PersonDateWiseDetails) 
                 {
                     PunchInDetails Punching = Punchings.Where(o => o.EmployeeNumber == item.PersonID && o.PunchDate == item.MCurDate).FirstOrDefault();
@@ -221,7 +223,8 @@ namespace CBBW.BLL.Repository
                     }
                     item.TourStatus = item.MCurDate < item.DWToDate ? 0 : 1;
                     item.LNPunchRequired = item.Isdriver == 1?item.TourStatus == 0 ? 1 : 0:0;
-                    item.EMPunchStatus =item.Isdriver==1?item.EMPunchRequired == 1 ? item.EMPunchTime.Hour>0?"Yes": "Required But Not Entered" : "NR":"No";
+                    item.EMPunchStatus =item.Isdriver==1?item.EMPunchRequired == 1 ? item.EMPunchTime.Hour>0?"Yes": FirstDayTour == item.MCurDate?"NR": "Required But Not Entered" : "NR":"No";
+                    //item.EMPunchStatus = FirstDayTour == item.DWFromDate ? "NR" : item.EMPunchStatus;
                     item.LNPunchStatus = item.Isdriver == 1 ? item.LNPunchRequired == 1 ? item.LNPunchTime.Hour>0 ? "Yes" : "Required But Not Entered" : "NR":"No";
                 
                 }
@@ -252,5 +255,11 @@ namespace CBBW.BLL.Repository
         {
             return _EntryIIEntities.GetEntryIIData(NoteNumber, CentreCode, IsMainlocation,ref pMsg);
         }
+        public int IsMainLocationEntered(string NoteNumber, ref string pMsg)
+        {
+            return _EntryIIEntities.IsMainLocationEntered(NoteNumber, ref pMsg);
+        }
+
+
     }
 }
