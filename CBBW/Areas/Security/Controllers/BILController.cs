@@ -411,13 +411,31 @@ namespace CBBW.Areas.Security.Controllers
         public ActionResult PaymentDetails(string NoteNumber)
         {
             TADABillGeneration modelobj = _iBIL.GetTADABillGenerationData(NoteNumber, "Na", 0, 3, ref pMsg);
-
-
             return View(modelobj);
         }
+        public ActionResult BillReport()
+        {
+            TADABillGeneration Model = new TADABillGeneration();
+            
+            Model.customlist = _iBIL.GetBILNoteNumberList(user.CentreCode, 3, ref pMsg);
 
+            return View(Model);
+        }
 
         #region Common Use
+        public ActionResult GetReport(int EmployeeNo, string NoteNumber)
+        {
+            VMReport model = new VMReport();
+            try
+            {
+                model.Report = _iBIL.GetTADACalculationDateWiseForReport(EmployeeNo, user.CentreCode,NoteNumber, ref pMsg);
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
+            return View("~/Areas/Security/Views/BIL/_BILLReport.cshtml", model);
+        }
         public ActionResult ExpensesDetails(string NoteNumber)
         {
             TADABillGeneration modelobj = _iBIL.GetTADABillGenerationData(NoteNumber, "Na", 0, 3, ref pMsg);
@@ -430,8 +448,13 @@ namespace CBBW.Areas.Security.Controllers
         }
         public JsonResult GetTADABillGenerationDataHdr(string NoteNumber)
         {
-
             TADABillGeneration modelobj = _iBIL.GetTADABillGenerationData(NoteNumber, "Na", 0, 1, ref pMsg);
+            return Json(modelobj, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetTADABillGenerationDataReport(string NoteNumber)
+        {
+            TADABillGeneration modelobj = _iBIL.GetTADABillGenerationData(NoteNumber, "Na", 0, 3, ref pMsg);
+            modelobj.NetAmount = modelobj.ATAAmount + modelobj.DAAmount + modelobj.ALocAmount + modelobj.ALodAmount;
             return Json(modelobj, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetBILNoteNumberList()

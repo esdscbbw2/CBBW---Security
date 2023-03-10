@@ -27,5 +27,6 @@ namespace CBBW.BLL.IRepository
         IEnumerable<CustomComboOptions> GetDeptWiseEmployeeList(int DeptId, int CentreCode, ref string pMsg);
         List<TravellingDetails> GetTraveelingDetails(int EmployeeNumber, int CentreCode, string NoteNumber, ref string pMsg);
          bool SetDeductionFormDA(TADABillGeneration model, ref string pMsg);
+        List<TADAReport> GetTADACalculationDateWiseForReport(int EmployeeNumber, int CentreCode, string NoteNumber, ref string pMsg);
     }
 }

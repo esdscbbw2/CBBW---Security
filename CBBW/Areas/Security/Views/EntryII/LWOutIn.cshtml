@@ -10,6 +10,7 @@
     @Html.HiddenFor(m => m.SchFromDate)
     @Html.HiddenFor(m => m.SchToDate)
     @Html.HiddenFor(m => m.IsManagementPerson)
+    @Html.HiddenFor(m => m.IsBranchVisit)
     <div class="row newTable">
         <div class="fixedElement">
             <div class="col-md-12" style="position: relative;">
@@ -119,7 +120,12 @@
                                                            placeholder="Select Time">
                                                 </div>
                                             </td>
-                                            <td class="text-center htmlVal" data-name="KMIn">@Model.VehicleDetails.KMIn</td>
+                                            <td class="text-center" >
+                                                <div id="VKMInCtrl" class="htmlVal @(Model.IsBranchVisit==1?"inVisible":"")" data-name="KMIn">
+                                                    @Model.VehicleDetails.KMIn
+                                                </div>
+                                                <input id="KMInCtrl" type="text" onchange="KMChanged()" class="form-control @(Model.IsBranchVisit==1?"":"inVisible")">
+                                            </td>
                                             <td class="text-center">
                                                 <div id="RFIDOutDiv" class="inVisible htmlVal" data-name="OutRFIDCard"></div>
                                                 @Html.DropDownListFor(m => m.RFIDCardOut,
@@ -139,7 +145,12 @@
                                                            placeholder="Select Time">
                                                 </div>
                                             </td>
-                                            <td class="text-center htmlVal" data-name="KMOut">@Model.VehicleDetails.KMOut</td>
+                                            <td class="text-center" >
+                                                <div id="VKMOutCtrl" class="htmlVal @(Model.IsBranchVisit==1?"inVisible":"")" data-name="KMOut">
+                                                    @Model.VehicleDetails.KMOut
+                                                </div>                                                
+                                                <input id="KMOutCtrl" type="text" onchange="KMChanged()" class="form-control @(Model.IsBranchVisit==1?"":"inVisible")">
+                                            </td>
                                             <td class="text-center">
                                                 <textarea data-name="VRemarks" name="" id=""
                                                           cols="20" rows="2"

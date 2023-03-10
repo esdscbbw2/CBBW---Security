@@ -51,7 +51,7 @@ function Notenumberchanged(notenumber) {
                     noteCtrl.isValid();
                     // $('#TourFB').makeEnabled();
                     (async function () {
-                        const r2 = await GetTPDetails(item.tfdHdr.RefNoteNumber);
+                        const r2 = await GetTPDetails(item.tfdHdr.RefNoteNumber, item.tfdHdr.AuthEmployeeCode);
                     })();
                 });
             }
@@ -61,7 +61,7 @@ function Notenumberchanged(notenumber) {
 
     } else { noteCtrl.isInvalid(); }
 };
-async function GetTPDetails(notenumber) {
+async function GetTPDetails(notenumber,empno) {
     // var notenumber = $('#NoteNumber').val();
     var TPDetailsDiv = $('#TPDiv');
     var dataSourceURL = '/TFD/TPView?NoteNumber=' + notenumber;
@@ -74,7 +74,7 @@ async function GetTPDetails(notenumber) {
             TPDetailsDiv.removeClass('inVisible');
             TPDetailsDiv.html(result);
             (async function () {
-                const r6 = await GetDateWiseTour(notenumber);
+                const r6 = await GetDateWiseTour(notenumber, empno);
             })();
         },
         error: function (xhr, status) {
@@ -82,18 +82,20 @@ async function GetTPDetails(notenumber) {
         }
     })
 };
-async function GetDateWiseTour(notenumber) {
+async function GetDateWiseTour(notenumber, empno) {
    // alert(notenumber);
    // var NoteNo = $('#tfdHdr_RefNoteNumber').val();
     var TourDetailsDiv = $('#TourDiv');
-    TourDetailsDiv.removeClass('inVisible');
-    var dataSourceURL = '/TFD/DateWiseTourView?NoteNumbers=' + $.trim(notenumber);
+    TourDetailsDiv.addClass('inVisible');
+    var Employeeno = $('tfdHdr_AuthEmployeeCode').val();
+    var dataSourceURL = '/TFD/ApprovalDateWiseTourView?NoteNumbers=' + $.trim(notenumber) + '&EmployeeNo=' + empno;
     $.ajax({
         url: dataSourceURL,
         contentType: 'application/html; charset=utf-8',
         type: 'GET',
         dataType: 'html',
         success: function (result) {
+            TourDetailsDiv.removeClass('inVisible');
             TourDetailsDiv.html(result);
         },
         error: function (xhr, status) {

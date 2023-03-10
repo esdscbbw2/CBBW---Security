@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CBBW.BOL.CustomModels;
 
 namespace CBBW.BOL.BIL
 {
@@ -23,6 +24,7 @@ namespace CBBW.BOL.BIL
         public int CanDelete { get; set; }
         public int SubmitCount { get; set; }
         public IEnumerable<NoteNo> RNotelist { get; set; }
+        public IEnumerable<CustomOptionsWithString> customlist{ get; set; }
         public List<ApprovalNoteNo> NoteList { get; set; }
         public int EmpNo { get; set; }
         public int EmployeeNo { get; set; }
@@ -92,7 +94,7 @@ namespace CBBW.BOL.BIL
         public string PreparedEmpName { get; set; }
         public float RequisitionAmt { get; set; }
         public string Remark { get; set; }
-
+        public float NetAmount { get; set; }
 
 
     }

@@ -24,5 +24,6 @@ namespace CBBW.Areas.Security.ViewModel.EntryII
         public int KMIn { get; set; }
         public int KMOut { get; set; }
         public int IsManagementPerson { get; set; }
+        public int IsBranchVisit { get; set; }
     }
 }

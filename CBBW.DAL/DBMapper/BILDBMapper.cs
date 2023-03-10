@@ -251,7 +251,6 @@ namespace CBBW.DAL.DBMapper
             catch (Exception ex) { ex.ToString(); }
             return result;
         }
-
         public TravellingDetails Map_TravellingDetails(DataRow dr)
         {
             TravellingDetails result = new TravellingDetails();
@@ -274,6 +273,42 @@ namespace CBBW.DAL.DBMapper
                         result.BASInTime = dr["BASInTime"].ToString();
                     if (!DBNull.Value.Equals(dr["BASOutTime"]))
                         result.BASOutTime = dr["BASOutTime"].ToString();
+                    result.ActualTourInDatestr = MyDBLogic.ConvertDateToString(result.ActualTourInDate);
+
+
+                }
+            }
+            catch (Exception ex) { ex.ToString(); }
+            return result;
+        }
+        public TADAReport Map_TADAReport(DataRow dr)
+        {
+            TADAReport result = new TADAReport();
+            try
+            {
+                if (dr != null)
+                {
+
+                    if (!DBNull.Value.Equals(dr["ActualTourInDate"]))
+                        result.ActualTourInDate = DateTime.Parse(dr["ActualTourInDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["TourCategoryCodesName"]))
+                        result.TourCategoryCodesName = dr["TourCategoryCodesName"].ToString();
+                    if (!DBNull.Value.Equals(dr["LocationCodeName"]))
+                        result.LocationCodeName = dr["LocationCodeName"].ToString();
+                    if (!DBNull.Value.Equals(dr["ZoneCodeName"]))
+                        result.ZoneCodeName = dr["ZoneCodeName"].ToString();
+                    if (!DBNull.Value.Equals(dr["DAPerDay"]))
+                        result.DAPerDay =int.Parse(dr["DAPerDay"].ToString());
+                    if (!DBNull.Value.Equals(dr["LocalConvAmount"]))
+                        result.LocalConvAmount = int.Parse(dr["LocalConvAmount"].ToString());
+                    if (!DBNull.Value.Equals(dr["LodgingAmount"]))
+                        result.LodgingAmount = int.Parse(dr["LodgingAmount"].ToString());
+                    if (!DBNull.Value.Equals(dr["TourCategoryCode"]))
+                        result.TourCategoryCode = int.Parse(dr["TourCategoryCode"].ToString());
+                    if (!DBNull.Value.Equals(dr["TourFeedBack"]))
+                        result.TourFeedBack = dr["TourFeedBack"].ToString();
+                    if (!DBNull.Value.Equals(dr["TourActions"]))
+                        result.TourActions = bool.Parse(dr["TourActions"].ToString());
                     result.ActualTourInDatestr = MyDBLogic.ConvertDateToString(result.ActualTourInDate);
 
 

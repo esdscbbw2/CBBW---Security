@@ -1,4 +1,12 @@
-﻿function EnableSubmitBtn() {
+﻿function KMChanged() {
+    var targetCtrl = $(KMChanged.caller.arguments[0].target);
+    var timerid = targetCtrl.attr('id');
+    var datadivid = 'V' + timerid;
+    $('#' + datadivid).html(targetCtrl.val());
+    if (targetCtrl.val() > 0) { targetCtrl.isValid(); }
+    else { targetCtrl.isInvalid(); }
+};
+function EnableSubmitBtn() {
     var btnsubmit = $('#btnSubmit');
     var opt1 = $('#Option1').val();
     if (opt1 == 1) {

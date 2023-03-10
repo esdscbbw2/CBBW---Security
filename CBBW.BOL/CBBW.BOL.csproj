@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="BIL\DADetails.cs" />
     <Compile Include="BIL\TADABillGeneration.cs" />
+    <Compile Include="BIL\TADAReport.cs" />
     <Compile Include="BIL\TADARuleData.cs" />
     <Compile Include="BIL\TravellingDetails.cs" />
     <Compile Include="CTV\CTVHdrDtl.cs" />

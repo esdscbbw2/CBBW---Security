@@ -1,0 +1,266 @@
+﻿@using System.Globalization;
+@using CBBW.BOL.BIL;
+@model TADABillGeneration
+@{
+
+}
+
+<div class="container">
+    <div class="row newTable">
+        <div class="fixedElement">
+            <div class="col-md-12">
+                <div class="heading_text_btn mb-3 mt-4">
+
+                    <h2>TA & DA Bill Statement & Payment – Report     </h2>
+                    <div class="rightButton">
+                        <button type="button" class="btn btn-white" onclick="window.print()">
+                            <i data-feather="printer"></i>
+                            Print / View
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div id="page-wrap" style="margin-bottom: 30px;">
+    <div class="heading_text_btn2  page-name d-block mt-4 pb-4">
+        <h2 class="text-center">TA & DA Bill Statement & Payment – Report </h2>
+    </div>
+
+
+    <div id="identity">
+
+        <table class="table  table-bordered table-form">
+            <tbody>
+                <tr style="border:0;">
+                    <td colspan="3">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="inner-padding bill-no-outer" style="display: flex;">
+                                            <h6 class="form-sample-label">Ref. Bill No.:</h6>
+                                            @Html.DropDownListFor(m => m.NoteNumber,
+new SelectList(Model.customlist, "ID", "DisplayText"),
+"Select Note Number",
+htmlAttributes: new
+{
+    @class = "form-select pointer",
+    id = "NoteNumber"
+})
+
+                                        </div>
+                                    </td>
+                                    <td style="width:20%">
+                                        <div class="inner-padding" style="display: flex;">
+                                            <h6 class="form-sample-label">Date:</h6>
+                                            <input type="text" class="form-control" value="@DateTime.Today.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)" disabled>
+                                        </div>
+                                    </td>
+                                    <td style="width: 32%;">
+                                        <div class="inner-padding" style="display: flex;">
+                                            <h6 class="form-sample-label ps-0">Time:</h6>
+                                            <input type="text" class="form-control" value="@DateTime.Now.ToString("hh:mm tt")" disabled>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                    </td>
+
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="inner-padding" style="display: flex;">
+                            <h6 class="form-sample-label" style="width:22%">Person Type Code  & Name:</h6>
+                            @Html.TextBoxFor(m => m.PersonTypetxt, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="inner-padding" style="display: flex;">
+                            <h6 class="form-sample-label" style="width:42%">Employee No. & Name:</h6>
+                            @Html.TextBoxFor(m => m.EmployeeCodeName, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                    </td>
+                    <td colspan="2">
+                        <div class="inner-padding" style="display: flex;">
+                            <h6 class="form-sample-label">Designation Code & Name:</h6>
+                            @Html.TextBoxFor(m => m.DesigCodeName, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="inner-padding" style="display: flex;">
+                            <h6 class="form-sample-label" style="width:22%">Centre Code & Name:</h6>
+                            @Html.TextBoxFor(m => m.CenterCodeName, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                    </td>
+                </tr>
+                <tr style="border:0;">
+                    <td>
+                        <div class="inner-padding" style="display: flex;">
+                            <h6 class="form-sample-label" style="width:42%">Tour Start Date:</h6>
+                            @Html.TextBoxFor(m => m.TourFromDateNTime, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                    </td>
+                    <td style="width:28%">
+                        <div class="inner-padding" style="display: flex;">
+                            <h6 class="form-sample-label">Tour End Date:</h6>
+                            @Html.TextBoxFor(m => m.TourToDateNTime, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                    </td>
+                    <td style="width:23%">
+                        <div class="inner-padding" style="display: flex;">
+                            <h6 class="form-sample-label">No. Of Days:</h6>
+                            @Html.TextBoxFor(m => m.NoOfDays, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <div style="clear:both"></div>
+
+    <div id="customer">
+        <div id="TPDiv" class="inVisible">
+        </div>
+
+
+    </div>
+    <div class="heading_text_btn2 d-block mt-4 pb-2">
+        <h2 class="text-center">
+            Tour Expenditure Details
+        </h2>
+    </div>
+    <table id="meta" class="table table-bordered bill-table mt-3">
+        <tr>
+            <td class="meta-head">1. Travelling Allowance: </td>
+            <td><div class="due" id="TAAllowance"></div></td>
+        </tr>
+        <tr>
+
+            <td class="meta-head">2. Dearness Allowance Amount:</td>
+            <td><div class="due" id="DAAllowance"></div></td>
+        </tr>
+        <tr>
+            <td class="meta-head">3. Local Conveyance Amount: </td>
+            <td><div class="due" id="LocalAllowance"></div></td>
+        </tr>
+        <tr>
+            <td class="meta-head">4.  Lodging Amount:  </td>
+            <td><div class="due" id="LodingAmount"></div></td>
+        </tr>
+        <tr>
+            <td class="meta-head"><b>Net Amount: </b> </td>
+            <td><div class="due" id="NetAmount"></div></td>
+        </tr>
+
+    </table>
+    <div class="sign-div pt-5 mt-5">
+        <table class="table table-bordered table-form" style="margin-top: 20px;border:0;">
+            <tbody>
+                <tr>
+                    <td> <b>Signature Of Employee:</b> </td>
+                    <td> <b>Signature Of DIC Admin, T&S:</b> </td>
+                    <td style="text-align: left;">
+                        <b>Signature Of Auditor:</b>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section headers
+{
+    <link href="~/UIContent/CSS/print-css.css" rel="stylesheet" />
+    <style>
+
+        .hide {
+            display: none;
+        }
+
+        .myVehicleDiv {
+            display: none;
+        }
+        /*
+        .customSelect {
+            display: none;
+        } */
+        .table-form {
+            border: 1px solid #ccc;
+        }
+
+            .table-form td {
+                border: 0;
+            }
+
+        .inner-padding {
+            padding: 0.5rem;
+            align-items: center;
+        }
+
+        .form-sample-label {
+            font-weight: 500;
+            font-size: 13px;
+            margin-bottom: 0;
+            line-height: 1.5;
+            padding: 0px 15px 0 0;
+        }
+
+        .bg-grey {
+            background-color: #e9ecef;
+            opacity: 1;
+        }
+
+        .form-control {
+            display: block;
+            height: 33px;
+            width: 100%;
+            padding: .375rem .75rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #212529;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            border-radius: .25rem;
+            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        }
+
+        .form-select {
+            height: 33px;
+        }
+
+        .table-bordered > :not(caption) > * {
+            border-width: 0px 0;
+        }
+
+        .bill-table thead th {
+            color: #fff;
+            background: #3a3cab !important;
+            print-color-adjust: exact;
+            border: 1px solid #dee2e6;
+        }
+
+        .bill-table td {
+            border: 1px solid #dee2e6;
+        }
+    </style>
+}
+@section scripts{
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/BIL/BILLReport.js"></script>
+}

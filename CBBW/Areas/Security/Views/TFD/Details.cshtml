@@ -213,11 +213,11 @@
                 </div>
 
                 <div class="col-md-12">
-                    <div class="bgColor mt-4 bg-transparent content border-red text-left">
+                    <div class="bgColor mt-4 bg-transparent content border-green text-left">
                         <ul style="list-style:none;">
                             <li style="font-size: 16px;">
                                 The “Tour Feed Back Details” Are Entered With The Best Of Knowledge, The Details Entered Are Correct & As Required:
-                                <select disabled class="form-select  content border-red" aria-label="Default select example" id="Required">
+                                <select disabled class="form-select  content border-green" aria-label="Default select example" id="Required">
                                     <option selected="" value="1">Yes</option>
 
 
@@ -254,43 +254,12 @@
             window.location.href = urlbk;
         };
     </script>
-    <script>
-        if ('@ViewBag.ErrMsg' != '') {
-                Swal.fire({
-                    title: 'Failed to submit',
-                    text: "@ViewBag.ErrMsg",
-                    icon: 'warning',
-                    customClass: 'swal-wide',
-                    buttons: {
-                        //cancel: 'Cancel',
-                        confirm: 'Ok'
-                    },
-                    //cancelButtonClass: 'btn-cancel',
-                    confirmButtonColor: '#2527a2',
-                });
-            };
-        if ('@ViewBag.Msg' != '') {
-                Swal.fire({
-                    title: 'Confirmation',
-                    text: "@ViewBag.Msg",
-                    icon: 'success',
-                    customClass: 'swal-wide',
-                    buttons: {
-                        confirm: 'Ok'
-                    },
-                    confirmButtonColor: '#2527a2',
-                }).then(callback);
-                function callback(result) {
-                    if (result.value) {
-                        var url = "/Security/TFD/Index";
-                        window.location.href = url;
-                    }
-                }
-            };
-    </script>
+  
 
     <script>
         function VisibleRows(EmpNo) {
+            var TourDetailsDiv = $('#TourDiv');
+            TourDetailsDiv.addClass('inVisible');
             var targetCtrl = $(VisibleRows.caller.arguments[0].target);
             var mID = targetCtrl.attr('id');
             var PType = $('#PersonType_' + mID).html();
@@ -306,8 +275,8 @@
             }
             
 
-            var TourDetailsDiv = $('#TourDiv');
-            TourDetailsDiv.removeClass('inVisible');
+         
+            
 
             var dataSourceURL = '/TFD/DateWiseTourView?NoteNumbers=' + $.trim(NoteNo) + '&PersonType=' + $.trim(PType) + '&EmployeeNo=' + $.trim(EmployeeNo) + '&PersonCentre=' + $.trim(PersonCentre) + '&ApprovalTime=' + ApprovalTime;
             $.ajax({
@@ -316,6 +285,7 @@
                 type: 'GET',
                 dataType: 'html',
                 success: function (result) {
+                    TourDetailsDiv.removeClass('inVisible');
                     TourDetailsDiv.html(result);
                 },
                 error: function (xhr, status) {

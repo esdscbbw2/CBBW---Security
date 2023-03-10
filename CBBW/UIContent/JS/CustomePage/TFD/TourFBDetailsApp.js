@@ -43,8 +43,10 @@ async function getInitialData() {
                         ActionTakens.html("Yes");
                 } else { ActionTakens.html("No"); }
                  GetConDept(ConcernDeptCode.attr('id'), item.NoteNumber, item.ConcernDeptCode);
-                    
-                    IDs.html(item.ID);
+                if (item.ConcernDeptCode != null || item.ConcernDeptCode != "" || item.ConcernDeptCode != 0) {
+                    ConcernDeptCode.removeClass('is-invalid').addClass('is-valid');
+                }
+                IDs.html(item.ID);
                 NoteNumberid.html(item.NoteNumber);
             });
         }
@@ -84,6 +86,9 @@ function validatectrl(targetid, value, rowid) {
     switch (targetid) {
         case "CIGI":
             isvalid = validatectrl_YesNoCombo(value);
+            if (isvalid) {
+                $('.content ').removeClass('border-red').addClass('border-green')
+            }
             break;
         case "ConcernDeptCode":
             isvalid = validatectrl_ValidatestringLength(value);

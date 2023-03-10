@@ -45,7 +45,7 @@ namespace CBBW.Controllers
         {
             if (_iUser.LogIn(model.UserName, ref pMsg))
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Common",new { area = "Security" });
             }
             else 
             {

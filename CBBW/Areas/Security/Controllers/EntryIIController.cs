@@ -140,7 +140,11 @@ namespace CBBW.Areas.Security.Controllers
                 modelobj.VehicleDetails = _iEntryIIRepository.GetEntryIIVehicleAllotmentDetails(NoteNumber, modelobj.SchFromDate, modelobj.SchToDate, user.CentreCode, false, ref pMsg);
                 if (modelobj.PersonDetails != null) 
                 {
-                   modelobj.IsManagementPerson= modelobj.PersonDetails.Where(o => o.PersonType == 3 || o.PersonType == 4).Count();
+                   modelobj.IsManagementPerson= modelobj.PersonDetails.Where(o => o.PersonType == 3 || o.PersonType == 4).Count()>0?1:0;
+                }
+                if (modelobj.PersonDateWiseDetails != null)
+                {
+                    modelobj.IsBranchVisit = modelobj.PersonDateWiseDetails.Where(o => o.DWTourCategoryIds.Contains("2")).Count()>0?1:0;
                 }
             }
             catch { }

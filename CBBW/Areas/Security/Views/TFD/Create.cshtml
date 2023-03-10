@@ -8,8 +8,8 @@
 <div class="container">
     @using (Html.BeginForm("Create", "TFD", FormMethod.Post))
     {
-        @Html.HiddenFor(x => x.tfdHdr.NoteNumber, htmlAttributes: new{ id = "tfdHdr_NoteNumber" })
-        @*@Html.HiddenFor(x => x.NoteNumber)*@
+        @*@Html.HiddenFor(x => x.tfdHdr.NoteNumber, htmlAttributes: new{ id = "tfdHdr_NoteNumber" })*@
+        @Html.HiddenFor(x => x.tfdHdr.NoteNumber)
         @Html.HiddenFor(x => x.tfdHdr.AuthEmployeeCode)
         @Html.HiddenFor(x => x.submitcount)
         @Html.HiddenFor(x=>x.NoteNo)
@@ -52,14 +52,9 @@
 
                                 </label>
                                 <div class="col-md-4">
-                                    @Html.DropDownListFor(m => m.NoteNumber,
-new SelectList(Model.Notelist, "NoteNumber", "NoteNumber"),
-"Select Note Number",
-htmlAttributes: new
-{
-    @class = "form-select pointer",
-    id = "NoteNumber2"
-})
+                                    @Html.DropDownListFor(m => m.tfdHdr.RefNoteNumber,
+new SelectList(Model.Notelist, "NoteNumber", "NoteNumber"),"Select Note Number",htmlAttributes: new
+{@class = "form-select pointer",id = "NoteNumber2"})
                                 </div>
                                 <div class="col-md-4">
                                     <div id="NZB_staff">
@@ -98,13 +93,7 @@ htmlAttributes: new
                                     <label>Note No.:</label>
                                 </div>
                                 <div class="col-md-3">
-                                    @Html.TextBoxFor(m => m.tfdHdr.NoteNumber,
-      htmlAttributes: new
-      {
-          @class = "form-control",
-          disabled = "disabled"
-
-      })
+                                    @Html.TextBoxFor(m => m.tfdHdr.NoteNumber,htmlAttributes: new{ @class = "form-control",@readonly = "readonly" })
                                 </div>
                                 <div class="col-md-1 col-form-label">
                                     <label>Date:</label>
@@ -124,8 +113,7 @@ htmlAttributes: new
                                     <label>Feed Back By Employee No. & Name: </label>
                                 </div>
                                 <div class="col-md-3">
-
-                                    <select name="EmployeeNo" class="form-select is-invalid max-content-input alterID inValidTag pickPersonName xPerson"
+                                    <select name="EmployeeNo" class="form-select is-invalid max-content-input pickPersonName xPerson"
                                             data-name="EmployeeNo" onchange="ValidateControl();" data-name-text="EmployeeNonNamecmb"
                                             aria-label="Default select example"
                                             id="EmployeeNo"></select>

@@ -291,14 +291,19 @@
 
                         <div class="col-md-12">
                             <div class="d-flex justify-content-center mt-4">
-                                <button id="Deducted" type="submit" name="Submit" value="DAD" class="btn btn-primary me-2">
+                                @*<button id="Deducted" type="submit" name="Submit" value="DAD" class="btn btn-primary me-2">
+            Deductions From DA Detail
+        </button>*@
+                                <button type="button" id="Deducted"
+                                        onclick="TPDBtnClicked()"
+                                        class="btn btn-primary me-2">
                                     Deductions From DA Detail
                                 </button>
                             </div>
                         </div>
 
                         <div class="col-md-12">
-                            <div class="bgColor mt-4 bg-transparent content border-red text-left">
+                            <div class="bgColor mt-4 bg-transparent content border-green text-left">
                                 <ul style="list-style:none;">
                                     <li style="font-size: 16px;">
                                         The Details Displayed & Entered Are As Per Rule & Policy Of The Company. Hence Entered & Saved The Transaction As Required:
@@ -321,6 +326,28 @@
         </div>
 
     }
+    <div class="modal modal-previous-details fade" id="TPDModal" tabindex="-1"
+         aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="exampleModalLabel">TA & DA Bill Generation - APPROVAL</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="TPDModalDiv">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @section headers
 {
@@ -383,6 +410,45 @@
                 window.open(url);
             });
         });
+    </script>
+    <script>
+        function TPDBtnClicked() {
+            var notenumber = $('#NoteNumber').val();
+            var EmployeeNo = $('#EmployeeNo').val();
+            var NoteNumber = $('#RefNoteNumber').val();
+            $('#SubmitCount').val(1);
+            if (notenumber != '') {
+                var iDiv = $('#TPDModalDiv');
+                var modalDiv = $('#TPDModal');
+                var dataSourceURL = '/BIL/VMDeductionsFromDA?EmployeeNo=' + EmployeeNo + '&NoteNumber=' + NoteNumber;
+                $.ajax({
+                    url: dataSourceURL,
+                    contentType: 'application/html; charset=utf-8',
+                    type: 'GET',
+                    dataType: 'html',
+                    success: function (result) {
+                        iDiv.html(result);
+                        modalDiv.modal('show');
+                        EnableSubmitBtn();
+                    },
+                    error: function (xhr, status) {
+
+                    }
+                })
+            }
+            else {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Select A NoteNumber To Deductions From DA Detail.',
+                    icon: 'error',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        confirm: 'Ok'
+                    },
+                    confirmButtonColor: '#2527a2',
+                });
+            }
+        };
     </script>
 
 }

@@ -82,6 +82,11 @@ namespace CBBW.BLL.Repository
             return _BILEntities.GetTADABillGenerationData(NoteNumber, RefNoteNumber, EmployeeNo, status, ref pMsg);
         }
 
+        public List<TADAReport> GetTADACalculationDateWiseForReport(int EmployeeNumber, int CentreCode, string NoteNumber, ref string pMsg)
+        {
+            return _BILEntities.GetTADACalculationDateWiseForReport(EmployeeNumber, CentreCode, NoteNumber, ref pMsg);
+        }
+
         public TADARuleData GetTAdARuleData(int EmployeeNumber, int CentreCode,string NoteNumber, ref string pMsg)
         {
             return _BILEntities.GetTAdARuleData(EmployeeNumber, CentreCode, NoteNumber, ref pMsg);

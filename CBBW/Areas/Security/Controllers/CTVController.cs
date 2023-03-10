@@ -476,7 +476,6 @@ namespace CBBW.Areas.Security.Controllers
             _iUser.RecordCallBack("/Security/CTV/ScheduleLists");
             return RedirectToAction("Create");
         }
-        
         public ActionResult Create() 
         {
             //UserInfo user= getLogInUserInfo();
@@ -487,8 +486,8 @@ namespace CBBW.Areas.Security.Controllers
                 TempData["CTVHDR"] = _iCTV.NewTripScheduleNo(schpattern, ref pMsg);
             }
             model = TempData["CTVHDR"] as TripScheduleHdr;
-            //model.CenterCode = user.CentreCode;
-            //model.CentreCodenName = user.CentreCode.ToString().Trim() + "/" + user.CentreName;
+            model.CenterCode = user.CentreCode;
+            model.CentreCodenName = user.CentreCode.ToString().Trim() + "/" + user.CentreName;
             TempData["CTVHDR"] = model;
             if (model.ListofVehicles == null)
             {

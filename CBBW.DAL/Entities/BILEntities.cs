@@ -243,5 +243,28 @@ namespace CBBW.DAL.Entities
             _DBResponseMapper.Map_DBResponse(_datasync.SetDeductionFormDA(model, ref pMsg), ref pMsg, ref result);
             return result;
         }
+
+
+        public List<TADAReport> GetTADACalculationDateWiseForReport(int EmployeeNumber, int CentreCode, string NoteNumber, ref string pMsg)
+        {
+            List<TADAReport> result = new List<TADAReport>();
+            try
+            {
+                dt = _datasync.GetTADACalculationDateWiseForReport(EmployeeNumber, CentreCode, NoteNumber, ref pMsg);
+                if (dt != null)
+                {
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+                            result.Add(_DBMapper.Map_TADAReport(dt.Rows[i]));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
     }
 }

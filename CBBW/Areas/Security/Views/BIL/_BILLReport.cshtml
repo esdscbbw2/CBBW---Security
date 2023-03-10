@@ -1,0 +1,82 @@
+﻿@using System.Globalization;
+@using CBBW.Areas.Security.ViewModel.BIL
+@model VMReport
+@{
+    Layout = null;
+}
+
+<div class="table-responsive table-height">
+    <table class="table bill-table table-bordered ">
+        <thead>
+            <tr>
+                <th colspan="7" class="text-center">TA & DA Bill Details</th>
+                <th colspan="2" class="text-center">Tour Feed Back Details </th>
+            </tr>
+            <tr>
+                <th>Tour Date</th>
+                <th>Visited Place Type & Name </th>
+                <th>Visited Location Code & Name</th>
+
+                <th>Zone Code & Name</th>
+                <th>DA Eligible Per Day</th>
+                <th>Local Conveyance Amount Eligible</th>
+                <th>Maximum Lodge Expenditure Eligible Amount</th>
+                <th>Tour Feedback Description </th>
+                <th>Tour Action Details </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                foreach (var item in Model.Report)
+                {
+                    <tr style="border:0;">
+
+                        <td>
+                            @item.ActualTourInDatestr
+                        </td>
+                        <td>
+                            @item.TourCategoryCodesName
+                        </td>
+                        <td>
+                            @item.LocationCodeName
+                        </td>
+                        <td>
+                            @item.ZoneCodeName
+                        </td>
+                        <td>
+                            @item.DAPerDay
+                        </td>
+                        <td>
+                            @item.LocalConvAmount
+                        </td>
+                        <td>
+                            @item.LodgingAmount
+                        </td>
+                        <td>
+                            @item.TourFeedBack
+                        </td>
+                        <td>
+                            @if (item.TourActions)
+                            {
+                                <span>Yes</span>
+                            }
+                            else if (!item.TourActions)
+                            {
+                                <span>No</span>
+                            }
+                            else
+                            {
+                                <span>-</span>
+                            }
+                        </td>
+                    </tr>
+                }
+
+            }
+
+
+
+        </tbody>
+    </table>
+</div>

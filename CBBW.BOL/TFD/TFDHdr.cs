@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 namespace CBBW.BOL.TFD
 {
  
-    public class TFDHdr: TFDNote
+    public class TFDHdr
     {
         public string RefNoteNumber { get; set; }
+        public string NoteNumber { get; set; }
         public string EntryTime { get; set; }
         public DateTime EntryDate { get; set; }
         public string EntryDatestr { get; set; }

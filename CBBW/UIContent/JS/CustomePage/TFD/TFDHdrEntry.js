@@ -1,10 +1,11 @@
 ﻿$(document).ready(function () {
 
-    
+   var Empno= $('#tfdHdr_AuthEmployeeCode').val();
     $('#NoteNumber2').change(function () {
         Notenumberchanged($(this).val());
+        $('#NoteNo').val($(this).val());
     });
-    Notenumberchanged($('#NoteNumber2').val());
+    Notenumberchanged($('#NoteNumber2').val(), Empno);
     var btnDisplays = $('#submitcount').val();
     if (btnDisplays == 1) {
         $('#NoteNumber2').makeDisable();
@@ -12,10 +13,9 @@
         $('#NoteNumber2').makeEnabled();
     }
 });
-function Notenumberchanged(notenumber) {
+function Notenumberchanged(notenumber, Empno) {
     $('#TourFB').makeDisable();
     var noteCtrl = $('#NoteNumber2');
-    var selectedvalue = 0;
     if (notenumber != '') { noteCtrl.isValid(); 
     $.ajax({
         url: '/TFD/GetTFDHeaderData',
@@ -35,7 +35,7 @@ function Notenumberchanged(notenumber) {
         }
     });
         (async function () {
-            const r1 = await GetEmployeeList(notenumber, selectedvalue);
+            const r1 = await GetEmployeeList(notenumber, Empno);
         })();
         (async function () {
             const r2 = await GetTPDetails(notenumber);
@@ -44,8 +44,13 @@ function Notenumberchanged(notenumber) {
     } else { noteCtrl.isInvalid(); }
 };
 async function GetEmployeeList(notenumber, selectedvalue) {
+    if (selectedvalue == 0) {
+        selectedvalue = '-1';
+    }
    getDropDownDataWithSelectedValue('EmployeeNo', 'Select Employee', '/Security/TFD/GetENTAuthEmployeeList?NoteNumber=' + notenumber, selectedvalue );
- 
+    if (selectedvalue > 0) {
+        $('#EmployeeNo').removeClass('is-invalid').addClass('is-valid valid');
+    }
 };
 
 async function GetTPDetails(notenumber) {
@@ -70,7 +75,8 @@ async function GetTPDetails(notenumber) {
     })
 };
 function VisibleRows(EmpNo) {
-    
+    var TourDetailsDiv = $('#TourDiv');
+    TourDetailsDiv.addClass('inVisible');
     var targetCtrl = $(VisibleRows.caller.arguments[0].target);
     var mID = targetCtrl.attr('id');
     var PType = $('#PersonType_' + mID).html();
@@ -78,8 +84,8 @@ function VisibleRows(EmpNo) {
     // var PName = $('#PersonName_' + mID).html();
     var PersonCentre = $('#PersonCentre_' + mID).html();
     var NoteNo = $('#NoteNumber2 :selected').val();
-    var TourDetailsDiv = $('#TourDiv');
-    TourDetailsDiv.removeClass('inVisible');
+    
+   
 
     var dataSourceURL = '/TFD/DateWiseTourView?NoteNumbers=' + $.trim(NoteNo) + '&PersonType=' + $.trim(PType) + '&EmployeeNo=' + $.trim(EmployeeNo) + '&PersonCentre=' + $.trim(PersonCentre);
     $.ajax({
@@ -88,6 +94,7 @@ function VisibleRows(EmpNo) {
         type: 'GET',
         dataType: 'html',
         success: function (result) {
+            TourDetailsDiv.removeClass('inVisible');
             TourDetailsDiv.html(result);
             $('#TourFB').makeEnabled();
         },
@@ -106,7 +113,7 @@ function FinalSavedata() {
     var AuthEmployeeName = $('#EmployeeNo option:selected').text();
     var NoteNumber=$('#tfdHdr_NoteNumber').val();
     var RefNoteNumber = $('#NoteNo').val();
-    alert(RefNoteNumber);
+   
     var x = '{"NoteNumber":"' + NoteNumber + '","RefNoteNumber":"' + RefNoteNumber + '","EntEntryDate":"' + EntEntryDate + '","EntEntryTime": "' + EntEntryTime + '" ,"TourFromDate": "' + TourFromDate + '","TourToDate": "' + TourToDate + '", "PurposeOfVisit": "' + PurposeOfVisit + '", "AuthEmployeeCode": "' + AuthEmployeeCode + '", "AuthEmployeeName": "' + AuthEmployeeName + '"}';
     $.ajax({
         method: 'POST',
@@ -161,6 +168,9 @@ function ValidateControl() {
     } else {
         $(target).removeClass('is-valid').addClass('is-invalid');
     }
+    if (targetid == 'EmployeeNo') {
+        $('#tfdHdr_AuthEmployeeCode').val($(target).val());
+    }
    
     EnableSubmitBtn();
 
@@ -173,6 +183,9 @@ function validatectrl(targetid, value) {
             break;
         case "Required":
             isvalid = validatectrl_ValidateLength(value);
+            if (isvalid) {
+                $('.content ').removeClass('border-red').addClass('border-green')
+            }
             break;
             
     }

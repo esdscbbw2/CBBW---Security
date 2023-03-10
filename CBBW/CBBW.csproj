@@ -153,6 +153,7 @@
     <Compile Include="Areas\Security\ViewModel\BIL\BILExpensesVM.cs" />
     <Compile Include="Areas\Security\ViewModel\BIL\BILHdrVM.cs" />
     <Compile Include="Areas\Security\ViewModel\BIL\DaDetailsVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\BIL\VMReport.cs" />
     <Compile Include="Areas\Security\ViewModel\EMC\EMCHeaderEntryVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EMC\EMCNoteApproveVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EMC\EMCTravellingDetailsVM.cs" />
@@ -265,7 +266,17 @@
     <Content Include="Images\personnel.jpg" />
     <Content Include="Images\personnel.png" />
     <Content Include="Images\User-Icon.png" />
+    <Content Include="img\Beediworkers.png" />
+    <Content Include="img\calendar.png" />
     <Content Include="img\charbhai-logo-center.jpg" />
+    <Content Include="img\charbhai-logo.png" />
+    <Content Include="img\clock.png" />
+    <Content Include="img\close.png" />
+    <Content Include="img\down-arrow-dark.png" />
+    <Content Include="img\down-arrow.png" />
+    <Content Include="img\iconNew1.svg" />
+    <Content Include="img\iconNew2.svg" />
+    <Content Include="img\launch.gif" />
     <Content Include="UIContent\CSS\bootstrap-datetimepicker.min.css" />
     <Content Include="UIContent\CSS\Custom_ErrorToolTip.css" />
     <Content Include="UIContent\CSS\fixedColumns.dataTables.min.css" />
@@ -273,6 +284,7 @@
     <Content Include="UIContent\CSS\img\clock.png" />
     <Content Include="UIContent\CSS\img\main-banner.png" />
     <Content Include="UIContent\CSS\jquery.dataTables.min.css" />
+    <Content Include="UIContent\CSS\print-css.css" />
     <Content Include="UIContent\CSS\style.css" />
     <Content Include="UIContent\CSS\style_0711.css" />
     <Content Include="UIContent\CSS\sweetalert2.min.css" />
@@ -338,6 +350,7 @@
     <Content Include="UIContent\JS\bootstrap.bundle.min.js" />
     <Content Include="UIContent\JS\CustomePage\BIL\BILApprovalEntry.js" />
     <Content Include="UIContent\JS\CustomePage\BIL\BILEntry.js" />
+    <Content Include="UIContent\JS\CustomePage\BIL\BILLReport.js" />
     <Content Include="UIContent\JS\CustomePage\BIL\BILPaymentEntry.js" />
     <Content Include="UIContent\JS\CustomePage\CommonReusable.js" />
     <Content Include="UIContent\JS\CustomePage\CreateRuleTADA.js" />
@@ -568,6 +581,11 @@
     <Content Include="Areas\Security\Views\BIL\_VDeductionFromDA.cshtml" />
     <Content Include="Areas\Security\Views\BIL\_VPytmDeductionFromDA.cshtml" />
     <Content Include="Areas\Security\Views\BIL\_VPytmDeductionFromDAView.cshtml" />
+    <Content Include="Areas\Security\Views\Shared\_TopMenu.cshtml" />
+    <Content Include="Areas\Security\Views\Shared\_LeftMenu.cshtml" />
+    <Content Include="Areas\Security\Views\Common\Index.cshtml" />
+    <Content Include="Areas\Security\Views\BIL\_BILLReport.cshtml" />
+    <Content Include="Areas\Security\Views\BIL\BillReport.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />
@@ -601,7 +619,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Security\Data\" />
-    <Folder Include="Areas\Security\Views\Common\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

@@ -240,14 +240,14 @@ htmlAttributes: new
     <script src="~/UIContent/JS/CustomePage/TFD/ApprovalEntry.js"></script>
     <script>
         function VisibleRows(EmpNo) {
-            //alert(EmpNo);
-            //$('.allperson').each(function () {
-            //    $(this).makeInVisible();
-            //});
+
+            $('.allperson').each(function () {
+                $(this).addClass('inVisible');
+            });
             $('#EmployeeNo').val(EmpNo);
-            $('#DateTbl').makeVisible();
+            $('#DateTbl').removeClass('inVisible');
             $('.' + EmpNo).each(function () {
-                $(this).makeVisible();
+                $(this).removeClass('inVisible');
             });
             $('#HCVD').makeEnabled();
             $('#TFBD').makeEnabled();

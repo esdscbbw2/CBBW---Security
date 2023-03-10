@@ -411,5 +411,27 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+
+        public DataTable GetTADACalculationDateWiseForReport(int EmployeeNumber, int CentreCode, string NoteNumber, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[3];
+                para[paracount] = new SqlParameter("@EmployeeNumber", SqlDbType.Int);
+                para[paracount++].Value = EmployeeNumber;
+                para[paracount] = new SqlParameter("@CentreCode", SqlDbType.Int);
+                para[paracount++].Value = CentreCode;
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NVarChar, 25);
+                para[paracount++].Value = NoteNumber;
+
+                using (SQLHelper sql = new SQLHelper("[BIL].[getTADACalculationDateWiseForReport]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+
     }
 }
