@@ -122,6 +122,7 @@
     <Compile Include="TADA\TADAPubTransOption.cs" />
     <Compile Include="TADA\TADARule.cs" />
     <Compile Include="TADA\TADARuleDetails.cs" />
+    <Compile Include="TADA\TADARuleV2.cs" />
     <Compile Include="TFD\TFDDateWiseTourData.cs" />
     <Compile Include="TFD\TFDHdr.cs" />
     <Compile Include="TFD\TFDTourFeedBackDetails.cs" />

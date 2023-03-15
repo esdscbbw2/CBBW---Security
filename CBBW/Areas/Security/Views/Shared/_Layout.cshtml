@@ -22,7 +22,7 @@
     <link rel='stylesheet' href='~/UIContent/CSS/bootstrap-datetimepicker.min.css'>
     <style>
         .inVisible {
-            display: none;
+            display: none !important;
         }
 
         .pointer {
@@ -314,7 +314,7 @@
         }
 
         #mains {
-            background: #f3f4f9;
+            background: #fff;
         }
 
         .dashboard-box .card {
@@ -408,7 +408,7 @@
 }
 .main-content {
     /* margin-left: 29.563rem; */
-    background: #E8EAF6;
+    background: #fff;
     height: 100%;
 }
 .navmenu, .navclosemenu {
@@ -575,18 +575,23 @@
             }
 
             // $("#mySidebar").toggleClass('showSidebar');
-            $(".navmenu").hide();
-            $(".navclosemenu").show();
+            //$(".navmenu").hide();
+            //$(".navclosemenu").show();
+            $('#navOpen').addClass('inVisible');
+            $('#navClose').removeClass('inVisible');
         }
 
         function closeNav() {
+            $('#navOpen').removeClass('inVisible');
+            $('#navClose').addClass('inVisible');
             document.getElementById("mySidebar").style.width = "0px";
             document.getElementById("mains").style.marginLeft = "0px";
             document.getElementById("menu-btn5").style.backgroundColor = "#e7ecf9"
             document.getElementById("menu-btn5").style.color = "#000"
             // $("#mySidebar").removeClass('showSidebar');
-            $(".navclosemenu").hide();
-            $(".navmenu").show();
+            //$(".navclosemenu").hide();
+            //$(".navmenu").show();
+            
         }
     </script>
     <script type="text/javascript">

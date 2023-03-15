@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -85,9 +86,11 @@ namespace CBBW.BOL.BIL
 
         public int DeptCode { get; set; }
         public string DeptName { get; set; }
+        //[StringLength(5)]
         public int RequisitionNo { get; set; }
         public DateTime RequisitionDate { get; set; }
         public string RequisitionDatestr { get; set; }
+        public string RequisitionDatestrDisplay { get; set; }
         public string RequisitionDateMin { get; set; }
         public string RequisitionDateMax { get; set; }
         public int PreparedEmpNo { get; set; }

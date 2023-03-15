@@ -188,6 +188,7 @@
     <Compile Include="Areas\Security\ViewModel\MGPOutInVM.cs" />
     <Compile Include="Areas\Security\ViewModel\OtherTripSchDisplayVM.cs" />
     <Compile Include="Areas\Security\ViewModel\OtherTripScheduleEntryVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\Rule\TADARuleVM.cs" />
     <Compile Include="Areas\Security\ViewModel\TADATransViewModel.cs" />
     <Compile Include="Areas\Security\ViewModel\TFD\TFDHdrVM.cs" />
     <Compile Include="Areas\Security\ViewModel\TFD\TourFeedBackDetailsVM.cs" />
@@ -269,6 +270,7 @@
     <Content Include="img\Beediworkers.png" />
     <Content Include="img\calendar.png" />
     <Content Include="img\charbhai-logo-center.jpg" />
+    <Content Include="img\charbhai-logo-center.png" />
     <Content Include="img\charbhai-logo.png" />
     <Content Include="img\clock.png" />
     <Content Include="img\close.png" />
@@ -398,6 +400,8 @@
     <Content Include="UIContent\JS\CustomePage\OtherTripSchEdit.js" />
     <Content Include="UIContent\JS\CustomePage\OtherTripSchedule.js" />
     <Content Include="UIContent\JS\CustomePage\SecurityRuleValidation.js" />
+    <Content Include="UIContent\JS\CustomePage\TADARule\TADARuleEntry.js" />
+    <Content Include="UIContent\JS\CustomePage\TADARule\TADATransModeUpdation.js" />
     <Content Include="UIContent\JS\CustomePage\TFD\ApprovalDetails.js" />
     <Content Include="UIContent\JS\CustomePage\TFD\ApprovalEntry.js" />
     <Content Include="UIContent\JS\CustomePage\TFD\TFDDetails.js" />

@@ -235,6 +235,8 @@
                         var Active = GetInActiveInDD('EmployeeNo');
                         if (Active) {
                             $('#SubmitBtn').makeEnabled();
+                        } else {
+                            $('#SubmitBtn').makeDisabled();
                         }
                     }
                 }

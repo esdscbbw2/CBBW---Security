@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -156,11 +157,12 @@ namespace CBBW.Areas.Security.Controllers
                     {
                         model.TourFromDate = model.TourFromDate;
                     }
-
+                    model.TourFromTime = model.TourFromTime != null ? model.TourFromTime : "-";
+                    model.TourToTime = model.TourToTime != null ? model.TourToTime : "-";
 
                     model.NoOfDays = model.NoOfDays != 0 ? model.NoOfDays : 0;
                     model.PurposeOfVisit = model.PurposeOfVisit != null ? model.PurposeOfVisit : "NA";
-
+                    model.EmpNo = model.EmployeeNo;
                     if (_iBIL.SetSetTADABillGeneration(model, ref pMsg))
                     {
                         ViewBag.Msg = "Employee Number " + model.EmployeeCodeName + " Submited Successfully.";
@@ -514,8 +516,10 @@ namespace CBBW.Areas.Security.Controllers
                
                 model.TadabollGen.RequisitionDateMin = DateTime.Today.AddDays(-3).ToString("yyyy-MM-dd");
                 model.TadabollGen.RequisitionDateMax = DateTime.Today.ToString("yyyy-MM-dd");
+               model.TadabollGen.RequisitionDate=model.TadabollGen.RequisitionDate;
                 model.Deptlist = _iTFD.GetENTConcernDeptList(NoteNumber, user.CentreCode,ref pMsg);
                 model.TadabollGen.ETotalAmount = ETotalAmount;
+              
             }
             catch (Exception ex)
             {

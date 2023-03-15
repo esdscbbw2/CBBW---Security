@@ -80,6 +80,11 @@ namespace CBBW.DAL.DBMapper
                         result.ActualTourInDate = DateTime.Parse(dr["ActualTourInDate"].ToString());
                     if (!DBNull.Value.Equals(dr["ActualTourOutDate"]))
                         result.ActualTourOutDate = DateTime.Parse(dr["ActualTourOutDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["ActualTourInTime"]))
+                        result.ActualTourInTime = dr["ActualTourInTime"].ToString();
+                    if (!DBNull.Value.Equals(dr["ActualTourOutTime"]))
+                        result.ActualTourOutTime = dr["ActualTourOutTime"].ToString();
+
                     if (!DBNull.Value.Equals(dr["TotalNoOfDays"]))
                         result.TotalNoOfDays = int.Parse(dr["TotalNoOfDays"].ToString());
                     if (!DBNull.Value.Equals(dr["DAAmount"]))
@@ -182,6 +187,11 @@ namespace CBBW.DAL.DBMapper
                         result.TourFromDate = DateTime.Parse(dr["TourFromDate"].ToString());
                     if (!DBNull.Value.Equals(dr["TourToDate"]))
                         result.TourToDate = DateTime.Parse(dr["TourToDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["TourFromTime"]))
+                        result.TourFromTime = dr["TourFromTime"].ToString();
+                    if (!DBNull.Value.Equals(dr["TourToTime"]))
+                        result.TourToTime = dr["TourToTime"].ToString();
+
                     if (!DBNull.Value.Equals(dr["NoOfDays"]))
                         result.NoOfDays = int.Parse(dr["NoOfDays"].ToString());
                     if (!DBNull.Value.Equals(dr["PurposeOfVisit"]))
@@ -238,7 +248,7 @@ namespace CBBW.DAL.DBMapper
                     if (!DBNull.Value.Equals(dr["Remark"]))
                         result.Remark = dr["Remark"].ToString();
 
-
+                    result.RequisitionDatestrDisplay =result.RequisitionDate.ToString("yyyy-MM-dd");
                     result.RequisitionDatestr = MyDBLogic.ConvertDateToString(result.RequisitionDate);
                     result.TourFromDateNTime = MyDBLogic.ConvertDateToString(result.TourFromDate);
                     result.TourToDateNTime = MyDBLogic.ConvertDateToString(result.TourToDate);

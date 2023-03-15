@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
-
-   var Empno= $('#tfdHdr_AuthEmployeeCode').val();
+    var Empno = $('#tfdHdr_AuthEmployeeCode').val();
+   
     $('#NoteNumber2').change(function () {
         Notenumberchanged($(this).val());
         $('#NoteNo').val($(this).val());
@@ -29,8 +29,8 @@ function Notenumberchanged(notenumber, Empno) {
                 $('#tfdHdr_TourFromDate').val(item.tfdHdr.TourFromDatestr);
                 $('#tfdHdr_TourToDate').val(item.tfdHdr.TourToDatestr);
                 $('#tfdHdr_PurposeOfVisit').val(item.tfdHdr.PurposeOfVisit);
-                $('#EmployeeNo').val('');
-                $('#EmployeeNo').isInvalid();
+               // $('#EmployeeNo').val('');
+                //$('#EmployeeNo').isInvalid();
             });
         }
     });
@@ -44,12 +44,12 @@ function Notenumberchanged(notenumber, Empno) {
     } else { noteCtrl.isInvalid(); }
 };
 async function GetEmployeeList(notenumber, selectedvalue) {
-    if (selectedvalue == 0) {
-        selectedvalue = '-1';
-    }
+    //if (selectedvalue == 0) {
+    //    selectedvalue = '-1';
+    //}
    getDropDownDataWithSelectedValue('EmployeeNo', 'Select Employee', '/Security/TFD/GetENTAuthEmployeeList?NoteNumber=' + notenumber, selectedvalue );
-    if (selectedvalue > 0) {
-        $('#EmployeeNo').removeClass('is-invalid').addClass('is-valid valid');
+    if (selectedvalue * 1 > 0) {
+        $('#EmployeeNo').isValid();
     }
 };
 

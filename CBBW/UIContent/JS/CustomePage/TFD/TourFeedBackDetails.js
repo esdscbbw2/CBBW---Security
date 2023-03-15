@@ -97,6 +97,7 @@ function validatectrl(targetid, value, rowid) {
             break;
         case "TourFeedBack":
             isvalid = validatectrl_ValidateLength(value);
+            if (value.length > 1 && WordCount(value) <= 100) { isvalid = true; }
             break;
 
     }

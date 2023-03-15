@@ -1,5 +1,6 @@
-﻿@using CBBW.BOL.TADA;
-@model TADARuleDetails
+﻿@using System.Globalization;
+@using CBBW.Areas.Security.ViewModel.Rule;
+@model TADARuleVM
 @{
     ViewBag.Title = "New TA & DA Rule";
 }
@@ -8,12 +9,9 @@
     {
         @Html.HiddenFor(m => m.MaxDate)
         @Html.HiddenFor(m => m.MinDate)
-        @Html.HiddenFor(m => m.EntryDate)
-        @Html.HiddenFor(m => m.EntryTime)
-        @Html.HiddenFor(m => m.NewConnectingID);
-        @Html.HiddenFor(m => m.IsBtn);
         @Html.HiddenFor(m => m.IsParamBtn);
-        @Html.HiddenFor(m => m.IsSubmitBtn);
+        @Html.HiddenFor(m => m.IsTransBtn);
+        @Html.HiddenFor(m => m.TADARule.EffectiveDate);
         <div class="fixedElement">
             <div class="col-md-12" style="position: relative;">
                 <div class="heading_text_btn mb-4 mt-4">
@@ -49,27 +47,25 @@
                         </label>
                         <div class="col-md-4">
                             <div class="position-relative">
-                                @Html.TextBoxFor(m => m.EffectiveDate, "{0:yyyy-MM-dd}",
-                           htmlAttributes: new
-                                {
-                               @class = "form-control pointer isvalidate CustomDateFormat",
-                               type = "date",
-                               onchange = "validatecontrol()",
-                               max = Model.MaxDate,
-                               min = Model.MinDate
-                           })
-                                <label id="EffectiveDatelbl" class="datelabel">Select a date</label>
-                            </div>
-
-                            @*@Html.EditorFor(m => m.EffectiveDate, new
-                                {
-                                    htmlAttributes = new
-                                    {
-                                        @readonly = "readonly",
+                                <input id="mEffectiveDate" type="date"
+                                       min="@DateTime.Today.ToString("yyyy-MM-dd")"
+                                       max="@DateTime.Today.AddMonths(1).ToString("yyyy-MM-dd")"
+                                       class="form-control pointer is-invalid valid"
+                                       title="Accept Today Or Future One Month">
+                                <label id="lblmEffectiveDate" style="width:100px"
+                                       class="datelabel">Select Date</label>
+                                @*@Html.TextBoxFor(m => m.TADARule.EffectiveDate, "{0:yyyy-MM-dd}",
+                                    htmlAttributes: new
+                                         {
+                                        @class = "form-control pointer isvalidate CustomDateFormat",
+                                        type = "date",
                                         onchange = "validatecontrol()",
-                                        @class = "form-control pointer datepicker1 isvalidate EffDt"
-                                    }
-                                })*@
+                                        max = Model.MaxDate,
+                                        min = Model.MinDate
+                                    })
+                                         <label id="TADARule_EffectiveDatelbl" class="datelabel">Select a date</label>*@
+
+                            </div>
                         </div>
                     </div>
                     <div class="row d-flex align-items-center">
@@ -77,97 +73,82 @@
                             Entry Date  :
                         </label>
                         <div class="col-md-4">
-                            @Html.TextBoxFor(m => m.EntryDate, "{0:dd-MM-yyyy}",
-                           htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                            <input type="text" disabled class="form-control" value="@DateTime.Today.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)" />
+                            @*@Html.TextBoxFor(m => m.EntryDate, "{0:dd-MM-yyyy}",
+                                htmlAttributes: new { @class = "form-control", disabled = "disabled" })*@
                         </div>
                         <label class="col-form-label col-md-2">
                             Time  :
                         </label>
                         <div class="col-md-4">
-                            @Html.TextBoxFor(m => m.EntryTime, htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                            <input type="text" disabled class="form-control" value="@DateTime.Now.ToString("hh:mm tt")" />
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-12">
+        <div id="Div1" class="col-12 sectionB">
             <div class="bgColor wid-100 mb-4">
                 <ul>
                     <li>
-                        @*<span class="d-flex justify-content-start align-items-center infoerror">*@
                         Minimum Hours Of Tour Required To Get Half DA:
                         <div class="form-group">
-                            @Html.TextBoxFor(m => m.MinHoursForHalfDA,
+                            @Html.TextBoxFor(m => m.TADARule.MinHoursForHalfDA,
                            htmlAttributes: new
                            {
-                               @class = "form-control pointer only-numeric isvalidate is-valid",
+                               @class = "form-control pointer only-numeric myctrl",
                                @placeholder = "Hours",
                                onkeyup = "validatecontrol()",
                                title = "Value must be 1 - 9"
                            })
                         </div>
-                        @*<button type="button" id="tt_MinHoursForHalfDA"
-                                    class="btn btn-outline-danger "
-                                    data-toggle="tooltip" data-placement="top"
-                                    title="Value must be 0 - 9">
-                                <i data-feather="info"></i>
-                            </button>*@
-                        @*</span>*@
                     </li>
                     <li>
                         <span class="d-flex justify-content-start align-items-center infoerror">
                             Pay DA When Destination is More Than (KMS):
                             <div class="form-group">
-                                @Html.TextBoxFor(m => m.MinKmsForDA,
+                                @Html.TextBoxFor(m => m.TADARule.MinKmsForDA,
                                    htmlAttributes: new
                                    {
-                                       @class = "form-control pointer only-numeric isvalidate is-valid",
+                                       @class = "form-control pointer only-numeric myctrl",
                                        @placeholder = "KMS",
                                        onkeyup = "validatecontrol()",
                                        title = "Value must be 1 - 99"
                                    })
-                                @*<input type="text" class="form-control" placeholder="KMS">*@
                             </div>
 
                         </span>
-                        @*<button type="button" id="tt_MinKmsForDA"
-                                    class="btn btn-outline-danger "
-                                    data-toggle="tooltip" data-placement="top"
-                                    title="Value must be 0 - 99">
-                                <i data-feather="info"></i>
-                            </button>*@
-
                     </li>
                     <li>
                         When Company Accommodation Available Lodging Expenses Allowed?
-                        @Html.DropDownListFor(m => m.LodgingExpOnCompAcco,
+                        @Html.DropDownListFor(m => m.TADARule.LodgingExpOnCompAcco,
                        new[] {
-                           new SelectListItem { Text = "Yes", Value = "" },
-                           new SelectListItem { Text = "No", Value = "false" } },
+                           new SelectListItem { Text = "Yes", Value = "true" },
+                           new SelectListItem { Text = "No", Value = "false" } },"-",
                        htmlAttributes: new
-                            {
-                           @class = "form-select pointer isvalidate is-valid",
+                       {
+                           @class = "form-select pointer myctrl",
                            @onchange = "validatecontrol()",
                            title = "Accept only no",
-                            })
+                       })
                     </li>
                     <li>
                         Local Conveyance Eligible:
-                        @Html.DropDownListFor(m => m.LocalConvEligibility,
+                        @Html.DropDownListFor(m => m.TADARule.LocalConvEligibility,
                        new[] {
                            new SelectListItem { Text = "Yes", Value = "true" },
                            new SelectListItem { Text = "No", Value = "false" } }, "-",
-                       htmlAttributes: new { @class = "form-select pointer isvalidate is-valid", @onchange = "validatecontrol()" })
+                       htmlAttributes: new { @class = "form-select pointer myctrl", @onchange = "validatecontrol()" })
 
                     </li>
                     <li>
                         On Deputation Staff Allowed To Go On Tour But Not Eligible For DA Where As Rest Of All
                         Conditions Applicable:
-                        @Html.DropDownListFor(m => m.DepuStaffDAEligibility,
+                        @Html.DropDownListFor(m => m.TADARule.DepuStaffDAEligibility,
                        new[] {
                            new SelectListItem { Text = "Yes", Value = "true" },
                            new SelectListItem { Text = "No", Value = "false" } }, "-",
-                       htmlAttributes: new { @class = "form-select pointer isvalidate", @onchange = "validatecontrol()" })
+                       htmlAttributes: new { @class = "form-select pointer myctrl", @onchange = "validatecontrol()" })
 
                     </li>
                     <li>
@@ -176,13 +157,13 @@
                         Company Transport)” Shall Be Eligible When Return Trip Loaded With Goods More Than 85% Of
                         The Total Vehicle Capacity.
                         Otherwise Only Half Eligible DA For The Tour Is Payable:
-                        @Html.DropDownListFor(m => m.ExtraDAApplicability,
+                        @Html.DropDownListFor(m => m.TADARule.ExtraDAApplicability,
                        new[] {
                            new SelectListItem { Text = "Yes", Value = "true" },
-                           new SelectListItem { Text = "No", Value = "" } },
+                           new SelectListItem { Text = "No", Value = "false" } },"-",
                        htmlAttributes: new
                        {
-                           @class = "form-select pointer isvalidate",
+                           @class = "form-select pointer myctrl",
                            @onchange = "validatecontrol()",
                            title = "Accept only yes"
                        })
@@ -191,18 +172,21 @@
                 </ul>
             </div>
         </div>
-        <div class="col-md-12">
+        <div id="Div2" class="col-md-12">
             <div class="bgColor mb-4">
                 <div class="col-md-12 form-sample">
                     <label class="d-flex">Category Code & Name :<span></span></label>
                     <div class="form-group">
-
-                        @Html.ListBoxFor(m => m.SelectedCategoryIds, new MultiSelectList(Model.Categories, "ID", "DisplayText", Model.SelectedCategoryIds),
-                       htmlAttributes: new
-                            {
-                                @multiple = "multiple",
-                           @class = "form-select pointer example-getting-started isvalidate2 is-valid"
-                       })
+                        <select id="CategoryDD"
+                                class="form-select is-invalid myctrl2"
+                                aria-label="Default select example">
+                        </select>
+                        @*@Html.ListBoxFor(m => m.TADARule.CategoryIds, new MultiSelectList(Model.Categories, "ID", "DisplayText", Model.SelectedCategoryIds),
+                            htmlAttributes: new
+                                 {
+                                     @multiple = "multiple",
+                                @class = "form-select pointer example-getting-started isvalidate2 is-valid"
+                            })*@
 
                     </div>
                 </div>
@@ -226,19 +210,19 @@
                 </div>
             </div>
         </div>
-        <div class="bgColor bg-transparent border-blue mt-4">
+        <div id="Div3" class="bgColor bg-transparent border-blue mt-4">
             <ul style="list-style: none; padding: 0; font-size:28px;">
                 <li>
                     Are You Sure The Details Entered Are Correct & As Required?
                     <select id="submitConfirmation" onchange="validatecontrol()"
-                            class="form-select " aria-label="Default select example">
+                            class="form-select myctrl" aria-label="Default select example">
                         <option value="0">No</option>
                         <option selected value="1">Yes</option>
                     </select>
                 </li>
             </ul>
         </div>
-        <div class="col-md-12 mb-4">
+        <div id="Div4" class="col-md-12 mb-4">
             <div class="d-flex justify-content-center mt-3">
                 <button id="btnSave" type="submit" name="Submit" value="save"
                         disabled="disabled" style="width:100px;height:45px"
@@ -252,122 +236,123 @@
 </div>
 @section headers
     {
-    
+
 }
-<script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
 @section scripts{
-    <script src="~/UIContent/JS/CustomePage/CreateRuleTADA.js"></script>
-    <script>
-        $(document).ready(function () {
-            //var mymsg = '@ViewBag.DupMsg';
-            if ('@ViewBag.DupMsg' != '') {
-                Swal.fire({
-                    title: 'Failed to create rule',
-                    text: "@ViewBag.DupMsg",
-                    icon: 'warning',
-                    customClass: 'swal-wide',
-                    buttons: {
-                        //cancel: 'Cancel',
-                        confirm: 'Ok'
-                    },
-                    //cancelButtonClass: 'btn-cancel',
-                    confirmButtonColor: '#2527a2',
-                });
-            };
-            if ('@ViewBag.Msg' != '') {
-                Swal.fire({
-                    title: 'Confirmation',
-                    text: "@ViewBag.Msg",
-                    icon: 'success',
-                    customClass: 'swal-wide',
-                    buttons: {
-                        confirm: 'Ok'
-                    },
-                    confirmButtonColor: '#2527a2',
-                }).then(callback);
-                function callback(result) {
-                    if (result.value) {
-                        var url = "/Security/TADARules/Index";
-                        window.location.href = url;
-                    }
-                }
-            };
-        });
-    </script>
-    <script>
-        $(document).ready(function () {
-            var parambtn = $('#IsParamBtn').val();
-            if (parambtn == 1) {
-                btnparam.removeAttr("disabled");
-            } else {
-                btnparam.attr("disabled", "disabled");
-            }
-            //$('.EffDt').val('');
-            //$('input').css('cursor', 'hand');
-        });
-    </script>
-    <script>
-        $(document).ready(function () {
-            $('#btnBack').click(function () {
-                var url = "/Security/TADARules/Index";
-                if ($('.is-invalid').length > 0 || $('#IsBtn').val() == 1) {
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/TADARule/TADARuleEntry.js"></script>
+    @*<script src="~/UIContent/JS/CustomePage/CreateRuleTADA.js"></script>
+        <script>
+            $(document).ready(function () {
+                //var mymsg = '@ViewBag.DupMsg';
+                if ('@ViewBag.DupMsg' != '') {
                     Swal.fire({
-                        title: 'Confirmation Message',
-                        text: "Are You Sure Want to Go Back?",
-                        icon: 'question',
+                        title: 'Failed to create rule',
+                        text: "@ViewBag.DupMsg",
+                        icon: 'warning',
                         customClass: 'swal-wide',
-                        //buttons: {
-                        //    cancel: 'No',
-                        //    confirm: 'Yes'
-                        //},
-                        confirmButtonText: "Yes",
-                        cancelButtonText: "No",
-                        cancelButtonClass: 'btn-cancel',
+                        buttons: {
+                            //cancel: 'Cancel',
+                            confirm: 'Ok'
+                        },
+                        //cancelButtonClass: 'btn-cancel',
                         confirmButtonColor: '#2527a2',
-                        showCancelButton: true,
+                    });
+                };
+                if ('@ViewBag.Msg' != '') {
+                    Swal.fire({
+                        title: 'Confirmation',
+                        text: "@ViewBag.Msg",
+                        icon: 'success',
+                        customClass: 'swal-wide',
+                        buttons: {
+                            confirm: 'Ok'
+                        },
+                        confirmButtonColor: '#2527a2',
                     }).then(callback);
                     function callback(result) {
                         if (result.value) {
+                            var url = "/Security/TADARules/Index";
                             window.location.href = url;
-                        } else {
-                            // second variant
                         }
                     }
-                } else {
-                    window.location.href = url;
                 };
             });
-            var dtctrl = $('#EffectiveDate');
-            dtctrl.CustomDateFormat();
-            if (dtctrl.val() == '0001-01-01') { $('#EffectiveDatelbl').html('Select a date');}
-        });
-    </script>
+        </script>
+        <script>
+            $(document).ready(function () {
+                var parambtn = $('#IsParamBtn').val();
+                if (parambtn == 1) {
+                    btnparam.removeAttr("disabled");
+                } else {
+                    btnparam.attr("disabled", "disabled");
+                }
+                //$('.EffDt').val('');
+                //$('input').css('cursor', 'hand');
+            });
+        </script>
+        <script>
+            $(document).ready(function () {
+                $('#btnBack').click(function () {
+                    var url = "/Security/TADARules/Index";
+                    if ($('.is-invalid').length > 0 || $('#IsBtn').val() == 1) {
+                        Swal.fire({
+                            title: 'Confirmation Message',
+                            text: "Are You Sure Want to Go Back?",
+                            icon: 'question',
+                            customClass: 'swal-wide',
+                            //buttons: {
+                            //    cancel: 'No',
+                            //    confirm: 'Yes'
+                            //},
+                            confirmButtonText: "Yes",
+                            cancelButtonText: "No",
+                            cancelButtonClass: 'btn-cancel',
+                            confirmButtonColor: '#2527a2',
+                            showCancelButton: true,
+                        }).then(callback);
+                        function callback(result) {
+                            if (result.value) {
+                                window.location.href = url;
+                            } else {
+                                // second variant
+                            }
+                        }
+                    } else {
+                        window.location.href = url;
+                    };
+                });
+                var dtctrl = $('#EffectiveDate');
+                dtctrl.CustomDateFormat();
+                if (dtctrl.val() == '0001-01-01') { $('#EffectiveDatelbl').html('Select a date');}
+            });
+        </script>*@
     @*<script type="text/javascript">
 
-        $(document).ready(function () {
-            $(".only-numeric").bind("keypress", function (e) {
-                var keyCode = e.which ? e.which : e.keyCode
+            $(document).ready(function () {
+                $(".only-numeric").bind("keypress", function (e) {
+                    var keyCode = e.which ? e.which : e.keyCode
 
-                if (!(keyCode >= 48 && keyCode <= 57)) {
-                    $(".error").css("display", "inline");
-                    return false;
-                } else {
-                    $(".error").css("display", "none");
-                }
+                    if (!(keyCode >= 48 && keyCode <= 57)) {
+                        $(".error").css("display", "inline");
+                        return false;
+                    } else {
+                        $(".error").css("display", "none");
+                    }
+                });
+                $(".only-decimal").bind("keypress", function (e) {
+                    var keyCode = e.which ? e.which : e.keyCode
+                    //alert(keyCode);
+                    if (!(keyCode >= 48 && keyCode <= 57)) {
+                        if (keyCode != 46) { return false; }
+                        //$(".error").css("display", "inline");
+                    } else {
+                        //$(".error").css("display", "none");
+                    }
+                });
             });
-            $(".only-decimal").bind("keypress", function (e) {
-                var keyCode = e.which ? e.which : e.keyCode
-                //alert(keyCode);
-                if (!(keyCode >= 48 && keyCode <= 57)) {
-                    if (keyCode != 46) { return false; }
-                    //$(".error").css("display", "inline");                    
-                } else {
-                    //$(".error").css("display", "none");
-                }
-            });
-        });
 
-    </script>*@
+        </script>*@
 }
 
 

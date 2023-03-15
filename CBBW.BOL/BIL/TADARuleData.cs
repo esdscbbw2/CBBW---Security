@@ -27,6 +27,8 @@ namespace CBBW.BOL.BIL
 		public int MaxLocalConv { get; set; }
 		public DateTime ActualTourInDate { get; set; }
 		public DateTime ActualTourOutDate { get; set; }
+		public string ActualTourOutTime { get; set; }
+		public string ActualTourInTime { get; set; }
 		public string ActualTourInDatestr { get; set; }
 		public string ActualTourOutDatestr { get; set; }
 		public int TotalNoOfDays { get; set; }

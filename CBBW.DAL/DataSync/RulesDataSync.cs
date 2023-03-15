@@ -12,6 +12,110 @@ namespace CBBW.DAL.DataSync
 {
     public class RulesDataSync
     {
+        #region Version 2 TADA Rule
+        public DataTable GetCatCodesForTADARule(DateTime EffectiveDate, ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("Select * from [RUL].[GetCatCodesForTADARule]('"+ EffectiveDate.ToString("yyyy-MM-dd") + "')", CommandType.Text))
+                {
+                    return sql.GetDataTable(ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable GetLastTADARuleV2(DateTime EffectiveDate, ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("Select * from [RUL].[GetLastTADARuleV2]('" + EffectiveDate.ToString("yyyy-MM-dd") + "')", CommandType.Text))
+                {
+                    return sql.GetDataTable(ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable SetTADARuleV2(TADARuleV2 data, ref string pMsg) 
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[25];
+                para[paracount] = new SqlParameter("@EntryDate", SqlDbType.Date);
+                para[paracount++].Value = data.EntryDate;
+                para[paracount] = new SqlParameter("@EntryTime", SqlDbType.NVarChar,15);
+                para[paracount++].Value = data.EntryTime;
+                para[paracount] = new SqlParameter("@EffectiveDate", SqlDbType.Date);
+                para[paracount++].Value = data.EffectiveDate;
+                para[paracount] = new SqlParameter("@MinHoursForHalfDA", SqlDbType.Int);
+                para[paracount++].Value = data.MinHoursForHalfDA;
+                para[paracount] = new SqlParameter("@MinKmsForDA", SqlDbType.Int);
+                para[paracount++].Value = data.MinKmsForDA;
+                para[paracount] = new SqlParameter("@LodgingExpOnCompAcco", SqlDbType.Bit);
+                para[paracount++].Value = data.LodgingExpOnCompAcco;
+                para[paracount] = new SqlParameter("@LocalConvEligibility", SqlDbType.Bit);
+                para[paracount++].Value = data.LocalConvEligibility;
+                para[paracount] = new SqlParameter("@DepuStaffDAEligibility", SqlDbType.Bit);
+                para[paracount++].Value = data.DepuStaffDAEligibility;
+                para[paracount] = new SqlParameter("@ExtraDAApplicability", SqlDbType.Bit);
+                para[paracount++].Value = data.ExtraDAApplicability;
+                para[paracount] = new SqlParameter("@CategoryIds", SqlDbType.NVarChar);
+                para[paracount++].Value = data.CategoryIds;
+                para[paracount] = new SqlParameter("@CategoryText", SqlDbType.NVarChar);
+                para[paracount++].Value = data.CategoryText;
+                para[paracount] = new SqlParameter("@CompanyTransIDs", SqlDbType.NVarChar,50);
+                para[paracount++].Value = data.CompanyTransIDs;
+                para[paracount] = new SqlParameter("@PublicTransIDs", SqlDbType.NVarChar, 50);
+                para[paracount++].Value = data.PublicTransIDs;
+                para[paracount] = new SqlParameter("@PubTransClassIDs", SqlDbType.NVarChar, 50);
+                para[paracount++].Value = data.PubTransClassIDs;
+                para[paracount] = new SqlParameter("@IsDAActualSpend", SqlDbType.Bit);
+                para[paracount++].Value = data.IsDAActualSpend;
+                para[paracount] = new SqlParameter("@IsLodgingAllowed", SqlDbType.Bit);
+                para[paracount++].Value = data.IsLodgingAllowed;
+                para[paracount] = new SqlParameter("@Metro_DAPerDay", SqlDbType.Int);
+                para[paracount++].Value = data.Metro_DAPerDay;
+                para[paracount] = new SqlParameter("@City_DAPerDay", SqlDbType.Int);
+                para[paracount++].Value = data.City_DAPerDay;
+                para[paracount] = new SqlParameter("@Town_DAPerDay", SqlDbType.Int);
+                para[paracount++].Value = data.Town_DAPerDay;
+                para[paracount] = new SqlParameter("@Metro_MaxLodgingExp", SqlDbType.Int);
+                para[paracount++].Value = data.Metro_MaxLodgingExp;
+                para[paracount] = new SqlParameter("@City_MaxLodgingExp", SqlDbType.Int);
+                para[paracount++].Value = data.City_MaxLodgingExp;
+                para[paracount] = new SqlParameter("@Town_MaxLodgingExp", SqlDbType.Int);
+                para[paracount++].Value = data.Town_MaxLodgingExp;
+                para[paracount] = new SqlParameter("@Metro_MaxLocalConv", SqlDbType.Int);
+                para[paracount++].Value = data.Metro_MaxLocalConv;
+                para[paracount] = new SqlParameter("@City_MaxLocalConv", SqlDbType.Int);
+                para[paracount++].Value = data.City_MaxLocalConv;
+                para[paracount] = new SqlParameter("@Town_MaxLocalConv", SqlDbType.Int);
+                para[paracount++].Value = data.Town_MaxLocalConv;
+
+                using (SQLHelper sql = new SQLHelper("[RUL].[SetTADARuleV2]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable GetCatCodesForTADARuleView(DateTime EffectiveDate,ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("Select * from [RUL].[GetLastTADARuleV2]('"+ EffectiveDate.ToString("yyyy-MM-dd")+ "')", CommandType.Text))
+                {
+                    return sql.GetDataTable(ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+
+
+
+
+
+        #endregion
         #region Version 2 Changes
         public DataTable getTourRules(int DisplayLength, int DisplayStart, int SortColumn,
             string SortDirection, string SearchText,ref string pMsg)

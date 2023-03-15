@@ -117,7 +117,6 @@ function DataNotAvailble(ctrl) {
     ValidateControl();
 };
 function GetRFIDCardNos(index) {
-  
     var FRIDData = $('#'+ index +'_RFID');
     $.ajax({
         url: '/MaterialGatePass/GetRFIdCards',
@@ -302,7 +301,7 @@ function getVechCurrentOutRecords() {
                 'VehicleNumber': $('#' + rowid + '_VehicleNo').val(),
                 'RFIDCard': $('#' + rowid + '_RFID').val(),
                 'ActualTripOutDate': $('#' + rowid + '_ActualTripDate').val(),
-                'ActualTripOutTime': $('#' + rowid + '_ActualTripTime').val().toLocaleString(),
+                'ActualTripOutTime': $('#' + rowid + '_ActualTripTime').val() != '' ? $('#' + rowid + '_ActualTripTime').val().toLocaleString():'0',
                 'OutRemarks': $('#' + rowid + '_OutRemark').val()
 
             });
@@ -368,9 +367,15 @@ function SaveData() {
 function SelectedRFIDValid() {
     var target = SelectedRFIDValid.caller.arguments[0].target;
     var rowid = $(target.closest('.add-row')).attr("id");
-    var _val = $('#' + rowid + '_RFID option:selected').val();
+    var RFId = $('#' + rowid + '_RFID option:selected').val();
+    var dt = new Date();
+    var dateString = (dt.getFullYear() + '-'
+        + ('0' + (dt.getMonth() + 1)).slice(-2)
+        + '-' + ('0' + (dt.getDate())).slice(-2));
+    DatePicker(RFId);
+    RFId = RFId == 'NA' ? 0 : RFId;
 
-    DatePicker(_val);
+    RFIDOutChanged(RFId, dateString);
 };
 function activateSubmitBtn() {
 
@@ -413,3 +418,27 @@ function DatePicker(val) {
     });
    
 }
+
+function RFIDOutChanged(RFId, TripDate) {
+    if (RFId != '' || RFId!=0) {
+        $.ajax({
+            url: '/EntryII/GetRFIDPunchTime',
+            method: 'GET',
+            data: { RFIDNumber: RFId, PunchDate: TripDate },
+            dataType: 'json',
+            success: function (data) {
+                $(data).each(function (index, item) {
+                    $('#0_ActualTripTime').val(item.PunchOutStr);
+                    $('#0_ActualTripTime').removeClass('timePicker');
+                    $('#0_ActualTripTime').attr('readonly', 'readonly');
+                    $('#0_ActualTripTime').isValid();
+                });
+            }
+        });
+    }
+    else {
+        $('#0_ActualTripTime').removeAttr('readonly', 'readonly');
+        $('#0_ActualTripTime').addClass('timePicker');
+        $('#0_ActualTripTime').isInvalid();
+    }
+};

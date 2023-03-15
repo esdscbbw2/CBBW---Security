@@ -14,6 +14,74 @@ namespace CBBW.DAL.DBMapper
 {
     public class RulesDBMapper
     {
+        public TADARuleV2 Map_TADARuleV2(DataRow dr) 
+        {
+            TADARuleV2 result = new TADARuleV2();
+            try
+            {
+                if (dr != null)
+                {
+                    if (!DBNull.Value.Equals(dr["EntryDate"]))
+                        result.EntryDate = DateTime.Parse(dr["EntryDate"].ToString());                    
+                    if (!DBNull.Value.Equals(dr["EntryTime"]))
+                        result.EntryTime = dr["EntryTime"].ToString();
+                    if (!DBNull.Value.Equals(dr["EffectiveDate"]))
+                        result.EffectiveDate = DateTime.Parse(dr["EffectiveDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["MinHoursForHalfDA"]))
+                        result.MinHoursForHalfDA = int.Parse(dr["MinHoursForHalfDA"].ToString());
+                    if (!DBNull.Value.Equals(dr["MinKmsForDA"]))
+                        result.MinKmsForDA = int.Parse(dr["MinKmsForDA"].ToString());
+                    if (!DBNull.Value.Equals(dr["LodgingExpOnCompAcco"]))
+                        result.LodgingExpOnCompAcco = bool.Parse(dr["LodgingExpOnCompAcco"].ToString());
+                    if (!DBNull.Value.Equals(dr["LocalConvEligibility"]))
+                        result.LocalConvEligibility = bool.Parse(dr["LocalConvEligibility"].ToString());
+                    if (!DBNull.Value.Equals(dr["DepuStaffDAEligibility"]))
+                        result.DepuStaffDAEligibility =bool.Parse(dr["DepuStaffDAEligibility"].ToString());
+                    if (!DBNull.Value.Equals(dr["ExtraDAApplicability"]))
+                        result.ExtraDAApplicability =bool.Parse(dr["ExtraDAApplicability"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsActive"]))
+                        result.IsActive =bool.Parse(dr["IsActive"].ToString());
+                    if (!DBNull.Value.Equals(dr["CategoryIds"]))
+                        result.CategoryIds = dr["CategoryIds"].ToString();
+                    if (!DBNull.Value.Equals(dr["CompanyTransIDs"]))
+                        result.CompanyTransIDs = dr["CompanyTransIDs"].ToString();
+                    if (!DBNull.Value.Equals(dr["PublicTransIDs"]))
+                        result.PublicTransIDs = dr["PublicTransIDs"].ToString();
+                    if (!DBNull.Value.Equals(dr["PubTransClassIDs"]))
+                        result.PubTransClassIDs = dr["PubTransClassIDs"].ToString();
+                    if (!DBNull.Value.Equals(dr["IsDAActualSpend"]))
+                        result.IsDAActualSpend = bool.Parse(dr["IsDAActualSpend"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsLodgingAllowed"]))
+                        result.IsLodgingAllowed = bool.Parse(dr["IsLodgingAllowed"].ToString());
+                    if (!DBNull.Value.Equals(dr["Metro_DAPerDay"]))
+                        result.Metro_DAPerDay = int.Parse(dr["Metro_DAPerDay"].ToString());
+                    if (!DBNull.Value.Equals(dr["City_DAPerDay"]))
+                        result.City_DAPerDay = int.Parse(dr["City_DAPerDay"].ToString());
+                    if (!DBNull.Value.Equals(dr["Town_DAPerDay"]))
+                        result.Town_DAPerDay =int.Parse(dr["Town_DAPerDay"].ToString());
+                    if (!DBNull.Value.Equals(dr["Metro_MaxLodgingExp"]))
+                        result.Metro_MaxLodgingExp = int.Parse(dr["Metro_MaxLodgingExp"].ToString());
+                    if (!DBNull.Value.Equals(dr["City_MaxLodgingExp"]))
+                        result.City_MaxLodgingExp = int.Parse(dr["City_MaxLodgingExp"].ToString());
+                    if (!DBNull.Value.Equals(dr["Town_MaxLodgingExp"]))
+                        result.Town_MaxLodgingExp = int.Parse(dr["Town_MaxLodgingExp"].ToString());
+                    if (!DBNull.Value.Equals(dr["Metro_MaxLocalConv"]))
+                        result.Metro_MaxLocalConv = int.Parse(dr["Metro_MaxLocalConv"].ToString());
+                    if (!DBNull.Value.Equals(dr["City_MaxLocalConv"]))
+                        result.City_MaxLocalConv = int.Parse(dr["City_MaxLocalConv"].ToString());
+                    if (!DBNull.Value.Equals(dr["Town_MaxLocalConv"]))
+                        result.Town_MaxLocalConv = int.Parse(dr["Town_MaxLocalConv"].ToString());
+                    if (!DBNull.Value.Equals(dr["CategoryText"]))
+                        result.CategoryText = dr["CategoryText"].ToString();
+                }
+            }
+            catch { }
+            return result;
+        }
+
+
+
+
         public TourRuleSaveInfo Map_TourRuleSaveInfo(DataRow dr) 
         {
             TourRuleSaveInfo result = new TourRuleSaveInfo();

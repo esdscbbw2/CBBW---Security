@@ -20,7 +20,9 @@ function Notenumberchanged(notenumber) {
                 //$('#txtToDate').val(item.ToDateStr);
                  $('#VehicleNo').val(item.Vehicleno);
                  $('#VehicleType').val(item.VehicleType);
-                 $('#ModelName').val(item.ModelName);
+                $('#ModelName').val(item.ModelName);
+                $('#CTVEntryDate').val(item.EntryDatestr);
+                $('#CTVEntryTime').val(item.EntryTime);
                 //$('#txtDriverNonName').val(item.DriverNonName);
                 //if (item.ApprovalFor == 0 || item.ApprovalFor == 2) { osbtn.removeAttr('disabled') }
                 //else if (item.ApprovalFor == 1) { lsbtn.removeAttr('disabled') }

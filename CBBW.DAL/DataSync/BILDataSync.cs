@@ -130,7 +130,7 @@ namespace CBBW.DAL.DataSync
             {
 
                 int paracount = 0;
-                SqlParameter[] para = new SqlParameter[23];
+                SqlParameter[] para = new SqlParameter[25];
                 para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.VarChar, 25);
                 para[paracount++].Value = hdrmodel.NoteNumber;
                 para[paracount] = new SqlParameter("@RefNoteNumber", SqlDbType.VarChar, 25);
@@ -185,6 +185,10 @@ namespace CBBW.DAL.DataSync
                 {
                     para[paracount++].Value = hdrmodel.TourToDate;
                 }
+                para[paracount] = new SqlParameter("@TourFromTime", SqlDbType.NVarChar,15);
+                para[paracount++].Value = hdrmodel.TourFromTime;
+                para[paracount] = new SqlParameter("@TourToTime", SqlDbType.NVarChar,15);
+                para[paracount++].Value = hdrmodel.TourToTime;
                 //para[paracount++].Value = hdrmodel.TourToDate;
                 para[paracount] = new SqlParameter("@NoOfDays", SqlDbType.Int);
                 para[paracount++].Value = hdrmodel.NoOfDays;

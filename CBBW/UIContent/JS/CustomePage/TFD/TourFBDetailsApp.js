@@ -42,10 +42,12 @@ async function getInitialData() {
                     if (item.ActionTakens == true) {
                         ActionTakens.html("Yes");
                 } else { ActionTakens.html("No"); }
+              
                  GetConDept(ConcernDeptCode.attr('id'), item.NoteNumber, item.ConcernDeptCode);
-                if (item.ConcernDeptCode != null || item.ConcernDeptCode != "" || item.ConcernDeptCode != 0) {
-                    ConcernDeptCode.removeClass('is-invalid').addClass('is-valid');
+                if (item.ConcernDeptCode >0) {
+                    ConcernDeptCode.isValid();
                 }
+               
                 IDs.html(item.ID);
                 NoteNumberid.html(item.NoteNumber);
             });

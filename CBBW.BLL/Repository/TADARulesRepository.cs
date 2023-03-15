@@ -26,8 +26,28 @@ namespace CBBW.BLL.Repository
         {
             return _tadaEntities.getTADARules(DisplayLength, DisplayStart, SortColumn, SortDirection, SearchText, ref pMsg);
         }
-        
-        
+        public List<CustomCheckBoxOption> GetCatCodesForTADARule(DateTime EffectiveDate, ref string pMsg) 
+        {
+            return _tadaEntities.GetCatCodesForTADARule(EffectiveDate,ref pMsg);
+        }
+        public TADARuleV2 GetLastTADARuleV2(DateTime EffectiveDate, ref string pMsg) 
+        {
+            return _tadaEntities.GetLastTADARuleV2(EffectiveDate,ref pMsg);
+        }
+        public bool SetTADARuleV2(TADARuleV2 data, ref string pMsg) 
+        {
+            return _tadaEntities.SetTADARuleV2(data, ref pMsg);
+        }
+        public List<CustomComboOptionsWithString> GetCatCodesForTADARuleView(DateTime EffectiveDate, ref string pMsg) 
+        {
+            return _tadaEntities.GetCatCodesForTADARuleView(EffectiveDate, ref pMsg);
+        }
+
+
+
+
+
+
         #endregion
         public bool CreateNewTADARule(TADARuleDetails trd, ref string pMsg)
         {

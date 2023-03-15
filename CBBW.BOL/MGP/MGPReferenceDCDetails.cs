@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace CBBW.BOL.MGP
 {
-    
     public class MGPReferenceDCDetails
     {
         public string NoteNumber { get; set; }

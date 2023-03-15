@@ -232,8 +232,8 @@ function ChangeNoteNumber() {
                     PersonTypetxt.html(item.PersonTypetxt);
                     EmployeeCodeName.html(item.EmployeeCodeName);
                     DesigCodeName.html(item.DesigCodeName);
-                    TourFromDate.html(item.TourFromDateNTime);
-                    TourToDate.html(item.TourToDateNTime);
+                    TourFromDate.html(item.TourFromDateNTime + "-" + item.TourFromTime);
+                    TourToDate.html(item.TourToDateNTime + "-" + item.TourToTime);
                     NoOfDays.html(item.NoOfDays);
                     PurposeOfVisit.html(item.PurposeOfVisit);
 
@@ -497,56 +497,49 @@ function totalAmount() {
     let table1_value_2 = parseInt(document.getElementById("first-table-tr").children[2].children[0].children[0].value);
     let table1_value_3 = parseInt(document.getElementById("first-table-tr").children[3].children[0].children[0].value);
     let table1_value_4 = parseInt(document.getElementById("first-table-tr").children[4].children[0].children[0].value);
-    document.getElementById("ATotalAmount").value = table1_value_1 + table1_value_2 + table1_value_3 + table1_value_4;
-   
+   var total = table1_value_1 + table1_value_2 + table1_value_3 + table1_value_4;
+    document.getElementById("ATotalAmount").value = isNaN(total) ? 0 : total;
 }
 function decrementQty(e) {
     var value = e.parentElement.parentElement.firstElementChild.value;
-    // if(e.parentElement.parentElement.parentElement.parentElement.id == "first-table-tr") {
-
-    // }
     value = value.trim().replace(/\,/g, '');
     value = isNaN(value) ? 1 : value;
     value--;
-
+    value = value < 0 ? 0 : value;
     e.parentElement.parentElement.firstElementChild.value = value;
-
-    //     let total = value1 + value2 + value3 + value4;
-    //    e.parentElement.parentElement.parentElement.parentElement.children[5].innerHTML = total;
-
+    TotalExp();
 }
-function incrementQty(e) {
-    let value = e.parentElement.parentElement.firstElementChild.value.trim().replace(/\,/g, '')
-    if (e.className.substring(10) == "first-btn") {
+function AEDincrementQty() {
+    var target = $(AEDincrementQty.caller.arguments[0].target);
+    var mid = target.attr('id');    
+    var maxvalue = $('#' + mid + 'Max').html()*1;
+    var txtcTrl = $('#' + mid + 'Amount');
+    var mValue = txtcTrl.val() * 1;
+   
+    mValue += 1;
+    mValue = mValue > maxvalue ? maxvalue : mValue;
+    txtcTrl.val(mValue);
+    TotalExp();
+};
+function TotalExp() {
+    var edamt = $('#AEDAmount').val() * 1;
+    var atamt = $('#ATAAmount').val() * 1;
+    var alamt = $('#ALocAmount').val() * 1;
+    var aloamt = $('#ALodAmount').val() * 1;
+    var total = edamt + atamt + alamt + aloamt;
+    var Atotal=isNaN(total) ? 0 : total;
+    $('#ATotalAmount').val(Atotal);
+};
 
-        if (value != e.parentElement.parentElement.parentElement.parentElement.parentElement.children[1].children[1].innerHTML.trim().replace(/\,/g, '')) {
-            value = isNaN(value) ? 1 : value;
-            value++;
-            e.parentElement.parentElement.firstElementChild.value = value;
-        }
+function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
     }
-    if (e.className.substring(10) == "second-btn") {
-        if (value != e.parentElement.parentElement.parentElement.parentElement.parentElement.children[1].children[2].innerHTML.trim().replace(/\,/g, '')) {
-            value = isNaN(value) ? 1 : value;
-            value++;
-            e.parentElement.parentElement.firstElementChild.value = value;
-        }
-    }
-    if (e.className.substring(10) == "third-btn") {
-        if (value != e.parentElement.parentElement.parentElement.parentElement.parentElement.children[1].children[3].innerHTML.trim().replace(/\,/g, '')) {
-            value = isNaN(value) ? 1 : value;
-            value++;
-            e.parentElement.parentElement.firstElementChild.value = value;
-        }
-    }
-    if (e.className.substring(10) == "four-btn") {
-        if (value != e.parentElement.parentElement.parentElement.parentElement.parentElement.children[1].children[4].innerHTML.trim().replace(/\,/g, '')) {
-            value = isNaN(value) ? 1 : value;
-            value++;
-            e.parentElement.parentElement.firstElementChild.value = value;
-        }
-    }
-    console.log
-
+    return true;
 }
+
+
+    
   

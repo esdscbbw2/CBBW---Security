@@ -5,6 +5,7 @@
         Notenumberchanged($(this).val());
     });
     Notenumberchanged($('#NoteNumber').val());
+    $('#NoteNo').val($('#NoteNumber').val())
     var btnDisplays = $('#submitcount').val();
     if (btnDisplays > 0) {
         $('#NoteNumber').makeDisable();
@@ -202,6 +203,7 @@ function validatectrl(targetid, value) {
             break;
         case "ApprovalRemark":
             isvalid = validatectrl_ValidatestringLength(value);
+            if (value.length > 1 && WordCount(value) <= 100) { isvalid = true; }
             break;
 
     }

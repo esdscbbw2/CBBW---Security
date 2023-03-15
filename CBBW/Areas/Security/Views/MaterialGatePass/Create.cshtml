@@ -72,15 +72,17 @@
                                     Date  :
                                 </label>
                                 <div class="col-md-2">
-                                    @Html.TextBox("EntryDate", DateTime.Today.ToString("dd/MM/yyyy"),
-                               htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                                    @*@Html.TextBo("EntryDate",
+                               htmlAttributes: new { @class = "form-control", disabled = "disabled" })*@
+                                    <input class="form-control" disabled name="CTVEntryDate" id="CTVEntryDate" />
                                 </div>
                                 <label class="col-form-label col-md-1">
                                     Time  :
                                 </label>
                                 <div class="col-md-2">
-                                    @Html.TextBox("EntryTime", DateTime.Now.ToString("hh:mm tt"),
-                               htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                                    @*@Html.TextBox("EntryTime", DateTime.Now.ToString("hh:mm tt"),
+        htmlAttributes: new { @class = "form-control", disabled = "disabled" })*@
+                                    <input class="form-control" disabled name="CTVEntryTime" id="CTVEntryTime" />
                                 </div>
 
 
@@ -154,7 +156,7 @@
                         <li style="font-size: 16px;">
                             If The Driver Name Given In The System & The Person Driving The Vehicle Are Same:
                             <select id="driversame" style="width:110px"
-                                    class="form-select pointer is-invalid"
+                                    class="form-select canclear pointer is-invalid"
                                     onchange="ValidateControl()"
                                     aria-label="Default select example">
                                 <option selected="">-</option>
@@ -171,7 +173,7 @@
                             Have You Collected / Given Back The Mobile Phone To The Driver Who Is Driving The Vehicle:
 
                             <select id="vehicledriver" style="width:110px"
-                                    class="form-select pointer is-invalid"
+                                    class="form-select pointer canclear is-invalid"
                                     onchange="ValidateControl()" aria-label="Default select example">
                                 <option selected="">-</option>
                                 <option value="Yes">Yes</option>
@@ -261,6 +263,7 @@
                     title: 'Confirmation',
                     text: "@ViewBag.Msg",
                     icon: 'success',
+                    setTimeout:5000,
                     customClass: 'swal-wide',
                     buttons: {
                         confirm: 'Ok'

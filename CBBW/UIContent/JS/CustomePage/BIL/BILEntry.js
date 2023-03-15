@@ -4,8 +4,9 @@
     $('#RefEntryDate').val('');
     var selectedvalue = 0;
     $('#RefNoteNumber').change(function () {
-
+        ValuesClear();
         Notenumberchanged($(this).val(), selectedvalue);
+
         $('#SubmitBtn').makeDisable();
     });
     var btnDisplays = $('#SubmitCount').val();
@@ -59,18 +60,21 @@ $('#EmployeeNo').change(function () {
     $('#EmployeeCodeName').val($("#EmployeeNo option:selected").text())
     ChangeEmployee($(this).val());
     $('#SubmitBtn').makeDisable();
+   
 });
 function ChangeEmployee(EmployeeNo) {
+    ValuesClear();
     $('#EmpNo').val(EmployeeNo);
     var noteCtrl = $('#EmployeeNo');
     var NoteNumber = $('#RefNoteNumber').val();
+    $('#Deducted').makeDisable();
     
     if (EmployeeNo != '' && EmployeeNo != '-1') {
-        var Active = GetInActiveInDD('EmployeeNo');
-       // alert(Active);
-        if (Active) {
-            $('#SubmitBtn').makeEnabled();
-        }
+       // var Active = GetInActiveInDD('EmployeeNo');
+       //// alert(Active);
+       // if (Active) {
+       //     $('#SubmitBtn').makeEnabled();
+       // }
         noteCtrl.isValid();
         $.ajax({
             url: '/BIL/GetTAdARuleData',
@@ -91,8 +95,8 @@ function ChangeEmployee(EmployeeNo) {
                         $('#DAAmount').val(item.DAAmount);
                         $('#DADeducted').val(item.DADeducted);
                         $('#EDAllowance').val(item.EAmount);
-                        $('#TourFromDateNTime').val(item.ActualTourInDatestr);
-                        $('#TourToDateNTime').val(item.ActualTourOutDatestr);
+                        $('#TourFromDateNTime').val(item.ActualTourInDatestr + "-" + item.ActualTourInTime);
+                        $('#TourToDateNTime').val(item.ActualTourOutDatestr + "'-" + item.ActualTourOutTime);
                         $('#TourFromDate').val(item.ActualTourInDatestr);
                         $('#TourToDate').val(item.ActualTourOutDatestr);
                         $('#NoOfDays').val(item.TotalNoOfDays);
@@ -103,6 +107,9 @@ function ChangeEmployee(EmployeeNo) {
                         $('#TAAmount').val(0);
                         $('#LocalConveyance').val(0);
                         $('#Lodging').val(0);
+                        $('#TourFromTime').val(item.ActualTourInTime);
+                        $('#TourToTime').val(item.ActualTourOutTime);
+
                     }
                     else if (item.status == 2) {
                         
@@ -111,8 +118,8 @@ function ChangeEmployee(EmployeeNo) {
                         $('#DAAmount').val(item.DAAmount);
                         $('#DADeducted').val(item.DADeducted);
                         $('#EDAllowance').val(item.EAmount);
-                        $('#TourFromDateNTime').val(item.ActualTourInDatestr);
-                        $('#TourToDateNTime').val(item.ActualTourOutDatestr);
+                        $('#TourFromDateNTime').val(item.ActualTourInDatestr + "-" + item.TourFromTime);
+                        $('#TourToDateNTime').val(item.ActualTourOutDatestr + "-" + item.TourToDate);
                         $('#TourFromDate').val(item.ActualTourInDatestr);
                         $('#TourToDate').val(item.ActualTourOutDatestr);
                         $('#NoOfDays').val(item.TotalNoOfDays);
@@ -121,6 +128,8 @@ function ChangeEmployee(EmployeeNo) {
                         $('#TAAmount').val(item.TAAmount);
                         $('#LocalConveyance').val(item.LocalConveyance);
                         $('#Lodging').val(item.Lodging);
+                        $('#TourFromTime').val(item.TourFromTime);
+                        $('#TourToTime').val(item.TourToTime);
                     }
                         $('#Deducted').makeEnabled();
                     }
@@ -131,16 +140,33 @@ function ChangeEmployee(EmployeeNo) {
 
     } else { noteCtrl.isInvalid(); }
 }
+
+function ValuesClear() {
+    $('#PersonTypetxt').val('');
+    $('#DesigCodeName').val('');
+    $('#DAAmount').val(0);
+    $('#DADeducted').val(0);
+    $('#EDAllowance').val(0);
+    $('#TourFromDateNTime').val('-');
+    $('#TourToDateNTime').val('-');
+    $('#TourFromDate').val('');
+    $('#TourToDate').val('');
+    $('#NoOfDays').val(0);
+    $('#PurposeOfVisit').val('-');
+    $('#TotalExpenses').val(0);
+    $('#Lodging').attr('max', 0);
+    $('#LocalConveyance').attr('max', 0);
+    $('#TAAmount').val(0);
+    $('#LocalConveyance').val(0);
+    $('#Lodging').val(0);
+    $('#TourFromTime').val('');
+    $('#TourToTime').val('');
+}
 function TotalExpance() {
-    debugger;
-    var target = TotalExpance.caller.arguments[0].target;
-    var targetCtrl = $(target);
-    var targetid = targetCtrl.attr('id');
-    var TotalExpenses = $('#TotalExpenses').val();
-    if (targetCtrl.val() != 0 && targetCtrl.val() != "") {
-    var Total = parseInt(TotalExpenses) + parseInt(targetCtrl.val());
-        $('#TotalExpenses').val(Total);
-    }
+    var taAmt = $('#TAAmount').val() * 1;
+    var lcamt = $('#LocalConveyance').val() * 1;
+    var lodamt = $('#Lodging').val() * 1;
+    $('#TotalExpenses').val(taAmt + lcamt + lodamt);    
 };
 function ValidateControl() {
     var target = ValidateControl.caller.arguments[0].target;
@@ -160,7 +186,7 @@ function validatectrl(targetid, value) {
     switch (targetid) {
         case "Policy":
             isvalid = validatectrl_YesNoCombo(value);
-            if (isvalid) { $('#Policy').removeClass('border-red').addClass('border-green'); }
+            if (isvalid) { $('.content').removeClass('border-red').addClass('border-green'); }
            
             break;
     }

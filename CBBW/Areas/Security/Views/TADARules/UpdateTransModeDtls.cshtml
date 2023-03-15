@@ -56,32 +56,102 @@
                         <tbody id="tbody1">
                             <tr id="0" class="add-row">
                                 <td>
-                                    <select id="0_C" class="form-select pointer dycom" aria-label="Default select example"
+                                    @*<select id="0_C" class="form-select pointer dycom alterID"
+                                            aria-label="Default select example"
                                             onchange="comboChangeContext()">
+                                    </select>*@
+                                    <select id="PTC" class="form-select alterID inValidTag is-invalid"
+                                            aria-label="Default select example"
+                                            onchange="PublicTransportChange()">
+                                        <option value="0">Select type</option>
+                                        <option value="1">Train</option>
+                                        <option value="2">Bus</option>
+                                        <option value="3">Air</option>
                                     </select>
                                 </td>
                                 <td>
-                                    <div id="0_D">
+                                    @*<div id="0_D">
+                                    </div>*@
+                                    <div class="selectBoxInfo alterID inVisible inVisibleTag" id="TrainDiv">
+                                        <div class="form-check">
+                                            <input class="form-check-input PTCOptions alterID" type="checkbox" 
+                                                   id="optcheck1" name="option1" value="1">
+                                            <label id="check1" class="form-check-label alterID" 
+                                                   for="optcheck1">General</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input PTCOptions alterID" 
+                                                   id="optcheck2" name="option2" value="2">
+                                            <label id="check2" class="form-check-label alterID" 
+                                                   for="optcheck2">Sleeper Coach</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input PTCOptions alterID" 
+                                                   id="optcheck3" name="option2" value="3">
+                                            <label id="check3" class="form-check-label alterID" 
+                                                   for="optcheck3">3 Tier AC</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input PTCOptions alterID" 
+                                                   id="optcheck4" name="option2" value="4">
+                                            <label id="check4" class="form-check-label alterID" 
+                                                   for="optcheck4">2 Tier AC</label>
+                                        </div>
+                                    </div>
+                                    <div class="selectBoxInfo mt-2 mb-2 alterID inVisibleTag inVisible" id="BusDiv">
+                                        <div class="form-check">
+                                            <input class="form-check-input alterID PTCOptions" type="checkbox" 
+                                                   id="optcheck5" name="option1" value="5">
+                                            <label id="check5" class="form-check-label alterID" 
+                                                   for="optcheck5">Ordinary</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input alterID PTCOptions" 
+                                                   id="optcheck6" name="option2" value="6">
+                                            <label id="check6" class="form-check-label alterID" 
+                                                   for="optcheck6">Express</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input alterID PTCOptions" 
+                                                   id="optcheck7" name="option2" value="7">
+                                            <label id="check7" class="form-check-label alterID" 
+                                                   for="optcheck7">Luxury</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input alterID PTCOptions" 
+                                                   id="optcheck8" name="option2" value="8">
+                                            <label id="check8" class="form-check-label alterID" 
+                                                   for="optcheck8">Hi Tech</label>
+                                        </div>
+                                    </div>
+                                    <div class="selectBoxInfo alterID inVisibleTag inVisible" id="AirDiv">
+                                        <div class="form-check">
+                                            <input class="form-check-input alterID PTCOptions" type="checkbox" 
+                                                   id="optcheck9" name="option1" value="9">
+                                            <label id="check9" class="form-check-label alterID"
+                                                   for="optcheck9">Economy Class</label>
+                                        </div>
                                     </div>
                                 </td>
                                 <td>
-                                    @*<div id="0_DR" class="form-group">
-                                        </div>*@
                                     <div class="form-group">
-                                        <input id="0_DR" type="text" disabled="disabled" class="form-control pubtrantxt">
+                                        <input id="PubTranText" type="text" disabled 
+                                               class="form-control pubtrantxt alterID">
                                     </div>
                                 </td>
                                 <td>
                                     <span class="actionBtn">
-                                        <button id="0_addbtn" type="button" class="btn primaryLink addbtn"
+                                        <button id="AddBtn" type="button" 
+                                                class="btn primaryLink alterID cloneBtn addBtn"
                                                 title="Add" data-toggle="tooltip" data-placement="top"
-                                                onclick="addBtnClick()">
+                                                onclick="addCloneBtnClick()">
                                             <i data-feather="plus"></i>
                                         </button>
                                         &nbsp;&nbsp;
-                                        <button id="0_delbtn" type="button" class="btn secondaryLink hideControl"
+                                        <button id="DeleteBtn" type="button" 
+                                                class="btn secondaryLink inVisible alterID cloneBtn removeBtn"
                                                 title="Remove" data-toggle="tooltip" data-placement="top"
-                                                onclick="removeBtnClick()">
+                                                onclick="RemoveBtnClicked()">
                                             <i data-feather="x"></i>
                                         </button>
                                     </span>
@@ -101,7 +171,6 @@
                     <h2>B. Company Transport – Details</h2>
                 </div>
             </div>
-
             <div class="col-md-12">
                 <div class="table-responsive" style="overflow-x:inherit;">
                     <table class="table table-bordered mt-4">
@@ -115,8 +184,20 @@
                             <tr>
                                 <td>
                                     <div class="selectBoxInfo">
-                                        <div id="divmChkBox" class="form-check pointer">
-                                            @Html.EditorFor(m => m.CompTranOptions)
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" 
+                                                   id="check100" name="option1" value="1">
+                                            <label class="form-check-label" for="check100">LV</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" 
+                                                   id="check101" name="option1" value="2">
+                                            <label class="form-check-label" for="check101">2 Wheeler</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" 
+                                                   id="check102" name="option1" value="0">
+                                            <label class="form-check-label" for="check102">NA</label>
                                         </div>
                                     </div>
                                 </td>
@@ -139,8 +220,11 @@
 @section headers
     {
     <style>
+        .inVisible {
+            display: none;
+        }
         .hideControl {
-            display:none;
+            display: none;
         }
         .pointer {
             cursor: pointer;
@@ -148,288 +232,20 @@
     </style>
 }
 <script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
+<script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+<script src="~/UIContent/JS/CustomePage/TADARule/TADATransModeUpdation.js"></script>
 <script>
-    function addBtnClick() {
-        var rows = $('#tbody2 tr').length + 1;        
-        var r = parseInt($('#tbody2 tr:last').attr("id"));
-        if (r >= 1) { r = r + 1; } else { r = 1; }
-        var cloneready = $('#tbody1').find('tr').clone();
-        cloneready.attr("id", r);
-        cloneready.find('#0_C').attr('id', r + '_C');
-        var classdiv = cloneready.find('#0_D');
-        classdiv.empty();
-        classdiv.attr('id', r + '_D');
-        var classdivr = cloneready.find('#0_DR');
-        classdivr.val("");
-        classdivr.attr('id', r + '_DR');
-        var addbtn = cloneready.find('#0_addbtn');
-        addbtn.attr('id', r + '_addbtn');
-        addbtn.on('mouseenter', function () {
-            $(this).tooltip('show');
-        });
-        addbtn.on('mouseleave click', function () {
-            $(this).tooltip('hide');
-        });
-        var delbtn = cloneready.find('#0_delbtn');
-        delbtn.attr('id', r + '_delbtn').removeClass("hideControl");
-        delbtn.on('mouseenter', function () {
-            $(this).tooltip('show');
-        });
-        delbtn.on('mouseleave click', function () {
-            $(this).tooltip('hide');
-        });
-        //cloneready.find('.hideControl').removeClass("hideControl");
-
-        if (rows < 3) {
-            $('#tbody2').append(cloneready);
-        }
-        if (rows >= 2){
-            $('.addbtn').attr("disabled", "disabled");
-            //sweet alert here
-        }
-        $('#0_addbtn').on('mouseleave click', function () {
-            $(this).tooltip('hide');
-        });
-        
-    }
-    function removeBtnClick() {
-        var r = removeBtnClick.caller.arguments[0].target.closest('.add-row');
-        if ($(r).attr("id") == 0) {
-        } else {
-            r.remove();
-            $('.addbtn').removeAttr("disabled", "disabled");
-        };
-        return false;
-    }
-    function GetTransportTypes() {
-        var cmbType = $('#0_C');
-        $.ajax({
-            url: '/TADARules/GetPublicTransTypes',
-            method: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                cmbType.append($('<option/>', { value: "-1", text: "select type" }));
-                $(data).each(function (index, item) {
-                    cmbType.append($('<option/>', { value: item.ID, text: item.DisplayText }));
-                });
-
-                GetInitialData();
-            }
-        });
-    }
-    function comboChangeContext() {
-        var target = comboChangeContext.caller.arguments[0].target;        
-        var rowid = $(target).closest('.add-row').attr("id");
-        var value1 = $(target).val();
-        var msg = 0;
-        $('.dycom').each(function () {
-            if ($(this).attr("id") != rowid + '_C') {
-                if ($(this).val() == value1 && value1>0) {
-                    msg = 1;
-                }
-            }
-        });
-        var rowid = $(target).closest('.add-row').attr("id");
-        var transportid = $(target).val();
-        if (msg == 1) {
-            $(target).val('-1');
-            comboChangeContextChild(rowid, "-1");
-            Swal.fire({
-                title: 'Information Message',
-                text: "You Have Selected Duplicate Transport Type",
-                icon: 'warning',
-                customClass: 'swal-wide',
-                //buttons: {
-                //    cancel: 'No',
-                //    confirm: 'Yes'
-                //},
-                confirmButtonText: "OK",
-                //cancelButtonText: "No",
-                cancelButtonClass: 'btn-cancel',
-                confirmButtonColor: '#2527a2',
-                //showCancelButton: true,
-            })
-            //swal.fire('Duplicate transport type');
-        } else {
-            comboChangeContextChild(rowid, transportid);
-        }
-        
-    };
-    function comboChangeContextChild(rowid, transportid) {
-        var classdiv = $('#' + rowid + '_D');
-        var classtext = $('#' + rowid + '_DR');
-        var r = '';
-        var chk = '';
-        $.ajax({
-            url: '/TADARules/GetClassTypes',
-            method: 'GET',
-            data: { TypeID: transportid },
-            dataType: 'json',
-            success: function (data) {
-                classdiv.empty();
-                $(data).each(function (index, item) {
-                    if (item.IsSelected) {
-                        //chk = 'checked="checked"';
-                        chk = '';
-                        r = '';
-                    } else {
-                        chk = '';
-                    }
-                    classdiv.append('<input type="checkbox" class="form-check-input pointer" onclick="cbOptionClick()" name="' + item.DisplayText + '" value="' + item.ID + '" ' + chk + ' />&nbsp;&nbsp;<label class="form-check-label">' + item.DisplayText + '</label><br/>');
-                });
-                if (r == '') {
-                    classtext.val('no options selected');
-                } else {
-                    classtext.val(r.slice(0, -2));
-                }
-                getallPubtranIds();
-                validateSubmit();
-            }
-        });
-    };
-    function comboChangeContextChildForFirstTime(rowid, transportid) {
-        var classdiv = $('#' + rowid + '_D');
-        var classtext = $('#' + rowid + '_DR');
-        var r = '';
-        var chk = '';
-        $.ajax({
-            url: '/TADARules/GetClassTypes',
-            method: 'GET',
-            data: { TypeID: transportid },
-            dataType: 'json',
-            success: function (data) {
-                classdiv.empty();
-                $(data).each(function (index, item) {
-                    if (item.IsSelected) {
-                        chk = 'checked="checked"';
-                        r = r + item.DisplayText + ', ';
-                    } else {
-                        chk = '';
-                    }
-                    classdiv.append('<input type="checkbox" class="form-check-input pointer" onclick="cbOptionClick()" name="' + item.DisplayText + '" value="' + item.ID + '" ' + chk + ' />&nbsp;&nbsp;<label class="form-check-label">' + item.DisplayText + '</label><br/>');
-                });
-                if (r == '') {
-                    classtext.val('no options selected');
-                } else {
-                    classtext.val(r.slice(0, -2));
-                }
-                getallPubtranIds();
-                validateSubmit();
-            }
-        });
-    };
-    function cbOptionClick() {
-        var target = cbOptionClick.caller.arguments[0].target;
-        var rowid = $(target.closest('.add-row')).attr("id");
-        var classtext = $('#' + rowid + '_DR');
-        var chkboxes = $('#' + rowid + '_D input[type="checkbox"]:checked');
-        var r = '';
-        if (chkboxes.length > 0) {
-            chkboxes.each(function () {
-                r += $(this).attr("name") + ', ';                
-            });
-            r = r.slice(0, -2);
-            $('#IsBtnSubmit').val("1");
-        }
-        else {
-            r = "No options selected";
-        }
-        classtext.val(r);
-        getallPubtranIds();
-        validateSubmit();
-    }
-    function GetInitialData() {
-        $.ajax({
-            url: '/TADARules/GetInitialPTData',
-            method: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                var r = '';
-                $(data).each(function (index, item) {
-                    if (index == 0) {
-                        comboChangeContextChildForFirstTime(index, item.TypeID);
-                        $('#' + index + '_C').val(item.TypeID);
-                    } else {
-                        addBtnClick();
-                        comboChangeContextChildForFirstTime(index, item.TypeID);
-                        $('#' + index + '_C').val(item.TypeID);
-                    }
-                    r = r + '#' + index + '_C' + " value = " + item.TypeID + "<br/>"
-                });
-            }
-        });
-    }
-
-    function getmySelectedCheckBoxText(checkboxContainer) {
-        var r = "";
-        var chkboxes = $('#' + checkboxContainer + ' input[type="checkbox"]:checked');
-        if (chkboxes.length > 0) {
-            chkboxes.each(function () {
-                r += $('#T' + $(this).attr("id")).attr("value") + ", ";
-            });
-            r = r.slice(0, -2);
-        }
-        else {
-            r = "No options selected";
-        }
-        return r;
-    }
-    function getallmySelectedCheckBoxText() {
-        var x = getmySelectedCheckBoxText("divmChkBox");
-        $('#divChkBoxResult').val(x);
-    }
-    function getallPubtranIds() {
-        var r = '';
-        var chkboxes = $('#Pubtran input[type="checkbox"]:checked');
-        if (chkboxes.length > 0) {
-            chkboxes.each(function () {
-                r += $(this).val() + ",";
-            });
-            r = r.slice(0, -1);
-        }
-        $('#SelectedpubTranOptions').val(r);
-    }
-    function validateToEnableSubmit() {
-        var btnvalid = false;
-        var pubtrans = $('#Pubtran input[type="checkbox"]:checked');
-        var comptranms = $('#divmChkBox input[type="checkbox"]:checked');
-        if (pubtrans.length > 0) {
-            if (comptranms.length > 0) {
-                if ($('#IsBtnSubmit').val() == 1) {
-                    btnvalid = true;
-                }                
-            }
-        }        
-        return btnvalid;
-    }
-    function validateSubmit() {        
-        var btnsubmit = $('#btnSubmit');
-        if (validateToEnableSubmit()) {
-            btnsubmit.removeAttr("disabled");
-        } else { btnsubmit.attr("disabled", "disabled"); }
-    };
-    function btnClearClicked() {
-        $('#Pubtran input[type="checkbox"]:checked').each(function () {
-            $(this).prop("checked", false);
-        });
-        $('.pubtrantxt').val('');
-        $('#divmChkBox input[type="checkbox"]:checked').each(function () {
-            $(this).prop("checked", false);
-        });
-        $('#divChkBoxResult').val('');        
-        validateSubmit();
-    };
-
+    
 </script>
 <script>
-    $(document).ready(function () {
-        GetTransportTypes();
-        getallmySelectedCheckBoxText();
-        validateSubmit();
-        $('.mychkbox').click(function () {
-            getallmySelectedCheckBoxText();
-            validateSubmit();
-        });
-    });
+    //$(document).ready(function () {
+    //    GetTransportTypes();
+    //    getallmySelectedCheckBoxText();
+    //    validateSubmit();
+    //    $('.mychkbox').click(function () {
+    //        getallmySelectedCheckBoxText();
+    //        validateSubmit();
+    //    });
+    //});
 </script>
 

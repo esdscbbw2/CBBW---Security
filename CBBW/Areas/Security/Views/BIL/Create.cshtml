@@ -5,17 +5,18 @@
 
 }
 
-
 <div class="container">
-    @using (Html.BeginForm())
+    @using (Html.BeginForm("Create", "BIL", FormMethod.Post))
     {
-
         @Html.HiddenFor(x => x.EmpNo)
         @Html.HiddenFor(x => x.RefEntryDate)
         @Html.HiddenFor(x => x.TourFromDate)
         @Html.HiddenFor(x => x.TourToDate)
         @Html.HiddenFor(x => x.EmployeeCodeName)
         @Html.HiddenFor(x => x.SubmitCount)
+        @Html.HiddenFor(x => x.TourFromTime)
+        @Html.HiddenFor(x => x.TourToTime)
+
         <div class="row newTable">
             <div class="fixedElement">
                 <div class="col-md-12">
@@ -29,7 +30,7 @@
                                 <i data-feather="upload"></i>
                                 Submit
                             </button>
-                            <button type="button" class="btn btn-white">
+                            <button type="button" class="btn btn-white" onclick="window.location.href='/Security/BIL/Create';">
                                 <i data-feather="x-circle"></i>
                                 Clear
                             </button>
@@ -198,22 +199,34 @@ htmlAttributes: new
                                         <label>T.A Amount:</label>
                                     </div>
                                     <div class="col-md-4">
-                                        @Html.TextBoxFor(x => x.TAAmount, new { @minlength = "0",@class = "form-control", onchange = "TotalExpance();",@type="number" })
+                                        @Html.TextBoxFor(x => x.TAAmount,
+                                       new { @minlength = "0", @class = "form-control",
+                                           onchange = "TotalExpance();",
+                                           onkeyup = "TotalExpance();",
+                                           @type = "number" })
                                     </div>
                                     <div class="col-md-2 col-form-label">
                                         <label>Local Conveyance:</label>
                                     </div>
                                     <div class="col-md-4">
-                                        @Html.TextBoxFor(x => x.LocalConveyance, new { @minlength = "0", @class = "form-control", onchange = "TotalExpance();", @type = "number" })
+                                        @Html.TextBoxFor(x => x.LocalConveyance,
+                                       new { @minlength = "0", @class = "form-control",
+                                           onchange = "TotalExpance();",
+                                           onkeyup = "TotalExpance();",
+                                           @type = "number" })
 
                                     </div>
                                 </div>
                                 <div class="row d-flex align-items-center mb-4">
-                                    <div class="col-md-2 col-form-label">
+                                    <div class="col-md-2 col-form-labeal">
                                         <label>Lodging:</label>
                                     </div>
                                     <div class="col-md-4">
-                                        @Html.TextBoxFor(x => x.Lodging, new { @minlength = "0",@class = "form-control", onchange = "TotalExpance();", @type = "number" })
+                                        @Html.TextBoxFor(x => x.Lodging,
+                                       new { @minlength = "0", @class = "form-control",
+                                           onchange = "TotalExpance();",
+                                           onkeyup = "TotalExpance();",
+                                           @type = "number" })
                                     </div>
                                     <div class="col-md-2 col-form-label">
                                         <label>Total Expenses:</label>
@@ -283,8 +296,8 @@ htmlAttributes: new
                         <div class="col-md-12">
                             <div class="d-flex justify-content-center mt-4">
                                 @*<button disabled id="Deducted" type="submit" name="Submit" value="DAD" class="btn btn-primary me-2">
-            Deductions From DA Detail
-        </button>*@
+                                        Deductions From DA Detail
+                                    </button>*@
 
                                 <button type="button" disabled id="Deducted"
                                         onclick="TPDBtnClicked()"
@@ -292,36 +305,36 @@ htmlAttributes: new
                                     Deductions From DA Detail
                                 </button>
                             </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="bgColor mt-4 bg-transparent content border-red text-left">
-                                <ul style="list-style:none;">
-                                    <li style="font-size: 16px;">
-                                        The Details Displayed & Entered Are As Per Rule & Policy Of The Company. Hence Entered & Saved The Transaction As Required:
-                                        <select onchange="ValidateControl();" class="form-select content border-red is-invalid" aria-label="Default select example" id="Policy">
-                                            <option selected value="-1">-</option>
-                                            <option value="1">Yes</option>
-                                            <option value="0">No</option>
-
-                                        </select>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="text-center">
-                            <button disabled id="Save" type="submit" name="Submit" value="Save" class="btn btn-green mt-3 me-2">
-                                <i data-feather="check-circle"></i>
-                                Save
-                            </button>
                         </div>
                     </div>
+
+                    <div class="col-md-12">
+                        <div class="bgColor mt-4 bg-transparent content border-red text-left">
+                            <ul style="list-style:none;">
+                                <li style="font-size: 16px;">
+                                    The Details Displayed & Entered Are As Per Rule & Policy Of The Company. Hence Entered & Saved The Transaction As Required:
+                                    <select onchange="ValidateControl();" class="form-select content border-red is-invalid" aria-label="Default select example" id="Policy">
+                                        <option selected value="-1">-</option>
+                                        <option value="1">Yes</option>
+                                        <option value="0">No</option>
+
+                                    </select>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button disabled id="Save" type="submit" name="Submit" value="Save" class="btn btn-green mt-3 me-2">
+                            <i data-feather="check-circle"></i>
+                            Save
+                        </button>
+                    </div>
                 </div>
-
-
             </div>
-      
+
+
+        </div>
+
 
     }
 
@@ -395,15 +408,14 @@ htmlAttributes: new
                 }).then(callback);
                 function callback(result) {
                     if (result.value) {
-                       
-                        $('#SubmitCount').val(0);
-                        var Active = GetInActiveInDD('EmployeeNo');
-                       
-                        if (Active) {
-                            $('#SubmitBtn').makeEnabled();
-                        } else {
-                            $('#SubmitBtn').makeDisable();
-                        }
+                        $('#SubmitBtn').makeEnabled();
+                        //$('#SubmitCount').val(0);
+                        //var Active = GetInActiveInDD('EmployeeNo');
+                        //if (Active) {
+                        //    $('#SubmitBtn').makeEnabled();
+                        //} else {
+                        //    $('#SubmitBtn').makeDisable();
+                        //}
                     }
                 }
            

@@ -299,7 +299,6 @@ namespace CBBW.Areas.Security.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
            
         }
-
         [HttpPost]
         public ActionResult VehicleMaterialInDetails(MGPInDetailsVM model)
         {
@@ -319,8 +318,6 @@ namespace CBBW.Areas.Security.Controllers
                   new { Area = "Security", NoteNumber = model.NoteNumber, CBUID = 2 });
 
         }
-
-
         [HttpGet]
         public ActionResult VehicleMaterialInDetails(string NoteNumber)
         {
@@ -336,7 +333,6 @@ namespace CBBW.Areas.Security.Controllers
             catch (Exception ex) { ex.ToString(); }
             return View(model);
         }
-
         public JsonResult GetcurentInDetails(string NoteNumber)
         {
             try
@@ -364,7 +360,6 @@ namespace CBBW.Areas.Security.Controllers
             }
 
         }
-        
         public JsonResult GetRefInDCDetails(string VehicleNo, string FromDT)
         {
             try
@@ -380,7 +375,6 @@ namespace CBBW.Areas.Security.Controllers
                 return Json(ex.ToString());
             }
         }
-
         public JsonResult GetItemWiseInDetails(string NoteNumber)
         {
 
@@ -388,7 +382,6 @@ namespace CBBW.Areas.Security.Controllers
             model.ListofMGPItemWiseInDetails = _IMGP.getItemWiseDetails(NoteNumber, ref pMsg);
             return Json(model.ListofMGPItemWiseInDetails, JsonRequestBehavior.AllowGet);
         }
-
         public JsonResult GetHistoryInDCDetails(long ID)
         {
 

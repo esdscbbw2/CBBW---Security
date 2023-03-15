@@ -94,7 +94,7 @@ function ValidateCtrl(CtrlID, value)
             } else { mCtrl.isInvalid(); mCtrl.title = "Enter Time"; }
             break;
         case "MinutesGracePeriodAllowed":
-            if (value == 1) {
+            if (value >=0) {
                 mCtrl.isValid();
             } else {
                 mCtrl.isInvalid();

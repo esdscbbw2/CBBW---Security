@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CBBW.BOL.CustomModels;
 using CBBW.BOL.TADA;
 using CBBW.DAL.DataSync;
 using CBBW.DAL.DBMapper;
@@ -42,6 +43,72 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return TADARules;
         }
+        public List<CustomCheckBoxOption> GetCatCodesForTADARule(DateTime EffectiveDate, ref string pMsg) 
+        {
+            List<CustomCheckBoxOption> result = new List<CustomCheckBoxOption>();
+            try
+            {
+                dt = _datasync.GetCatCodesForTADARule(EffectiveDate, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        result.Add(_dbResponseMapper.Map_CustomCheckBoxOption(dt.Rows[i]));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg = ex.Message;
+            }
+            return result;
+        }
+        public TADARuleV2 GetLastTADARuleV2(DateTime EffectiveDate, ref string pMsg) 
+        {
+            TADARuleV2 result = new TADARuleV2();
+            try
+            {
+                dt = _datasync.GetLastTADARuleV2(EffectiveDate,ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    return _mapper.Map_TADARuleV2(dt.Rows[0]);
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg = ex.Message;
+            }
+            return result;
+        }
+        public bool SetTADARuleV2(TADARuleV2 data, ref string pMsg) 
+        {
+            bool result = false;
+            _dbResponseMapper.Map_DBResponse(_datasync.SetTADARuleV2(data, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
+        public List<CustomComboOptionsWithString> GetCatCodesForTADARuleView(DateTime EffectiveDate, ref string pMsg) 
+        {
+            List<CustomComboOptionsWithString> result = new List<CustomComboOptionsWithString>();
+            try
+            {
+                dt = _datasync.GetCatCodesForTADARule(EffectiveDate, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        result.Add(_dbResponseMapper.Map_CustomOptionsWithString(dt.Rows[i]));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg = ex.Message;
+            }
+            return result;
+        }
+
+
+
 
         #endregion
         public IEnumerable<TADARule> GetTADARules(ref string pMsg)

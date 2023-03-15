@@ -227,7 +227,7 @@ function getVechCurrentInRecords() {
                 'CarryingInMaterial': $('#' + rowid + '_carrmat').val(),
                 'LoadPercentageIn': $('#' + rowid + '_Loaded').val(),
                 'ActualTripInDate': $('#' + rowid + '_ActualTripDate').val(),
-                'ActualTripInTime': $('#' + rowid + '_ActualTime').val(),
+                'ActualTripInTime': $('#' + rowid + '_ActualTime').val() != '' ? $('#' + rowid + '_ActualTime').val():'0',
                 'RequiredKmIn': $('#' + rowid + '_RKMIn').val(),
                 'ActualKmIn': $('#' + rowid + '_ActualKmIn').val(),
                 'KMRunInTrip': $('#' + rowid + '_KMRunInTrip').val(),
@@ -350,8 +350,7 @@ function validatectrl(targetid, value) {
     activateSubmitBtn();
     return isvalid;
 
-};
-
+}
 function OnclickHistoryDCDetails(ctrl) {
     $("#savebtndisables").removeClass('is-invalid').addClass('is-valid');
     $("#savebtndisables").removeClass('is-valid').addClass('is-invalid');
@@ -406,13 +405,17 @@ function OnclickHistoryDCDetails(ctrl) {
     });
 
 }
-
 function SelectedRFIDValid() {
     var target = SelectedRFIDValid.caller.arguments[0].target;
     var rowid = $(target.closest('.add-row')).attr("id");
-    var _val = $('#' + rowid + '_RFID option:selected').val();
-
-    DatePicker(_val);
+    var RFId = $('#' + rowid + '_RFID option:selected').val();
+    DatePicker(RFId);
+    var dt = new Date();
+    var dateString = (dt.getFullYear() + '-'
+        + ('0' + (dt.getMonth() + 1)).slice(-2)
+        + '-' + ('0' + (dt.getDate())).slice(-2));
+    RFId = RFId == 'NA' ? 0 : RFId;
+    RFIDInChanged(RFId, dateString)
 };
 function DatePicker(val) {
     var minDate = new Date();
@@ -426,3 +429,27 @@ function DatePicker(val) {
     });
 
 }
+
+function RFIDInChanged(RFId, TripDate) {
+    if (RFId != '' || RFId != 0) {
+        $.ajax({
+            url: '/EntryII/GetRFIDPunchTime',
+            method: 'GET',
+            data: { RFIDNumber: RFId, PunchDate: TripDate },
+            dataType: 'json',
+            success: function (data) {
+                $(data).each(function (index, item) {
+                    $('#0_ActualTime').val(item.PunchInStr);
+                    $('#0_ActualTime').removeClass('timePicker');
+                    $('#0_ActualTime').attr('readonly', 'readonly');
+                    $('#0_ActualTime').isValid();
+                });
+            }
+        });
+    }
+    else {
+        $('#0_ActualTime').removeAttr('readonly', 'readonly');
+        $('#0_ActualTime').addClass('timePicker');
+        $('#0_ActualTime').isInvalid();
+    }
+};

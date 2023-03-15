@@ -21,7 +21,7 @@
                         <tr>
                             <th scope="col" style="vertical-align: middle;">Subject </th>
                             <th scope="col" style="text-align: center; vertical-align: middle;">Eligible Daily Allowance Amount   </th>
-                            <th scope="col" style="text-align: center; vertical-align: middle;">T.A Amount  </th>
+                            <th scope="col" style="text-align: center; vertical-align: middle; width: 14%;">T.A Amount  </th>
                             <th scope="col" style="text-align: center; vertical-align: middle;">Local Conveyance Amount </th>
                             <th scope="col" style="text-align: center; vertical-align: middle;">Lodging Expenses Amount</th>
                             <th scope="col" style="text-align: center; vertical-align: middle;">Total Expenses</th>
@@ -36,16 +36,16 @@
                             <th scope="row">
                                 Claimed
                             </th>
-                            <td class="text-center">
+                            <td id="AEDMax" class="text-center">
                                @Model.EDAllowance
                             </td>
-                            <td class="text-center">
+                            <td id="ATAMax" class="text-center">
                                @Model.TAAmount
                             </td>
-                            <td class="text-center">
+                            <td id="ALocMax" class="text-center">
                                 @Model.LocalConveyance
                             </td>
-                            <td class="text-center">
+                            <td  id="ALodMax" class="text-center">
                                 @Model.Lodging
                             </td>
                             <td class="text-center">
@@ -63,48 +63,65 @@
                             </th>
                             <td class="text-center">
                                 <div class="qty mx-auto">
-                                    @Html.TextBoxFor(x => x.AEDAmount, new { @minlength =0, @maxlength = Model.EDAllowance, @class = "form-control numberonly", onchange = "totalAmount();" })
+                                    @Html.TextBoxFor(x => x.AEDAmount, new {@class = "form-control number", @onchange = "TotalExp();", @onkeypress = "return isNumber(event)" })
                                     <div class="qty_inc_dec">
-                                        <i class="increment" onclick="incrementQty(this); totalAmount();">
-                                            <i data-feather="chevron-up"></i>
-                                        </i><i class="decrement first-btn" onclick="decrementQty(this); totalAmount();">
-                                            <i data-feather="chevron-down"></i>
+                                        <i id="AED" class="increment first-btn" onclick="AEDincrementQty()">
+                                            <i data-feather="chevron-up">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                                            </i>
+                                        </i><i class="decrement first-btn" onclick="decrementQty(this);">
+                                                <i data-feather="chevron-down">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                                </i>
                                         </i>
                                     </div>
                                 </div>
                             </td>
                             <td class="text-center">
                                 <div class="qty mx-auto">
-                                    @Html.TextBoxFor(x => x.ATAAmount, new { @minlength = 0, @maxlength = Model.TAAmount, @class = "form-control numberonly", onchange = "totalAmount();" })
+                                    @Html.TextBoxFor(x => x.ATAAmount, new {@class = "form-control number", @onchange = "TotalExp();", @onkeypress = "return isNumber(event)" })
                                     <div class="qty_inc_dec">
-                                        <i class="increment" onclick="incrementQty(this); totalAmount();">
-                                            <i data-feather="chevron-up"></i>
-                                        </i><i class="decrement second-btn" onclick="decrementQty(this); totalAmount();">
-                                            <i data-feather="chevron-down"></i>
+                                        <i id="ATA" class="increment second-btn" onclick="AEDincrementQty();">
+                                            <i data-feather="chevron-up ">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                                            </i>
+                                        </i><i class="decrement second-btn" onclick="decrementQty(this)">
+                                                <i data-feather="chevron-down">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                                </i>
                                         </i>
                                     </div>
                                 </div>
                             </td>
                             <td class="text-center">
                                 <div class="qty mx-auto">
-                                    @Html.TextBoxFor(x => x.ALocAmount, new { @minlength = 0, @maxlength = Model.LocalConveyance, @class = "form-control numberonly", onchange = "totalAmount();" })
+                                    @Html.TextBoxFor(x => x.ALocAmount, new { @class = "form-control number", @onchange = "TotalExp();", @onkeypress = "return isNumber(event)" })
+                                    <div id="errmsg"></div>
                                     <div class="qty_inc_dec">
-                                        <i class="increment" onclick="incrementQty(this); totalAmount();">
-                                            <i data-feather="chevron-up"></i>
-                                        </i><i class="decrement third-btn" onclick="decrementQty(this); totalAmount();">
-                                            <i data-feather="chevron-down"></i>
+                                        <i id="ALoc" class="increment third-btn" onclick="AEDincrementQty()">
+                                            <i data-feather="chevron-up">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                                            </i>
+                                        </i><i class="decrement third-btn" onclick="decrementQty(this);">
+                                                <i data-feather="chevron-down">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                                </i>
                                         </i>
                                     </div>
                                 </div>
                             </td>
                             <td class="text-center">
                                 <div class="qty mx-auto">
-                                    @Html.TextBoxFor(x => x.ALodAmount, new { @minlength =0, @maxlength = Model.Lodging, @class = "form-control numberonly", onchange = "totalAmount();" })
+                                    @Html.TextBoxFor(x => x.ALodAmount, new {@class = "form-control number", onchange = "TotalExp();", @onkeypress = "return isNumber(event)" })
                                     <div class="qty_inc_dec">
-                                        <i class="increment" onclick="incrementQty(this); totalAmount();">
-                                            <i data-feather="chevron-up"></i>
-                                        </i><i class="decrement four-btn" onclick="decrementQty(this); totalAmount();">
-                                            <i data-feather="chevron-down"></i>
+                                        <i id="ALod" class="increment four-btn" onclick="AEDincrementQty()">
+                                            <i data-feather="chevron-up">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                                            </i>
+                                        </i><i class="decrement four-btn" onclick="decrementQty(this);">
+                                                <i data-feather="chevron-down">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                                </i>
                                         </i>
                                     </div>
                                 </div>
@@ -113,7 +130,7 @@
                                 @Html.TextBoxFor(x => x.ATotalAmount, new { @minlength = 0, @class = "form-control",  @readonly = "readonly" })
                             </td>
                             <td class="text-center">
-                                @Html.TextAreaFor(x => x.AReamrk, new {@class = "form-control is-invalid", onchange = "ValidateControl();" })
+                                @Html.TextAreaFor(x => x.AReamrk, new {@class = "form-control" })
                             </td>
                         </tr>
                     </tbody>

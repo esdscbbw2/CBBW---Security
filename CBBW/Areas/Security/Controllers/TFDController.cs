@@ -194,7 +194,6 @@ namespace CBBW.Areas.Security.Controllers
             IEnumerable<TFDDateWiseTourData> modelobj = _iTFD.GetENTDateWiseTourData(NoteNumbers, 0, EmployeeNo, 0, status, ref pMsg);
             modelobj=modelobj.Where(x => persons.Contains(x.PersonID));
 
-
             return View(URl, modelobj);
         }
         public ActionResult DateWiseTourView(string NoteNumbers, int PersonType=0, int EmployeeNo=0, int PersonCentre=0, string ApprovalTime=null)
@@ -217,9 +216,7 @@ namespace CBBW.Areas.Security.Controllers
         {
             int status = EmployeeNo == 0 ? 2 : 1;
             string urlDetails = "~/Areas/Security/Views/TFD/_DateWiseTourDataDetails.cshtml";
-           
             string URl = urlDetails;
-
             IEnumerable<TFDDateWiseTourData> modelobj = _iTFD.GetTFDDateWiseTourData(NoteNumbers, PersonType, EmployeeNo, PersonCentre, status, ref pMsg);
             return View(URl, modelobj);
         }
@@ -377,7 +374,7 @@ namespace CBBW.Areas.Security.Controllers
             
             try
             {
-                string baseUrl = "/Security/TFD/ApprovalCreate?NoteNumber=" + model.tfdHdr.NoteNumber;
+                string baseUrl = "/Security/TFD/ApprovalCreate?NoteNumber=" + model.NoteNo;
                 model.submitcount = 1;
                 TempData["Backurl"] = baseUrl;
                 TempData["AppEnty"] = model;

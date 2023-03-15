@@ -232,8 +232,8 @@ function ChangeNoteNumber() {
                     PersonTypetxt.html(item.PersonTypetxt);
                     EmployeeCodeName.html(item.EmployeeCodeName);
                     DesigCodeName.html(item.DesigCodeName);
-                    TourFromDate.html(item.TourFromDateNTime);
-                    TourToDate.html(item.TourToDateNTime);
+                    TourFromDate.html(item.TourFromDateNTime + "-" + item.TourFromTime);
+                    TourToDate.html(item.TourToDateNTime + "-" + item.TourToTime);
                     NoOfDays.html(item.NoOfDays);
                     PurposeOfVisit.html(item.PurposeOfVisit);
 
@@ -276,6 +276,33 @@ function TPDBtnClicked() {
             success: function (result) {
                 iDiv.html(result);
                 modalDiv.modal('show');
+                var Deptcode = $('#TadabollGen_DeptCode');
+                var RequisitionNo = $('#TadabollGen_RequisitionNo');
+                var RequisitionDate = $('#TadabollGen_RequisitionDate');
+                var PreparedEmpNo = $('#PreparedEmpNo');
+                var PreparedEmpNoDD = $('#TadabollGen_PreparedEmpNo');
+                var RequisitionAmt = $('#TadabollGen_RequisitionAmt');
+                var Remark = $('#TadabollGen_Remark');
+                var Datestr = $('#TadabollGen_RequisitionDatestr');
+
+                Deptcode.val() > 0 ? Deptcode.isValid() : Deptcode.isInvalid();
+                RequisitionNo.val() > 0 ? RequisitionNo.isValid() : RequisitionNo.isInvalid();
+
+
+                if (RequisitionDate.val() != 0001) {
+
+                    $('#TadabollGen_RequisitionDatelbl').html(Datestr.val());
+                    $('#TadabollGen_RequisitionDate').val($('#TadabollGen_RequisitionDatestrDisplay').val());
+                }
+                RequisitionDate.val() != 0001 ? RequisitionDate.isValid() : RequisitionDate.isInvalid();
+
+
+                if (PreparedEmpNo.val() > 0) {
+                    GetEmp(Deptcode.val(), PreparedEmpNo.val());
+                }
+                PreparedEmpNo.val() > 0 ? PreparedEmpNoDD.isValid() : PreparedEmpNoDD.isInvalid();
+                RequisitionAmt.val() > 0 ? RequisitionAmt.isValid() : RequisitionAmt.isInvalid();
+
                 EnableSubmitBtn();
             },
             error: function (xhr, status) {
@@ -295,6 +322,9 @@ function TPDBtnClicked() {
             confirmButtonColor: '#2527a2',
         });
     }
+};
+function GetEmp(Deptid, employeeno) {
+    getDropDownDataWithSelectedValueWithColor('TadabollGen_PreparedEmpNo', 'Select Employee', '/Security/BIL/GetDeptWiseEmployee?DeptId=' + Deptid, employeeno);
 };
 function TDBtnClicked() {
     var notenumber = $('#NoteNumber').val();
@@ -316,7 +346,7 @@ function TDBtnClicked() {
                 SubmitCount.val(submitval);
                 iDiv.html(result);
                 modalDiv.modal('show');
-              
+
             },
             error: function (xhr, status) {
 
@@ -346,7 +376,7 @@ function ValidateControl() {
         $(target).removeClass('is-valid').addClass('is-invalid');
     }
 
-   
+
     EnableSubmitBtn();
     EnablDeductionDAeSavebtn();
 
@@ -369,7 +399,7 @@ function validatectrl(targetid, value) {
         case "NoteNumbers":
             isvalid = validatectrl_ValidatestringLength(value);
             break;
-       
+
         case "EReamrk":
             isvalid = validatectrl_ValidatestringLength(value);
             break;
@@ -378,7 +408,9 @@ function validatectrl(targetid, value) {
             isvalid = validatectrl_ValidatestringLength(value);
             break;
         case "TadabollGen_RequisitionNo":
-            isvalid = validatectrl_ValidateLength(value);
+            if (value >= 10000 && value <= 99999) {
+                isvalid = true;
+            }
             break;
         case "TadabollGen_RequisitionDate":
             isvalid = validatectrl_ValidateLength(value);
@@ -390,14 +422,14 @@ function validatectrl(targetid, value) {
             isvalid = validatectrl_ValidateLength(value);
             break;
         case "TadabollGen_Remark":
-            isvalid = validatectrl_ValidatestringLength(value);
+            if (value.length > 1 && WordCount(value) <=50) { isvalid = true; }
             break;
         case "Checked":
             isvalid = validatectrl_ValidatestringLength(value);
             if (isvalid) {
-                $('#Checked').removeClass('border-red').addClass('border-green');
+                $('.content').removeClass('border-red').addClass('border-green');
             }
-            
+
             break;
 
     }
@@ -430,7 +462,7 @@ function EnableSubmitBtn() {
     var z = getDivInvalidCount('AllData');
     var btn = $('#SubmitCount').val();
     var SubmitBtn = $('#SubmitBtn');
-    if (z <= 0 && btn >=2) {
+    if (z <= 0 && btn >= 2) {
         SubmitBtn.makeEnabled();
     }
 };
@@ -443,7 +475,7 @@ function SaveDetails() {
     var ETotalAmount = $('#ETotalAmount').val();
     var EReamrk = $('#EReamrk').val();
     var status = 3;
-    
+
     var x = '{"NoteNumber":"' + notenumber + '","EEDAmount":"' + EEDAmount + '","ETAAmount":"' + ETAAmount + '","ELocAmount":"' + ELocAmount + '","ELodAmount":"' + ELodAmount + '","ETotalAmount":"' + ETotalAmount + '","EReamrk":"' + EReamrk + '","status":"' + status + '"}';
     $.ajax({
         method: 'POST',
@@ -495,7 +527,7 @@ function FinalSubmit() {
     var status = 2;
     var schrecords = getRecordsFromTableV2('BILTable');
     var x = '{"status":"' + status + '","NoteList":' + schrecords + '}';
- 
+
     $.ajax({
         method: 'POST',
         url: '/BIL/PaymentCreate',
@@ -552,7 +584,7 @@ function SaveRequisitionDetails() {
     var SubmitCount = $('#SubmitCount');
     var submitval = SubmitCount.val();
     var x = '{"NoteNumber":"' + notenumber + '","RefNoteNumber":"' + RefNoteNumber + '","DeptCode":"' + DeptCode + '","RequisitionNo":"' + RequisitionNo + '","RequisitionDate":"' + RequisitionDate + '","PreparedEmpNo":"' + PreparedEmpNo + '","RequisitionAmt":"' + RequisitionAmt + '","Remark":"' + Remark + '","status":"' + status + '"}';
-   
+
     $.ajax({
         method: 'POST',
         url: '/BIL/SetDeductionFromData',
@@ -579,7 +611,7 @@ function SaveRequisitionDetails() {
                     function callback(result) {
                         if (result.value) {
                             $("#TPDModal").modal('hide');
-                           
+
                             //var url = "/Security/EMN/Index"
                             //window.location.href = url;
                         }
@@ -609,64 +641,49 @@ function EnablDeductionDAeSavebtn() {
         SubmitBtn.makeEnabled();
     }
 }
-
-function totalAmount() {
-    let table1_value_1 = parseInt(document.getElementById("first-table-tr").children[1].children[0].children[0].value);
-    let table1_value_2 = parseInt(document.getElementById("first-table-tr").children[2].children[0].children[0].value);
-    let table1_value_3 = parseInt(document.getElementById("first-table-tr").children[3].children[0].children[0].value);
-    let table1_value_4 = parseInt(document.getElementById("first-table-tr").children[4].children[0].children[0].value);
-    document.getElementById("ETotalAmount").value = table1_value_1 + table1_value_2 + table1_value_3 + table1_value_4;
-
-}
 function decrementQty(e) {
+    debugger;
     var value = e.parentElement.parentElement.firstElementChild.value;
-    // if(e.parentElement.parentElement.parentElement.parentElement.id == "first-table-tr") {
-
-    // }
     value = value.trim().replace(/\,/g, '');
     value = isNaN(value) ? 1 : value;
     value--;
 
+    value = value < 0 ? 0 : value;
     e.parentElement.parentElement.firstElementChild.value = value;
-
-    //     let total = value1 + value2 + value3 + value4;
-    //    e.parentElement.parentElement.parentElement.parentElement.children[5].innerHTML = total;
-
+    TotalExp();
 }
-function incrementQty(e) {
-    let value = e.parentElement.parentElement.firstElementChild.value.trim().replace(/\,/g, '')
-    if (e.className.substring(10) == "first-btn") {
-
-        if (value != e.parentElement.parentElement.parentElement.parentElement.parentElement.children[1].children[1].innerHTML.trim().replace(/\,/g, '')) {
-            value = isNaN(value) ? 1 : value;
-            value++;
-            e.parentElement.parentElement.firstElementChild.value = value;
-        }
+function AEDincrementQty() {
+    var target = $(AEDincrementQty.caller.arguments[0].target);
+    var mid = target.attr('id');
+    var maxvalue = $('#' + mid + 'Max').html() * 1;
+    var txtcTrl = $('#' + mid + 'Amount');
+    var mValue = txtcTrl.val() * 1;
+    //alert(mValue + '' + maxvalue);
+    mValue += 1;
+    mValue = mValue > maxvalue ? maxvalue : mValue;
+    txtcTrl.val(mValue);
+    TotalExp();
+};
+function TotalExp() {
+    var edamt = $('#EEDAmount').val() * 1;
+    var atamt = $('#ETAAmount').val() * 1;
+    var alamt = $('#ELocAmount').val() * 1;
+    var aloamt = $('#ELodAmount').val() * 1;
+    var total = edamt + atamt + alamt + aloamt;
+    var Atotal = isNaN(total) ? 0 : total;
+    $('#ETotalAmount').val(Atotal);
+};
+function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
     }
-    if (e.className.substring(10) == "second-btn") {
-        if (value != e.parentElement.parentElement.parentElement.parentElement.parentElement.children[1].children[2].innerHTML.trim().replace(/\,/g, '')) {
-            value = isNaN(value) ? 1 : value;
-            value++;
-            e.parentElement.parentElement.firstElementChild.value = value;
-        }
-    }
-    if (e.className.substring(10) == "third-btn") {
-        if (value != e.parentElement.parentElement.parentElement.parentElement.parentElement.children[1].children[3].innerHTML.trim().replace(/\,/g, '')) {
-            value = isNaN(value) ? 1 : value;
-            value++;
-            e.parentElement.parentElement.firstElementChild.value = value;
-        }
-    }
-    if (e.className.substring(10) == "four-btn") {
-        if (value != e.parentElement.parentElement.parentElement.parentElement.parentElement.children[1].children[4].innerHTML.trim().replace(/\,/g, '')) {
-            value = isNaN(value) ? 1 : value;
-            value++;
-            e.parentElement.parentElement.firstElementChild.value = value;
-        }
-    }
-    console.log
-
+    return true;
 }
+
+
+
 
 
 

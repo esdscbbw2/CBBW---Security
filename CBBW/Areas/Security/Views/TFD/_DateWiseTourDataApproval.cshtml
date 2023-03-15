@@ -9,7 +9,7 @@
 <div id="DateTbl" class="table-responsive  btnalign mt-4 pt-3 inVisible">
     <div class="newTable  table-height">
         <table class="table table-bordered w-100">
-            <thead> 
+            <thead>
                 <tr>
                     <th scope="col" style="text-align: center;">
                         Sl.No
@@ -31,8 +31,15 @@
                 @if (Model != null)
                 {
                     int sl = 1;
+                    int mPersonId = 0;
                     foreach (var item in Model)
                     {
+
+                        if (mPersonId != item.PersonID)
+                        {
+                            sl = 1;
+                            mPersonId = item.PersonID;
+                        }
                         <tr class="@item.PersonID inVisible allperson">
                             <th class="text-center" scope="row">
                                 @sl
@@ -55,11 +62,11 @@
                                     <option selected value="-1">-</option>
                                     <option value="1"> Yes</option>
                                     <option value="0"> No </option>
-                              </select>
+                                </select>
                             </td>
                             <td class="text-center">
-                                <textarea id="ApprovalRemark_@sl" data-name="ApprovalRemark" maxlength="100" onchange="ValidateCloneRowCtrl()" class="form-control alterID inValidTag clear is-invalid" cols="10" rows="2"></textarea>
-                               
+                                <textarea id="ApprovalRemark_@sl" data-name="ApprovalRemark" onchange="ValidateCloneRowCtrl()" class="form-control alterID inValidTag clear is-invalid" cols="10" rows="2"></textarea>
+
                             </td>
                         </tr>
                         sl += 1;

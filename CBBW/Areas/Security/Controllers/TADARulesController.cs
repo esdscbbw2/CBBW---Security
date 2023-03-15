@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CBBW.Areas.Security.ViewModel;
+using CBBW.Areas.Security.ViewModel.Rule;
 using CBBW.BLL.IRepository;
 using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
@@ -15,6 +16,7 @@ namespace CBBW.Areas.Security.Controllers
     {
         IUserRepository _iUser;
         ITADARulesRepository _iTADARules;
+        TADARuleVM rulevm;
         string pMsg;
         public TADARulesController(ITADARulesRepository iTADARule, IUserRepository iUser)
         {
@@ -98,18 +100,25 @@ namespace CBBW.Areas.Security.Controllers
         }
         public ActionResult CreateRule() 
         {
-            TADARuleDetails model;
-            if (TempData["TADARuleDetail"] == null)
-            {
-                TADARuleDetails obj= _iTADARules.GetLastTADARule(ref pMsg);
-                obj.EffectiveDate = new DateTime(1,1,1);
-                TempData["TADARuleDetail"] = obj; 
-            }
-            model = TempData["TADARuleDetail"] as TADARuleDetails;
-            model.MinDate = DateTime.Today.ToString("yyyy-MM-dd");
-            model.MaxDate = DateTime.Today.AddMonths(1).ToString("yyyy-MM-dd");
-            TempData["TADARuleDetail"] = model;            
-            return View(model);
+            rulevm=CastTADATempData();
+            //rulevm.MinDate= DateTime.Today.ToString("yyyy-MM-dd");
+            //rulevm.MaxDate = DateTime.Today.AddMonths(1).ToString("yyyy-MM-dd");
+            //rulevm.TADARule = _iTADARules.GetLastTADARuleV2(ref pMsg);
+            //DateTime mEffectiveDate = rulevm.TADARule.IsActive ? new DateTime(1,1,1) : rulevm.TADARule.EffectiveDate;
+            //rulevm.CategoryList = _iTADARules.GetCatCodesForTADARule(mEffectiveDate, ref pMsg);
+            TempData["TADARuleV2"] = rulevm;
+            //TADARuleDetails model;
+            //if (TempData["TADARuleDetail"] == null)
+            //{
+            //    TADARuleDetails obj= _iTADARules.GetLastTADARule(ref pMsg);
+            //    obj.EffectiveDate = new DateTime(1,1,1);
+            //    TempData["TADARuleDetail"] = obj; 
+            //}
+            //model = TempData["TADARuleDetail"] as TADARuleDetails;
+            //model.MinDate = DateTime.Today.ToString("yyyy-MM-dd");
+            //model.MaxDate = DateTime.Today.AddMonths(1).ToString("yyyy-MM-dd");
+            //TempData["TADARuleDetail"] = model;            
+            return View(rulevm);
         }
         [HttpPost]
         public ActionResult CreateRule(TADARuleDetails model,string Submit) 
@@ -292,5 +301,33 @@ namespace CBBW.Areas.Security.Controllers
         {
             return View();
         }
+        #region - V2 functions
+        public JsonResult GetCategories(string EffectiveDate) 
+        {
+            var result = _iTADARules.GetCatCodesForTADARule(EffectiveDate == "" ? new DateTime(1, 1, 1) : DateTime.Parse(EffectiveDate), ref pMsg);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetRuleData(string EffectiveDate)
+        {
+            var result = _iTADARules.GetLastTADARuleV2(EffectiveDate == "" ? new DateTime(1, 1, 1) : DateTime.Parse(EffectiveDate), ref pMsg);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+        #region - Private functions
+        private TADARuleVM CastTADATempData()
+        {
+            if (TempData["TADARuleV2"] != null)
+            {
+                rulevm = TempData["TADARuleV2"] as TADARuleVM;
+            }
+            else
+            {
+                rulevm = new TADARuleVM();
+            }            
+            TempData["TADARuleV2"] = rulevm;
+            return rulevm;
+        }
+        #endregion
+
     }
 }

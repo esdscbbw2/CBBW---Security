@@ -109,69 +109,82 @@
             {
                 @Html.HiddenFor(x => x.TadabollGen.NoteNumber)
                 @Html.HiddenFor(x => x.TadabollGen.RefNoteNumber)
+                @Html.HiddenFor(x => x.TadabollGen.RequisitionDatestr)
+                @Html.HiddenFor(x => x.TadabollGen.RequisitionDatestrDisplay)
+                @Html.HiddenFor(x => x.TadabollGen.ETotalAmount)
+                @Html.HiddenFor(x => x.TadabollGen.PreparedEmpNo, new { @id = "PreparedEmpNo" })
+                <div>
+                    <div class="table-responsive newTable" id="DADection">
+                        <table class="table table-bordered w-100 btnalign " id="">
+                            <thead>
+                                <tr>
+                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                        Department  Code & Name
+                                    </th>
+                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="25%">
+                                        Requisition No.  & Date
+                                    </th>
+                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                        Prepared By No. & Name
+                                    </th>
+                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                        Requisition Amount
+                                    </th>
+                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                        Amount Paid
+                                    </th>
+                                    <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">Remarks  </th>
 
-                <div class="table-responsive" id="DADection">
-                    <table class="table table-bordered w-100 btnalign " id="">
-                        <thead>
-                            <tr>
-                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
-                                    Department  Code & Name
-                                </th>
-                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="25%">
-                                    Requisition No.  & Date
-                                </th>
-                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
-                                    Prepared By No. & Name
-                                </th>
-                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
-                                    Requisition Amount
-                                </th>
-                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
-                                    Amount Paid
-                                </th>
-                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">Remarks  </th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="text-center">
-                                    @Html.DropDownListFor(model => model.TadabollGen.DeptCode, new SelectList(Model.Deptlist, "ID", "DisplayText"), "Select", htmlAttributes: new { @class = "form-select pointer is-invalid", @onchange = "GetDeptEmployee();ValidateControl();" })
-                                </td>
-                                <td class="text-center">
-                                    <div class="d-flex">
-                                        @Html.TextBoxFor(x => x.TadabollGen.RequisitionNo, new { @class = "form-control is-invalid", @onchange = "ValidateControl()" })
-                                        <div class="position-relative pointer w-50">
-                                            @Html.TextBoxFor(x => x.TadabollGen.RequisitionDate, new { @type = "date", @min = (Model.TadabollGen.RequisitionDateMin), @max = (Model.TadabollGen.RequisitionDateMax), @class = "form-control pointer is-invalid", onchange = "changeDateFormat(this);ValidateControl();" })
-                                            <label class="datelabel pointer" id="TadabollGen_RequisitionDatelbl">Select date</label>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center">
+                                        @Html.DropDownListFor(model => model.TadabollGen.DeptCode, new SelectList(Model.Deptlist, "ID", "DisplayText"), "Select", htmlAttributes: new { @class = "form-select pointer is-invalid", @onchange = "GetDeptEmployee();ValidateControl();" })
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="d-flex">
+                                            @Html.TextBoxFor(x => x.TadabollGen.RequisitionNo, new { @class = "form-control is-invalid", @onchange = "ValidateControl()" })
+                                            <div class="position-relative pointer w-50">
+                                                @Html.TextBoxFor(x => x.TadabollGen.RequisitionDate, new { @type = "date", @min = (Model.TadabollGen.RequisitionDateMin), @max = (Model.TadabollGen.RequisitionDateMax), @class = "form-control pointer is-invalid", onchange = "changeDateFormat(this);ValidateControl();" })
+                                                <label class="datelabel pointer" style="width:80px" id="TadabollGen_RequisitionDatelbl">Select date</label>
+                                            </div>
                                         </div>
-                                    </div>
 
 
-                                </td>
-                                <td class="text-center">
-                                    @Html.DropDownListFor(model => model.TadabollGen.PreparedEmpNo, new SelectList("", "ID", "DisplayText"), "Select", htmlAttributes: new { @class = "form-select pointer is-invalid", @onchange = "ValidateControl()" })
-                                </td>
-                                <td class="text-center">
-                                    @Html.TextBoxFor(x => x.TadabollGen.RequisitionAmt, new { @min = (Model.TadabollGen.ETotalAmount), @max = (Model.TadabollGen.ETotalAmount), @type = "number", @class = "form-control is-invalid", @onchange = "ValidateControl()" })
-                                </td>
-                                <td class="text-center">
-                                    @Model.TadabollGen.ATotalAmount
-                                </td>
-                                <td>
-                                    @Html.TextAreaFor(x => x.TadabollGen.Remark, new { @class = "form-control", @onchange = "ValidateControl()" })
-                                </td>
-                            </tr>
+                                    </td>
+                                    <td class="text-center">
+                                        @Html.DropDownListFor(model => model.TadabollGen.PreparedEmpNo, new SelectList("", "ID", "DisplayText"), "Select", htmlAttributes: new { @class = "form-select pointer is-invalid", @onchange = "ValidateControl()" })
+                                    </td>
+                                    <td class="text-center">
+                                        @Html.TextBoxFor(x => x.TadabollGen.RequisitionAmt, new { @min = (Model.TadabollGen.ETotalAmount), @max = (Model.TadabollGen.ETotalAmount), @type = "number", @class = "form-control is-invalid", @onchange = "ValidateControl()" })
+                                    </td>
+                                    <td class="text-center">
+                                        @Model.TadabollGen.ATotalAmount
+                                    </td>
+                                    <td>
+                                        @Html.TextAreaFor(x => x.TadabollGen.Remark, new {  @class = "form-control", @onchange = "ValidateControl()" })
+                                    </td>
+                                </tr>
 
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+
+
+
+                    </div>
+                    <div class="text-center">
+                        <button type="button" id="DFAbtnSubmit" disabled onclick="SaveRequisitionDetails();" class="btn btn-green mt-2  me-2">
+                            <i data-feather="check-circle"></i>
+                            Save
+                        </button>
+                    </div>
                 </div>
-                <button type="button" id="DFAbtnSubmit" disabled onclick="SaveRequisitionDetails();" class="btn btn-green mt-2  me-2">
-                    <i data-feather="check-circle"></i>
-                    Save
-                </button>
-                
+
+
+
+
             }
         </div>
     </div>

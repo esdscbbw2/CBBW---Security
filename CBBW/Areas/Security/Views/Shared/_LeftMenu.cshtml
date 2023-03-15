@@ -141,7 +141,7 @@
                                     <ul class="submenu collapse">
                                         <li>@Html.ActionLink("Main Location", "Index", "EntryII", new { area = "Security" }, new { @class = "nav-link" })</li>
                                         <li>@Html.ActionLink("Location Wise", "LocationWiseIndex", "EntryII", new { area = "Security" }, new { @class = "nav-link" })</li>
-                                        
+
                                     </ul>
                                 </li>
                                 <li>
@@ -154,16 +154,10 @@
                                         <li>@Html.ActionLink("Entry", "Index", "TFD", new { area = "Security" }, new { @class = "nav-link" })</li>
                                         <li>@Html.ActionLink("Approval", "ApprovalIndex", "TFD", new { area = "Security" }, new { @class = "nav-link" })</li>
                                         @*<li><a class="nav-link" href="#"><span class="menu-title">Entry</span></a></li>
-                                        <li><a class="nav-link" href="#"><span class="menu-title">Approval</span></a></li>
-                                        <li><a class="nav-link" href="#"><span class="menu-title">Ratification</span></a></li>*@
+                <li><a class="nav-link" href="#"><span class="menu-title">Approval</span></a></li>
+                <li><a class="nav-link" href="#"><span class="menu-title">Ratification</span></a></li>*@
                                     </ul>
                                 </li>
-                            </ul>
-                        </li>
-
-                        <li>
-                            <a class="nav-link" href="#"> <i class="fa fa-circle" aria-hidden="true"></i> Reports <i class="fa fa-angle-down"></i></a>
-                            <ul class="submenu collapse">
                                 <li>
                                     <a class="nav-link" href="#">
                                         <span class="menu-title">
@@ -173,11 +167,17 @@
                                     <ul class="submenu collapse">
                                         <li>@Html.ActionLink("Entry", "Index", "BIL", new { area = "Security" }, new { @class = "nav-link" })</li>
                                         <li>@Html.ActionLink("Approval", "ApprovalIndex", "BIL", new { area = "Security" }, new { @class = "nav-link" })</li>
-
+                                        <li>@Html.ActionLink("Payment", "PaymentIndex", "BIL", new { area = "Security" }, new { @class = "nav-link" })</li>
                                     </ul>
                                 </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a class="nav-link" href="#"> <i class="fa fa-circle" aria-hidden="true"></i> Reports <i class="fa fa-angle-down"></i></a>
+                            <ul class="submenu collapse">                                
                                 @*<li><a class="nav-link" href="#">TA & DA Bill Statement</a></li>*@
-                                <li>@Html.ActionLink("Payment", "PaymentIndex", "BIL", new { area = "Security" }, new { @class = "nav-link" })</li>
+                                
                                 <li>@Html.ActionLink("Report", "BillReport", "BIL", new { area = "Security" }, new { @class = "nav-link" })</li>
                             </ul>
                         </li>
