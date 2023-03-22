@@ -73,6 +73,7 @@ namespace CBBW.DAL.DBMapper
                         result.Town_MaxLocalConv = int.Parse(dr["Town_MaxLocalConv"].ToString());
                     if (!DBNull.Value.Equals(dr["CategoryText"]))
                         result.CategoryText = dr["CategoryText"].ToString();
+                    //result.EffectiveDateDisplay = result.EffectiveDate.ToString("yyyy-MM-dd");
                 }
             }
             catch { }

@@ -1,0 +1,238 @@
+﻿@using CBBW.Areas.Security.ViewModel.Rule;
+@model TADARuleViewVM
+@{
+    ViewBag.Title = "TA & DA Parameters";
+}
+<div class="row newTable">
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(m => m.TADARule.EffectiveDate)
+        @Html.HiddenFor(m => m.TADARule.EffectiveDateDisplay)
+        @Html.HiddenFor(m => m.IsDelete)
+
+        <div class="col-md-12">
+            <div class="fixedElement">
+                <div class="col-md-12" style="position: relative;">
+                    <div class="heading_text_btn mb-4 mt-4">
+                        <div class="leftButton">
+                            <button id="btnBack" type="button"
+                                    class="btn btn-primary me-2"
+                                    @*onclick="window.location.href='@Url.Action("CreateRule", "TADARules", new { Area = "Security" })';"*@>
+                                <i data-feather="arrow-left-circle"></i>
+                                Back
+                            </button>
+                        </div>
+                        <h2>TA & DA - RULES</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+
+            <div class="heading_text_btn2 d-block mb-4">
+                <h2>TA & DA Parameter :</h2>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    @*<form class="form-sample">*@
+                    <div class="row d-flex align-items-center mb-3">
+                        <label class="col-form-label col-md-3">
+                            1. DA Per Day Is Actual Spent? :
+                        </label>
+                        <div class="col-md-6 form-group mb-2">
+                            @Html.DropDownListFor(m => m.TADARule.IsDAActualSpend,
+                               new[] {
+                                   new SelectListItem { Text = "Yes", Value = "true" },
+                                   new SelectListItem { Text = "No", Value = "false" } }, "-",
+                               htmlAttributes: new
+                               {
+                                   @class = "form-select pointer isvalidate",
+                                   @disabled = "disabled",
+                                   @onchange = "IsActualSpendChanged()"
+                               })
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center mb-3">
+                        <label class="col-form-label col-md-3">
+                            2. Lodging Expenses Allowed :
+                        </label>
+                        <div class="col-md-6 form-group mb-2">
+                            @Html.DropDownListFor(m => m.TADARule.IsLodgingAllowed,
+                               new[] {
+                                   new SelectListItem { Text = "Yes", Value = "true" },
+                                   new SelectListItem { Text = "No", Value = "false" } }, "-",
+                               htmlAttributes: new
+                               {
+                                   @class = "form-select pointer isvalidate",
+                                   @disabled = "disabled",
+                                   @onchange = "IsLodgingAllowedChanged()"
+                               })
+                        </div>
+                    </div>
+
+                    @*</form>*@
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-12">
+            <div class="table-responsive" style="overflow-x:inherit;">
+
+                <table class="table table-bordered mt-4">
+                    <thead>
+                        <tr>
+                            <th scope="col">Zone Code & Name</th>
+                            <th scope="col">DA Per Day</th>
+                            <th scope="col">Maximum Allowed Lodging Expenses</th>
+                            <th scope="col">Maximum Allowed Local Conveyance Per Day</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>
+                                Metropolitan
+                            </td>
+                            <td>
+                                <span class="d-flex justify-content-start align-items-center infoerror">
+                                    <div class="form-group">
+                                        <input type="text" value="@(Model.TADARule.Metro_DAPerDay>0?Model.TADARule.Metro_DAPerDay.ToString():"NA")" disabled class="form-control" />
+
+                                    </div>
+                                </span>
+
+                            </td>
+                            <td>
+                                <span class="d-flex justify-content-start align-items-center infoerror">
+                                    <div class="form-group">
+                                        <input type="text"
+                                               value="@(Model.TADARule.Metro_MaxLodgingExp>0?Model.TADARule.Metro_MaxLodgingExp.ToString():"NA")"
+                                               disabled class="form-control" />
+
+                                    </div>
+                                </span>
+                            </td>
+                            <td>
+                                <span class="d-flex justify-content-start align-items-center infoerror">
+                                    <div class="form-group">
+                                        <input type="text"
+                                               value="@(Model.TADARule.Metro_MaxLocalConv>0?Model.TADARule.Metro_MaxLocalConv.ToString():"NA")"
+                                               disabled class="form-control" />
+
+                                    </div>
+                                </span>
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td>
+                                City
+                            </td>
+                            <td>
+                                <span class="d-flex justify-content-start align-items-center infoerror">
+                                    <div class="form-group">
+                                        <input type="text"
+                                               value="@(Model.TADARule.City_DAPerDay>0?Model.TADARule.City_DAPerDay.ToString():"NA")"
+                                               disabled class="form-control" />
+
+                                    </div>
+                                </span>
+                            </td>
+                            <td>
+                                <span class="d-flex justify-content-start align-items-center infoerror">
+                                    <div class="form-group">
+                                        <input type="text"
+                                               value="@(Model.TADARule.City_MaxLodgingExp>0?Model.TADARule.City_MaxLodgingExp.ToString():"NA")"
+                                               disabled class="form-control" />
+
+                                    </div>
+                                </span>
+                            </td>
+                            <td>
+                                <span class="d-flex justify-content-start align-items-center infoerror">
+                                    <div class="form-group">
+                                        <input type="text"
+                                               value="@(Model.TADARule.City_MaxLocalConv>0?Model.TADARule.City_MaxLocalConv.ToString():"NA")"
+                                               disabled class="form-control" />
+                                    </div>
+                                </span>
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td>
+                                Town
+                            </td>
+                            <td>
+                                <span class="d-flex justify-content-start align-items-center infoerror">
+                                    <div class="form-group">
+                                        <input type="text"
+                                               value="@(Model.TADARule.Town_DAPerDay>0?Model.TADARule.Town_DAPerDay.ToString():"NA")"
+                                               disabled class="form-control" />
+
+                                    </div>
+                                </span>
+                            </td>
+                            <td>
+                                <span class="d-flex justify-content-start align-items-center infoerror">
+                                    <div class="form-group">
+                                        <input type="text"
+                                               value="@(Model.TADARule.Town_MaxLodgingExp>0?Model.TADARule.Town_MaxLodgingExp.ToString():"NA")"
+                                               disabled class="form-control" />
+
+                                    </div>
+                                </span>
+                            </td>
+                            <td>
+                                <span class="d-flex justify-content-start align-items-center infoerror">
+                                    <div class="form-group">
+                                        <input type="text"
+                                               value="@(Model.TADARule.Town_MaxLocalConv>0?Model.TADARule.Town_MaxLocalConv.ToString():"NA")"
+                                               disabled class="form-control" />
+
+                                    </div>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="bgColor mt-4">
+                <ul style="list-style: none; padding: 0; font-size:28px;">
+                    <li>
+                        Are You Sure The Details Entered Are Correct & As Required?
+                        <select id="submitConfirmation" disabled
+                                class="form-select pointer"
+                                aria-label="Default select example"
+                                style="width:110px">
+                            <option value="">-</option>
+                            <option value="0">No</option>
+                            <option selected value="1">Yes</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    }
+</div>
+@section headers
+    {
+    @*<link href="~/UIContent/CSS/Custom_ErrorToolTip.css" rel="stylesheet" />*@
+
+}
+@section scripts{
+    <script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#btnBack').click(function () {
+                var effDate = $('#TADARule_EffectiveDate').val();
+                var url = "/Security/TADARules/ViewRuleV2?EffectiveDate=" + effDate + "&isDelete=" + $('#IsDelete').val();
+                window.location.href = url;
+            });            
+        });
+    </script>
+    
+}

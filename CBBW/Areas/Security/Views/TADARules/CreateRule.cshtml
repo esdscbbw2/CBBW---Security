@@ -7,11 +7,30 @@
 <div class="row newTable">
     @using (Html.BeginForm())
     {
-        @Html.HiddenFor(m => m.MaxDate)
-        @Html.HiddenFor(m => m.MinDate)
         @Html.HiddenFor(m => m.IsParamBtn);
         @Html.HiddenFor(m => m.IsTransBtn);
-        @Html.HiddenFor(m => m.TADARule.EffectiveDate);
+        @Html.HiddenFor(m => m.IsSubmitActive);
+        @Html.HiddenFor(m => m.TADARule.EffectiveDate)
+        @Html.HiddenFor(m => m.TADARule.EffectiveDateDisplay)
+        @Html.HiddenFor(m => m.TADARule.CategoryIds)
+        @Html.HiddenFor(m => m.TADARule.CategoryText)
+
+        @Html.HiddenFor(m => m.TADARule.PublicTransIDs)
+        @Html.HiddenFor(m => m.TADARule.PubTransClassIDs)
+        @Html.HiddenFor(m => m.TADARule.CompanyTransIDs)
+
+        @Html.HiddenFor(m => m.TADARule.IsDAActualSpend)
+        @Html.HiddenFor(m => m.TADARule.IsLodgingAllowed)
+        @Html.HiddenFor(m => m.TADARule.Metro_DAPerDay)
+        @Html.HiddenFor(m => m.TADARule.City_DAPerDay)
+        @Html.HiddenFor(m => m.TADARule.Town_DAPerDay)
+        @Html.HiddenFor(m => m.TADARule.Metro_MaxLodgingExp)
+        @Html.HiddenFor(m => m.TADARule.City_MaxLodgingExp)
+        @Html.HiddenFor(m => m.TADARule.Town_MaxLodgingExp)
+        @Html.HiddenFor(m => m.TADARule.Metro_MaxLocalConv)
+        @Html.HiddenFor(m => m.TADARule.City_MaxLocalConv)
+        @Html.HiddenFor(m => m.TADARule.Town_MaxLocalConv)
+
         <div class="fixedElement">
             <div class="col-md-12" style="position: relative;">
                 <div class="heading_text_btn mb-4 mt-4">
@@ -23,7 +42,7 @@
                             Back
                         </button>
                         <button type="submit" name="Submit" value="create"
-                                disabled="disabled" id="btnSubmit"
+                                disabled id="btnSubmit2"
                                 class="btn btn-secondary me-2">
                             <i data-feather="upload"></i>
                             Submit
@@ -89,16 +108,16 @@
         </div>
         <div id="Div1" class="col-12 sectionB">
             <div class="bgColor wid-100 mb-4">
-                <ul>
+                <ol>
                     <li>
                         Minimum Hours Of Tour Required To Get Half DA:
                         <div class="form-group">
                             @Html.TextBoxFor(m => m.TADARule.MinHoursForHalfDA,
                            htmlAttributes: new
                            {
-                               @class = "form-control pointer only-numeric myctrl",
+                               @class = "form-control pointer only-numeric myctrl is-valid",
                                @placeholder = "Hours",
-                               onkeyup = "validatecontrol()",
+                               @onchange = "validatecontrol()",
                                title = "Value must be 1 - 9"
                            })
                         </div>
@@ -110,9 +129,9 @@
                                 @Html.TextBoxFor(m => m.TADARule.MinKmsForDA,
                                    htmlAttributes: new
                                    {
-                                       @class = "form-control pointer only-numeric myctrl",
+                                       @class = "form-control pointer only-numeric myctrl is-valid",
                                        @placeholder = "KMS",
-                                       onkeyup = "validatecontrol()",
+                                       @onchange = "validatecontrol()",
                                        title = "Value must be 1 - 99"
                                    })
                             </div>
@@ -124,10 +143,10 @@
                         @Html.DropDownListFor(m => m.TADARule.LodgingExpOnCompAcco,
                        new[] {
                            new SelectListItem { Text = "Yes", Value = "true" },
-                           new SelectListItem { Text = "No", Value = "false" } },"-",
+                           new SelectListItem { Text = "No", Value = "false" } }, "-",
                        htmlAttributes: new
                        {
-                           @class = "form-select pointer myctrl",
+                           @class = "form-select pointer myctrl is-valid myctrlw100",
                            @onchange = "validatecontrol()",
                            title = "Accept only no",
                        })
@@ -138,7 +157,7 @@
                        new[] {
                            new SelectListItem { Text = "Yes", Value = "true" },
                            new SelectListItem { Text = "No", Value = "false" } }, "-",
-                       htmlAttributes: new { @class = "form-select pointer myctrl", @onchange = "validatecontrol()" })
+                       htmlAttributes: new { @class = "form-select pointer myctrl is-valid myctrlw100", @onchange = "validatecontrol()" })
 
                     </li>
                     <li>
@@ -148,7 +167,7 @@
                        new[] {
                            new SelectListItem { Text = "Yes", Value = "true" },
                            new SelectListItem { Text = "No", Value = "false" } }, "-",
-                       htmlAttributes: new { @class = "form-select pointer myctrl", @onchange = "validatecontrol()" })
+                       htmlAttributes: new { @class = "form-select pointer myctrl is-valid myctrlw100", @onchange = "validatecontrol()" })
 
                     </li>
                     <li>
@@ -160,16 +179,16 @@
                         @Html.DropDownListFor(m => m.TADARule.ExtraDAApplicability,
                        new[] {
                            new SelectListItem { Text = "Yes", Value = "true" },
-                           new SelectListItem { Text = "No", Value = "false" } },"-",
+                           new SelectListItem { Text = "No", Value = "false" } }, "-",
                        htmlAttributes: new
                        {
-                           @class = "form-select pointer myctrl",
+                           @class = "form-select pointer myctrl is-valid myctrlw100",
                            @onchange = "validatecontrol()",
                            title = "Accept only yes"
                        })
 
                     </li>
-                </ul>
+                </ol>
             </div>
         </div>
         <div id="Div2" class="col-md-12">
@@ -177,8 +196,8 @@
                 <div class="col-md-12 form-sample">
                     <label class="d-flex">Category Code & Name :<span></span></label>
                     <div class="form-group">
-                        <select id="CategoryDD"
-                                class="form-select is-invalid myctrl2"
+                        <select id="CategoryDD" onchange="CategoryChanged()"
+                                class="form-select myctrl"
                                 aria-label="Default select example">
                         </select>
                         @*@Html.ListBoxFor(m => m.TADARule.CategoryIds, new MultiSelectList(Model.Categories, "ID", "DisplayText", Model.SelectedCategoryIds),
@@ -210,14 +229,17 @@
                 </div>
             </div>
         </div>
-        <div id="Div3" class="bgColor bg-transparent border-blue mt-4">
+        <div id="Div3" class="bgColor bg-transparent content border-red mt-4">
             <ul style="list-style: none; padding: 0; font-size:28px;">
                 <li>
                     Are You Sure The Details Entered Are Correct & As Required?
-                    <select id="submitConfirmation" onchange="validatecontrol()"
-                            class="form-select myctrl" aria-label="Default select example">
+                    <select id="submitConfirmation" disabled
+                            onchange="SubmitConfChanged()"
+                            class="form-select content border-red myctrlw100 is-invalid"
+                            aria-label="Default select example">
+                        <option selected value="">-</option>
                         <option value="0">No</option>
-                        <option selected value="1">Yes</option>
+                        <option value="1">Yes</option>
                     </select>
                 </li>
             </ul>
@@ -236,11 +258,70 @@
 </div>
 @section headers
     {
-
+    <style>
+        .myctrlw100 {
+            width: 110px !important; 
+        }
+    </style>
+    
 }
 @section scripts{
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
     <script src="~/UIContent/JS/CustomePage/TADARule/TADARuleEntry.js"></script>
+    <script>
+        $(document).ready(function () {
+                if ('@ViewBag.ErrMsg' != '') {
+                    Swal.fire({
+                        title: 'Failed to create rule',
+                        text: "@ViewBag.ErrMsg",
+                        icon: 'warning',
+                        customClass: 'swal-wide',
+                        buttons: {
+                            //cancel: 'Cancel',
+                            confirm: 'Ok'
+                        },
+                        //cancelButtonClass: 'btn-cancel',
+                        confirmButtonColor: '#2527a2',
+                    });
+                };
+                if ('@ViewBag.Msg' != '') {
+                    Swal.fire({
+                        title: 'Confirmation',
+                        text: "@ViewBag.Msg",
+                        icon: 'success',
+                        customClass: 'swal-wide',
+                        buttons: {
+                            confirm: 'Ok'
+                        },
+                        confirmButtonColor: '#2527a2',
+                    }).then(callback);
+                    function callback(result) {
+                        if (result.value) {
+                            var url = "/Security/TADARules/CreateRule";
+                            window.location.href = url;
+                        }
+                    }
+            };
+                if ('@ViewBag.SMsg' != '') {
+                    Swal.fire({
+                        title: 'Confirmation',
+                        text: "@ViewBag.SMsg",
+                        icon: 'success',
+                        customClass: 'swal-wide',
+                        buttons: {
+                            confirm: 'Ok'
+                        },
+                        confirmButtonColor: '#2527a2',
+                    }).then(callback);
+                    function callback(result) {
+                        if (result.value) {
+                            var url = "/Security/TADARules/Index";
+                            window.location.href = url;
+                        }
+                    }
+                };
+            });
+    </script>
     @*<script src="~/UIContent/JS/CustomePage/CreateRuleTADA.js"></script>
         <script>
             $(document).ready(function () {

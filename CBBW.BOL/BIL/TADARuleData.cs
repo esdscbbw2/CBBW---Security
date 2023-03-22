@@ -44,6 +44,8 @@ namespace CBBW.BOL.BIL
 		public float LocalConveyance { get; set; }
 		public float Lodging { get; set; }
 		public float TotalExpenses { get; set; }
-		
+		public bool IsVehicleProvided { get; set; }
+
+
 	}
 }

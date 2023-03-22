@@ -1005,6 +1005,50 @@ function GetNoteDescription(notetype)
     }
     return notedesc;
 };
+function GetSelectedTextOfaMultiSelect(multiselectid) {
+    var selectedOptions = $('#' + multiselectid+' option:selected');
+    var selectedText = [];
+    selectedOptions.each(function () {
+        selectedText.push($(this).text().trim());
+    });
+    var selectedTextString = selectedText.join(', ');
+    //alert(selectedTextString);
+    return selectedTextString;
+};
+function GetSelectedTextOfCheckBoxes(groupname) {
+    var selectedFruits = $('input[name="' + groupname+'"]:checked').map(function () {
+        return $(this).attr('data-name');
+    }).get();
+    return selectedFruits;
+};
+function GetSelectedValueOfCheckBoxes(groupname) {
+    var selectedFruits = $('input[name="' + groupname + '"]:checked').map(function () {
+        return $(this).val();
+    }).get();
+    return selectedFruits;
+};
 
+
+
+function GetMultiSelectDataInClickedSequence(multiselectid) {
+    var selectedData = [];
+    $("#"+multiselectid+" option").mousedown(function (e) {
+        e.preventDefault();
+        $(this).prop("selected", !$(this).prop("selected"));
+        $(this).data("index", $(this).index());
+    }).mousemove(function (e) {
+        e.preventDefault();
+    }).mouseup(function (e) {
+        $(this).prop("selected", !$(this).prop("selected"));
+    });
+    $("#" + multiselectid+" option:selected").each(function () {
+        var index = $(this).data("index");
+        //selectedData.push($(this).val());
+        selectedData[index] = $(this).val();
+        alert(index + ' - ' + $(this).val());
+    });
+    var commaSeparated = selectedData.join(",");
+    alert(commaSeparated);
+};
 
 

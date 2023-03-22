@@ -130,7 +130,7 @@ namespace CBBW.DAL.DataSync
             {
 
                 int paracount = 0;
-                SqlParameter[] para = new SqlParameter[25];
+                SqlParameter[] para = new SqlParameter[26];
                 para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.VarChar, 25);
                 para[paracount++].Value = hdrmodel.NoteNumber;
                 para[paracount] = new SqlParameter("@RefNoteNumber", SqlDbType.VarChar, 25);
@@ -194,8 +194,10 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = hdrmodel.NoOfDays;
                 para[paracount] = new SqlParameter("@PurposeOfVisit", SqlDbType.NVarChar,100);
                 para[paracount++].Value = hdrmodel.PurposeOfVisit;
+                para[paracount] = new SqlParameter("@IsVehicleProvided", SqlDbType.Bit);
+                para[paracount++].Value = hdrmodel.IsVehicleProvided;
 
-               using (SQLHelper sql = new SQLHelper("[BIL].[SetTADABillGeneration]", CommandType.StoredProcedure))
+                using (SQLHelper sql = new SQLHelper("[BIL].[SetTADABillGeneration]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataTable(para, ref pMsg);
                 }

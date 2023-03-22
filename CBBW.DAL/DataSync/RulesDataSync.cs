@@ -103,13 +103,57 @@ namespace CBBW.DAL.DataSync
         {
             try
             {
-                using (SQLHelper sql = new SQLHelper("Select * from [RUL].[GetLastTADARuleV2]('"+ EffectiveDate.ToString("yyyy-MM-dd")+ "')", CommandType.Text))
+                using (SQLHelper sql = new SQLHelper("Select * from [RUL].[GetTADARuleCatIds]('" + EffectiveDate.ToString("yyyy-MM-dd")+ "')", CommandType.Text))
                 {
                     return sql.GetDataTable(ref pMsg);
                 }
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+        public DataTable FinalSubmitTADARuleV2(DateTime EffectiveDate, ref string pMsg) 
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[1];                
+                para[paracount] = new SqlParameter("@EffectiveDate", SqlDbType.Date);
+                para[paracount++].Value = EffectiveDate;
+                using (SQLHelper sql = new SQLHelper("[RUL].[FinalSubmitTADARuleV2]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable GetTADARuleV2(DateTime EffectiveDate, string CategoryIDs, ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("Select * from [RUL].[GetTADARuleV2]('" + EffectiveDate.ToString("yyyy-MM-dd") + "','"+ CategoryIDs + "')", CommandType.Text))
+                {
+                    return sql.GetDataTable(ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable RemoveTADARuleV2(DateTime EffectiveDate, string CategoryIDs, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[2];
+                para[paracount] = new SqlParameter("@EffectiveDate", SqlDbType.Date);
+                para[paracount++].Value = EffectiveDate;
+                para[paracount] = new SqlParameter("@CategoryCodes", SqlDbType.NVarChar,150);
+                para[paracount++].Value = CategoryIDs;
+                using (SQLHelper sql = new SQLHelper("[RUL].[RemoveTADARuleV2]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+
 
 
 

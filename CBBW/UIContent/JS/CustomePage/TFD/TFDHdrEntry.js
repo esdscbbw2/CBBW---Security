@@ -1,6 +1,5 @@
 ﻿$(document).ready(function () {
     var Empno = $('#tfdHdr_AuthEmployeeCode').val();
-   
     $('#NoteNumber2').change(function () {
         Notenumberchanged($(this).val());
         $('#NoteNo').val($(this).val());
@@ -52,7 +51,6 @@ async function GetEmployeeList(notenumber, selectedvalue) {
         $('#EmployeeNo').isValid();
     }
 };
-
 async function GetTPDetails(notenumber) {
    // var notenumber = $('#NoteNumber').val();
     var TPDetailsDiv = $('#TPDiv');

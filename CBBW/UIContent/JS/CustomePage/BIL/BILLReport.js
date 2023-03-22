@@ -4,11 +4,10 @@
     });
    
 });
-
 function Notenumberchanged(notenumber) {
     var noteCtrl = $('#NoteNumber');
   
-    if (notenumber != '') {
+    if (notenumber != '' || notenumber != '-1') {
         $.ajax({
             url: '/BIL/GetTADABillGenerationDataReport',
             method: 'GET',
@@ -29,6 +28,14 @@ function Notenumberchanged(notenumber) {
                     $('#LocalAllowance').html(item.ALocAmount);
                     $('#LodingAmount').html(item.ALodAmount);
                     $('#NetAmount').html(item.NetAmount);
+                    $('#IsPaymenttSubmit').val(item.IsPaymenttSubmit);
+                    
+                    if (item.IsPaymenttSubmit) {
+                        $('#Printbtn').removeAttr('disabled', 'disabled');
+                    } else {
+                       
+                        $('#Printbtn').attr('disabled', 'disabled');
+                    }
                     
                     (async function () {
                         const r1 = await GetTPDetails(notenumber, item.EmployeeNo);
@@ -39,7 +46,6 @@ function Notenumberchanged(notenumber) {
         });
     } 
 };
-
 async function GetTPDetails(notenumber, EmployeeNo) {
     // var notenumber = $('#NoteNumber').val();
     var TPDetailsDiv = $('#TPDiv');

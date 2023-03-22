@@ -284,25 +284,20 @@ function TPDBtnClicked() {
                 var RequisitionAmt = $('#TadabollGen_RequisitionAmt');
                 var Remark = $('#TadabollGen_Remark');
                 var Datestr = $('#TadabollGen_RequisitionDatestr');
-
                 Deptcode.val() > 0 ? Deptcode.isValid() : Deptcode.isInvalid();
                 RequisitionNo.val() > 0 ? RequisitionNo.isValid() : RequisitionNo.isInvalid();
-
-
-                if (RequisitionDate.val() != 0001) {
-
+                if (Datestr.val() != '01/01/0001') {
                     $('#TadabollGen_RequisitionDatelbl').html(Datestr.val());
                     $('#TadabollGen_RequisitionDate').val($('#TadabollGen_RequisitionDatestrDisplay').val());
                 }
-                RequisitionDate.val() != 0001 ? RequisitionDate.isValid() : RequisitionDate.isInvalid();
-
-
+                Datestr.val() != '01/01/0001'? RequisitionDate.isValid() : RequisitionDate.isInvalid();
                 if (PreparedEmpNo.val() > 0) {
                     GetEmp(Deptcode.val(), PreparedEmpNo.val());
                 }
                 PreparedEmpNo.val() > 0 ? PreparedEmpNoDD.isValid() : PreparedEmpNoDD.isInvalid();
                 RequisitionAmt.val() > 0 ? RequisitionAmt.isValid() : RequisitionAmt.isInvalid();
-
+                RequisitionAmt.attr('min', 0);
+                RequisitionAmt.attr('max', ETotalAmount * 1);
                 EnableSubmitBtn();
             },
             error: function (xhr, status) {
@@ -422,7 +417,11 @@ function validatectrl(targetid, value) {
             isvalid = validatectrl_ValidateLength(value);
             break;
         case "TadabollGen_Remark":
-            if (value.length > 1 && WordCount(value) <=50) { isvalid = true; }
+            if (value.length > 1 && WordCount(value) <= 50) { isvalid = true; }
+            else {
+               
+                targetid.preventTypying();
+            }
             break;
         case "Checked":
             isvalid = validatectrl_ValidatestringLength(value);
@@ -674,13 +673,24 @@ function TotalExp() {
     $('#ETotalAmount').val(Atotal);
 };
 function isNumber(evt) {
-    evt = (evt) ? evt : window.event;
-    var charCode = (evt.which) ? evt.which : evt.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-        return false;
+    var target = isNumber.caller.arguments[0].target;
+    var targetCtrl = $(target).val() * 1;
+    var ETotalAmount = $('#ETotalAmount').val()*1;
+    if (targetCtrl > ETotalAmount) {
+        $('#TadabollGen_RequisitionAmt').preventTypying();
     }
-    return true;
+   
 }
+
+function keypressCountWord(e) {
+    var target = keypressCountWord.caller.arguments[0].target;
+    var targetCtrl = $(target).val();
+    if (targetCtrl.length > 1 && WordCount(targetCtrl) >= 50) {
+        $(target).preventTypying();
+    }
+}
+
+
 
 
 

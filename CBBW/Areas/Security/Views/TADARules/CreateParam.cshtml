@@ -1,24 +1,41 @@
-﻿@model CBBW.BOL.TADA.TADAParam
+﻿@using CBBW.Areas.Security.ViewModel.Rule;
+@model TADARuleVM
 @{
     ViewBag.Title = "TA & DA Parameters";
 }
 <div class="row newTable">
     @using (Html.BeginForm())
     {
-        @Html.HiddenFor(m => m.IsLocalConvAllowed)
+        @Html.HiddenFor(m => m.IsTransBtn)
+        @Html.HiddenFor(m => m.IsParamBtn)
+        @Html.HiddenFor(m => m.TADARule.EffectiveDate)
+        @Html.HiddenFor(m => m.TADARule.EffectiveDateDisplay)
+        @Html.HiddenFor(m => m.TADARule.MinHoursForHalfDA)
+        @Html.HiddenFor(m => m.TADARule.MinKmsForDA)
+        @Html.HiddenFor(m => m.TADARule.LodgingExpOnCompAcco)
+        @Html.HiddenFor(m => m.TADARule.LocalConvEligibility)
+        @Html.HiddenFor(m => m.TADARule.DepuStaffDAEligibility)
+        @Html.HiddenFor(m => m.TADARule.ExtraDAApplicability)
+        @Html.HiddenFor(m => m.TADARule.CategoryIds)
+        @Html.HiddenFor(m => m.TADARule.CategoryText)
+
+        @Html.HiddenFor(m => m.TADARule.PublicTransIDs)
+        @Html.HiddenFor(m => m.TADARule.PubTransClassIDs)
+        @Html.HiddenFor(m => m.TADARule.CompanyTransIDs)
+
         <div class="col-md-12">
             <div class="fixedElement">
                 <div class="col-md-12" style="position: relative;">
                     <div class="heading_text_btn mb-4 mt-4">
                         <div class="leftButton">
-                            <button type="submit" name="Submit" value="back"
+                            <button type="button" onclick="BackButtonClicked()"
                                     class="btn btn-primary me-2"
                                     @*onclick="window.location.href='@Url.Action("CreateRule", "TADARules", new { Area = "Security" })';"*@>
                                 <i data-feather="arrow-left-circle"></i>
                                 Back
                             </button>
                             <button type="submit" name="Submit" value="create"
-                                    id="btnSubmit" disabled="disabled"
+                                    id="btnSubmit" disabled
                                     class="btn btn-secondary me-2">
                                 <i data-feather="upload"></i>
                                 Submit
@@ -47,15 +64,15 @@
                             1. DA Per Day Is Actual Spent? :
                         </label>
                         <div class="col-md-6 form-group mb-2">
-                            @Html.DropDownListFor(m => m.IsDAActualSpend,
+                            @Html.DropDownListFor(m => m.TADARule.IsDAActualSpend,
                                new[] {
                                    new SelectListItem { Text = "Yes", Value = "true" },
                                    new SelectListItem { Text = "No", Value = "false" } }, "-",
                                htmlAttributes: new
-                                    {
-                                       @class = "form-select pointer isvalidate is-valid",
-                                       @onchange = "validatecontrol()"
-                                    })
+                               {
+                                   @class = "form-select pointer isvalidate is-invalid",
+                                   @onchange = "IsActualSpendChanged()"
+                               })
                         </div>
                     </div>
                     <div class="row d-flex align-items-center mb-3">
@@ -63,15 +80,15 @@
                             2. Lodging Expenses Allowed :
                         </label>
                         <div class="col-md-6 form-group mb-2">
-                            @Html.DropDownListFor(m => m.IsLodgingAllowed,
+                            @Html.DropDownListFor(m => m.TADARule.IsLodgingAllowed,
                                new[] {
                                    new SelectListItem { Text = "Yes", Value = "true" },
                                    new SelectListItem { Text = "No", Value = "false" } }, "-",
                                htmlAttributes: new
-                                    {
-                                       @class = "form-select pointer isvalidate is-valid",
-                                       @onchange = "validatecontrol()"
-                                    })
+                               {
+                                   @class = "form-select pointer isvalidate is-invalid",
+                                   @onchange = "IsLodgingAllowedChanged()"
+                               })
                         </div>
                     </div>
 
@@ -101,59 +118,41 @@
                             <td>
                                 <span class="d-flex justify-content-start align-items-center infoerror">
                                     <div class="form-group">
-                                        @*<label  for="Metro_DAPerDay" class="mytooltipDanger">Error</label>*@
-                                        @Html.TextBoxFor(m => m.Metro_DAPerDay,
+                                        @Html.TextBoxFor(m => m.TADARule.Metro_DAPerDay,
                                            htmlAttributes: new
                                            {
-                                               @class = "form-control valGroup1 only-numeric isvalidate is-valid",
+                                               @class = "form-control valGroup1 only-numeric",
                                                onkeyup = "validatecontrol()",
                                                title = "Value must be 0 - 9999"
                                            })
                                     </div>
-                                    @*<button type="button" id="tt_Metro_DAPerDay"
-                                            class="btn btn-outline-danger inVisible"
-                                            data-toggle="tooltip" data-placement="top"
-                                            title="Value must be 0 - 9999">
-                                            <i data-feather="info"></i>
-                                        </button>*@
                                 </span>
 
                             </td>
                             <td>
                                 <span class="d-flex justify-content-start align-items-center infoerror">
                                     <div class="form-group">
-                                        @Html.TextBoxFor(m => m.Metro_MaxLodgingExp,
+                                        @Html.TextBoxFor(m => m.TADARule.Metro_MaxLodgingExp,
                                            htmlAttributes: new
                                            {
-                                               @class = "form-control pointer only-numeric valGroup2 isvalidate is-valid",
+                                               @class = "form-control pointer only-numeric valGroup2",
                                                onkeyup = "validatecontrol()",
                                                title = "Value must be 0 - 9999"
                                            })
                                     </div>
-                                    @*<button type="button" id="tt_Metro_MaxLodgingExp"
-                                                class="btn btn-outline-danger inVisible"
-                                                title="Value must be 0 - 9999"
-                                                data-toggle="tooltip" data-placement="top">
-                                            <i data-feather="info"></i>
-                                        </button>*@
                                 </span>
                             </td>
                             <td>
                                 <span class="d-flex justify-content-start align-items-center infoerror">
                                     <div class="form-group">
-                                        @Html.TextBoxFor(m => m.Metro_MaxLocalConv,
+                                        @Html.TextBoxFor(m => m.TADARule.Metro_MaxLocalConv,
                                            htmlAttributes: new
                                            {
-                                               @class = "form-control pointer only-numeric valGroup3 isvalidate is-valid",
+                                               @class = "form-control pointer only-numeric valGroup3",
                                                onkeyup = "validatecontrol()",
                                                title = "Maximum Value - 999"
                                            })
                                     </div>
-                                    @*<button type="button" id="tt_Metro_MaxLocalConv"
-                                                title="Maximum Value - 999" class="btn btn-outline-danger inVisible"
-                                                data-toggle="tooltip" data-placement="top">
-                                            <i data-feather="info"></i>
-                                        </button>*@
                                 </span>
                             </td>
                         </tr>
@@ -166,55 +165,40 @@
                             <td>
                                 <span class="d-flex justify-content-start align-items-center infoerror">
                                     <div class="form-group">
-                                        @Html.TextBoxFor(m => m.City_DAPerDay,
+                                        @Html.TextBoxFor(m => m.TADARule.City_DAPerDay,
                                            htmlAttributes: new
                                            {
-                                               @class = "form-control pointer only-numeric valGroup1 isvalidate is-valid",
+                                               @class = "form-control pointer only-numeric valGroup1",
                                                onkeyup = "validatecontrol()",
                                                title = "Value must be 0 - 9999"
                                            })
                                     </div>
-                                    @*<button type="button" id="tt_City_DAPerDay"
-                                                title="Value must be 0 - 9999" class="btn btn-outline-danger inVisible"
-                                                data-toggle="tooltip" data-placement="top">
-                                            <i data-feather="info"></i>
-                                        </button>*@
                                 </span>
                             </td>
                             <td>
                                 <span class="d-flex justify-content-start align-items-center infoerror">
                                     <div class="form-group">
-                                        @Html.TextBoxFor(m => m.City_MaxLodgingExp,
+                                        @Html.TextBoxFor(m => m.TADARule.City_MaxLodgingExp,
                                            htmlAttributes: new
                                            {
-                                               @class = "form-control pointer only-numeric valGroup2 isvalidate is-valid",
+                                               @class = "form-control pointer only-numeric valGroup2",
                                                onkeyup = "validatecontrol()",
                                                title = "Value must be 0 - 9999"
                                            })
                                     </div>
-                                    @*<button type="button" id="tt_City_MaxLodgingExp"
-                                                title="Value must be 0 - 9999" class="btn btn-outline-danger inVisible"
-                                                data-toggle="tooltip" data-placement="top">
-                                            <i data-feather="info"></i>
-                                        </button>*@
                                 </span>
                             </td>
                             <td>
                                 <span class="d-flex justify-content-start align-items-center infoerror">
                                     <div class="form-group">
-                                        @Html.TextBoxFor(m => m.City_MaxLocalConv,
+                                        @Html.TextBoxFor(m => m.TADARule.City_MaxLocalConv,
                                            htmlAttributes: new
                                            {
-                                               @class = "form-control pointer only-numeric valGroup3 isvalidate is-valid",
+                                               @class = "form-control pointer only-numeric valGroup3",
                                                onkeyup = "validatecontrol()",
                                                title = "Maximum Value - 500"
                                            })
                                     </div>
-                                    @*<button type="button" id="tt_City_MaxLocalConv"
-                                                title="Maximum Value - 500" class="btn btn-outline-danger inVisible"
-                                                data-toggle="tooltip" data-placement="top">
-                                            <i data-feather="info"></i>
-                                        </button>*@
                                 </span>
                             </td>
                         </tr>
@@ -227,56 +211,40 @@
                             <td>
                                 <span class="d-flex justify-content-start align-items-center infoerror">
                                     <div class="form-group">
-                                        @Html.TextBoxFor(m => m.Town_DAPerDay,
+                                        @Html.TextBoxFor(m => m.TADARule.Town_DAPerDay,
                                            htmlAttributes: new
                                            {
-                                               @class = "form-control pointer only-numeric valGroup1 isvalidate is-valid",
+                                               @class = "form-control pointer only-numeric valGroup1",
                                                onkeyup = "validatecontrol()",
                                                title = "Value must be 0 - 9999"
                                            })
                                     </div>
-                                    @*<button type="button" id="tt_Town_DAPerDay"  class="btn btn-outline-danger inVisible"
-                                                data-toggle="tooltip" data-placement="top">
-                                            <i data-feather="info"></i>
-                                        </button>*@
                                 </span>
                             </td>
                             <td>
                                 <span class="d-flex justify-content-start align-items-center infoerror">
                                     <div class="form-group">
-                                        @Html.TextBoxFor(m => m.Town_MaxLodgingExp,
+                                        @Html.TextBoxFor(m => m.TADARule.Town_MaxLodgingExp,
                                            htmlAttributes: new
                                            {
-                                               @class = "form-control pointer only-numeric valGroup2 isvalidate is-valid",
+                                               @class = "form-control pointer only-numeric valGroup2",
                                                onkeyup = "validatecontrol()",
                                                title = "Value must be 0 - 9999"
                                            })
                                     </div>
-                                    @*<button type="button" id="tt_Town_MaxLodgingExp"
-                                                title="Value must be 0 - 9999"
-                                                class="btn btn-outline-danger inVisible"
-                                                data-toggle="tooltip" data-placement="top">
-                                            <i data-feather="info"></i>
-                                        </button>*@
                                 </span>
                             </td>
                             <td>
                                 <span class="d-flex justify-content-start align-items-center infoerror">
                                     <div class="form-group">
-                                        @Html.TextBoxFor(m => m.Town_MaxLocalConv,
+                                        @Html.TextBoxFor(m => m.TADARule.Town_MaxLocalConv,
                                            htmlAttributes: new
                                            {
-                                               @class = "form-control pointer only-numeric valGroup3 isvalidate is-valid",
+                                               @class = "form-control pointer only-numeric valGroup3",
                                                onkeyup = "validatecontrol()",
                                                title = "Maximum value - 200"
                                            })
                                     </div>
-                                    @*<button type="button" id="tt_Town_MaxLocalConv"
-                                                title="Maximum value - 200"
-                                                class="btn btn-outline-danger inVisible"
-                                                data-toggle="tooltip" data-placement="top">
-                                            <i data-feather="info"></i>
-                                        </button>*@
                                 </span>
                             </td>
                         </tr>
@@ -287,10 +255,13 @@
                 <ul style="list-style: none; padding: 0; font-size:28px;">
                     <li>
                         Are You Sure The Details Entered Are Correct & As Required?
-                        <select id="submitConfirmation" class="form-select pointer is-valid"
-                                aria-label="Default select example" style="width:110px">
+                        <select id="submitConfirmation" 
+                                class="form-select pointer"
+                                aria-label="Default select example" 
+                                style="width:110px" onchange="submitConfirmationChanged()">
+                            <option selected value="">-</option>
                             <option value="0">No</option>
-                            <option selected value="1">Yes</option>
+                            <option value="1">Yes</option>
                         </select>
                     </li>
                 </ul>
@@ -301,97 +272,92 @@
 @section headers
     {
     <link href="~/UIContent/CSS/Custom_ErrorToolTip.css" rel="stylesheet" />
-    <style>
-        .inVisible {
-            display: none
-        }
-
-        .pointer {
-            cursor: pointer;
-        }
-    </style>
+    
 }
 @section scripts{
-    <script src="~/UIContent/JS/CustomePage/SecurityRuleValidation.js"></script>
-    <script>
-        function btnClearClicked() {
-            $('.isvalidate').each(function () {
-                thisctrl = $(this);
-                thisctrl.val('');
-                if (thisctrl.attr("disabled") == "disabled") { } else { thisctrl.removeClass('is-valid').addClass('is-invalid') }
-                /*$(this).removeClass('is-valid').addClass('is-invalid').val('');*/
-            });
-            $('#submitConfirmation').removeClass('is-valid').addClass('is-invalid').val('0');
-            validateallcontrol();
-        };
-    </script>
-    <script>
-        $(document).ready(function () {
-            var locconv = $('#IsLocalConvAllowed').val();
-
-            $('.valGroup3').each(function () {
-                thisctrl = $(this);
-                if (locconv == "True") {
-                    thisctrl.removeAttr("disabled").attr("placeholder", "Amount").removeClass('is-invalid').addClass('is-valid pointer');
-                } else {
-                    thisctrl.attr("disabled", "disabled").attr("placeholder", "NA").removeClass('is-invalid pointer').addClass('is-valid').val("");
-                }
-            });
-            validatectrl("IsDAActualSpend", $('#IsDAActualSpend').val());
-            validatectrl("IsLodgingAllowed", $('#IsLodgingAllowed').val());
-
-        });
-    </script>
-    <script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
-    </script>
-    <script>
-        $('#submitConfirmation').change(function () {
-            var cnf = $(this);
-            if (cnf.val() == 0) {
-                cnf.removeClass('is-valid').addClass('is-invalid');
-                $('#btnSubmit').attr("disabled", "disabled");
-                //alert("Confirmation msg");
-                Swal.fire({
-                    title: 'Warning',
-                    text: "Select Yes to procceed.",
-                    icon: 'warning',
-                    customClass: 'swal-wide',
-                    buttons: {
-                        //cancel: 'Cancel',
-                        confirm: 'Ok'
-                    },
-                    //cancelButtonClass: 'btn-cancel',
-                    confirmButtonColor: '#2527a2',
+    <script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/TADARule/TADARuleParam.js"></script>
+    @*<script src="~/UIContent/JS/CustomePage/SecurityRuleValidation.js"></script>*@
+    @*<script>
+            function btnClearClicked() {
+                $('.isvalidate').each(function () {
+                    thisctrl = $(this);
+                    thisctrl.val('');
+                    if (thisctrl.attr("disabled") == "disabled") { } else { thisctrl.removeClass('is-valid').addClass('is-invalid') }
+                    /*$(this).removeClass('is-valid').addClass('is-invalid').val('');*/
                 });
-            } else {
-                cnf.removeClass('is-invalid').addClass('is-valid');
-                $('#btnSubmit').removeAttr("disabled");
+                $('#submitConfirmation').removeClass('is-valid').addClass('is-invalid').val('0');
+                validateallcontrol();
             };
-        });
-    </script>
-    <script>
-        $.fn.CustomDateFormat = function () {
-            var that = this;
-            var parentid = that.attr('id');
-            var lblid = parentid + 'lbl';
-            var dt = this.val();
-            var e = dt;
-            if (dt.indexOf('/') != -1) {
-                var e = dt.split('/').reverse().join('-');
-            }
-            else {
-                var e = dt.split('-').reverse().join('-');
-            }
-            $('#' + lblid).html(e);
-            //that.addClass('is-valid').removeClass('is-invalid')
-        };
-        $(document).ready(function () {
-            $('#EffectiveDate').change(function () {
-                $(this).CustomDateFormat();
+        </script>
+        <script>
+            $(document).ready(function () {
+                var locconv = $('#IsLocalConvAllowed').val();
+
+                $('.valGroup3').each(function () {
+                    thisctrl = $(this);
+                    if (locconv == "True") {
+                        thisctrl.removeAttr("disabled").attr("placeholder", "Amount").removeClass('is-invalid').addClass('is-valid pointer');
+                    } else {
+                        thisctrl.attr("disabled", "disabled").attr("placeholder", "NA").removeClass('is-invalid pointer').addClass('is-valid').val("");
+                    }
+                });
+                validatectrl("IsDAActualSpend", $('#IsDAActualSpend').val());
+                validatectrl("IsLodgingAllowed", $('#IsLodgingAllowed').val());
+
             });
-        });
-    </script>
+        </script>
+        <script>
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
+        </script>
+        <script>
+            $('#submitConfirmation').change(function () {
+                var cnf = $(this);
+                if (cnf.val() == 0) {
+                    cnf.removeClass('is-valid').addClass('is-invalid');
+                    $('#btnSubmit').attr("disabled", "disabled");
+                    //alert("Confirmation msg");
+                    Swal.fire({
+                        title: 'Warning',
+                        text: "Select Yes to procceed.",
+                        icon: 'warning',
+                        customClass: 'swal-wide',
+                        buttons: {
+                            //cancel: 'Cancel',
+                            confirm: 'Ok'
+                        },
+                        //cancelButtonClass: 'btn-cancel',
+                        confirmButtonColor: '#2527a2',
+                    });
+                } else {
+                    cnf.removeClass('is-invalid').addClass('is-valid');
+                    $('#btnSubmit').removeAttr("disabled");
+                };
+            });
+        </script>
+        <script>
+            $.fn.CustomDateFormat = function () {
+                var that = this;
+                var parentid = that.attr('id');
+                var lblid = parentid + 'lbl';
+                var dt = this.val();
+                var e = dt;
+                if (dt.indexOf('/') != -1) {
+                    var e = dt.split('/').reverse().join('-');
+                }
+                else {
+                    var e = dt.split('-').reverse().join('-');
+                }
+                $('#' + lblid).html(e);
+                //that.addClass('is-valid').removeClass('is-invalid')
+            };
+            $(document).ready(function () {
+                $('#EffectiveDate').change(function () {
+                    $(this).CustomDateFormat();
+                });
+            });
+        </script>*@
 }

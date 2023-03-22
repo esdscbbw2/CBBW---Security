@@ -188,6 +188,7 @@
     <Compile Include="Areas\Security\ViewModel\MGPOutInVM.cs" />
     <Compile Include="Areas\Security\ViewModel\OtherTripSchDisplayVM.cs" />
     <Compile Include="Areas\Security\ViewModel\OtherTripScheduleEntryVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\Rule\TADARuleViewVM.cs" />
     <Compile Include="Areas\Security\ViewModel\Rule\TADARuleVM.cs" />
     <Compile Include="Areas\Security\ViewModel\TADATransViewModel.cs" />
     <Compile Include="Areas\Security\ViewModel\TFD\TFDHdrVM.cs" />
@@ -401,6 +402,7 @@
     <Content Include="UIContent\JS\CustomePage\OtherTripSchedule.js" />
     <Content Include="UIContent\JS\CustomePage\SecurityRuleValidation.js" />
     <Content Include="UIContent\JS\CustomePage\TADARule\TADARuleEntry.js" />
+    <Content Include="UIContent\JS\CustomePage\TADARule\TADARuleParam.js" />
     <Content Include="UIContent\JS\CustomePage\TADARule\TADATransModeUpdation.js" />
     <Content Include="UIContent\JS\CustomePage\TFD\ApprovalDetails.js" />
     <Content Include="UIContent\JS\CustomePage\TFD\ApprovalEntry.js" />
@@ -590,6 +592,10 @@
     <Content Include="Areas\Security\Views\Common\Index.cshtml" />
     <Content Include="Areas\Security\Views\BIL\_BILLReport.cshtml" />
     <Content Include="Areas\Security\Views\BIL\BillReport.cshtml" />
+    <Content Include="Areas\Security\Views\TADARules\ViewRuleV2.cshtml" />
+    <Content Include="Areas\Security\Views\TADARules\CreateParamView2.cshtml" />
+    <Content Include="Areas\Security\Views\TADARules\UpdateTransModeDtlsView2.cshtml" />
+    <Content Include="Areas\Security\Views\TADARules\EmptyView.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />

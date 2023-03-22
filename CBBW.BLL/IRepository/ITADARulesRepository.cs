@@ -15,6 +15,9 @@ namespace CBBW.BLL.IRepository
         TADARuleV2 GetLastTADARuleV2(DateTime EffectiveDate,ref string pMsg);
         bool SetTADARuleV2(TADARuleV2 data, ref string pMsg);
         List<CustomComboOptionsWithString> GetCatCodesForTADARuleView(DateTime EffectiveDate, ref string pMsg);
+        bool FinalSubmitTADARuleV2(DateTime EffectiveDate, ref string pMsg);
+        TADARuleV2 GetTADARuleV2(DateTime EffectiveDate, string CategoryIDs, ref string pMsg);
+        bool RemoveTADARuleV2(DateTime EffectiveDate, string CategoryIDs, ref string pMsg);
 
 
 

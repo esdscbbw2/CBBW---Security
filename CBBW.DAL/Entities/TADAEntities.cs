@@ -54,7 +54,7 @@ namespace CBBW.DAL.Entities
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
                         result.Add(_dbResponseMapper.Map_CustomCheckBoxOption(dt.Rows[i]));
-                    }
+                    }                    
                 }
             }
             catch (Exception ex)
@@ -91,7 +91,7 @@ namespace CBBW.DAL.Entities
             List<CustomComboOptionsWithString> result = new List<CustomComboOptionsWithString>();
             try
             {
-                dt = _datasync.GetCatCodesForTADARule(EffectiveDate, ref pMsg);
+                dt = _datasync.GetCatCodesForTADARuleView(EffectiveDate, ref pMsg);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     for (int i = 0; i < dt.Rows.Count; i++)
@@ -104,6 +104,35 @@ namespace CBBW.DAL.Entities
             {
                 pMsg = ex.Message;
             }
+            return result;
+        }
+        public bool FinalSubmitTADARuleV2(DateTime EffectiveDate, ref string pMsg) 
+        {
+            bool result = false;
+            _dbResponseMapper.Map_DBResponse(_datasync.FinalSubmitTADARuleV2(EffectiveDate, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
+        public TADARuleV2 GetTADARuleV2(DateTime EffectiveDate, string CategoryIDs, ref string pMsg) 
+        {
+            TADARuleV2 result = new TADARuleV2();
+            try
+            {
+                dt = _datasync.GetTADARuleV2(EffectiveDate, CategoryIDs, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    return _mapper.Map_TADARuleV2(dt.Rows[0]);
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg = ex.Message;
+            }
+            return result;
+        }
+        public bool RemoveTADARuleV2(DateTime EffectiveDate, string CategoryIDs, ref string pMsg) 
+        {
+            bool result = false;
+            _dbResponseMapper.Map_DBResponse(_datasync.RemoveTADARuleV2(EffectiveDate, CategoryIDs, ref pMsg), ref pMsg, ref result);
             return result;
         }
 

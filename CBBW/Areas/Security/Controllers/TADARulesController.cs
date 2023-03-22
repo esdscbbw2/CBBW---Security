@@ -17,6 +17,7 @@ namespace CBBW.Areas.Security.Controllers
         IUserRepository _iUser;
         ITADARulesRepository _iTADARules;
         TADARuleVM rulevm;
+        TADARuleViewVM ruleviewvm;
         string pMsg;
         public TADARulesController(ITADARulesRepository iTADARule, IUserRepository iUser)
         {
@@ -24,62 +25,80 @@ namespace CBBW.Areas.Security.Controllers
             _iUser = iUser;
             pMsg = "";
         }
+        public ActionResult AddRule() 
+        {
+            TempData["TADARuleV2"] = null;
+            return RedirectToAction("CreateRule");
+        }
         public JsonResult BackButtonClicked()
         {
             string url = _iUser.GetCallBackUrl();
             if (string.IsNullOrEmpty(url)) { url = "/Security/TADARules/Index"; }
+            TempData["TADARuleV2View"] = null;
             return Json(url, JsonRequestBehavior.AllowGet);
         }
         public ActionResult ViewRedirection(int CBUID, string NoteNumber = "") 
-        {            
-            string mEffectiveDate = _iTADARules.GetAffectedRuleID(ref pMsg).ToString("dd-MM-yyyy");
-            return RedirectToAction("ViewRule", new { id = 1, isDelete = false });
-        }
-        public ActionResult ViewRule(int id, bool isDelete)
         {
-            TADARuleDetails model = _iTADARules.GetTADARuleByID(id, ref pMsg);
-            model.mDelete = isDelete;
-            ViewBag.IsDelete = isDelete;
-            model.CallBaclkUrl = TempData["Tadacallbackurl"] != null ? TempData["Tadacallbackurl"].ToString(): "/Security/TADARules/Index" ;
-            TempData["Tadacallbackurl"] = model.CallBaclkUrl;
-            return View(model);
-        }
-        [HttpPost]
-        public ActionResult ViewRule(TADARuleDetails model, string Submit)
-        {            
-            if (Submit == "TAParam")
-            {                
-                return RedirectToAction("ViewParam",new { id = model.ID, isDelete=model.mDelete });
-            }
-            else if (Submit == "TMDtl")
+            DateTime mEffeDate = _iTADARules.GetAffectedRuleID(ref pMsg);
+            List<CustomComboOptionsWithString> obj1 = _iTADARules.GetCatCodesForTADARuleView(mEffeDate, ref pMsg);
+            if (obj1 != null && obj1.Count > 1) 
             {
-                return RedirectToAction("ViewTransModeDtls", new { id = model.ID, isDelete = model.mDelete });
-            }
-            else if (Submit == "Delete") 
+                return RedirectToAction("ViewRuleV2", new { EffectiveDate = mEffeDate.ToString("dd-MM-yyyy"), isDelete = false });
+            } 
+            else 
             {
-                //return RedirectToAction("RemoveRule", new { id = model.ID});
-            }
-            return View(model);
+                return RedirectToAction("EmptyView");
+            }            
         }
-        public ActionResult ViewParam(int id, bool isDelete) 
+        public ActionResult EmptyView()
         {
-            TADARuleDetails model = _iTADARules.GetTADARuleByID(id, ref pMsg);
-            if (model.TADAParam == null) { model.TADAParam = new TADAParam(); }
-            model.TADAParam.IsLocalConvAllowed =model.LocalConvEligibility;
-            model.TADAParam.mDelete = isDelete;
-            return View(model.TADAParam);
+            return View();
         }
-        public ActionResult ViewTransModeDtls(int id,bool isDelete)
-        {
-            TADARuleDetails obj = _iTADARules.GetTADARuleByID(id, ref pMsg);
-            TADATransViewModel model = new TADATransViewModel();
-            model.CompTranOptions = obj.CompTranOptions;
-            model.PubTranOptions = obj.PubTranOptions;
-            model.mRuleID = id;
-            model.mDelete = isDelete;
-            TempData["TADARulePubTrans"] = obj.PubTranOptions;
-            return View(model);
-        }
+        //public ActionResult ViewRule(int id, bool isDelete)
+        //{
+        //    TADARuleDetails model = _iTADARules.GetTADARuleByID(id, ref pMsg);
+        //    model.mDelete = isDelete;
+        //    ViewBag.IsDelete = isDelete;
+        //    model.CallBaclkUrl = TempData["Tadacallbackurl"] != null ? TempData["Tadacallbackurl"].ToString(): "/Security/TADARules/Index" ;
+        //    TempData["Tadacallbackurl"] = model.CallBaclkUrl;
+        //    return View(model);
+        //}
+        //[HttpPost]
+        //public ActionResult ViewRule(TADARuleDetails model, string Submit)
+        //{            
+        //    if (Submit == "TAParam")
+        //    {                
+        //        return RedirectToAction("ViewParam",new { id = model.ID, isDelete=model.mDelete });
+        //    }
+        //    else if (Submit == "TMDtl")
+        //    {
+        //        return RedirectToAction("ViewTransModeDtls", new { id = model.ID, isDelete = model.mDelete });
+        //    }
+        //    else if (Submit == "Delete") 
+        //    {
+        //        //return RedirectToAction("RemoveRule", new { id = model.ID});
+        //    }
+        //    return View(model);
+        //}
+        //public ActionResult ViewParam(int id, bool isDelete) 
+        //{
+        //    TADARuleDetails model = _iTADARules.GetTADARuleByID(id, ref pMsg);
+        //    if (model.TADAParam == null) { model.TADAParam = new TADAParam(); }
+        //    model.TADAParam.IsLocalConvAllowed =model.LocalConvEligibility;
+        //    model.TADAParam.mDelete = isDelete;
+        //    return View(model.TADAParam);
+        //}
+        //public ActionResult ViewTransModeDtls(int id,bool isDelete)
+        //{
+        //    TADARuleDetails obj = _iTADARules.GetTADARuleByID(id, ref pMsg);
+        //    TADATransViewModel model = new TADATransViewModel();
+        //    model.CompTranOptions = obj.CompTranOptions;
+        //    model.PubTranOptions = obj.PubTranOptions;
+        //    model.mRuleID = id;
+        //    model.mDelete = isDelete;
+        //    TempData["TADARulePubTrans"] = obj.PubTranOptions;
+        //    return View(model);
+        //}
         // GET: Security/TADARules
         public ActionResult Index()
         {
@@ -88,51 +107,21 @@ namespace CBBW.Areas.Security.Controllers
             return View(model);
         }
         //[HttpPost]
-        public ActionResult RemoveRule(int id) 
-        {
-            try
-            {
-                _iTADARules.RemoveTADARule(id, ref pMsg);
-                TempData["TADARuleDetail"] = null;
-            }
-            catch { }
-            return RedirectToAction("Index");
-        }
+        
         public ActionResult CreateRule() 
         {
-            rulevm=CastTADATempData();
-            //rulevm.MinDate= DateTime.Today.ToString("yyyy-MM-dd");
-            //rulevm.MaxDate = DateTime.Today.AddMonths(1).ToString("yyyy-MM-dd");
-            //rulevm.TADARule = _iTADARules.GetLastTADARuleV2(ref pMsg);
-            //DateTime mEffectiveDate = rulevm.TADARule.IsActive ? new DateTime(1,1,1) : rulevm.TADARule.EffectiveDate;
-            //rulevm.CategoryList = _iTADARules.GetCatCodesForTADARule(mEffectiveDate, ref pMsg);
-            TempData["TADARuleV2"] = rulevm;
-            //TADARuleDetails model;
-            //if (TempData["TADARuleDetail"] == null)
-            //{
-            //    TADARuleDetails obj= _iTADARules.GetLastTADARule(ref pMsg);
-            //    obj.EffectiveDate = new DateTime(1,1,1);
-            //    TempData["TADARuleDetail"] = obj; 
-            //}
-            //model = TempData["TADARuleDetail"] as TADARuleDetails;
-            //model.MinDate = DateTime.Today.ToString("yyyy-MM-dd");
-            //model.MaxDate = DateTime.Today.AddMonths(1).ToString("yyyy-MM-dd");
-            //TempData["TADARuleDetail"] = model;            
+            rulevm=CastTADATempData();            
+            //TempData["TADARuleV2"] = rulevm;                        
             return View(rulevm);
         }
         [HttpPost]
-        public ActionResult CreateRule(TADARuleDetails model,string Submit) 
+        public ActionResult CreateRule(TADARuleVM model,string Submit) 
         {
-            if (TempData["TADARuleDetail"] == null)
-            {
-                TempData["TADARuleDetail"] = _iTADARules.GetLastTADARule(ref pMsg);
-            }
-            TADARuleDetails obj = TempData["TADARuleDetail"] as TADARuleDetails;
-            model.TADAParam = obj.TADAParam;
-            model.CompTranOptions = obj.CompTranOptions;
-            model.PubTranOptions = obj.PubTranOptions;
-            model.Categories = obj.Categories;
-            TempData["TADARuleDetail"] = model;
+            model.TADARule.EffectiveDateDisplay = model.TADARule.EffectiveDate.ToString("yyyy-MM-dd");
+            rulevm=CastTADATempData();
+            rulevm.CategoryList=rulevm.CategoryList!=null ? rulevm.CategoryList : _iTADARules.GetCatCodesForTADARule(model.TADARule.EffectiveDate, ref pMsg);
+            rulevm.TADARule = model.TADARule;
+            TempData["TADARuleV2"] = rulevm;
             if (Submit == "TAParam")
             {
                 return RedirectToAction("CreateParam");
@@ -141,147 +130,81 @@ namespace CBBW.Areas.Security.Controllers
             {
                 return RedirectToAction("UpdateTransModeDtls");
             }
-            else if (Submit == "create") 
+            else if (Submit == "save") 
             {
-                if (_iTADARules.IsValidRule(model, ref pMsg))
+                if (_iTADARules.SetTADARuleV2(model.TADARule, ref pMsg)) 
                 {
-                    if (_iTADARules.CreateNewTADARule(model, ref pMsg))
-                    {
-                        ViewBag.Msg = "New rule successfully created";
-                        return View(model);
-                        //return RedirectToAction("Index");
-                    }
-                    else 
-                    {
-                        ViewBag.DupMsg = "System failed to create new rule.";
-                    }
+                    ViewBag.Msg = "Rule Saved Successfully For "+model.TADARule.CategoryText;
+                    rulevm.CategoryList = _iTADARules.GetCatCodesForTADARule(model.TADARule.EffectiveDate, ref pMsg);
+                    //rulevm.IsSubmitActive = rulevm.CategoryList.Where(o => o.IsSelected == false).Count() > 0 ? 0 : 1;
+                    rulevm.TADARule.CategoryIds = "";
+                    rulevm.IsParamBtn = 0;
+                    rulevm.IsTransBtn = 0;
+                    TempData["TADARuleV2"] = rulevm;
                 }
                 else 
                 {
-                    ViewBag.DupMsg = "Rule already exist";
-                }                            
+                    ViewBag.ErrMsg = "Data Updation Failed.";
+                }
             }
-            //ViewBag.Msg = pMsg;
-             return View(model);
+            else if (Submit == "create")
+            {
+                if (_iTADARules.FinalSubmitTADARuleV2(model.TADARule.EffectiveDate, ref pMsg))
+                {
+                    ViewBag.SMsg = "Rule Submitted Successfully";
+                    TempData["TADARuleV2"] = null;
+                }
+                else 
+                {
+                    ViewBag.ErrMsg = "Data Updation Failed.";
+                }
+            }
+             return View(rulevm);
         }
         public ActionResult CreateParam() 
         {
-            if (TempData["TADARuleDetail"] == null)
-            {
-                TempData["TADARuleDetail"] = _iTADARules.GetLastTADARule(ref pMsg);
-            }
-            TADARuleDetails obj = TempData["TADARuleDetail"] as TADARuleDetails;
-            obj.TADAParam.IsLocalConvAllowed = obj.LocalConvEligibility;
-            TempData["TADARuleDetail"] = obj;
-            return View(obj.TADAParam);
+            rulevm = CastTADATempData();
+            return View(rulevm);
         }
         [HttpPost]
-        public ActionResult CreateParam(TADAParam model, string Submit) 
+        public ActionResult CreateParam(TADARuleVM model, string Submit) 
         {
-            if (TempData["TADARuleDetail"] == null)
+            rulevm = CastTADATempData();
+            rulevm.IsTransBtn = model.IsTransBtn;
+            rulevm.TADARule = model.TADARule;
+            if (Submit == "create") 
             {
-                TempData["TADARuleDetail"] = _iTADARules.GetLastTADARule(ref pMsg);
-            }
-            TADARuleDetails obj = TempData["TADARuleDetail"] as TADARuleDetails;
-            if (Submit == "back")
-            {
-                TempData["TADARuleDetail"] = obj;
-                //ViewBag.BackMsg = "Are You Sure Want to Go Back?";
-                //return View();
+                rulevm.IsParamBtn = 1;
+                TempData["TADARuleV2"] = rulevm;
                 return RedirectToAction("CreateRule");
             }
-            else if (Submit == "clear") 
-            {
-                return View();
-            }
-            obj.TADAParam = model;
-            obj.IsSubmitBtn = 1;
-            TempData["TADARuleDetail"] = obj;
-            return RedirectToAction("CreateRule");            
+            return View(model);
         }
         public ActionResult UpdateTransModeDtls()
         {
-            if (TempData["TADARuleDetail"] == null)
-            {
-                TempData["TADARuleDetail"] = _iTADARules.GetLastTADARule(ref pMsg);
-            }
-            TADARuleDetails obj = TempData["TADARuleDetail"] as TADARuleDetails;
-            
-            TADATransViewModel model=new TADATransViewModel();
-            model.CompTranOptions = obj.CompTranOptions;
-            model.PubTranOptions = obj.PubTranOptions;
-            TempData["TADARulePubTrans"] = obj.PubTranOptions;
-            
-            TempData["TADARuleDetail"] = obj;
-            return View(model);
+            rulevm = CastTADATempData();            
+            return View(rulevm);
         }
         [HttpPost]
-        public ActionResult UpdateTransModeDtls(TADATransViewModel model, string Submit)
+        public ActionResult UpdateTransModeDtls(TADARuleVM model, string Submit)
         {
-            //TempData["UTModel"] = model;
-            if (TempData["TADARuleDetail"] == null)
-            {
-                TempData["TADARuleDetail"] = _iTADARules.GetLastTADARule(ref pMsg);
-            }
-            TADARuleDetails obj = TempData["TADARuleDetail"] as TADARuleDetails;            
+            rulevm = CastTADATempData();
+            rulevm.TADARule = model.TADARule;
+            rulevm.IsParamBtn = model.IsParamBtn;
             if (Submit == "create")
             {
-                List<int> selectedoptions = new List<int>();
-                if (model.SelectedpubTranOptions != null && !string.IsNullOrEmpty(model.SelectedpubTranOptions))
-                {
-                    selectedoptions = model.SelectedpubTranOptions.Split(',').Select(int.Parse).ToList();
-                }
-                foreach (TADAPubTransOption objoption in obj.PubTranOptions)
-                {
-                    objoption.IsSelected = selectedoptions.IndexOf(objoption.ID) >= 0 ? true : false;
-                }
-                obj.CompTranOptions = model.CompTranOptions;
-                obj.IsParamBtn = 1;
-                TempData["TADARuleDetail"] = obj;
+                rulevm.IsTransBtn = 1;
+                TempData["TADARuleV2"] = rulevm;
                 return RedirectToAction("CreateRule");
             }
             else if (Submit == "back") 
-            {   
-                TempData["TADARuleDetail"] = obj;
-                //ViewBag.BackMsg = "Are You Sure Want to Go Back?";
-                //return View(model);
+            {
+                rulevm.IsTransBtn = 0;
+                TempData["TADARuleV2"] = rulevm;
                 return RedirectToAction("CreateRule");
             }
             return View(model);
         }        
-        public JsonResult GetPublicTransTypes() 
-        {
-            return Json(_iTADARules.GetPublicTransportTypes(ref pMsg), JsonRequestBehavior.AllowGet);
-        }
-        public JsonResult GetClassTypes(int TypeID)
-        {
-            IEnumerable<TADAPubTransOption> pubtranoptions;
-            if (TempData["TADARulePubTrans"] != null) 
-            {
-                pubtranoptions = TempData["TADARulePubTrans"] as List<TADAPubTransOption>;
-            } else 
-            {
-                pubtranoptions = _iTADARules.GetPublicTransportClassTypes(TypeID, ref pMsg);
-            }
-            TempData["TADARulePubTrans"] = pubtranoptions;
-            return Json(pubtranoptions.Where(o=>o.TransTypeID==TypeID).ToList(), JsonRequestBehavior.AllowGet);
-        }
-        public JsonResult GetInitialPTData()
-        {
-            IEnumerable<TADAPubTransOption> pubtranoptions;
-            List<RowDisplayInfo> PTRows = new List<RowDisplayInfo>();
-            if (TempData["TADARulePubTrans"] != null)
-            {
-                pubtranoptions = TempData["TADARulePubTrans"] as List<TADAPubTransOption>;
-                
-                foreach (int typeid in pubtranoptions.Where(o => o.IsSelected == true).GroupBy(o => o.TransTypeID).Select(o => o.Key).ToList()) 
-                {
-                    PTRows.Add(new RowDisplayInfo() {TypeID= typeid });
-                }
-                TempData["TADARulePubTrans"] = pubtranoptions;
-            }
-            return Json(PTRows, JsonRequestBehavior.AllowGet);
-        }
         public JsonResult getListOfRules(int iDisplayLength, int iDisplayStart, int iSortCol_0,
             string sSortDir_0, string sSearch)
         {
@@ -299,17 +222,117 @@ namespace CBBW.Areas.Security.Controllers
         }
         public ActionResult ViewRuleV2(string EffectiveDate, bool isDelete = false, bool isFromIndex = false) 
         {
-            return View();
+            ruleviewvm=CastTADAViewTempData(DateTime.Parse(EffectiveDate));
+            ruleviewvm.IsDelete = isDelete;
+            if (isFromIndex) 
+            { 
+                ruleviewvm.SelectedCategory = null;
+                ruleviewvm.CategoryList= _iTADARules.GetCatCodesForTADARuleView(ruleviewvm.EffectiveDate, ref pMsg);
+            }
+            try
+            {
+                //ruleviewvm.EffectiveDate = DateTime.Parse(EffectiveDate);
+                ruleviewvm.SelectedCategory = ruleviewvm.SelectedCategory == null ? ruleviewvm.CategoryList==null || ruleviewvm.CategoryList .Count==0? "":ruleviewvm.CategoryList.FirstOrDefault().ID : ruleviewvm.SelectedCategory;
+                ruleviewvm.TADARule = _iTADARules.GetTADARuleV2(ruleviewvm.EffectiveDate, ruleviewvm.SelectedCategory, ref pMsg);
+                TempData["TADARuleV2View"] = ruleviewvm;
+            }
+            catch { }
+            return View(ruleviewvm);
+        }
+        [HttpPost]
+        public ActionResult ViewRuleV2(TADARuleViewVM model, string Submit) 
+        {
+            ruleviewvm = CastTADAViewTempData(model.EffectiveDate);
+            ruleviewvm.SelectedCategory = model.SelectedCategory;
+            ruleviewvm.IsDelete = model.IsDelete;
+            ruleviewvm.TADARule = _iTADARules.GetTADARuleV2(model.EffectiveDate, model.SelectedCategory, ref pMsg);
+            TempData["TADARuleV2View"] = ruleviewvm;
+            if (Submit == "TAParam")
+            {
+                return RedirectToAction("CreateParamView2",new { EffectiveDate= model.EffectiveDate });
+            }
+            else if (Submit == "TMDtl")
+            {
+                return RedirectToAction("UpdateTransModeDtlsView2", new { EffectiveDate = model.EffectiveDate });
+            }
+            return View(ruleviewvm);
+        }        
+        public ActionResult CreateParamView2(DateTime EffectiveDate) 
+        {
+            ruleviewvm = CastTADAViewTempData(EffectiveDate);
+
+            return View(ruleviewvm);
+        }
+        public ActionResult UpdateTransModeDtlsView2(DateTime EffectiveDate) 
+        {
+            ruleviewvm = CastTADAViewTempData(EffectiveDate);
+
+            return View(ruleviewvm);
         }
         #region - V2 functions
         public JsonResult GetCategories(string EffectiveDate) 
         {
-            var result = _iTADARules.GetCatCodesForTADARule(EffectiveDate == "" ? new DateTime(1, 1, 1) : DateTime.Parse(EffectiveDate), ref pMsg);
+            List<CustomCheckBoxOption> result=null;
+            try
+            {
+                rulevm = CastTADATempData();
+                if (rulevm.TADARule != null && rulevm.TADARule.EffectiveDate == DateTime.Parse(EffectiveDate))
+                {
+                    if (rulevm.CategoryList != null && rulevm.CategoryList.Count > 0)
+                        result = rulevm.CategoryList;
+                }
+                if (result == null)
+                {
+                    result = _iTADARules.GetCatCodesForTADARule(EffectiveDate == "" ? new DateTime(1, 1, 1) : DateTime.Parse(EffectiveDate), ref pMsg);
+                }
+                rulevm.CategoryList = result;
+                rulevm.IsSubmitActive = 0;
+                TempData["TADARuleV2"] = rulevm;
+            }
+            catch { }
+            return Json(result.OrderBy(o=>o.ID), JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetCategoryAvblCount(string EffectiveDate)
+        {
+            int result = 1;
+            List<CustomCheckBoxOption> obj1=_iTADARules.GetCatCodesForTADARule(DateTime.Parse(EffectiveDate), ref pMsg);
+            result=obj1.Where(o => o.IsSelected == false).Count();
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetRuleData(string EffectiveDate)
         {
-            var result = _iTADARules.GetLastTADARuleV2(EffectiveDate == "" ? new DateTime(1, 1, 1) : DateTime.Parse(EffectiveDate), ref pMsg);
+            TADARuleV2 result = null;
+            try
+            {
+                rulevm = CastTADATempData();
+                if (rulevm.TADARule != null && rulevm.TADARule.EffectiveDate == DateTime.Parse(EffectiveDate))
+                {
+                    result = _iTADARules.GetLastTADARuleV2(rulevm.TADARule.EffectiveDate, ref pMsg);
+                }
+                else
+                {
+                    result = _iTADARules.GetLastTADARuleV2(DateTime.Parse(EffectiveDate), ref pMsg);
+                }
+                rulevm.TADARule = result;
+                TempData["TADARuleV2"] = rulevm;
+            }
+            catch { }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult RemoveRuleV2(string EffectiveDate, string ServiceTypeCodes)
+        {
+            CustomAjaxResponse result = new CustomAjaxResponse();
+            if (_iTADARules.RemoveTADARuleV2(DateTime.Parse(EffectiveDate), ServiceTypeCodes, ref pMsg))
+            {
+                result.bResponseBool = true;
+                result.sResponseString = "Data Successfully Deleted.";
+            }
+            else
+            {
+                result.bResponseBool = false;
+                result.sResponseString = "Failed To Delete Data Due To - " + pMsg;
+            }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         #endregion
@@ -326,6 +349,24 @@ namespace CBBW.Areas.Security.Controllers
             }            
             TempData["TADARuleV2"] = rulevm;
             return rulevm;
+        }
+        private TADARuleViewVM CastTADAViewTempData(DateTime EffectiveDate)
+        {
+            if (TempData["TADARuleV2View"] != null)
+            {
+                ruleviewvm = TempData["TADARuleV2View"] as TADARuleViewVM;
+            }
+            else
+            {
+                ruleviewvm = new TADARuleViewVM();
+            }
+            if (ruleviewvm.CategoryList == null) 
+            {
+                ruleviewvm.CategoryList = _iTADARules.GetCatCodesForTADARuleView(EffectiveDate, ref pMsg);
+            }
+            ruleviewvm.EffectiveDate = EffectiveDate;
+            TempData["TADARuleV2View"] = ruleviewvm;
+            return ruleviewvm;
         }
         #endregion
 

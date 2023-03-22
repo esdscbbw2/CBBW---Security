@@ -1,27 +1,69 @@
 ﻿function RemoveBtnClicked() {
     var tblRow = RemoveBtnClicked.caller.arguments[0].target.closest('.add-row');
     removeBtnClickFromCloneRow(tblRow, 'tbody2');
-    EnableSubmitBtn();
+    SubmitBtnState();
 };
 function addCloneBtnClick() {
-    var insrow = addCloneBtnClick.caller.arguments[0].target.closest('.add-row');
-    var insrowid = $(insrow).attr('id');
-    //alert(insrowid);
-    var addbtn = $('#AddBtn');
-    if (insrowid > 0) { addbtn = $('#AddBtn_' + insrowid); }
-    var clonerowid = CloneRowReturningIDV2('tbody1', 'tbody2', $(insrow).attr('id') * 1, true, true);
-    //addbtn.makeDisable();
+    if ($('.addBtn').length >= 3) {
+        Swal.fire({
+            title: 'Error',
+            text: "Can Not Add More Than 3 Public Transport Types",
+            icon: 'error',
+            customClass: 'swal-wide',
+            buttons: {
+                confirm: 'Ok'
+            },
+            confirmButtonColor: '#2527a2',
+        });
+    } else {
+        var insrow = addCloneBtnClick.caller.arguments[0].target.closest('.add-row');
+        var insrowid = $(insrow).attr('id');
+        var addbtn = $('#AddBtn');
+        if (insrowid > 0) { addbtn = $('#AddBtn_' + insrowid); }
+        var clonerowid = CloneRowReturningIDV2('tbody1', 'tbody2', $(insrow).attr('id') * 1, true, true);
+        $('#PubTranText_' + clonerowid).val('');
+    }    
+    SubmitBtnState();
+};
+function PublicTransportChangeV(rowid) {
+    var cmbCtrl = $('#PTC');
+    var ptclass = '';
+    var mvalid = true;
+    if (rowid > 0) {
+        cmbCtrl = $('#PTC_' + rowid);
+    }
+    var ptcvalue = cmbCtrl.val();
+    if (ptcvalue > 0) {
+        $('.ptcclass').each(function () {
+            if ($(this).attr('id') != cmbCtrl.attr('id') && $(this).val() == ptcvalue) {
+                cmbCtrl.val('');
+                mvalid = false;
+                ClearPTCheckboxes(rowid, 0);
+                Swal.fire({
+                    title: 'Error',
+                    text: "Duplicate Public Transport Type.",
+                    icon: 'error',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        confirm: 'Ok'
+                    },
+                    confirmButtonColor: '#2527a2',
+                });
+            }
+            ptclass = ptclass + $(this).val() + ',';
+        });
+        if (mvalid) {
+            cmbCtrl.isValid();
+            ClearPTCheckboxes(rowid, ptcvalue);
+        } else { cmbCtrl.isInvalid(); }
+        $('#TADARule_PublicTransIDs').val(ptclass);
+    } else { cmbCtrl.isInvalid(); }
+    SubmitBtnState();
 };
 function PublicTransportChange() {
     var insrow = PublicTransportChange.caller.arguments[0].target.closest('.add-row');
     var rowid = $(insrow).attr('id');
-    var cmbCtrl = $('#PTC');    
-    if (rowid > 0) {
-        cmbCtrl = $('#PTC_' + rowid);        
-    }
-    var ptcvalue = cmbCtrl.val();
-    ClearPTCheckboxes(rowid, ptcvalue);
-    if (ptcvalue > 0) { cmbCtrl.isValid(); } else { cmbCtrl.isInvalid(); }
+    PublicTransportChangeV(rowid);
 };
 function ClearPTCheckboxes(rowid, ptcvalue) {
     var trainDiv = $('#TrainDiv');
@@ -54,6 +96,151 @@ function ClearPTCheckboxes(rowid, ptcvalue) {
         airDiv.removeClass('inVisible');
     }    
 };
+function CTChanged() {
+    var comTransids = GetSelectedValueOfCheckBoxes('ctoptions');
+    var comTranNames = GetSelectedTextOfCheckBoxes('ctoptions');
+    $('#divChkBoxResult').val(comTranNames);
+    $('#TADARule_CompanyTransIDs').val(comTransids);
+    SubmitBtnState();
+};
+function PTChanged(optiontype) {
+    var rowid = $(PTChanged.caller.arguments[0].target.closest('.add-row')).attr('id');
+    var pubtrantext = $('#PubTranText');
+    if (rowid > 0) { pubtrantext = $('#PubTranText_' + rowid); }
+    pubtrantext.val(GetSelectedTextOfCheckBoxes(optiontype));
+    var trainopts = GetSelectedValueOfCheckBoxes('trainoptions');
+    var busopts = GetSelectedValueOfCheckBoxes('busoptions');
+    var airopts = GetSelectedValueOfCheckBoxes('airoptions');
+    var mopts = '';
+    mopts = mopts + (trainopts != '' ? trainopts+',' : '');
+    mopts = mopts + (busopts != '' ? busopts+',' : '');
+    mopts = mopts + (airopts != '' ? airopts+',' : '');
+    $('#TADARule_PubTransClassIDs').val(mopts);
+    SubmitBtnState();
+};
+function SubmitBtnState()
+{   
+    var btnsubmit = $('#btnSubmit');
+    var comptranms = $('#divmChkBox input[type="checkbox"]:checked');
+    var pubtrans = $('#Pubtran input[type="checkbox"]:checked');
+    var invalidDD = $('.is-invalid').length;
+    var isptselected = false;
+    $('.pubtrantxt').each(function () {
+        if ($(this).val() == '') { isptselected = true;}
+    });
+    if (invalidDD > 0 || isptselected) { btnsubmit.attr('disabled', 'disabled');; }
+    else {
+        if (comptranms.length > 0 && pubtrans.length > 0) {
+            btnsubmit.removeAttr('disabled');
+        }
+        else {
+            btnsubmit.attr('disabled', 'disabled');;
+        }
+    }
+    
+}
+function btnClearClicked() {
+    $('#Pubtran input[type="checkbox"]:checked').each(function () {
+        $(this).prop("checked", false);
+    });
+    $('.pubtrantxt').val('');
+    $('#divmChkBox input[type="checkbox"]:checked').each(function () {
+        $(this).prop("checked", false);
+    });
+    $('#divChkBoxResult').val('');
+    SubmitBtnState();
+};
+function GetOPtionDiv(pubTranId) {
+    var Optiontype = '';
+    if (pubTranId == 1) {
+        Optiontype = 'TrainDiv';
+    }
+    else if (pubTranId == 2) {
+        Optiontype = 'BusDiv';
+    }
+    else if (pubTranId == 3) {
+        Optiontype = 'AirDiv';
+    }
+    return Optiontype;
+};
+function GetInitialData() {
+    //company Transport
+    ctt = $('#TADARule_CompanyTransIDs').val();
+    var cttarray = [];
+    var myDiv = $('#divmChkBox');
+    if (ctt.indexOf(',') >= 0) {
+        cttarray = ctt.split(',');
+        var m = '';
+        $.each(cttarray, function (index, value) {
+            var myCheckbox = myDiv.find("input[type='checkbox'][value=" + value + "]");
+            if (myCheckbox.length > 0) {
+                myCheckbox.prop("checked", true);
+                m = m + myCheckbox.attr('data-name')+',';
+            }
+        });
+        $('#divChkBoxResult').val(m.slice(0,-1));
+    }
+    else {
+        var myCheckbox = myDiv.find("input[type='checkbox'][value=" + ctt + "]");
+        if (myCheckbox.length > 0) { myCheckbox.prop("checked", true); }
+    }
+    //Public Transport - Class
+    var ptc = $('#TADARule_PubTransClassIDs').val();
+    var ptcarray = [];
+    if (ptc.indexOf(',') < 0) { ptc = ptc + ','; }
+    ptcarray = ptc.split(',');
+
+    //Public transport Type
+    var ptt = $('#TADARule_PublicTransIDs').val();
+    var pttarray = [];
+    if (ptt.indexOf(',') < 0) { ptt = ptt + ','; }
+    pttarray = ptt.split(',');
+    var ptcCtrl = $('#PTC');
+    var myTable = $('#Pubtran');
+    $.each(pttarray, function (mindex, mvalue) {
+        var mText = '';
+        if (mindex == 0) {
+            ptcCtrl.val(mvalue).isValid();
+            PublicTransportChangeV(0);
+            var myDiv = $('#' + GetOPtionDiv(mvalue));            
+            $.each(ptcarray, function (index, value) {
+                var myOption = 'optcheck' + value;                
+                var myCheckbox = myDiv.find('#' + myOption);
+                if (myCheckbox.length > 0) {
+                    myCheckbox.prop("checked", true);
+                    mText = mText + myCheckbox.attr('data-name') + ',';
+                }
+            });
+            $('#PubTranText').val(mText.slice(0, -1));
+        }
+        else {
+            if (mvalue != '') {
+                var clonerowid = CloneRowReturningIDV2('tbody1', 'tbody2', 0, true, true);
+                TranTextCtrl = $('#PubTranText_' + clonerowid);
+                ptcCtrl = $('#PTC_' + clonerowid);
+                ptcCtrl.val(mvalue).isValid();
+                PublicTransportChangeV(clonerowid);
+                var myDiv = $('#' + GetOPtionDiv(mvalue) + '_' + clonerowid);
+                $.each(ptcarray, function (index, value) {
+                    var myOption = 'optcheck' + value + '_'+ clonerowid;
+                    var myCheckbox = myDiv.find('#' + myOption);
+                    if (myCheckbox.length > 0) {
+                        myCheckbox.prop("checked", true);
+                        mText = mText + myCheckbox.attr('data-name') + ',';
+                    }
+                });
+                $('#PubTranText_' + clonerowid).val(mText.slice(0,-1));
+            }
+        }
+    }); 
+}
+$(document).ready(function () {
+    GetInitialData();
+});
+
+
+
+
 
 
 
@@ -249,28 +436,6 @@ function cbOptionClick() {
     getallPubtranIds();
     validateSubmit();
 }
-function GetInitialData() {
-    $.ajax({
-        url: '/TADARules/GetInitialPTData',
-        method: 'GET',
-        dataType: 'json',
-        success: function (data) {
-            var r = '';
-            $(data).each(function (index, item) {
-                if (index == 0) {
-                    comboChangeContextChildForFirstTime(index, item.TypeID);
-                    $('#' + index + '_C').val(item.TypeID);
-                } else {
-                    addBtnClick();
-                    comboChangeContextChildForFirstTime(index, item.TypeID);
-                    $('#' + index + '_C').val(item.TypeID);
-                }
-                r = r + '#' + index + '_C' + " value = " + item.TypeID + "<br/>"
-            });
-        }
-    });
-}
-
 function getmySelectedCheckBoxText(checkboxContainer) {
     var r = "";
     var chkboxes = $('#' + checkboxContainer + ' input[type="checkbox"]:checked');
@@ -319,14 +484,4 @@ function validateSubmit() {
         btnsubmit.removeAttr("disabled");
     } else { btnsubmit.attr("disabled", "disabled"); }
 };
-function btnClearClicked() {
-    $('#Pubtran input[type="checkbox"]:checked').each(function () {
-        $(this).prop("checked", false);
-    });
-    $('.pubtrantxt').val('');
-    $('#divmChkBox input[type="checkbox"]:checked').each(function () {
-        $(this).prop("checked", false);
-    });
-    $('#divChkBoxResult').val('');
-    validateSubmit();
-};
+

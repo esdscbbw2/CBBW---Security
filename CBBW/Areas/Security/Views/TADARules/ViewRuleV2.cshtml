@@ -1,0 +1,309 @@
+﻿@using System.Globalization;
+@using CBBW.Areas.Security.ViewModel.Rule;
+@model TADARuleViewVM
+@{
+    ViewBag.Title = "View TA & DA Rule";
+}
+<div class="row newTable">
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(m => m.EffectiveDate)
+        @Html.HiddenFor(m => m.IsDelete)<div class="fixedElement">
+            <div class="col-md-12" style="position: relative;">
+                <div class="heading_text_btn mb-4 mt-4">
+                    <div class="leftButton">
+                        <button id="btnBack" type="button"
+                                class="btn btn-primary me-2">
+                            <i data-feather="arrow-left-circle"></i>
+                            Back
+                        </button>
+                        @if (Model.IsDelete)
+                        {
+                            <button id="btnDelete" type="button"
+                                    class="btn btn-primary me-2">
+                                <i data-feather="trash-2"></i>
+                                Delete
+                            </button>
+                            <button id="btnDeleteAll" type="button"
+                                    class="btn btn-primary me-2">
+                                <i data-feather="trash-2"></i>
+                                Delete All
+                            </button>
+                        }
+                    </div>
+                    <h2>TA & DA - RULES</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row d-flex align-items-center mb-3 ">
+                        <label class="col-form-label col-md-2">
+                            Effective From Date :
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" disabled class="form-control" value="@Model.EffectiveDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)" />
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center">
+                        <label class="col-form-label col-md-2">
+                            Entry Date  :
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" disabled class="form-control" value="@Model.TADARule.EntryDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)" />
+                        </div>
+                        <label class="col-form-label col-md-2">
+                            Time  :
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" disabled class="form-control" value="@Model.TADARule.EntryTime" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="bgColor  mb-4">
+                <ul>
+                    <li>
+                        1. Minimum Hours Of Tour Required To Get Half DA:
+                        <div class="form-group">
+                            <input type="text" disabled class="form-control" value="@Model.TADARule.MinHoursForHalfDA" />
+                        </div>
+                    </li>
+                    <li>
+                        2. Pay DA When Destination is More Than (KMS):
+                        <div class="form-group">
+                            <input type="text" disabled class="form-control" value="@Model.TADARule.MinKmsForDA" />
+                        </div>
+                    </li>
+                    <li>
+                        3. When Company Accommodation Available Lodging Expenses Allowed?
+                        <div class="form-group">
+                            <input type="text" disabled class="form-control" value="@(Model.TADARule.LodgingExpOnCompAcco?"Yes":"No")" />
+                        </div>
+                    </li>
+                    <li>
+                        4. Local Conveyance Eligible:
+                        <div class="form-group">
+                            <input type="text" disabled class="form-control" value="@(Model.TADARule.LocalConvEligibility?"Yes":"No")" />
+                        </div>
+                    </li>
+                    <li>
+                        5. On Deputation Staff Allowed To Go On Tour But Not Eligible For DA Where As Rest Of All
+                        Conditions Applicable:
+                        <div class="form-group">
+                            <input type="text" disabled class="form-control" value="@(Model.TADARule.DepuStaffDAEligibility?"Yes":"No")" />
+                        </div>
+                    </li>
+                    <li>
+                        6. DA & Extra DA Applicable To Designation “Driver” Or “Senior Driver” When On Tour As Saved In
+                        “Material Gate Pass (For
+                        Company Transport)” Shall Be Eligible When Return Trip Loaded With Goods More Than 85% Of
+                        The Total Vehicle Capacity.
+                        Otherwise Only Half Eligible DA For The Tour Is Payable:
+                        <div class="form-group">
+                            <input type="text" disabled class="form-control" value="@(Model.TADARule.ExtraDAApplicability?"Yes":"No")" />
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="bgColor mb-4">
+                <div class="col-md-12 form-sample">
+                    <div class="form-group">
+                        <label class="d-flex">Category Code & Name :<span></span></label>
+                        @if (Model.CategoryList != null)
+                        {
+                            @Html.DropDownListFor(m => m.SelectedCategory,
+                            new SelectList(Model.CategoryList, "ID", "DisplayText"),
+                            htmlAttributes: new
+                            {
+                                @class = "form-select pointer",
+                                onchange = "ServiceCategoryChangedFromView()"
+                            })
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mb-4">
+                <div class="d-flex justify-content-center mt-3">
+
+                    <button id="btnTransDetail"
+                            type="submit" name="Submit" value="TMDtl"
+                            class="btn btn-primary me-2"
+                            @*onclick="window.location.href='@Url.Action("CreateTransModeDtls", "TADARules", new { Area = "Security" })';"*@>
+                        Transport Mode - Details
+                    </button>
+
+                    <button id="btntadaParam"
+                            type="submit" name="Submit" value="TAParam"
+                            class="btn btn-primary"
+                            @*onclick="window.location.href='@Url.Action("CreateParam", "TADARules", new { Area = "Security" })';"*@>
+                        TA &amp; DA Parameters
+                    </button>
+                </div>
+            </div>
+
+            <div class="bgColor bg-transparent border-blue mt-4">
+                <ul style="list-style: none; padding: 0; font-size:28px;">
+                    <li>
+                        Are You Sure The Details Entered Are Correct & As Required?
+                        <select disabled="disabled" id="submitConfirmation"
+                                class="form-select " aria-label="Default select example">
+                            <option value="0">No</option>
+                            <option selected value="1">Yes</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    }
+</div>
+@section headers{
+    <style>
+        .inVisible {
+            display: none;
+        }
+
+        .border-blue {
+            border: solid 1px #aacdfd;
+        }
+
+        .btn-primary:disabled {
+            background-color: #e9ecef;
+            border-color: lightgray;
+            color: black;
+        }
+    </style>
+}
+@section scripts{
+    <script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
+    
+    <script>
+        $(document).ready(function () {
+            var effectiveDate = $('#EffectiveDate').val();            
+            $('#btnDelete').click(function () {
+                var STCodes = $('#SelectedCategory').val();
+                var STTypes = $('#SelectedCategory option:selected').toArray().map(item => item.text).join();
+                var x = '{"EffectiveDate":"' + effectiveDate
+                    + '","ServiceTypeCodes":"' + STCodes + '"}';
+                if (STCodes == '') {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Select Category To Delete Rule.',
+                        icon: 'question',
+                        customClass: 'swal-wide',
+                        buttons: {
+                            confirm: 'Ok'
+                        },
+                        confirmButtonColor: '#2527a2',
+                    });
+                } else {
+                    $.ajax({
+                        method: 'POST',
+                        url: '/Security/TADARules/RemoveRuleV2',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: x,
+                        success: function (data) {
+                            $(data).each(function (index, item) {
+                                if (item.bResponseBool == true) {
+                                    Swal.fire({
+                                        title: 'Confirmation Message',
+                                        text: "Rule Has Been Deleted For " + STTypes + ". Are You Sure Want To Go Back To List Page?",
+                                        icon: 'warning',
+                                        customClass: 'swal-wide',
+                                        confirmButtonText: "Yes",
+                                        cancelButtonText: "No",
+                                        cancelButtonClass: 'btn-cancel',
+                                        confirmButtonColor: '#2527a2',
+                                        showCancelButton: true,
+                                    }).then(callback);
+                                    function callback(result) {
+                                        if (result.value) {
+                                            var url = "/Security/TADARules/Index";
+                                            window.location.href = url;
+                                        } else {
+                                            var url = "/Security/TADARules/ViewRuleV2?EffectiveDate=" + effectiveDate + "&isDelete=true&isFromIndex=true";
+                                            window.location.href = url;
+                                        }
+                                    }
+                                }
+                                else {
+                                    Swal.fire({
+                                        title: 'Error',
+                                        text: 'Failed To Delete Rule.',
+                                        icon: 'question',
+                                        customClass: 'swal-wide',
+                                        buttons: {
+                                            confirm: 'Ok'
+                                        },
+                                        confirmButtonColor: '#2527a2',
+                                    });
+                                }
+                            });
+                        },
+                    });
+                }
+            });
+            $('#btnDeleteAll').click(function () {
+                var x = '{"EffectiveDate":"' + effectiveDate
+                    + '","ServiceTypeCodes":"ALL"}';
+                $.ajax({
+                    method: 'POST',
+                    url: '/Security/TADARules/RemoveRuleV2',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: x,
+                    success: function (data) {
+                        $(data).each(function (index, item) {
+                            if (item.bResponseBool == true) {
+                                Swal.fire({
+                                    title: 'Confirmation Message',
+                                    text: "Rule Has Been Deleted For All Categories Of Effective Date - ." + effectiveDate,
+                                    icon: 'warning',
+                                    customClass: 'swal-wide',
+                                    confirmButtonText: "OK",
+                                    confirmButtonColor: '#2527a2',
+                                }).then(callback);
+                                function callback(result) {
+                                    if (result.value) {
+                                        var url = "/Security/TADARules/Index";
+                                        window.location.href = url;
+                                    }
+                                }
+                            }
+                            else {
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: 'Failed To Delete Rule.',
+                                    icon: 'question',
+                                    customClass: 'swal-wide',
+                                    buttons: {
+                                        confirm: 'Ok'
+                                    },
+                                    confirmButtonColor: '#2527a2',
+                                });
+                            }
+                        });
+                    },
+                });
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#btnBack').click(function () {
+                $.ajax({
+                    url: "/Security/TADARules/BackButtonClicked",
+                    success: function (result) { window.location.href = result; }
+                });
+
+            });
+        });
+    </script>
+}

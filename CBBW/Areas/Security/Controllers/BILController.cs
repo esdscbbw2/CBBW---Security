@@ -163,9 +163,10 @@ namespace CBBW.Areas.Security.Controllers
                     model.NoOfDays = model.NoOfDays != 0 ? model.NoOfDays : 0;
                     model.PurposeOfVisit = model.PurposeOfVisit != null ? model.PurposeOfVisit : "NA";
                     model.EmpNo = model.EmployeeNo;
+                    model.IsVehicleProvided = model.IsVehicleProvided;
                     if (_iBIL.SetSetTADABillGeneration(model, ref pMsg))
                     {
-                        ViewBag.Msg = "Employee Number " + model.EmployeeCodeName + " Submited Successfully.";
+                        ViewBag.Msg = "Employee Number " + model.EmployeeCodeName + " Save Successfully.";
                     }
                     else { ViewBag.ErrMsg = "Updation Failed For Employee Number " + model.EmployeeCodeName; }
                    
@@ -183,7 +184,7 @@ namespace CBBW.Areas.Security.Controllers
             return View(model);
 
         }
-        public ActionResult Details(string NoteNumber = null)
+        public ActionResult Details(string NoteNumber = null, int CanDelete=0)
         {
             TADABillGeneration model = new TADABillGeneration();
             TADABillGeneration models = new TADABillGeneration();
@@ -196,6 +197,7 @@ namespace CBBW.Areas.Security.Controllers
             {
                 model = _iBIL.GetTADABillGenerationData(NoteNumber, "Na", 0, 1, ref pMsg);
             }
+            model.CanDelete = CanDelete;
             return View(model);
         }
         [HttpPost]
@@ -225,7 +227,7 @@ namespace CBBW.Areas.Security.Controllers
             {
                 ex.ToString();
             }
-            return View();
+            return View(models);
         }
         public ActionResult ApprovalIndex()
         {
@@ -639,7 +641,9 @@ namespace CBBW.Areas.Security.Controllers
                 Model.LocalConveyance = models.LocalConveyance;
                 Model.Lodging = models.Lodging;
                 Model.TotalExpenses = models.TotalExpenses;
-
+                Model.MaxLodgingExp = models.MaxLodgingExp;
+                Model.MaxLocalConv = models.MaxLocalConv;
+                Model.IsVehicleProvided = models.IsVehicleProvided;
                 Model.status = 2;
                 return Json(Model, JsonRequestBehavior.AllowGet);
             }

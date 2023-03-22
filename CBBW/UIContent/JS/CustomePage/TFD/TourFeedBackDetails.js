@@ -19,6 +19,7 @@ function ClearRowvalues(rowid) {
 function removeClonebtn() {
     var tblRow = removeClonebtn.caller.arguments[0].target.closest('.add-row');
     removeBtnClickFromCloneRow(tblRow, 'tbody2');
+    EnableAddBtn(tblRow, 'AddBtn');
     EnableSubmitBtn();
 };
 $(document).ready(function () {
@@ -84,7 +85,6 @@ function EnableAddBtn(tblRow, addBtnBaseID) {
 };
 function validatectrl(targetid, value, rowid) {
     var isvalid = false;
-
     switch (targetid) {
         case "ActionTaken":
             isvalid = validatectrl_YesNoCombo(value);
@@ -97,13 +97,17 @@ function validatectrl(targetid, value, rowid) {
             break;
         case "TourFeedBack":
             isvalid = validatectrl_ValidateLength(value);
-            if (value.length > 1 && WordCount(value) <= 100) { isvalid = true; }
+            if (value.length > 1 && WordCount(value) <= 100) {
+                isvalid = true;
+            }
             break;
 
     }
 
     return isvalid;
 };
+
+
 function validatectrl_YesNoCombo(value) {
 
     if (value * 1 >= 0) {
@@ -176,7 +180,6 @@ function SaveDataClicked() {
     });
 
 };
-
 async function getInitialData() {
     var rowid = 0;
     var NoteNumber = $('#NoteNumber');
@@ -227,3 +230,12 @@ async function getInitialData() {
         }
     });
 };
+
+function keypressCountWord(e) {
+    var target = keypressCountWord.caller.arguments[0].target;
+    var tblRow = target.closest('.add-row');
+    var targetCtrl = $(target).val();
+    if (targetCtrl.length > 1 && WordCount(targetCtrl) >= 100) {
+        $(target).preventTypying();
+    }
+}

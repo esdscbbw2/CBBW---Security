@@ -1,59 +1,27 @@
 ﻿@using CBBW.Areas.Security.ViewModel.Rule;
-@model TADARuleVM
+@model TADARuleViewVM
 @{
     ViewBag.Title = "Transport Mode Details";
 }
 <div class="row newTable">
     @using (Html.BeginForm())
     {
-        @Html.HiddenFor(m => m.IsTransBtn)
-        @Html.HiddenFor(m => m.IsParamBtn)
         @Html.HiddenFor(m => m.TADARule.EffectiveDate)
         @Html.HiddenFor(m => m.TADARule.EffectiveDateDisplay)
-        @Html.HiddenFor(m => m.TADARule.MinHoursForHalfDA)
-        @Html.HiddenFor(m => m.TADARule.MinKmsForDA)
-        @Html.HiddenFor(m => m.TADARule.LodgingExpOnCompAcco)
-        @Html.HiddenFor(m => m.TADARule.LocalConvEligibility)
-        @Html.HiddenFor(m => m.TADARule.DepuStaffDAEligibility)
-        @Html.HiddenFor(m => m.TADARule.ExtraDAApplicability)
-        @Html.HiddenFor(m => m.TADARule.CategoryIds)
-        @Html.HiddenFor(m => m.TADARule.CategoryText)
+        @Html.HiddenFor(m => m.IsDelete)        
 
         @Html.HiddenFor(m => m.TADARule.PublicTransIDs)
         @Html.HiddenFor(m => m.TADARule.PubTransClassIDs)
         @Html.HiddenFor(m => m.TADARule.CompanyTransIDs)
-
-        @Html.HiddenFor(m => m.TADARule.IsDAActualSpend)
-        @Html.HiddenFor(m => m.TADARule.IsLodgingAllowed)
-        @Html.HiddenFor(m => m.TADARule.Metro_DAPerDay)
-        @Html.HiddenFor(m => m.TADARule.City_DAPerDay)
-        @Html.HiddenFor(m => m.TADARule.Town_DAPerDay)
-        @Html.HiddenFor(m => m.TADARule.Metro_MaxLodgingExp)
-        @Html.HiddenFor(m => m.TADARule.City_MaxLodgingExp)
-        @Html.HiddenFor(m => m.TADARule.Town_MaxLodgingExp)
-        @Html.HiddenFor(m => m.TADARule.Metro_MaxLocalConv)
-        @Html.HiddenFor(m => m.TADARule.City_MaxLocalConv)
-        @Html.HiddenFor(m => m.TADARule.Town_MaxLocalConv)
         <div class="fixedElement">
             <div class="col-md-12" style="position: relative;">
                 <div class="heading_text_btn mb-4 mt-4">
                     <div class="leftButton">
-                        <button type="submit" name="Submit" value="back"
+                        <button id="btnBack" type="button"
                                 class="btn btn-primary me-2">
-                            @*onclick="window.location.href='tours_ta_da.html';"*@
                             <i data-feather="arrow-left-circle"></i>
                             Back
-                        </button>
-                        <button id="btnSubmit" disabled
-                                type="submit" name="Submit" value="create"
-                                class="btn btn-secondary me-2">
-                            <i data-feather="upload"></i>
-                            Submit
-                        </button>
-                        <button type="button" onclick="btnClearClicked()" class="btn btn-white">
-                            <i data-feather="x-circle"></i>
-                            Clear
-                        </button>
+                        </button>                        
                     </div>
                     <h2>TA & DA - RULES</h2>
                 </div>
@@ -162,20 +130,20 @@
                                 </td>
                                 <td>
                                     <div class="form-group">
-                                        <input id="PubTranText" type="text" 
+                                        <input id="PubTranText" type="text"
                                                class="form-control pubtrantxt alterID">
                                     </div>
                                 </td>
                                 <td>
                                     <span class="actionBtn">
-                                        <button id="AddBtn" type="button"
+                                        <button id="AddBtn" type="button" disabled
                                                 class="btn primaryLink alterID cloneBtn addBtn"
                                                 title="Add" data-toggle="tooltip" data-placement="top"
                                                 onclick="addCloneBtnClick()">
                                             <i data-feather="plus"></i>
                                         </button>
                                         &nbsp;&nbsp;
-                                        <button id="DeleteBtn" type="button"
+                                        <button id="DeleteBtn" type="button" disabled
                                                 class="btn secondaryLink inVisible alterID cloneBtn removeBtn"
                                                 title="Remove" data-toggle="tooltip" data-placement="top"
                                                 onclick="RemoveBtnClicked()">
@@ -260,17 +228,25 @@
 <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
 <script src="~/UIContent/JS/CustomePage/TADARule/TADATransModeUpdation.js"></script>
 <script>
+    $(document).ready(function () {
+        $('#btnBack').click(function () {
+            var effDate = $('#TADARule_EffectiveDate').val();
+            var url = "/Security/TADARules/ViewRuleV2?EffectiveDate=" + effDate + "&isDelete=" + $('#IsDelete').val();
+            window.location.href = url;
+        });
+        $('.form-check-input').each(function () {
+            $(this).attr('disabled','disabled');
+        });
+        $('.pubtrantxt').each(function () {
+            $(this).attr('disabled', 'disabled');
+        });
+        $('.ptcclass').each(function () {
+            $(this).attr('disabled', 'disabled');
+        });
+        $('.cloneBtn').each(function () {
+            $(this).attr('disabled', 'disabled');
+        });
+    });
+</script>
 
-</script>
-<script>
-    //$(document).ready(function () {
-    //    GetTransportTypes();
-    //    getallmySelectedCheckBoxText();
-    //    validateSubmit();
-    //    $('.mychkbox').click(function () {
-    //        getallmySelectedCheckBoxText();
-    //        validateSubmit();
-    //    });
-    //});
-</script>
 

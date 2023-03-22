@@ -5,7 +5,7 @@
 
 }
 
-<div class="container">
+<div class="">
     @using (Html.BeginForm("Details", "TFD", FormMethod.Post))
     {
         @Html.HiddenFor(x => x.tfdHdr.NoteNumber)
@@ -217,11 +217,9 @@
                         <ul style="list-style:none;">
                             <li style="font-size: 16px;">
                                 The “Tour Feed Back Details” Are Entered With The Best Of Knowledge, The Details Entered Are Correct & As Required:
-                                <select disabled class="form-select  content border-green" aria-label="Default select example" id="Required">
-                                    <option selected="" value="1">Yes</option>
+                               
+                                    <input type="text" class="form-control border-green" value="Yes" disabled="">
 
-
-                                </select>
                             </li>
                         </ul>
                     </div>

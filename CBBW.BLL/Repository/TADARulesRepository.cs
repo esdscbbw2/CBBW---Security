@@ -36,11 +36,28 @@ namespace CBBW.BLL.Repository
         }
         public bool SetTADARuleV2(TADARuleV2 data, ref string pMsg) 
         {
+            if (data != null) 
+            {
+                data.EntryDate = DateTime.Today;
+                data.EntryTime = DateTime.Now.ToString("hh:mm tt");
+            }
             return _tadaEntities.SetTADARuleV2(data, ref pMsg);
         }
         public List<CustomComboOptionsWithString> GetCatCodesForTADARuleView(DateTime EffectiveDate, ref string pMsg) 
         {
             return _tadaEntities.GetCatCodesForTADARuleView(EffectiveDate, ref pMsg);
+        }
+        public bool FinalSubmitTADARuleV2(DateTime EffectiveDate, ref string pMsg) 
+        {            
+            return _tadaEntities.FinalSubmitTADARuleV2(EffectiveDate, ref pMsg);
+        }
+        public TADARuleV2 GetTADARuleV2(DateTime EffectiveDate, string CategoryIDs, ref string pMsg) 
+        {
+            return _tadaEntities.GetTADARuleV2(EffectiveDate, CategoryIDs, ref pMsg);
+        }
+        public bool RemoveTADARuleV2(DateTime EffectiveDate, string CategoryIDs, ref string pMsg) 
+        {
+            return _tadaEntities.RemoveTADARuleV2(EffectiveDate, CategoryIDs, ref pMsg);
         }
 
 

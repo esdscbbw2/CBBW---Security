@@ -100,6 +100,8 @@ namespace CBBW.DAL.DBMapper
                         result.PurposeOfVisit = dr["PurposeOfVisit"].ToString();
                     if (!DBNull.Value.Equals(dr["PersonType"]))
                         result.PersonType = dr["PersonType"].ToString();
+                    if (!DBNull.Value.Equals(dr["IsVehicleProvided"]))
+                        result.IsVehicleProvided = bool.Parse(dr["IsVehicleProvided"].ToString());
                     result.ActualTourInDatestr = MyDBLogic.ConvertDateToString(result.ActualTourInDate);
                     result.ActualTourOutDatestr = MyDBLogic.ConvertDateToString(result.ActualTourOutDate);
 
@@ -204,8 +206,6 @@ namespace CBBW.DAL.DBMapper
                         result.ApprovalTime = dr["ApprovalTime"].ToString();
                     if (!DBNull.Value.Equals(dr["ApprovalReason"]))
                         result.ApprovalReason = dr["ApprovalReason"].ToString();
-
-
                     if (!DBNull.Value.Equals(dr["AEDAmount"]))
                         result.AEDAmount = float.Parse(dr["AEDAmount"].ToString());
                     if (!DBNull.Value.Equals(dr["ATAAmount"]))
@@ -247,6 +247,16 @@ namespace CBBW.DAL.DBMapper
                         result.RequisitionAmt = float.Parse(dr["RequisitionAmt"].ToString());
                     if (!DBNull.Value.Equals(dr["Remark"]))
                         result.Remark = dr["Remark"].ToString();
+                    if (!DBNull.Value.Equals(dr["MaxLocalConv"]))
+                        result.MaxLocalConv = int.Parse(dr["MaxLocalConv"].ToString());
+                    if (!DBNull.Value.Equals(dr["MaxLodgingExp"]))
+                        result.MaxLodgingExp = int.Parse(dr["MaxLodgingExp"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsVehicleProvided"]))
+                        result.IsVehicleProvided = bool.Parse(dr["IsVehicleProvided"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsApprovalSubmit"]))
+                        result.IsApprovalSubmit = bool.Parse(dr["IsApprovalSubmit"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsPaymenttSubmit"]))
+                        result.IsPaymenttSubmit = bool.Parse(dr["IsPaymenttSubmit"].ToString());
 
                     result.RequisitionDatestrDisplay =result.RequisitionDate.ToString("yyyy-MM-dd");
                     result.RequisitionDatestr = MyDBLogic.ConvertDateToString(result.RequisitionDate);

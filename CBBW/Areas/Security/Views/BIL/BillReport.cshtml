@@ -5,7 +5,8 @@
 
 }
 
-<div class="container">
+<div class="">
+    @Html.HiddenFor(x=>x.IsPaymenttSubmit)
     <div class="row newTable">
         <div class="fixedElement">
             <div class="col-md-12">
@@ -13,7 +14,7 @@
 
                     <h2>TA & DA Bill Statement & Payment – Report     </h2>
                     <div class="rightButton">
-                        <button type="button" class="btn btn-white" onclick="window.print()">
+                        <button type="button" id="Printbtn" disabled class="btn btn-white" onclick="window.print()">
                             <i data-feather="printer"></i>
                             Print / View
                         </button>

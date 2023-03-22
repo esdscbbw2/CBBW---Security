@@ -70,11 +70,11 @@ function ChangeEmployee(EmployeeNo) {
     $('#Deducted').makeDisable();
     
     if (EmployeeNo != '' && EmployeeNo != '-1') {
-       // var Active = GetInActiveInDD('EmployeeNo');
-       //// alert(Active);
+        var Active = GetInActiveInDD('EmployeeNo');
+       // alert(Active);
        // if (Active) {
        //     $('#SubmitBtn').makeEnabled();
-       // }
+       //}
         noteCtrl.isValid();
         $.ajax({
             url: '/BIL/GetTAdARuleData',
@@ -83,13 +83,11 @@ function ChangeEmployee(EmployeeNo) {
             dataType: 'json',
             success: function (data) {
                 $(data).each(function (index, item) {
-                   
                     var date = new Date(parseInt(item.ActualTourInDate.substr(6)));
-                    
                     if (date.getFullYear() != 0001) {
                         $('#NoteNumber').val(item.NoteNumber);
-                       
                     if (item.status == 1) {
+
                         $('#PersonTypetxt').val(item.PersonType);
                         $('#DesigCodeName').val(item.DesginationCodeName);
                         $('#DAAmount').val(item.DAAmount);
@@ -110,6 +108,12 @@ function ChangeEmployee(EmployeeNo) {
                         $('#TourFromTime').val(item.ActualTourInTime);
                         $('#TourToTime').val(item.ActualTourOutTime);
 
+                        if (item.IsVehicleProvided) {
+                            $('#TAAmount').attr('readonly', 'readonly');
+                        } else {
+                            $('#TAAmount').removeAttr('readonly', 'readonly');
+                        }
+                        $('#IsVehicleProvided').val(item.IsVehicleProvided);
                     }
                     else if (item.status == 2) {
                         
@@ -130,6 +134,14 @@ function ChangeEmployee(EmployeeNo) {
                         $('#Lodging').val(item.Lodging);
                         $('#TourFromTime').val(item.TourFromTime);
                         $('#TourToTime').val(item.TourToTime);
+                        $('#Lodging').attr('max', item.MaxLodgingExp);
+                        $('#LocalConveyance').attr('max', item.MaxLocalConv);
+                        if (item.IsVehicleProvided) {
+                            $('#TAAmount').attr('readonly', 'readonly');
+                        } else {
+                            $('#TAAmount').removeAttr('readonly', 'readonly');
+                        }
+                        $('#IsVehicleProvided').val(item.IsVehicleProvided);
                     }
                         $('#Deducted').makeEnabled();
                     }

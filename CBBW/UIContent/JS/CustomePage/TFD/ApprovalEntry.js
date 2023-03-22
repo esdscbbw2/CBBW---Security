@@ -252,3 +252,11 @@ function Btnclear() {
     $('#TFBD').makeDisable();
     Notenumberchanged($('#NoteNumber').val(''));
 }
+function keypressCountWord(e) {
+    var target = keypressCountWord.caller.arguments[0].target;
+    var tblRow = target.closest('.add-row');
+    var targetCtrl = $(target).val();
+    if (targetCtrl.length > 1 && WordCount(targetCtrl) >= 100) {
+        $(target).preventTypying();
+    }
+}

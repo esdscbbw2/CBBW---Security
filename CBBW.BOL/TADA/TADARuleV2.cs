@@ -11,6 +11,7 @@ namespace CBBW.BOL.TADA
         public DateTime EntryDate { get; set; }
         public string EntryTime { get; set; }
         public DateTime EffectiveDate { get; set; }
+        public string EffectiveDateDisplay { get; set; }
         public string RuleStatus { get; set; }
     }
     public class TADARuleV2: TADARuleForListing

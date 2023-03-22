@@ -11,8 +11,7 @@ namespace CBBW.Areas.Security.ViewModel.Rule
     {
         public TADARuleV2 TADARule { get; set; }
         public List<CustomCheckBoxOption> CategoryList { get; set; }
-        public string MaxDate { get; set; }
-        public string MinDate { get; set; }
+        public int IsSubmitActive { get; set; }
         public int IsParamBtn { get; set; }
         public int IsTransBtn { get; set; }
     }

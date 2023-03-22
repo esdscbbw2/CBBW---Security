@@ -98,7 +98,11 @@ namespace CBBW.BOL.BIL
         public float RequisitionAmt { get; set; }
         public string Remark { get; set; }
         public float NetAmount { get; set; }
-
+        public int MaxLodgingExp { get; set; }
+        public int MaxLocalConv { get; set; }
+        public bool IsVehicleProvided { get; set; }
+        public bool IsApprovalSubmit { get; set; }
+        public bool IsPaymenttSubmit { get; set; }
 
     }
 

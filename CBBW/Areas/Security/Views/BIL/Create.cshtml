@@ -5,7 +5,7 @@
 
 }
 
-<div class="container">
+<div class="">
     @using (Html.BeginForm("Create", "BIL", FormMethod.Post))
     {
         @Html.HiddenFor(x => x.EmpNo)
@@ -16,6 +16,7 @@
         @Html.HiddenFor(x => x.SubmitCount)
         @Html.HiddenFor(x => x.TourFromTime)
         @Html.HiddenFor(x => x.TourToTime)
+        @Html.HiddenFor(x => x.IsVehicleProvided)
 
         <div class="row newTable">
             <div class="fixedElement">
@@ -200,20 +201,28 @@ htmlAttributes: new
                                     </div>
                                     <div class="col-md-4">
                                         @Html.TextBoxFor(x => x.TAAmount,
-                                       new { @minlength = "0", @class = "form-control",
+                                       new
+                                            {
+                                                @minlength = "0",
+                                                @class = "form-control",
                                            onchange = "TotalExpance();",
                                            onkeyup = "TotalExpance();",
-                                           @type = "number" })
+                                           @type = "number"
+                                            })
                                     </div>
                                     <div class="col-md-2 col-form-label">
                                         <label>Local Conveyance:</label>
                                     </div>
                                     <div class="col-md-4">
                                         @Html.TextBoxFor(x => x.LocalConveyance,
-                                       new { @minlength = "0", @class = "form-control",
+                                       new
+                                            {
+                                                @minlength = "0",
+                                                @class = "form-control",
                                            onchange = "TotalExpance();",
                                            onkeyup = "TotalExpance();",
-                                           @type = "number" })
+                                           @type = "number"
+                                            })
 
                                     </div>
                                 </div>
@@ -223,10 +232,14 @@ htmlAttributes: new
                                     </div>
                                     <div class="col-md-4">
                                         @Html.TextBoxFor(x => x.Lodging,
-                                       new { @minlength = "0", @class = "form-control",
+                                       new
+                                            {
+                                                @minlength = "0",
+                                                @class = "form-control",
                                            onchange = "TotalExpance();",
                                            onkeyup = "TotalExpance();",
-                                           @type = "number" })
+                                           @type = "number"
+                                            })
                                     </div>
                                     <div class="col-md-2 col-form-label">
                                         <label>Total Expenses:</label>

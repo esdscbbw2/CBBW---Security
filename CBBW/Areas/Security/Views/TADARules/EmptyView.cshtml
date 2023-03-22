@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "View TA & DA Rule";
+}
+<div class="row newTable">
+    @using (Html.BeginForm())
+    {
+        <div class="fixedElement">
+            <div class="col-md-12" style="position: relative;">
+                <div class="heading_text_btn mb-4 mt-4">
+                    <div class="leftButton">
+                        <button id="btnBack" type="button"
+                                class="btn btn-primary me-2">
+                            <i data-feather="arrow-left-circle"></i>
+                            Back
+                        </button>
+                    </div>
+                    <h2>TA & DA - RULES</h2>
+                </div>
+            </div>
+        </div>
+        <div style="margin:30px;padding-bottom:200px">
+            <h1>No TADA Rule Found</h1>
+        </div>
+    }
+</div>
+@section headers{
+    <style>
+        .inVisible {
+            display: none;
+        }
+
+        .border-blue {
+            border: solid 1px #aacdfd;
+        }
+
+        .btn-primary:disabled {
+            background-color: #e9ecef;
+            border-color: lightgray;
+            color: black;
+        }
+    </style>
+}
+@section scripts{
+    <script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#btnBack').click(function () {
+                $.ajax({
+                    url: "/Security/TADARules/BackButtonClicked",
+                    success: function (result) { window.location.href = result; }
+                });
+
+            });
+        });
+    </script>
+}
+
