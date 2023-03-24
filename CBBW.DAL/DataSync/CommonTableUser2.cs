@@ -403,7 +403,7 @@ namespace CBBW.DAL.DataSync
                     dr["sActualTourInTime"] = obj.ActualTourInTime != null ? obj.ActualTourInTime : "NA";
                     dr["sActualTourOutTime"] = obj.ActualTourOutTime != null ? obj.ActualTourOutTime : "NA";
                     dr["bIsApproval"] = obj.IsApprovals == "1" ? true : false;
-                    dr["sApprovalRemark"] =obj.ApprovalRemark != null ? obj.ApprovalRemark : "NA";
+                    dr["sApprovalRemark"] =obj.ApprovalRemark != null && obj.ApprovalRemark !=""? obj.ApprovalRemark : "NA";
 
                     UDTable.Rows.Add(dr);
                 }

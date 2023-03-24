@@ -111,6 +111,10 @@ namespace CBBW.DAL.Entities
         {
             return _datasync.getLastEffectiveDatePartiallyFilled(RuleType, ref pMsg);
         }
+        public int GetMaxDaysOfTour(int ServiceTypeCode, ref string pMsg) 
+        {
+            return _datasync.GetMaxDaysOfTour(ServiceTypeCode, ref pMsg);
+        }
         #endregion
         public IEnumerable<TourRule> GetTourRules(ref string pMsg) 
         {

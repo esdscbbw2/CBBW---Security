@@ -9,7 +9,8 @@
     @Html.HiddenFor(x => x.tfdHdr.AuthEmployeeCode)
     @Html.HiddenFor(x => x.submitcount)
     @Html.HiddenFor(x => x.EmployeeNo)
-    @Html.HiddenFor(x=>x.NoteNo)
+    @Html.HiddenFor(x => x.NoteNo)
+    @Html.HiddenFor(x=>x.btnEnable)
     <div class="">
         <div class="row newTable" id="AllData">
             <div class="fixedElement">
@@ -80,11 +81,7 @@ htmlAttributes: new
                             </div>
 
                             <div class="row d-flex align-items-center mb-4">
-                                <label class="col-form-label col-md-4">
-                                    <div>
-                                        Ref. Employees Travelling  Schedule Details – ENTRY Note No.:
-                                    </div>
-                                </label>
+                                <label id="lblNoteDesc" class="col-form-label col-md-4">Ref NoteNumber</label>
                                 <div class="col-md-4">
                                     @Html.TextBoxFor(x => x.tfdHdr.RefNoteNumber, new { @class = "form-control", @readonly = "readonly" })
                                 </div>
@@ -181,7 +178,7 @@ htmlAttributes: new
                                         <label>Approved :</label>
                                     </div>
                                     <div class="col-md-2">
-                                        <select id="IsApproves" data-name="IsApproves" data-name-text="IsApprove"
+                                        <select disabled id="IsApproves" data-name="IsApproves" data-name-text="IsApprove"
                                                 onchange="ValidateControl()"
                                                 class="form-select is-invalid clear"
                                                 aria-label="Default select example">
@@ -201,7 +198,7 @@ htmlAttributes: new
                                         <label>Reason If not Approved :</label>
                                     </div>
                                     <div class="col-md-2">
-                                        <textarea maxlength="200" id="ApproveReason" onchange="ValidateControl()" data-name="ApproveReason" class="form-control is-invalid clear" cols="10" rows="2"></textarea>
+                                        <textarea disabled maxlength="200" id="ApproveReason" onchange="ValidateControl()" data-name="ApproveReason" class="form-control is-invalid clear" cols="10" rows="2"></textarea>
                                     </div>
                                 </div>
                             </form>
@@ -238,52 +235,11 @@ htmlAttributes: new
 }
 @section scripts{
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
-    <script src="~/UIContent/JS/CustomePage/TFD/ApprovalEntry.js"></script>
+
     <script>
-        function VisibleRows(EmpNo) {
-
-            $('.allperson').each(function () {
-                $(this).addClass('inVisible');
-            });
-            $('#EmployeeNo').val(EmpNo);
-            $('#DateTbl').removeClass('inVisible');
-            $('.' + EmpNo).each(function () {
-                $(this).removeClass('inVisible');
-            });
-            $('#HCVD').makeEnabled();
-            $('#TFBD').makeEnabled();
-        }
-        //function PersonSelectionChanged() {
-
-
-        //    var targetCtrl = $(PersonSelectionChanged.caller.arguments[0].target);
-        //    var mID = targetCtrl.attr('id');
-        //    var PType = $('#PersonType_' + mID).html();
-        //    var EmployeeNo = $('#AuthEmployeeCode_' + mID).html();
-        //    // var PName = $('#PersonName_' + mID).html();
-        //    var PersonCentre = $('#PersonCentre_' + mID).html();
-        //    var NoteNo = $('#tfdHdr_RefNoteNumber').val();
-
-        //    var TourDetailsDiv = $('#TourDiv');
-        //    TourDetailsDiv.removeClass('inVisible');
-
-        //    var dataSourceURL = '/TFD/DateWiseTourView?NoteNumbers=' + $.trim(NoteNo) + '&PersonType=' + $.trim(PType) + '&EmployeeNo=' + $.trim(EmployeeNo) + '&PersonCentre=' + $.trim(PersonCentre);
-        //    $.ajax({
-        //        url: dataSourceURL,
-        //        contentType: 'application/html; charset=utf-8',
-        //        type: 'GET',
-        //        dataType: 'html',
-        //        success: function (result) {
-        //            TourDetailsDiv.html(result);
-        //        },
-        //        error: function (xhr, status) {
-        //            TourDetailsDiv.html(xhr.responseText);
-        //        }
-        //    })
-        //};
-
-
+       
     </script>
+    <script src="~/UIContent/JS/CustomePage/TFD/ApprovalEntry.js"></script>
     <script>
         $('#btnBacks').click(function () {
             var url = "/Security/TFD/ApprovalIndex";

@@ -24,5 +24,6 @@ namespace CBBW.BOL.TFD
         public string IsApprovals { get; set; }
         public string ApprovalRemark { get; set; }
         public int IsApproved { get; set; }
+        public string LocationsCode { get; set; }
     }
 }

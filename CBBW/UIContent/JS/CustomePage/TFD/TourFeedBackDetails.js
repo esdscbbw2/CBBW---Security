@@ -29,8 +29,9 @@ $(document).ready(function () {
     })();
 });
 async function GetTourCategory() {
+    var RefNoteNumber=$('#RefNoteNumber').val();
     (async function () {
-        const r1 = await getMultiselectData('TourCategory', '/TFD/GetTourCategories');
+        const r1 = await getMultiselectData('TourCategory', '/TFD/GetTourCategories?NoteNumber=' + RefNoteNumber);
     })();
 };
 function GetCenterCode() {
@@ -59,9 +60,9 @@ function TourDateWiseDropdownvalue(rowid, targetval, x, selectedvalues) {
         
     }
 
-
+    var RefNoteNumber = $('#RefNoteNumber').val();
     $('#' + CCNaDiv).html('').addClass('inVisible');
-    getMultiselectDataWithSelectedValues(CCnamectrl, '/Security/EMC/GetLocationsFromTypes?TypeIDs=' + x, selectedvalues);
+    getMultiselectDataWithSelectedValues(CCnamectrl, '/Security/TFD/GetLocationsFromTypes?TypeIDs=' + x + '&NoteNumber=' + RefNoteNumber, selectedvalues);
      
 }
 function ValidateCloneRowCtrl() {
@@ -99,6 +100,9 @@ function validatectrl(targetid, value, rowid) {
             isvalid = validatectrl_ValidateLength(value);
             if (value.length > 1 && WordCount(value) <= 100) {
                 isvalid = true;
+            }else {
+
+                targetid.preventTypying();
             }
             break;
 
@@ -233,9 +237,10 @@ async function getInitialData() {
 
 function keypressCountWord(e) {
     var target = keypressCountWord.caller.arguments[0].target;
-    var tblRow = target.closest('.add-row');
     var targetCtrl = $(target).val();
-    if (targetCtrl.length > 1 && WordCount(targetCtrl) >= 100) {
+    if (WordCount(targetCtrl) >= 10) {
         $(target).preventTypying();
+    } else {
+        $(target).off('keypress');
     }
 }

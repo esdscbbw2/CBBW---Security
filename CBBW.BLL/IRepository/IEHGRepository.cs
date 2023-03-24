@@ -27,5 +27,6 @@ namespace CBBW.BLL.IRepository
         bool SetEHGHdrAppStatus(string NoteNumber, bool IsApproved, string ReasonForDisApproval,
             int ApproverID, ref string pMsg);
         List<CustomComboOptions> getDriverListForOfficeWork(string Notenumber, ref string pMsg);
+        int GetMaxDaysOfTour(int ServiceTypeCode, ref string pMsg);
     }
 }

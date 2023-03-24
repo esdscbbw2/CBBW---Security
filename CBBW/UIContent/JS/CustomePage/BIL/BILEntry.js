@@ -31,7 +31,19 @@ function Notenumberchanged(notenumber, selectedvalue) {
    
     var noteCtrl = $('#RefNoteNumber');
     $('#EmployeeNo').isInvalid();
-    
+    var lblNoteDesc = $('#lblNoteDesc');
+
+    var notetype = notenumber.substring(7, 10);
+    if (notetype == 'CTV') {
+        lblNoteDesc.html('Ref. “Company Transport” Vehicle Trip Schedule – ENTRY Note No.:');
+    }
+    else if (notetype == 'TFD') {
+        lblNoteDesc.html('Ref. Tour Information & Feed Back Details Note no.: ');
+    }
+    else if (notetype == 'DNR') {
+        lblNoteDesc.html('Ref. Driver Negative Point Recording – ENTRY Note No.:');
+    }
+    else { lblNoteDesc.html('Ref. Tour Information & Feed Back Details Note no.:'); }
     if (notenumber != '') {
         noteCtrl.isValid();
         $.ajax({
@@ -86,71 +98,90 @@ function ChangeEmployee(EmployeeNo) {
                     var date = new Date(parseInt(item.ActualTourInDate.substr(6)));
                     if (date.getFullYear() != 0001) {
                         $('#NoteNumber').val(item.NoteNumber);
-                    if (item.status == 1) {
+                        if (item.PersonType != null && item.DesginationCodeName != null) {
+                            if (item.status == 1) {
 
-                        $('#PersonTypetxt').val(item.PersonType);
-                        $('#DesigCodeName').val(item.DesginationCodeName);
-                        $('#DAAmount').val(item.DAAmount);
-                        $('#DADeducted').val(item.DADeducted);
-                        $('#EDAllowance').val(item.EAmount);
-                        $('#TourFromDateNTime').val(item.ActualTourInDatestr + "-" + item.ActualTourInTime);
-                        $('#TourToDateNTime').val(item.ActualTourOutDatestr + "'-" + item.ActualTourOutTime);
-                        $('#TourFromDate').val(item.ActualTourInDatestr);
-                        $('#TourToDate').val(item.ActualTourOutDatestr);
-                        $('#NoOfDays').val(item.TotalNoOfDays);
-                        $('#PurposeOfVisit').val(item.PurposeOfVisit);
-                        $('#TotalExpenses').val(item.EAmount);
-                        $('#Lodging').attr('max', item.MaxLodgingExp);
-                        $('#LocalConveyance').attr('max', item.MaxLocalConv);
-                        $('#TAAmount').val(0);
-                        $('#LocalConveyance').val(0);
-                        $('#Lodging').val(0);
-                        $('#TourFromTime').val(item.ActualTourInTime);
-                        $('#TourToTime').val(item.ActualTourOutTime);
+                                $('#PersonTypetxt').val(item.PersonType);
+                                $('#DesigCodeName').val(item.DesginationCodeName);
+                                $('#DAAmount').val(item.DAAmount);
+                                $('#DADeducted').val(item.DADeducted);
+                                $('#EDAllowance').val(item.EAmount);
+                                $('#TourFromDateNTime').val(item.ActualTourInDatestr + "-" + item.ActualTourInTime);
+                                $('#TourToDateNTime').val(item.ActualTourOutDatestr + "'-" + item.ActualTourOutTime);
+                                $('#TourFromDate').val(item.ActualTourInDatestr);
+                                $('#TourToDate').val(item.ActualTourOutDatestr);
+                                $('#NoOfDays').val(item.TotalNoOfDays);
+                                $('#PurposeOfVisit').val(item.PurposeOfVisit);
+                                $('#TotalExpenses').val(item.EAmount);
+                                $('#Lodging').attr('max', item.MaxLodgingExp);
+                                $('#LocalConveyance').attr('max', item.MaxLocalConv);
+                                $('#TAAmount').val(0);
+                                $('#LocalConveyance').val(0);
+                                $('#Lodging').val(0);
+                                $('#TourFromTime').val(item.ActualTourInTime);
+                                $('#TourToTime').val(item.ActualTourOutTime);
 
-                        if (item.IsVehicleProvided) {
-                            $('#TAAmount').attr('readonly', 'readonly');
+                                if (item.IsVehicleProvided) {
+                                    $('#TAAmount').attr('readonly', 'readonly');
+                                } else {
+                                    $('#TAAmount').removeAttr('readonly', 'readonly');
+                                }
+                                $('#IsVehicleProvided').val(item.IsVehicleProvided);
+                            }
+                            else if (item.status == 2) {
+
+                                $('#PersonTypetxt').val(item.PersonType);
+                                $('#DesigCodeName').val(item.DesginationCodeName);
+                                $('#DAAmount').val(item.DAAmount);
+                                $('#DADeducted').val(item.DADeducted);
+                                $('#EDAllowance').val(item.EAmount);
+                                $('#TourFromDateNTime').val(item.ActualTourInDatestr + "-" + item.TourFromTime);
+                                $('#TourToDateNTime').val(item.ActualTourOutDatestr + "-" + item.TourToDate);
+                                $('#TourFromDate').val(item.ActualTourInDatestr);
+                                $('#TourToDate').val(item.ActualTourOutDatestr);
+                                $('#NoOfDays').val(item.TotalNoOfDays);
+                                $('#PurposeOfVisit').val(item.PurposeOfVisit);
+                                $('#TotalExpenses').val(item.TotalExpenses);
+                                $('#TAAmount').val(item.TAAmount);
+                                $('#LocalConveyance').val(item.LocalConveyance);
+                                $('#Lodging').val(item.Lodging);
+                                $('#TourFromTime').val(item.TourFromTime);
+                                $('#TourToTime').val(item.TourToTime);
+                                $('#Lodging').attr('max', item.MaxLodgingExp);
+                                $('#LocalConveyance').attr('max', item.MaxLocalConv);
+                                if (item.IsVehicleProvided) {
+                                    $('#TAAmount').attr('readonly', 'readonly');
+                                } else {
+                                    $('#TAAmount').removeAttr('readonly', 'readonly');
+                                }
+                                $('#IsVehicleProvided').val(item.IsVehicleProvided);
+                            }
+                            $('#Deducted').makeEnabled();
                         } else {
-                            $('#TAAmount').removeAttr('readonly', 'readonly');
+                            AlertMessage();
                         }
-                        $('#IsVehicleProvided').val(item.IsVehicleProvided);
+                    } else {
+                        AlertMessage();
                     }
-                    else if (item.status == 2) {
-                        
-                        $('#PersonTypetxt').val(item.PersonType);
-                        $('#DesigCodeName').val(item.DesginationCodeName);
-                        $('#DAAmount').val(item.DAAmount);
-                        $('#DADeducted').val(item.DADeducted);
-                        $('#EDAllowance').val(item.EAmount);
-                        $('#TourFromDateNTime').val(item.ActualTourInDatestr + "-" + item.TourFromTime);
-                        $('#TourToDateNTime').val(item.ActualTourOutDatestr + "-" + item.TourToDate);
-                        $('#TourFromDate').val(item.ActualTourInDatestr);
-                        $('#TourToDate').val(item.ActualTourOutDatestr);
-                        $('#NoOfDays').val(item.TotalNoOfDays);
-                        $('#PurposeOfVisit').val(item.PurposeOfVisit);
-                        $('#TotalExpenses').val(item.TotalExpenses);
-                        $('#TAAmount').val(item.TAAmount);
-                        $('#LocalConveyance').val(item.LocalConveyance);
-                        $('#Lodging').val(item.Lodging);
-                        $('#TourFromTime').val(item.TourFromTime);
-                        $('#TourToTime').val(item.TourToTime);
-                        $('#Lodging').attr('max', item.MaxLodgingExp);
-                        $('#LocalConveyance').attr('max', item.MaxLocalConv);
-                        if (item.IsVehicleProvided) {
-                            $('#TAAmount').attr('readonly', 'readonly');
-                        } else {
-                            $('#TAAmount').removeAttr('readonly', 'readonly');
-                        }
-                        $('#IsVehicleProvided').val(item.IsVehicleProvided);
-                    }
-                        $('#Deducted').makeEnabled();
-                    }
+
                 });
             }
         });
 
 
     } else { noteCtrl.isInvalid(); }
+}
+function AlertMessage() {
+    Swal.fire({
+        title: 'Error',
+        text: 'TA DA Rule Is Not Prepared For That Employee.So System Cannot Proceed Further',
+        icon: 'question',
+        customClass: 'swal-wide',
+        buttons: {
+            confirm: 'Ok'
+        },
+        confirmButtonColor: '#2527a2',
+    });
 }
 
 function ValuesClear() {

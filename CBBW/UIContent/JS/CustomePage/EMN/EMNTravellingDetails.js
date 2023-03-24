@@ -222,7 +222,6 @@ function AddClonebtn() {
     var insrowid = $(insrow).attr('id');
     var addbtn = $('#AddBtn');
     if (insrowid > 0) { addbtn = $('#AddBtn_' + insrowid); }
-
     var rowid = CloneRowReturningID('tbody1', 'tbody2', $(insrow).attr('id') * 1, true, false);
     var preToDate = $(insrow).find('.todt').val();
     var curFromDate = CustomDateChange(preToDate,1, '/');
@@ -287,6 +286,8 @@ function RemoveAllDataFromDropdown(CenterCode, BranchCode) {
 function removeClonebtn() {
     var tblRow = removeClonebtn.caller.arguments[0].target.closest('.add-row');
     removeBtnClickFromCloneRow(tblRow, 'tbody2');
+    EnableAddBtn(tblRow, 'AddBtn');
+    EnableSubmitBtn();
 
 };
 function Datechange(evt) {

@@ -117,6 +117,7 @@ namespace CBBW.Areas.Security.Controllers
                         model.Notelist = _iTFD.GetNoteNumberList(user.CentreCode, 1, ref pMsg);
                         model.tfdHdr = _iTFD.getNewTFDNoteNumber(ref pMsg);
                         TempData["NewNoteNo"] = model.tfdHdr.NoteNumber;
+                       
                     }
                     TempData["HdrTFD"] = Vmhdr;
                 }
@@ -227,9 +228,7 @@ namespace CBBW.Areas.Security.Controllers
             TourFeedBackDetailsVM obj = new TourFeedBackDetailsVM();
             obj.NoteNumber = NoteNumber;
             obj.RefNoteNumber = RefNoteNumber;
-           
             ViewBag.BackUrl = TempData["Backurl"];
-
             ViewBag.BtnClear = "/Security/TFD/TourFeedBackDetails?NoteNumber=" + NoteNumber + "&RefNoteNumber=" + RefNoteNumber;
 
             return View(obj);
@@ -360,6 +359,7 @@ namespace CBBW.Areas.Security.Controllers
                     {
                         model.submitcount = 1;
                     }
+                    model.btnEnable = 1;
                     model.tfdHdr.NoteNumber = model.Notelist.Where(x => x.NoteNumber == NoteNumber).FirstOrDefault().NoteNumber;
                 }
                 
@@ -526,13 +526,45 @@ namespace CBBW.Areas.Security.Controllers
            
             return Json(modelvm, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult GetTourCategories(int PTval = 0)
+        public JsonResult GetTourCategories(int PTval = 0,string NoteNumber=null)
         {
             List<CustomComboOptions> result = new List<CustomComboOptions>();
             EHGMaster master = EHGMaster.GetInstance;
-            long[] ids = { 1, 2, 3 };
-            result = master.TourCategoryForNZB.Where(x => ids.Contains(x.ID)).ToList();
+            if (NoteNumber != null)
+            {
+                   var TourCat= _iTFD.GetENTTourCategroy(NoteNumber, ref pMsg);
+                   long[] Tourids = !string.IsNullOrEmpty(TourCat) ? TourCat.Split(',').Select(long.Parse).ToArray() : new long[] { };
+                   result = master.TourCategoryForNZB.Where(x => Tourids.Contains(x.ID)).ToList();
+            }
+            else {
+                long[] ids = { 1, 2, 3 };
+                result = master.TourCategoryForNZB.Where(x => ids.Contains(x.ID)).ToList();
+            }
+          
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetLocationsFromTypes(string TypeIDs,string NoteNumber=null)
+        {
+            IEnumerable<CustomComboOptions> result=null;
+            if (NoteNumber != null)
+            {
+                IEnumerable<TFDDateWiseTourData> modelobj = _iTFD.GetENTDateWiseTourData(NoteNumber, 0, 0, 0, 2, ref pMsg);
+                var LocationsCode = modelobj.Select(x=>x.LocationsCode).FirstOrDefault();
+                long[] Locids = !string.IsNullOrEmpty(LocationsCode) ? LocationsCode.Split(',').Select(long.Parse).ToArray() : new long[] { };
+                var locatioins = _iCTV.getLocationsFromType(TypeIDs, ref pMsg);
+                result = locatioins.Where(x => Locids.Contains(x.ID)).ToList();
+
+            }
+            else
+            {
+               result = _iCTV.getLocationsFromType(TypeIDs, ref pMsg);
+            }
+            
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+
+
         }
         #endregion
     }

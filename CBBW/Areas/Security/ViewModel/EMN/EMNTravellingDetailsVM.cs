@@ -20,8 +20,8 @@ namespace CBBW.Areas.Security.ViewModel.EMN
         public string AttachFile { get; set; }
         public int PersonType { get; set; }
         public string FromdateStr { get; set; }
-        public string TourFromdateStr { get; set; }
         public string TodateStr { get; set; }
+        public string TourFromdateStr { get; set; }
         public int btnSubmit { get; set; }
         public EMNTravellingDetails travDetails { get; set; }
         public List<EMNTravellingDetails> TravellingDetails { get; set; }

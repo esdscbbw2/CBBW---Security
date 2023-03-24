@@ -15,7 +15,21 @@
 function Notenumberchanged(notenumber, Empno) {
     $('#TourFB').makeDisable();
     var noteCtrl = $('#NoteNumber2');
-    if (notenumber != '') { noteCtrl.isValid(); 
+    var lblNoteDesc = $('#lblNoteDesc');
+
+    var notetype = notenumber.substring(7, 10);
+    if (notetype == 'EHG') {
+        lblNoteDesc.html('Ref. Employee’s Travelling  Details & Vehicle Allotment (By HG)  –  ENTRY Note No.');
+    }
+    else if (notetype == 'EZB') {
+        lblNoteDesc.html('Ref. Employees Travelling  Schedule Details – ENTRY (FOR NZB STAFF) Note No.');
+    }
+    else if (notetype == 'EMN') {
+        lblNoteDesc.html('Ref. Employees Travelling  Schedule Details – ENTRY (FOR MFG. CENTERS RECORDED AT NZB) Note No.');
+    }
+    else { lblNoteDesc.html('Ref. Employees Travelling  Schedule Details – ENTRY (FOR MFG. CENTERS) Note No.'); }
+    if (notenumber != '') {
+        noteCtrl.isValid();
     $.ajax({
         url: '/TFD/GetTFDHeaderData',
         method: 'GET',
@@ -65,18 +79,27 @@ async function GetTPDetails(notenumber) {
         success: function (result) {
             TPDetailsDiv.removeClass('inVisible');
             TPDetailsDiv.html(result);
-           
+            $('#1').prop('checked', true);
+            
+            VisibleRows($('#1').val(),1);
         },
         error: function (xhr, status) {
             TPDetailsDiv.html(xhr.responseText);
         }
     })
 };
-function VisibleRows(EmpNo) {
+function VisibleRows(EmpNo, mid) {
+    debugger;
     var TourDetailsDiv = $('#TourDiv');
     TourDetailsDiv.addClass('inVisible');
     var targetCtrl = $(VisibleRows.caller.arguments[0].target);
-    var mID = targetCtrl.attr('id');
+    var mID = 0;
+    if (mid != 1) {
+         mID = targetCtrl.attr('id');
+    } else {
+        mID = mid;
+    }
+   
     var PType = $('#PersonType_' + mID).html();
     var EmployeeNo = $('#AuthEmployeeCode_' + mID).html();
     // var PName = $('#PersonName_' + mID).html();

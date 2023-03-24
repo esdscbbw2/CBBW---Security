@@ -5,7 +5,7 @@
 
 }
 
-<div class="container">
+<div class="">
     @using (Html.BeginForm())
     {
         @Html.HiddenFor(x => x.PersonType);
@@ -91,7 +91,7 @@
                                                 <select id="PublicTransport"
                                                         onchange="ValidateControl()"
                                                         data-name="PublicTransport" class="form-select w-200 clear is-invalid" aria-label="Default select example">
-                                                    <option selected="" value="">Select</option>
+                                                    <option selected="" value="-1">Select</option>
                                                     <option value="1">Yes</option>
                                                     <option value="0">No </option>
                                                 </select>
@@ -130,7 +130,7 @@
                                                            data-name="SchFromDate"
                                                            onchange="ValidateControl()"
                                                            class="form-control pointer is-invalid clear CustomDateFormatCloneRow">
-                                                    <label id="lblSchFromDate" style="width:90px"
+                                                    <label id="lblSchFromDate" style="width:80px"
                                                            class="datelabel cleardate pointer alterID">Select Date</label>
 
                                                 </div>
@@ -210,7 +210,7 @@
                                                            onchange="ValidateCloneRowCtrl()"
                                                            data-name="SchToDate"
                                                            class="form-control pointer is-invalid alterID inValidTag CustomDateFormatCloneRow todt">
-                                                    <label id="lblSchToDate" style="width:80px"
+                                                    <label id="lblSchToDate" style="width:90px"
                                                            class="datelabel pointer alterID">Select Date</label>
                                                 </div>
                                             </td>

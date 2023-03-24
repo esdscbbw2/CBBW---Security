@@ -40,6 +40,7 @@ namespace CBBW.BOL.CTV
         public int TotalCount { get; set; }
         public string FromDateStr { get; set; }
         public string ToDateStr { get; set; }
+        public string EntryDatestr { get; set; }
         public int ApprovalFor { get; set; }
         public int IsDeleteBtn { get; set; }
         public int CBUID { get; set; }        

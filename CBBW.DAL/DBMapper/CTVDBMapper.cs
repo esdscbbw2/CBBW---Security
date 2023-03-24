@@ -190,7 +190,7 @@ namespace CBBW.DAL.DBMapper
 
                     hdr.FromDateStr = hdr.FromDate.ToString("dd-MM-yyyy");
                     hdr.ToDateStr = hdr.ToDate.ToString("dd-MM-yyyy");
-
+                    hdr.EntryDatestr = MyDBLogic.ConvertDateToString(hdr.EntryDate);
                     result.SchHdrData = hdr;
                 }
                 if (dt != null && dt.Rows.Count > 0) 

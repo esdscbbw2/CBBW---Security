@@ -63,17 +63,18 @@
                             </th>
                             <td class="text-center">
                                 <div class="qty mx-auto">
-                                    @Html.TextBoxFor(x => x.AEDAmount, new {@class = "form-control number", @onchange = "TotalExp();", @onkeypress = "return isNumber(event)" })
+                                    @Html.TextBoxFor(x => x.AEDAmount, new {@class = "form-control only-numeric", @onchange = "TotalExp();", @onkeypress = "return isNumber(event);", autocomplete = "off", onkeyup = "AEDAmount(this);" })
                                     <div class="qty_inc_dec">
-                                        <i id="AED" class="increment first-btn" onclick="AEDincrementQty()">
+                                        <div id="AED" class="increment" onclick="AEDincrementQty()">
+                                         
                                             <i data-feather="chevron-up">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
-                                            </i>
-                                        </i><i class="decrement first-btn" onclick="decrementQty(this);">
+                                               </i>
+                                        </div>
+                                        <div class="decrement first-btn" onclick="decrementQty(this);">
                                                 <i data-feather="chevron-down">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                                   
                                                 </i>
-                                        </i>
+                                        </div>
                                     </div>
                                 </div>
                             </td>
@@ -83,11 +84,10 @@
                                     <div class="qty_inc_dec">
                                         <i id="ATA" class="increment second-btn" onclick="AEDincrementQty();">
                                             <i data-feather="chevron-up ">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                                                
                                             </i>
                                         </i><i class="decrement second-btn" onclick="decrementQty(this)">
                                                 <i data-feather="chevron-down">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
                                                 </i>
                                         </i>
                                     </div>
@@ -100,11 +100,9 @@
                                     <div class="qty_inc_dec">
                                         <i id="ALoc" class="increment third-btn" onclick="AEDincrementQty()">
                                             <i data-feather="chevron-up">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
                                             </i>
                                         </i><i class="decrement third-btn" onclick="decrementQty(this);">
                                                 <i data-feather="chevron-down">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
                                                 </i>
                                         </i>
                                     </div>
@@ -116,11 +114,9 @@
                                     <div class="qty_inc_dec">
                                         <i id="ALod" class="increment four-btn" onclick="AEDincrementQty()">
                                             <i data-feather="chevron-up">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
                                             </i>
                                         </i><i class="decrement four-btn" onclick="decrementQty(this);">
                                                 <i data-feather="chevron-down">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
                                                 </i>
                                         </i>
                                     </div>
@@ -139,8 +135,9 @@
 
             <div class="col-md-12">
                 <div class="d-flex justify-content-center mt-2">
-                 
-                    <button type="button" id="TPDBtn" 
+
+
+                    <button type="button" id="TPDBtn"
                             onclick="TPDBtnClicked()"
                             class="btn btn-primary me-2">
                         Deductions From DA Detail

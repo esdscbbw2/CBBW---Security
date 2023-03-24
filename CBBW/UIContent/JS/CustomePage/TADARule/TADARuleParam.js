@@ -3,7 +3,7 @@
     window.location.href = url;
 };
 function btnClearClicked() {
-    $('#submitConfirmation').val('').isInvalid();
+    //$('#submitConfirmation').val('').isInvalid();
     $('#TADARule_IsDAActualSpend').val('').isInvalid();
     $('#TADARule_IsLodgingAllowed').val('').isInvalid();
     IsLodgingAllowedChanged();
@@ -110,7 +110,7 @@ $(document).ready(function () {
     IsLodgingAllowedChanged();
     IsActualSpendChanged();
 
-    if ($('#IsParamBtn').val() == 1) {
-        $('#submitConfirmation').val(1).isValid();
-    } else { $('#submitConfirmation').val('').isInvalid();}
+    //if ($('#IsParamBtn').val() == 1) {
+    //    $('#submitConfirmation').val(1).isValid();
+    //} else { $('#submitConfirmation').val('').isInvalid();}
 });

@@ -3,7 +3,7 @@
     var insrowid = $(insrow).attr('id');
     var addbtn = $('#AddBtn');
     if (insrowid > 0) { addbtn = $('#AddBtn_' + insrowid); }
-
+   
     var rowid = CloneRowReturningID('tbody1', 'tbody2', $(insrow).attr('id') * 1, true, false);
     $('#cmbDDPersonType_' + rowid).empty();
     $('#txtDDPersonType_' + rowid).val('').addClass('is-invalid');
@@ -520,8 +520,12 @@ async function getInitialData(CenterCode, status) {
 
                     }
                 if ($('#Btnsubmit').val() == 1) {
-                    
+                    $('#otherplace').removeAttr("disabled", "disabled");
+                    $('#carryLaptop').removeAttr("disabled", "disabled");
+                    $('#Policy').removeAttr("disabled", "disabled");
                     $("#Traveltbl").find("input,button,textarea,select").attr("disabled", "disabled");
+                
+           
                     $('#SaveTP').makeDisable();
 
                 }
@@ -548,7 +552,6 @@ $('#btnClear').click(function () {
     EnableTravellingBtn();
 
 });
-
 function CenterCNChanged() {
     var target = CenterCNChanged.caller.arguments[0].target;
     var targetCtrl = $(target);

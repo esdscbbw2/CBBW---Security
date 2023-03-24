@@ -44,9 +44,14 @@
                 </div>
                 <div class="col-md-12 d-flex justify-content-between">
                     <div class="text-left pt-2 pb-2">
-                        <button type="button" class="btn btn-light-green" onclick="fireSweetAlert()">
+                        <button id="btnScan" type="button" class="btn btn-light-green @(string.IsNullOrEmpty(Model.etsHeader.AttachFile)?"":"inVisible")" 
+                                onclick="fireSweetAlert()">
                             Scan & Attach
                             “Travelling Request Form”
+                        </button>
+                        <button id="btnScanView" type="button" class="btn btn-light-blue @(string.IsNullOrEmpty(Model.etsHeader.AttachFile)?"inVisible":"")"
+                                onclick="btnScanViewClicked()">
+                            View Attached “Travelling Request Form”
                         </button>
                     </div>
                     <div class="text-right pt-2 pb-2">
@@ -359,6 +364,25 @@
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
     <script src="~/UIContent/JS/CustomePage/ETS/ETSEntry.js"></script>
     <script>
+        function btnScanViewClicked() {
+            var filename = $('#etsHeader_AttachFile').val();
+            var filepath = "/Upload/Forms/" + filename;
+            if (filename != '') {
+                window.open(filepath);
+            } else {
+                Swal.fire({
+                    title: 'No Files Found.',
+                    text: 'Unable To Find Uploaded File.',
+                    icon: 'error',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        confirm: 'Ok'
+                    },
+                    confirmButtonColor: '#2527a2',
+                });
+            }
+
+        };
         function fireSweetAlert() {
             Swal.fire({
                 title: 'Attach Travelling Request Form',
@@ -394,6 +418,8 @@
                                 $(response).each(function (index, item) {
                                     if (item.ResponseStat == 1) {
                                         $('#etsHeader_AttachFile').val(item.FileName);
+                                        $('#btnScan').addClass('inVisible');
+                                        $('#btnScanView').removeClass('inVisible');
                                         var filepath = "/Upload/Forms/" + item.FileName;
                                         window.open(filepath);
                                     }

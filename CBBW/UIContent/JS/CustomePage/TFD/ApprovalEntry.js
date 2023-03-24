@@ -1,16 +1,23 @@
 ﻿$(document).ready(function () {
     allvalclear();
-
     $('#NoteNumber').change(function () {
         Notenumberchanged($(this).val());
+        $('#TFBD').makeDisable();
+        $('#HCVD').makeDisable();
     });
     Notenumberchanged($('#NoteNumber').val());
     $('#NoteNo').val($('#NoteNumber').val())
     var btnDisplays = $('#submitcount').val();
     if (btnDisplays > 0) {
         $('#NoteNumber').makeDisable();
+        $('#IsApproves').removeAttr('disabled', 'disabled');
+        $('#ApproveReason').removeAttr('disabled', 'disabled');
     } else {
         $('#NoteNumber').makeEnabled();
+    }
+    var btnenable = $('#btnEnable').val();
+    if (btnenable==1) {
+        $('#TFBD').makeEnabled();
     }
 });
 function allvalclear() {
@@ -25,10 +32,11 @@ function allvalclear() {
     $('#tfdHdr_PurposeOfVisit').val('');
     $('#tfdHdr_AuthEmployeeCode').val('');
 }
-
 function Notenumberchanged(notenumber) {
   //  $('#TourFB').makeDisable();
     var noteCtrl = $('#NoteNumber');
+    $('#NoteNo').val(notenumber);
+    var lblNoteDesc = $('#lblNoteDesc');
     var selectedvalue = 0;
     if (notenumber != '') {
        
@@ -39,18 +47,32 @@ function Notenumberchanged(notenumber) {
             dataType: 'json',
             success: function (data) {
                 $(data).each(function (index, item) {
+                    var notetype = item.tfdHdr.RefNoteNumber.substring(7, 10);
+                    if (notetype == 'EHG') {
+                        lblNoteDesc.html('Ref. Employee’s Travelling  Details & Vehicle Allotment (By HG)  –  ENTRY Note No.');
+                    }
+                    else if (notetype == 'EZB') {
+                        lblNoteDesc.html('Ref. Employees Travelling  Schedule Details – ENTRY (FOR NZB STAFF) Note No.');
+                    }
+                    else if (notetype == 'EMN') {
+                        lblNoteDesc.html('Ref. Employees Travelling  Schedule Details – ENTRY (FOR MFG. CENTERS RECORDED AT NZB) Note No.');
+                    }
+                    else { lblNoteDesc.html('Ref. Employees Travelling  Schedule Details – ENTRY (FOR MFG. CENTERS) Note No.'); }
+
                     $('#tfdHdr_EntryDatestr').val(item.tfdHdr.EntryDatestr);
                     $('#tfdHdr_EntryTime').val(item.tfdHdr.EntryTime);
                     $('#tfdHdr_RefNoteNumber').val(item.tfdHdr.RefNoteNumber);
                     $('#tfdHdr_AuthEmployeeName').val(item.tfdHdr.AuthEmployeeName);
                     $('#tfdHdr_EntEntryDatestr').val(item.tfdHdr.EntEntryDatestr);
-                    $('#tfdHdr_EntEntryTime').val(item.tfdHdr.EntEntryTime);
+                    var str = item.tfdHdr.EntEntryTime;
+                    var lastIndex = str.lastIndexOf(".");
+                    str = str.substring(0, lastIndex);
+                    $('#tfdHdr_EntEntryTime').val(str);
                     $('#tfdHdr_TourFromDatestr').val(item.tfdHdr.TourFromDatestr);
                     $('#tfdHdr_TourToDatestr').val(item.tfdHdr.TourToDatestr);
                     $('#tfdHdr_PurposeOfVisit').val(item.tfdHdr.PurposeOfVisit);
                     $('#tfdHdr_AuthEmployeeCode').val(item.tfdHdr.AuthEmployeeCode);
                     noteCtrl.isValid();
-                    // $('#TourFB').makeEnabled();
                     (async function () {
                         const r2 = await GetTPDetails(item.tfdHdr.RefNoteNumber, item.tfdHdr.AuthEmployeeCode);
                     })();
@@ -74,9 +96,10 @@ async function GetTPDetails(notenumber,empno) {
         success: function (result) {
             TPDetailsDiv.removeClass('inVisible');
             TPDetailsDiv.html(result);
+            $('#1').prop('checked', true);
             (async function () {
                 const r6 = await GetDateWiseTour(notenumber, empno);
-            })();
+            })(); 
         },
         error: function (xhr, status) {
             TPDetailsDiv.html(xhr.responseText);
@@ -98,6 +121,9 @@ async function GetDateWiseTour(notenumber, empno) {
         success: function (result) {
             TourDetailsDiv.removeClass('inVisible');
             TourDetailsDiv.html(result);
+            (async function () {
+                const r8 = await VisibleRows($('#1').val());
+            })();
         },
         error: function (xhr, status) {
             TourDetailsDiv.html(xhr.responseText);
@@ -110,7 +136,6 @@ function SaveDataClicked() {
     var NoteNumber = $('#NoteNumber').val();
     var TravD = getRecordsFromTableV2('DateTbl');
     var x = '{"ApproveReason":"' + ApproveReason + '","IsApproves":"' + IsApproves + '","NoteNumber":"' + NoteNumber + '","TFdDateWise":' + TravD + '}';
-  //  alert(x);
     $.ajax({
         method: 'POST',
         url: '/TFD/SetFinalApprovalSubmit',
@@ -239,6 +264,8 @@ function EnableSubmitBtn() {
     if (z <= 0 && btn == 1) {
         SubmitBtn.makeEnabled();
     }
+
+   
 };
 function Btnclear() {
     allvalclear();
@@ -259,4 +286,16 @@ function keypressCountWord(e) {
     if (targetCtrl.length > 1 && WordCount(targetCtrl) >= 100) {
         $(target).preventTypying();
     }
+}
+async function VisibleRows(EmpNo) {
+    $('.allperson').each(function () {
+        $(this).addClass('inVisible');
+    });
+    $('#EmployeeNo').val(EmpNo);
+    $('#DateTbl').removeClass('inVisible');
+    $('.'+EmpNo).each(function () {
+        $(this).removeClass('inVisible');
+    });
+    $('#HCVD').makeEnabled();
+ //   $('#TFBD').makeEnabled();
 }

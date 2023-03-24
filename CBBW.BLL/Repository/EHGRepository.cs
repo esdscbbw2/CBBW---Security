@@ -16,6 +16,7 @@ namespace CBBW.BLL.Repository
     {
         string NotePattern = "200002-EHG-" + DateTime.Today.ToString("yyyyMMdd") + "-";
         MasterEntities _MasterEntities;
+        TourEntities _TourEntities;
         UserRepository _user;
         UserInfo user;
         EHGEntities _EHGEntities;
@@ -23,6 +24,7 @@ namespace CBBW.BLL.Repository
         {
             _MasterEntities = new MasterEntities();
             _EHGEntities = new EHGEntities();
+            _TourEntities = new TourEntities();
             _user = new UserRepository();
             user = _user.getLoggedInUser();
         }
@@ -145,6 +147,10 @@ namespace CBBW.BLL.Repository
         public List<CustomComboOptions> getDriverListForOfficeWork(string Notenumber, ref string pMsg) 
         {
             return _EHGEntities.getDriverListForOfficeWork(Notenumber, ref pMsg);
+        }
+        public int GetMaxDaysOfTour(int ServiceTypeCode, ref string pMsg)
+        {
+           return _TourEntities.GetMaxDaysOfTour(ServiceTypeCode,ref pMsg);
         }
     }
 }

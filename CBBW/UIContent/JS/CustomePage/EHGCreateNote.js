@@ -48,6 +48,7 @@ function validatectrl(targetid, value) {
             break;
         case "FromDate":
             isvalid = validatectrl_ValidateLength(value);
+            //alert(isvalid);
             break;
         case "FromTime":
             isvalid = validatectrl_ValidateLength(value);
@@ -71,7 +72,14 @@ function validatectrl(targetid, value) {
         case "FromdateForMang":
             if (value != '') {
                 if ($('#lblFromdateForMang').html() == 'Select Date') { isvalid = false; }
-                else { isvalid = true; }
+                else {
+                    isvalid = true;
+                    var maxdays = $('#MaxDaysOfTourForEmp').val();
+                    var mtdt = CustomDateChangeV2(value, maxdays);
+                    $('#ToDateForMang').attr('max', mtdt).attr('min', value);
+                    $('#ToDateForMang').val('').isInvalid();
+                    $('#lblToDateForMang').html('Select Date');
+                }
                 $('#ActualTOutDtForMang').html(ChangeDateFormat(value));
             }
             break;
@@ -84,7 +92,7 @@ function validatectrl(targetid, value) {
         case "ToDateForMang":
             if (value != '') {
                 var fromdate = $('#FromdateForMang').val();
-                isvalid = CompareDate(fromdate, 0, value, 0);                
+                isvalid = CompareDateV2(fromdate, 0, value, 0);
                 $('#ReTInDtForMang').html(ChangeDateFormat(value));
                 if (!isvalid) { $('#ToDateForMang').prop('title', 'To Date Should Be Latter Than From Date'); }
             }
@@ -98,6 +106,14 @@ function validatectrl(targetid, value) {
         case "DriverNoForManagement":
             if (value >= 1) { isvalid = true; }
             break;
+    }
+    
+    if (targetid == 'AuthorisedEmpNoForManagement' && isvalid) {
+        LockDiv('sManagementDiv');
+        //$('#AuthorisedEmpNoForManagement').removeAttr('disabled');
+    }
+    else if (targetid == 'AuthorisedEmpNoForManagement' && !isvalid) {
+        UnLockDiv('sManagementDiv');
     }
     return isvalid;
 };
@@ -317,24 +333,46 @@ function ValidateCloneRowCtrl() {
     var targetCtrl = $(target);
     var targetid = targetCtrl.attr('id');
     var fdtCtrl = $('#FromDate');
-    if (targetid.indexOf('_') >= 0) { targetid = targetid.split('_')[0]; fdtCtrl = $('#FromDate_' + $(tblRow).attr('id')); }
+    var tdtCtrl = $('#ToDate');
+    var lbltdtCtrl = $('#lblToDate');
+    if (targetid.indexOf('_') >= 0) {
+        targetid = targetid.split('_')[0];
+        fdtCtrl = $('#FromDate_' + $(tblRow).attr('id'));
+        tdtCtrl = $('#ToDate_' + $(tblRow).attr('id'));
+        lbltdtCtrl = $('#lblToDate_' + $(tblRow).attr('id'));
+    }
     var isvalid = validatectrl(targetid, targetCtrl.val());
     //for todate>fromdate validation
     if (targetid == 'ToDate') {
-        isvalid = CompareDate(fdtCtrl.val(), 0, targetCtrl.val(), 0);        
+        isvalid = CompareDateV2(fdtCtrl.val(), 0, targetCtrl.val(), 0);
+    }
+    
+    if (targetid == 'FromDate' && isvalid) {
+        var maxdays = $('#MaxDaysOfTourForEmp').val();
+        var mtdt = CustomDateChangeV2(targetCtrl.val(), maxdays);
+        tdtCtrl.attr('max', mtdt).attr('min', targetCtrl.val());
+        tdtCtrl.val('').isInvalid();
+        lbltdtCtrl.html('Select Date');
     }
     if (isvalid) { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
     EnableAddBtn(tblRow, 'AddBtn');
     EnableDateWiseTourBtn();
     EnableSubmitBtn();    
 };
-function EnableAddBtn(tblRow,addBtnBaseID) {
+function EnableAddBtn(tblRow, addBtnBaseID) {
+    var authempCtrl=$('#DDAuthorisedEmpForWork');
     var tblrow = $(tblRow);
     var rowid = tblrow.attr('id')
     if (rowid != 0) { addBtnBaseID = addBtnBaseID + '_' + rowid; }
     var addBtnctrl = $('#' + addBtnBaseID);
-    if (tblrow.find('.is-invalid').length > 0)
-    { addBtnctrl.makeDisable(); } else { addBtnctrl.makeEnabled(); }
+    if (tblrow.find('.is-invalid').length > 0) {
+        addBtnctrl.makeDisable();
+        authempCtrl.makeDisable();
+    }
+    else {
+        addBtnctrl.makeEnabled();
+        authempCtrl.makeEnabled();
+    }
     //alert(rowid + ' - ' + addBtnBaseID+' - '+tblrow.find('.is-invalid').length);
     EnableDateWiseTourBtn();
 };
@@ -445,18 +483,37 @@ function DDAuthorisedEmpForWorkChanged() {
         $('#ehgHeader_AuthorisedEmployeeName').val(targetCtrl.val());
         //$('#AuthorisedEmpNo').val(targetCtrl.val());
         targetCtrl.isValid();
-    } else { targetCtrl.isInvalid(); }
+        LockDiv('sOfficeworkDiv');
+        //targetCtrl.removeAttr('disabled');
+    }
+    else {
+        targetCtrl.isInvalid();
+        UnLockDiv('sOfficeworkDiv');
+    }
     EnableDateWiseTourBtn();
 };
 function addOfficeWorkCloneBtnClick() {
+    //var mtargetCtrl = $(addOfficeWorkCloneBtnClick.caller.arguments[0].target);
     var insrow = addOfficeWorkCloneBtnClick.caller.arguments[0].target.closest('.add-row');
+    var sRowid = $(insrow).attr('id');
+    var frmdtlblSource = $('#lblFromDate');
+    var btnAdd = $('#AddBtn');
+    if (sRowid > 0) {
+        frmdtlblSource = $('#lblFromDate_' + sRowid);
+        btnAdd = $('#AddBtn_' + sRowid);
+    }
     var rowid=CloneRowReturningID('tbody3', 'tbody4', $(insrow).attr('id') * 1, true, false);
     $('#PurposeOfVisit_' + rowid).val('');
     $('#cmbDDPersonType_' + rowid).empty();
     $('#ToDate_' + rowid).val('');
-    $('#FromDate_' + rowid).val('');
+    //$('#FromDate_' + rowid).val('');
+    $('#lblFromDate_' + rowid).html(frmdtlblSource.html());
     $('#FromTime_' + rowid).val('');
     $('#txtDDPersonType_' + rowid).val('');
+    $('#FromDate_' + rowid).isValid();
+    $('#FromDate_' + rowid).attr('disabled', 'disabled');
+    $('#DDAuthorisedEmpForWork').attr('disabled', 'disabled');
+    btnAdd.attr('disabled', 'disabled');
     EnableDateWiseTourBtn();
 };
 function removeOfficeWorkCloneBtnClick() {
@@ -464,6 +521,10 @@ function removeOfficeWorkCloneBtnClick() {
     removeBtnClickFromCloneRow(tblRow, 'tbody4');
     UpdateAuthorisedPersonForOfficeWork('Select Authorized Person');
     EnableDateWiseTourBtn();
+    $('#DDAuthorisedEmpForWork').removeAttr('disabled');
+    $('#OficeWorkTbl tr:last').find('button').each(function () {
+        $(this).makeEnabled();
+    });
 };
 function VehicleTypeChanged() {
     var POACtrl = $('#for_LV');
@@ -642,7 +703,7 @@ async function getInitialDataForTravelingPerson() {
         success: function (data) {
             $(data).each(function (index, item) {
                 if (index > 0) {                    
-                    rowid = CloneRowReturningID('tbody3', 'tbody4', index-1, true, true);
+                    rowid = CloneRowReturningID('tbody3', 'tbody4', index-1, true, false);
                     persontypeCtrl=$('#DDPersonType_' + rowid);
                     cmbpersonCtrl = $('#cmbDDPersonType_' + rowid);
                     txtpersonCtrl = $('#txtDDPersonType_' + rowid);
@@ -697,10 +758,10 @@ async function getInitialDataForTravelingPerson() {
                         cmbpersonCtrl.addClass('inVisible').removeClass('pickPersonName').clearValidateClass();
                         break;
                 }
-                cmbpersonCtrl.isValid();
-                addbtnCtrl.makeEnabled();
+                cmbpersonCtrl.isValid();                
                 EnableDateWiseTourBtn();
             });
+            addbtnCtrl.makeEnabled();
         }
     });
 };

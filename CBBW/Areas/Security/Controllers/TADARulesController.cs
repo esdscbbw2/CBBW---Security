@@ -295,8 +295,15 @@ namespace CBBW.Areas.Security.Controllers
         public JsonResult GetCategoryAvblCount(string EffectiveDate)
         {
             int result = 1;
-            List<CustomCheckBoxOption> obj1=_iTADARules.GetCatCodesForTADARule(DateTime.Parse(EffectiveDate), ref pMsg);
-            result=obj1.Where(o => o.IsSelected == false).Count();
+            try
+            {
+                if (!string.IsNullOrEmpty(EffectiveDate))
+                {
+                    List<CustomCheckBoxOption> obj1 = _iTADARules.GetCatCodesForTADARule(DateTime.Parse(EffectiveDate), ref pMsg);
+                    if (obj1 != null && obj1.Count > 0) { result = obj1.Where(o => o.IsSelected == false).Count(); }
+                }
+            }
+            catch { }     
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetRuleData(string EffectiveDate)

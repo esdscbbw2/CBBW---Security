@@ -236,5 +236,21 @@ namespace CBBW.DAL.Entities
             return result;
         }
 
+        public string GetENTTourCategroy(string NoteNumber, ref string pMsg)
+        {
+            string result = null;
+            try
+            {
+                dt = _datasync.GetENTTourCategroy(NoteNumber, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    if (!DBNull.Value.Equals(dt.Rows[0]["TourCategoryCodes"]))
+                        result = dt.Rows[0]["TourCategoryCodes"].ToString();
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
+
     }
 }

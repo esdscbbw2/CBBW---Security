@@ -255,7 +255,6 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-
         public DataTable SetTFDFeedBackApproval(string NoteNumber, List<TFDTourFBApproval> dtldata, ref string pMsg)
         {
             try
@@ -274,7 +273,6 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-
         public DataTable SetTFDDateWiseTourData(string NoteNumber,bool IsApprove,string ApproveReason, List<TFDDateWiseTourData> dtldata, ref string pMsg)
         {
             try
@@ -315,6 +313,23 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = status;
 
                 using (SQLHelper sql = new SQLHelper("[TFD].[getTFDDateWiseTourData]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable GetENTTourCategroy(string NoteNumber, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[1];
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
+                para[paracount++].Value = NoteNumber;
+               
+
+                using (SQLHelper sql = new SQLHelper("[TFD].[getENTTourCategoryNlocations]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataTable(para, ref pMsg);
                 }

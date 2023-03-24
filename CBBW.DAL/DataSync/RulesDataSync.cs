@@ -153,7 +153,17 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-
+        public int GetMaxDaysOfTour(int ServiceTypeCode,ref string pMsg) 
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("SELECT [RUL].[GetMaxDaysOfTour](" + ServiceTypeCode + ")", CommandType.Text))
+                {
+                    return int.Parse(sql.ExecuteScaler(ref pMsg).ToString());
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return 0; }
+        }
 
 
 

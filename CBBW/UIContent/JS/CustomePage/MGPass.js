@@ -88,10 +88,16 @@ function ActivateOutbtn(notenumber) {
     });
 };
 function btnClearClicked() {
-    debugger;
+    var btnOut = $('#btnCMOD');
+    var btnIn = $('#btnCMID');
     $('.canclear').each(function () {
         $(this).val('');
+        $('#NoteNo').isInvalid();
+        $('#driversame').isInvalid();
+        $('#vehicledriver').isInvalid();
     });
+    btnOut.makeDisable();
+    btnIn.makeDisable();
     //$('#submitConfirmation').removeClass('is-valid').addClass('is-invalid');
     //$('#Vehicleno').removeClass('is-valid').addClass('is-invalid');
     //$('#divErrorLVS').addClass('inVisible');

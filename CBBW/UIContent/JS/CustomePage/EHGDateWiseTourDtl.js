@@ -1,4 +1,17 @@
-﻿function RemoveBtnClicked() {
+﻿function GetCompleteDateRangeStat() {
+    var ri = 0; var r = 0;
+    var fd = '';var td = '';
+    $('.rDate').each(function () {
+        that = $(this);
+        mdt = that.html();
+        ri += 1;
+        if (r > 0 && ri == 1) { fd = mdt; }
+        if (ri == 2) { ri = 0; td = mdt; }
+        alert(CustomDateChange(fd,1,'/'));
+        r += 1;
+    });
+};
+function RemoveBtnClicked() {
     var tblRow = RemoveBtnClicked.caller.arguments[0].target.closest('.add-row');
     removeBtnClickFromCloneRow(tblRow, 'tbody2');
     EnableSubmitBtn();
@@ -142,6 +155,7 @@ function EnableSubmitBtn() {
     if (x <= 0) {       
         if (mEnable) { SubmitBtn.makeEnabled(); } else { SubmitBtn.makeDisable(); }        
     } else { SubmitBtn.makeDisable(); }
+    GetCompleteDateRangeStat();
 };
 $(document).ready(function () {
     $('#btnBack').click(function () {

@@ -129,6 +129,7 @@ function convertTime12To24(mtime) {
 }
 function CompareDate(fromDate,fromDateOrder, toDate,toDateOrder)
 {
+    //DateOrder 1= yyyy-MM-dd
     var result = false;
     var fdt = fromDate;
     var tdt = toDate;
@@ -166,6 +167,44 @@ function CompareDate(fromDate,fromDateOrder, toDate,toDateOrder)
     //alert(fdt + ' - ' + tdt + ' - ' + result);
     return result;
 };
+function CompareDateV2(fromDate, fromDateOrder, toDate, toDateOrder) {
+    //DateOrder 0= yyyy-MM-dd
+    var result = false;
+    var fdt = 0;
+    var tdt = 0;
+    if (fromDateOrder == 0) {
+        if (fromDate.indexOf('/') != -1) {
+            fdt = fromDate.split('/').join('');
+        } else {
+            fdt = fromDate.split('-').join('');
+        }
+    }
+    else {
+        if (fromDate.indexOf('/') != -1) {
+            fdt = fromDate.split('/').reverse().join('');
+        }
+        else {
+            fdt = fromDate.split('-').reverse().join('');
+        }
+    }
+    if (toDateOrder == 0) {
+        if (toDate.indexOf('/') != -1) {
+            tdt = toDate.split('/').join('');
+        } else {
+            tdt = toDate.split('-').join('');
+        }
+    }
+    else {
+        if (toDate.indexOf('/') != -1) {
+            tdt = toDate.split('/').reverse().join('');
+        }
+        else {
+            tdt = toDate.split('-').reverse().join('');
+        }
+    }
+    if (fdt*1 <= tdt*1) { result = true; }
+    return result;
+};
 function ChangeDateFormat(dt) {
     //dt must be a string not a date
     var e = '';
@@ -189,7 +228,7 @@ function ChangeDateFormatV2(dt) {
 function CustomDateChange(firstDate, addDays, DisplaySeparator) {
     first_date = new Date(firstDate);
     output_f = new Date(first_date.setDate(first_date.getDate() + addDays)).toISOString().split('.');
-    output_s = output_f[0].split('T');
+    output_s = output_f[0].split('T');    
     //$('#second_date').val(output_s[0]);
     //$('#datetime').val(output_f[0]);
     var result = output_s[0];
@@ -200,6 +239,28 @@ function CustomDateChange(firstDate, addDays, DisplaySeparator) {
         e = result.split('-').reverse().join(DisplaySeparator);
     }
     return e;
+}
+function CustomDateChangeV2(firstDate, addDays) {
+    var myDate = new Date(firstDate);
+    myDate.setDate(myDate.getDate() + addDays * 1);
+    var output1 = myDate.toISOString().split('.');
+    var output = output1[0].split('T');
+    return output[0];
+    //alert(firstDate + ' - ' + addDays + ' - ' + myDate);
+    //alert(output);
+    //first_date = new Date(firstDate);
+    //output_f = new Date(first_date.setDate(first_date.getDate() + addDays)).toISOString().split('.');
+    //output_s = output_f[0].split('T');
+    ////$('#second_date').val(output_s[0]);
+    ////$('#datetime').val(output_f[0]);
+    //var result = output_s[0];
+    //var e = result;
+    //if (result.indexOf('/') != -1) {
+    //    e = result.split('/').reverse().join(DisplaySeparator);
+    //} else {
+    //    e = result.split('-').reverse().join(DisplaySeparator);
+    //}
+    //return e;
 }
 function WordCount(value) {
     return $.trim(value).split(" ").length;
@@ -1027,9 +1088,41 @@ function GetSelectedValueOfCheckBoxes(groupname) {
     }).get();
     return selectedFruits;
 };
+function LockDiv(divID) {
+    var inputs = $('#' + divID).find('input');
+    $(inputs).each(function () {
+        $(this).attr('disabled', 'disabled');
+    });
+    $('#' + divID).find('select').each(function () {
+        $(this).attr('disabled', 'disabled');
+    });
+    $('#' + divID).find('textarea').each(function () {
+        $(this).attr('disabled', 'disabled');
+    });
+    $('#' + divID).find('button').each(function () {
+        $(this).attr('disabled', 'disabled');
+    });
+    $('#' + divID).addClass('sectionB');
+};
+function UnLockDiv(divID) {
+    var inputs = $('#' + divID).find('input');
+    $(inputs).each(function () {
+        $(this).removeAttr('disabled');
+    });
+    $('#' + divID).find('select').each(function () {
+        $(this).removeAttr('disabled');
+    });
+    $('#' + divID).find('textarea').each(function () {
+        $(this).removeAttr('disabled');
+    });
+    $('#' + divID).find('button').each(function () {
+        $(this).removeAttr('disabled');
+    });
+    $('#' + divID).removeClass('sectionB');
+};
 
 
-
+//Need to make RND
 function GetMultiSelectDataInClickedSequence(multiselectid) {
     var selectedData = [];
     $("#"+multiselectid+" option").mousedown(function (e) {
@@ -1050,5 +1143,12 @@ function GetMultiSelectDataInClickedSequence(multiselectid) {
     var commaSeparated = selectedData.join(",");
     alert(commaSeparated);
 };
+function GetPreviousTRId(trID) {
+    var currentRow = document.getElementById(trID);
+    var previousRow = currentRow.previousElementSibling;
+    return previousRow.attr('id');
+};
+
+
 
 

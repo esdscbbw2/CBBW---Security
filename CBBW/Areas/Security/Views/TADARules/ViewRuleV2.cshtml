@@ -151,11 +151,15 @@
                 <ul style="list-style: none; padding: 0; font-size:28px;">
                     <li>
                         Are You Sure The Details Entered Are Correct & As Required?
-                        <select disabled="disabled" id="submitConfirmation"
-                                class="form-select " aria-label="Default select example">
-                            <option value="0">No</option>
-                            <option selected value="1">Yes</option>
-                        </select>
+                        @*<select disabled="disabled" id="submitConfirmation"
+                class="form-select " aria-label="Default select example">
+            <option value="0">No</option>
+            <option selected value="1">Yes</option>
+        </select>*@
+                        <div class="form-group">
+                            <input type="text" disabled class="form-control" value="Yes" />
+                        </div>
+                            
                     </li>
                 </ul>
             </div>

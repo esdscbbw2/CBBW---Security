@@ -109,5 +109,11 @@ namespace CBBW.BLL.Repository
         {
             return _TFDEntities.GetTFDDateWiseTourData(NoteNumber, PersonType, EmployeeNo, PersonCentre, status, ref pMsg);
         }
+
+        public string GetENTTourCategroy(string NoteNumber, ref string pMsg)
+        {
+            return _TFDEntities.GetENTTourCategroy(NoteNumber,ref pMsg);
+        }
+    
     }
 }

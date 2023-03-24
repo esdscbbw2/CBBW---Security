@@ -111,6 +111,8 @@ namespace CBBW.DAL.DBMapper
                         result.PersonID = int.Parse(dr["PersonID"].ToString());
                     if (!DBNull.Value.Equals(dr["IsApprovals"]))
                         result.IsApproved = int.Parse(dr["IsApprovals"].ToString());
+                    if (!DBNull.Value.Equals(dr["LocationsCode"]))
+                        result.LocationsCode = dr["LocationsCode"].ToString();
                     result.SchFromDatestr = MyDBLogic.ConvertDateToString(result.SchFromDate);
 
                 }
@@ -146,7 +148,6 @@ namespace CBBW.DAL.DBMapper
             catch { }
             return result;
         }
-
         public TFDTourFeedBackDetails Map_TFDTourFeedBackDetails(DataRow dr)
         {
             TFDTourFeedBackDetails result = new TFDTourFeedBackDetails();
@@ -180,7 +181,6 @@ namespace CBBW.DAL.DBMapper
             catch (Exception ex) { ex.ToString(); }
             return result;
         }
-
         public TFDHdr Map_TFDHeaderDetails(DataRow dr)
         {
             TFDHdr result = new TFDHdr();

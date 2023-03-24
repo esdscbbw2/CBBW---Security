@@ -43,9 +43,14 @@
                 </div>
                 <div class="col-md-12 d-flex justify-content-between">
                     <div class="text-left pt-2 pb-2">
-                        <button type="button" class="btn btn-light-green" onclick="fireSweetAlert()">
+                        <button id="btnScan" type="button" class="btn btn-light-green @(string.IsNullOrEmpty(Model.emnHeader.AttachFile)?"":"inVisible")" 
+                                onclick="fireSweetAlert()">
                             Scan & Attach
                             “Travelling Request Form”
+                        </button>
+                        <button id="btnScanView" type="button" class="btn btn-light-blue @(string.IsNullOrEmpty(Model.emnHeader.AttachFile)?"inVisible":"")"
+                                onclick="btnScanViewClicked()">
+                            View Attached “Travelling Request Form”
                         </button>
                     </div>
                     <div class="text-right pt-2 pb-2">
@@ -300,7 +305,7 @@
                         <ul style="list-style:none;">
                             <li style="font-size: 16px;">
                                 It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
-                                <select id="otherplace" style="width: 110px;" class="form-select is-invalid" onchange="ValidateControl()" aria-label="Default select example">
+                                <select disabled id="otherplace" style="width: 110px;" class="form-select is-invalid" onchange="ValidateControl()" aria-label="Default select example">
                                     <option selected="">-</option>
                                     <option value="0">Yes</option>
                                     <option value="1">No</option>
@@ -308,7 +313,7 @@
                             </li>
                             <li style="font-size: 16px;">
                                 It Is Ensured That This Person Is Carrying Laptop As Provided To Him. The Same Has Been Confirmed (as per leave rules):
-                                <select id="carryLaptop" style="width: 110px;" class="form-select is-invalid" onchange="ValidateControl()" aria-label="Default select example">
+                                <select disabled id="carryLaptop" style="width: 110px;" class="form-select is-invalid" onchange="ValidateControl()" aria-label="Default select example">
                                     <option selected="">-</option>
                                     <option value="0">Yes</option>
                                     <option value="1">No</option>
@@ -316,7 +321,7 @@
                             </li>
                             <li style="font-size: 16px;">
                                 The Entry Is Done As Per Policy & As Required:
-                                <select id="Policy" style="width: 110px;" class="form-select is-invalid" onchange="ValidateControl()" aria-label="Default select example">
+                                <select disabled id="Policy" style="width: 110px;" class="form-select is-invalid" onchange="ValidateControl()" aria-label="Default select example">
                                     <option selected="">-</option>
                                     <option value="0">Yes</option>
                                     <option value="1">No</option>
@@ -340,6 +345,25 @@
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
     <script src="~/UIContent/JS/CustomePage/EMN/EMNEntry.js"></script>
     <script>
+        function btnScanViewClicked() {
+            var filename = $('#emnHeader_AttachFile').val();
+            var filepath = "/Upload/Forms/" + filename;
+            if (filename != '') {
+                window.open(filepath);
+            } else {
+                Swal.fire({
+                    title: 'No Files Found.',
+                    text: 'Unable To Find Uploaded File.',
+                    icon: 'error',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        confirm: 'Ok'
+                    },
+                    confirmButtonColor: '#2527a2',
+                });
+            }
+
+        };
         function fireSweetAlert() {
             Swal.fire({
                 title: 'Attach Travelling Request Form',
@@ -375,6 +399,8 @@
                                 $(response).each(function (index, item) {
                                     if (item.ResponseStat == 1) {
                                         $('#emnHeader_AttachFile').val(item.FileName);
+                                        $('#btnScan').addClass('inVisible');
+                                        $('#btnScanView').removeClass('inVisible');
                                         var filepath = "/Upload/Forms/" + item.FileName;
                                         window.open(filepath);
                                     }

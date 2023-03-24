@@ -26,5 +26,6 @@ namespace CBBW.BLL.IRepository
         bool SetTFDFeedBackApproval(string NoteNumber, List<TFDTourFBApproval> dtldata, ref string pMsg);
          bool SetTFDDateWiseTourData(string NoteNumber, bool IsApprove, string ApproveReason, List<TFDDateWiseTourData> dtldata, ref string pMsg);
          List<TFDDateWiseTourData> GetTFDDateWiseTourData(string NoteNumber, int PersonType, int EmployeeNo, int PersonCentre, int status, ref string pMsg);
+        string GetENTTourCategroy(string NoteNumber, ref string pMsg);
     }
 }

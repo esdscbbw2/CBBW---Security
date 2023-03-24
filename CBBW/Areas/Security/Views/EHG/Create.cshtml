@@ -32,7 +32,7 @@
         @Html.HiddenFor(m => m.Instructor)
         @Html.HiddenFor(m => m.AuthorisedEmpNo)
         @Html.HiddenFor(m => m.POA)
-        @*@Html.HiddenFor(m => m.ehgHeader.PurposeOfAllotment)*@
+        @Html.HiddenFor(m => m.MaxDaysOfTourForEmp)
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
@@ -59,9 +59,14 @@
         </div>
         <div class="col-md-12">
             <div class="text-center pt-2 pb-2">
-                <button type="button" class="btn btn-light-green" onclick="fireSweetAlert()">
+                <button id="btnScan" type="button" class="btn btn-light-green @(string.IsNullOrEmpty(Model.ehgHeader.DocFileName)?"":"inVisible")" 
+                        onclick="fireSweetAlert()">
                     Scan & Attach
                     “Travelling Request Form”
+                </button>
+                <button id="btnScanView" type="button" class="btn btn-light-blue @(string.IsNullOrEmpty(Model.ehgHeader.DocFileName)?"inVisible":"")" 
+                        onclick="btnScanViewClicked()">
+                    View Attached “Travelling Request Form”
                 </button>
             </div>
         </div>
@@ -196,43 +201,40 @@
                     </div>
                 </div>
             </div>
-            <div class="card mt-4 mb-4">
-                <div class="card-body">
-                    <div class="row d-flex align-items-center">
-                        <div class="col-md-2 col-form-label">
-                            <label>Approved :</label>
+            <div class="card mb-4 mt-4">
+                <div class="card-body  alert alert-danger text-dark approvalForm">
+                    
+                        <div class="row d-flex align-items-center">
+                            <div class="col-md-2 col-form-label">
+                                <label>Approved :</label>
+                            </div>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" value="-" disabled="">
+                            </div>
+                            <div class="col-md-2 col-form-label">
+                                <label>Date &amp; Time Of Approval :</label>
+                            </div>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" value="" disabled="">
+                            </div>
+                            <div class="col-md-2 col-form-label">
+                                <label>Reason If Not Approved :</label>
+                            </div>
+                            <div class="col-md-2">
+                                <textarea name="" id="" cols="10" rows="2" class="form-control pointer-default" readonly></textarea>
+                            </div>
                         </div>
-                        <div class="col-md-2">
-                            <select class="form-select" aria-label="Default select example" disabled="">
-                                <option selected=""> -</option>
-                                <option value="1">Yes</option>
-                                <option value="1">No</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2 col-form-label">
-                            <label>Date &amp; Time Of Approval :</label>
-                        </div>
-                        <div class="col-md-2">
-                            <input type="text" class="form-control" value="" disabled="">
-                        </div>
-                        <div class="col-md-2 col-form-label">
-                            <label>Reason If Not Approved :</label>
-                        </div>
-                        <div class="col-md-2">
-                            <textarea name="" id="" cols="10" rows="2" class="form-control" disabled></textarea>
-
-                        </div>
-
-                    </div>
+                    
                 </div>
             </div>
+            
             <div class="col-md-12 mt-4 pt-3 inVisible" id="for_Management">
                 <div class="heading_text_btn2 d-block mb-4">
                     <h2>
                         Travelling Person Details: For Management
                     </h2>
                 </div>
-                <div class="card">
+                <div class="card" id="sManagementDiv">
                     <div class="card-body">
                         <div class="table-responsive max-content">
                             <table class="table table-bordered w-100" id="table">
@@ -306,7 +308,7 @@
                                         </td>
 
                                         <td class="text-center">
-                                            <div class="input-group date pointer position-static placeholder-dark" >
+                                            <div class="input-group date pointer position-static placeholder-dark">
                                                 @Html.TextBoxFor(m => m.FromTimeForMang,
                                                    htmlAttributes: new
                                                    {
@@ -316,8 +318,8 @@
                                                        placeholder = "Select Time"
                                                    })
                                                 @*<input id="" type="text"
-                                                    class="form-control timePicker"
-                                                    placeholder="Select Time">*@
+                                            class="form-control timePicker"
+                                            placeholder="Select Time">*@
                                             </div>
                                         </td>
                                         <td id="ActualTOutDtForMang" class="text-center">
@@ -335,8 +337,8 @@
                                                        min = Model.MinFromDate
                                                    })
                                                 @*<input type="date"
-                                                    class="form-control pointer CustomDateFormatCloneRow"
-                                                    id="tblToDate">*@
+                                            class="form-control pointer CustomDateFormatCloneRow"
+                                            id="tblToDate">*@
                                                 <label id="lblToDateForMang" style="width:110px"
                                                        class="datelabel pointer">Select Date</label>
                                             </div>
@@ -364,12 +366,12 @@
                                                    @onchange = "ValidateControl()"
                                                })
                                             @*<select class="form-select" aria-label="Default select example">
-                                                    <option selected="">-</option>
-                                                    <option value="1">  Yes</option>
-                                                    <option value="2">
-                                                        No
-                                                    </option>
-                                                </select>*@
+                                            <option selected="">-</option>
+                                            <option value="1">  Yes</option>
+                                            <option value="2">
+                                                No
+                                            </option>
+                                        </select>*@
                                         </td>
                                         <td id="ReTInDtForMang" class="text-center">
                                         </td>
@@ -413,7 +415,7 @@
                 <div class="heading_text_btn2 d-block mb-4">
                     <h2> Travelling Person Details: For Office Work </h2>
                 </div>
-                <div class="card">
+                <div class="card" id="sOfficeworkDiv">
                     <div class="card-body">
                         <div class="table-responsive max-content">
                             <table class="table table-bordered w-100 btnalign" id="OficeWorkTbl">
@@ -475,7 +477,7 @@
                                                    onblur="DDPickPersonChanged(1)"
                                                    id="txtDDPersonType">
                                         </td>
-                                        <td id="DesgCodenName" data-name="DesignationCodenName" 
+                                        <td id="DesgCodenName" data-name="DesignationCodenName"
                                             class="text-center alterID htmlVal"> </td>
                                         <td class="text-center">
                                             <div class="position-relative pointer" style="width:200px">
@@ -556,7 +558,7 @@
                                 <label>Authorized Employee No. & Name :</label>
                             </div>
                             <div class="col-md-5">
-                                <select id="DDAuthorisedEmpForWork"
+                                <select id="DDAuthorisedEmpForWork" disabled
                                         onchange="DDAuthorisedEmpForWorkChanged()"
                                         class="form-select is-invalid"
                                         aria-label="Default select example">
@@ -647,6 +649,25 @@
         });
     </script>
     <script>
+        function btnScanViewClicked() {
+            var filename = $('#ehgHeader_DocFileName').val();
+            var filepath = "/Upload/Forms/" + filename;
+            if (filename != '') {
+                window.open(filepath);
+            } else {
+                Swal.fire({
+                    title: 'No Files Found.',
+                    text: 'Unable To Find Uploaded File.',
+                    icon: 'error',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        confirm: 'Ok'
+                    },
+                    confirmButtonColor: '#2527a2',
+                });
+            }
+           
+        };
         function fireSweetAlert() {
             Swal.fire({
                 title: 'Attach Travelling Request Form',
@@ -654,7 +675,7 @@
                 icon: 'success',
                 html: `<div style="text-align:left;">
                             <div class="form-group">
-                                <label class="swal-label">Attach File</label>
+                                <label class="swal-label">Attach File(Only Pdf,Png & Jpg Files)</label>
                                 <input type="file" id="uploadCtrl" name="uploadCtrl" class="form-control" placeholder="">
                             </div>
                         </div>`,
@@ -666,8 +687,6 @@
             }).then(callback);
             function callback(result) {
                 if (result.value) {
-                    //var url = "/Security/EHG/Index";
-                    //window.location.href = url;
                     var data = new FormData();
                     var files = $("#uploadCtrl").get(0).files;
                     if (files.length > 0) {
@@ -682,6 +701,8 @@
                                 $(response).each(function (index, item) {
                                     if (item.ResponseStat == 1) {
                                         $('#ehgHeader_DocFileName').val(item.FileName);
+                                        $('#btnScan').addClass('inVisible');
+                                        $('#btnScanView').removeClass('inVisible');
                                         var filepath = "/Upload/Forms/" + item.FileName;
                                         window.open(filepath);
                                     }
@@ -698,11 +719,6 @@
                                         });
                                     }
                                 });
-                                //code after success
-                                //$('#ehgHeader_DocFileName').val(response);
-                                //var filepath = "/Upload/Forms/" + response;
-                                //VehicleTypeChanged();
-                                //window.open(filepath);
                             },
                             error: function (er) {
                                 //alert(er);

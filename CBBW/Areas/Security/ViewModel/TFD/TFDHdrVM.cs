@@ -18,6 +18,7 @@ namespace CBBW.Areas.Security.ViewModel.TFD
         public string NoteNumber { get; set; }
         public int EmployeeNo { get; set; }
         public int submitcount { get; set; }
+        public int btnEnable { get; set; }
         public List<TFDNote> Notelist { get; set; }
         public List<CustomComboOptions> AuthEmp { get; set; }
         public TFDHdr tfdHdr { get; set; }

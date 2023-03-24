@@ -28,6 +28,8 @@ namespace CBBW.DAL.DBMapper
                         result.CenterCodeName = dr["CenterCodeName"].ToString();
                     if (!DBNull.Value.Equals(dr["EntryDate"]))
                         result.EntryDate = DateTime.Parse(dr["EntryDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["EmployeeCodeName"]))
+                        result.EmployeeCodeName = dr["EmployeeCodeName"].ToString();
                     if (!DBNull.Value.Equals(dr["IsApproved"]))
                         result.IsApproved = bool.Parse(dr["IsApproved"].ToString());
                     result.EntryDateDisplay = MyDBLogic.ConvertDateToString(result.EntryDate);

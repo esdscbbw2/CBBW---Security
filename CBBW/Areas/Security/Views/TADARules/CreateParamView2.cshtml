@@ -41,16 +41,17 @@
                             1. DA Per Day Is Actual Spent? :
                         </label>
                         <div class="col-md-6 form-group mb-2">
-                            @Html.DropDownListFor(m => m.TADARule.IsDAActualSpend,
-                               new[] {
-                                   new SelectListItem { Text = "Yes", Value = "true" },
-                                   new SelectListItem { Text = "No", Value = "false" } }, "-",
-                               htmlAttributes: new
-                               {
-                                   @class = "form-select pointer isvalidate",
-                                   @disabled = "disabled",
-                                   @onchange = "IsActualSpendChanged()"
-                               })
+                            <input type="text" disabled class="form-control" value="@(Model.TADARule.IsDAActualSpend?"Yes":"No")" />
+                            @*@Html.DropDownListFor(m => m.TADARule.IsDAActualSpend,
+        new[] {
+            new SelectListItem { Text = "Yes", Value = "true" },
+            new SelectListItem { Text = "No", Value = "false" } }, "-",
+        htmlAttributes: new
+        {
+            @class = "form-select isvalidate",
+            @disabled = "disabled",
+            @onchange = "IsActualSpendChanged()"
+        })*@
                         </div>
                     </div>
                     <div class="row d-flex align-items-center mb-3">
@@ -58,16 +59,17 @@
                             2. Lodging Expenses Allowed :
                         </label>
                         <div class="col-md-6 form-group mb-2">
-                            @Html.DropDownListFor(m => m.TADARule.IsLodgingAllowed,
-                               new[] {
-                                   new SelectListItem { Text = "Yes", Value = "true" },
-                                   new SelectListItem { Text = "No", Value = "false" } }, "-",
-                               htmlAttributes: new
-                               {
-                                   @class = "form-select pointer isvalidate",
-                                   @disabled = "disabled",
-                                   @onchange = "IsLodgingAllowedChanged()"
-                               })
+                            <input type="text" disabled class="form-control" value="@(Model.TADARule.IsLodgingAllowed?"Yes":"No")" />
+                            @*@Html.DropDownListFor(m => m.TADARule.IsLodgingAllowed,
+        new[] {
+            new SelectListItem { Text = "Yes", Value = "true" },
+            new SelectListItem { Text = "No", Value = "false" } }, "-",
+        htmlAttributes: new
+        {
+            @class = "form-select isvalidate",
+            @disabled = "disabled",
+            @onchange = "IsLodgingAllowedChanged()"
+        })*@
                         </div>
                     </div>
 
@@ -200,7 +202,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="bgColor mt-4">
+            @*<div class="bgColor mt-4">
                 <ul style="list-style: none; padding: 0; font-size:28px;">
                     <li>
                         Are You Sure The Details Entered Are Correct & As Required?
@@ -214,7 +216,7 @@
                         </select>
                     </li>
                 </ul>
-            </div>
+            </div>*@
         </div>
     }
 </div>

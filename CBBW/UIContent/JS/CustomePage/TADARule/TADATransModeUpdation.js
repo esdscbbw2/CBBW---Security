@@ -164,26 +164,14 @@ function GetOPtionDiv(pubTranId) {
     return Optiontype;
 };
 function GetInitialData() {
-    //company Transport
-    ctt = $('#TADARule_CompanyTransIDs').val();
-    var cttarray = [];
-    var myDiv = $('#divmChkBox');
-    if (ctt.indexOf(',') >= 0) {
-        cttarray = ctt.split(',');
-        var m = '';
-        $.each(cttarray, function (index, value) {
-            var myCheckbox = myDiv.find("input[type='checkbox'][value=" + value + "]");
-            if (myCheckbox.length > 0) {
-                myCheckbox.prop("checked", true);
-                m = m + myCheckbox.attr('data-name')+',';
-            }
-        });
-        $('#divChkBoxResult').val(m.slice(0,-1));
-    }
-    else {
-        var myCheckbox = myDiv.find("input[type='checkbox'][value=" + ctt + "]");
-        if (myCheckbox.length > 0) { myCheckbox.prop("checked", true); }
-    }
+    
+    //if (ctt.indexOf(',') >= 0) {
+    //    cttarray = ctt.split(',');
+    //}
+    //else {
+    //    var myCheckbox = myDiv.find("input[type='checkbox'][value=" + ctt + "]");
+    //    if (myCheckbox.length > 0) { myCheckbox.prop("checked", true); }
+    //}
     //Public Transport - Class
     var ptc = $('#TADARule_PubTransClassIDs').val();
     var ptcarray = [];
@@ -232,7 +220,26 @@ function GetInitialData() {
                 $('#PubTranText_' + clonerowid).val(mText.slice(0,-1));
             }
         }
-    }); 
+    });
+
+    //company Transport
+    ctt = $('#TADARule_CompanyTransIDs').val();
+    var cttarray = [];
+    var myDiv = $('#divmChkBox');
+    if (ctt.indexOf(',') < 0) { ctt = ctt + ','; }
+    cttarray = ctt.split(',');
+    var mdt = '';
+    $.each(cttarray, function (index, value) {
+        if (value != '') {
+            var myCheckbox = myDiv.find("input[type='checkbox'][value=" + value + "]");
+            if (myCheckbox.length > 0) {
+                myCheckbox.prop("checked", true);
+                mdt = mdt + myCheckbox.attr('data-name') + ',';
+            }
+        }
+    });
+    $('#divChkBoxResult').val(mdt.slice(0, -1));
+
 }
 $(document).ready(function () {
     GetInitialData();

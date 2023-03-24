@@ -14,7 +14,7 @@ namespace CBBW.DAL.Entities
    public class EMNEntities
     {
         DataTable dt = null;
-        //DataSet ds = null;
+        DataSet ds = null;
         EMNDataSync _datasync;
         EMNDBMapper _DBMapper;
         DBResponseMapper _DBResponseMapper;

@@ -510,12 +510,12 @@ function decrementQty(e) {
     TotalExp();
 }
 function AEDincrementQty() {
-    var target = $(AEDincrementQty.caller.arguments[0].target);
-    var mid = target.attr('id');    
-    var maxvalue = $('#' + mid + 'Max').html()*1;
-    var txtcTrl = $('#' + mid + 'Amount');
+    var targetCtrl = AEDincrementQty.caller.arguments[0].target;
+    var mids =  $(targetCtrl).attr('id');
+    var maxvalue = $('#' + mids + 'Max').html()*1;
+    var txtcTrl = $('#' + mids + 'Amount');
     var mValue = txtcTrl.val() * 1;
-   
+    //alert(mids + "--" + maxvalue + '--' + mValue);
     mValue += 1;
     mValue = mValue > maxvalue ? maxvalue : mValue;
     txtcTrl.val(mValue);
@@ -530,8 +530,16 @@ function TotalExp() {
     var Atotal=isNaN(total) ? 0 : total;
     $('#ATotalAmount').val(Atotal);
 };
+function AEDAmount() {
+    var edamt = $('#AEDAmount').val() * 1;
+    var maxvalue = $('#AEDMax').html() * 1;
+    alert(maxvalue + '--' + edamt);
+    edamt = edamt > maxvalue ? maxvalue : edamt;
+    $('#AEDAmount').val(edamt);
+}
 
 function isNumber(evt) {
+
     evt = (evt) ? evt : window.event;
     var charCode = (evt.which) ? evt.which : evt.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {

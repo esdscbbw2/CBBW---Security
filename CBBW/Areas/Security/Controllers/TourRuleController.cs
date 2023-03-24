@@ -32,6 +32,11 @@ namespace CBBW.Areas.Security.Controllers
             if (string.IsNullOrEmpty(url)) { url = "/Security/TourRule/Index"; }
             return Json(url, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult AddRule()
+        {
+            TempData["TourDetails"] = null;
+            return RedirectToAction("CreateRule");
+        }
         public ActionResult ViewRedirection(int CBUID,string NoteNumber="")
         {
             string mEffectiveDate = _toursRule.GetAffectedRuleID(ref pMsg).ToString("dd-MM-yyyy");

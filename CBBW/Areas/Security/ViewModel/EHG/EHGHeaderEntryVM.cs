@@ -13,6 +13,7 @@ namespace CBBW.Areas.Security.ViewModel.EHG
     public class EHGHeaderEntryVM
     {
         MasterEntities _master;
+        TourEntities _tour;
         string pMsg;
         public EHGHeaderEntryVM(int centerCode)
         {
@@ -28,6 +29,9 @@ namespace CBBW.Areas.Security.ViewModel.EHG
             this.StaffList = _master.getEmployeeList(centerCode, 99, 0, ref pMsg);
             this.MDDICList = _master.getEmployeeList(centerCode, 0, 0, ref pMsg);
             this.OtherStaffList = _master.getEmployeeList(centerCode, 99, 1, ref pMsg);
+            _tour = new TourEntities();
+            this.MaxDaysOfTourForEmp = _tour.GetMaxDaysOfTour(1, ref pMsg);
+            
         }
         public EHGHeaderEntryVM()
         {
@@ -39,11 +43,17 @@ namespace CBBW.Areas.Security.ViewModel.EHG
             this.VehicleBelongsTo = master.VehicleBelongsTo;
             pMsg = "";
             _master = new MasterEntities();
+            _tour = new TourEntities();
+            this.MaxDaysOfTourForEmp = _tour.GetMaxDaysOfTour(1, ref pMsg);
+
         }
         public EHGHeaderEntryVM(bool IsForList)
         {
             pMsg = "";
             _master = new MasterEntities();
+            _tour = new TourEntities();
+            this.MaxDaysOfTourForEmp = _tour.GetMaxDaysOfTour(1, ref pMsg);
+
         }
         public IEnumerable<CustomComboOptions> getDriverList(int centerCode) 
         {
@@ -103,5 +113,7 @@ namespace CBBW.Areas.Security.ViewModel.EHG
         public int POA { get; set; }
         public string OthVehNo { get; set; }
         public int IsBtn { get; set; }
+        public string MaxToDate { get; set; }
+        public int MaxDaysOfTourForEmp { get; set; }
     }
 }

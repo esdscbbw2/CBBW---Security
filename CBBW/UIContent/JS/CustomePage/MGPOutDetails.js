@@ -75,7 +75,7 @@
                 
                 $("#" + index + "_SchTripdatetext").val(item.SchFromDatestr);
                 $("#" + index + "_SchTrip").val(item.SchFromDate);
-                $("#" + index + "_ActualTripDates").val(item.ActualTripOutDate).html('<input id="' + index + '_ActualTripDate" type="text" placeholder="dd/mm/yyyy" class="form-control pointer is-invalid ActualTripDates" onchange="ValidateControl()">');
+                $("#" + index + "_ActualTripDates").val(item.ActualTripOutDate).html('<input id="' + index + '_ActualTripDate" type="text" placeholder="dd/mm/yyyy" disabled class="form-control pointer is-invalid ActualTripDates" onchange="ValidateControl()">');
                 $("#" + index + "_ActualTripTime").val(item.ActualTripOutTime);//.html('<input id="' + index + '_ActualTripTime"  type="text" class="form-control pointer is-invalid" onblur="ValidateControl()" placeholder="08:00PM">').addClass('timePicker');
                 $("#" + index + "_KM").html(item.KMOUT);//Display Only
                 $("#" + index + "_KMOut").val(item.KMOUT);
@@ -387,10 +387,10 @@ function activateSubmitBtn() {
     }
 };
 function ValidateControl() {
+     //alert(targetid);
     var target = ValidateControl.caller.arguments[0].target;
     var targetid = $(target).attr('id');
     var isvalid = validatectrl(targetid, $(target).val());
-
     if (isvalid) {
         $(target).removeClass('is-invalid').addClass('is-valid');
     } else {
@@ -400,15 +400,17 @@ function ValidateControl() {
 
 };
 function validatectrl(targetid, value) {
+    alert(targetid);
     var isvalid = false;
-    if (value == "" || value == null) { isvalid = false; } else { isvalid = true }
-    activateSubmitBtn();
+    if (value == "" || value == null) { isvalid = false; } else { isvalid = true; }
+   // activateSubmitBtn();
     return isvalid;
 
 };
 function DatePicker(val) {
         var minDate = new Date();
-        var maxDate = new Date();
+    var maxDate = new Date();
+    $('.ActualTripDates').makeEnabled();
     $('.ActualTripDates').datepicker({
         dateFormat: 'dd/mm/yy',
         autoclose: true,
@@ -420,7 +422,7 @@ function DatePicker(val) {
 }
 
 function RFIDOutChanged(RFId, TripDate) {
-    if (RFId != '' || RFId!=0) {
+    if (RFId != '' && RFId!=0) {
         $.ajax({
             url: '/EntryII/GetRFIDPunchTime',
             method: 'GET',
@@ -431,14 +433,15 @@ function RFIDOutChanged(RFId, TripDate) {
                     $('#0_ActualTripTime').val(item.PunchOutStr);
                     $('#0_ActualTripTime').removeClass('timePicker');
                     $('#0_ActualTripTime').attr('readonly', 'readonly');
-                    $('#0_ActualTripTime').isValid();
+                    $('#0_ActualTripTime').removeClass('is-invalid').addClass('is-valid');
                 });
             }
         });
     }
     else {
+        $('#0_ActualTripTime').val('');
         $('#0_ActualTripTime').removeAttr('readonly', 'readonly');
         $('#0_ActualTripTime').addClass('timePicker');
-        $('#0_ActualTripTime').isInvalid();
+        $('#0_ActualTripTime').removeClass('is-valid').addClass('is-invalid');
     }
 };

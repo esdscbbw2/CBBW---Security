@@ -393,33 +393,37 @@ $(document).ready(function () {
     }
 });
 $(document).ready(function () {
-    $("#btnClear").click(function () {
-        //$('#lblmEffectiveDate').html('Select Date');
-        //$('#mEffectiveDate').removeClass('is-valid').addClass('is-invalid').val('');
-        $('#PublicTranDelay_HalfDA').removeClass('is-valid').addClass('is-invalid').val('');
-        $('#OtherTranDelay_HalfDA').removeClass('is-valid').addClass('is-invalid').val('');
-        $('#PublicTranDelay_FullDA').removeClass('is-valid').addClass('is-invalid').val('');
-        $('#OtherTranDelay_FullDA').removeClass('is-valid').addClass('is-invalid').val('');
-        $('#NightPunch_From').removeClass('is-valid').addClass('is-invalid').val('');
-        $('#NightPunch_To').removeClass('is-valid').addClass('is-invalid').val('');
-        $('#EarlyMorningPunch_From').removeClass('is-valid').addClass('is-invalid').val('');
-        $('#EarlyMorningPunch_To').removeClass('is-valid').addClass('is-invalid').val('');
-        $('#MaxDayAllowed').removeClass('is-valid').addClass('is-invalid').val('');
-        $('#MaxTraveltime_ComVeh_50km').removeClass('is-valid').addClass('is-invalid').val('');
-        $('#MaxTraveltime_PubTran_50km').removeClass('is-valid').addClass('is-invalid').val('');
-        $('#GracePeriod_200km').removeClass('is-valid').addClass('is-invalid').val('');
-        $('#ReadRule1').removeClass('is-valid').addClass('is-invalid').val('');
-        $('#ReadRule2').removeClass('is-valid').addClass('is-invalid').val('');
-        $('#ReadRule3').removeClass('is-valid').addClass('is-invalid').val('');
-        $('#ReadRule4').removeClass('is-valid').addClass('is-invalid').val('');
-        $('#ReadRule5').removeClass('is-valid').addClass('is-invalid').val('');
-        $('#LICAllowTour').removeClass('is-valid').addClass('is-invalid').val(-1);
-        $('#MinutesGracePeriodAllowed').removeClass('is-valid').addClass('is-invalid').val(-1);
-        $('#ServiceTypeDD').multiselect('clearSelection').addClass('is-invalid');
-        $('#ServiceTypeDD').multiselect('refresh').addClass('is-invalid');
-        $('#btnSave').makeDisable();        
-        MakeBodyDisable();
+    $('#btnClear').click(function () {
+        var url = "/Security/TourRule/AddRule"
+        window.location.href = url;
     });
+    //$("#btnClear").click(function () {
+    //    //$('#lblmEffectiveDate').html('Select Date');
+    //    //$('#mEffectiveDate').removeClass('is-valid').addClass('is-invalid').val('');
+    //    $('#PublicTranDelay_HalfDA').removeClass('is-valid').addClass('is-invalid').val('');
+    //    $('#OtherTranDelay_HalfDA').removeClass('is-valid').addClass('is-invalid').val('');
+    //    $('#PublicTranDelay_FullDA').removeClass('is-valid').addClass('is-invalid').val('');
+    //    $('#OtherTranDelay_FullDA').removeClass('is-valid').addClass('is-invalid').val('');
+    //    $('#NightPunch_From').removeClass('is-valid').addClass('is-invalid').val('');
+    //    $('#NightPunch_To').removeClass('is-valid').addClass('is-invalid').val('');
+    //    $('#EarlyMorningPunch_From').removeClass('is-valid').addClass('is-invalid').val('');
+    //    $('#EarlyMorningPunch_To').removeClass('is-valid').addClass('is-invalid').val('');
+    //    $('#MaxDayAllowed').removeClass('is-valid').addClass('is-invalid').val('');
+    //    $('#MaxTraveltime_ComVeh_50km').removeClass('is-valid').addClass('is-invalid').val('');
+    //    $('#MaxTraveltime_PubTran_50km').removeClass('is-valid').addClass('is-invalid').val('');
+    //    $('#GracePeriod_200km').removeClass('is-valid').addClass('is-invalid').val('');
+    //    $('#ReadRule1').removeClass('is-valid').addClass('is-invalid').val('');
+    //    $('#ReadRule2').removeClass('is-valid').addClass('is-invalid').val('');
+    //    $('#ReadRule3').removeClass('is-valid').addClass('is-invalid').val('');
+    //    $('#ReadRule4').removeClass('is-valid').addClass('is-invalid').val('');
+    //    $('#ReadRule5').removeClass('is-valid').addClass('is-invalid').val('');
+    //    $('#LICAllowTour').removeClass('is-valid').addClass('is-invalid').val(-1);
+    //    $('#MinutesGracePeriodAllowed').removeClass('is-valid').addClass('is-invalid').val(-1);
+    //    $('#ServiceTypeDD').multiselect('clearSelection').addClass('is-invalid');
+    //    $('#ServiceTypeDD').multiselect('refresh').addClass('is-invalid');
+    //    $('#btnSave').makeDisable();        
+    //    MakeBodyDisable();
+    //});
     $('#btnBackOnView').click(function () {
         $.ajax({
             url: "/Security/TourRule/BackButtonClicked",

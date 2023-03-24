@@ -1,4 +1,8 @@
-﻿function SubmitConfChanged() {
+﻿function btnClearClicked() {
+    var url ="/Security/TADARules/AddRule"
+    window.location.href = url;
+};
+function SubmitConfChanged() {
     var mCtrl = $('#submitConfirmation');
     var mValue = mCtrl.val();
     var mDiv = $('#Div3');
