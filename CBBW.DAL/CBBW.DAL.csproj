@@ -84,6 +84,7 @@
     <Compile Include="Entities\GVMREntities.cs" />
     <Compile Include="Entities\MasterEntities.cs" />
     <Compile Include="Entities\MGPEntities.cs" />
+    <Compile Include="Entities\SingletonEntity.cs" />
     <Compile Include="Entities\TADAEntities.cs" />
     <Compile Include="Entities\TFDEntities.cs" />
     <Compile Include="Entities\TourEntities.cs" />

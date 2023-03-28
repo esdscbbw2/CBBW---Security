@@ -102,6 +102,7 @@
     <Compile Include="GVMR\GVMRDetails.cs" />
     <Compile Include="GVMR\GVMRNoteNumber.cs" />
     <Compile Include="GVMR\NoteNumberDetails.cs" />
+    <Compile Include="Master\LocationMaster.cs" />
     <Compile Include="Master\PublicTransportType.cs" />
     <Compile Include="Master\ServiceType.cs" />
     <Compile Include="Master\VTStatement.cs" />

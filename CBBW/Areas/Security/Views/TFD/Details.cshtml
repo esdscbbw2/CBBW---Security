@@ -13,7 +13,7 @@
         @Html.HiddenFor(x => x.tfdHdr.AuthEmployeeCode)
         @Html.HiddenFor(m => m.CanDelete)
         @Html.HiddenFor(m => m.CBUID)
-        @Html.HiddenFor(m=>m.tfdHdr.ApprovalTime)
+        @Html.HiddenFor(m => m.tfdHdr.ApprovalTime)
         <div class="row newTable">
             <div class="fixedElement">
                 <div class="col-md-12">
@@ -217,8 +217,8 @@
                         <ul style="list-style:none;">
                             <li style="font-size: 16px;">
                                 The “Tour Feed Back Details” Are Entered With The Best Of Knowledge, The Details Entered Are Correct & As Required:
-                               
-                                    <input type="text" class="form-control border-green" value="Yes" disabled="">
+
+                                <input type="text" class="form-control border-green" value="Yes" disabled="">
 
                             </li>
                         </ul>
@@ -246,13 +246,47 @@
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
     <script src="~/UIContent/JS/CustomePage/TFD/TFDDetails.js"></script>
     <script>
+        if ('@ViewBag.ErrMsg' != '') {
+                Swal.fire({
+                    title: 'Failed to submit',
+                    text: "@ViewBag.ErrMsg",
+                    icon: 'warning',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        //cancel: 'Cancel',
+                        confirm: 'Ok'
+                    },
+                    //cancelButtonClass: 'btn-cancel',
+                    confirmButtonColor: '#2527a2',
+                });
+            };
+        if ('@ViewBag.Msg' != '') {
+                Swal.fire({
+                    title: 'Confirmation',
+                    text: "@ViewBag.Msg",
+                    icon: 'success',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        confirm: 'Ok'
+                    },
+                    confirmButtonColor: '#2527a2',
+                }).then(callback);
+                function callback(result) {
+                    if (result.value) {
+                        var url = "/Security/TFD/Index";
+                        window.location.href = url;
+                    }
+                }
+            };
+    </script>
+    <script>
         function BackUrls() {
             var url = "/Security/TFD/Index";
             var urlbk = url.replace(/&amp;/g, '&');
             window.location.href = urlbk;
         };
     </script>
-  
+
 
     <script>
         function VisibleRows(EmpNo) {
@@ -271,10 +305,10 @@
             } else {
                 NoteNo = $('#tfdHdr_NoteNumber').val();
             }
-            
 
-         
-            
+
+
+
 
             var dataSourceURL = '/TFD/DateWiseTourView?NoteNumbers=' + $.trim(NoteNo) + '&PersonType=' + $.trim(PType) + '&EmployeeNo=' + $.trim(EmployeeNo) + '&PersonCentre=' + $.trim(PersonCentre) + '&ApprovalTime=' + ApprovalTime;
             $.ajax({
@@ -292,5 +326,5 @@
             })
         };
     </script>
-    
+
 }

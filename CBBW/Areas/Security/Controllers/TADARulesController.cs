@@ -41,7 +41,7 @@ namespace CBBW.Areas.Security.Controllers
         {
             DateTime mEffeDate = _iTADARules.GetAffectedRuleID(ref pMsg);
             List<CustomComboOptionsWithString> obj1 = _iTADARules.GetCatCodesForTADARuleView(mEffeDate, ref pMsg);
-            if (obj1 != null && obj1.Count > 1) 
+            if (obj1 != null && obj1.Count > 0) 
             {
                 return RedirectToAction("ViewRuleV2", new { EffectiveDate = mEffeDate.ToString("dd-MM-yyyy"), isDelete = false });
             } 

@@ -1,5 +1,7 @@
 ﻿$(document).ready(function () {
+   
     (async function () {
+       
         const r3 = await getInitialData();
     })();  
 });
@@ -32,6 +34,7 @@ async function GetAuthEmployee(selectedval, Vtype) {
     dateDetails.show();
     DropdownCtrl.makeEnabled();
     DropdownCtrl.val('');
+    
     if (Vtype == "") {
         if (pubTran == 'False') {
             getDropDownDataWithSelectedValue(DropdownCtrl.attr('id'), 'Select', '/Security/ETS/GetEmployeeNoName?Noteno=' + NoteNo, selectedval)
@@ -58,7 +61,7 @@ async function GetAuthEmployee(selectedval, Vtype) {
         DropdownCtrl.isInvalid();
         getDropDownDataWithSelectedValue(DropdownCtrl.attr('id'), 'Select', '/Security/ETS/GetEmployeeNoName?Noteno=' + NoteNo, selectedval)
     }
-  //  EnableSubmitBtnActive();
+   EnableSubmitBtnActive();
 };
 function ValidateControlCtrl() {
     var target = ValidateControlCtrl.caller.arguments[0].target;
@@ -211,15 +214,16 @@ async function getInitialData() {
     var EligibleVeh = $('#EligibleVeh');
     var VehicleAlloc = $('#VehicleAlloc');
     var btnSubmit = $('#btnSubmit');
+   
     if (VehicleTypeProvided.val() > 0) {
-        debugger;
+       
         btnSubmit.makeDisable();
         $('#ReasonVehicleProvideds').val(ReasonVehicleProvided.val());
         $('#ReasonVehicleProvideds').isValid();
-
+       
         (async function () {
-            const r1 = await GetVechileType(VehicleTypeProvided.val());
-            const r2 = await GetAuthEmployee($.trim(EmpNoName.val()), VehicleTypeProvided.val());
+            const r8 = await GetVechileType(VehicleTypeProvided.val());
+            const r9 = await GetAuthEmployee($.trim(EmpNoName.val()), VehicleTypeProvided.val());
         })();
         EmployeeNonName.isValid();
         GetEmpEligibilty(parseInt($.trim(EmpNoName.val())), VehicleTypeProvided.val());
@@ -230,14 +234,13 @@ async function getInitialData() {
         } else {
         (async function () {
             const r1 = await GetVechileType(selectedval);
-          //  const r2 = await GetAuthEmployee(selectedval, Vtype);
+            const r2 = await GetAuthEmployee(selectedval, Vtype);
         })();
         
     }
    
 
 };
-
 $(function () {
     var selectedval = "";
     var EligibleVeh = $('#EligibleVeh');
@@ -249,8 +252,6 @@ $(function () {
             VehicleAlloc.val(''); VehicleAlloc.isInvalid();
         });
 });
-
-
 $(function () {
     var selectedval = "";
     $("#EmployeeNonName").change(function () {
@@ -258,7 +259,6 @@ $(function () {
         GetEmpEligibilty(parseInt(EMPName), selectedval)
     });
 });
-
 function GetEmpEligibilty(actualempcode, VtypeProvided) {
     if (VtypeProvided == "") {
         var VtypeProvided = $("#VehicleTypeProvideds").val();
@@ -274,7 +274,6 @@ function GetEmpEligibilty(actualempcode, VtypeProvided) {
         }
     });
 }
-
 async function GetStatement(EligibleVT, VtypeProvided) {
     debugger;
     var EligibleVeh = $('#EligibleVeh');
@@ -296,7 +295,8 @@ async function GetStatement(EligibleVT, VtypeProvided) {
                 VehicleAlloc.isValid();
                 EligibleVeh.isValid();
                 dateDetails.hide();
-            } 
+            }
+            EnableSubmitBtnActive();
         }
     });
 

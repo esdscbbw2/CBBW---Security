@@ -9,6 +9,8 @@ using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.EHG;
 using System.Globalization;
+using CBBW.BOL.Master;
+
 namespace CBBW.Areas.Security.Controllers
 {
     public class EHGController : Controller
@@ -333,30 +335,16 @@ namespace CBBW.Areas.Security.Controllers
             string url = _iUser.GetCallBackUrl();
             return Json(url, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult GetTourLocations(string CategoryID)
+        public JsonResult GetTourLocations(string CategoryIDs)
         {
-            List<CustomComboOptions> result = new List<CustomComboOptions>();
-            //model = CastEHGTempData();
-            //if (model.PersonType == null)
-            //{
-            //    EHGMaster master = EHGMaster.GetInstance;
-            //    result = master.TourCategory;
-            //}
-            //else { result = model.TourCategory; }
-            EHGMaster master = EHGMaster.GetInstance;
-            result = master.TourCategory;
+            CategoryIDs = CategoryIDs.Replace('_', ',');
+            IEnumerable<LocationMaster> result =_master.GetCentresFromTourCategory(CategoryIDs, ref pMsg);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetTourCategories()
         {
             List<CustomComboOptions> result = new List<CustomComboOptions>();
-            //model = CastEHGTempData();
-            //if (model.PersonType == null)
-            //{
-            //    EHGMaster master = EHGMaster.GetInstance;
-            //    result = master.TourCategory;
-            //}
-            //else { result = model.TourCategory; }
+            
             EHGMaster master = EHGMaster.GetInstance;
             result = master.TourCategory;
             return Json(result, JsonRequestBehavior.AllowGet);

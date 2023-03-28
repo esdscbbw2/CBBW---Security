@@ -107,6 +107,7 @@ $(document).ready(function () {
     $('#btnBack').click(function () {        
         //var url = getCBUrl();
         //alert(url);
+        var backUrl = "/Security/CTV/ScheduleLists";
         if ($('#IsOTSSaved').val() == 1) {
             Swal.fire({
                 title: 'Confirmation Message',
@@ -122,20 +123,22 @@ $(document).ready(function () {
             function callback(result) {
                 if (result.value) {
                     DeleteNote();
-                    $.ajax({
-                        url: "/Security/CTV/BackButtonClicked",
-                        success: function (result) { window.location.href = result; }
-                    });
+                    window.location.href = backUrl;
+                    //$.ajax({
+                    //    url: "/Security/CTV/Index",
+                    //    success: function (result) { window.location.href = result; }
+                    //});
                 } else {
                     // second variant
                 }
             }
         } else {
-            DeleteNote();
-            $.ajax({
-                url: "/Security/CTV/BackButtonClicked",
-                success: function (result) {window.location.href =result;}
-            });
+            DeleteNote();            
+            window.location.href = backUrl;
+            //$.ajax({
+            //    url: "/Security/CTV/Index",
+            //    success: function (result) {window.location.href =result;}
+            //});
             //window.location.href = url;
         }
     });

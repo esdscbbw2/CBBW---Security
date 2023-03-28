@@ -232,8 +232,7 @@ namespace CBBW.DAL.DataSync
                 }
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
-        }
-        
+        }   
         public DataTable GetEPTourNoteNumber(int EmployeeNumber, int CentreCode, ref string pMsg)
         {
             try

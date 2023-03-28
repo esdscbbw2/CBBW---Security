@@ -290,7 +290,9 @@ namespace CBBW.Areas.Security.Controllers
             modelvm.CanDelete = CanDelete;
             modelvm.CBUID = CBUID;
             modelvm.tfdHdr = _iTFD.GetTFDHeaderDetails(NoteNumber, user.CentreCode, 1, ref pMsg);
-          
+            var pos = modelvm.tfdHdr.EntEntryTime.LastIndexOf('.');
+            var Entrydate = modelvm.tfdHdr.EntEntryTime.Substring(0, pos);
+            modelvm.tfdHdr.EntEntryTime = Entrydate;
             return View(modelvm);
         }
         [HttpPost]

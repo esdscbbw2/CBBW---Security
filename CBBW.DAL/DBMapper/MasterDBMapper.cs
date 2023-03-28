@@ -74,5 +74,23 @@ namespace CBBW.DAL.DBMapper
             }
             return result;
         }
+        public LocationMaster Map_LocationMaster(DataRow dr) 
+        {
+            LocationMaster result = new LocationMaster();
+            if (dr != null)
+            {
+                if (!DBNull.Value.Equals(dr["TypeID"]))
+                    result.TypeID = int.Parse(dr["TypeID"].ToString());
+                if (!DBNull.Value.Equals(dr["ID"]))
+                    result.ID = int.Parse(dr["ID"].ToString());                
+                if (!DBNull.Value.Equals(dr["DisplayText"]))
+                    result.DisplayText = dr["DisplayText"].ToString();
+                if (!DBNull.Value.Equals(dr["IDStr"]))
+                    result.IDStr = dr["IDStr"].ToString();
+                if (!DBNull.Value.Equals(dr["CentreCode"]))
+                    result.CentreCode = int.Parse(dr["CentreCode"].ToString());                
+            }
+            return result;
+        }
     }
 }

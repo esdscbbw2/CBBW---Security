@@ -144,7 +144,7 @@
                                     </td>
                                     <td class="text-center">
                                         <div class="d-flex">
-                                            @Html.TextBoxFor(x => x.TadabollGen.RequisitionNo, new { @class = "form-control is-invalid", @onchange = "ValidateControl()" })
+                                            @Html.TextBoxFor(x => x.TadabollGen.RequisitionNo, new {@class = "form-control is-invalid", @onchange = "ValidateControl()" })
                                             <div class="position-relative pointer w-50">
                                                 @Html.TextBoxFor(x => x.TadabollGen.RequisitionDate, new { @type = "date", @min = (Model.TadabollGen.RequisitionDateMin), @max = (Model.TadabollGen.RequisitionDateMax), @class = "form-control pointer is-invalid", onchange = "changeDateFormat(this);ValidateControl();" })
                                                 <label class="datelabel pointer" style="width:80px" id="TadabollGen_RequisitionDatelbl">Select date</label>
@@ -157,7 +157,7 @@
                                         @Html.DropDownListFor(model => model.TadabollGen.PreparedEmpNo, new SelectList("", "ID", "DisplayText"), "Select", htmlAttributes: new { @class = "form-select pointer is-invalid", @onchange = "ValidateControl()" })
                                     </td>
                                     <td class="text-center">
-                                        @Html.TextBoxFor(x => x.TadabollGen.RequisitionAmt, new { @class = "form-control is-invalid",@type="number", @onkeypress = "isNumber(event)", @onchange = "ValidateControl()" })
+                                        @Html.TextBoxFor(x => x.TadabollGen.RequisitionAmt, new { @class = "form-control numbers is-invalid", @onchange = "ValidateControl()" })
                                     </td>
                                     <td class="text-center">
                                         @Model.TadabollGen.ATotalAmount

@@ -13,7 +13,7 @@ namespace CBBW.DAL.Entities
     public class ETSEntities
     {
         DataTable dt = null;
-        //DataSet ds = null;
+        DataSet ds = null;
         ETSDataSync _datasync;
        ETSDBMapper _DBMapper;
         DBResponseMapper _DBResponseMapper;
@@ -157,14 +157,12 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
-
         public bool SetETSApprovalData(ETSApproveTravDetails model, ref string pMsg)
         {
             bool result = false;
             _DBResponseMapper.Map_DBResponse(_datasync.SetETSApprovalData(model, ref pMsg), ref pMsg, ref result);
             return result;
         }
-
         public bool SetETSRatifiedData(ETSRatified model, ref string pMsg)
         {
             bool result = false;

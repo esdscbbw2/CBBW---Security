@@ -238,7 +238,7 @@ async function getInitialData() {
 function keypressCountWord(e) {
     var target = keypressCountWord.caller.arguments[0].target;
     var targetCtrl = $(target).val();
-    if (WordCount(targetCtrl) >= 10) {
+    if (WordCount(targetCtrl) > 100) {
         $(target).preventTypying();
     } else {
         $(target).off('keypress');

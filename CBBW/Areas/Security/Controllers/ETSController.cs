@@ -11,6 +11,7 @@ using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.EHG;
 using CBBW.BOL.ETS;
+using CBBW.BOL.Master;
 
 namespace CBBW.Areas.Security.Controllers
 {
@@ -862,21 +863,25 @@ namespace CBBW.Areas.Security.Controllers
         }
         public JsonResult GetLocationsFromTypes(string TypeIDs)
         {
-            IEnumerable<CustomComboOptions> result = _iCTV.getLocationsFromType(TypeIDs, ref pMsg);
+            TypeIDs = TypeIDs.Replace('_', ',');
+            //IEnumerable<CustomComboOptions> result = _iCTV.getLocationsFromType(TypeIDs, ref pMsg);
+            IEnumerable<LocationMaster> result = _master.GetCentresFromTourCategory(TypeIDs, ref pMsg);
             return Json(result, JsonRequestBehavior.AllowGet);
 
 
         }
         public JsonResult GetLocationsFromType(int TypeID)
         {
-            IEnumerable<CustomComboOptions> result = _iCTV.getLocationsFromType(TypeID, ref pMsg);
+            //IEnumerable<CustomComboOptions> result = _iCTV.getLocationsFromType(TypeID, ref pMsg);
+            IEnumerable<LocationMaster> result = _master.GetCentresFromTourCategory(TypeID.ToString(), ref pMsg);
             return Json(result, JsonRequestBehavior.AllowGet);
 
 
         }
         public JsonResult getBranchType(int CenterId)
         {
-            IEnumerable<CustomComboOptions> result = _master.getBranchType(CenterId, ref pMsg);
+            //IEnumerable<CustomComboOptions> result = _master.getBranchType(CenterId, ref pMsg);
+            IEnumerable<LocationMaster> result = _master.GetBranchOfaCentre(CenterId, ref pMsg);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult getVehicleEligibilityStatement(int EligibleVT, int ProvidedVT)

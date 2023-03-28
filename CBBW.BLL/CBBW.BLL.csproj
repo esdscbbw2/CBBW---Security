@@ -61,6 +61,7 @@
     <Compile Include="IRepository\ITFDRepository.cs" />
     <Compile Include="IRepository\IToursRuleRepository.cs" />
     <Compile Include="IRepository\IUserRepository.cs" />
+    <Compile Include="MasterData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\BILRepository.cs" />
     <Compile Include="Repository\CTVRepository.cs" />

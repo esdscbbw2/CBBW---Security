@@ -206,7 +206,7 @@ namespace CBBW.Areas.Security.Controllers
             {
                 model = TempData["EMC"] as EMCHeaderEntryVM;
                 if (Btnsubmit != 1)
-                {
+                {   
 
                     if (TempData["EMC"] != null)
                     {

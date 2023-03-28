@@ -271,6 +271,27 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return 0; }
         }
-
+        public string GetDesignation(int PersonID,int PersonType, ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("SELECT [MTR].[GetDesignation](" + PersonID + ","+ PersonType + ")", CommandType.Text))
+                {
+                    return sql.ExecuteScaler(ref pMsg).ToString();
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return ""; }
+        }
+        public DataTable GetLocationsFromCommaSeparatedTypes(string LocationTypeID, ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("select * from [CTV].[GetLocationsFromCommaSeparatedTypes]('" + LocationTypeID + "')", CommandType.Text))
+                {
+                    return sql.GetDataTable();
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
     }
 }

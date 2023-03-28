@@ -242,58 +242,84 @@
                         </div>
 
                         <div class="card mt-4 mb-4">
-                            <div class="card-body  alert alert-success text-dark approvalForm">
-                                <div class="form-sample form-inline row ms-auto">
-                                    <div class="row d-flex align-items-center">
-                                        <div class="col-md-2 col-form-label">
-                                            <label>Approved :</label>
-                                        </div>
-                                        <div class="col-md-2">
-                                            @if (Model.ApprovalDatestr != "01/01/0001")
-                                            {
-                                                if (Model.IsApproved == true)
-                                                {
-                                                    <input type="text" class="form-control" value="Yes" disabled="">
-                                                }
-                                                else
-                                                {
-                                                    <input type="text" class="form-control" value="No" disabled="">
-                                                }
-                                            }
-                                            else
-                                            {
-                                                <input type="text" class="form-control" value="" disabled="">
-                                            }
-                                        </div>
-                                        <div class="col-md-2 col-form-label">
-                                            <label>Date &amp; Time Of Approval :</label>
-                                        </div>
-                                        <div class="col-md-2">
-                                            @if (Model.ApprovalDatestr != "01/01/0001")
-                                            {
-                                                <input type="text" class="form-control" value="@Model.ApprovalDatestr @Model.ApprovalTime" disabled="">
-                                            }
-                                            else
-                                            {
-                                                <input type="text" class="form-control" value="" disabled="">
-                                            }
-                                        </div>
-                                        <div class="col-md-2 col-form-label">
-                                            <label>Reason If Not Approved :</label>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <textarea name="" id="" cols="20" rows="2" class="form-control pointer-default" readonly> @Model.ApprovalReason </textarea>
+                            @if (Model.ApprovalDatestr != "01/01/0001")
+                            {
+                                <div class="card-body  alert alert-success text-dark approvalForm">
+                                    <div class="form-sample form-inline row ms-auto">
+                                        <div class="row d-flex align-items-center">
+                                            <div class="col-md-2 col-form-label">
+                                                <label>Approved :</label>
+                                            </div>
+                                            <div class="col-md-2">
+                                              
+                                                    @if (Model.IsApproved == true)
+                                                    {
+                                                        <input type="text" class="form-control" value="Yes" disabled="">
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="text" class="form-control" value="No" disabled="">
+                                                    }
+                                                
+                                            </div>
+                                            <div class="col-md-2 col-form-label">
+                                                <label>Date &amp; Time Of Approval :</label>
+                                            </div>
+                                            <div class="col-md-2">
+                                                
+                                                    <input type="text" class="form-control" value="@Model.ApprovalDatestr @Model.ApprovalTime" disabled="">
+                                               
+                                            </div>
+                                            <div class="col-md-2 col-form-label">
+                                                <label>Reason If Not Approved :</label>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <textarea name="" id="" cols="20" rows="2" class="form-control pointer-default" readonly> @Model.ApprovalReason </textarea>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            }
+                            else
+                            {
+                                <div class="card-body  alert alert-danger text-dark approvalForm">
+                                    <div class="form-sample form-inline row ms-auto">
+                                        <div class="row d-flex align-items-center">
+                                            <div class="col-md-2 col-form-label">
+                                                <label>Approved :</label>
+                                            </div>
+                                            <div class="col-md-2">
+
+                                                <input type="text" class="form-control" value="" disabled="">
+
+                                            </div>
+                                            <div class="col-md-2 col-form-label">
+                                                <label>Date &amp; Time Of Approval :</label>
+                                            </div>
+                                            <div class="col-md-2">
+
+                                                <input type="text" class="form-control" value="" disabled="">
+
+                                            </div>
+                                            <div class="col-md-2 col-form-label">
+                                                <label>Reason If Not Approved :</label>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <textarea name="" id="" cols="20" rows="2" class="form-control pointer-default" readonly> - </textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+
                         </div>
 
                         <div class="col-md-12">
                             <div class="d-flex justify-content-center mt-4">
                                 @*<button id="Deducted" type="submit" name="Submit" value="DAD" class="btn btn-primary me-2">
-            Deductions From DA Detail
-        </button>*@
+                                        Deductions From DA Detail
+                                    </button>*@
                                 <button type="button" id="Deducted"
                                         onclick="TPDBtnClicked()"
                                         class="btn btn-primary me-2">

@@ -401,31 +401,6 @@ function SaveFinalSubmit() {
         },
     });
 }
-$('#btnBack').click(function () {
-    var backbtnactive = $('#BackBtnActive').val(1);
-    var backurl = "/Security/ETS/Index";
-    if (backbtnactive == 1) {
-        Swal.fire({
-            title: 'Confirmation',
-            text: "Are You Sure Want to Go Back?",
-            icon: 'question',
-            customClass: 'swal-wide',
-            confirmButtonText: "Yes",
-            cancelButtonText: "No",
-            cancelButtonClass: 'btn-cancel',
-            confirmButtonColor: '#2527a2',
-            showCancelButton: true,
-        }).then(callback);
-        function callback(result) {
-            if (result.value) {
-                window.location.href = backurl;
-            }
-        }
-    }
-    else {
-        window.location.href = backurl;
-    }
-});
 $(document).ready(function () {
     (async function () {
         const r1 = await getInitialData();
@@ -492,10 +467,11 @@ $('#btnClear').click(function () {
     var mValue = 0;
     var DDPersonType = $('#DDPersonType');
     var TaDaDenied = $('#TaDaDenied');
+    //$('Btnsubmit').val(0);
     $('#etsHeader_AttachFile').val('');
-    $('#otherplace').val('');
-    $('#carryLaptop').val('');
-    $('#Policy').val('');
+    $('#otherplace').val('').isInvalid();
+    $('#carryLaptop').val('').isInvalid();
+    $('#Policy').val('').isInvalid();
     DDPersonType.val('').isInvalid();
     GetDDPersonTypeChanged(DDPersonType.attr('id'), mValue, selectvalue, Empval);
     getDesgnCode(0, 0);

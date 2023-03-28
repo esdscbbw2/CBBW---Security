@@ -1,15 +1,27 @@
-﻿function GetCompleteDateRangeStat() {
-    var ri = 0; var r = 0;
-    var fd = '';var td = '';
-    $('.rDate').each(function () {
-        that = $(this);
-        mdt = that.html();
-        ri += 1;
-        if (r > 0 && ri == 1) { fd = mdt; }
-        if (ri == 2) { ri = 0; td = mdt; }
-        alert(CustomDateChange(fd,1,'/'));
-        r += 1;
-    });
+﻿
+function EnableAddBtnInCloneRowIfOnlyLastV2(tblRow, addBtnBaseID) {
+    //If The Add Button Is Exist In The Last Row Then Only Enable 
+    var mTodate = $('#TodateStr').val();
+    var tDateCtrl = $('#ToDate');
+    var tblrow = $(tblRow);
+    var rowid = tblrow.attr('id');
+    if (rowid != 0) {
+        addBtnBaseID = addBtnBaseID + '_' + rowid;
+        tDateCtrl = $('#ToDate_' + rowid);
+    }
+    var addBtnctrl = $('#' + addBtnBaseID);
+    if (tblrow.is(":last-child")) {
+        if (tblrow.find('.is-invalid').length > 0) {
+            addBtnctrl.makeDisable();
+        } else {
+            if (mTodate == tDateCtrl.val()) {
+                addBtnctrl.makeDisable();
+            } else { addBtnctrl.makeEnabled(); }
+        }
+    }
+    else { addBtnctrl.makeDisable(); }
+
+    //alert(tblrow.find('.is-invalid').length);
 };
 function RemoveBtnClicked() {
     var tblRow = RemoveBtnClicked.caller.arguments[0].target.closest('.add-row');
@@ -21,13 +33,14 @@ function addCloneBtnClick() {
     var insrowid = $(insrow).attr('id');
     var addbtn = $('#AddBtn');
     if (insrowid > 0) { addbtn = $('#AddBtn_' + insrowid); }
-    var clonerowid = CloneRowReturningID('tbody1', 'tbody2', $(insrow).attr('id') * 1, true, false);
+    var clonerowid = CloneRowReturningID('tbody1', 'tbody2', $(insrow).attr('id') * 1, false, false);
     var preToDate = $(insrow).find('.todt').val();
     var curFromDate = CustomDateChange(preToDate, 1, '/');
     $('#FromDateLbl_' + clonerowid).html(curFromDate);
     $('#btnSubmit').makeDisable();
     $('#CenterCode_' + clonerowid).isInvalid();
     $('#ToDate_' + clonerowid).isInvalid();
+    addbtn.tooltip('hide');
     addbtn.makeDisable();
 };
 function ValidateCloneRowCtrl() {
@@ -37,19 +50,19 @@ function ValidateCloneRowCtrl() {
     var targetid = targetCtrl.attr('id');
     if (targetid.indexOf('_') >= 0) { targetid = targetid.split('_')[0] }
     var isvalid = validatectrl(targetid, targetCtrl.val(), $(tblRow).attr('id'));
-    if (isvalid) { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
-    EnableAddBtnInCloneRow(tblRow, 'AddBtn');
+    if (isvalid) { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }    
     $('#DWBackBtnActive').val(1);
-    EnableSubmitBtn();    
-    var todate = new Date($('#TodateStr').val());
-    var preToDate = $(tblRow).find('.todt').val();
-    var calculatedFromdate =new Date(ChangeDateFormat(CustomDateChange(preToDate, 1, '-')));
-    //alert(todate+' - '+calculatedFromdate + ' - ' + todate);
-    //var rowid = $('#tblRow').attr('id');
-    //if (rowid > 0) { addbtn = $('#AddBtn_' + rowid); }
-    if (todate <= calculatedFromdate) {
-        $(tblRow).find('.addBtn').makeDisable();
-    }    
+    if (targetid == 'ToDate') {
+        RestRowsDeleted('table1', $(tblRow).attr('id'));
+        var todate = new Date($('#TodateStr').val());
+        var preToDate = $(tblRow).find('.todt').val();
+        var calculatedFromdate = new Date(ChangeDateFormat(CustomDateChange(preToDate, 1, '-')));
+        if (todate <= calculatedFromdate) {
+            $(tblRow).find('.addBtn').makeDisable();
+        }
+    }
+    EnableAddBtnInCloneRowIfOnlyLastV2(tblRow, 'AddBtn');
+    EnableSubmitBtn();
 };
 function validatectrl(targetid, value,rowid) {
     var isvalid = false;
@@ -58,7 +71,9 @@ function validatectrl(targetid, value,rowid) {
             if (value != '') {
                 var fromdateCtrl = $('#FromDateLbl');
                 if (rowid > 0) { fromdateCtrl = $('#FromDateLbl_' + rowid); }
-                if (CompareDate(fromdateCtrl.html(), 0, value, 1)) { isvalid = true; }
+                if (CompareDate(fromdateCtrl.html(), 0, value, 1)) {
+                    isvalid = true;
+                }
                 else {
                     Swal.fire({
                         title: 'Invalid Date Range!',
@@ -133,7 +148,7 @@ async function getInitialData() {
                 }
                 tourcatCtrl.isValid();                
                 (async function () {
-                    const r1 = await getMultiselectDataWithSelectedValues(centrecodeCtrl.attr('id'), '/Security/CTV/GetToLocationsFromType?TypeIDs=2&m=0', item.CenterCodes);
+                    const r1 = await getMultiselectDataWithSelectedValues(centrecodeCtrl.attr('id'), '/Security/EHG/GetTourLocations?CategoryIDs=', item.CenterCodes);
                 })();
                 centrecodeCtrl.isValid();
                 addbtnCtrl.makeDisable();
@@ -144,18 +159,20 @@ async function getInitialData() {
 function EnableSubmitBtn() {
     var mEnable = false;
     var todate = $('#TodateStr').val();
+    var SubmitBtn = $('#btnSubmit');
+    var x = getDivInvalidCount('HdrDiv');
     $('.todt').each(function () {
         if ($(this).val() == todate) { mEnable = true; }
-        //alert(todate + ' - ' + mEnable + ' - ' + $(this).val());
-    });
-    var x = getDivInvalidCount('HdrDiv');
-    //alert(x);
-    //$('#mMsg').html(x);
-    var SubmitBtn = $('#btnSubmit');
+    });    
     if (x <= 0) {       
-        if (mEnable) { SubmitBtn.makeEnabled(); } else { SubmitBtn.makeDisable(); }        
-    } else { SubmitBtn.makeDisable(); }
-    GetCompleteDateRangeStat();
+        if (mEnable) {
+            SubmitBtn.makeEnabled();
+        }
+        else {
+            SubmitBtn.makeDisable();
+        }
+    }
+    else { SubmitBtn.makeDisable(); }
 };
 $(document).ready(function () {
     $('#btnBack').click(function () {

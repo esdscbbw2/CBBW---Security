@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CBBW.BLL.IRepository;
 using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
+using CBBW.BOL.Master;
 using CBBW.DAL.Entities;
 
 namespace CBBW.BLL.Repository
@@ -47,8 +48,27 @@ namespace CBBW.BLL.Repository
         {
             return _CTVEntities.getLocalVehicleSchedule(VehicleNo, FromDate, ToDate, ref pMsg);
         }
-        public IEnumerable<CustomComboOptions> getLocationsFromType(string LocationTypeIDs, ref string pMsg)
+        public IEnumerable<LocationMaster> GetLocationsFromTypes(string LocationTypeIDs, ref string pMsg) 
         {
+            List<LocationMaster> locations = new List<LocationMaster>();
+            MasterData masterdata = MasterData.GetInstance;
+            if (masterdata.AllLocations != null && masterdata.AllLocations.Count > 0)
+            {
+                if (LocationTypeIDs.IndexOf(',') < 0) { LocationTypeIDs = LocationTypeIDs + ","; }
+                string[] LocationTypes = LocationTypeIDs.Split(',');
+                foreach (var obj in LocationTypes)
+                {
+                    int intValue;
+                    if (int.TryParse(obj, out intValue))
+                    {
+                        locations.AddRange(masterdata.AllLocations.Where(o=>o.TypeID== intValue).ToList());
+                    }
+                }
+            }
+            return locations;
+        }
+        public IEnumerable<CustomComboOptions> getLocationsFromType(string LocationTypeIDs, ref string pMsg)
+        {            
             return _MasterEntities.getLocationsFromType(LocationTypeIDs, ref pMsg);
         }
         public IEnumerable<CustomComboOptions> getLocationsFromType(int LocationTypeID, ref string pMsg)

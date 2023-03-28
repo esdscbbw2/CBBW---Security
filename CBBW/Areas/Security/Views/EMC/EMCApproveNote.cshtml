@@ -10,7 +10,7 @@
     @Html.HiddenFor(x => x.btnDisplay)
 
 
-    <div class="container">
+    <div class="">
         <div class="row newTable">
             <div class="fixedElement">
                 <div class="col-md-12">
@@ -181,7 +181,7 @@
                     </ul>
                 </div>
 
-                <div id="TravDetails" class="bgColor mt-4 bg-transparent content2 border-red  text-left">
+                <div id="TravDetails" class="bgColor mt-4 bg-transparent content border-red  text-left">
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
                             Tour Is Approved / Rejected After Written Information & Consent Of COO. When Ever Required, VB Document Shall Be Produced:
@@ -280,7 +280,7 @@
         });
     </script>
     <script>
-           $('#APPRej').change(function () {
+        $('#APPRej').change(function () {
             if ($('#APPRej').val() == "1") {
                 $("#TravDetails").addClass("border-green").removeClass("border-red");
             }else {

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
+using CBBW.BOL.Master;
 
 namespace CBBW.BLL.IRepository
 {
@@ -40,7 +41,7 @@ namespace CBBW.BLL.IRepository
         bool setLocalTripSchDtls(string Notenumber, List<LocVehSchFromMat> dtldata, ref string pMsg);
         bool EditOthTripSchDtl(string Notenumber, string TripPurpose, List<OthTripTemp> dtldata, ref string pMsg);
         bool SetCTVEditHdr(string Notenumber, int EmployeeNumber,int ApprovalFor, ref string pMsg);
-
+        IEnumerable<LocationMaster> GetLocationsFromTypes(string LocationTypeIDs, ref string pMsg);
 
 
 

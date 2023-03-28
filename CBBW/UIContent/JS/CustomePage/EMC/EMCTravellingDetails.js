@@ -116,8 +116,7 @@ function ValidateControl() {
     EnableSubmitBtn();
 
 };
-function ValidateCloneRowCtrl() {
-   
+function ValidateCloneRowCtrl() {   
     var target = ValidateCloneRowCtrl.caller.arguments[0].target;
     var tblRow = target.closest('.add-row');
     var targetCtrl = $(target);
@@ -125,16 +124,39 @@ function ValidateCloneRowCtrl() {
     if (targetid.indexOf('_') >= 0) { targetid = targetid.split('_')[0] }
     var isvalid = validatectrl(targetid, targetCtrl.val(), $(tblRow).attr('id'));
     if (isvalid) { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
-    EnableAddBtn(tblRow, 'AddBtn');
-    
-    var todate = new Date($('#SchTourToDate').val());
-    var preToDate = $(tblRow).find('.todt').val();
-    var calculatedFromdate = new Date(ChangeDateFormat(CustomDateChange(preToDate, 1, '-')));
-    if (todate <= calculatedFromdate) {
-        $(tblRow).find('.addBtn').makeDisable();
-    } 
-
+    if (targetid == 'SchToDate') {
+        RestRowsDeleted('TourWisetbl', $(tblRow).attr('id'));
+        var todate = new Date($('#SchTourToDate').val());
+        var preToDate = $(tblRow).find('.todt').val();
+        var calculatedFromdate = new Date(ChangeDateFormat(CustomDateChange(preToDate, 1, '-')));
+        if (todate <= calculatedFromdate) {
+            $(tblRow).find('.addBtn').makeDisable();
+        }
+    }
+    EnableAddBtnInCloneRowIfOnlyLastV2(tblRow, 'AddBtn');
     EnableSubmitBtn();
+};
+function EnableAddBtnInCloneRowIfOnlyLastV2(tblRow, addBtnBaseID) {
+    //If The Add Button Is Exist In The Last Row Then Only Enable 
+    var mTodate = $('#SchTourToDate').val();
+    var tDateCtrl = $('#SchToDate');
+    var tblrow = $(tblRow);
+    var rowid = tblrow.attr('id');
+    if (rowid != 0) {
+        addBtnBaseID = addBtnBaseID + '_' + rowid;
+        tDateCtrl = $('#SchToDate_' + rowid);
+    }
+    var addBtnctrl = $('#' + addBtnBaseID);
+    if (tblrow.is(":last-child")) {
+        if (tblrow.find('.is-invalid').length > 0) {
+            addBtnctrl.makeDisable();
+        } else {
+            if (mTodate == tDateCtrl.val()) {
+                addBtnctrl.makeDisable();
+            } else { addBtnctrl.makeEnabled(); }
+        }
+    }
+    else { addBtnctrl.makeDisable(); }
 };
 function validatectrl(targetid, value, rowid) {
     var isvalid = false;
@@ -244,7 +266,7 @@ function AddClonebtn() {
     var addbtn = $('#AddBtn');
     if (insrowid > 0) { addbtn = $('#AddBtn_' + insrowid); }
 
-    var rowid = CloneRowReturningID('tbody1', 'tbody2', $(insrow).attr('id') * 1, true, false);
+    var rowid = CloneRowReturningID('tbody1', 'tbody2', $(insrow).attr('id') * 1, false, false);
     var preToDate = $(insrow).find('.todt').val();
     var curFromDate = CustomDateChange(preToDate,1, '/');
     $('#DDSchFromDate_' + rowid).html(curFromDate);
@@ -256,7 +278,7 @@ function AddClonebtn() {
     $('#btnSubmits').makeDisable();
     
     $('#TourCategory_' + rowid).isInvalid();
-  
+    addbtn.tooltip('hide');
     addbtn.makeDisable();
     //EnableSubmitBtn();
     
@@ -344,7 +366,6 @@ function GetCenterCode() {
     var targetid = $(target).attr('id');
     var targetval = $(target).val();
     var targetCtrl = $(target);
-   
     var rowid = $(target.closest('.add-row')).attr("id");
    
     var x = '';

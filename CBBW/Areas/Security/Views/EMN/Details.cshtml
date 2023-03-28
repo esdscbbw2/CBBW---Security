@@ -98,56 +98,118 @@
                     </div>
                 </div>
                 <div class="card mb-4 mt-4">
-                    <div class="card-body  alert alert-danger text-dark approvalForm">
-                        <form class="form-sample form-inline row ms-auto">
-                            <div class="row d-flex align-items-center">
-                                <div class="col-md-2 col-form-label">
-                                    <label>Approved :</label>
+                    @if (Model.emnHeader.IsApproved.HasValue)
+                    {
+                        <div class="card-body  alert alert-success text-dark approvalForm">
+                            <form class="form-sample form-inline row ms-auto">
+                                <div class="row d-flex align-items-center">
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Approved :</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control" value="@Model.emnHeader.IsApproveds" disabled="">
+                                    </div>
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Date &amp; Time Of Approval :</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control" value="@Model.emnHeader.ApproveDatestr @Model.emnHeader.ApproveTime" disabled="">
+                                    </div>
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Reason If Not Approved :</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <textarea name="" id="" cols="10" rows="2" class="form-control pointer-default" readonly>@Model.emnHeader.ApprovedReason</textarea>
+                                    </div>
                                 </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control" value="@Model.emnHeader.IsApproveds" disabled="">
+                            </form>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="card-body  alert alert-danger text-dark approvalForm">
+                            <form class="form-sample form-inline row ms-auto">
+                                <div class="row d-flex align-items-center">
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Approved :</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control" value="@Model.emnHeader.IsApproveds" disabled="">
+                                    </div>
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Date &amp; Time Of Approval :</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control" value="@Model.emnHeader.ApproveDatestr @Model.emnHeader.ApproveTime" disabled="">
+                                    </div>
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Reason If Not Approved :</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <textarea name="" id="" cols="10" rows="2" class="form-control pointer-default" readonly>@Model.emnHeader.ApprovedReason</textarea>
+                                    </div>
                                 </div>
-                                <div class="col-md-2 col-form-label">
-                                    <label>Date &amp; Time Of Approval :</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control" value="@Model.emnHeader.ApproveDatestr @Model.emnHeader.ApproveTime" disabled="">
-                                </div>
-                                <div class="col-md-2 col-form-label">
-                                    <label>Reason If Not Approved :</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <textarea name="" id="" cols="10" rows="2" class="form-control pointer-default" readonly>@Model.emnHeader.ApprovedReason</textarea>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                            </form>
+                        </div>
+                    }
+
                 </div>
                 <div class="card mb-4 mt-4">
-                    <div class="card-body  alert alert-danger text-dark approvalForm">
-                        <form class="form-sample form-inline row ms-auto">
-                            <div class="row d-flex align-items-center">
-                                <div class="col-md-2 col-form-label">
-                                    <label>Ratified :</label>
+                    @if (Model.emnHeader.IsRatified.HasValue)
+                    {
+                        <div class="card-body  alert alert-success text-dark approvalForm">
+                            <form class="form-sample form-inline row ms-auto">
+                                <div class="row d-flex align-items-center">
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Ratified :</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control" value="@Model.emnHeader.IsRatifieds" disabled="">
+                                    </div>
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Date & Time Of &nbsp; Ratification :</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control" value="@Model.emnHeader.RatifiedDatestr @Model.emnHeader.RatifiedTime" disabled="">
+                                    </div>
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Reason If Not Ratified :</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <textarea name="" id="" cols="10" rows="2" class="form-control pointer-default" readonly>@Model.emnHeader.RatifiedReason</textarea>
+                                    </div>
                                 </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control" value="@Model.emnHeader.IsRatifieds" disabled="">
+                            </form>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="card-body  alert alert-danger text-dark approvalForm">
+                            <form class="form-sample form-inline row ms-auto">
+                                <div class="row d-flex align-items-center">
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Ratified :</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control" value="@Model.emnHeader.IsRatifieds" disabled="">
+                                    </div>
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Date & Time Of &nbsp; Ratification :</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control" value="@Model.emnHeader.RatifiedDatestr @Model.emnHeader.RatifiedTime" disabled="">
+                                    </div>
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Reason If Not Ratified :</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <textarea name="" id="" cols="10" rows="2" class="form-control pointer-default" readonly>@Model.emnHeader.RatifiedReason</textarea>
+                                    </div>
                                 </div>
-                                <div class="col-md-2 col-form-label">
-                                    <label>Date & Time Of &nbsp; Ratification :</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control" value="@Model.emnHeader.RatifiedDatestr @Model.emnHeader.RatifiedTime" disabled="">
-                                </div>
-                                <div class="col-md-2 col-form-label">
-                                    <label>Reason If Not Ratified :</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <textarea name="" id="" cols="10" rows="2" class="form-control pointer-default" readonly>@Model.emnHeader.RatifiedReason</textarea>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                            </form>
+                        </div>
+                    }
+
                 </div>
                 <div class="col-md-12 mt-4 pt-3">
                     <div class="heading_text_btn2 d-block mb-4">
@@ -220,7 +282,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="bgColor mt-4 bg-transparent text-left">
+                <div class="bgColor mt-4 bg-transparent border-green text-left">
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
                             It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
@@ -229,7 +291,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="bgColor mt-4 bg-transparent text-left">
+                <div class="bgColor mt-4 bg-transparent border-green text-left">
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
                             It Is Ensured That This Person Is Carrying Laptop As Provided To Him. The Same Has Been Confirmed (as per leave rules):
@@ -237,7 +299,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="bgColor mt-4 bg-transparent text-left">
+                <div class="bgColor mt-4 bg-transparent border-green text-left">
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
                             The Entry Is Done As Per Policy & As Required:

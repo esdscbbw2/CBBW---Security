@@ -539,10 +539,13 @@ $('#btnClear').click(function () {
     var mValue = 0;
     var DDPersonType = $('#DDPersonType');
     var TaDaDenied = $('#TaDaDenied');
+    //$('Btnsubmit').val(0);
     $('#etsHeader_AttachFile').val('');
-    $('#otherplace').val('');
-    $('#carryLaptop').val('');
-    $('#Policy').val('');
+    $('#otherplace').val('').isInvalid();
+    $('#carryLaptop').val('').isInvalid();
+    $('#Policy').val('').isInvalid();
+    $('#CenterCN').val('').isInvalid();
+    
     DDPersonType.val('').isInvalid();
     GetDDPersonTypeChanged(DDPersonType.attr('id'), mValue, selectvalue, Empval,0);
     getDesgnCode(0, 0);

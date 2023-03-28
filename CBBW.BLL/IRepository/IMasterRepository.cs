@@ -21,5 +21,7 @@ namespace CBBW.BLL.IRepository
         CustomComboOptions getVehicleEligibility(int EmployeeNumber, ref string pMsg);
         IEnumerable<CustomComboOptions> getBranchType(int CentreId, ref string pMsg);
         VTStatement getVehicleEligibilityStatement(int EligibleVT, int ProvidedVT, ref string pMsg);
+        IEnumerable<LocationMaster> GetCentresFromTourCategory(string TourCatIDs, ref string pMsg);
+        IEnumerable<LocationMaster> GetBranchOfaCentre(int CentreCode, ref string pMsg);
     }
 }

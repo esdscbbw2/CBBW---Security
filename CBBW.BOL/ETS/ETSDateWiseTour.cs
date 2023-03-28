@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 namespace CBBW.BOL.ETS
 {
     public class ETSDateWiseTour
@@ -15,7 +16,8 @@ namespace CBBW.BOL.ETS
 		public string TourCategory { get; set; }
 		public string CenterName { get; set; }
 		public string CenterCodeName { get; set; }
-		public string BranchCodeName { get; set; }		
+		public string BranchCodeName { get; set; }
+		
 		public string CenterCode { get; set; }
 		public string TourCategoryId { get; set; }
 		public string BranchCode { get; set; }
@@ -23,7 +25,9 @@ namespace CBBW.BOL.ETS
 		public string CenterCodeNametxt { get; set; }
 		public string BranchCodeNametxt { get; set; }
 		public bool IsActive { get; set; }
-		public string SchToDatestr { get; set; }	
+
+		public string SchToDatestr { get; set; }
+		
 
 	}
 }

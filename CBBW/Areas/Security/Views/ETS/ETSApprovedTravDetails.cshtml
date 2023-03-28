@@ -13,7 +13,7 @@
     @Html.HiddenFor(x => x.travDetails.ReasonVehicleProvided)
     @Html.HiddenFor(x => x.travDetails.VehicleTypeProvided)
 
-    <div class="container">
+    <div class="">
         <div class="row newTable">
             <div class="fixedElement">
                 <div class="col-md-12">
@@ -138,7 +138,7 @@
                                                                 class="form-select is-invalid clear"
                                                                 aria-label="Default select example">
                                                         </select>
-                                                        <input type="hidden" id="VehicleTypeVal"/>
+                                                        <input type="hidden" id="VehicleTypeVal" />
 
                                                     </td>
                                                     <td class="text-center">
@@ -280,13 +280,13 @@
 
 }
 @section scripts{
-    <script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
     <script src="~/UIContent/JS/CustomePage/ETS/ETSTravApprove.js"></script>
     <script>
 
 
         $(document).ready(function () {
+
             $('#btnBack').click(function () {
 
                 debugger;

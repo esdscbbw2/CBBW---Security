@@ -90,6 +90,7 @@ namespace CBBW.DAL.Entities
                         result.Add(_dbresmapper.Map_CustomComboOptions(dt.Rows[i]));
                     }
                 }
+                result.Add(new CustomComboOptions {ID=99,DisplayText="99 / Others" });
             }
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
@@ -146,7 +147,7 @@ namespace CBBW.DAL.Entities
         public DateTime getEffectedRuleID(int RuleType, ref string pMsg) 
         {
             return _datasync.GetEffectedRuleID(RuleType, ref pMsg);
-        }
+        } 
         public string getNewNoteNumber(string numberPattern, ref string pMsg)
         {
             string noteno = string.Empty;
@@ -284,6 +285,10 @@ namespace CBBW.DAL.Entities
             }
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
+        }
+        public string GetDesignation(int PersonID, int PersonType, ref string pMsg)
+        {
+            return _datasync.GetDesignation(PersonID, PersonType,ref pMsg);
         }
     }
 }

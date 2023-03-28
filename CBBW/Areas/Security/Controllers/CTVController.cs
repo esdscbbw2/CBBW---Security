@@ -8,6 +8,7 @@ using CBBW.Areas.Security.ViewModel;
 using CBBW.BLL.IRepository;
 using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
+using CBBW.BOL.Master;
 using CBBW.DAL.DataSync;
 
 namespace CBBW.Areas.Security.Controllers
@@ -551,6 +552,7 @@ namespace CBBW.Areas.Security.Controllers
         }
         public ActionResult OtherTrip() 
         {
+            DateTime MaxDT = DateTime.Today.AddDays(2);
             OtherTripScheduleEntryVM model = new OtherTripScheduleEntryVM();
             model.MinDate = DateTime.Now.ToString("yyyy-MM-dd");
             model.CurDate = DateTime.Now.ToString("yyyy-MM-dd");
@@ -562,8 +564,9 @@ namespace CBBW.Areas.Security.Controllers
                 model.VehicleNo = obj.Vehicleno;
                 model.TripPurpose = obj.TripPurpose;
                 model.DriverCode = obj.DriverNo;
-                model.DriverName = obj.DriverName;                
-                model.MaxDate=obj.ToDate.ToString("yyyy-MM-dd");
+                model.DriverName = obj.DriverName;
+                MaxDT = MaxDT <= obj.ToDate ? MaxDT : obj.ToDate;
+                model.MaxDate= MaxDT.ToString("yyyy-MM-dd");
                 TempData["CTVHDR"] = obj; 
             }
                       
@@ -597,7 +600,8 @@ namespace CBBW.Areas.Security.Controllers
         }          
         public JsonResult GetToLocationsFromType(string TypeIDs,int m=0) 
         {
-            IEnumerable<CustomComboOptions> result = _iCTV.getLocationsFromType(TypeIDs, ref pMsg);
+            TypeIDs= TypeIDs.Replace('_', ',');
+            IEnumerable<LocationMaster> result = _iCTV.GetLocationsFromTypes(TypeIDs, ref pMsg);
             //result = result.Take(5);
             return Json(result, JsonRequestBehavior.AllowGet);
             //return Json(_iCTV.getLocationsFromType(TypeIDs, ref pMsg), JsonRequestBehavior.AllowGet);
@@ -605,8 +609,9 @@ namespace CBBW.Areas.Security.Controllers
         }
         public JsonResult GetLocationsFromType(int TypeID)
         {
-            //int x = 1;
-            return Json(_iCTV.getLocationsFromType(TypeID, ref pMsg), JsonRequestBehavior.AllowGet);            
+            IEnumerable<LocationMaster> result = _iCTV.GetLocationsFromTypes(TypeID.ToString(), ref pMsg);
+            return Json(result, JsonRequestBehavior.AllowGet);
+            //return Json(_iCTV.getLocationsFromType(TypeID, ref pMsg), JsonRequestBehavior.AllowGet);            
         }
         public JsonResult GetVehicleInfo(string VehicleNo,string NoteNumber,int RemoveTemp=0)
         {

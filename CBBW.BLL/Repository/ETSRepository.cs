@@ -75,12 +75,10 @@ namespace CBBW.BLL.Repository
         {
             return _ETSEntities.RemoveETSNoteNumber(NoteNumber, RemoveTag, ActiveTag, ref pMsg);
         }
-
         public List<ETSNote> GetETSNoteListToBeApproved(int CentreCode, int status, ref string pMsg)
         {
             return _ETSEntities.GetETSNoteListToBeApproved(CentreCode, status, ref pMsg);
         }
-
         public bool SetETSApprovalData(ETSApproveTravDetails model, ref string pMsg)
         {
             return _ETSEntities.SetETSApprovalData(model, ref pMsg);

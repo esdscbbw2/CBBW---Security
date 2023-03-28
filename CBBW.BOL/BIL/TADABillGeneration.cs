@@ -113,7 +113,6 @@ namespace CBBW.BOL.BIL
         public int TotalCount { get; set; }
         public string CenterCodeName { get; set; }
         public string EmployeeCodeName { get; set; }
-        
         public DateTime EntryDate { get; set; }
         public string EntryDateDisplay { get; set; }
         public bool? IsApproved { get; set; }

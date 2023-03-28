@@ -57,7 +57,11 @@ function validatectrl(targetid, value) {
             isvalid = validatectrl_ValidateLength(value);
             break;
         case "PurposeOfVisit":
-            if (value.length > 1 && WordCount(value) <= 200) { isvalid = true; }
+            if (value.length > 1 && WordCount(value) <= 200) {
+                if (IsAlphaNumericWithSpace(value)) {
+                    isvalid = true;
+                }                
+            }
             break;
         case "TaDaDenied":
             isvalid = validatectrl_YesNoCombo(value);
@@ -101,7 +105,11 @@ function validatectrl(targetid, value) {
             if (value != -1) { isvalid = true; }
             break;
         case "PurposeOfVisitFoeMang":
-            if (value.length > 1 && WordCount(value) <= 200)  { isvalid = true; }
+            if (value.length > 1 && WordCount(value) <= 200) {
+                if (IsAlphaNumericWithSpace(value)) {
+                    isvalid = true;
+                }
+            }
             break;
         case "DriverNoForManagement":
             if (value >= 1) { isvalid = true; }

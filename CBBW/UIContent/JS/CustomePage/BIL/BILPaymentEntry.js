@@ -403,7 +403,7 @@ function validatectrl(targetid, value) {
             isvalid = validatectrl_ValidatestringLength(value);
             break;
         case "TadabollGen_RequisitionNo":
-            if (value >= 10000 && value <= 99999) {
+            if (value >= 0 && value.length <= 5) {
                 isvalid = true;
             }
             break;
@@ -414,10 +414,17 @@ function validatectrl(targetid, value) {
             isvalid = validatectrl_ValidatestringLength(value);
             break;
         case "TadabollGen_RequisitionAmt":
-            isvalid = validatectrl_ValidateLength(value);
+            //isvalid = validatectrl_ValidateLength(value);
+            var ETotalAmount = $('#TadabollGen_ETotalAmount').val() * 1;
+            if ((value * 1) <= ETotalAmount) {
+                isvalid = true;
+            } else {
+                isvalid = false;
+            }
+
             break;
         case "TadabollGen_Remark":
-            if (value.length > 1 && WordCount(value) <= 50) { isvalid = true; }
+            if (value.length > 1 && WordCount(value) <= 50) { isvalid = true; $(targetid).off('keypress');}
             else {
                
                 targetid.preventTypying();
@@ -432,6 +439,7 @@ function validatectrl(targetid, value) {
             break;
 
     }
+   
     return isvalid;
 };
 function validatectrl_YesNoComboApproval(value) {
@@ -636,8 +644,10 @@ function EnablDeductionDAeSavebtn() {
     var z = getDivInvalidCount('DADection');
     var btn = $('#SubmitCount').val();
     var SubmitBtn = $('#DFAbtnSubmit');
-    if (z <= 0) {
+    if ((z * 1) <= 0) {
         SubmitBtn.makeEnabled();
+    } else {
+        SubmitBtn.makeDisable();
     }
 }
 function decrementQty(e) {
@@ -672,21 +682,27 @@ function TotalExp() {
     var Atotal = isNaN(total) ? 0 : total;
     $('#ETotalAmount').val(Atotal);
 };
-function isNumber(evt) {
-    var target = isNumber.caller.arguments[0].target;
-    var targetCtrl = $(target).val() * 1;
-    var ETotalAmount = $('#ETotalAmount').val()*1;
-    if (targetCtrl > ETotalAmount) {
-        $('#TadabollGen_RequisitionAmt').preventTypying();
-    }
+//function isNumber(evt) {
+//    var target = isNumber.caller.arguments[0].target;
+//    var targetCtrl = $(target).val() * 1;
+//    var ETotalAmount = $('#TadabollGen_ETotalAmount').val()*1;
+//    if (targetCtrl > ETotalAmount) {
+//        $('#TadabollGen_RequisitionAmt').preventTypying();
+//    } else {
+//        $('#TadabollGen_RequisitionAmt').off('keypress');
+//    }
    
-}
-
+//}
+$('.numbers').keypress(function (e) {
+    if (String.fromCharCode(e.keyCode).match(/[^0-9]/g)) return false;
+});
 function keypressCountWord(e) {
     var target = keypressCountWord.caller.arguments[0].target;
     var targetCtrl = $(target).val();
     if (targetCtrl.length > 1 && WordCount(targetCtrl) >= 50) {
         $(target).preventTypying();
+    } else {
+        $(target).off('keypress');
     }
 }
 

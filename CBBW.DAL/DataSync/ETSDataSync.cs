@@ -164,7 +164,6 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-       
         public DataTable RemoveETSNoteNumber(string NoteNumber, int RemoveTag, int ActiveTag, ref string pMsg)
         {
             try
@@ -184,8 +183,6 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-
-
         public DataTable GetETSNoteListToBeApproved(int CentreCode, int status, ref string pMsg)
         {
             try
@@ -197,8 +194,6 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-
-
         public DataTable SetETSApprovalData(ETSApproveTravDetails model, ref string pMsg)
         {
             try

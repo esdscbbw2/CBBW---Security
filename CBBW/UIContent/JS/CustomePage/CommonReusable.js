@@ -70,6 +70,14 @@ $.fn.CustomDateFormat = function () {
     $('#' + lblid).html(e);
     //that.addClass('is-valid').removeClass('is-invalid')
 };
+function IsAlphaNumericWithSpace(stringvalue) {
+    var result = false;
+    if (stringvalue != '') {
+        var regx = /^[a-zA-Z0-9\s]+$/;
+        result = regx.test(stringvalue);
+    }
+    return result;
+};
 $(document).ready(function () {
     $(".only-numeric").bind("keypress", function (e) {
         var keyCode = e.which ? e.which : e.keyCode
@@ -625,12 +633,18 @@ function CloneRowReturningID(sourceTBody, destinationTBody, rowid, IsRemoveBtn, 
     });
     cloneready.find('.htmlVal').each(function () {
         $(this).html('');
-    }); 
+    });    
+    sourcebody.find('.btn').each(function () {
+        that = $(this);
+        that.on('mouseleave click', function () {
+            $(this).tooltip('hide');
+        });
+    });
     if (IsAddBtnEnable) {
         cloneready.find('.addBtn').removeAttr('disabled');
     }
     else {
-        cloneready.find('.addBtn').attr('disabled', 'disabled');;
+        cloneready.find('.addBtn').attr('disabled', 'disabled').tooltip('hide');
     };
     if (IsRemoveBtn) {
         cloneready.find('.removeBtn').removeClass('inVisible');
@@ -638,12 +652,6 @@ function CloneRowReturningID(sourceTBody, destinationTBody, rowid, IsRemoveBtn, 
     else {
         cloneready.find('.removeBtn').addClass('inVisible');
     }
-    sourcebody.find('.btn').each(function () {
-        that = $(this);
-        that.on('mouseleave click', function () {
-            $(this).tooltip('hide');
-        });
-    });
     if (rowid == 0) {
         if (maxrows == 0) {
             destinationbody.append(cloneready);
@@ -1033,6 +1041,21 @@ function EnableAddBtnInCloneRow(tblRow, addBtnBaseID) {
     if (tblrow.find('.is-invalid').length > 0) { addBtnctrl.makeDisable(); } else { addBtnctrl.makeEnabled(); }
     //alert(tblrow.find('.is-invalid').length);
 };
+function EnableAddBtnInCloneRowIfOnlyLast(tblRow, addBtnBaseID) {
+    //If The Add Button Is Exist In The Last Row Then Only Enable 
+    var tblrow = $(tblRow);
+    var rowid = tblrow.attr('id');
+    if (rowid != 0) { addBtnBaseID = addBtnBaseID + '_' + rowid; }
+    var addBtnctrl = $('#' + addBtnBaseID);
+    if (tblrow.is(":last-child")) {
+        if (tblrow.find('.is-invalid').length > 0) {
+            addBtnctrl.makeDisable();
+        } else { addBtnctrl.makeEnabled(); }
+    }
+    else { addBtnctrl.makeDisable(); }
+    
+    //alert(tblrow.find('.is-invalid').length);
+};
 function getDivInvalidCount(mdivID) {
     var x = 0;
     var mDiv = $('#' + mdivID);
@@ -1120,6 +1143,22 @@ function UnLockDiv(divID) {
     });
     $('#' + divID).removeClass('sectionB');
 };
+function RestRowsDeleted(TableID, RowID) {
+    var ind = 0;
+    $('#' + TableID+' tr').each(function () {
+        var that = $(this);
+        if (that.attr('id') == RowID) {
+            ind = 1;
+            that.find('.addBtn').each(function () {
+                $(this).removeAttr('disabled');
+            });
+        }
+        else if (ind == 1) {
+            that.remove();
+        }
+    });
+};
+
 
 
 //Need to make RND

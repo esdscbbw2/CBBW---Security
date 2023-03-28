@@ -262,11 +262,12 @@ function EnableSubmitBtn() {
     var z = getDivInvalidCount('AllData');
     var btn = $('#SubmitCount').val();
     var SubmitBtn = $('#Save');
+    if (btn == 1) {
+        $('#Policy').makeEnabled();
+    }
     if (z <= 0 && btn == 1) {
-
         SubmitBtn.makeEnabled();
     }
-   
 };
 function GetInActiveInDD(DDId) {
     var IsActive = false;
@@ -292,6 +293,10 @@ function TPDBtnClicked() {
     var EmployeeNo = $('#EmployeeNo').val();
     var NoteNumber = $('#RefNoteNumber').val();
     $('#SubmitCount').val(1);
+    var btn = $('#SubmitCount').val();
+    if (btn == 1) {
+        $('#Policy').makeEnabled();
+    }
     if (notenumber != '') {
         var iDiv = $('#TPDModalDiv');
         var modalDiv = $('#TPDModal');

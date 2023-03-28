@@ -14,7 +14,7 @@
         @Html.HiddenFor(m => m.etsHeader.CenterName)
         @Html.HiddenFor(m => m.etsHeader.CenterCodeName)
         @Html.HiddenFor(m => m.Btnsubmit)
-        <div class="container">
+        <div class="">
             <div class="row newTable">
                 <div class="fixedElement">
                     <div class="col-md-12">
@@ -44,7 +44,7 @@
                 </div>
                 <div class="col-md-12 d-flex justify-content-between">
                     <div class="text-left pt-2 pb-2">
-                        <button id="btnScan" type="button" class="btn btn-light-green @(string.IsNullOrEmpty(Model.etsHeader.AttachFile)?"":"inVisible")" 
+                        <button id="btnScan" type="button" class="btn btn-light-green @(string.IsNullOrEmpty(Model.etsHeader.AttachFile)?"":"inVisible")"
                                 onclick="fireSweetAlert()">
                             Scan & Attach
                             “Travelling Request Form”
@@ -321,35 +321,48 @@
                         </div>
                     </div>
                     <div class="bgColor mt-4 bg-transparent text-left" id="Questions">
-                        <ul style="list-style:none;">
-                            <li style="font-size: 16px;">
-                                It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
-                                <select id="otherplace" style="width: 110px;" class="form-select is-invalid" onchange="ValidateControl()" aria-label="Default select example">
-                                    <option selected="">-</option>
-                                    <option value="0">Yes</option>
-                                    <option value="1">No</option>
-                                </select>
-                            </li>
-                            <li style="font-size: 16px;">
-                                It Is Ensured That This Person Is Carrying Laptop As Provided To Him. The Same Has Been Confirmed (as per leave rules):
-                                <select id="carryLaptop" style="width: 110px;" class="form-select is-invalid" onchange="ValidateControl()" aria-label="Default select example">
-                                    <option selected="">-</option>
-                                    <option value="0">Yes</option>
-                                    <option value="1">No</option>
-                                </select>
-                            </li>
-                            <li style="font-size: 16px;">
-                                The Entry Is Done As Per Policy & As Required:
-                                <select id="Policy" style="width: 110px;" class="form-select is-invalid" onchange="ValidateControl()" aria-label="Default select example">
-                                    <option selected="">-</option>
-                                    <option value="0">Yes</option>
-                                    <option value="1">No</option>
-                                </select>
-                            </li>
-                        </ul>
+                        <div class="bgColor mt-4 bg-transparent content text-left">
+                            <ul style="list-style:none;">
+                                <li style="font-size: 16px;">
+                                    It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
+                                    <select id="otherplace" style="width: 110px;" class="form-select is-invalid" onchange="ValidateControl()" aria-label="Default select example">
+                                        <option selected="">-</option>
+                                        <option value="0">Yes</option>
+                                        <option value="1">No</option>
+                                    </select>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="bgColor mt-4 bg-transparent content text-left">
+                            <ul style="list-style:none;">
+                                <li style="font-size: 16px;">
+                                    It Is Ensured That This Person Is Carrying Laptop As Provided To Him. The Same Has Been Confirmed (as per leave rules):
+                                    <select id="carryLaptop" style="width: 110px;" class="form-select is-invalid" onchange="ValidateControl()" aria-label="Default select example">
+                                        <option selected="">-</option>
+                                        <option value="0">Yes</option>
+                                        <option value="1">No</option>
+                                    </select>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="bgColor mt-4 bg-transparent content text-left">
+                            <ul style="list-style:none;">
+                                <li style="font-size: 16px;">
+                                    The Entry Is Done As Per Policy & As Required:
+                                    <select id="Policy" style="width: 110px;" class="form-select is-invalid" onchange="ValidateControl()" aria-label="Default select example">
+                                        <option selected="">-</option>
+                                        <option value="0">Yes</option>
+                                        <option value="1">No</option>
+                                    </select>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
+
+                    
+
                 </div>
-            </div>
+                </div>
         </div>
     }
 </div>
@@ -389,11 +402,11 @@
                 text: "Are you sure you want to delete this?",
                 icon: 'success',
                 html: `<div style="text-align:left;">
-                                                            <div class="form-group">
-                                                                <label class="swal-label">Attach File (Only Pdf,Png & Jpg Files)</label>
-                                                                <input type="file" id="uploadCtrl" name="uploadCtrl" class="form-control" placeholder="">
-                                                            </div>
-                                                        </div>`,
+                                                                <div class="form-group">
+                                                                    <label class="swal-label">Attach File (Only Pdf,Png & Jpg Files)</label>
+                                                                    <input type="file" id="uploadCtrl" name="uploadCtrl" class="form-control" placeholder="">
+                                                                </div>
+                                                            </div>`,
                 cancelButtonClass: 'btn-cancel',
                 cancelButtonText: 'Cancel',
                 confirmButtonText: 'Submit',
@@ -467,7 +480,6 @@
     <script>
         $(document).ready(function () {
             $('#btnBack').click(function () {
-                var url = "/Security/ETS/Index";
                 if ($('#etsHeader_CenterCodeName').val() != "") {
                     Swal.fire({
                         title: 'Confirmation Message',
@@ -487,14 +499,11 @@
                     }).then(callback);
                     function callback(result) {
                         if (result.value) {
+                            var url = "/Security/ETS/Index";
                             window.location.href = url;
-                        } else {
-                            // second variant
                         }
                     }
-                } else {
-                    window.location.href = url;
-                };
+                } 
             });
         });
         $(document).ready(function () {

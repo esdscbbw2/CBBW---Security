@@ -22,24 +22,22 @@ namespace CBBW.BLL.Repository
         {
             return _entities.getServiceTypes(0,ref pMsg);
         }
-
         //public IEnumerable<CustomComboOptions> getBranchType(int CentreId, ref string pMsg)
         //{
         //    return _entities.getBranchType(CentreId, ref pMsg);
         //}
-
         public string GetDesgCodenName(int empID, int empType)
         {
-            //empType : 2-driver, 1-Others
+            string msg = "";
             string result = "";
-            if (empType == 1)
-                result = "4 / DIC";
-            if (empType == 2)
-                result = "0 / Senior Driver"; 
+            if (empType == 1 || empType == 2)
+                result = _entities.GetDesignation(empID, empType, ref msg);
             else if (empType == 3)
                 result = "0 / Others";
             else if (empType == 4)
                 result = "0 / Management";
+
+            if (string.IsNullOrEmpty(result)) { result = "0 / NA"; }
             return result;
         }
         public IEnumerable<CustomComboOptions> getDriverList(ref string pMsg)
@@ -58,17 +56,50 @@ namespace CBBW.BLL.Repository
         {
             return _entities.getVehicleBasicInfo(VehicleNumber, ref pMsg);
         }
-
         //public CompanyTransportType getVehicleEligibility(int EmployeeNumber, ref string pMsg)
         //{
         //    CompanyTransportType result = new CompanyTransportType();
         //    result.ID = 3;result.DisplayText = "LV";
         //    return result;
         //}
-
         public List<VehicleNo> getVehicleList(string VehicleType, int wheeltype, ref string pMsg)
         {
             return _entities.getVehicleList(VehicleType, wheeltype, ref pMsg);
         }
+        public IEnumerable<LocationMaster> GetCentresFromTourCategory(string TourCatIDs, ref string pMsg)
+        {
+            List<int> listOfIntegers = new List<int>();
+            List<LocationMaster> locations = new List<LocationMaster>();
+            MasterData masterdata = MasterData.GetInstance;
+            if (masterdata.AllLocations != null && masterdata.AllLocations.Count > 0)
+            {
+                if (TourCatIDs.IndexOf(',') < 0) { TourCatIDs = TourCatIDs + ","; }
+                string[] CatTypes = TourCatIDs.Split(',');
+                foreach (var obj in CatTypes)
+                {
+                    int intValue;
+                    if (int.TryParse(obj, out intValue))
+                    {
+                        if (intValue == 1 || intValue == 4) { intValue = 2; }
+                        else if (intValue == 3) { intValue = 99; }
+                        listOfIntegers.Add(intValue);                        
+                    }
+                }
+                locations.AddRange(masterdata.AllLocations.Where(o => listOfIntegers.Contains(o.TypeID)).ToList());
+            }
+            return locations;
+        }
+        public IEnumerable<LocationMaster> GetBranchOfaCentre(int CentreCode, ref string pMsg)
+        {
+            List<LocationMaster> locations = new List<LocationMaster>();
+            MasterData masterdata = MasterData.GetInstance;
+            if (masterdata.AllLocations != null && masterdata.AllLocations.Count > 0)
+            {
+                locations.AddRange(masterdata.AllLocations.Where(o => o.TypeID == 1 && o.CentreCode == CentreCode).ToList());
+            }
+            return locations;
+        }
+
+
     }
 }
