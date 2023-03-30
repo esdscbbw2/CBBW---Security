@@ -644,6 +644,8 @@ namespace CBBW.Areas.Security.Controllers
                 Model.MaxLodgingExp = models.MaxLodgingExp;
                 Model.MaxLocalConv = models.MaxLocalConv;
                 Model.IsVehicleProvided = models.IsVehicleProvided;
+                Model.ActualTourInTime = models.TourFromTime;
+                Model.ActualTourOutTime = models.TourToTime;
                 Model.status = 2;
                 return Json(Model, JsonRequestBehavior.AllowGet);
             }

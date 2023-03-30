@@ -18,5 +18,6 @@ namespace CBBW.Areas.Security.ViewModel
         public int IsLVViewed { get; set; }
         public int IsApprovedComboValue { get; set; }
         public int IsBackMsg { get; set; }
+        public int IsTabClicked { get; set; }
     }
 }

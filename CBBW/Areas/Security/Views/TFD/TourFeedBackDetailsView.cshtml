@@ -21,7 +21,16 @@
                             </button>
 
                         </div>
-                        <h2>Tour Information & Feed Back Details - ENTRY  </h2>
+                        @if (Model.ApprovalTime == null)
+                        {
+
+
+                            <h2>Tour Information & Feed Back Details - ENTRY  </h2>
+                        }
+                        else
+                        {
+                            <h2>Tour Information & Feed Back Details - Approval  </h2>
+                        }
                     </div>
                 </div>
 

@@ -58,7 +58,6 @@ function removeClonebtn() {
 
 };
 function EnableAddBtn(tblRow, addBtnBaseID,CheckId) {
-    debugger;
     var tblrow = $(tblRow);
     var rowid = tblrow.attr('id')
     if (rowid != 0) { addBtnBaseID = addBtnBaseID + '_' + rowid; CheckId = CheckId + '_' + rowid; }
@@ -77,7 +76,7 @@ function VisibleRows() {
     $('#SubmitCount').val(0);
     $('#BtnSubmit').makeDisable();
     var ExpensesDetailsDiv = $('#ExpensesDetailsDiv');
-    var rowid = 0;
+    var rowid = 0;    
     var targetCtrl = $(VisibleRows.caller.arguments[0].target);
     var insrow = targetCtrl.closest('.add-row');
     rowid = $(insrow).attr('id');
@@ -97,6 +96,52 @@ function VisibleRows() {
     ExpensesDetailsDiv.addClass('inVisible');
 
     if ($.trim(NoteNo.val()) != '' && $.trim(NoteNo.val())!='-1') {
+        var dataSourceURL = '/BIL/ExpensesDetails?NoteNumber=' + $.trim(NoteNo.val());
+        $.ajax({
+            url: dataSourceURL,
+            contentType: 'application/html; charset=utf-8',
+            type: 'GET',
+            dataType: 'html',
+            success: function (result) {
+                ExpensesDetailsDiv.removeClass('inVisible');
+                ExpensesDetailsDiv.html(result);
+            },
+            error: function (xhr, status) {
+                ExpensesDetailsDiv.html(xhr.responseText);
+            }
+        })
+    } else {
+        Swal.fire({
+            title: 'Error',
+            text: 'Please Select Bill No.',
+            icon: 'question',
+            customClass: 'swal-wide',
+            buttons: {
+                confirm: 'Ok'
+            },
+            confirmButtonColor: '#2527a2',
+        });
+
+    }
+};
+function VisibleRowsEnable(rowid) {
+    $('#SubmitCount').val(0);
+    $('#BtnSubmit').makeDisable();
+    var ExpensesDetailsDiv = $('#ExpensesDetailsDiv');
+    var EmployeeCode = $('#EmployeeCodes');
+    var RefNoteNumber = $('#RefNoteNumbers');
+    var NoteNo = $('#NoteNumbers');
+    if (rowid > 0) {
+        NoteNo = $('#NoteNumbers_' + rowid);
+        EmployeeCode = $('#EmployeeCodes_' + rowid);
+        RefNoteNumber = $('#RefNoteNumbers_' + rowid);
+    }
+    $('#NoteNumber').val($.trim(NoteNo.val()));
+    $('#EmployeeNo').val(EmployeeCode.html());
+    $('#RefNoteNumber').val($.trim(RefNoteNumber.html()));
+    ExpensesDetailsDiv.addClass('inVisible');
+
+    if ($.trim(NoteNo.val()) != '' && $.trim(NoteNo.val()) != '-1') {
         var dataSourceURL = '/BIL/ExpensesDetails?NoteNumber=' + $.trim(NoteNo.val());
         $.ajax({
             url: dataSourceURL,
@@ -171,7 +216,6 @@ function ChangeNoteNumber() {
     $('.CheckList').prop('checked', false);
     $('.CheckList').removeClass('selected-row');
     var TargetVal = $(targetCtrl).val();
-
     var EmployeeCode = $('#EmployeeCodes');
     var RefNoteNumber = $('#RefNoteNumbers');
     var CenterCodeName = $('#CenterCodeName');
@@ -182,16 +226,14 @@ function ChangeNoteNumber() {
     var TourToDate = $('#TourToDate');
     var NoOfDays = $('#NoOfDays');
     var PurposeOfVisit = $('#PurposeOfVisit');
-
+    var CheckList = $('#CheckList');
+    var AddBtn = $('#AddBtn');
     var dstat = 0;
     $('.xPerson').each(function () {
         if (TargetVal != '' && $(this).val() == TargetVal) { dstat += 1; }
         //alert(mValue + ' - ' + $(this).val() + ' - ' + dstat);
     });
     if (dstat > 1) {
-        
-        $(targetCtrl).val('');
-        $(targetCtrl).isInvalid();
         Swal.fire({
             title: 'Data Duplicacy Error',
             text: 'Bill No You Have Selected Is Already Taken.',
@@ -202,6 +244,17 @@ function ChangeNoteNumber() {
             },
             confirmButtonColor: '#2527a2',
         });
+        if (rowid > 0) {
+            CheckList = $('#CheckList_' + rowid);
+            AddBtn = $('#AddBtn_' + rowid);
+        }
+        AddBtn.makeDisable();
+        CheckList.makeDisable();
+        $(targetCtrl).val('')
+        $(targetCtrl).removeClass('is-valid').addClass('is-invalid');
+       
+       
+
     } else {
         $.ajax({
             url: '/BIL/GetTADABillGenerationDataHdr',
@@ -211,7 +264,7 @@ function ChangeNoteNumber() {
             success: function (data) {
                
                 $(data).each(function (index, item) {
-
+                    if (TargetVal != "-1") {
                     if (rowid > 0) {
                         EmployeeCode = $('#EmployeeCodes_' + rowid);
                         RefNoteNumber = $('#RefNoteNumbers_' + rowid);
@@ -223,6 +276,7 @@ function ChangeNoteNumber() {
                         TourToDate = $('#TourToDate_' + rowid);
                         NoOfDays = $('#NoOfDays_' + rowid);
                         PurposeOfVisit = $('#PurposeOfVisit_' + rowid);
+                        CheckList = $('#CheckList_' + rowid);
 
                     }
 
@@ -236,9 +290,11 @@ function ChangeNoteNumber() {
                     TourToDate.html(item.TourToDateNTime + "-" + item.TourToTime);
                     NoOfDays.html(item.NoOfDays);
                     PurposeOfVisit.html(item.PurposeOfVisit);
-
-
-                });
+                    CheckList.prop('checked', true);
+                    VisibleRowsEnable(rowid);
+                    
+                    }
+                 });
             },
             error: function (xhr, status) {
                 alert(xhr.responseText);
@@ -249,7 +305,6 @@ function ChangeNoteNumber() {
     
 };
 function TotalExpance() {
-    debugger;
     var target = TotalExpance.caller.arguments[0].target;
     var targetCtrl = $(target);
     var targetid = targetCtrl.attr('id');
@@ -320,7 +375,6 @@ function ValidateControl() {
 
 };
 function ValidateCloneRowCtrl() {
-    debugger;
     var target = ValidateCloneRowCtrl.caller.arguments[0].target;
     var tblRow = target.closest('.add-row');
     var targetCtrl = $(target);
@@ -334,8 +388,8 @@ function ValidateCloneRowCtrl() {
 function validatectrl(targetid, value) {
     var isvalid = false;
     switch (targetid) {
-         case "NoteNumbers":
-            isvalid = validatectrl_ValidateLength(value);
+        case "NoteNumbers":
+            isvalid = validatectrl_ValidatestringLength(value);
          break;
         case "IsApproves":
             isvalid = validatectrl_YesNoComboApproval(value);
@@ -343,10 +397,18 @@ function validatectrl(targetid, value) {
         case "ApproveReason":
             isvalid = validatectrl_ValidatestringLength(value);
             break;
-        
         case "AReamrk":
             isvalid = validatectrl_ValidatestringLength(value);
+            break; 
+        case "Checked":
+            isvalid = validatectrl_ValidatestringLength(value);
+            if (isvalid) {
+                $('.content').removeClass('border-red').addClass('border-green');
+            } else {
+                $('.content').removeClass('border-green').addClass('border-red');
+            }
             break;
+
 
     }
     return isvalid;
@@ -513,7 +575,7 @@ function AEDincrementQty() {
     var targetCtrl = AEDincrementQty.caller.arguments[0].target;
     var mids =  $(targetCtrl).attr('id');
     var maxvalue = $('#' + mids + 'Max').html()*1;
-    var txtcTrl = $('#' + mids + 'Amount');
+    var txtcTrl = $('#' + mids);
     var mValue = txtcTrl.val() * 1;
     //alert(mids + "--" + maxvalue + '--' + mValue);
     mValue += 1;
@@ -522,31 +584,48 @@ function AEDincrementQty() {
     TotalExp();
 };
 function TotalExp() {
-    var edamt = $('#AEDAmount').val() * 1;
-    var atamt = $('#ATAAmount').val() * 1;
-    var alamt = $('#ALocAmount').val() * 1;
-    var aloamt = $('#ALodAmount').val() * 1;
+    var edamt = $('#AED').val() * 1;
+    var atamt = $('#ATA').val() * 1;
+    var alamt = $('#ALoc').val() * 1;
+    var aloamt = $('#ALod').val() * 1;
     var total = edamt + atamt + alamt + aloamt;
-    var Atotal=isNaN(total) ? 0 : total;
+    var Atotal = isNaN(total) ? 0 : total;
     $('#ATotalAmount').val(Atotal);
 };
-function AEDAmount() {
-    var edamt = $('#AEDAmount').val() * 1;
-    var maxvalue = $('#AEDMax').html() * 1;
-    alert(maxvalue + '--' + edamt);
-    edamt = edamt > maxvalue ? maxvalue : edamt;
-    $('#AEDAmount').val(edamt);
+
+function numbervalidate(key) {
+    var presskeys = (key.which) ? key.which : key.presskeys;
+    if (!(presskeys == 8 || presskeys == 46) && (presskeys < 48 || presskeys > 57)) {
+        return false;
+    }
 }
-
 function isNumber(evt) {
-
     evt = (evt) ? evt : window.event;
     var charCode = (evt.which) ? evt.which : evt.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
         return false;
     }
+    var targetCtrl = isNumber.caller.arguments[0].target;
+    var mids = $(targetCtrl).attr('id');
+    var maxvalue = $('#' + mids + 'Max').html() * 1;
+    var txtcTrl = $('#'+mids);
+    var mValue = txtcTrl.val();
+    var mValuetatol = mValue > maxvalue ? maxvalue : mValue;
+    txtcTrl.val(mValuetatol);
+    TotalExp();
     return true;
 }
+function keypressCountWord(e) {
+    var target = keypressCountWord.caller.arguments[0].target;
+    var targetCtrl = $(target).val();
+    if (WordCount(targetCtrl) > 50) {
+        $(target).preventTypying();
+    } else {
+        $(target).off('keypress');
+    }
+}
+
+
 
 
     

@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BIL\DADetails.cs" />
+    <Compile Include="BIL\IndexList.cs" />
     <Compile Include="BIL\TADABillGeneration.cs" />
     <Compile Include="BIL\TADAReport.cs" />
     <Compile Include="BIL\TADARuleData.cs" />
@@ -126,6 +127,7 @@
     <Compile Include="TADA\TADARuleV2.cs" />
     <Compile Include="TFD\TFDDateWiseTourData.cs" />
     <Compile Include="TFD\TFDHdr.cs" />
+    <Compile Include="TFD\TFDNoteList.cs" />
     <Compile Include="TFD\TFDTourFeedBackDetails.cs" />
     <Compile Include="TFD\TFDTravellingPerson.cs" />
     <Compile Include="Tour\TourRule.cs" />

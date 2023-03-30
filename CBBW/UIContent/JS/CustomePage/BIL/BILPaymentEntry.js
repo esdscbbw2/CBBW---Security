@@ -125,6 +125,55 @@ function VisibleRows() {
 
     }
 };
+function VisibleRowsEnable(rowid) {
+    $('#SubmitCount').val(0);
+    $('#BtnSubmit').makeDisable();
+    $('#SubmitBtn').makeDisable();
+    var ExpensesDetailsDiv = $('#ExpensesDetailsDiv');
+    var EmployeeCode = $('#EmployeeCodes');
+    var RefNoteNumber = $('#RefNoteNumbers');
+    var NoteNo = $('#NoteNumbers');
+    if (rowid > 0) {
+        NoteNo = $('#NoteNumbers_' + rowid);
+        EmployeeCode = $('#EmployeeCodes_' + rowid);
+        RefNoteNumber = $('#RefNoteNumbers_' + rowid);
+    }
+
+
+    $('#NoteNumber').val($.trim(NoteNo.val()));
+    $('#EmployeeNo').val(EmployeeCode.html());
+    $('#RefNoteNumber').val($.trim(RefNoteNumber.html()));
+    ExpensesDetailsDiv.addClass('inVisible');
+
+    if ($.trim(NoteNo.val()) != '' && $.trim(NoteNo.val()) != '-1') {
+        var dataSourceURL = '/BIL/PaymentExpensesDetails?NoteNumber=' + $.trim(NoteNo.val());
+        $.ajax({
+            url: dataSourceURL,
+            contentType: 'application/html; charset=utf-8',
+            type: 'GET',
+            dataType: 'html',
+            success: function (result) {
+                ExpensesDetailsDiv.removeClass('inVisible');
+                ExpensesDetailsDiv.html(result);
+            },
+            error: function (xhr, status) {
+                ExpensesDetailsDiv.html(xhr.responseText);
+            }
+        })
+    } else {
+        Swal.fire({
+            title: 'Error',
+            text: 'Please Select Bill No.',
+            icon: 'question',
+            customClass: 'swal-wide',
+            buttons: {
+                confirm: 'Ok'
+            },
+            confirmButtonColor: '#2527a2',
+        });
+
+    }
+};
 $('#btnBacks').click(function () {
     var url = "/Security/BIL/PaymentIndex";
     if ($('#NoteNumber').val() != "") {
@@ -182,6 +231,8 @@ function ChangeNoteNumber() {
     var TourToDate = $('#TourToDate');
     var NoOfDays = $('#NoOfDays');
     var PurposeOfVisit = $('#PurposeOfVisit');
+    var CheckList = $('#CheckList');
+    var AddBtn = $('#AddBtn');
 
     var dstat = 0;
     $('.xPerson').each(function () {
@@ -202,6 +253,14 @@ function ChangeNoteNumber() {
             },
             confirmButtonColor: '#2527a2',
         });
+        if (rowid > 0) {
+            CheckList = $('#CheckList_' + rowid);
+            AddBtn = $('#AddBtn_' + rowid);
+        }
+        $(targetCtrl).val('')
+        $(targetCtrl).removeClass('is-valid').addClass('is-invalid');
+        AddBtn.makeDisable();
+        CheckList.makeDisable();
     } else {
         $.ajax({
             url: '/BIL/GetTADABillGenerationDataHdr',
@@ -211,33 +270,35 @@ function ChangeNoteNumber() {
             success: function (data) {
 
                 $(data).each(function (index, item) {
+                    if (TargetVal != "-1") {
+                        if (rowid > 0) {
+                            EmployeeCode = $('#EmployeeCodes_' + rowid);
+                            RefNoteNumber = $('#RefNoteNumbers_' + rowid);
+                            CenterCodeName = $('#CenterCodeName_' + rowid);
+                            PersonTypetxt = $('#PersonTypetxt_' + rowid);
+                            EmployeeCodeName = $('#EmployeeCodeName_' + rowid);
+                            DesigCodeName = $('#DesigCodeName_' + rowid);
+                            TourFromDate = $('#TourFromDate_' + rowid);
+                            TourToDate = $('#TourToDate_' + rowid);
+                            NoOfDays = $('#NoOfDays_' + rowid);
+                            PurposeOfVisit = $('#PurposeOfVisit_' + rowid);
 
-                    if (rowid > 0) {
-                        EmployeeCode = $('#EmployeeCodes_' + rowid);
-                        RefNoteNumber = $('#RefNoteNumbers_' + rowid);
-                        CenterCodeName = $('#CenterCodeName_' + rowid);
-                        PersonTypetxt = $('#PersonTypetxt_' + rowid);
-                        EmployeeCodeName = $('#EmployeeCodeName_' + rowid);
-                        DesigCodeName = $('#DesigCodeName_' + rowid);
-                        TourFromDate = $('#TourFromDate_' + rowid);
-                        TourToDate = $('#TourToDate_' + rowid);
-                        NoOfDays = $('#NoOfDays_' + rowid);
-                        PurposeOfVisit = $('#PurposeOfVisit_' + rowid);
+                        }
 
+                        EmployeeCode.html(item.EmployeeNo);
+                        RefNoteNumber.html(item.RefNoteNumber);
+                        CenterCodeName.html(item.CenterCodeName);
+                        PersonTypetxt.html(item.PersonTypetxt);
+                        EmployeeCodeName.html(item.EmployeeCodeName);
+                        DesigCodeName.html(item.DesigCodeName);
+                        TourFromDate.html(item.TourFromDateNTime + "-" + item.TourFromTime);
+                        TourToDate.html(item.TourToDateNTime + "-" + item.TourToTime);
+                        NoOfDays.html(item.NoOfDays);
+                        PurposeOfVisit.html(item.PurposeOfVisit);
+                        CheckList.prop('checked', true);
+                        VisibleRowsEnable(rowid);
+                        
                     }
-
-                    EmployeeCode.html(item.EmployeeNo);
-                    RefNoteNumber.html(item.RefNoteNumber);
-                    CenterCodeName.html(item.CenterCodeName);
-                    PersonTypetxt.html(item.PersonTypetxt);
-                    EmployeeCodeName.html(item.EmployeeCodeName);
-                    DesigCodeName.html(item.DesigCodeName);
-                    TourFromDate.html(item.TourFromDateNTime + "-" + item.TourFromTime);
-                    TourToDate.html(item.TourToDateNTime + "-" + item.TourToTime);
-                    NoOfDays.html(item.NoOfDays);
-                    PurposeOfVisit.html(item.PurposeOfVisit);
-
-
                 });
             },
             error: function (xhr, status) {
@@ -295,9 +356,9 @@ function TPDBtnClicked() {
                     GetEmp(Deptcode.val(), PreparedEmpNo.val());
                 }
                 PreparedEmpNo.val() > 0 ? PreparedEmpNoDD.isValid() : PreparedEmpNoDD.isInvalid();
-                RequisitionAmt.val() > 0 ? RequisitionAmt.isValid() : RequisitionAmt.isInvalid();
+                RequisitionAmt.val() >= 0 ? RequisitionAmt.isValid() : RequisitionAmt.isInvalid();
                 RequisitionAmt.attr('min', 0);
-                RequisitionAmt.attr('max', ETotalAmount * 1);
+           /*     RequisitionAmt.attr('max', ETotalAmount * 1);*/
                 EnableSubmitBtn();
             },
             error: function (xhr, status) {
@@ -377,7 +438,6 @@ function ValidateControl() {
 
 };
 function ValidateCloneRowCtrl() {
-    debugger;
     var target = ValidateCloneRowCtrl.caller.arguments[0].target;
     var tblRow = target.closest('.add-row');
     var targetCtrl = $(target);
@@ -414,9 +474,8 @@ function validatectrl(targetid, value) {
             isvalid = validatectrl_ValidatestringLength(value);
             break;
         case "TadabollGen_RequisitionAmt":
-            //isvalid = validatectrl_ValidateLength(value);
-            var ETotalAmount = $('#TadabollGen_ETotalAmount').val() * 1;
-            if ((value * 1) <= ETotalAmount) {
+            var ETotalAmount = $('#TadabollGen_ATotalAmount').val() * 1;
+            if ((value * 1) <= ETotalAmount && value!="") {
                 isvalid = true;
             } else {
                 isvalid = false;
@@ -434,6 +493,8 @@ function validatectrl(targetid, value) {
             isvalid = validatectrl_ValidatestringLength(value);
             if (isvalid) {
                 $('.content').removeClass('border-red').addClass('border-green');
+            } else {
+                $('.content').removeClass('border-green').addClass('border-red');
             }
 
             break;
@@ -665,45 +726,69 @@ function AEDincrementQty() {
     var target = $(AEDincrementQty.caller.arguments[0].target);
     var mid = target.attr('id');
     var maxvalue = $('#' + mid + 'Max').html() * 1;
-    var txtcTrl = $('#' + mid + 'Amount');
+    var txtcTrl = $('#' + mid);
     var mValue = txtcTrl.val() * 1;
-    //alert(mValue + '' + maxvalue);
     mValue += 1;
     mValue = mValue > maxvalue ? maxvalue : mValue;
     txtcTrl.val(mValue);
     TotalExp();
 };
 function TotalExp() {
-    var edamt = $('#EEDAmount').val() * 1;
-    var atamt = $('#ETAAmount').val() * 1;
-    var alamt = $('#ELocAmount').val() * 1;
-    var aloamt = $('#ELodAmount').val() * 1;
+    var edamt = $('#EED').val() * 1;
+    var atamt = $('#ETA').val() * 1;
+    var alamt = $('#ELoc').val() * 1;
+    var aloamt = $('#ELod').val() * 1;
     var total = edamt + atamt + alamt + aloamt;
     var Atotal = isNaN(total) ? 0 : total;
     $('#ETotalAmount').val(Atotal);
 };
-//function isNumber(evt) {
-//    var target = isNumber.caller.arguments[0].target;
-//    var targetCtrl = $(target).val() * 1;
-//    var ETotalAmount = $('#TadabollGen_ETotalAmount').val()*1;
-//    if (targetCtrl > ETotalAmount) {
-//        $('#TadabollGen_RequisitionAmt').preventTypying();
-//    } else {
-//        $('#TadabollGen_RequisitionAmt').off('keypress');
-//    }
-   
-//}
-$('.numbers').keypress(function (e) {
-    if (String.fromCharCode(e.keyCode).match(/[^0-9]/g)) return false;
-});
+
+function numbervalidate(key) {
+    var presskeys = (key.which) ? key.which : key.presskeys;
+    if (!(presskeys == 8 || presskeys == 46) && (presskeys < 48 || presskeys > 57)) {
+        return false;
+    }
+}
+function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    var targetCtrl = isNumber.caller.arguments[0].target;
+    var mids = $(targetCtrl).attr('id');
+    var maxvalue = $('#' + mids + 'Max').html() * 1;
+    var txtcTrl = $('#' + mids);
+    var mValue = txtcTrl.val();
+    var mValuetatol = mValue > maxvalue ? maxvalue : mValue;
+    txtcTrl.val(mValuetatol);
+    TotalExp();
+    return true;
+}
 function keypressCountWord(e) {
     var target = keypressCountWord.caller.arguments[0].target;
     var targetCtrl = $(target).val();
-    if (targetCtrl.length > 1 && WordCount(targetCtrl) >= 50) {
+    if (WordCount(targetCtrl) > 50) {
         $(target).preventTypying();
     } else {
         $(target).off('keypress');
     }
+}
+
+function isPytmFormDA(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    var targetCtrl = isPytmFormDA.caller.arguments[0].target;
+    var mids = $(targetCtrl).attr('id');
+    var maxvalue = $('#TadabollGen_ATotalAmount').val() * 1;
+    var txtcTrl = $('#' + mids);
+    var mValue = txtcTrl.val();
+    var mValuetatol = mValue > maxvalue ? maxvalue : mValue;
+    txtcTrl.val(mValuetatol);
+    return true;
 }
 
 

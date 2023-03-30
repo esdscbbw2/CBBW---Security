@@ -515,7 +515,9 @@ $('#btnClear').click(function () {
     var Policy = $('#Policy');
     Policy.val('');
     Policy.isInvalid();
-    $('#emnHeader_AttachFile').val('');
+        $('#emnHeader_AttachFile').val('');
+        $('#btnScan').removeClass('inVisible');
+        $('#btnScanView').addClass('inVisible');
     $('#otherplace').val('');
     $('#carryLaptop').val('');
     $('#Policy').val('');

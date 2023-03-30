@@ -86,7 +86,7 @@
                             </th>
                             <td class="text-center">
                                 <div class="qty mx-auto">
-                                    @Html.TextBoxFor(x => x.EEDAmount, new { @class = "form-control", @onchange = "TotalExp();", @onkeypress = "return isNumber(event)" })
+                                    @Html.TextBoxFor(x => x.EEDAmount, new {@id= "EED", @class = "form-control", autocomplete = "off", onkeyup = "return isNumber(event);", onkeypress = "return numbervalidate(event)" })
                                     <div class="qty_inc_dec">
                                         <i id="EED" class="increment" onclick="AEDincrementQty();">
                                             <i data-feather="chevron-up">
@@ -100,7 +100,7 @@
                             </td>
                             <td class="text-center">
                                 <div class="qty mx-auto">
-                                    @Html.TextBoxFor(x => x.ETAAmount, new { @class = "form-control", @onchange = "TotalExp();", @onkeypress = "return isNumber(event)" })
+                                    @Html.TextBoxFor(x => x.ETAAmount, new {@id= "ETA", @class = "form-control", autocomplete = "off", onkeyup = "return isNumber(event);", onkeypress = "return numbervalidate(event)" })
                                     <div class="qty_inc_dec">
                                         <i id="ETA" class="increment" onclick="AEDincrementQty();">
                                             <i data-feather="chevron-up">
@@ -114,7 +114,7 @@
                             </td>
                             <td class="text-center">
                                 <div class="qty mx-auto">
-                                    @Html.TextBoxFor(x => x.ELocAmount, new { @class = "form-control", @onchange = "TotalExp();", @onkeypress = "return isNumber(event)" })
+                                    @Html.TextBoxFor(x => x.ELocAmount, new {@id= "ELoc", @class = "form-control", autocomplete = "off", onkeyup = "return isNumber(event);", onkeypress = "return numbervalidate(event)" })
                                     <div class="qty_inc_dec">
                                         <i id="ELoc" class="increment" onclick="AEDincrementQty();">
                                             <i data-feather="chevron-up">
@@ -128,7 +128,7 @@
                             </td>
                             <td class="text-center">
                                 <div class="qty mx-auto">
-                                    @Html.TextBoxFor(x => x.ELodAmount, new { @class = "form-control", @onchange = "TotalExp();", @onkeypress = "return isNumber(event)" })
+                                    @Html.TextBoxFor(x => x.ELodAmount, new {@id= "ELod", @class = "form-control", autocomplete = "off", onkeyup = "return isNumber(event);", onkeypress = "return numbervalidate(event)" })
                                     <div class="qty_inc_dec">
                                         <i id="ELod" class="increment" onclick="AEDincrementQty();">
                                             <i data-feather="chevron-up">
@@ -145,7 +145,7 @@
                                 @Html.TextBoxFor(x => x.ETotalAmount, new { @minlength = "0", @class = "form-control", @readonly = "readonly" })
                             </td>
                             <td class="text-center">
-                                @Html.TextAreaFor(x => x.EReamrk, new { @class = "form-control"})
+                                @Html.TextAreaFor(x => x.EReamrk, new { @class = "form-control",@onkeypress = "keypressCountWord(this);" })
                             </td>
                         </tr>
                     </tbody>

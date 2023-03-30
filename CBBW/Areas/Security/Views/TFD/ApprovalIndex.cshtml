@@ -26,9 +26,12 @@
                 <thead>
                     <tr>
                         <th scope="col"> SL.No.</th>
-                        <th scope="col">Note No.</th>
+                        <th scope="col">Ref Note No.</th>
+                        <th scope="col">Ref Date</th>
+                        <th scope="col">Note No</th>
                         <th scope="col">Date</th>
                         <th scope="col">Center Code & Name</th>
+                        <th scope="col">Employee Code & Name</th>
                         <th scope="col" style="background: pink;color: #000;">Action</th>
                     </tr>
                 </thead>
@@ -36,6 +39,16 @@
                 <thead>
                     <tr>
                         <th scope="col">&nbsp;</th>
+                        <th scope="col">
+                            <div class="form-group">
+                                <input id="filterRefNoteno" type="text" class="form-control tblSearch" placeholder="Search...">
+                            </div>
+                        </th>
+                        <th scope="col">
+                            <div class="form-group">
+                                <input id="filterRefDate" type="text" class="form-control tblSearch" placeholder="Search...">
+                            </div>
+                        </th>
                         <th scope="col">
                             <div class="form-group">
                                 <input id="filterNoteno" type="text" class="form-control tblSearch" placeholder="Search...">
@@ -51,34 +64,40 @@
                                 <input id="filterCenterCN" type="text" class="form-control tblSearch" placeholder="Search...">
                             </div>
                         </th>
+                        <th scope="col">
+                            <div class="form-group">
+                                <input id="filterEmployeeCN" type="text" class="form-control tblSearch" placeholder="Search...">
+                            </div>
+                        </th>
 
                         <th scope="col">&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if (Model != null && Model.Count > 0)
-                    {
-                        foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>@item.RowNumber</td>
-                                <td>@item.NoteNumber</td>
-                                <td>@item.EntryDateDisplay</td>
-                                <td>@item.CenterCodeName</td>
+                    <tr></tr>
+                    @*@if (Model != null && Model.Count > 0)
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.RowNumber</td>
+                        <td>@item.NoteNumber</td>
+                        <td>@item.EntryDateDisplay</td>
+                        <td>@item.CenterCodeName</td>
 
-                                <td>
-                                    <span class="actionBtn">
-                                        <button type="button" class="btn primaryLink" value="btn" data-toggle="tooltip" data-placement="top"
-                                                title="Details">
-                                            <i data-feather="eye"></i>
-                                        </button>
+                        <td>
+                            <span class="actionBtn">
+                                <button type="button" class="btn primaryLink" value="btn" data-toggle="tooltip" data-placement="top"
+                                        title="Details">
+                                    <i data-feather="eye"></i>
+                                </button>
 
-                                    </span>
-                                </td>
-                            </tr>
+                            </span>
+                        </td>
+                    </tr>
 
-                        }
-                    }
+                }
+            }*@
 
                 </tbody>
             </table>
@@ -105,9 +124,13 @@
             var dtinstance = $('#tblmgp').dataTable({
                 columns: [
                     { 'data': 'RowNumber' },
+                    { 'data': 'RefNoteNumber' },
+                    { 'data': 'EntEntryDateDisplay' },
                     { 'data': 'NoteNumber' },
                     { 'data': 'EntryDateDisplay' },
                     { 'data': 'CenterCodeName' },
+                    { 'data': 'AuthEmployeeName' },
+
 
                     {
                         'data': 'NoteNumber', render: function (data, type, row, meta) {

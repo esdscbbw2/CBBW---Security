@@ -8,6 +8,7 @@
         @Html.HiddenFor(m => m.IsOthViewed)
         @Html.HiddenFor(m => m.IsLVViewed)
         @Html.HiddenFor(m=>m.IsBackMsg)
+        @Html.HiddenFor(m=>m.IsTabClicked)
         <div class="col-md-12">
             <div class="heading_text_btn mb-3 mt-4">
                 <div class="leftButton">
@@ -197,12 +198,13 @@
                                        new[] {
                                            new SelectListItem { Text = "-", Value = "0" },
                                             new SelectListItem { Text = "Yes", Value = "1" },
-                                            new SelectListItem { Text = "No", Value = "2" },                                        
+                                            new SelectListItem { Text = "No", Value = "2" },
                                        },
                                        htmlAttributes: new
                                        {
                                            @class = "form-select pointer canclear is-invalid",
-                                           @onchange = "ApproveStatusChanged()"
+                                           @onchange = "ApproveStatusChanged()",
+                                           @disabled= "disabled"
                                        })
 
                         </div>
@@ -249,7 +251,14 @@
 @section scripts{
     @*<script src="~/UIContent/JS/CustomLayout.js"></script>*@
     <script src="~/UIContent/JS/CustomePage/CTVApproval.js"></script>
-
+    <script>
+        $(document).ready(function () {
+            if ($('#IsTabClicked').val() == 1) {
+                $('#IsApprovedComboValue').removeAttr('disabled');
+            }
+            else { $('#IsApprovedComboValue').attr('disabled','disabled');}
+        });
+    </script>
     <script>
         $(document).ready(function () {
             //var mymsg = '@ViewBag.ErrMsg';

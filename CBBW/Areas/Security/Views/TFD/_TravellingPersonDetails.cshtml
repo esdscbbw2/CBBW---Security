@@ -33,7 +33,7 @@
                             <tr>
                                 <th class="text-center">
                                     <div class="form-check ms-3">
-                                        <input class="form-check-input" id="@sl" onchange="VisibleRows(@item.PersonID)" type="radio" value='@item.PersonID' name="thing">
+                                        <input class="form-check-input" id="@sl" onchange="VisibleRows(@item.PersonID);changeColor(this);" type="radio" value='@item.PersonID' name="thing">
                                     </div>
                                     <div id="PersonType_@sl" class="inVisible">
                                         @item.PersonType

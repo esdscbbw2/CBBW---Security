@@ -6,7 +6,7 @@
 }
 
 
-<div class="container">
+<div class="">
     <div class="row newTable">
         <div class="fixedElement">
             <div class="col-md-12" style="position: relative;">
@@ -24,7 +24,7 @@
 
         <div class="table-responsive">
 
-            <table id="tblmgp" class="table table-bordered btnalign mt-4">
+            <table id="tblmgp" class="table w-100 table-bordered btnalign mt-4">
                 <thead>
                     <tr>
                         <th scope="col"> SL.No.</th>
@@ -41,29 +41,30 @@
                         <th scope="col">&nbsp;</th>
                         <th scope="col">
                             <div class="form-group">
-                                <input id="filterNoteno" type="text" class="form-control" placeholder="Search...">
+                                <input id="filterNoteno" type="text" class="form-control tblSearch" placeholder="Search...">
                             </div>
                         </th>
                         <th scope="col">
                             <div class="form-group">
-                                <input id="filterCenterCN" type="text" class="form-control" placeholder="Search...">
+                                <input id="filterCenterCN" type="text" class="form-control tblSearch" placeholder="Search...">
                             </div>
                         </th>
                         <th scope="col">
                             <div class="form-group">
-                                <input id="filterVehicleNo" type="text" class="form-control" placeholder="Search...">
+                                <input id="filterVehicleNo" type="text" class="form-control tblSearch" placeholder="Search...">
                             </div>
                         </th>
                         <th scope="col">
                             <div class="form-group">
-                                <input id="filterMonthYear" type="text" class="form-control" placeholder="Search...">
+                                <input id="filterMonthYear" type="text" class="form-control tblSearch" placeholder="Search...">
                             </div>
                         </th>
                         <th scope="col">&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if (Model != null && Model.Count > 0)
+                    <tr></tr>
+                    @*@if (Model != null && Model.Count > 0)
                     {
                         foreach (var item in Model)
                         {
@@ -85,7 +86,7 @@
                             </tr>
 
                         }
-                    }
+                    }*@
 
                 </tbody>
             </table>
@@ -127,7 +128,14 @@
                 ],
 
                 bServerSide: true,
-                sAjaxSource: '/Security/GVMR/getNoteList'
+                sAjaxSource: '/Security/GVMR/getNoteList',
+             "pagingType": "input"
+            });
+            $('.tblSearch').on('keyup change', function () {
+                dtinstance.search(this.value).draw();
+            });
+            $('.tblSearch').on('click', function (e) {
+                e.stopPropagation();
             });
         });
 

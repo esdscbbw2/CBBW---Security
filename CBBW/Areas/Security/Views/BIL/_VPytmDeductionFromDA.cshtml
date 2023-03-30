@@ -112,6 +112,7 @@
                 @Html.HiddenFor(x => x.TadabollGen.RequisitionDatestr)
                 @Html.HiddenFor(x => x.TadabollGen.RequisitionDatestrDisplay)
                 @Html.HiddenFor(x => x.TadabollGen.ETotalAmount)
+                @Html.HiddenFor(x => x.TadabollGen.ATotalAmount)
                 @Html.HiddenFor(x => x.TadabollGen.PreparedEmpNo, new { @id = "PreparedEmpNo" })
                 <div>
                     <div class="table-responsive newTable" id="DADection">
@@ -144,7 +145,7 @@
                                     </td>
                                     <td class="text-center">
                                         <div class="d-flex">
-                                            @Html.TextBoxFor(x => x.TadabollGen.RequisitionNo, new {@class = "form-control is-invalid", @onchange = "ValidateControl()" })
+                                            @Html.TextBoxFor(x => x.TadabollGen.RequisitionNo, new { @class = "form-control is-invalid", @onchange = "ValidateControl()", @onkeypress = "return isNumber(event);" })
                                             <div class="position-relative pointer w-50">
                                                 @Html.TextBoxFor(x => x.TadabollGen.RequisitionDate, new { @type = "date", @min = (Model.TadabollGen.RequisitionDateMin), @max = (Model.TadabollGen.RequisitionDateMax), @class = "form-control pointer is-invalid", onchange = "changeDateFormat(this);ValidateControl();" })
                                                 <label class="datelabel pointer" style="width:80px" id="TadabollGen_RequisitionDatelbl">Select date</label>
@@ -157,10 +158,10 @@
                                         @Html.DropDownListFor(model => model.TadabollGen.PreparedEmpNo, new SelectList("", "ID", "DisplayText"), "Select", htmlAttributes: new { @class = "form-select pointer is-invalid", @onchange = "ValidateControl()" })
                                     </td>
                                     <td class="text-center">
-                                        @Html.TextBoxFor(x => x.TadabollGen.RequisitionAmt, new { @class = "form-control numbers is-invalid", @onchange = "ValidateControl()" })
+                                        @Html.TextBoxFor(x => x.TadabollGen.RequisitionAmt, new { @class = "form-control numbers is-invalid", @onchange = "ValidateControl()", autocomplete = "off", onkeyup = "return isPytmFormDA(event);", onkeypress = "return numbervalidate(event)" })
                                     </td>
                                     <td class="text-center">
-                                        @Model.TadabollGen.ATotalAmount
+                                        @Model.TadabollGen.ETotalAmount
                                     </td>
                                     <td>
                                         @Html.TextAreaFor(x => x.TadabollGen.Remark, new { @class = "form-control", @onchange = "ValidateControl()", @onkeypress = "keypressCountWord(this);" })

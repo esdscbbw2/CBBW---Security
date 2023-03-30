@@ -97,6 +97,7 @@ async function GetTPDetails(notenumber,empno) {
             TPDetailsDiv.removeClass('inVisible');
             TPDetailsDiv.html(result);
             $('#1').prop('checked', true);
+            $('#1').add('selected-row');
             (async function () {
                 const r6 = await GetDateWiseTour(notenumber, empno);
             })(); 

@@ -106,18 +106,5 @@ namespace CBBW.BOL.BIL
 
     }
 
-    public class IndexList
-    {
-        public string NoteNumber { get; set; }
-        public int RowNumber { get; set; }
-        public int TotalCount { get; set; }
-        public string CenterCodeName { get; set; }
-        public string EmployeeCodeName { get; set; }
-        public DateTime EntryDate { get; set; }
-        public string EntryDateDisplay { get; set; }
-        public bool? IsApproved { get; set; }
-        public string IsApproveds { get; set; }
-        public bool CanDelete { get; set; }
-
-    }
+    
 }

@@ -469,6 +469,8 @@ $('#btnClear').click(function () {
     var TaDaDenied = $('#TaDaDenied');
     //$('Btnsubmit').val(0);
     $('#etsHeader_AttachFile').val('');
+    $('#btnScan').removeClass('inVisible');
+    $('#btnScanView').addClass('inVisible');
     $('#otherplace').val('').isInvalid();
     $('#carryLaptop').val('').isInvalid();
     $('#Policy').val('').isInvalid();

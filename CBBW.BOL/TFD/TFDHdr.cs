@@ -42,16 +42,5 @@ namespace CBBW.BOL.TFD
         public string NoteNumber { get; set; }
     }
 
-    public class TFDNoteList : TFDNote
-    {
-        public int RowNumber { get; set; }
-        public int TotalCount { get; set; }
-        public string CenterCodeName { get; set; }
-        public DateTime EntryDate { get; set; }
-        public string EntryDateDisplay { get; set; }
-        public bool? IsApproved { get; set; }
-        public string IsApproveds { get; set; }
-        public bool CanDelete { get; set; }
-
-    }
+    
 }

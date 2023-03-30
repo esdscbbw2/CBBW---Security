@@ -135,8 +135,8 @@ function ChangeEmployee(EmployeeNo) {
                                 $('#DAAmount').val(item.DAAmount);
                                 $('#DADeducted').val(item.DADeducted);
                                 $('#EDAllowance').val(item.EAmount);
-                                $('#TourFromDateNTime').val(item.ActualTourInDatestr + "-" + item.TourFromTime);
-                                $('#TourToDateNTime').val(item.ActualTourOutDatestr + "-" + item.TourToDate);
+                                $('#TourFromDateNTime').val(item.ActualTourInDatestr + "-" + item.ActualTourInTime);
+                                $('#TourToDateNTime').val(item.ActualTourOutDatestr + "-" + item.ActualTourOutTime);
                                 $('#TourFromDate').val(item.ActualTourInDatestr);
                                 $('#TourToDate').val(item.ActualTourOutDatestr);
                                 $('#NoOfDays').val(item.TotalNoOfDays);
@@ -183,7 +183,6 @@ function AlertMessage() {
         confirmButtonColor: '#2527a2',
     });
 }
-
 function ValuesClear() {
     $('#PersonTypetxt').val('');
     $('#DesigCodeName').val('');
@@ -206,10 +205,11 @@ function ValuesClear() {
     $('#TourToTime').val('');
 }
 function TotalExpance() {
+    var EDAmt = $('#EDAllowance').val() * 1;
     var taAmt = $('#TAAmount').val() * 1;
     var lcamt = $('#LocalConveyance').val() * 1;
     var lodamt = $('#Lodging').val() * 1;
-    $('#TotalExpenses').val(taAmt + lcamt + lodamt);    
+    $('#TotalExpenses').val(EDAmt+taAmt + lcamt + lodamt);
 };
 function ValidateControl() {
     var target = ValidateControl.caller.arguments[0].target;

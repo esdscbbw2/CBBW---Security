@@ -98,7 +98,7 @@ function validatectrl(targetid, value) {
                 var fromdate = $('#FromdateForMang').val();
                 isvalid = CompareDateV2(fromdate, 0, value, 0);
                 $('#ReTInDtForMang').html(ChangeDateFormat(value));
-                if (!isvalid) { $('#ToDateForMang').prop('title', 'To Date Should Be Latter Than From Date'); }
+                if (!isvalid) { $('#ToDateForMang').prop('title', 'To Date Should Be Same Or Latter Than From Date'); }
             }
             break;
         case "TADADeniedForManagement":
@@ -185,7 +185,6 @@ function DateWiseTourDtlClicked() {
 function getDesgnCode(rowid, empCode) {
     var actualempcode=0
     if ($.isNumeric(empCode)) { actualempcode = empCode; }
-    //alert(rowid + ' - ' + empCode + ' - ' + actualempcode);
     var desgCtrl = $('#DesgCodenName');
     var persontypeCtrl = $('#DDPersonType');
     if (rowid != 0) {
@@ -400,7 +399,10 @@ function EnableDateWiseTourBtn() {
         DWTBtn.makeDisable();
     }
     else {
-        DWTBtn.makeEnabled();
+        if ($('#ehgHeader_PurposeOfAllotment').val() == 1) {
+            DWTBtn.makeDisable();
+        }
+        else { DWTBtn.makeEnabled(); }        
     }
 };
 function EnableSubmitBtn() {
@@ -768,6 +770,7 @@ async function getInitialDataForTravelingPerson() {
                 }
                 cmbpersonCtrl.isValid();                
                 EnableDateWiseTourBtn();
+                if (authPerson != '') { LockDiv('sOfficeworkDiv'); }
             });
             addbtnCtrl.makeEnabled();
         }
@@ -872,8 +875,10 @@ $(document).ready(function () {
             $(this).makeDisable();
         });
     }
+    
     var POAValue = $('#ehgHeader_VehicleType').val();
     if (POAValue == 2) { officeworkDiv.removeClass('inVisible'); }
     EnableSubmitBtn();
-    
+    //alert($('#DDAuthorisedEmpForWork').val());
+    //if ($('#DDAuthorisedEmpForWork').val() != -1) { LockDiv('sOfficeworkDiv'); }
 });

@@ -4,18 +4,19 @@
         var PersonType = $("#PersonType").val();
         MakevalueReset();
         PublicTransportchange(PublicTransport, PersonType, 0);
-        
+
         GetTourCategory(PublicTransport);
     });
 });
-function PublicTransportchange(PublicTransport, PersonType,vehicleType) {
+function PublicTransportchange(PublicTransport, PersonType, vehicleType) {
     var VehicleType = $('#VehicleType');
+    var NoteNumber = $('#NoteNumber').val();
     if (PublicTransport * 1 == 0) {
         $('.forYes').hide();
         $('.forNo').show();
         $("#VehicleType").removeClass('is-valid').addClass('is-invalid');
         $("#ReasonVehicleReq").removeClass('is-valid').addClass('is-invalid');
-        getDropDownDataWithSelectedValue(VehicleType.attr('id'), 'Select Type', '/EMN/GetVehicleTypes?TypeVal=' + PersonType, vehicleType);
+        getDropDownDataWithSelectedValue(VehicleType.attr('id'), 'Select Type', '/EMN/GetVehicleTypes?TypeVal=' + PersonType + '&NoteNumber=' + NoteNumber, vehicleType);
     } else {
         $('.forYes').show();
         $('.forNo').hide();
@@ -30,7 +31,7 @@ async function GetTourCategory(PublicTransport) {
         const r1 = await getMultiselectData('TourCategory', '/EMN/GetTourCategories?PTval=' + PublicTransport);
     })();
 
-    
+
 };
 function MakevalueReset() {
     $("#SchFromDate").val('').isInvalid();
@@ -39,9 +40,9 @@ function MakevalueReset() {
     $('#lblSchTourToDate').html('Select Date');
     $("#SchTourToDate,#SchToDate").makeDisable();
     $('#lblSchFromDate').html('Select Date');
-    
- 
-   
+
+
+
 };
 function fireSweetAlert(evt) {
 
@@ -78,10 +79,10 @@ function ValidateControl() {
     //if (targetid == 'VehicleType') {
     //    fireSweetAlert($(target).val());
     //}
-    if (targetid == "SchFromDate") { Datechange($(target).val());}
+    if (targetid == "SchFromDate") { Datechange($(target).val()); }
     if (targetid == "SchTourToDate") {
         SetDatechange($(target).val());
-    }else if (targetid != "PurposeOfVisit" && targetid != "ReasonVehicleReq") {
+    } else if (targetid != "PurposeOfVisit" && targetid != "ReasonVehicleReq") {
         $("#SchTourToDate").val('').isInvalid();
         $('#lblSchTourToDate').html('Select Date');
         $('#SchToDate').val('');
@@ -89,7 +90,7 @@ function ValidateControl() {
         $('#SchToDate').makeDisable();
         $('#lblSchToDate').html('Select Date');
     }
-    
+
     //$('#SchToDate').val('');
     //$('#SchToDate').isInvalid();
     if (targetid != "ReasonVehicleReq") {
@@ -98,7 +99,8 @@ function ValidateControl() {
     }
     EnableSubmitBtn();
 };
-function ValidateCloneRowCtrl() {   
+function ValidateCloneRowCtrl() {
+
     var target = ValidateCloneRowCtrl.caller.arguments[0].target;
     var tblRow = target.closest('.add-row');
     var targetCtrl = $(target);
@@ -144,14 +146,14 @@ function validatectrl(targetid, value, rowid) {
     var isvalid = false;
 
     switch (targetid) {
-        
+
         case "ReasonVehicleReq":
             isvalid = validatectrl_ValidateLength(value);
-              break;
+            break;
         case "PublicTransport":
             isvalid = validatectrl_YesNoCombo(value);
             break;
-            
+
         case "VehicleType":
             isvalid = validatectrl_YesNoCombo(value);
             break;
@@ -171,7 +173,7 @@ function validatectrl(targetid, value, rowid) {
             if (value > 0) {
                 var insname = $('#dateTour_BranchCodeName option:selected').text();
                 $('#dateTour_BranchCodeName').val(insname);
-                
+
                 isvalid = true;
             }
             break;
@@ -205,9 +207,9 @@ function validatectrl(targetid, value, rowid) {
         case "PurposeOfVisit":
             isvalid = validatectrl_ValidateLength(value);
             break;
-            
+
     }
-   
+
     return isvalid;
 };
 function validatectrl_YesNoCombo(value) {
@@ -229,13 +231,13 @@ function EnableSubmitBtn() {
     var todate = $('#SchTourToDate').val();
     $('.todt').each(function () {
         if ($(this).val() == todate) { mEnable = true; }
-        
+
     });
-    if ((x + y) * 1  <= 0) {
+    if ((x + y) * 1 <= 0) {
         if (mEnable) { DWTBtn.makeEnabled(); } else { DWTBtn.makeDisable(); }
     } else { DWTBtn.makeDisable(); }
 
-   
+
 };
 function AddClonebtn() {
     var insrow = AddClonebtn.caller.arguments[0].target.closest('.add-row');
@@ -244,7 +246,7 @@ function AddClonebtn() {
     if (insrowid > 0) { addbtn = $('#AddBtn_' + insrowid); }
     var rowid = CloneRowReturningID('tbody1', 'tbody2', $(insrow).attr('id') * 1, false, false);
     var preToDate = $(insrow).find('.todt').val();
-    var curFromDate = CustomDateChange(preToDate,1, '/');
+    var curFromDate = CustomDateChange(preToDate, 1, '/');
     $('#DDSchFromDate_' + rowid).html(curFromDate);
     var SchTourToDate = $('#SchTourToDate').val();
     $('#SchToDate_' + rowid).attr('max', SchTourToDate);
@@ -252,12 +254,12 @@ function AddClonebtn() {
     $('#SchToDate_' + rowid).val('');
     ClearallDropdownData(rowid);
     $('#btnSubmits').makeDisable();
-    
+
     $('#TourCategory_' + rowid).isInvalid();
     addbtn.tooltip('hide');
     addbtn.makeDisable();
     //EnableSubmitBtn();
-    
+
 };
 function EnableAddBtn(tblRow, addBtnBaseID) {
     var tblrow = $(tblRow);
@@ -265,7 +267,7 @@ function EnableAddBtn(tblRow, addBtnBaseID) {
     if (rowid != 0) { addBtnBaseID = addBtnBaseID + '_' + rowid; }
     var addBtnctrl = $('#' + addBtnBaseID);
     if (tblrow.find('.is-invalid').length > 0) { addBtnctrl.makeDisable(); } else { addBtnctrl.makeEnabled(); }
-   
+
 };
 function ClearallDropdownData(rowid) {
     var ccnamectrls = 'CenterCodeName';
@@ -274,7 +276,7 @@ function ClearallDropdownData(rowid) {
     var BBNADiv = 'BCNAdiv';
     var BCCtrlDiv = 'BCctrldiv';
     var Cctrldiv = 'CenterDiv';
-    var dTourCategory ='TourCategory';
+    var dTourCategory = 'TourCategory';
 
     if (rowid > 0) {
         ccnamectrls = 'CenterCodeName_' + rowid;
@@ -294,10 +296,10 @@ function ClearallDropdownData(rowid) {
     $('#' + BBNADiv).html('NA');
     $('#' + dTourCategory).multiselect('clearSelection');
     RemoveAllDataFromDropdown(ccnamectrls, bnamectrls);
-   
+
 };
 function RemoveAllDataFromDropdown(CenterCode, BranchCode) {
-   
+
     getMultiselectData(CenterCode, '/Security/ETS/GetLocationsFromTypes?TypeIDs=' + 0);
     getDropDownData(CenterCode, 'select Center Code', '/Security/ETS/GetLocationsFromType?TypeID=' + 0);
     getMultiselectData(BranchCode, '/Security/ETS/getBranchType?CenterId=' + 0);
@@ -318,13 +320,13 @@ function Datechange(evt) {
     $('#SchTourToDate').isInvalid();
     $('#SchTourToDate').attr('min', evt);
     $('#lblSchTourToDate').html('Select Date');
-    
+
 };
 function SetDatechange(evt) {
     $('#SchToDate').makeEnabled();
     $('#SchToDate').val('').addClass('is-invalid');
     $('#lblSchToDate').html('Select Date');
-    var  SchFromDate=$('#SchFromDate').val();
+    var SchFromDate = $('#SchFromDate').val();
     $('#SchToDate').attr('min', SchFromDate);
     $('#SchToDate').attr('max', evt);
 
@@ -334,17 +336,17 @@ function GetCenterCode() {
     var targetid = $(target).attr('id');
     var targetval = $(target).val();
     var targetCtrl = $(target);
-   
+
     var rowid = $(target.closest('.add-row')).attr("id");
-   
+
     var x = '';
     $('#' + targetid + ' option:selected').each(function () {
         x = x + '_' + $(this).val();
     });
     var selectval = '0';
     TourDateWiseDropdownvalue(rowid, targetval, x, selectval);
-       toggleGroupv(target,targetid, targetval);
-    
+    toggleGroupv(target, targetid, targetval);
+
 };
 function TourDateWiseDropdownvalue(rowid, targetval, x, selectedvalues) {
     debugger;
@@ -405,9 +407,9 @@ function BranchChanges() {
         Tournamectrl = 'TourCategory_' + rowid;
         bbnamectrl = 'BranchCodeName_' + rowid;
     }
-   var TourVal = $('#' + Tournamectrl).val();
-    GetBranchData(rowid, targetval, TourVal,'0');
-  
+    var TourVal = $('#' + Tournamectrl).val();
+    GetBranchData(rowid, targetval, TourVal, '0');
+
 };
 function GetBranchData(rowid, targetval, Tourval, Selectedvalue) {
     var bbnamectrl = 'BranchCodeName';
@@ -416,22 +418,22 @@ function GetBranchData(rowid, targetval, Tourval, Selectedvalue) {
         Tournamectrl = 'TourCategory_' + rowid;
         bbnamectrl = 'BranchCodeName_' + rowid;
     }
-   
+
     if (Tourval == "4") {
         $('#' + bbnamectrl).isInvalid();
         getMultiselectDataWithSelectedValues(bbnamectrl, '/Security/ETS/getBranchType?CenterId=' + targetval, Selectedvalue);
     }
 
-    
+
 }
 function SaveDataClicked() {
     var PersonType = $('#PersonType').val();
     var NoteNumber = $('#NoteNumber').val();
-    var AttachFile = $('#AttachFile').val();    
+    var AttachFile = $('#AttachFile').val();
     var TravD = getRecordsFromTableV2('TravdtlTbl');
     var Tourwise = getRecordsFromTableV2('TourWisetbl');
     var x = '{"PersonType":"' + PersonType + '","NoteNumber":"' + NoteNumber + '","AttachFile":"' + AttachFile + '","TravellingDetails":' + TravD + ',"dateTour":' + Tourwise + '}';
-    
+
     $.ajax({
         method: 'POST',
         url: '/EMN/SetTravNTourDetails',
@@ -440,7 +442,7 @@ function SaveDataClicked() {
         data: x,
         success: function (data) {
             $(data).each(function (index, item) {
-                if (item.bResponseBool == true) { 
+                if (item.bResponseBool == true) {
                     Swal.fire({
                         title: 'Confirmation',
                         text: 'Travelling & Date Wise Tour Details Saved Successfully.',
@@ -476,14 +478,14 @@ function SaveDataClicked() {
     });
 
 };
-function toggleGroupv(target,multictrlId, value) {
+function toggleGroupv(target, multictrlId, value) {
     var idsval = "";
     var rowid = $(target.closest('.add-row')).attr("id");
     var ccnamectrl = 'CenterCodeName';
     var BBnamectrl = 'BranchCodeName';
     if (rowid > 0) {
         ccnamectrl = 'CenterCodeName_' + rowid;
-        BBnamectrl = 'BranchCodeName_' + rowid; 
+        BBnamectrl = 'BranchCodeName_' + rowid;
     }
     debugger;
     if (value == "1,2") {
@@ -498,12 +500,12 @@ function toggleGroupv(target,multictrlId, value) {
         WarringMsg();
         $('#' + multictrlId).multiselect('clearSelection');
         RemoveAllDataFromDropdown(ccnamectrl, BBnamectrl);
-    } 
+    }
 
 
 
-   
-    
+
+
 };
 function WarringMsg() {
     Swal.fire({
@@ -533,14 +535,14 @@ function ValueClears() {
     $('#lblSchFromDate').html('Select Date');
 };
 $(document).ready(function () {
-    
+
     (async function () {
         const r1 = await getInitialData();
     })();
-    
+
 });
 async function getInitialData() {
-    var rowid=0;
+    var rowid = 0;
     var NoteNumber = $('#NoteNumber');
     var AttachFile = $('#AttachFile');
     var CenterCodenName = $('#CenterCodenName');
@@ -569,15 +571,15 @@ async function getInitialData() {
         dataType: 'json',
         success: function (data) {
             $(data).each(function (index, item) {
-               
+
                 if (item.btnSubmit == 1) {
                     var PT = item.travDetails.PublicTransports == true ? 1 : 0;
                     NoteNumber.val(item.NoteNumber);
                     AttachFile.val(item.AttachFile);
                     CenterCodenName.val(item.CenterCodenName);
                     PersonType.val(item.PersonType);
-                //$(item.TravellingDetails).each(function (index, travitem) {
-                   
+                    //$(item.TravellingDetails).each(function (index, travitem) {
+
                     PublicTransport.val(PT).isValid();
                     PublicTransportchange(PT, item.PersonType, item.travDetails.VehicleType);
                     VehicleType.isValid();
@@ -591,7 +593,7 @@ async function getInitialData() {
                     SetDatechange(item.travDetails.SchTourToDateStr);
                     PurposeOfVisit.val(item.travDetails.PurposeOfVisit).isValid();
                     $(item.dateTour).each(function (indexs, travitem) {
-                       
+
                         if (indexs > 0) {
                             rowid = CloneRowReturningID('tbody1', 'tbody2', indexs - 1, true, false);
                             DDSchFromDate = $('#DDSchFromDate_' + rowid);
@@ -605,7 +607,7 @@ async function getInitialData() {
                             BCctrldiv = $('#BCctrldiv_' + rowid);
                             addbtnCtrl = $('#AddBtn_' + rowid);
                         }
-                        
+
                         DDSchFromDate.html(travitem.DDSchFromDate).isValid();
                         SchToDate.val(travitem.SchToDatestr).isValid();
                         lblSchToDate.html(travitem.DDSchToDate);
@@ -620,7 +622,7 @@ async function getInitialData() {
                         addbtnCtrl.makeDisable();
                     });
                 }
-               
+
             });
         }
     });

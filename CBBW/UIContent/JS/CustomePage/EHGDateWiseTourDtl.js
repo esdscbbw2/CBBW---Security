@@ -38,8 +38,15 @@ function addCloneBtnClick() {
     var curFromDate = CustomDateChange(preToDate, 1, '/');
     $('#FromDateLbl_' + clonerowid).html(curFromDate);
     $('#btnSubmit').makeDisable();
-    $('#CenterCode_' + clonerowid).isInvalid();
+    //$('#CenterCode_' + clonerowid).isInvalid();
     $('#ToDate_' + clonerowid).isInvalid();
+    var mCentreCode = $('#CenterCode_' + clonerowid);
+    mCentreCode.empty();
+    mCentreCode.multiselect('destroy');
+    mCentreCode.removeAttr('multiple');
+    mCentreCode.multiselect('refresh');
+    mCentreCode.isInvalid();
+
     addbtn.tooltip('hide');
     addbtn.makeDisable();
 };

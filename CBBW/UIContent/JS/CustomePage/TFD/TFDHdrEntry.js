@@ -80,7 +80,7 @@ async function GetTPDetails(notenumber) {
             TPDetailsDiv.removeClass('inVisible');
             TPDetailsDiv.html(result);
             $('#1').prop('checked', true);
-            
+            $('#1').add('selected-row');
             VisibleRows($('#1').val(),1);
         },
         error: function (xhr, status) {

@@ -541,11 +541,12 @@ $('#btnClear').click(function () {
     var TaDaDenied = $('#TaDaDenied');
     //$('Btnsubmit').val(0);
     $('#etsHeader_AttachFile').val('');
+    $('#btnScan').removeClass('inVisible');
+    $('#btnScanView').addClass('inVisible');
     $('#otherplace').val('').isInvalid();
     $('#carryLaptop').val('').isInvalid();
     $('#Policy').val('').isInvalid();
     $('#CenterCN').val('').isInvalid();
-    
     DDPersonType.val('').isInvalid();
     GetDDPersonTypeChanged(DDPersonType.attr('id'), mValue, selectvalue, Empval,0);
     getDesgnCode(0, 0);

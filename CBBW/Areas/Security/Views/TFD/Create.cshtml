@@ -264,7 +264,16 @@ new SelectList(Model.Notelist, "NoteNumber", "NoteNumber"),"Select Note Number",
             };
     </script>
 
-   
+    <script>
+        function changeColor(e) {
+            var allElements = document.querySelectorAll(".selected-row");
+            for (i = 0; i < allElements.length; i++) {
+                allElements[i].classList.remove('selected-row');
+            }
+            let ele = e.parentElement.parentElement.parentElement;
+            ele.classList.add("selected-row");
+        }
+    </script>
     <script>
         $('#btnBacks').click(function () {
             var url = "/Security/TFD/Index";

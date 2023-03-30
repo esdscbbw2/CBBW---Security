@@ -59,10 +59,17 @@ function ApproveStatusChanged() {
     if (appstatctrl.val() == 2) {
         appstatctrl.isValid();
         disappreasonCtrl.removeAttr('disabled').val('').isInvalid();        
-    } else if (appstatctrl.val() == 1) {
+    }
+    else if (appstatctrl.val() == 1) {
         appstatctrl.isValid();
+        disappreasonCtrl.val('');
         disappreasonCtrl.attr('disabled', 'disabled').clearValidateClass();
-    } else { appstatctrl.isInvalid(); disappreasonCtrl.attr('disabled', 'disabled').clearValidateClass(); }
+    }
+    else {
+        appstatctrl.isInvalid();
+        disappreasonCtrl.val('');
+        disappreasonCtrl.attr('disabled', 'disabled').clearValidateClass();
+    }
 
     $('#IsBackMsg').val('1');
     ActivateSubmit();
@@ -103,9 +110,14 @@ function Notenumberchanged(notenumber) {
     var osbtn = $('#btnOVT');
     var appCombo = $('#IsApprovedComboValue');
     var disappreason = $('#DisapprovalReason');
+    var tabclicked = $('#IsTabClicked').val();
+    appCombo.val(0).isInvalid();
+    $('#IsApprovedComboValue option:selected').removeAttr("selected");
     if (notenumber.length > 1){
-        that.isValid();        
-        appCombo.makeEnabled();
+        that.isValid();
+        if (tabclicked == 1) {
+            appCombo.makeEnabled();
+        } else { appCombo.makeDisable(); }
         disappreason.makeDisable();
         //appCombo.addClass('pointer');
     }
@@ -115,8 +127,7 @@ function Notenumberchanged(notenumber) {
         disappreason.makeDisable();
         //appCombo.removeClass('pointer')
     }
-    appCombo.val(0).isInvalid();
-    $('#IsApprovedComboValue option:selected').removeAttr("selected");
+    
     //alert(notenumber.length);
     $.ajax({
         url: '/CTV/getDataFromNote',

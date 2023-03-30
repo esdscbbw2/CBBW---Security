@@ -37,10 +37,10 @@
             <div class="col-md-12">
                 <div class="text-center pt-2 pb-2">
                     <div class="upper-tab-buttons text-center">
-                        <button type="button" class="btn btn-primary me-2" onclick="window.location.href='#';">
+                        <button type="button" class="btn btn-primary me-2" onclick="window.open('/Security/TourRule/ViewRedirection?CBUID=1');">
                             To Check  “Tour Rules”   Click Here
                         </button>
-                        <button type="button" class="btn btn-primary" onclick="window.location.href='#';">
+                        <button type="button" class="btn btn-primary" onclick="window.open('/Security/TADARules/ViewRedirection?CBUID=1');">
                             To Check “TA & DA Rules”   Click Here
                         </button>
                     </div>
@@ -101,7 +101,7 @@
                                         <select class="form-select max-content-input is-invalid alterID inValidTag xPerson"
                                                 data-name="NoteNumbers"
                                                 aria-label="Default select example"
-                                                onchange="ChangeNoteNumber(); ValidateCloneRowCtrl();"
+                                                onchange=" ValidateCloneRowCtrl();ChangeNoteNumber();"
                                                 id="NoteNumbers">
                                         </select>
 
@@ -145,11 +145,15 @@
                 </div>
 
                 <div class="col-md-12 mb-4">
-                    <div class="bgColor mt-4 bg-transparent content border-green text-left">
+                    <div class="bgColor mt-4 bg-transparent content  border-red text-left">
                         <ul style="list-style:none;">
                             <li style="font-size: 16px;">
                                 The Details Displayed & Entered Are As Per Rule & Policy Of The Company. Hence Entered & Saved The Transaction As Required:
-                                <input type="text" class="form-control content border-green width-85 pointer-none" value="Yes" disabled="">
+                                <select style="width: 10%;" id="Checked" onchange="ValidateControl();" class="form-select content border-red is-invalid" aria-label="Default select example">
+                                    <option selected="" value="-1">-</option>
+                                    <option value="1">Yes</option>
+
+                                </select>
                             </li>
                         </ul>
                     </div>

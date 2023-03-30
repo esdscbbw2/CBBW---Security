@@ -10,6 +10,7 @@ using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.EHG;
 using CBBW.BOL.EMC;
+using CBBW.BOL.Master;
 
 namespace CBBW.Areas.Security.Controllers
 {
@@ -608,40 +609,28 @@ namespace CBBW.Areas.Security.Controllers
         }
         #endregion
         #region Common Use
-        public JsonResult getBranchType(int CenterId,string PT=null)
+        public JsonResult getBranchType(int CenterId)
         {
-            IEnumerable<CustomComboOptions> result;
-            //if (PT == "0")
-            //{
-            //    EHGMaster master = EHGMaster.GetInstance;
-            //    result = master.GetBranchCodeForEMC.ToList();
-            //}
-            //else
-            //{
-                result = _master.getBranchType(CenterId, ref pMsg);
-            //}
+            IEnumerable<LocationMaster> result = _master.GetBranchOfaCentre(CenterId, ref pMsg);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetLocationsFromTypes(string TypeIDs)
         {
-
-            IEnumerable<CustomComboOptions> result = _iCTV.getLocationsFromType(TypeIDs, ref pMsg);
-            
+            TypeIDs = TypeIDs.Replace('_', ',');
+            IEnumerable<LocationMaster> result = _master.GetCentresFromTourCategory(TypeIDs, ref pMsg);
             return Json(result, JsonRequestBehavior.AllowGet);
-
-
         }
         public JsonResult GetLocationsFromType(int TypeID)
         {
-            IEnumerable<CustomComboOptions> result=null;
+            IEnumerable<LocationMaster> result = null;
             if (TypeID == 6)
             {
-                result = _iCTV.getLocationsFromType(2, ref pMsg);
+                result = _master.GetCentresFromTourCategory(Convert.ToString(2), ref pMsg);
                 result = result.Where(x => x.ID == 13);
             }
             else
             {
-                result = _iCTV.getLocationsFromType(TypeID, ref pMsg);
+                result = _master.GetCentresFromTourCategory(TypeID.ToString(), ref pMsg);
             }
             return Json(result, JsonRequestBehavior.AllowGet);
 

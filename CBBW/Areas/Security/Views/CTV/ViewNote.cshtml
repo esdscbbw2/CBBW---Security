@@ -1,4 +1,5 @@
-﻿@using CBBW.BOL.CTV;
+﻿@using System.Globalization;
+@using CBBW.BOL.CTV;
 @model TripScheduleHdr
 @{
     ViewBag.Title = "CTV View Note";
@@ -41,7 +42,7 @@
                         </button>
                     }
                 </div>
-                <h2 style="text-align: right;">“Company Transport” Vehicle Trip Schedule - VIEW</h2>
+                <h2 style="text-align: right;">“Company Transport” Vehicle Trip Schedule - @ViewBag.HeaderSign</h2>
             </div>
         </div>
         <div class="col-md-12 mb-4">
@@ -187,9 +188,9 @@
                             Approved :
                         </label>
                         <div class="col-md-2">
-                            @Html.TextBoxFor(m => m.IsApproved,
-                           htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })
-
+                            @*@Html.TextBoxFor(m => m.IsApproved,
+                           htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })*@
+                            <input type="text" class="form-control" value="@(Model.IsApproved?"Yes":"No")" disabled>
                         </div>
                         <label class="col-form-label col-md-2">
                             Date & Time Approved :

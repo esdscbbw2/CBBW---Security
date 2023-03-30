@@ -63,10 +63,9 @@
                             </th>
                             <td class="text-center">
                                 <div class="qty mx-auto">
-                                    @Html.TextBoxFor(x => x.AEDAmount, new {@class = "form-control only-numeric", @onchange = "TotalExp();", @onkeypress = "return isNumber(event);", autocomplete = "off", onkeyup = "AEDAmount(this);" })
+                                    @Html.TextBoxFor(x => x.AEDAmount, new {@id="AED",@class = "form-control only-numeric calculate", autocomplete = "off", onkeyup = "return isNumber(event);", onkeypress = "return numbervalidate(event)" })
                                     <div class="qty_inc_dec">
                                         <div id="AED" class="increment" onclick="AEDincrementQty()">
-                                         
                                             <i data-feather="chevron-up">
                                                </i>
                                         </div>
@@ -80,7 +79,7 @@
                             </td>
                             <td class="text-center">
                                 <div class="qty mx-auto">
-                                    @Html.TextBoxFor(x => x.ATAAmount, new {@class = "form-control number", @onchange = "TotalExp();", @onkeypress = "return isNumber(event)" })
+                                    @Html.TextBoxFor(x => x.ATAAmount, new { @id = "ATA", @class = "form-control number", autocomplete = "off", onkeyup = "return isNumber(event);", onkeypress = "return numbervalidate(event)" })
                                     <div class="qty_inc_dec">
                                         <i id="ATA" class="increment second-btn" onclick="AEDincrementQty();">
                                             <i data-feather="chevron-up ">
@@ -95,7 +94,7 @@
                             </td>
                             <td class="text-center">
                                 <div class="qty mx-auto">
-                                    @Html.TextBoxFor(x => x.ALocAmount, new { @class = "form-control number", @onchange = "TotalExp();", @onkeypress = "return isNumber(event)" })
+                                    @Html.TextBoxFor(x => x.ALocAmount, new { @id = "ALoc", @class = "form-control number", autocomplete = "off", onkeyup = "return isNumber(event);", onkeypress = "return numbervalidate(event)" })
                                     <div id="errmsg"></div>
                                     <div class="qty_inc_dec">
                                         <i id="ALoc" class="increment third-btn" onclick="AEDincrementQty()">
@@ -110,7 +109,7 @@
                             </td>
                             <td class="text-center">
                                 <div class="qty mx-auto">
-                                    @Html.TextBoxFor(x => x.ALodAmount, new {@class = "form-control number", onchange = "TotalExp();", @onkeypress = "return isNumber(event)" })
+                                    @Html.TextBoxFor(x => x.ALodAmount, new { @id = "ALod", @class = "form-control number", autocomplete = "off", onkeyup = "return isNumber(event);", onkeypress = "return numbervalidate(event)" })
                                     <div class="qty_inc_dec">
                                         <i id="ALod" class="increment four-btn" onclick="AEDincrementQty()">
                                             <i data-feather="chevron-up">
@@ -126,7 +125,7 @@
                                 @Html.TextBoxFor(x => x.ATotalAmount, new { @minlength = 0, @class = "form-control",  @readonly = "readonly" })
                             </td>
                             <td class="text-center">
-                                @Html.TextAreaFor(x => x.AReamrk, new {@class = "form-control" })
+                                @Html.TextAreaFor(x => x.AReamrk, new {@class = "form-control", @onkeypress = "keypressCountWord(this);" })
                             </td>
                         </tr>
                     </tbody>
@@ -146,7 +145,7 @@
             </div>
             <div class="col-md-12">
                 <div class="card mt-4 mb-2">
-                    <div class="card-body alert alert-success text-dark approvalForm">
+                    <div class="card-body alert alert-danger text-dark approvalForm">
                         <div class="form-sample form-inline row ms-auto">
                             <div class="row d-flex align-items-center">
                                 <div class="col-md-2 col-form-label">

@@ -46,7 +46,7 @@ namespace CBBW.BOL.Tour
         public string EffectiveDateOfLastPartiallyFilledRuleDisplay { get; set; }
     }
     public class TourRuleServiceTypes
-    {
+    {        
         public List<ServiceTypeSelector> RuleServiceTypeList { get; set; }
         public List<CustomCheckBoxOption> MasterServiceTypeList { get; set; }
     }

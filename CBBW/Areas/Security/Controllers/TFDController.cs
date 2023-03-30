@@ -483,6 +483,9 @@ namespace CBBW.Areas.Security.Controllers
             modelvm.CanDelete = CanDelete;
             modelvm.CBUID = CBUID;
             modelvm.tfdHdr = _iTFD.GetTFDHeaderDetails(NoteNumber, user.CentreCode, 1, ref pMsg);
+            var indexp = modelvm.tfdHdr.EntEntryTime.LastIndexOf('.');
+            var time = modelvm.tfdHdr.EntEntryTime.Substring(0, indexp);
+            modelvm.tfdHdr.EntEntryTime = time;
             return View(modelvm);
         }
         [HttpPost]
@@ -525,7 +528,9 @@ namespace CBBW.Areas.Security.Controllers
         {
             TFDHdrVM modelvm = new TFDHdrVM();
             modelvm.tfdHdr = _iTFD.GetTFDHeaderDetails(NoteNumber, user.CentreCode, 1, ref pMsg);
-           
+            var indexp = modelvm.tfdHdr.EntEntryTime.LastIndexOf('.');
+            var time = modelvm.tfdHdr.EntEntryTime.Substring(0, indexp);
+            modelvm.tfdHdr.EntEntryTime = time;
             return Json(modelvm, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetTourCategories(int PTval = 0,string NoteNumber=null)

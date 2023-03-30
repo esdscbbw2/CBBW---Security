@@ -156,6 +156,7 @@ namespace CBBW.DAL.DBMapper
                             obj1.ServiceTypeCodes = sts.Rows[i]["ServiceTypeCodes"].ToString();
                         if (!DBNull.Value.Equals(sts.Rows[i]["ServiceTypeTexts"]))
                             obj1.ServiceTypeTexts = sts.Rows[i]["ServiceTypeTexts"].ToString();
+                        
                         objlist1.Add(obj1);
                     }
                 }
@@ -170,6 +171,8 @@ namespace CBBW.DAL.DBMapper
                             obj2.DisplayText = cco.Rows[i]["DisplayText"].ToString();
                         if (!DBNull.Value.Equals(cco.Rows[i]["IsSelected"]))
                             obj2.IsSelected = bool.Parse(cco.Rows[i]["IsSelected"].ToString());
+                        if (!DBNull.Value.Equals(cco.Rows[i]["IsActive"]))
+                            obj2.IsActive = bool.Parse(cco.Rows[i]["IsActive"].ToString());
                         objlist2.Add(obj2);
                     }
                 }

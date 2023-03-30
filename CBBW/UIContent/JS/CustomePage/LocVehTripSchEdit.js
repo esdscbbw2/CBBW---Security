@@ -122,7 +122,7 @@ $(document).ready(function () {
     });
     $('#btnBack').click(function () {
         var noteno = $('#NoteNo').val();
-        //var url = "/Security/CTV/EditNote?NoteNumber=" + noteno;
+        var url = "/Security/CTV/EditNote?NoteNumber=" + noteno;
         if ($('#IsSaveVisible').val() == 1) {
             Swal.fire({
                 title: 'Confirmation Message',
@@ -137,23 +137,21 @@ $(document).ready(function () {
             }).then(callback);
             function callback(result) {
                 if (result.value) {
-                    DeleteNote();
-                    $.ajax({
-                        url: "/Security/CTV/BackButtonClicked",
-                        success: function (result) { window.location.href = result; }
-                    });
-                    //window.location.href = url;
+                    //alert(result.value);
+                    //DeleteNote();
+                    //alert(url);
+                    window.location.href = url;
                 } else {
                     // second variant
                 }
             }
         }
         else {
-            $.ajax({
-                url: "/Security/CTV/BackButtonClicked",
-                success: function (result) { window.location.href = result; }
-            });
-            //window.location.href = url;
+            window.location.href = url;
+            //$.ajax({
+            //    url: "/Security/CTV/BackButtonClicked",
+            //    success: function (result) { window.location.href = result; }
+            //});            
         }
     });
 });

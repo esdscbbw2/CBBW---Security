@@ -9,6 +9,7 @@ namespace CBBW.BOL.CustomModels
     public class CustomCheckBoxOption : CustomComboOptions
     {        
         public bool IsSelected { get; set; }
+        public bool IsActive { get; set; }
     }
     
 }

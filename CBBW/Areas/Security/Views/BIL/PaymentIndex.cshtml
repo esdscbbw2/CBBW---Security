@@ -21,15 +21,15 @@
         </div>
 
         <div class="table-responsive">
-
             <table id="tblmgp" class="table w-100 table-bordered btnalign mt-4">
                 <thead>
                     <tr>
                         <th scope="col"> SL.No.</th>
-                        <th scope="col">Note No.</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Center Code & Name</th>
+                        <th scope="col">Ref Bill No.</th>
+                        <th scope="col">Ref Date</th>
                         <th scope="col">Employee Code & Name</th>
+                        <th scope="col">Tour From Date</th>
+                        <th scope="col">Tour To Date</th>
                         <th scope="col" style="background: pink;color: #000;">Action</th>
                     </tr>
                 </thead>
@@ -57,40 +57,45 @@
                                 <input id="filterEmployeeCN" type="text" class="form-control tblSearch" placeholder="Search...">
                             </div>
                         </th>
-
+                        <th scope="col">
+                            <div class="form-group">
+                                <input id="filterTourFromDate" type="text" class="form-control tblSearch" placeholder="Search...">
+                            </div>
+                        </th>
+                        
                         <th scope="col">&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if (Model != null && Model.Count > 0)
+                    <tr></tr>
+                    @*@if (Model != null && Model.Count > 0)
                     {
                         foreach (var item in Model)
                         {
-                    <tr>
-                        <td>@item.RowNumber</td>
-                        <td>@item.NoteNumber</td>
-                        <td>@item.EntryDateDisplay</td>
-                        <td>@item.CenterCodeName</td>
-                        <td>@item.EmployeeCodeName</td>
+                            <tr>
+                                <td>@item.RowNumber</td>
+                                <td>@item.NoteNumber</td>
+                                <td>@item.PaymentEntryDateDisplay</td>
+                                <td>@item.EmployeeCodeName</td>
+                                <td>@item.TourFromDateDisplay</td>
+                                <td>@item.TourToDateDisplay</td>
 
-                        <td>
-                            <span class="actionBtn">
-                                <button type="button" class="btn primaryLink" value="btn" data-toggle="tooltip" data-placement="top"
-                                        title="Details">
-                                    <i data-feather="eye"></i>
-                                </button>
+                                <td>
+                                    <span class="actionBtn">
+                                        <button type="button" class="btn primaryLink" value="btn" data-toggle="tooltip" data-placement="top"
+                                                title="Details">
+                                            <i data-feather="eye"></i>
+                                        </button>
 
-                            </span>
-                        </td>
-                    </tr>
+                                    </span>
+                                </td>
+                            </tr>
 
                         }
-                    }
+                    }*@
 
                 </tbody>
             </table>
-
-
         </div>
 
 
@@ -113,9 +118,10 @@
                 columns: [
                     { 'data': 'RowNumber' },
                     { 'data': 'NoteNumber' },
-                    { 'data': 'EntryDateDisplay' },
-                    { 'data': 'CenterCodeName' }, 
+                    { 'data': 'PaymentEntryDateDisplay' },
                     { 'data': 'EmployeeCodeName' },
+                    { 'data': 'TourFromDateDisplay' },
+                    { 'data': 'TourToDateDisplay' },
                     {
                         'data': 'NoteNumber', render: function (data, type, row, meta) {
                             //var viewBtn = '<button type="button" class="btn primaryLink" data-toggle="tooltip" data-placement="top"> <i data-feather="eye"></i></button>';

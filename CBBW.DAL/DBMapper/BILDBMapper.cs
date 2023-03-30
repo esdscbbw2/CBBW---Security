@@ -24,15 +24,30 @@ namespace CBBW.DAL.DBMapper
                         result.TotalCount = int.Parse(dr["TotalCount"].ToString());
                     if (!DBNull.Value.Equals(dr["NoteNumber"]))
                         result.NoteNumber = dr["NoteNumber"].ToString();
-                    if (!DBNull.Value.Equals(dr["CenterCodeName"]))
-                        result.CenterCodeName = dr["CenterCodeName"].ToString();
-                    if (!DBNull.Value.Equals(dr["EntryDate"]))
-                        result.EntryDate = DateTime.Parse(dr["EntryDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["RefNoteNumber"]))
+                        result.RefNoteNumber = dr["RefNoteNumber"].ToString();
+                    if (!DBNull.Value.Equals(dr["RefEntryDate"]))
+                        result.RefEntryDate = DateTime.Parse(dr["RefEntryDate"].ToString());
                     if (!DBNull.Value.Equals(dr["EmployeeCodeName"]))
                         result.EmployeeCodeName = dr["EmployeeCodeName"].ToString();
+                    if (!DBNull.Value.Equals(dr["TourFromDate"]))
+                        result.TourFromDate = DateTime.Parse(dr["TourFromDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["TourToDate"]))
+                        result.TourToDate = DateTime.Parse(dr["TourToDate"].ToString());
                     if (!DBNull.Value.Equals(dr["IsApproved"]))
                         result.IsApproved = bool.Parse(dr["IsApproved"].ToString());
+                    if (!DBNull.Value.Equals(dr["ApprovalDate"]))
+                        result.ApprovalDate = DateTime.Parse(dr["ApprovalDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["PaymentEntryDate"]))
+                        result.PaymentEntryDate = DateTime.Parse(dr["PaymentEntryDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["EntryDate"]))
+                        result.EntryDate = DateTime.Parse(dr["EntryDate"].ToString());
                     result.EntryDateDisplay = MyDBLogic.ConvertDateToString(result.EntryDate);
+                    result.RefEntryDateDisplay = MyDBLogic.ConvertDateToString(result.RefEntryDate);
+                    result.TourFromDateDisplay = MyDBLogic.ConvertDateToString(result.TourFromDate);
+                    result.TourToDateDisplay = MyDBLogic.ConvertDateToString(result.TourToDate);
+                    result.ApprovalDateDisplay = MyDBLogic.ConvertDateToString(result.ApprovalDate);
+                    result.PaymentEntryDateDisplay = MyDBLogic.ConvertDateToString(result.PaymentEntryDate);
                     if (!result.IsApproved.HasValue && result.EntryDate == DateTime.Today)
                     { result.CanDelete = true; }
 

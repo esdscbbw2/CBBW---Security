@@ -400,7 +400,7 @@ function ValidateControl() {
 
 };
 function validatectrl(targetid, value) {
-    alert(targetid);
+   // alert(targetid);
     var isvalid = false;
     if (value == "" || value == null) { isvalid = false; } else { isvalid = true; }
    // activateSubmitBtn();

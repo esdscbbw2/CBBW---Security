@@ -308,6 +308,7 @@ function STChanged(value, IsView) {
 };
 function FillServiceType(effDate) {
     var multiselectCtrl = $('#ServiceTypeDD');
+    var isActive = false;
     $.ajax({
         url: '/Security/TourRule/getServiceTypeList?EffectiveDate='+effDate,
         method: 'GET',
@@ -326,6 +327,7 @@ function FillServiceType(effDate) {
                     aitemsCount = aitemsCount + 1;
                     multiselectCtrl.append($('<option/>', { value: item.ID, text: item.DisplayText }));
                 }
+                if (item.IsActive) { isActive = true; }
             });
             multiselectCtrl.attr('multiple', 'multiple');
             multiselectCtrl.multiselect({
@@ -335,7 +337,14 @@ function FillServiceType(effDate) {
             });
             multiselectCtrl.multiselect('clearSelection');
             multiselectCtrl.multiselect('refresh');
-            if (aitemsCount > 0) { btnsubmitCtrl.makeDisable(); } else { btnsubmitCtrl.makeEnabled(); }
+            if (aitemsCount > 0) {
+                btnsubmitCtrl.makeDisable();
+            }
+            else {
+                if (isActive) { btnsubmitCtrl.makeDisable();} else { btnsubmitCtrl.makeEnabled(); }
+            
+            }
+
         }
     });
 };

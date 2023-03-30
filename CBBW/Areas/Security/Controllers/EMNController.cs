@@ -200,27 +200,20 @@ namespace CBBW.Areas.Security.Controllers
                 model = TempData["EMN"] as EMNHeaderEntryVM;
                 if (Btnsubmit != 1)
                 {
-
                     if (TempData["EMN"] != null)
                     {
-
                         if (model.PersonDtls.Where(x => x.PersonType == 2 || x.PersonType == 4).FirstOrDefault() != null)
                             modeltravvm.PersonType = model.PersonDtls.Where(x => x.PersonType == 2 || x.PersonType == 4).FirstOrDefault().PersonType > 0 ? 4 : 1;
                         else
-                            modeltravvm.PersonType = 1;
+                        modeltravvm.PersonType = 1;
                         modeltravvm.NoteNumber = model.NoteNumber;
                         modeltravvm.AttachFile = model.AttachFile;
                         modeltravvm.CenterCodenName = model.CenterCodeName;
-                        
                         var DateNo = _iEMN.GetTourInfoForServiceType(ServiceTypeCode, ref pMsg);
-                      
                         modeltravvm.TourFromdateStr = DateTime.Today.AddDays(DateNo.MaxDayAllowed).ToString("yyyy-MM-dd");
                         modeltravvm.TodateStr = DateTime.Today.AddDays(3).ToString("yyyy-MM-dd");
                         modeltravvm.FromdateStr = DateTime.Today.ToString("yyyy-MM-dd");
-
-
                     }
-
                 }
                 string baseUrl = "/Security/EMN/Create?NoteNumber=" + model.NoteNumber;
                 ViewBag.BackUrl = baseUrl;
@@ -758,14 +751,18 @@ namespace CBBW.Areas.Security.Controllers
             result = tempobj.getStaffList(CentreCode);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult GetVehicleTypes(int TypeVal = 0, string PT = null)
+        public JsonResult GetVehicleTypes(int TypeVal = 0, string PT = null,string NoteNumber=null)
         {
             List<CustomComboOptions> result = new List<CustomComboOptions>();
-
-            EHGMaster master = EHGMaster.GetInstance;
+              EHGMaster master = EHGMaster.GetInstance;
+          
             if (PT == null)
             {
-                    result = master.VehicleTypes.Where(x => x.ID != 3).ToList();   
+                List<EMNTravellingPerson> PersonDtls = _iEMN.GetEMNTravellingPerson(NoteNumber, 0, 1, ref pMsg);
+                if (PersonDtls.Where(x => x.PersonType == 2).ToList().Count() > 0)
+                    result = master.VehicleTypes.Where(x => x.ID != 3).ToList();
+                else
+                    result = master.VehicleTypes.Where(x => x.ID ==2).ToList();   
             }
             else
             {

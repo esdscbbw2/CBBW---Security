@@ -139,13 +139,20 @@ namespace CBBW.DAL.DBMapper
                         result.EntryDate = DateTime.Parse(dr["EntryDate"].ToString());
                     if (!DBNull.Value.Equals(dr["IsApproved"]))
                         result.IsApproved = bool.Parse(dr["IsApproved"].ToString());
+                    if (!DBNull.Value.Equals(dr["RefNoteNumber"]))
+                        result.RefNoteNumber = dr["RefNoteNumber"].ToString();
+                    if (!DBNull.Value.Equals(dr["EntEntryDate"]))
+                        result.EntEntryDate = DateTime.Parse(dr["EntEntryDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["AuthEmployeeName"]))
+                        result.AuthEmployeeName = dr["AuthEmployeeName"].ToString();
                     result.EntryDateDisplay = MyDBLogic.ConvertDateToString(result.EntryDate);
+                    result.EntEntryDateDisplay = MyDBLogic.ConvertDateToString(result.EntEntryDate);
                     if (!result.IsApproved.HasValue && result.EntryDate == DateTime.Today)
                     { result.CanDelete = true; }
 
                 }
             }
-            catch { }
+            catch(Exception ex) { ex.ToString(); }
             return result;
         }
         public TFDTourFeedBackDetails Map_TFDTourFeedBackDetails(DataRow dr)

@@ -10,7 +10,7 @@
     @Html.HiddenFor(x => x.submitcount)
     @Html.HiddenFor(x => x.EmployeeNo)
     @Html.HiddenFor(x => x.NoteNo)
-    @Html.HiddenFor(x=>x.btnEnable)
+    @Html.HiddenFor(x => x.btnEnable)
     <div class="">
         <div class="row newTable" id="AllData">
             <div class="fixedElement">
@@ -235,11 +235,18 @@ htmlAttributes: new
 }
 @section scripts{
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/TFD/ApprovalEntry.js"></script>
 
     <script>
-       
+        function changeColor(e) {
+            var allElements = document.querySelectorAll(".selected-row");
+            for (i = 0; i < allElements.length; i++) {
+                allElements[i].classList.remove('selected-row');
+            }
+            let ele = e.parentElement.parentElement.parentElement;
+            ele.classList.add("selected-row");
+        }
     </script>
-    <script src="~/UIContent/JS/CustomePage/TFD/ApprovalEntry.js"></script>
     <script>
         $('#btnBacks').click(function () {
             var url = "/Security/TFD/ApprovalIndex";

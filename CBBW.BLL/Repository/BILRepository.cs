@@ -15,7 +15,7 @@ namespace CBBW.BLL.Repository
     {
         BILEntities _BILEntities;
         MasterEntities _MasterEntities;
-        string NotePattern = "200001-BIL-" + DateTime.Today.ToString("yyyyMMdd") + "-";
+        string NotePattern = "200001-TDB-" + DateTime.Today.ToString("yyyyMMdd") + "-";
        
         UserRepository _user;
         UserInfo user;
