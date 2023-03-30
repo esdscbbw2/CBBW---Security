@@ -104,24 +104,17 @@ function getInitialData() {
     var drivercnn = $('#DriverCode').val() + ' / ' + $('#DriverName').val();
     var addbtnindex = 0;
     $.ajax({
-        url: '/CTV/getOTVSChDetailData',
+        url: '/CTV/getOTVSChDetailEntryData',
         method: 'GET',
         data: { Notenumber: notenumber },
         dataType: 'json',
         success: function (data) {
-            $(data).each(function (index, item) {
+            var entrylist = data.SchDetailEntryList;
+            var datalist = data.SchDetailList;
+            $.each(datalist, function (index, item) {
                 $('#TripPurpose').val(item.TripPurpose);
                 if (index > 0) { cloneEditRows(index); }
-                $('#' + index + '_FromDate2').val(item.FromDateStr);
-                $('#' + index + '_FromTime2').val(item.FromTime);
-                $('#' + index + '_FromLT2').val(item.FromCenterTypeCode + ' / ' + item.FromCenterTypeName);
-                $('#' + index + '_FromL2').val(item.FromCentreCode + ' / ' + item.FromCenterName);
-                $('#' + index + '_ToLT2').val(item.ToCenterTypeName);
-                $('#' + index + '_ToDate2').val(item.ToDateStr);
-                $('#' + index + '_Driver2').val(drivercnn);
-                $('#' + index + '_ToL2X').val(item.ToCenterName);
                 if (index >= 1) { AddBtnVirtualClick3(index); }
-
                 var fromdtctrl = $('#' + index + '_FromDt');
                 var fromtimectrl = $('#' + index + '_Fromtime');
                 var fromltctrl = $('#' + index + '_FromLT');
@@ -132,7 +125,6 @@ function getInitialData() {
                 var drivercombotxt = $('#' + index + '_DriverCmbtxt');
                 var addbtn = $('#' + index + '_AddBtn');
                 var deletebtn = $('#' + index + '_DeleteBtn');
-
                 fromdtctrl.val(item.FromDateStrYMD).removeClass('is-invalid').addClass('is-valid');
                 fromtimectrl.val(item.FromTime).removeClass('is-invalid').addClass('is-valid');
                 fromltctrl.val(item.FromCenterTypeCode).removeClass('is-invalid').addClass('is-valid');
@@ -170,8 +162,21 @@ function getInitialData() {
                     drivercombotxt.removeAttr('disabled', 'disabled');
                     addbtn.removeAttr('disabled', 'disabled');
                     deletebtn.removeAttr('disabled', 'disabled');
-                }                
+                }
             });
+            $.each(entrylist, function (index, item) {
+                $('#' + index + '_FromDate2').val(item.FromDateStr);
+                $('#' + index + '_FromTime2').val(item.FromTime);
+                $('#' + index + '_FromLT2').val(item.FromCenterTypeCode + ' / ' + item.FromCenterTypeName);
+                $('#' + index + '_FromL2').val(item.FromCentreCode + ' / ' + item.FromCenterName);
+                $('#' + index + '_ToLT2').val(item.ToCenterTypeName);
+                $('#' + index + '_ToDate2').val(item.ToDateStr);
+                $('#' + index + '_Driver2').val(drivercnn);
+                $('#' + index + '_ToL2X').val(item.ToCenterName);
+
+            });
+            //$(data).each(function (index, item) {
+            //});
 
             $('#' + addbtnindex + '_AddBtn').removeAttr('disabled', 'disabled');
         }

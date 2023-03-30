@@ -282,6 +282,7 @@ function ChangeNoteNumber() {
                             TourToDate = $('#TourToDate_' + rowid);
                             NoOfDays = $('#NoOfDays_' + rowid);
                             PurposeOfVisit = $('#PurposeOfVisit_' + rowid);
+                            CheckList = $('#CheckList_' + rowid);
 
                         }
 

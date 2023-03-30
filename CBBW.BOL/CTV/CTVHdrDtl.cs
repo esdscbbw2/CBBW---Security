@@ -10,5 +10,6 @@ namespace CBBW.BOL.CTV
     {
         public TripScheduleHdr SchHdrData { get; set; }
         public IEnumerable<LocVehSchFromMat> SchDetailList { get; set; }
+        public IEnumerable<LocVehSchFromMat> SchDetailEntryList { get; set; }
     }
 }

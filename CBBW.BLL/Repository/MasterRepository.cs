@@ -99,6 +99,10 @@ namespace CBBW.BLL.Repository
             }
             return locations;
         }
+        public bool GetHGOpenOrNot(int CentreCode, ref string pMsg)
+        {
+            return _entities.GetHGOpenOrNot(CentreCode, ref pMsg);
+        }
 
 
     }

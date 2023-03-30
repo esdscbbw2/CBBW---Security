@@ -90,7 +90,7 @@ namespace CBBW.DAL.Entities
                         result.Add(_dbresmapper.Map_CustomComboOptions(dt.Rows[i]));
                     }
                 }
-                result.Add(new CustomComboOptions {ID=99,DisplayText="99 / Others" });
+                //result.Add(new CustomComboOptions {ID=99,DisplayText="99 / Others" });
             }
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
@@ -290,5 +290,10 @@ namespace CBBW.DAL.Entities
         {
             return _datasync.GetDesignation(PersonID, PersonType,ref pMsg);
         }
+        public bool GetHGOpenOrNot(int CentreCode, ref string pMsg) 
+        {
+            return _datasync.GetHGOpenOrNot(CentreCode, ref pMsg);
+        }
+    
     }
 }

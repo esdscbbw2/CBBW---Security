@@ -11,6 +11,7 @@ namespace CBBW.Areas.Security.ViewModel
         public string NoteNumber { get; set; }
         public string TripPurpose { get; set; }
         public IEnumerable<LocVehSchFromMat> SchDetailList { get; set; }
+        public IEnumerable<LocVehSchFromMat> SchDetailEntryList { get; set; }
         public string CallBackUrl { get; set; }
     }
 }

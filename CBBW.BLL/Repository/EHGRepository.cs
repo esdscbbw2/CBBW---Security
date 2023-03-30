@@ -152,5 +152,8 @@ namespace CBBW.BLL.Repository
         {
            return _TourEntities.GetMaxDaysOfTour(ServiceTypeCode,ref pMsg);
         }
+        
+
+
     }
 }

@@ -293,5 +293,16 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+        public bool GetHGOpenOrNot(int CentreCode, ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("SELECT [EHG].[GetHGOpenOrNot](" + CentreCode + ")", CommandType.Text))
+                {
+                    return bool.Parse(sql.ExecuteScaler(ref pMsg).ToString());
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return false; }
+        }
     }
 }

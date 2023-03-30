@@ -127,9 +127,19 @@ namespace CBBW.Areas.Security.Controllers
         }
         public ActionResult Index()
         {
-            return View();
+            if (_master.GetHGOpenOrNot(user.CentreCode, ref pMsg))
+                return View();
+            else
+                return RedirectToAction("NotOpen");
         }
         public ActionResult NoteApproveList() 
+        {
+            if (_master.GetHGOpenOrNot(user.CentreCode, ref pMsg))
+                return View();
+            else
+                return RedirectToAction("NotOpen");
+        }
+        public ActionResult NotOpen() 
         {
             return View();
         }

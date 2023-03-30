@@ -142,6 +142,7 @@ function EnableSubmitBtnActive() {
 function Buttonclear() {
     $('.clear').val('');
     $('.clear').isInvalid();
+    $('.clear').makeEnabled();
 };
 function SaveDataTravClicked() {
     debugger;

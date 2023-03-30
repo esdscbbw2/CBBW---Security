@@ -23,5 +23,6 @@ namespace CBBW.BLL.IRepository
         VTStatement getVehicleEligibilityStatement(int EligibleVT, int ProvidedVT, ref string pMsg);
         IEnumerable<LocationMaster> GetCentresFromTourCategory(string TourCatIDs, ref string pMsg);
         IEnumerable<LocationMaster> GetBranchOfaCentre(int CentreCode, ref string pMsg);
+        bool GetHGOpenOrNot(int CentreCode, ref string pMsg);
     }
 }

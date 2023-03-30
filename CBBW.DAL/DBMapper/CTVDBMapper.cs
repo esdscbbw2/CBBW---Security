@@ -131,7 +131,7 @@ namespace CBBW.DAL.DBMapper
             catch { }
             return result;
         }
-        public CTVHdrDtl Map_CTVHdrDtl(DataRow dr, DataTable dt)
+        public CTVHdrDtl Map_CTVHdrDtl(DataRow dr, DataTable dt, DataTable dt2)
         {
             CTVHdrDtl result = new CTVHdrDtl();
             try
@@ -248,6 +248,62 @@ namespace CBBW.DAL.DBMapper
                         dtl.Add(x);
                     }
                     result.SchDetailList = dtl.OrderBy(o=>o.FromDate).ToList();
+                }
+                if (dt2 != null && dt2.Rows.Count > 0)
+                {
+                    List<LocVehSchFromMat> dtl2 = new List<LocVehSchFromMat>();
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        LocVehSchFromMat x = new LocVehSchFromMat();
+                        if (!DBNull.Value.Equals(dt2.Rows[i]["FromDate"]))
+                            x.FromDate = DateTime.Parse(dt2.Rows[i]["FromDate"].ToString());
+                        if (!DBNull.Value.Equals(dt2.Rows[i]["FromLocationType"]))
+                            x.FromCenterTypeCode = int.Parse(dt2.Rows[i]["FromLocationType"].ToString());
+                        if (!DBNull.Value.Equals(dt2.Rows[i]["FromLocation"]))
+                            x.FromCentreCode = int.Parse(dt2.Rows[i]["FromLocation"].ToString());
+                        if (!DBNull.Value.Equals(dt2.Rows[i]["ToLocationType"]))
+                            x.ToCentreTypeCode = int.Parse(dt2.Rows[i]["ToLocationType"].ToString());
+                        if (!DBNull.Value.Equals(dt2.Rows[i]["ToLocation"]))
+                            x.ToCentreCode = int.Parse(dt2.Rows[i]["ToLocation"].ToString());
+                        if (!DBNull.Value.Equals(dt2.Rows[i]["ToDate"]))
+                            x.ToDate = DateTime.Parse(dt2.Rows[i]["ToDate"].ToString());
+                        if (!DBNull.Value.Equals(dt2.Rows[i]["FromTime"]))
+                            x.FromTime = dt2.Rows[i]["FromTime"].ToString();
+                        if (!DBNull.Value.Equals(dt2.Rows[i]["DriverCodenName"]))
+                            x.DriverCodenName = dt2.Rows[i]["DriverCodenName"].ToString();
+                        if (!DBNull.Value.Equals(dt2.Rows[i]["FromLocationName"]))
+                            x.FromCenterName = dt2.Rows[i]["FromLocationName"].ToString();
+                        if (!DBNull.Value.Equals(dt2.Rows[i]["FromLocationTypeName"]))
+                            x.FromCenterTypeName = dt2.Rows[i]["FromLocationTypeName"].ToString();
+                        if (!DBNull.Value.Equals(dt2.Rows[i]["ToLocationTypes"]))
+                            x.ToCenterTypeName = dt2.Rows[i]["ToLocationTypes"].ToString();
+                        if (!DBNull.Value.Equals(dt2.Rows[i]["ToLocations"]))
+                            x.ToCenterName = dt2.Rows[i]["ToLocations"].ToString();
+                        if (!DBNull.Value.Equals(dt2.Rows[i]["ToLocationTypeCodes"]))
+                            x.ToCentreTypeCodes = dt2.Rows[i]["ToLocationTypeCodes"].ToString();
+                        if (!DBNull.Value.Equals(dt2.Rows[i]["ToLocationCodes"]))
+                            x.ToCentreCodes = dt2.Rows[i]["ToLocationCodes"].ToString();
+                        if (!DBNull.Value.Equals(dt2.Rows[i]["EditDriverNo"]))
+                            x.EditDriverNo = int.Parse(dt2.Rows[i]["EditDriverNo"].ToString());
+                        if (!DBNull.Value.Equals(dt2.Rows[i]["EditDriverName"]))
+                            x.EditDriverName = dt2.Rows[i]["EditDriverName"].ToString();
+
+                        if (!DBNull.Value.Equals(dt2.Rows[i]["CurrentDriverCode"]))
+                            x.CurrentDriverCode = int.Parse(dt2.Rows[i]["CurrentDriverCode"].ToString());
+                        if (!DBNull.Value.Equals(dt2.Rows[i]["CurrentDriverName"]))
+                            x.CurrentDriverName = dt2.Rows[i]["CurrentDriverName"].ToString();
+
+                        x.IsActivetoEdit = x.FromDate >= DateTime.Today ? 1 : 0;
+                        x.FromDateStr = x.FromDate.ToString("dd-MM-yyyy");
+                        x.ToDateStr = x.ToDate.ToString("dd-MM-yyyy");
+                        x.FromDateStrYMD = x.FromDate.ToString("yyyy-MM-dd");
+                        if (result.SchHdrData != null && result.SchHdrData.TripPurpose != null)
+                        { x.TripPurpose = result.SchHdrData.TripPurpose; }
+                        //Otherlocation yes no options will come here.
+
+                        dtl2.Add(x);
+                    }
+                    result.SchDetailEntryList = dtl2.OrderBy(o => o.FromDate).ToList();
                 }
             }
             catch(Exception ex) { string errmsg = ex.Message; }

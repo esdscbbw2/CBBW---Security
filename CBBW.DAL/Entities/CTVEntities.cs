@@ -176,7 +176,11 @@ namespace CBBW.DAL.Entities
                 ds = _datasync.getCTVSchDetailsFromNote(NoteNumber, ref pMsg);
                 if (ds != null)
                 {
-                    DataTable dtl = null; DataRow hdr = null;
+                    DataTable hdrdtl = null; DataTable dtl = null; DataRow hdr = null;
+                    if (ds.Tables[2] != null && ds.Tables[2].Rows.Count > 0)
+                    {
+                        hdrdtl = ds.Tables[2];
+                    }
                     if (ds.Tables[1] != null && ds.Tables[1].Rows.Count > 0)
                     {
                         dtl = ds.Tables[1];
@@ -185,7 +189,7 @@ namespace CBBW.DAL.Entities
                     {
                         hdr = ds.Tables[0].Rows[0];
                     }
-                    return _CTVDBMapper.Map_CTVHdrDtl(hdr, dtl);
+                    return _CTVDBMapper.Map_CTVHdrDtl(hdr, dtl, hdrdtl);
                 }
             }
             catch (Exception ex){pMsg = ex.Message;}

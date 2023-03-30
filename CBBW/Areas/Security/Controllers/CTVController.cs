@@ -178,6 +178,7 @@ namespace CBBW.Areas.Security.Controllers
             CTVHdrDtl obj = _iCTV.getSchDetailsFromNote(NoteNumber, ref pMsg);
             if (obj != null) 
             {
+                model.SchDetailEntryList = obj.SchDetailEntryList;
                 model.SchDetailList = obj.SchDetailList;
                 model.NoteNumber = obj.SchHdrData.NoteNo;
                 model.TripPurpose = obj.SchHdrData.TripPurpose;
@@ -784,6 +785,11 @@ namespace CBBW.Areas.Security.Controllers
         {
             CTVHdrDtl result=_iCTV.getSchDetailsFromNote(Notenumber, ref pMsg);
             return Json(result.SchDetailList,JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getOTVSChDetailEntryData(string Notenumber)
+        {
+            CTVHdrDtl result = _iCTV.getSchDetailsFromNote(Notenumber, ref pMsg);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult getOTVSChDetailDataCount(string Notenumber)
         {
