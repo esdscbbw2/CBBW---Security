@@ -131,6 +131,7 @@ namespace CBBW.Areas.Security.Controllers
                 return View();
             else
                 return RedirectToAction("NotOpen");
+            //return View();
         }
         public ActionResult NoteApproveList() 
         {
@@ -181,24 +182,24 @@ namespace CBBW.Areas.Security.Controllers
                     model.ehgHeader.AuthorisedEmpNo = model.AuthorisedEmpNoForManagement;
                     EHGTravelingPersondtlsForManagement dtl = new EHGTravelingPersondtlsForManagement();
                     dtl.NoteNumber = model.ehgHeader.NoteNumber;
-                    dtl.EmployeeNo = model.DriverNoForManagement;
+                    dtl.EmployeeNo = model.DriverNoForManagement2;
                     dtl.EmployeeNonName = model.DriverNameForManagement;
                     dtl.DesignationCode = _myHelper.getFirstIntegerFromString(model.DesgCodeNNameForManagement, '/');
                     dtl.DesignationCodenName = model.DesgCodeNNameForManagement;
-                    dtl.FromDate = model.FromdateForMang;
-                    dtl.FromTime = model.FromTimeForMang;
-                    dtl.ToDate = model.ToDateForMang;
-                    dtl.PurposeOfVisit = model.PurposeOfVisitFoeMang;
+                    dtl.FromDate = model.FromdateForMang2;
+                    dtl.FromTime = model.FromTimeForMang2;
+                    dtl.ToDate = model.ToDateForMang2;
+                    dtl.PurposeOfVisit = model.PurposeOfVisitFoeMang2;
                     //To be changed after rfid implementation
-                    dtl.ActualTourOutDate= model.FromdateForMang;
-                    dtl.ActualTourOutTime= model.FromTimeForMang;
-                    dtl.RequiredTourInDate= model.ToDateForMang;
+                    dtl.ActualTourOutDate= model.FromdateForMang2;
+                    dtl.ActualTourOutTime= model.FromTimeForMang2;
+                    dtl.RequiredTourInDate= model.ToDateForMang2;
                     dtl.RequiredTourInTime = " ";
-                    dtl.ActualTourInDate= model.ToDateForMang;
+                    dtl.ActualTourInDate= model.ToDateForMang2;
                     dtl.ActualTourInTime = " ";
                     dtl.TourStatus = 0;
 
-                    if (model.TADADeniedForManagement == 1)
+                    if (model.TADADeniedForManagement2 == 1)
                         dtl.TADADenied = true;
                     else
                         dtl.TADADenied = false;

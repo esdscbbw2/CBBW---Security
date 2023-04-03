@@ -192,7 +192,62 @@
                                 </button>
                             </div>
                         </div>
-                        
+                        <br />
+                        <div class="table-responsive" id="DADection">
+                            <table class="table table-bordered w-100 btnalign " id="">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                            Department  Code & Name
+                                        </th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="25%">
+                                            Requisition No.  & Date
+                                        </th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                            Prepared By No. & Name
+                                        </th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                            Requisition Amount
+                                        </th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                            Amount Paid
+                                        </th>
+                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">Remarks  </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center">
+                                          @Model.DeptName
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="d-flex">
+                                                @Model.RequisitionNo
+                                                <div class="position-relative pointer w-50">
+                                                    @Model.RequisitionDatestr
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                        @Model.PreparedEmpName
+                                        </td>
+                                        <td class="text-center">
+                                            @Model.RequisitionAmt
+                                        </td>
+                                        <td class="text-center">
+                                            @Model.ETotalAmount
+                                        </td>
+                                        <td>
+                                            @Model.Remark
+                                        </td>
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+
 
                     </div>
                 </div>

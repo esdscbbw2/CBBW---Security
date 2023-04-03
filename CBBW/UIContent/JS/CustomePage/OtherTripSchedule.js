@@ -734,6 +734,8 @@ function ChangeLocationType() {
     var todateCtrl = $('#' + rowid + '_ToDt');
     todateCtrl.val('');
     todateCtrl.removeClass('is-valid').addClass('is-invalid');
+
+    OtherConfirmation();
     //getToDate(rowid);
     //activateSubmitBtn();
 };
@@ -787,6 +789,24 @@ function ChangeLocationToType() {
     var todateCtrl = $('#' + rowid + '_ToDt');
     todateCtrl.val('');
     todateCtrl.removeClass('is-valid').addClass('is-invalid');
+    OtherConfirmation();
+    
+};
+function OtherConfirmation() {
+    var othCtrl = $('#CCOth');
+    var isOther = false;
+    $('.ltype').each(function () {
+        if ($(this).val().indexOf('99') >= 0) { isOther = true;}
+    });
+    if (isOther) {
+        othCtrl.removeAttr('disabled');
+        othCtrl.addClass('is-invalid').removeClass('is-valid');
+    }
+    else {
+        othCtrl.val(-1);
+        othCtrl.removeClass('is-invalid').removeClass('is-valid');
+        othCtrl.attr('disabled', 'disabled');
+    }
 };
 function fillLocationMulti(x, target, targetid) {
     //alert(ok);
@@ -1017,6 +1037,12 @@ $(document).ready(function () {
             //getInitialData();
         }
     });    
+});
+$(document).ready(function () {
+    $('.CustomDateFormat').each(function () {
+        $(this).CustomDateFormat();
+    });
+
 });
 //$(function () {
 //    $('.datepicker2').datepicker({

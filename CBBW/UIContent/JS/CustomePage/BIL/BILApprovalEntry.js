@@ -13,9 +13,8 @@
     var TourToDate = $('#TourToDate');
     var NoOfDays = $('#NoOfDays');
     var PurposeOfVisit = $('#PurposeOfVisit');
+    EnableAddBtnInCloneRowIfOnlyLastV2(insrow, 'AddBtn');
     var rowid = CloneRowReturningID('tbody1', 'tbody2', $(insrow).attr('id') * 1, true, false);
-    //alert(rowid);
-    debugger;
     if (rowid > 0) {
         addbtn = $('#AddBtn_' + rowid);
         checklist = $('#CheckList_' + rowid);
@@ -48,6 +47,8 @@
     $('#ExpensesDetailsDiv').addClass('inVisible');
     addbtn.makeDisable();
     checklist.makeDisable();
+    $('#BtnSubmit').makeDisable();
+    $('#Checked').val('');
 
 }
 function removeClonebtn() {
@@ -55,8 +56,29 @@ function removeClonebtn() {
     removeBtnClickFromCloneRow(tblRow, 'tbody2');
     EnableAddBtn(tblRow, 'AddBtn', 'CheckList');
     $('#ExpensesDetailsDiv').addClass('inVisible');
+    var lastRowId = $('#BILTable tr:last').attr('id');
+    var CheckList = $('#CheckList');
+    if (lastRowId > 0) {
+        CheckList = $('#CheckList_' + lastRowId);
+    }
+    CheckList.prop('checked', true);
+    VisibleRowsEnable(lastRowId);
 
 };
+
+
+function EnableAddBtnInCloneRowIfOnlyLastV2(tblRow, addBtnBaseID) {
+    var tblrow = $(tblRow);
+    var rowid = tblrow.attr('id');
+    var addbtn = $('#AddBtn');
+    if (rowid > 0) {
+        addbtn = $('#AddBtn_' + rowid);
+    }
+    addbtn.tooltip('hide');
+    addbtn.makeDisable();
+};
+
+
 function EnableAddBtn(tblRow, addBtnBaseID,CheckId) {
     var tblrow = $(tblRow);
     var rowid = tblrow.attr('id')
@@ -446,10 +468,10 @@ function EnableSubmitBtn() {
 };
 function SaveDetails() {
     var notenumber = $('#NoteNumber').val();
-    var AEDAmount = $('#AEDAmount').val();
-    var ATAAmount = $('#ATAAmount').val();
-    var ALocAmount = $('#ALocAmount').val();
-    var ALodAmount = $('#ALodAmount').val();
+    var AEDAmount = $('#AED').val();
+    var ATAAmount = $('#ATA').val();
+    var ALocAmount = $('#ALoc').val();
+    var ALodAmount = $('#ALod').val();
     var ATotalAmount = $('#ATotalAmount').val();
     var AReamrk = $('#AReamrk').val();
     var IsApproves = $('#IsApproves').val();
@@ -473,7 +495,7 @@ function SaveDetails() {
                 if (item.bResponseBool == true) {
                     Swal.fire({
                         title: 'Confirmation',
-                        text: 'Data saved successfully.',
+                        text: 'Save Data For ' + notenumber + ' successfully.',
                         setTimeout: 5000,
                         icon: 'success',
                         customClass: 'swal-wide',
@@ -575,7 +597,7 @@ function AEDincrementQty() {
     var targetCtrl = AEDincrementQty.caller.arguments[0].target;
     var mids =  $(targetCtrl).attr('id');
     var maxvalue = $('#' + mids + 'Max').html()*1;
-    var txtcTrl = $('#' + mids);
+    var txtcTrl = $('#A' + mids);
     var mValue = txtcTrl.val() * 1;
     //alert(mids + "--" + maxvalue + '--' + mValue);
     mValue += 1;

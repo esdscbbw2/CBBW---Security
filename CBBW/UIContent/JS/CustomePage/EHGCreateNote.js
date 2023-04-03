@@ -21,11 +21,21 @@ $.fn.clearValidateClass = function () {
 function ValidateControl() {
     var target = ValidateControl.caller.arguments[0].target;
     var targetid = $(target).attr('id');
+    //alert(targetid);
     var isvalid = validatectrl(targetid, $(target).val());
     if (isvalid) {
         $(target).removeClass('is-invalid').addClass('is-valid');
     } else {
         $(target).removeClass('is-valid').addClass('is-invalid');        
+    }
+    if (targetid == 'AuthorisedEmpNoForManagement' ||
+        targetid == 'DriverNoForManagement' || 
+        targetid == 'FromdateForMang' ||
+        targetid == 'FromTimeForMang' ||
+        targetid == 'ToDateForMang' ||
+        targetid == 'PurposeOfVisitFoeMang' || 
+        targetid == 'TADADeniedForManagement' ) {
+        $('#' + targetid + '2').val($(target).val());
     }
     $('#BackBtnActive').val(1);
     EnableSubmitBtn();
@@ -48,7 +58,6 @@ function validatectrl(targetid, value) {
             break;
         case "FromDate":
             isvalid = validatectrl_ValidateLength(value);
-            //alert(isvalid);
             break;
         case "FromTime":
             isvalid = validatectrl_ValidateLength(value);
@@ -81,14 +90,15 @@ function validatectrl(targetid, value) {
                     var maxdays = $('#MaxDaysOfTourForEmp').val();
                     var mtdt = CustomDateChangeV2(value, maxdays);
                     $('#ToDateForMang').attr('max', mtdt).attr('min', value);
-                    $('#ToDateForMang').val('').isInvalid();
-                    $('#lblToDateForMang').html('Select Date');
+                    //$('#ToDateForMang').val('').isInvalid();
+                    //$('#lblToDateForMang').html('Select Date');
                 }
                 $('#ActualTOutDtForMang').html(ChangeDateFormat(value));
             }
             break;
         case "FromTimeForMang":
-            if (value != '') {
+            //alert(value);
+            if (value != '') {                
                 isvalid = true;
                 $('#ActualTOutTimeForMang').html(value);
             }
@@ -97,8 +107,11 @@ function validatectrl(targetid, value) {
             if (value != '') {
                 var fromdate = $('#FromdateForMang').val();
                 isvalid = CompareDateV2(fromdate, 0, value, 0);
-                $('#ReTInDtForMang').html(ChangeDateFormat(value));
-                if (!isvalid) { $('#ToDateForMang').prop('title', 'To Date Should Be Same Or Latter Than From Date'); }
+                //alert($('#' + targetid).attr('max') +' - '+value+ ' - ' + $('#' + targetid).attr('min'))
+                if (!isvalid) {
+                    $('#ToDateForMang').prop('title', 'To Date Should Be Same Or Latter Than From Date');
+                }
+                $('#ReTInDtForMang').html(ChangeDateFormat(value));               
             }
             break;
         case "TADADeniedForManagement":
@@ -597,7 +610,8 @@ function ForManagementDivRemoveInValidStatus() {
         var ctrl4 = $('#ToDateForMang');
         var ctrl5 = $('#PurposeOfVisitFoeMang');
         var ctrl6 = $('#TADADeniedForManagement');
-        var ctrl7=$('#AuthorisedEmpNoForManagement');
+        var ctrl7 = $('#AuthorisedEmpNoForManagement');
+        //alert(ctrl3.val() + ' - ' + ctrl4.val());
         var isvalid = validatectrl('DriverNoForManagement', Ctrl1.val());
         if (isvalid) {
             Ctrl1.isValid();
@@ -607,7 +621,8 @@ function ForManagementDivRemoveInValidStatus() {
                 isvalid = validatectrl('FromTimeForMang', ctrl3.val());
                 if (isvalid) {
                     ctrl3.isValid();
-                    isvalid = validatectrl('ToDateForMang', ctrl4.val());
+                    //alert(ctrl4.val());
+                    isvalid = validatectrl('ToDateForMang', ctrl4.val());                    
                     if (isvalid) {
                         ctrl4.isValid();
                         isvalid = validatectrl('PurposeOfVisitFoeMang', ctrl5.val());
@@ -881,4 +896,12 @@ $(document).ready(function () {
     EnableSubmitBtn();
     //alert($('#DDAuthorisedEmpForWork').val());
     //if ($('#DDAuthorisedEmpForWork').val() != -1) { LockDiv('sOfficeworkDiv'); }
+});
+$(document).ready(function () {
+    //$('#FromTimeForMang2').on('blur', function (e) {
+    //    if (e.target.classList.contains('mTimePickerAlert')) {
+    //        alert('hour changed!')
+    //        e.target.removeClass('mTimePickerAlert');
+    //    }
+    //});
 });

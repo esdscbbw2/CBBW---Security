@@ -13,8 +13,8 @@
     var TourToDate = $('#TourToDate');
     var NoOfDays = $('#NoOfDays');
     var PurposeOfVisit = $('#PurposeOfVisit');
+    EnableAddBtnInCloneRowIfOnlyLastV2(insrow, 'AddBtn');
     var rowid = CloneRowReturningID('tbody1', 'tbody2', $(insrow).attr('id') * 1, true, false);
-
     if (rowid > 0) {
         addbtn = $('#AddBtn_' + rowid);
         checklist = $('#CheckList_' + rowid);
@@ -47,25 +47,41 @@
     $('#ExpensesDetailsDiv').addClass('inVisible');
     addbtn.makeDisable();
     checklist.makeDisable();
+    $('#BtnSubmit').makeDisable();
+    $('#Checked').val('');
 
 }
 function removeClonebtn() {
     var tblRow = removeClonebtn.caller.arguments[0].target.closest('.add-row');
     removeBtnClickFromCloneRow(tblRow, 'tbody2');
-    EnableAddBtn(tblRow, 'AddBtn', 'CheckList');
     $('#ExpensesDetailsDiv').addClass('inVisible');
-
+    var lastRowId = $('#BILTable tr:last').attr('id');
+    var CheckList = $('#CheckList');
+    if (lastRowId > 0) {
+        CheckList = $('#CheckList_' + lastRowId);
+    }
+    CheckList.prop('checked', true);
+    VisibleRowsEnable(lastRowId);
 };
+
+function EnableAddBtnInCloneRowIfOnlyLastV2(tblRow, addBtnBaseID) {
+    var tblrow = $(tblRow);
+    var rowid = tblrow.attr('id');
+    var addbtn = $('#AddBtn');
+    if (rowid > 0) {
+        addbtn = $('#AddBtn_' + rowid);
+    }
+    addbtn.tooltip('hide');
+    addbtn.makeDisable();
+};
+
 function EnableAddBtn(tblRow, addBtnBaseID, CheckId) {
-    debugger;
     var tblrow = $(tblRow);
     var rowid = tblrow.attr('id')
     if (rowid != 0) { addBtnBaseID = addBtnBaseID + '_' + rowid; CheckId = CheckId + '_' + rowid; }
     var addBtnctrl = $('#' + addBtnBaseID);
     var CheckId = $('#' + CheckId);
     if (tblrow.find('.is-invalid').length > 0) { addBtnctrl.makeDisable(); CheckId.makeDisable(); } else { addBtnctrl.makeEnabled(); CheckId.makeEnabled(); }
-
-
 };
 $(document).ready(function () {
     (async function () {
@@ -106,6 +122,8 @@ function VisibleRows() {
             success: function (result) {
                 ExpensesDetailsDiv.removeClass('inVisible');
                 ExpensesDetailsDiv.html(result);
+                RequisitionData();
+
             },
             error: function (xhr, status) {
                 ExpensesDetailsDiv.html(xhr.responseText);
@@ -155,6 +173,7 @@ function VisibleRowsEnable(rowid) {
             success: function (result) {
                 ExpensesDetailsDiv.removeClass('inVisible');
                 ExpensesDetailsDiv.html(result);
+                RequisitionData();
             },
             error: function (xhr, status) {
                 ExpensesDetailsDiv.html(xhr.responseText);
@@ -173,6 +192,30 @@ function VisibleRowsEnable(rowid) {
         });
 
     }
+};
+function RequisitionData() {
+    var Deptcode = $('#DeptCode');
+    var RequisitionNo = $('#RequisitionNo');
+    var RequisitionDate = $('#RequisitionDate');
+    var PreparedEmpNo = $('#PreparedEmpNos');
+    var PreparedEmpNoDD = $('#PreparedEmpNo');
+    var RequisitionAmt = $('#RequisitionAmt');
+    var Remark = $('#Remark');
+    var Datestr = $('#RequisitionDatestr');
+    Deptcode.val() > 0 ? Deptcode.isValid() : Deptcode.isInvalid();
+    RequisitionNo.val() > 0 ? RequisitionNo.isValid() : RequisitionNo.isInvalid();
+    if (Datestr.val() != '01/01/0001') {
+        $('#RequisitionDatelbl').html(Datestr.val());
+        $('#RequisitionDate').val($('#RequisitionDatestrDisplay').val());
+    }
+    Datestr.val() != '01/01/0001' ? RequisitionDate.isValid() : RequisitionDate.isInvalid();
+    if (PreparedEmpNo.val() > 0) {
+        GetEmp(Deptcode.val(), PreparedEmpNo.val());
+    }
+    PreparedEmpNo.val() > 0 ? PreparedEmpNoDD.isValid() : PreparedEmpNoDD.isInvalid();
+    RequisitionAmt.val() >= 0 ? RequisitionAmt.isValid() : RequisitionAmt.isInvalid();
+    RequisitionAmt.attr('min', 0);
+    $('#DisplayETotalAmount').html($('#ETotalAmount').val());
 };
 $('#btnBacks').click(function () {
     var url = "/Security/BIL/PaymentIndex";
@@ -321,11 +364,13 @@ function TotalExpance() {
     }
 };
 function TPDBtnClicked() {
-    $('#DFAbtnSubmit').makeDisable();
+   // $('#DFAbtnSubmit').makeDisable();
     var notenumber = $('#NoteNumber').val();
     var EmployeeNo = $('#EmployeeNo').val();
     var NoteNumber = $('#RefNoteNumber').val();
     var ETotalAmount = $('#ETotalAmount').val();
+    var submitval = $('#SubmitCount').val() * 1;
+   
     if (notenumber != '') {
         var iDiv = $('#TPDModalDiv');
         var modalDiv = $('#TPDModal');
@@ -338,29 +383,33 @@ function TPDBtnClicked() {
             success: function (result) {
                 iDiv.html(result);
                 modalDiv.modal('show');
-                var Deptcode = $('#TadabollGen_DeptCode');
-                var RequisitionNo = $('#TadabollGen_RequisitionNo');
-                var RequisitionDate = $('#TadabollGen_RequisitionDate');
-                var PreparedEmpNo = $('#PreparedEmpNo');
-                var PreparedEmpNoDD = $('#TadabollGen_PreparedEmpNo');
-                var RequisitionAmt = $('#TadabollGen_RequisitionAmt');
-                var Remark = $('#TadabollGen_Remark');
-                var Datestr = $('#TadabollGen_RequisitionDatestr');
-                Deptcode.val() > 0 ? Deptcode.isValid() : Deptcode.isInvalid();
-                RequisitionNo.val() > 0 ? RequisitionNo.isValid() : RequisitionNo.isInvalid();
-                if (Datestr.val() != '01/01/0001') {
-                    $('#TadabollGen_RequisitionDatelbl').html(Datestr.val());
-                    $('#TadabollGen_RequisitionDate').val($('#TadabollGen_RequisitionDatestrDisplay').val());
-                }
-                Datestr.val() != '01/01/0001'? RequisitionDate.isValid() : RequisitionDate.isInvalid();
-                if (PreparedEmpNo.val() > 0) {
-                    GetEmp(Deptcode.val(), PreparedEmpNo.val());
-                }
-                PreparedEmpNo.val() > 0 ? PreparedEmpNoDD.isValid() : PreparedEmpNoDD.isInvalid();
-                RequisitionAmt.val() >= 0 ? RequisitionAmt.isValid() : RequisitionAmt.isInvalid();
-                RequisitionAmt.attr('min', 0);
-           /*     RequisitionAmt.attr('max', ETotalAmount * 1);*/
+                submitval = submitval + 1;
+                $('#SubmitCount').val(submitval);
                 EnableSubmitBtn();
+                //no need below data will remove this
+           //     var Deptcode = $('#TadabollGen_DeptCode');
+           //     var RequisitionNo = $('#TadabollGen_RequisitionNo');
+           //     var RequisitionDate = $('#TadabollGen_RequisitionDate');
+           //     var PreparedEmpNo = $('#PreparedEmpNo');
+           //     var PreparedEmpNoDD = $('#TadabollGen_PreparedEmpNo');
+           //     var RequisitionAmt = $('#TadabollGen_RequisitionAmt');
+           //     var Remark = $('#TadabollGen_Remark');
+           //     var Datestr = $('#TadabollGen_RequisitionDatestr');
+           //     Deptcode.val() > 0 ? Deptcode.isValid() : Deptcode.isInvalid();
+           //     RequisitionNo.val() > 0 ? RequisitionNo.isValid() : RequisitionNo.isInvalid();
+           //     if (Datestr.val() != '01/01/0001') {
+           //         $('#TadabollGen_RequisitionDatelbl').html(Datestr.val());
+           //         $('#TadabollGen_RequisitionDate').val($('#TadabollGen_RequisitionDatestrDisplay').val());
+           //     }
+           //     Datestr.val() != '01/01/0001'? RequisitionDate.isValid() : RequisitionDate.isInvalid();
+           //     if (PreparedEmpNo.val() > 0) {
+           //         GetEmp(Deptcode.val(), PreparedEmpNo.val());
+           //     }
+           //     PreparedEmpNo.val() > 0 ? PreparedEmpNoDD.isValid() : PreparedEmpNoDD.isInvalid();
+           //     RequisitionAmt.val() >= 0 ? RequisitionAmt.isValid() : RequisitionAmt.isInvalid();
+           //     RequisitionAmt.attr('min', 0);
+           ///*     RequisitionAmt.attr('max', ETotalAmount * 1);*/
+           //     EnableSubmitBtn();
             },
             error: function (xhr, status) {
 
@@ -381,14 +430,22 @@ function TPDBtnClicked() {
     }
 };
 function GetEmp(Deptid, employeeno) {
-    getDropDownDataWithSelectedValueWithColor('TadabollGen_PreparedEmpNo', 'Select Employee', '/Security/BIL/GetDeptWiseEmployee?DeptId=' + Deptid, employeeno);
+    getDropDownDataWithSelectedValueWithColor('PreparedEmpNo', 'Select Employee', '/Security/BIL/GetDeptWiseEmployee?DeptId=' + Deptid, employeeno);
 };
+function GetDeptEmployee() {
+    var employeeno = $('#EmployeeNo').val();
+    var target = GetDeptEmployee.caller.arguments[0].target;
+    var targetCtrl = $(target);
+    getDropDownDataWithSelectedValueWithColor('PreparedEmpNo', 'Select Employee', '/Security/BIL/GetDeptWiseEmployee?DeptId=' + $(targetCtrl).val(), '-1');
+
+}
 function TDBtnClicked() {
     var notenumber = $('#NoteNumber').val();
     var EmployeeNo = $('#EmployeeNo').val();
     var NoteNumber = $('#RefNoteNumber').val();
     var SubmitCount = $('#SubmitCount');
     var submitval = SubmitCount.val();
+   
     if (notenumber != '') {
         var iDiv = $('#TDModalDiv');
         var modalDiv = $('#TDModal');
@@ -403,6 +460,7 @@ function TDBtnClicked() {
                 SubmitCount.val(submitval);
                 iDiv.html(result);
                 modalDiv.modal('show');
+                EnableSubmitBtn();
 
             },
             error: function (xhr, status) {
@@ -435,7 +493,7 @@ function ValidateControl() {
 
 
     EnableSubmitBtn();
-    EnablDeductionDAeSavebtn();
+    //EnablDeductionDAeSavebtn();
 
 };
 function ValidateCloneRowCtrl() {
@@ -460,22 +518,22 @@ function validatectrl(targetid, value) {
             isvalid = validatectrl_ValidatestringLength(value);
             break;
 
-        case "TadabollGen_DeptCode":
+        case "DeptCode":
             isvalid = validatectrl_ValidatestringLength(value);
             break;
-        case "TadabollGen_RequisitionNo":
-            if (value >= 0 && value.length <= 5) {
+        case "RequisitionNo":
+            if (value >0 && value.length <= 5) {
                 isvalid = true;
             }
             break;
-        case "TadabollGen_RequisitionDate":
+        case "RequisitionDate":
             isvalid = validatectrl_ValidateLength(value);
             break;
-        case "TadabollGen_PreparedEmpNo":
+        case "PreparedEmpNo":
             isvalid = validatectrl_ValidatestringLength(value);
             break;
-        case "TadabollGen_RequisitionAmt":
-            var ETotalAmount = $('#TadabollGen_ATotalAmount').val() * 1;
+        case "RequisitionAmt":
+            var ETotalAmount = $('#ATotalAmount').val() * 1;
             if ((value * 1) <= ETotalAmount && value!="") {
                 isvalid = true;
             } else {
@@ -483,7 +541,7 @@ function validatectrl(targetid, value) {
             }
 
             break;
-        case "TadabollGen_Remark":
+        case "Remark":
             if (value.length > 1 && WordCount(value) <= 50) { isvalid = true; $(targetid).off('keypress');}
             else {
                
@@ -516,7 +574,7 @@ function validatectrl_ValidatestringLength(value) {
     } else { return false; }
 };
 function validatectrl_ValidateLength(value) {
-    debugger;
+    
     if (value.length > 0) {
         return true;
     } else { return false; }
@@ -529,23 +587,35 @@ function validatectrl_YesNoCombo(value) {
 };
 function EnableSubmitBtn() {
     var z = getDivInvalidCount('AllData');
+    var x = getDivInvalidCount('DADection');
     var btn = $('#SubmitCount').val();
     var SubmitBtn = $('#SubmitBtn');
-    if (z <= 0 && btn >= 2) {
+    //alert(z + "--" + x);
+    if (z <= 0 && x <= 0 && btn >= 2) {
         SubmitBtn.makeEnabled();
+    } else {
+        SubmitBtn.makeDisable();
     }
 };
 function SaveDetails() {
     var notenumber = $('#NoteNumber').val();
-    var EEDAmount = $('#EEDAmount').val();
-    var ETAAmount = $('#ETAAmount').val();
-    var ELocAmount = $('#ELocAmount').val();
-    var ELodAmount = $('#ELodAmount').val();
-    var ETotalAmount = $('#ETotalAmount').val();
+    var EEDAmount = $('#EED').val()*1;
+    var ETAAmount = $('#ETA').val()*1;
+    var ELocAmount = $('#ELoc').val()*1;
+    var ELodAmount = $('#ELod').val()*1;
+    var ETotalAmount = $('#ETotalAmount').val()*1;
     var EReamrk = $('#EReamrk').val();
+    var DeptCode = $('#DeptCode').val();
+    var RequisitionNo = $('#RequisitionNo').val();
+    var RequisitionDate = $('#RequisitionDate').val();
+    var PreparedEmpNo = $('#PreparedEmpNo').val();
+    var RequisitionAmt = $('#RequisitionAmt').val()*1;
+    var Remark = $('#Remark').val();
+    var DeptName = $('#DeptCode option:selected').text();
+    var PreparedEmpName = $('#PreparedEmpNo option:selected').text();
     var status = 3;
-
-    var x = '{"NoteNumber":"' + notenumber + '","EEDAmount":"' + EEDAmount + '","ETAAmount":"' + ETAAmount + '","ELocAmount":"' + ELocAmount + '","ELodAmount":"' + ELodAmount + '","ETotalAmount":"' + ETotalAmount + '","EReamrk":"' + EReamrk + '","status":"' + status + '"}';
+    
+    var x = '{"NoteNumber":"' + notenumber + '","EEDAmount":"' + EEDAmount + '","ETAAmount":"' + ETAAmount + '","ELocAmount":"' + ELocAmount + '","ELodAmount":"' + ELodAmount + '","ETotalAmount":"' + ETotalAmount + '","EReamrk":"' + EReamrk + '","status":"' + status + '","DeptCode": "' + DeptCode + '","RequisitionNo": "' + RequisitionNo + '","RequisitionDate": "' + RequisitionDate + '","PreparedEmpNo": "' + PreparedEmpNo + '","RequisitionAmt": "' + RequisitionAmt + '", "Remark": "' + Remark + '", "DeptName": "' + DeptName + '", "PreparedEmpName": "' + PreparedEmpName + '"}';
     $.ajax({
         method: 'POST',
         url: '/BIL/PaymentCreate',
@@ -556,10 +626,9 @@ function SaveDetails() {
             $(data).each(function (index, item) {
                 if (item.bResponseBool == true) {
                     $('#SubmitCount').val(0);
-
                     Swal.fire({
                         title: 'Confirmation',
-                        text: 'Data saved successfully.',
+                        text: 'Save Data For ' + notenumber+' successfully.',
                         setTimeout: 5000,
                         icon: 'success',
                         customClass: 'swal-wide',
@@ -640,6 +709,7 @@ function FinalSubmit() {
         },
     });
 };
+//No need below save function will be delete
 function SaveRequisitionDetails() {
     var notenumber = $('#TadabollGen_NoteNumber').val();
     var RefNoteNumber = $('#TadabollGen_RefNoteNumber').val();
@@ -713,7 +783,7 @@ function EnablDeductionDAeSavebtn() {
     }
 }
 function decrementQty(e) {
-    debugger;
+    
     var value = e.parentElement.parentElement.firstElementChild.value;
     value = value.trim().replace(/\,/g, '');
     value = isNaN(value) ? 1 : value;
@@ -727,7 +797,7 @@ function AEDincrementQty() {
     var target = $(AEDincrementQty.caller.arguments[0].target);
     var mid = target.attr('id');
     var maxvalue = $('#' + mid + 'Max').html() * 1;
-    var txtcTrl = $('#' + mid);
+    var txtcTrl = $('#E' + mid);
     var mValue = txtcTrl.val() * 1;
     mValue += 1;
     mValue = mValue > maxvalue ? maxvalue : mValue;
@@ -742,8 +812,8 @@ function TotalExp() {
     var total = edamt + atamt + alamt + aloamt;
     var Atotal = isNaN(total) ? 0 : total;
     $('#ETotalAmount').val(Atotal);
+    $('#DisplayETotalAmount').html(Atotal);
 };
-
 function numbervalidate(key) {
     var presskeys = (key.which) ? key.which : key.presskeys;
     if (!(presskeys == 8 || presskeys == 46) && (presskeys < 48 || presskeys > 57)) {
@@ -775,7 +845,6 @@ function keypressCountWord(e) {
         $(target).off('keypress');
     }
 }
-
 function isPytmFormDA(evt) {
     evt = (evt) ? evt : window.event;
     var charCode = (evt.which) ? evt.which : evt.keyCode;
@@ -784,7 +853,7 @@ function isPytmFormDA(evt) {
     }
     var targetCtrl = isPytmFormDA.caller.arguments[0].target;
     var mids = $(targetCtrl).attr('id');
-    var maxvalue = $('#TadabollGen_ATotalAmount').val() * 1;
+    var maxvalue = $('#ATotalAmount').val() * 1;
     var txtcTrl = $('#' + mids);
     var mValue = txtcTrl.val();
     var mValuetatol = mValue > maxvalue ? maxvalue : mValue;

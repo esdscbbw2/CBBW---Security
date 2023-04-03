@@ -4,7 +4,30 @@
 @{
     Layout = null;
 }
-
+<style>
+    .qty_inc_dec .increment{
+        position:relative;
+    }
+        .qty_inc_dec .increment::after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            content: "\f106";
+            font: normal normal normal 21px/1 FontAwesome;
+        }
+    .qty_inc_dec .decrement{
+        position:relative;
+    }
+        .qty_inc_dec .decrement::after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            content: "\f107";
+            font: normal normal normal 21px/1 FontAwesome;
+        }
+</style>
 
 
 <div class="col-md-12">
@@ -13,6 +36,7 @@
     </div>
 </div>
 <div class="col-md-12 mt-4" id="AllData">
+ 
     <div class="card">
         <div class="card-body">
             <div class="table-responsive btnalign" id="record1_div">
@@ -86,23 +110,21 @@
                             </th>
                             <td class="text-center">
                                 <div class="qty mx-auto">
-                                    @Html.TextBoxFor(x => x.EEDAmount, new {@id= "EED", @class = "form-control", autocomplete = "off", onkeyup = "return isNumber(event);", onkeypress = "return numbervalidate(event)" })
+                                    @Html.TextBoxFor(x => x.EEDAmount, new { @id = "EED", @class = "form-control", autocomplete = "off", onkeyup = "return isNumber(event);", onkeypress = "return numbervalidate(event)" })
                                     <div class="qty_inc_dec">
-                                        <i id="EED" class="increment" onclick="AEDincrementQty();">
-                                            <i data-feather="chevron-up">
-                                            </i>
+                                        <i id="ED" class="increment" onclick="AEDincrementQty();">
+
                                         </i><i class="decrement first-btn" onclick="decrementQty(this);">
-                                            <i data-feather="chevron-down">
-                                            </i>
+
                                         </i>
                                     </div>
                                 </div>
                             </td>
                             <td class="text-center">
                                 <div class="qty mx-auto">
-                                    @Html.TextBoxFor(x => x.ETAAmount, new {@id= "ETA", @class = "form-control", autocomplete = "off", onkeyup = "return isNumber(event);", onkeypress = "return numbervalidate(event)" })
+                                    @Html.TextBoxFor(x => x.ETAAmount, new { @id = "ETA", @class = "form-control", autocomplete = "off", onkeyup = "return isNumber(event);", onkeypress = "return numbervalidate(event)" })
                                     <div class="qty_inc_dec">
-                                        <i id="ETA" class="increment" onclick="AEDincrementQty();">
+                                        <i id="TA" class="increment" onclick="AEDincrementQty();">
                                             <i data-feather="chevron-up">
                                             </i>
                                         </i><i class="decrement second-btn" onclick="decrementQty(this);">
@@ -114,9 +136,9 @@
                             </td>
                             <td class="text-center">
                                 <div class="qty mx-auto">
-                                    @Html.TextBoxFor(x => x.ELocAmount, new {@id= "ELoc", @class = "form-control", autocomplete = "off", onkeyup = "return isNumber(event);", onkeypress = "return numbervalidate(event)" })
+                                    @Html.TextBoxFor(x => x.ELocAmount, new { @id = "ELoc", @class = "form-control", autocomplete = "off", onkeyup = "return isNumber(event);", onkeypress = "return numbervalidate(event)" })
                                     <div class="qty_inc_dec">
-                                        <i id="ELoc" class="increment" onclick="AEDincrementQty();">
+                                        <i id="Loc" class="increment" onclick="AEDincrementQty();">
                                             <i data-feather="chevron-up">
                                             </i>
                                         </i><i class="decrement third-btn" onclick="decrementQty(this);">
@@ -128,11 +150,11 @@
                             </td>
                             <td class="text-center">
                                 <div class="qty mx-auto">
-                                    @Html.TextBoxFor(x => x.ELodAmount, new {@id= "ELod", @class = "form-control", autocomplete = "off", onkeyup = "return isNumber(event);", onkeypress = "return numbervalidate(event)" })
+                                    @Html.TextBoxFor(x => x.ELodAmount, new { @id = "ELod", @class = "form-control", autocomplete = "off", onkeyup = "return isNumber(event);", onkeypress = "return numbervalidate(event)" })
                                     <div class="qty_inc_dec">
-                                        <i id="ELod" class="increment" onclick="AEDincrementQty();">
+                                        <i id="Lod" class="increment" onclick="AEDincrementQty();">
                                             <i data-feather="chevron-up">
-                                                
+
                                             </i>
                                         </i><i class="decrement four-btn" onclick="decrementQty(this);">
                                             <i data-feather="chevron-down">
@@ -145,14 +167,12 @@
                                 @Html.TextBoxFor(x => x.ETotalAmount, new { @minlength = "0", @class = "form-control", @readonly = "readonly" })
                             </td>
                             <td class="text-center">
-                                @Html.TextAreaFor(x => x.EReamrk, new { @class = "form-control",@onkeypress = "keypressCountWord(this);" })
+                                @Html.TextAreaFor(x => x.EReamrk, new { @class = "form-control", @onkeypress = "keypressCountWord(this);" })
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-
-
             <div class="col-md-12">
                 <div class="d-flex justify-content-center mt-2">
                     <button type="button" id="TDBtn" class="btn btn-primary me-2" onclick="TDBtnClicked()">
@@ -164,16 +184,83 @@
                         Deductions From DA Detail
                     </button>
                 </div>
-            </div>
+            </div><br /><br />
 
-            <div class="text-center">
-                <button type="button" id="SubmitBtn" disabled onclick="SaveDetails();" class="btn btn-green mt-2  me-2">
-                    <i data-feather="check-circle"></i>
-                    Save
-                </button>
+
+            <div class="col-md-12">
+                <div class="table-responsive newTable " id="DADection">
+                    <table class="table table-bordered w-100 btnalign " id="">
+                        <thead>
+                            <tr>
+                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                    Department  Code & Name
+                                </th>
+                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;" width="25%">
+                                    Requisition No.  & Date
+                                </th>
+                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                    Prepared By No. & Name
+                                </th>
+                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                    Requisition Amount
+                                </th>
+                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                    Amount Paid
+                                </th>
+                                <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">Remarks  </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                @Html.HiddenFor(x => x.RequisitionDatestr)
+                                @Html.HiddenFor(x => x.RequisitionDatestrDisplay)
+                                @Html.HiddenFor(x => x.ATotalAmount)
+                                @Html.HiddenFor(x => x.PreparedEmpNo, new { @id = "PreparedEmpNos" })
+                                <td class="text-center">
+                                    @Html.DropDownListFor(model => model.DeptCode, new SelectList(Model.Deptlist, "ID", "DisplayText"), "Select", htmlAttributes: new { @class = "form-select pointer is-invalid", @onchange = "GetDeptEmployee();ValidateControl();" })
+                                </td>
+                                <td class="text-center">
+                                    <div class="d-flex">
+                                        @Html.TextBoxFor(x => x.RequisitionNo, new { @class = "form-control is-invalid", @onchange = "ValidateControl()", @onkeypress = "return isNumber(event);" })
+                                        <div class="position-relative pointer w-300 ms-2">
+                                            @Html.TextBoxFor(x => x.RequisitionDate, new { @type = "date", @min = (Model.RequisitionDateMin), @max = (Model.RequisitionDateMax), @class = "form-control pointer is-invalid", onchange = "changeDateFormat(this);ValidateControl();" })
+                                            <label class="datelabel pointer" style="width:80px" id="RequisitionDatelbl">Select date</label>
+                                        </div>
+                                    </div>
+
+
+                                </td>
+                                <td class="text-center">
+                                    @Html.DropDownListFor(model => model.PreparedEmpNo, new SelectList("", "ID", "DisplayText"), "Select", htmlAttributes: new { @class = "form-select pointer is-invalid", @onchange = "ValidateControl()" })
+                                </td>
+                                <td class="text-center">
+                                    @Html.TextBoxFor(x => x.RequisitionAmt, new { @class = "form-control numbers is-invalid", @onchange = "ValidateControl()", autocomplete = "off", onkeyup = "return isPytmFormDA(event);", onkeypress = "return numbervalidate(event)" })
+                                </td>
+                                <td class="text-center" id="DisplayETotalAmount">
+                                </td>
+                                <td>
+                                    @Html.TextAreaFor(x => x.Remark, new { @class = "form-control", @onchange = "ValidateControl()", @onkeypress = "keypressCountWord(this);" })
+                                </td>
+                            </tr>
+
+
+                        </tbody>
+                    </table>
+
+
+
+                </div>
+
+                </div>
+                <div class="text-center">
+                    <button type="button" id="SubmitBtn" disabled onclick="SaveDetails();" class="btn btn-green mt-2  me-2">
+                        <i data-feather="check-circle"></i>
+                        Save
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
 
 </div>
 

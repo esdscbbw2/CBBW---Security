@@ -90,7 +90,7 @@ namespace CBBW.DAL.Entities
                         result.Add(_dbresmapper.Map_CustomComboOptions(dt.Rows[i]));
                     }
                 }
-                //result.Add(new CustomComboOptions {ID=99,DisplayText="99 / Others" });
+                result.Add(new CustomComboOptions {ID=99,DisplayText="99 / Others" });
             }
             catch (Exception ex) { pMsg = ex.Message; }
             return result;

@@ -84,15 +84,21 @@ namespace CBBW.Areas.Security.ViewModel.EHG
         public IEnumerable<CustomComboOptions> MDDICList { get; set; }
         public IEnumerable<CustomComboOptions> OtherStaffList { get; set; }
         public List<VehicleNo> VehicleList { get; set; }
-
         public int AuthorisedEmpNoForManagement { get; set; }
+        public int AuthorisedEmpNoForManagement2 { get; set; }
         public string AuthorisedEmpNameForManagement { get; set; }
         public int DriverNoForManagement { get; set; }
+        public int DriverNoForManagement2 { get; set; }
         public DateTime FromdateForMang { get; set; }
         public string FromTimeForMang { get; set; }
         public DateTime ToDateForMang { get; set; }
         public string PurposeOfVisitFoeMang { get; set; }
         public int TADADeniedForManagement { get; set; }
+        public DateTime FromdateForMang2 { get; set; }
+        public string FromTimeForMang2 { get; set; }
+        public DateTime ToDateForMang2 { get; set; }
+        public string PurposeOfVisitFoeMang2 { get; set; }
+        public int TADADeniedForManagement2 { get; set; }
         public string MaxFromDate { get; set; }
         public string MinFromDate { get; set; }
         public string DriverNameForManagement { get; set; }

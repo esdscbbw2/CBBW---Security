@@ -6,7 +6,7 @@
 }
 <div class="row newTable">
     @using (Html.BeginForm())
-    {        
+    {
         @Html.HiddenFor(m => m.ehgHeader.NoteNumber)
         @Html.HiddenFor(m => m.ehgHeader.DocFileName)
         @Html.HiddenFor(m => m.ehgHeader.CenterCode)
@@ -33,6 +33,13 @@
         @Html.HiddenFor(m => m.AuthorisedEmpNo)
         @Html.HiddenFor(m => m.POA)
         @Html.HiddenFor(m => m.MaxDaysOfTourForEmp)
+        @Html.HiddenFor(m => m.AuthorisedEmpNoForManagement2)
+        @Html.HiddenFor(m => m.DriverNoForManagement2)
+        @Html.HiddenFor(m => m.FromdateForMang2)
+        @Html.HiddenFor(m => m.FromTimeForMang2)
+        @Html.HiddenFor(m => m.ToDateForMang2)
+        @Html.HiddenFor(m => m.PurposeOfVisitFoeMang2)
+        @Html.HiddenFor(m => m.TADADeniedForManagement2)
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
@@ -59,12 +66,12 @@
         </div>
         <div class="col-md-12">
             <div class="text-center pt-2 pb-2">
-                <button id="btnScan" type="button" class="btn btn-light-green @(string.IsNullOrEmpty(Model.ehgHeader.DocFileName)?"":"inVisible")" 
+                <button id="btnScan" type="button" class="btn btn-light-green @(string.IsNullOrEmpty(Model.ehgHeader.DocFileName)?"":"inVisible")"
                         onclick="fireSweetAlert()">
                     Scan & Attach
                     “Travelling Request Form”
                 </button>
-                <button id="btnScanView" type="button" class="btn btn-light-blue @(string.IsNullOrEmpty(Model.ehgHeader.DocFileName)?"inVisible":"")" 
+                <button id="btnScanView" type="button" class="btn btn-light-blue @(string.IsNullOrEmpty(Model.ehgHeader.DocFileName)?"inVisible":"")"
                         onclick="btnScanViewClicked()">
                     View Attached “Travelling Request Form”
                 </button>
@@ -203,31 +210,31 @@
             </div>
             <div class="card mb-4 mt-4">
                 <div class="card-body  alert alert-danger text-dark approvalForm">
-                    
-                        <div class="row d-flex align-items-center">
-                            <div class="col-md-2 col-form-label">
-                                <label>Approved :</label>
-                            </div>
-                            <div class="col-md-2">
-                                <input type="text" class="form-control" value="-" disabled="">
-                            </div>
-                            <div class="col-md-2 col-form-label">
-                                <label>Date &amp; Time Of Approval :</label>
-                            </div>
-                            <div class="col-md-2">
-                                <input type="text" class="form-control" value="" disabled="">
-                            </div>
-                            <div class="col-md-2 col-form-label">
-                                <label>Reason If Not Approved :</label>
-                            </div>
-                            <div class="col-md-2">
-                                <textarea name="" id="" cols="10" rows="2" class="form-control pointer-default" readonly></textarea>
-                            </div>
+
+                    <div class="row d-flex align-items-center">
+                        <div class="col-md-2 col-form-label">
+                            <label>Approved :</label>
                         </div>
-                    
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" value="-" disabled="">
+                        </div>
+                        <div class="col-md-2 col-form-label">
+                            <label>Date &amp; Time Of Approval :</label>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" value="" disabled="">
+                        </div>
+                        <div class="col-md-2 col-form-label">
+                            <label>Reason If Not Approved :</label>
+                        </div>
+                        <div class="col-md-2">
+                            <textarea name="" id="" cols="10" rows="2" class="form-control pointer-default" readonly></textarea>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-            
+
             <div class="col-md-12 mt-4 pt-3 inVisible" id="for_Management">
                 <div class="heading_text_btn2 d-block mb-4">
                     <h2>
@@ -312,14 +319,14 @@
                                                 @Html.TextBoxFor(m => m.FromTimeForMang,
                                                    htmlAttributes: new
                                                    {
-                                                       @class = "form-control timePicker pointer ",
+                                                       @class = "form-control timePicker pointer",
                                                        type = "text",
                                                        onblur = "ValidateControl()",
                                                        placeholder = "Select Time"
                                                    })
                                                 @*<input id="" type="text"
-                                            class="form-control timePicker"
-                                            placeholder="Select Time">*@
+                                                    class="form-control timePicker"
+                                                    placeholder="Select Time">*@
                                             </div>
                                         </td>
                                         <td id="ActualTOutDtForMang" class="text-center">
@@ -330,15 +337,15 @@
                                             <div class="position-relative pointer" style="width:200px">
                                                 @Html.TextBoxFor(m => m.ToDateForMang, "{0:yyyy-MM-dd}",
                                                    htmlAttributes: new
-                                                        {
+                                                   {
                                                        @class = "form-control pointer CustomDateFormatCloneRow valid",
-                                                       type = "date",
-                                                       onblur = "ValidateControl()",
-                                                       min = Model.MinFromDate
+                                                       @type = "date",
+                                                       @onchange = "ValidateControl()",
+                                                       @min = Model.MinFromDate
                                                    })
                                                 @*<input type="date"
-                                            class="form-control pointer CustomDateFormatCloneRow"
-                                            id="tblToDate">*@
+                                                    class="form-control pointer CustomDateFormatCloneRow"
+                                                    id="tblToDate">*@
                                                 <label id="lblToDateForMang" style="width:110px"
                                                        class="datelabel pointer">Select Date</label>
                                             </div>
@@ -348,9 +355,9 @@
                                                    htmlAttributes: new
                                                    {
                                                        @class = "form-control",
-                                                       rows = "3",
-                                                       type = "text",
-                                                       onblur = "ValidateControl()"
+                                                       @rows = "3",
+                                                       @type = "text",
+                                                       @onblur = "ValidateControl()"
                                                    })
                                             @*<textarea name="" id="" cols="20" class="form-control" rows="3"></textarea>*@
                                         </td>
@@ -366,12 +373,12 @@
                                                    @onchange = "ValidateControl()"
                                                })
                                             @*<select class="form-select" aria-label="Default select example">
-                                            <option selected="">-</option>
-                                            <option value="1">  Yes</option>
-                                            <option value="2">
-                                                No
-                                            </option>
-                                        </select>*@
+                                                    <option selected="">-</option>
+                                                    <option value="1">  Yes</option>
+                                                    <option value="2">
+                                                        No
+                                                    </option>
+                                                </select>*@
                                         </td>
                                         <td id="ReTInDtForMang" class="text-center">
                                         </td>
@@ -495,7 +502,7 @@
                                                 <input id="FromTime" type="text"
                                                        data-name="FromTime"
                                                        onblur="ValidateCloneRowCtrl()"
-                                                       class="form-control is-invalid timePicker CustomTimeFormatCloneRow alterID inValidTag"
+                                                       class="form-control is-invalid timePicker CustomTimeFormatCloneRow alterID inValidTag mTimePickerAlert"
                                                        placeholder="Select Time">
                                             </div>
                                         </td>
@@ -792,5 +799,7 @@
             }
         });
     </script>
-
+    <script>
+        
+    </script>
 }

@@ -304,14 +304,7 @@
   
   
     <script>
-        function GetDeptEmployee() {
-            /*var PreparedEmpNo=$('#TadabollGen_PreparedEmpNo').val();*/
-            var employeeno = $('#EmployeeNo').val();
-            var target = GetDeptEmployee.caller.arguments[0].target;
-            var targetCtrl = $(target);
-            getDropDownDataWithSelectedValueWithColor('TadabollGen_PreparedEmpNo', 'Select Employee', '/Security/BIL/GetDeptWiseEmployee?DeptId=' + $(targetCtrl).val(), '-1');
-
-        }
+     
         function changeDateFormat(e) {
             if (e.value.indexOf('/') != -1) {
                 var e1 = e.value.split('/').reverse().join('/');

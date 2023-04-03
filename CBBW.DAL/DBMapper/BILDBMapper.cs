@@ -138,13 +138,17 @@ namespace CBBW.DAL.DBMapper
                     if (!DBNull.Value.Equals(dr["ActualTourInDate"]))
                         result.ActualTourInDate = DateTime.Parse(dr["ActualTourInDate"].ToString());
                     if (!DBNull.Value.Equals(dr["DAAmount"]))
-                        result.DAAmount = int.Parse(dr["DAAmount"].ToString());
+                        result.DAAmount = double.Parse(dr["DAAmount"].ToString());
                     if (!DBNull.Value.Equals(dr["DADeducted"]))
-                        result.DADeducted = int.Parse(dr["DADeducted"].ToString());
+                        result.DADeducted = double.Parse(dr["DADeducted"].ToString());
                     if (!DBNull.Value.Equals(dr["EAmount"]))
-                        result.EAmount = int.Parse(dr["EAmount"].ToString());
+                        result.EAmount = double.Parse(dr["EAmount"].ToString());
                     if (!DBNull.Value.Equals(dr["TotalHours"]))
                         result.TotalHours = int.Parse(dr["TotalHours"].ToString());
+                    if (!DBNull.Value.Equals(dr["HalfDayHours"]))
+                        result.HalfDayHours = int.Parse(dr["HalfDayHours"].ToString());
+                    if (!DBNull.Value.Equals(dr["FullDayHours"]))
+                        result.FullDayHours = int.Parse(dr["FullDayHours"].ToString());
                     result.ActualTourInDatestr = MyDBLogic.ConvertDateToString(result.ActualTourInDate);
                    
 

@@ -179,6 +179,7 @@ function getInitialData() {
             //});
 
             $('#' + addbtnindex + '_AddBtn').removeAttr('disabled', 'disabled');
+            OtherConfirmation2();
         }
     });
 };
@@ -950,6 +951,7 @@ function ChangeLocationType() {
     todateCtrl.removeClass('is-valid').addClass('is-invalid');
     //getToDate(rowid);
     //activateSubmitBtn();
+    OtherConfirmation();
 };
 function ChangeLocationToType() {
     var target = ChangeLocationToType.caller.arguments[0].target;
@@ -1001,6 +1003,24 @@ function ChangeLocationToType() {
     var todateCtrl = $('#' + rowid + '_ToDt');
     todateCtrl.val('');
     todateCtrl.removeClass('is-valid').addClass('is-invalid');
+    OtherConfirmation();
+};
+function OtherConfirmation() {
+    var othCtrl = $('#CCOth');
+    var isOther = false;
+    $('.ltype').each(function () {
+        if ($(this).val().indexOf('99') >= 0) { isOther = true; }
+    });
+    if (isOther) {
+        othCtrl.removeAttr('disabled');
+        othCtrl.addClass('is-invalid').removeClass('is-valid');
+        othCtrl.val(-1);
+    }
+    else {
+        othCtrl.val(-1);
+        othCtrl.removeClass('is-invalid').removeClass('is-valid');
+        othCtrl.attr('disabled', 'disabled');
+    }
 };
 function fillLocationMulti(x, target, targetid) {
     //alert(ok);
@@ -1194,6 +1214,24 @@ function DisableCombo() {
     $('#DIC').val(0).removeClass('is-valid').addClass('is-invalid');
 
 };
+function OtherConfirmation2() {
+    var othCtrl = $('#CCOth');
+    var isOther = false;
+    $('.ltype2').each(function () {
+        //alert($(this).html());
+        if ($(this).val().indexOf('99') >= 0) { isOther = true; }
+    });
+    if (isOther) {
+        othCtrl.removeAttr('disabled');
+        othCtrl.val(1);
+        othCtrl.attr('disabled', 'disabled');
+    }
+    else {
+        othCtrl.removeAttr('disabled');
+        othCtrl.val(-1);
+        othCtrl.attr('disabled', 'disabled');
+    }
+};
 $(document).ready(function () {
     var maxdt = $('#MaxDate').val();
     var mindt = $('#MinDate').val();
@@ -1244,6 +1282,13 @@ $(document).ready(function () {
             
         }
     });
+});
+$(document).ready(function () {
+    $('.CustomDateFormat').each(function () {
+        $(this).CustomDateFormat();
+    });
+    
+    //OtherConfirmation();
 });
 //$(function () {
 //    $('.datepicker2').datepicker({

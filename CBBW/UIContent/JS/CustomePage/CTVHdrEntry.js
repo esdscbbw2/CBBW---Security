@@ -173,10 +173,12 @@ function VehicleChange(vno, removetemp) {
                             btnLS.removeAttr('disabled');
                             if ($('#IsOTSActivated').val() == 0) {
                                 btnOS.attr('disabled', 'disabled');
-                            } else {
+                            }
+                            else {
                                 if (item.IsSlotAvbl) {
                                     btnOS.removeAttr('disabled');
-                                } else {
+                                }
+                                else {
                                     btnOS.attr('disabled', 'disabled');
                                     errorDivOTS.removeClass('inVisible');
                                     ErrlblOTS.html('Local Vehicle Schedule Was Scheduled For All The Dates, So Other Trip Schedule Cannot Be Enabled');
@@ -188,7 +190,8 @@ function VehicleChange(vno, removetemp) {
                         else {
                             if (item.IsSlotAvbl) {
                                 btnOS.removeAttr('disabled');
-                            } else {
+                            }
+                            else {
                                 //alert('ok');
                                 btnOS.attr('disabled', 'disabled');
                                 errorDivOTS.removeClass('inVisible');

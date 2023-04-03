@@ -110,7 +110,11 @@ function validatectrl(targetid, value,rowid) {
                         confirmButtonColor: '#2527a2',
                     });
                 }
-                else { isvalid = true; }                
+                else {
+                    isvalid = true;
+                    var ccDiv = $('#CentreCodeOrder_' + rowid);
+                    ccDiv.append(value);
+                }
             }
             break;
         case "PurposeOfVisitFoeMang":

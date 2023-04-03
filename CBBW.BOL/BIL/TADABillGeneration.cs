@@ -24,6 +24,7 @@ namespace CBBW.BOL.BIL
         public string HeaderText { get; set; }
         public int CanDelete { get; set; }
         public int SubmitCount { get; set; }
+        public IEnumerable<CustomComboOptions> Deptlist { get; set; }
         public IEnumerable<NoteNo> RNotelist { get; set; }
         public IEnumerable<CustomOptionsWithString> customlist{ get; set; }
         public List<ApprovalNoteNo> NoteList { get; set; }

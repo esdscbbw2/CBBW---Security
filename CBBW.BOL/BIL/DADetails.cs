@@ -13,6 +13,8 @@ namespace CBBW.BOL.BIL
         public double DAAmount { get; set; }
 	    public double DADeducted { get; set; }
         public double EAmount { get; set; }
-        public double TotalHours { get; set; }
+        public int TotalHours { get; set; }
+        public int FullDayHours { get; set; }
+        public int HalfDayHours { get; set; }
 }
 }

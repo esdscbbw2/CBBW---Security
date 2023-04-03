@@ -66,14 +66,18 @@
                                             @item.EAmount
                                         </td>
                                         <td class="text-center">
-                                            @if (item.DADeducted > 0)
+                                            @if (item.TotalHours > 0 && item.TotalHours >= item.HalfDayHours && item.TotalHours < item.FullDayHours)
                                             {
-
-
                                                 <textarea name="" id="" cols="20" rows="2" class="form-control pointer-default" readonly data-toggle="tooltip" data-placement="bottom" title=" Half Day  DA Deduction as per Rule  ">  Half Day  DA Deduction as per Rule  </textarea>
                                             }
-                                            else
-                                            { <textarea name="" id="" cols="20" rows="2" class="form-control pointer-default" readonly data-toggle="tooltip" data-placement="bottom" title=""> -</textarea>}
+                                            else if (item.TotalHours < item.HalfDayHours)
+                                            {
+                                                <textarea name="" id="" cols="20" rows="2" class="form-control pointer-default" readonly data-toggle="tooltip" data-placement="bottom" title="Complete Day DA Deducted As Per Rule"> Complete Day DA Deducted As Per Rule</textarea>
+                                            }
+                                            else if (item.TotalHours >= item.FullDayHours && item.TotalHours > 0)
+                                            {
+                                                <textarea name="" id="" cols="20" rows="2" class="form-control pointer-default" readonly data-toggle="tooltip" data-placement="bottom" title=" "> -</textarea>
+                                            }
 
                                         </td>
 

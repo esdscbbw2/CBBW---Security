@@ -335,7 +335,7 @@ namespace CBBW.Areas.Security.Controllers
                     if (_iBIL.SetApprovalTADABillGeneration(Model, ref pMsg))
                     {
                         result.bResponseBool = true;
-                        result.sResponseString = "Data successfully updated.";
+                        result.sResponseString = "Save Data successfully.";
 
                     }
                     else
@@ -448,6 +448,10 @@ namespace CBBW.Areas.Security.Controllers
         public ActionResult PaymentExpensesDetails(string NoteNumber)
         {
             TADABillGeneration modelobj = _iBIL.GetTADABillGenerationData(NoteNumber, "Na", 0, 3, ref pMsg);
+            modelobj.RequisitionDateMin = DateTime.Today.AddDays(-3).ToString("yyyy-MM-dd");
+            modelobj.RequisitionDateMax = DateTime.Today.ToString("yyyy-MM-dd");
+            modelobj.RequisitionDate = modelobj.RequisitionDate;
+            modelobj.Deptlist = _iTFD.GetENTConcernDeptList(NoteNumber, user.CentreCode, ref pMsg);
             return View("~/Areas/Security/Views/BIL/_PymtExpensesDetails.cshtml", modelobj);
         }
         public JsonResult GetTADABillGenerationDataHdr(string NoteNumber)
@@ -514,13 +518,12 @@ namespace CBBW.Areas.Security.Controllers
 
                 }
 
-                model.TadabollGen= _iBIL.GetTADABillGenerationData(NoteNumber, "Na", 0, 3, ref pMsg);
-               
-                model.TadabollGen.RequisitionDateMin = DateTime.Today.AddDays(-3).ToString("yyyy-MM-dd");
-                model.TadabollGen.RequisitionDateMax = DateTime.Today.ToString("yyyy-MM-dd");
-               model.TadabollGen.RequisitionDate=model.TadabollGen.RequisitionDate;
-                model.Deptlist = _iTFD.GetENTConcernDeptList(NoteNumber, user.CentreCode,ref pMsg);
-                model.TadabollGen.ETotalAmount = ETotalAmount;
+               // model.TadabollGen= _iBIL.GetTADABillGenerationData(NoteNumber, "Na", 0, 3, ref pMsg);
+               // model.TadabollGen.RequisitionDateMin = DateTime.Today.AddDays(-3).ToString("yyyy-MM-dd");
+               // model.TadabollGen.RequisitionDateMax = DateTime.Today.ToString("yyyy-MM-dd");
+               //model.TadabollGen.RequisitionDate=model.TadabollGen.RequisitionDate;
+               // model.Deptlist = _iTFD.GetENTConcernDeptList(NoteNumber, user.CentreCode,ref pMsg);
+               // model.TadabollGen.ETotalAmount = ETotalAmount;
               
             }
             catch (Exception ex)
