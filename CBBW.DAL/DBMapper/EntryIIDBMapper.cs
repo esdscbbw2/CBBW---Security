@@ -152,7 +152,10 @@ namespace CBBW.DAL.DBMapper
                         result.CentreTimeIn = DateTime.Parse(dr["CentreTimeIn"].ToString());
                     if (!DBNull.Value.Equals(dr["EmployeeIDs"]))
                         result.EmployeeIDs = dr["EmployeeIDs"].ToString();
-
+                    if (!DBNull.Value.Equals(dr["IsOutSaved"]))
+                        result.IsOutSaved = bool.Parse(dr["IsOutSaved"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsInSaved"]))
+                        result.IsInSaved = bool.Parse(dr["IsInSaved"].ToString());
                     result.PersonTypeText = master.PersonType.Where(o => o.ID == result.PersonType).FirstOrDefault().DisplayText;
 
                 }
@@ -370,7 +373,10 @@ namespace CBBW.DAL.DBMapper
                         result.IsVehicleProvided = bool.Parse(dr["IsVehicleProvided"].ToString());
                     if (!DBNull.Value.Equals(dr["AuthorisedEmpNoName"]))
                         result.AuthorisedEmpNoName = dr["AuthorisedEmpNoName"].ToString();
-                    
+                    if (!DBNull.Value.Equals(dr["IsOutSaved"]))
+                        result.IsOutSaved = bool.Parse(dr["IsOutSaved"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsInSaved"]))
+                        result.IsInSaved = bool.Parse(dr["IsInSaved"].ToString());
                     result.PersonTypeText = master.PersonType.Where(o => o.ID == result.PersonType).FirstOrDefault().DisplayText;
 
                 }
@@ -478,17 +484,17 @@ namespace CBBW.DAL.DBMapper
                         result.DWFromDate =DateTime.Parse(dr["SchFromDate"].ToString());
                     if (!DBNull.Value.Equals(dr["RequiredTourInDate"]))
                         result.RequiredTourInDate = DateTime.Parse(dr["RequiredTourInDate"].ToString());
-                    if (!DBNull.Value.Equals(dr["RequiredTourInTime"]))
+                    if (!DBNull.Value.Equals(dr["RequiredTourInTime"]) && !string.IsNullOrEmpty(dr["RequiredTourInTime"].ToString()))
                         result.RequiredTourInTime = DateTime.Parse(dr["RequiredTourInTime"].ToString());
                     if (!DBNull.Value.Equals(dr["ActualTourInDate"]))
                         result.ActualTourInDate = DateTime.Parse(dr["ActualTourInDate"].ToString());
-                    if (!DBNull.Value.Equals(dr["ActualTourInTime"]))
+                    if (!DBNull.Value.Equals(dr["ActualTourInTime"]) && !string.IsNullOrEmpty(dr["ActualTourInTime"].ToString()))
                         result.ActualTourInTime = DateTime.Parse(dr["ActualTourInTime"].ToString());
                     if (!DBNull.Value.Equals(dr["SchToDate"]))
                         result.DWToDate = DateTime.Parse(dr["SchToDate"].ToString());
                     if (!DBNull.Value.Equals(dr["ActualTourOutDate"]))
                         result.ActualTourOutDate = DateTime.Parse(dr["ActualTourOutDate"].ToString());
-                    if (!DBNull.Value.Equals(dr["ActualTourOutTime"]))
+                    if (!DBNull.Value.Equals(dr["ActualTourOutTime"]) && !string.IsNullOrEmpty(dr["ActualTourOutTime"].ToString()))
                         result.ActualTourOutTime = DateTime.Parse(dr["ActualTourOutTime"].ToString());
                     if (!DBNull.Value.Equals(dr["Status"]))
                         result.TourStatus = int.Parse(dr["Status"].ToString());
@@ -496,11 +502,11 @@ namespace CBBW.DAL.DBMapper
                         result.LNPunchStatus = dr["LNPunchStatus"].ToString();
                     if (!DBNull.Value.Equals(dr["EMPunchStatus"]))
                         result.EMPunchStatus = dr["EMPunchStatus"].ToString();
-                    if (!DBNull.Value.Equals(dr["SchFromTime"]))
+                    if (!DBNull.Value.Equals(dr["SchFromTime"]) && !string.IsNullOrEmpty(dr["SchFromTime"].ToString()))
                         result.SchFromTime =DateTime.Parse(dr["SchFromTime"].ToString());
                 }
             }
-            catch { }
+            catch(Exception ex) { }
             return result;
         }
         public SaveVehicleDetails Map_SaveVehicleDetails(DataRow dr) 
@@ -524,7 +530,7 @@ namespace CBBW.DAL.DBMapper
                         result.InRFIDCard = dr["ActualTourInRFID"].ToString();
                     if (!DBNull.Value.Equals(dr["ActualTourInDate"]))
                         result.ActualTourInDate =DateTime.Parse(dr["ActualTourInDate"].ToString());
-                    if (!DBNull.Value.Equals(dr["ActualTourInTime"]))
+                    if (!DBNull.Value.Equals(dr["ActualTourInTime"]) && !string.IsNullOrEmpty(dr["ActualTourInTime"].ToString()))
                         result.ActualTourInTime = DateTime.Parse(dr["ActualTourInTime"].ToString());
                     if (!DBNull.Value.Equals(dr["ActualTourInKMIN"]))
                         result.KMIn = int.Parse(dr["ActualTourInKMIN"].ToString());
@@ -532,7 +538,7 @@ namespace CBBW.DAL.DBMapper
                         result.OutRFIDCard = dr["ActualTourOutRFID"].ToString();
                     if (!DBNull.Value.Equals(dr["ActualTourOutDate"]))
                         result.ActualTourOutDate = DateTime.Parse(dr["ActualTourOutDate"].ToString());
-                    if (!DBNull.Value.Equals(dr["ActualTourOutTime"]))
+                    if (!DBNull.Value.Equals(dr["ActualTourOutTime"]) && !string.IsNullOrEmpty(dr["ActualTourOutTime"].ToString()))
                         result.ActualTourOutTime = DateTime.Parse(dr["ActualTourOutTime"].ToString());
                     if (!DBNull.Value.Equals(dr["ActualTourOutKMOUT"]))
                         result.KMOut = int.Parse(dr["ActualTourOutKMOUT"].ToString());
@@ -582,7 +588,24 @@ namespace CBBW.DAL.DBMapper
             }
             return result;
         }
-
+        public NoteStatus Map_NoteStatus(DataRow dr)
+        {
+            NoteStatus result = new NoteStatus();
+            try
+            {
+                if (dr != null)
+                {
+                    if (!DBNull.Value.Equals(dr["IsOutSaved"]))
+                        result.IsOutSaved =bool.Parse(dr["IsOutSaved"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsInSaved"]))
+                        result.IsInSaved = bool.Parse(dr["IsInSaved"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsDataToSave"]))
+                        result.IsDataToSave = bool.Parse(dr["IsDataToSave"].ToString());
+                }
+            }
+            catch { }
+            return result;
+        }
 
     }
 }

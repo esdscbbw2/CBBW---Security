@@ -216,6 +216,23 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
+        public List<PunchInDetails> GetPunchingsV4(int CentreCode, bool IsMainLocation, DateTime SchFromDate, string SchFromTime, List<EmpDate> dtldata, ref string pMsg) 
+        {
+            List<PunchInDetails> result = new List<PunchInDetails>();
+            try
+            {
+                dt = _EntryIIDataSync.GetPunchingsV4(CentreCode, IsMainLocation, SchFromDate,SchFromTime, dtldata, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        result.Add(_EntryIIDBMapper.Map_PunchInDetails(dt.Rows[i]));
+                    }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
         public List<LastCentrePunchOutWithDistance> GetLastPunchingCentresV3(int CentreCode, List<EmpDate> dtldata, ref string pMsg)
         {
             List<LastCentrePunchOutWithDistance> result = new List<LastCentrePunchOutWithDistance>();
@@ -312,7 +329,21 @@ namespace CBBW.DAL.Entities
         {
             return _EntryIIDataSync.IsMainLocationEntered(NoteNumber, ref pMsg);
         }
-
+        public NoteStatus GetEntryIINoteStatus(string NoteNumber, int CentreCode, ref string pMsg) 
+        {
+            NoteStatus result = new NoteStatus();
+            try
+            {
+                dt = _EntryIIDataSync.GetEntryIINoteStatus(NoteNumber, CentreCode, ref pMsg);
+                if (dt != null) 
+                {
+                    return _EntryIIDBMapper.Map_NoteStatus(dt.Rows[0]);
+                }                
+            }
+            catch (Exception ex)
+            { pMsg = ex.Message; }
+            return result;
+        }
 
 
 

@@ -1,10 +1,8 @@
 ﻿$('#NoteNo').change(function () {
-   
     ExistingRecord($(this).val());
     Notenumberchanged($(this).val());
     
 });
-
 function ExistingRecord(notenumber) {
     var that = $('#NoteNo');
     $.ajax({
@@ -48,62 +46,74 @@ function ExistingRecord(notenumber) {
         }
     });
 };
-
 function Notenumberchanged(notenumber) {
     var that = $('#NoteNo');
-    $.ajax({
-        url: '/GVMR/GetGVMRDetails',
-        method: 'GET',
-        data: { Notenumber: notenumber },
-        dataType: 'json',
-        success: function (data) {
-            $(data).each(function (index, item) {
-                
-                $('#CenterCode').val(item.LocationName);
-                $('#VehicleNo').val(item.VehicleNo);
-                $('#VehicleType').val(item.VehicleType);
-                $('#ModelName').val(item.ModelName);
-                var DriverNameCode = item.DriverNo + "/" + item.DriverName;
-                $('#DriverName').val(DriverNameCode);
-                that.addClass('is-valid').removeClass('is-invalid');
-                
-                if (index > 0) {
-                    var cloneready = $('#tbody1').find('tr').clone();
-                    cloneready.attr("id", index);
-                    cloneready.find('td').find('#0_LocationName').attr('id', index + '_LocationName');
-                    cloneready.find('td').find('#0_Gvmrid').attr('id', index + '_Gvmrid');
-                    cloneready.find('td').find('#0_ActualInRFIDCard').attr('id', index + '_ActualInRFIDCard');
-                    cloneready.find('td').find('#0_FromDateVal').attr('id', index + '_FromDateVal');
-                    cloneready.find('td').find('#0_ToDateVal').attr('id', index + '_ToDateVal');
-                    cloneready.find('td').find('#0_ActualTripInDate').attr('id', index + '_ActualTripInDate');
-                    cloneready.find('td').find('#0_ActualTripInTime').attr('id', index + '_ActualTripInTime');
-                    cloneready.find('td').find('#0_ActualTripInKM').attr('id', index + '_ActualTripInKM');
-                    cloneready.find('td').find('#0_ActualOutRFIDCard').attr('id', index + '_ActualOutRFIDCard');
-                    cloneready.find('td').find('#0_ActualTripOutDate').attr('id', index + '_ActualTripOutDate');
-                    cloneready.find('td').find('#0_ActualTripOutTime').attr('id', index + '_ActualTripOutTime');
-                    cloneready.find('td').find('#0_ActualTripOutKM').attr('id', index + '_ActualTripOutKM');
-                    cloneready.find('td').find('#0_Remark').attr('id', index + '_Remark');
-                    
-                    $('#tbody2').append(cloneready);
-                }
-                $("#" + index + "_LocationName").val(item.LocationName);
-                $("#" + index + "_Gvmrid").val(item.Gvmrid);
-                $("#" + index + "_ActualInRFIDCard").val();
-                $("#" + index + "_FromDateVal").val(item.SchFromDateDisplay);
-                $("#" + index + "_ToDateVal").val(item.ToDateVal);
-                $("#" + index + "_ActualTripInDate").val();
-                $("#" + index + "_ActualTripInTime").val();
-                $("#" + index + "_ActualTripInKM").val(item.ActualTripInKM);
-                $("#" + index + "_ActualOutRFIDCard").val();
-                $("#" + index + "_ActualTripOutDate").val();
-                $("#" + index + "_ActualTripOutTime").val();
-                $("#" + index + "_ActualTripOutKM").val(item.ActualTripOutKM);
-                $("#" + index + "_Remark").val();
-                GetRFIDCardNos(index);
-            });
-            $('#in_out_details').removeClass('invisible');
-        }
-    });
+    
+    if (notenumber != "") {
+        $.ajax({
+            url: '/GVMR/GetGVMRDetails',
+            method: 'GET',
+            data: { Notenumber: notenumber },
+            dataType: 'json',
+            success: function (data) {
+                $(data).each(function (index, item) {
+
+                    $('#CenterCode').val(item.LocationName);
+                    $('#VehicleNo').val(item.VehicleNo);
+                    $('#VehicleType').val(item.VehicleType);
+                    $('#ModelName').val(item.ModelName);
+                    var DriverNameCode = item.DriverNo + "/" + item.DriverName;
+                    $('#DriverName').val(DriverNameCode);
+                    //that.addClass('is-valid').removeClass('is-invalid');
+                    $('#tbody1').removeClass('invisible');
+                    if (index > 0) {
+                        var cloneready = $('#tbody1').find('tr').clone();
+                        cloneready.attr("id", index);
+                        cloneready.find('td').find('#0_LocationName').attr('id', index + '_LocationName');
+                        cloneready.find('td').find('#0_Gvmrid').attr('id', index + '_Gvmrid');
+                        cloneready.find('td').find('#0_ActualInRFIDCard').attr('id', index + '_ActualInRFIDCard');
+                        cloneready.find('td').find('#0_FromDateVal').attr('id', index + '_FromDateVal');
+                        cloneready.find('td').find('#0_ToDateVal').attr('id', index + '_ToDateVal');
+                        cloneready.find('td').find('#0_ActualTripInDate').attr('id', index + '_ActualTripInDate');
+                        cloneready.find('td').find('#0_ActualTripInTime').attr('id', index + '_ActualTripInTime');
+                        cloneready.find('td').find('#0_ActualTripInKM').attr('id', index + '_ActualTripInKM');
+                        cloneready.find('td').find('#0_ActualOutRFIDCard').attr('id', index + '_ActualOutRFIDCard');
+                        cloneready.find('td').find('#0_ActualTripOutDate').attr('id', index + '_ActualTripOutDate');
+                        cloneready.find('td').find('#0_ActualTripOutTime').attr('id', index + '_ActualTripOutTime');
+                        cloneready.find('td').find('#0_ActualTripOutKM').attr('id', index + '_ActualTripOutKM');
+                        cloneready.find('td').find('#0_Remark').attr('id', index + '_Remark');
+
+                        $('#tbody2').append(cloneready);
+                    }
+                    $("#" + index + "_LocationName").val(item.LocationName);
+                    $("#" + index + "_Gvmrid").val(item.Gvmrid);
+                    $("#" + index + "_ActualInRFIDCard").val();
+                    $("#" + index + "_FromDateVal").val(item.SchFromDateDisplay);
+                    $("#" + index + "_ToDateVal").val(item.ToDateVal);
+                    $("#" + index + "_ActualTripInDate").val();
+                    $("#" + index + "_ActualTripInTime").val();
+                    $("#" + index + "_ActualTripInKM").val(item.ActualTripInKM);
+                    $("#" + index + "_ActualOutRFIDCard").val();
+                    $("#" + index + "_ActualTripOutDate").val();
+                    $("#" + index + "_ActualTripOutTime").val();
+                    $("#" + index + "_ActualTripOutKM").val(item.ActualTripOutKM);
+                    $("#" + index + "_Remark").val();
+                    GetRFIDCardNos(index);
+                });
+                $('#in_out_details').removeClass('invisible');
+            }
+        });
+    } else {
+       
+        $('#CenterCode').val('');
+        $('#VehicleNo').val('');
+        $('#VehicleType').val('');
+        $('#ModelName').val('');
+        $('#DriverName').val('');
+        $('#tbody2').empty();
+        $('#tbody1').addClass('invisible');
+        $('#in_out_details').addClass('invisible');
+    }
 };
 function GetRFIDCardNos(index) {
     var FRIDData = $('#' + index + '_ActualInRFIDCard');
@@ -136,8 +146,13 @@ function GetActualDate() {
     var _val = $('#' + rowid + '_ActualInRFIDCard option:selected').val();
     var tripdatein = $('#' + rowid + '_ActualTripInDate');
     var fromDateVal = $('#' + rowid + '_FromDateVal').val();
-    var toDateVal = $('#' + rowid + '_ToDateVal').val();
-   
+    var toDateVals = $('#' + rowid + '_ToDateVal').val();
+    var dt = new Date();
+    var dateString = (dt.getFullYear() + '-'
+        + ('0' + (dt.getMonth() + 1)).slice(-2)
+        + '-' + ('0' + (dt.getDate())).slice(-2));
+    var toDateVal = toDateVals != '0001-01-01' ? toDateVals : dateString;
+    debugger;
     if (_val == 'NA') {
         
         tripdatein.datepicker("destroy");
@@ -148,8 +163,8 @@ function GetActualDate() {
             dateFormat: 'dd/mm/yy',
             autoclose: true,
             todayHighlight: true,
-            minDate: fromDateVal,
-            maxDate: toDateVal
+            minDate: new Date(fromDateVal),
+            maxDate: new Date(toDateVal)
         });
     } else {
         tripdatein.datepicker("destroy");
@@ -159,6 +174,9 @@ function GetActualDate() {
         
         DatePicker();
     }
+  
+    _val = _val == 'NA' || _val == '-1' ? 0 : _val;
+    RFIDInChangedIN(_val, dateString, rowid)
     
 };
 function GetDateUsingRFID() {
@@ -167,7 +185,12 @@ function GetDateUsingRFID() {
     var _vals = $('#' + rowids + '_ActualOutRFIDCard option:selected').val();
     var tripdateout = $('#' + rowids + '_ActualTripOutDate');
     var fromDateVals = $('#' + rowids + '_FromDateVal').val();
-    var toDateVals = $('#' + rowids + '_ToDateVal').val();
+    var toDateValue = $('#' + rowids + '_ToDateVal').val();
+    var dt = new Date();
+    var dateString = (dt.getFullYear() + '-'
+        + ('0' + (dt.getMonth() + 1)).slice(-2)
+        + '-' + ('0' + (dt.getDate())).slice(-2));
+    var toDateVals = toDateValue != '0001-01-01' ? toDateValue : dateString;
     if (_vals == 'NA') {
         tripdateout.datepicker("destroy");
         tripdateout.removeClass('ActualTripIDates').addClass('ActualInDates');
@@ -177,8 +200,8 @@ function GetDateUsingRFID() {
             dateFormat: 'dd/mm/yy',
             autoclose: true,
             todayHighlight: true,
-            minDate: fromDateVals,
-            maxDate: toDateVals
+            minDate: new Date(fromDateVals),
+            maxDate: new Date(toDateVals)
         });
     } else {
         tripdateout.datepicker("destroy");
@@ -188,6 +211,56 @@ function GetDateUsingRFID() {
         DatePicker();
     }
 
+   
+    _vals = _vals == 'NA' || _val == '-1' ? 0 : _vals;
+    RFIDInChangedOUT(_vals, dateString, rowids)
+};
+
+function RFIDInChangedIN(RFId, TripDate, rowid) {
+    if (RFId != '' || RFId != 0) {
+        $.ajax({
+            url: '/EntryII/GetRFIDPunchTime',
+            method: 'GET',
+            data: { RFIDNumber: RFId, PunchDate: TripDate },
+            dataType: 'json',
+            success: function (data) {
+                $(data).each(function (index, item) {
+                    $('#' + rowid + '_ActualTripInTime').val(item.PunchInStr);
+                    $('#' + rowid + '_ActualTripInTime').removeClass('timePicker');
+                    $('#' + rowid + '_ActualTripInTime').attr('readonly', 'readonly');
+                    $('#' + rowid + '_ActualTripInTime').isValid();
+                });
+            }
+        });
+    }
+    else {
+        $('#' + rowid + '_ActualTripInTime').removeAttr('readonly', 'readonly');
+        $('#' + rowid + '_ActualTripInTime').addClass('timePicker');
+        $('#' + rowid + '_ActualTripInTime').isInvalid();
+    }
+};
+function RFIDInChangedOUT(RFId, TripDate, rowid) {
+    if (RFId != '' || RFId != 0) {
+        $.ajax({
+            url: '/EntryII/GetRFIDPunchTime',
+            method: 'GET',
+            data: { RFIDNumber: RFId, PunchDate: TripDate },
+            dataType: 'json',
+            success: function (data) {
+                $(data).each(function (index, item) {
+                    $('#' + rowid + '_ActualTripOutTime').val(item.PunchInStr);
+                    $('#' + rowid + '_ActualTripOutTime').removeClass('timePicker');
+                    $('#' + rowid + '_ActualTripOutTime').attr('readonly', 'readonly');
+                    $('#' + rowid + '_ActualTripOutTime').isValid();
+                });
+            }
+        });
+    }
+    else {
+        $('#' + rowid + '_ActualTripOutTime').removeAttr('readonly', 'readonly');
+        $('#' + rowid + '_ActualTripOutTime').addClass('timePicker');
+        $('#' + rowid + '_ActualTripOutTime').isInvalid();
+    }
 };
 function DatePicker() {
     var minDate = new Date();
@@ -215,8 +288,8 @@ function ValidateControls() {
 };
 function validatectrl(targetid, value) {
     var isvalid = false;
-
-    if (value == "" || value == null) { isvalid = false; } else { isvalid = true }
+    
+    if (value == "" || value == null || value == "-1") { isvalid = false; } else { isvalid = true }
     activateSubmitBtn();
     return isvalid;
 
@@ -301,6 +374,15 @@ function SaveData() {
         },
     });
 };
+function keypressCountWord(e) {
+    var target = keypressCountWord.caller.arguments[0].target;
+    var targetCtrl = $(target).val();
+    if (WordCount(targetCtrl) > 50) {
+        $(target).preventTypying();
+    } else {
+        $(target).off('keypress');
+    }
+}
 
 //function btnClearClicked() {
 

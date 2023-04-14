@@ -10,6 +10,7 @@
     @Html.HiddenFor(x => x.btnDisplay)
     
 
+
     <div class="">
         <div class="row newTable">
             <div class="fixedElement">
@@ -77,13 +78,13 @@
                                     Date  :
                                 </label>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" value="@DateTime.Today.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)" disabled>
+                                    <input type="text" class="form-control" value="" id="EntryDate" disabled>
                                 </div>
                                 <label class="col-form-label col-md-1">
                                     Time  :
                                 </label>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" value="@DateTime.Now.ToString("hh:mm tt")" disabled>
+                                    <input type="text" class="form-control" value="" id="EntryTime" disabled>
                                 </div>
                             </div>
                             <div class="row d-flex align-items-center mb-4">
@@ -192,7 +193,7 @@
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
                             It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As It Is selected:
-                            <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                            <input type="text" id="OtherPlace" class="form-control width-85 pointer-none" value="" disabled="">
                         </li>
                         <li style="font-size: 16px;">
                             It Is Ensured That This Person Is Carrying Laptop As Provided To Him. The Same Has Been Confirmed (as per leave rules):
@@ -211,7 +212,7 @@
                             <select id="APPRej" data-name="APPRej" data-name-text="APPRej"
                                     onchange="ValidateControl()"
                                     class="form-select is-invalid clear"
-                                    aria-label="Default select example"  style="width: 110px;" >
+                                    aria-label="Default select example" style="width: 110px;">
                                 <option selected value="-1"> -</option>
                                 <option value="1">Yes</option>
                                 <option value="0">No</option>
@@ -235,7 +236,7 @@
                                     <option value="0">No</option>
                                 </select>
 
-                               
+
                             </div>
                             <div class="col-md-2 col-form-label">
                                 <label>Date &amp; Time Of Approval :</label>
@@ -248,7 +249,7 @@
                             </div>
 
                             <div class="col-md-2">
-                                <textarea maxlength="200" id="ApproveReason" onchange="ValidateControl()" data-name="ApproveReason" class="form-control is-invalid clear" cols="10" rows="2" ></textarea>
+                                <textarea maxlength="200" id="ApproveReason" onchange="ValidateControl()" data-name="ApproveReason" class="form-control is-invalid clear" cols="10" rows="2"></textarea>
 
                             </div>
 

@@ -86,12 +86,14 @@ namespace CBBW.Areas.Security.Controllers
         {
             EntryIIHdrVM modelobj = new EntryIIHdrVM();
             modelobj.NoteNumber = NoteNumber;
+            modelobj.NoteDetails = _iEntryIIRepository.GetEditNoteHdr(NoteNumber, ref pMsg);
             return View(modelobj);
         }
         public ActionResult ViewLWNote(string NoteNumber)
         {
             EntryIIHdrVM modelobj = new EntryIIHdrVM();
             modelobj.NoteNumber = NoteNumber;
+            modelobj.NoteDetails = _iEntryIIRepository.GetEditNoteHdr(NoteNumber, ref pMsg);
             return View(modelobj);
         }
         public ActionResult Index()
@@ -110,6 +112,8 @@ namespace CBBW.Areas.Security.Controllers
                 modelobj.TPDetails = _iEntryIIRepository.GetMainLocationTPs(NoteNumber, ref pMsg);
                 if (modelobj.TPDetails != null && modelobj.TPDetails.Count>0)
                 {
+                    modelobj.IsInSaved = modelobj.TPDetails.FirstOrDefault().IsInSaved;
+                    modelobj.IsOutSaved = modelobj.TPDetails.FirstOrDefault().IsOutSaved;
                     modelobj.DefaultPersonID = modelobj.TPDetails.FirstOrDefault().PersonID;
                     modelobj.SchFromDate = modelobj.TPDetails.Min(o => o.SchFromDate);
                     modelobj.SchToDate = modelobj.TPDetails.Max(o => o.SchToDate);
@@ -118,7 +122,13 @@ namespace CBBW.Areas.Security.Controllers
                 modelobj.RFIDCardList = _iEntryIIRepository.GetRFIDCards(ref pMsg);
                 modelobj.VehicleDetails = _iEntryIIRepository.GetEntryIIVehicleAllotmentDetails(NoteNumber, modelobj.SchFromDate, modelobj.SchToDate, user.CentreCode, true, ref pMsg);
                 int travelKMs = _iEntryIIRepository.GetTravelKmsOfANote(NoteNumber, modelobj.SchToDate, user.CentreCode, ref pMsg);
-                modelobj.RequiredKMIn = modelobj.VehicleDetails!=null? modelobj.VehicleDetails.KMOut + travelKMs :0;
+                if (modelobj.VehicleDetails != null) 
+                {
+                    modelobj.RequiredKMIn = modelobj.VehicleDetails != null ? modelobj.VehicleDetails.KMOut + travelKMs : 0;
+                    modelobj.RFIDCardOut = modelobj.VehicleDetails.RFIDCardOut;
+                    modelobj.RFIDCardIn = modelobj.VehicleDetails.RFIDCardIn;
+                }
+                
             }
             catch { }
             return View(modelobj);
@@ -134,17 +144,26 @@ namespace CBBW.Areas.Security.Controllers
                 modelobj.PersonDetails = obj1.PersonDetails;
                 modelobj.PersonDateWiseDetails = obj1.PersonDateWiseDetails;
                 modelobj.DefaultPersonID = modelobj.PersonDetails != null && modelobj.PersonDetails.Count>0 ? modelobj.PersonDetails.FirstOrDefault().PersonID : 0;
+                modelobj.DefaultPersonType = modelobj.PersonDetails != null && modelobj.PersonDetails.Count > 0 ? modelobj.PersonDetails.FirstOrDefault().PersonType : 0;
                 modelobj.SchFromDate = obj1.PersonDateWiseDetails.Min(o => o.DWFromDate);
                 modelobj.SchToDate = obj1.PersonDateWiseDetails.Max(o => o.DWToDate);
                 modelobj.RFIDCardList = _iEntryIIRepository.GetRFIDCards(ref pMsg);
                 modelobj.VehicleDetails = _iEntryIIRepository.GetEntryIIVehicleAllotmentDetails(NoteNumber, modelobj.SchFromDate, modelobj.SchToDate, user.CentreCode, false, ref pMsg);
                 if (modelobj.PersonDetails != null) 
                 {
-                   modelobj.IsManagementPerson= modelobj.PersonDetails.Where(o => o.PersonType == 3 || o.PersonType == 4).Count()>0?1:0;
+                    modelobj.IsOutSaved = modelobj.PersonDetails.FirstOrDefault().IsOutSaved;
+                    modelobj.IsInSaved = modelobj.PersonDetails.FirstOrDefault().IsInSaved;
+                    modelobj.IsManagementPerson= modelobj.PersonDetails.Where(o => o.PersonType == 3 || o.PersonType == 4).Count()>0?1:0;
                 }
                 if (modelobj.PersonDateWiseDetails != null)
                 {
                     modelobj.IsBranchVisit = modelobj.PersonDateWiseDetails.Where(o => o.DWTourCategoryIds.Contains("2")).Count()>0?1:0;
+                }
+                if (modelobj.VehicleDetails != null)
+                {
+                    //modelobj.RequiredKMIn = modelobj.VehicleDetails != null ? modelobj.VehicleDetails.KMOut + travelKMs : 0;
+                    modelobj.RFIDCardOut = modelobj.VehicleDetails.RFIDCardOut;
+                    modelobj.RFIDCardIn = modelobj.VehicleDetails.RFIDCardIn;
                 }
             }
             catch { }
@@ -246,7 +265,10 @@ namespace CBBW.Areas.Security.Controllers
         public JsonResult GetNoteInfo(string NoteNumber) 
         {
             EditNoteDetails result = _iEntryIIRepository.GetEditNoteHdr(NoteNumber, ref pMsg);
-            if (result != null) { result.IsMLEntered = _iEntryIIRepository.IsMainLocationEntered(NoteNumber, ref pMsg); }
+            if (result != null) { 
+                result.IsMLEntered = _iEntryIIRepository.IsMainLocationEntered(NoteNumber, ref pMsg);
+                result.IsDataToSave = _iEntryIIRepository.GetEntryIINoteStatus(NoteNumber, user.CentreCode, ref pMsg).IsDataToSave?1:0;
+            }
             return Json(result, JsonRequestBehavior.AllowGet);
         }        
         public ActionResult TDView(string NoteNumber)
@@ -293,11 +315,23 @@ namespace CBBW.Areas.Security.Controllers
         [HttpPost]
         public ActionResult SaveMLOutIn(SaveLWInnerPageVM modelobj)
         {
-            model = CastEntryIITempData(true);
             CustomAjaxResponse result = new CustomAjaxResponse();
-            result.bResponseBool = _iEntryIIRepository.SetEntryIIData(modelobj.NoteNumber, true, user.CentreCode,user.IsOffline, modelobj.TPersons, modelobj.DateWiseDetails,modelobj.VDetails, ref pMsg);
-            result.sResponseString = pMsg;
-
+            if (modelobj!=null && modelobj.DateWiseDetails != null) 
+            {
+                //need to check for person type=1;
+                var x= modelobj.DateWiseDetails.Select(o => (o.ActualTourOutTime-o.SchFromTime).TotalMinutes).Max();
+                if (x > 20) 
+                {
+                    result.bResponseBool = false;
+                    result.sResponseString = "Persons Actual Punch Out Exceeds 20 Minutes From Schedule Tour From Time.";
+                } 
+                else 
+                {
+                    model = CastEntryIITempData(true);
+                    result.bResponseBool = _iEntryIIRepository.SetEntryIIData(modelobj.NoteNumber, true, user.CentreCode, user.IsOffline, modelobj.TPersons, modelobj.DateWiseDetails, modelobj.VDetails, ref pMsg);
+                    result.sResponseString = pMsg;
+                }
+            }           
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetRFIDPunchTime(string RFIDNumber,string PunchDate)

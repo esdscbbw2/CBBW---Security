@@ -40,6 +40,19 @@ namespace CBBW.DAL.Entities
             }
             return result;
         }
+        public List<MGPNotes> GetNoteNumbersfromMGP(int Centercode, ref string pMsg)
+        {
+            List<MGPNotes> result = new List<MGPNotes>();
+            dt = _datasync.GetNoteNumbersfromMGP(Centercode, ref pMsg);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    result.Add(_datamapper.Map_MGPNotes(dt.Rows[i]));
+                }
+            }
+            return result;
+        }
         public List<MGPOutInDetails> getMGPOutDetails(string NoteNumber, ref string pMsg) 
         {
             List<MGPOutInDetails> result = new List<MGPOutInDetails>();

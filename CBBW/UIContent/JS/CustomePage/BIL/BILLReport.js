@@ -23,12 +23,19 @@ function Notenumberchanged(notenumber) {
                     $('#TourToDateNTime').val(item.TourToDateNTime);
                     $('#NoOfDays').val(item.NoOfDays);
 
-                    $('#TAAllowance').html(item.ATAAmount);
-                    $('#DAAllowance').html(item.DAAmount);
-                    $('#LocalAllowance').html(item.ALocAmount);
-                    $('#LodingAmount').html(item.ALodAmount);
+                    //$('#TAAllowance').html(item.ATAAmount);
+                    //$('#DAAllowance').html(item.DAAmount);
+                    //$('#LocalAllowance').html(item.ALocAmount);
+                    //$('#LodingAmount').html(item.ALodAmount);
+
+                    $('#TAAllowance').html(item.ETAAmount);
+                    $('#DAAllowance').html(item.EEDAmount);
+                    $('#LocalAllowance').html(item.ELocAmount);
+                    $('#LodingAmount').html(item.ELodAmount);
                     $('#NetAmount').html(item.NetAmount);
+
                     $('#IsPaymenttSubmit').val(item.IsPaymenttSubmit);
+                    $('#DT').val(item.EntryDatestr);
                     
                     if (item.IsPaymenttSubmit) {
                         $('#Printbtn').removeAttr('disabled', 'disabled');

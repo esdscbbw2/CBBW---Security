@@ -7,7 +7,7 @@
 <div class="row newTable">
     @using (Html.BeginForm())
     {
-        @Html.HiddenFor(m => m.NoteNumber)
+        @Html.HiddenFor(o=>o.NoteNumber)
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
@@ -68,13 +68,13 @@
                                         Date  :
                                     </label>
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control" value="@(DateTime.Today.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture))" disabled>
+                                        <input type="text" class="form-control" value="@(Model.NoteDetails.EntryDateDisplay)" disabled>
                                     </div>
                                     <label class="col-form-label col-md-2">
                                         Time  :
                                     </label>
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control" value="@DateTime.Now.ToString("hh:mm tt")" disabled>
+                                        <input type="text" class="form-control" value="@Model.NoteDetails.EntryTime" disabled>
                                     </div>
                                 </div>
                             </div>
@@ -122,7 +122,7 @@
                 </div>
             </div>
             <div class="card mb-4 mt-4">
-                <div class="card-body  alert alert-success text-dark approvalForm">
+                <div id="mratDiv" class="card-body  alert alert-success text-dark approvalForm">
                     @*<form class="form-sample form-inline row ms-auto">*@
                     <div class="row d-flex align-items-center">
                         <div class="col-md-2 col-form-label">

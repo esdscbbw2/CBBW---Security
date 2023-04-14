@@ -147,6 +147,7 @@
     <Compile Include="Areas\Security\Controllers\HomeController.cs" />
     <Compile Include="Areas\Security\Controllers\MaterialGatePassController.cs" />
     <Compile Include="Areas\Security\Controllers\TADARulesController.cs" />
+    <Compile Include="Areas\Security\Controllers\TestingController.cs" />
     <Compile Include="Areas\Security\Controllers\TFDController.cs" />
     <Compile Include="Areas\Security\Controllers\TourRuleController.cs" />
     <Compile Include="Areas\Security\Helpers\EditHistory.cs" />
@@ -191,6 +192,7 @@
     <Compile Include="Areas\Security\ViewModel\Rule\TADARuleViewVM.cs" />
     <Compile Include="Areas\Security\ViewModel\Rule\TADARuleVM.cs" />
     <Compile Include="Areas\Security\ViewModel\TADATransViewModel.cs" />
+    <Compile Include="Areas\Security\ViewModel\Testing\PunchingVM.cs" />
     <Compile Include="Areas\Security\ViewModel\TFD\TFDHdrVM.cs" />
     <Compile Include="Areas\Security\ViewModel\TFD\TourFeedBackDetailsVM.cs" />
     <Compile Include="Areas\Security\ViewModel\TourRulesViewModel.cs" />
@@ -286,6 +288,7 @@
     <Content Include="UIContent\CSS\font-awesome.min.css" />
     <Content Include="UIContent\CSS\img\clock.png" />
     <Content Include="UIContent\CSS\img\main-banner.png" />
+    <Content Include="UIContent\CSS\img\print-logo.png" />
     <Content Include="UIContent\CSS\jquery.dataTables.min.css" />
     <Content Include="UIContent\CSS\print-css.css" />
     <Content Include="UIContent\CSS\style.css" />
@@ -404,6 +407,7 @@
     <Content Include="UIContent\JS\CustomePage\TADARule\TADARuleEntry.js" />
     <Content Include="UIContent\JS\CustomePage\TADARule\TADARuleParam.js" />
     <Content Include="UIContent\JS\CustomePage\TADARule\TADATransModeUpdation.js" />
+    <Content Include="UIContent\JS\CustomePage\Testing\PunchingJS.js" />
     <Content Include="UIContent\JS\CustomePage\TFD\ApprovalDetails.js" />
     <Content Include="UIContent\JS\CustomePage\TFD\ApprovalEntry.js" />
     <Content Include="UIContent\JS\CustomePage\TFD\TFDDetails.js" />
@@ -597,6 +601,7 @@
     <Content Include="Areas\Security\Views\TADARules\UpdateTransModeDtlsView2.cshtml" />
     <Content Include="Areas\Security\Views\TADARules\EmptyView.cshtml" />
     <Content Include="Areas\Security\Views\EHG\NotOpen.cshtml" />
+    <Content Include="Areas\Security\Views\Testing\Index.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />

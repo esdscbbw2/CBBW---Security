@@ -447,7 +447,7 @@ namespace CBBW.DAL.DataSync
                     dr["bIsVehicleProvided"] = obj.IsVehicleProvided;
                     dr["bTADADenied"] = obj.TADADenied;
                     dr["bIsDriver"] = obj.Isdriver;
-                    dr["sTourCategoryText"] = obj.TourCategoryText;
+                    dr["sTourCategoryText"] = !string.IsNullOrEmpty(obj.TourCategoryText)? obj.TourCategoryText.Replace("&amp;","&"):"";
                     UDTable.Rows.Add(dr);
                 }
             }
@@ -483,25 +483,25 @@ namespace CBBW.DAL.DataSync
                     DataRow dr = UDTable.NewRow();
                     dr["iPersonID"] = obj.PersonID;
                     dr["sTourCategoryCodes"] = obj.DWTourCategoryIds;
-                    dr["sTourCategoryText"] = obj.DWTourCategoryNames;
+                    dr["sTourCategoryText"] = !string.IsNullOrEmpty(obj.DWTourCategoryNames)? obj.DWTourCategoryNames.Replace("&amp;", "&"):"";
                     dr["sCentreCodes"] = obj.DWTourCenterCodeIds;
                     dr["sCentreCodeName"] = obj.DWTourCenterNames;
                     dr["sBranchCodes"] = obj.DWBranchCodes;
                     dr["sBranchNames"] = obj.DWBranchNames;
                     dr["dSchFromDate"] = obj.DWFromDate;
                     dr["dRequiredTourInDate"] = obj.RequiredTourInDate;
-                    dr["sRequiredTourInTime"] = obj.RequiredTourInTime.ToString("hh:mm:ss tt");
+                    dr["sRequiredTourInTime"] = obj.RequiredTourInTime.Year==1?"": obj.RequiredTourInTime.ToString("hh:mm:ss tt");
                     dr["dActualTourInDate"] = obj.ActualTourInDate;
-                    dr["sActualTourInTime"] = obj.ActualTourInTime.ToString("hh:mm:ss tt");
+                    dr["sActualTourInTime"] = obj.ActualTourInTime.Year==1?"": obj.ActualTourInTime.ToString("hh:mm:ss tt");
                     dr["dSchToDate"] = obj.DWToDate;
                     dr["dActualTourOutDate"] = obj.ActualTourOutDate;
-                    dr["sActualTourOutTime"] = obj.ActualTourOutTime.ToString("hh:mm:ss tt");
+                    dr["sActualTourOutTime"] = obj.ActualTourOutTime.Year==1?"": obj.ActualTourOutTime.ToString("hh:mm:ss tt");
                     dr["iStatus"] = obj.TourStatus;
                     dr["sLNPunchStatus"] = obj.LNPunchStatus;
                     dr["sEMPunchStatus"] = obj.EMPunchStatus;
-                    dr["sSchFromTime"] = obj.SchFromTime.ToString("hh:mm:ss tt");
-                    dr["sDWLNPunch"] = obj.DWLNPunch.ToString("hh:mm:ss tt");
-                    dr["sDWEMPunch"] = obj.DWEMPunch.ToString("hh:mm:ss tt");
+                    dr["sSchFromTime"] = obj.SchFromTime.Year==1?"":obj.SchFromTime.ToString("hh:mm:ss tt");
+                    dr["sDWLNPunch"] = obj.DWLNPunch.Year==1?"": obj.DWLNPunch.ToString("hh:mm:ss tt");
+                    dr["sDWEMPunch"] = obj.DWEMPunch.Year==1?"": obj.DWEMPunch.ToString("hh:mm:ss tt");
                     UDTable.Rows.Add(dr);
                 }
             }
@@ -538,10 +538,10 @@ namespace CBBW.DAL.DataSync
                     dr["sModelName"] = obj.ModelName;
                     dr["sActualTourInRFID"] = obj.InRFIDCard;
                     dr["dActualTourInDate"] = obj.ActualTourInDate;
-                    dr["sActualTourInTime"] = obj.ActualTourInTime.ToString("hh:mm:ss tt");
+                    dr["sActualTourInTime"] = obj.ActualTourInTime.Year==1?"": obj.ActualTourInTime.ToString("hh:mm:ss tt");
                     dr["iActualTourInKMIN"] = obj.KMIn;
                     dr["dActualTourOutDate"] = obj.ActualTourOutDate;
-                    dr["sActualTourOutTime"] = obj.ActualTourOutTime.ToString("hh:mm:ss tt");
+                    dr["sActualTourOutTime"] = obj.ActualTourOutTime.Year==1?"": obj.ActualTourOutTime.ToString("hh:mm:ss tt");
                     dr["iActualTourOutKMOUT"] = obj.KMOut;
                     dr["sRemarks"] = obj.VRemarks;
                     dr["sActualTourOutRFID"] = obj.OutRFIDCard;

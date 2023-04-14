@@ -191,15 +191,17 @@ htmlAttributes: new
                                         <label>T.A Amount:</label>
                                     </div>
                                     <div class="col-md-4">
+                                        @*<input type="hidden" id="TAAmountMax" />*@
+                                        <input type="hidden" id="LocalConveyanceMax" />
+                                        <input type="hidden" id="LodgingMax" />
                                         @Html.TextBoxFor(x => x.TAAmount,
                                        new
-                                            {
-                                                @minlength = "0",
-                                                @class = "form-control",
-                                           onchange = "TotalExpance();",
+                                       {
+                                           @min = "0",
+                                           @class = "form-control",
                                            onkeyup = "TotalExpance();",
-                                           @type = "number"
-                                            })
+                                           onkeypress = "return numbervalidate(event)"
+                                       })
                                     </div>
                                     <div class="col-md-2 col-form-label">
                                         <label>Local Conveyance:</label>
@@ -207,13 +209,12 @@ htmlAttributes: new
                                     <div class="col-md-4">
                                         @Html.TextBoxFor(x => x.LocalConveyance,
                                        new
-                                            {
-                                                @minlength = "0",
-                                                @class = "form-control",
-                                           onchange = "TotalExpance();",
-                                           onkeyup = "TotalExpance();",
-                                           @type = "number"
-                                            })
+                                       {
+                                           @min = "0",
+                                           @class = "form-control",
+                                           onkeyup = "return Calculations(event);",
+                                           onkeypress = "return numbervalidate(event)"
+                                       })
 
                                     </div>
                                 </div>
@@ -224,13 +225,12 @@ htmlAttributes: new
                                     <div class="col-md-4">
                                         @Html.TextBoxFor(x => x.Lodging,
                                        new
-                                            {
-                                                @minlength = "0",
-                                                @class = "form-control",
-                                           onchange = "TotalExpance();",
-                                           onkeyup = "TotalExpance();",
-                                           @type = "number"
-                                            })
+                                       {
+                                           @min = "0",
+                                           @class = "form-control",
+                                           onkeyup = "return Calculations(event);",
+                                           onkeypress = "return numbervalidate(event)"
+                                       })
                                     </div>
                                     <div class="col-md-2 col-form-label">
                                         <label>Total Expenses:</label>
@@ -436,11 +436,9 @@ htmlAttributes: new
                     confirmButtonColor: '#2527a2',
 
                 }).then(callback);
-                function callback(result) {
-                    if (result.value) {
+             function callback(result) {
                         var url = "/Security/BIL/Index";
                         window.location.href = url;
-                    }
                 }
             
             };

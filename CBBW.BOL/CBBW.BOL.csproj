@@ -87,6 +87,7 @@
     <Compile Include="EntryII\EntryIITPDetails.cs" />
     <Compile Include="EntryII\EntryIITravelingDetails.cs" />
     <Compile Include="EntryII\MLPersonsInfo.cs" />
+    <Compile Include="EntryII\NoteStatus.cs" />
     <Compile Include="EntryII\PunchInDetails.cs" />
     <Compile Include="EntryII\SaveTPDetails.cs" />
     <Compile Include="EntryII\SaveVehicleDetails.cs" />

@@ -353,6 +353,9 @@ function TPDBtnClicked() {
             success: function (result) {
                 iDiv.html(result);
                 modalDiv.modal('show');
+                $('#Checked').makeEnabled();
+                $('#IsApproves').makeEnabled();
+                $('#ApproveReason').makeEnabled();
                 EnableSubmitBtn();
             },
             error: function (xhr, status) {
@@ -495,7 +498,7 @@ function SaveDetails() {
                 if (item.bResponseBool == true) {
                     Swal.fire({
                         title: 'Confirmation',
-                        text: 'Save Data For ' + notenumber + ' successfully.',
+                        text: ' Data Saved Successfully for '+ notenumber ,
                         setTimeout: 5000,
                         icon: 'success',
                         customClass: 'swal-wide',
@@ -515,7 +518,7 @@ function SaveDetails() {
                 else {
                     Swal.fire({
                         title: 'Error',
-                        text: 'Failed To Update Traveling Person Details.',
+                        text: 'Failed To Update.',
                         icon: 'question',
                         customClass: 'swal-wide',
                         buttons: {
@@ -596,7 +599,8 @@ function decrementQty(e) {
 function AEDincrementQty() {
     var targetCtrl = AEDincrementQty.caller.arguments[0].target;
     var mids =  $(targetCtrl).attr('id');
-    var maxvalue = $('#' + mids + 'Max').html()*1;
+     var maxvalue = $('#A' + mids + 'Max').html() * 1;
+   
     var txtcTrl = $('#A' + mids);
     var mValue = txtcTrl.val() * 1;
     //alert(mids + "--" + maxvalue + '--' + mValue);
@@ -614,7 +618,6 @@ function TotalExp() {
     var Atotal = isNaN(total) ? 0 : total;
     $('#ATotalAmount').val(Atotal);
 };
-
 function numbervalidate(key) {
     var presskeys = (key.which) ? key.which : key.presskeys;
     if (!(presskeys == 8 || presskeys == 46) && (presskeys < 48 || presskeys > 57)) {
@@ -627,10 +630,12 @@ function isNumber(evt) {
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
         return false;
     }
+
     var targetCtrl = isNumber.caller.arguments[0].target;
     var mids = $(targetCtrl).attr('id');
     var maxvalue = $('#' + mids + 'Max').html() * 1;
-    var txtcTrl = $('#'+mids);
+    var txtcTrl = $('#' + mids);
+   
     var mValue = txtcTrl.val();
     var mValuetatol = mValue > maxvalue ? maxvalue : mValue;
     txtcTrl.val(mValuetatol);

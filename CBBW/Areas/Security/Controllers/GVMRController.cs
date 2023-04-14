@@ -35,7 +35,6 @@ namespace CBBW.Areas.Security.Controllers
         {
             return View();
         }
-
         public ActionResult Create()
         {
             GVMRDetailsVM gvmrvm = new GVMRDetailsVM();
@@ -43,7 +42,6 @@ namespace CBBW.Areas.Security.Controllers
 
             return View(gvmrvm);
         }
-
         [HttpPost]
         public ActionResult Create(GVMRDetailsVM models)
         {
@@ -57,11 +55,11 @@ namespace CBBW.Areas.Security.Controllers
                     gvmrsave.NoteNo = item.NoteNo;
                     gvmrsave.ActualInRFIDCard = item.ActualInRFIDCard;
                     gvmrsave.ActualTripInDate = item.ActualTripInDate;
-                    gvmrsave.ActualTripInTime = item.ActualTripInTime;
+                    gvmrsave.ActualTripInTime = item.ActualTripInTime!=null? item.ActualTripInTime:"NA";
                     gvmrsave.ActualTripInKM = item.ActualTripInKM > 0 ? item.ActualTripInKM : 0;
                     gvmrsave.ActualOutRFIDCard = item.ActualOutRFIDCard;
                     gvmrsave.ActualTripOutDate = item.ActualTripOutDate;
-                    gvmrsave.ActualTripOutTime = item.ActualTripOutTime;
+                    gvmrsave.ActualTripOutTime = item.ActualTripOutTime != null ? item.ActualTripOutTime : "NA";
                     gvmrsave.ActualTripOutKM = item.ActualTripOutKM > 0 ? item.ActualTripOutKM : 0;
                     gvmrsave.Remark = item.Remark!=null? item.Remark:"NA";
                 }
@@ -94,7 +92,6 @@ namespace CBBW.Areas.Security.Controllers
             model.gvmrdetails = _IGVMR.GetGVMRDetails(NoteNumber, user.CentreCode, ref pMsg);
             return Json(model.gvmrdetails, JsonRequestBehavior.AllowGet);
         }
-
         public JsonResult getNoteList(int iDisplayLength, int iDisplayStart, int iSortCol_0,
          string sSortDir_0, string sSearch)
         {
@@ -103,13 +100,13 @@ namespace CBBW.Areas.Security.Controllers
             var result = new
             {
                 iTotalRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
-                iTotalDisplayRecords = noteList.Count(),
+                iTotalDisplayRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
+                iDisplayLength = iDisplayLength,
+                iDisplayStart = iDisplayStart,
                 aaData = noteList
             };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
-
         public ActionResult Details(string NoteNumber)
         {
             GVMRDetailsVM model = new GVMRDetailsVM();
@@ -123,7 +120,7 @@ namespace CBBW.Areas.Security.Controllers
             model.ModelName = models.ModelName;
             model.MonthYear = models.MonthYear;
             model.CenterName = models.LocationName;
-            model.EntryDate = models.EntryDate;
+            model.EntryDateDisplay = models.EntryDateDisplay;
             model.EntryTime = models.EntryTime;
             return View(model);
         }
@@ -134,8 +131,5 @@ namespace CBBW.Areas.Security.Controllers
 
             return Json(model.gvmrdetailsview, JsonRequestBehavior.AllowGet);
         }
-
-
-
     }
 }

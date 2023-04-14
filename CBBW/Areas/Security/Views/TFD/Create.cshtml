@@ -27,7 +27,7 @@
                                 <i data-feather="upload"></i>
                                 Submit
                             </button>
-                            <button type="button" class="btn btn-white">
+                            <button type="button" class="btn btn-white" onclick="window.location.href='/Security/TFD/Create';">
                                 <i data-feather="x-circle"></i>
                                 Clear
                             </button>
@@ -199,7 +199,7 @@ new SelectList(Model.Notelist, "NoteNumber", "NoteNumber"),"Select Note Number",
                         <ul style="list-style:none;">
                             <li style="font-size: 16px;">
                                 The “Tour Feed Back Details” Are Entered With The Best Of Knowledge, The Details Entered Are Correct & As Required:
-                                <select onchange="ValidateControl();" class="form-select is-invalid content border-red" aria-label="Default select example" id="Required">
+                                <select disabled onchange="ValidateControl();" class="form-select is-invalid content border-red" aria-label="Default select example" id="Required" style="width:110px">
                                     <option selected="" value="-1">-</option>
                                     <option value="1">Yes</option>
                                     <option value="0">No</option>

@@ -112,7 +112,7 @@ namespace CBBW.Areas.Security.Controllers
 
                     model.NoteNumber = model.NoteNumber != null ? model.NoteNumber : "NA";
                     model.RefNoteNumber = model.RefNoteNumber != null ? model.RefNoteNumber : "NA";
-                    model.EmployeeNo = model.EmployeeNo != 0 ? model.EmployeeNo : 0;
+                    model.EmployeeNo = model.EmployeeNo > 0 ? model.EmployeeNo : 0;
                     model.EmployeeCodeName = model.EmployeeCodeName != null ? model.EmployeeCodeName : "NA";
                     if (model.RefEntryDatestr != null) { model.RefEntryDate = model.RefEntryDate; };
                     model.RefEntryTime = model.RefEntryTime != null ? model.RefEntryTime : "NA";
@@ -124,9 +124,9 @@ namespace CBBW.Areas.Security.Controllers
                     }
                     else
                     {
-                        model.PersonType = model.PersonType != 0 ? model.PersonType : 0;
+                        model.PersonType = model.PersonType > 0 ? model.PersonType : 0;
                     }
-                    model.CenterCode = user.CentreCode != 0 ? user.CentreCode : 0;
+                    model.CenterCode = user.CentreCode > 0 ? user.CentreCode : 0;
                     model.CenterCodeName = user.CentreCode + "/" + user.CentreName;
                     model.DesigCodeName = model.DesigCodeName != null ? model.DesigCodeName : "NA";
                     if (model.DesigCodeName != null && model.DesigCodeName != "NA")
@@ -136,17 +136,17 @@ namespace CBBW.Areas.Security.Controllers
                     }
                     else
                     {
-                        model.DesigCode = model.DesigCode != 0 ? model.DesigCode : 0;
+                        model.DesigCode = model.DesigCode > 0 ? model.DesigCode : 0;
                     }
 
 
-                    model.DAAmount = model.DAAmount != 0 ? model.DAAmount : 0;
-                    model.DADeducted = model.DADeducted != 0 ? model.DADeducted : 0;
-                    model.EDAllowance = model.EDAllowance != 0 ? model.EDAllowance : 0;
-                    model.TAAmount = model.TAAmount != 0 ? model.TAAmount : 0;
-                    model.LocalConveyance = model.LocalConveyance != 0 ? model.LocalConveyance : 0;
-                    model.Lodging = model.Lodging != 0 ? model.Lodging : 0;
-                    model.TotalExpenses = model.TotalExpenses != 0 ? model.TotalExpenses : 0;
+                    model.DAAmount = model.DAAmount >0 ? model.DAAmount : 0;
+                    model.DADeducted = model.DADeducted >0 ? model.DADeducted : 0;
+                    model.EDAllowance = model.EDAllowance > 0 ? model.EDAllowance : 0;
+                    model.TAAmount = model.TAAmount > 0 ? model.TAAmount : 0;
+                    model.LocalConveyance = model.LocalConveyance > 0 ? model.LocalConveyance : 0;
+                    model.Lodging = model.Lodging > 0 ? model.Lodging : 0;
+                    model.TotalExpenses = model.TotalExpenses > 0 ? model.TotalExpenses : 0;
                     model.TourFromDateNTime = model.TourFromDateNTime != null ? model.TourFromDateNTime : "NA";
                     model.TourToDateNTime = model.TourToDateNTime != null ? model.TourToDateNTime : "NA";
                     if (model.TourFromDateNTime != null && model.TourFromDateNTime != "NA")
@@ -160,7 +160,7 @@ namespace CBBW.Areas.Security.Controllers
                     model.TourFromTime = model.TourFromTime != null ? model.TourFromTime : "-";
                     model.TourToTime = model.TourToTime != null ? model.TourToTime : "-";
 
-                    model.NoOfDays = model.NoOfDays != 0 ? model.NoOfDays : 0;
+                    model.NoOfDays = model.NoOfDays > 0 ? model.NoOfDays : 0;
                     model.PurposeOfVisit = model.PurposeOfVisit != null ? model.PurposeOfVisit : "NA";
                     model.EmpNo = model.EmployeeNo;
                     model.IsVehicleProvided = model.IsVehicleProvided;
@@ -260,7 +260,7 @@ namespace CBBW.Areas.Security.Controllers
             try
             {
                 if (Model.status == 1) {
-                if (_iBIL.SetApprovalTADABillGeneration(Model, ref pMsg))
+                if (_iBIL.SetApprovalTADABillApprovalData(Model, ref pMsg))
                 {
                     result.bResponseBool = true;
                     result.sResponseString = "Data successfully updated.";
@@ -462,7 +462,8 @@ namespace CBBW.Areas.Security.Controllers
         public JsonResult GetTADABillGenerationDataReport(string NoteNumber)
         {
             TADABillGeneration modelobj = _iBIL.GetTADABillGenerationData(NoteNumber, "Na", 0, 3, ref pMsg);
-            modelobj.NetAmount = modelobj.ATAAmount + modelobj.DAAmount + modelobj.ALocAmount + modelobj.ALodAmount;
+            //modelobj.NetAmount = modelobj.ATAAmount + modelobj.DAAmount + modelobj.ALocAmount + modelobj.ALodAmount;
+            modelobj.NetAmount = modelobj.ETAAmount + modelobj.EEDAmount + modelobj.ELocAmount + modelobj.ELodAmount;
             return Json(modelobj, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetBILNoteNumberList()

@@ -118,6 +118,8 @@ function ChangeEmployee(EmployeeNo) {
                                 $('#TAAmount').val(0);
                                 $('#LocalConveyance').val(0);
                                 $('#Lodging').val(0);
+                                $('#LocalConveyanceMax').val(item.MaxLocalConv);
+                                $('#LodgingMax').val(item.MaxLodgingExp);
                                 $('#TourFromTime').val(item.ActualTourInTime);
                                 $('#TourToTime').val(item.ActualTourOutTime);
 
@@ -149,6 +151,8 @@ function ChangeEmployee(EmployeeNo) {
                                 $('#TourToTime').val(item.TourToTime);
                                 $('#Lodging').attr('max', item.MaxLodgingExp);
                                 $('#LocalConveyance').attr('max', item.MaxLocalConv);
+                                $('#LocalConveyanceMax').val(item.MaxLocalConv);
+                                $('#LodgingMax').val(item.MaxLodgingExp);
                                 if (item.IsVehicleProvided) {
                                     $('#TAAmount').attr('readonly', 'readonly');
                                 } else {
@@ -204,13 +208,7 @@ function ValuesClear() {
     $('#TourFromTime').val('');
     $('#TourToTime').val('');
 }
-function TotalExpance() {
-    var EDAmt = $('#EDAllowance').val() * 1;
-    var taAmt = $('#TAAmount').val() * 1;
-    var lcamt = $('#LocalConveyance').val() * 1;
-    var lodamt = $('#Lodging').val() * 1;
-    $('#TotalExpenses').val(EDAmt+taAmt + lcamt + lodamt);
-};
+
 function ValidateControl() {
     var target = ValidateControl.caller.arguments[0].target;
     var targetid = $(target).attr('id');
@@ -329,3 +327,37 @@ function TPDBtnClicked() {
         });
     }
 };
+
+function numbervalidate(key) {
+    var presskeys = (key.which) ? key.which : key.presskeys;
+    if (!(presskeys == 8 || presskeys == 46) && (presskeys < 48 || presskeys > 57)) {
+        return false;
+    }
+}
+function TotalExpance() {
+    var EDAmt = $('#EDAllowance').val() * 1;
+    var taAmt = $('#TAAmount').val() * 1;
+    var lcamt = $('#LocalConveyance').val() * 1;
+    var lodamt = $('#Lodging').val() * 1;
+    var total=EDAmt + taAmt + lcamt + lodamt;
+    var Atotal = isNaN(total) ? 0 : total;
+    $('#TotalExpenses').val(Atotal);
+};
+function Calculations(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    debugger;
+    var targetCtrl = Calculations.caller.arguments[0].target;
+    var mids = $(targetCtrl).attr('id');
+    var maxvalue = $('#' + mids + 'Max').val() * 1;
+    var txtcTrl = $('#' + mids);
+
+    var mValue = txtcTrl.val();
+    var mValuetatol = mValue > maxvalue ? maxvalue : mValue;
+    txtcTrl.val(mValuetatol);
+    TotalExpance();
+    return true;
+}

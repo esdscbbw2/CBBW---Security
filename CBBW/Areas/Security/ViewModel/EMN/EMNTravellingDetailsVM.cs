@@ -29,6 +29,7 @@ namespace CBBW.Areas.Security.ViewModel.EMN
         public EMNApproveTravDetails appTravData { get; set; }
         public int VehicleTypeProvided { get; set; }
         public string ReasonVehicleProvided { get; set; }
+        public bool Tourcat { get; set; }
 
     }
 }

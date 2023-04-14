@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -36,7 +39,9 @@ namespace CBBW.Areas.Security.Controllers
         {
             TempData["MGPV"] = null;
             TempData["MGPVM"] = null;
-           // IEnumerable<MGPListDetails> model = _IMGP.getMGPDetailsforListPage(ref pMsg);
+         
+            TempData.Remove("MGPV");
+            // IEnumerable<MGPListDetails> model = _IMGP.getMGPDetailsforListPage(ref pMsg);
             return View();
         }
         public ActionResult Create()
@@ -145,7 +150,6 @@ namespace CBBW.Areas.Security.Controllers
             //    new { Area = "Security" });
             return View(model);
         }
-       
         public ActionResult VehicleMaterialOutDetails(string NoteNumber, int CBUID)
         {
            
@@ -407,9 +411,7 @@ namespace CBBW.Areas.Security.Controllers
 
         }
         #endregion
-
         #region For View Pages
-
         public JsonResult getNoteList(int iDisplayLength, int iDisplayStart, int iSortCol_0,
           string sSortDir_0, string sSearch)
         
@@ -419,7 +421,9 @@ namespace CBBW.Areas.Security.Controllers
             var result = new
             {
                 iTotalRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
-                iTotalDisplayRecords = noteList.Count(),
+                iTotalDisplayRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
+                iDisplayLength = iDisplayLength,
+                iDisplayStart = iDisplayStart,
                 aaData = noteList
             };
             return Json(result, JsonRequestBehavior.AllowGet);
@@ -435,14 +439,13 @@ namespace CBBW.Areas.Security.Controllers
                 }
                 else { 
 
-                model.ListofNotes = _IMGP.getApprovedNoteNumbers(user.CentreCode, ref pMsg);
+                    model.ListofNotes = _IMGP.GetNoteNumbersfromMGP(user.CentreCode, ref pMsg);
                     model.ListofNotes = model.ListofNotes.Where(x=>x.NoteNo==NoteNumber);
                    // model.NoteNo = NoteNumber;
                 }
-                TempData["MGPV"] = model;
-                return View(model);
+                
             }
-            catch { }
+            catch(Exception ex) { ex.ToString(); }
             TempData["MGPV"] = model;
             return View(model);
         }
@@ -455,7 +458,7 @@ namespace CBBW.Areas.Security.Controllers
                 model.ListofNotes = (TempData["MGPV"] as MGPNotes).ListofNotes;
             }
             else { 
-                model.ListofNotes = _IMGP.getApprovedNoteNumbers(user.CentreCode, ref pMsg);
+                model.ListofNotes = _IMGP.GetNoteNumbersfromMGP(user.CentreCode, ref pMsg);
                 model.ListofNotes = (IEnumerable<MGPNote>)model.ListofNotes.Where(x => x.NoteNo == model.NoteNo).OrderByDescending(x=>x.NoteNo).FirstOrDefault();
             }
             if (Submit == "CMOD")
@@ -470,7 +473,6 @@ namespace CBBW.Areas.Security.Controllers
             }
             return View(model);
         }
-
         public ActionResult VehicleMaterialOutView(string NoteNumber, int CBUID)
         {
 
@@ -490,8 +492,6 @@ namespace CBBW.Areas.Security.Controllers
             //model.ListCurrentOutDetails = _IMGP.getSchDtlsForMGP(mNoteNumber, ref pMsg);
             return View(model);
         }
-
-
         public ActionResult VehicleMaterialInView(string NoteNumber)
         {
             MGPInDetailsVM model = new MGPInDetailsVM();
@@ -505,10 +505,10 @@ namespace CBBW.Areas.Security.Controllers
             catch (Exception ex) { ex.ToString(); }
             return View(model);
         }
+        #endregion
+        #region For Report
 
-
-
-
+       
         #endregion
 
 

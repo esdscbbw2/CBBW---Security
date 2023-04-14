@@ -27,6 +27,8 @@ function Notenumberchanged(notenumber) {
             $(data).each(function (index, item) {
                 $('#CenterCodeName').val(item.etsHeader.CenterCodeName);
                 $('#AttachFile').val(item.etsHeader.AttachFile);
+                $('#EntryDate').val(item.etsHeader.EntryDateDisplay);
+                $('#EntryTime').val(item.etsHeader.EntryTime);
                 var approv = item.etsHeader.IsApproved == true ? "Yes" : "No"
                 if (notenumber == null || notenumber == "") {
                     $('#IsApproved').val('-');
@@ -36,6 +38,11 @@ function Notenumberchanged(notenumber) {
                     $('#IsApproved').val(approv);
                     $('#ApprovedDateTime').val(item.etsHeader.ApproveDatestr + " " + item.etsHeader.ApproveTime);
                     $('#ApprovedReason').val(item.etsHeader.ApprovedReason);
+                }
+                if (item.TourCatstatus) {
+                    $('#OtherPlace').val('Yes')
+                } else {
+                    $('#OtherPlace').val('-')
                 }
                 DisplayTPDetails(item.PersonDtls);
 

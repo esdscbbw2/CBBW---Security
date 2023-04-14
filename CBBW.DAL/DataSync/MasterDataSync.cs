@@ -304,5 +304,27 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return false; }
         }
+        public DataTable SetPunchIN(int CentreCode,int EmployeeNumber,DateTime PunchDate,string PunchTime, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[4];
+                para[paracount] = new SqlParameter("@EmployeeNumber", SqlDbType.Int);
+                para[paracount++].Value = EmployeeNumber;
+                para[paracount] = new SqlParameter("@CentreCode", SqlDbType.Int);
+                para[paracount++].Value = CentreCode;
+                para[paracount] = new SqlParameter("@PunchDate", SqlDbType.Date);
+                para[paracount++].Value = PunchDate;
+                para[paracount] = new SqlParameter("@PunchTime", SqlDbType.NVarChar, 15);
+                para[paracount++].Value = PunchTime;
+
+                using (SQLHelper sql = new SQLHelper("[MTR].[SetPunchIN]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);                    
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
     }
 }

@@ -75,13 +75,13 @@
                                     Date  :
                                 </label>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" value="@DateTime.Today.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)" disabled>
+                                    <input type="text" class="form-control" value=""  id="EntryDate" disabled>
                                 </div>
                                 <label class="col-form-label col-md-1">
                                     Time  :
                                 </label>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" value="@DateTime.Now.ToString("hh:mm tt")" disabled>
+                                    <input type="text" class="form-control" value="" id="EntryTime" disabled>
                                 </div>
                             </div>
                             <div class="row d-flex align-items-center mb-4">
@@ -190,7 +190,7 @@
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
                             It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As It Is selected:
-                            <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                            <input type="text" id="OtherPlace" class="form-control width-85 pointer-none" value="" disabled="">
                         </li>
                         <li style="font-size: 16px;">
                             It Is Ensured That This Person Is Carrying Laptop As Provided To Him. The Same Has Been Confirmed (as per leave rules):

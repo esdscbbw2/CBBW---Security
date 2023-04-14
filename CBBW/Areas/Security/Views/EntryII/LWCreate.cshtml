@@ -8,7 +8,7 @@
     @using (Html.BeginForm())
     {
         @Html.HiddenFor(m => m.IsBackButtonActive)
-        @Html.HiddenFor(m=>m.IsMainLocationEntered)
+        @Html.HiddenFor(m => m.IsMainLocationEntered)
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
@@ -20,7 +20,7 @@
                             Back
                         </button>
                         <button id="btnSubmit" type="submit" name="Submit"
-                                value="Save"
+                                value="Save" disabled
                                 class="btn btn-secondary me-2">
                             <i data-feather="upload"></i>
                             Submit
@@ -83,13 +83,13 @@
                                         Date  :
                                     </label>
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control" value="@(DateTime.Today.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture))" disabled>
+                                        <input id="NoteDateCtrl" type="text" class="form-control" value="" disabled>
                                     </div>
                                     <label class="col-form-label col-md-2">
                                         Time  :
                                     </label>
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control" value="@DateTime.Now.ToString("hh:mm tt")" disabled>
+                                        <input id="NoteTimeCtrl" type="text" class="form-control" value="" disabled>
                                     </div>
                                 </div>
                             </div>
@@ -137,7 +137,7 @@
                 </div>
             </div>
             <div class="card mb-4 mt-4">
-                <div class="card-body  alert alert-success text-dark approvalForm">
+                <div id="mratDiv" class="card-body  alert alert-success text-dark approvalForm">
                     @*<form class="form-sample form-inline row ms-auto">*@
                     <div class="row d-flex align-items-center">
                         <div class="col-md-2 col-form-label">
@@ -164,7 +164,7 @@
             </div>
             <div class="col-md-12">
                 <div class="d-flex justify-content-center mt-4">
-                    <button type="submit" name="Submit" value="LWOutInBtn" 
+                    <button type="submit" name="Submit" value="LWOutInBtn"
                             id="InnerPageBtn"
                             class="btn btn-primary me-2" disabled>
                         Location Wise Vehicle & Travelling Person IN & OUT Details

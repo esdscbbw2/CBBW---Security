@@ -332,6 +332,8 @@ namespace CBBW.DAL.DBMapper
 
                     if (!DBNull.Value.Equals(dr["ActualTourInDate"]))
                         result.ActualTourInDate = DateTime.Parse(dr["ActualTourInDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["ActualTourOutDate"]))
+                        result.ActualTourOutDate = DateTime.Parse(dr["ActualTourOutDate"].ToString());
                     if (!DBNull.Value.Equals(dr["TourCategoryCodesName"]))
                         result.TourCategoryCodesName = dr["TourCategoryCodesName"].ToString();
                     if (!DBNull.Value.Equals(dr["LocationCodeName"]))
@@ -351,7 +353,7 @@ namespace CBBW.DAL.DBMapper
                     if (!DBNull.Value.Equals(dr["TourActions"]))
                         result.TourActions = bool.Parse(dr["TourActions"].ToString());
                     result.ActualTourInDatestr = MyDBLogic.ConvertDateToString(result.ActualTourInDate);
-
+                    result.ActualTourOutDatestr = MyDBLogic.ConvertDateToString(result.ActualTourOutDate);
 
                 }
             }

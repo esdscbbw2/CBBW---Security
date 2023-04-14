@@ -11,6 +11,7 @@ namespace CBBW.BLL.IRepository
     {
         #region For Out Details
         IEnumerable<MGPNotes> getApprovedNoteNumbers(int Centercode, ref string pMsg);
+        IEnumerable<MGPNotes> GetNoteNumbersfromMGP(int Centercode, ref string pMsg);
         List<MGPOutInDetails> getMGPOutDetails(string NoteNumber, ref string pMsg);
         List<RFID> getRFIDCards(ref string pMsg);
 

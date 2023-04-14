@@ -24,16 +24,18 @@ namespace CBBW.Areas.Security.Controllers
         IMyHelperRepository _myHelper;
         IMasterRepository _master;
         IETSRepository _iETS;
+        IEMNRepository _iEMN;
         ETSHeaderEntryVM model;
         ETSTravellingDetailsVM modelTrav;
         ICTVRepository _iCTV;
-        public ETSController(ICTVRepository iCTV, IUserRepository iUser, IETSRepository iETS, IMyHelperRepository myHelper, IMasterRepository master)
+        public ETSController(IEMNRepository iEMN, ICTVRepository iCTV, IUserRepository iUser, IETSRepository iETS, IMyHelperRepository myHelper, IMasterRepository master)
         {
             try
             {
                 _iUser = iUser;
                 _myHelper = myHelper;
                 _master = master;
+                _iEMN = iEMN;
                 _iETS = iETS;
                 _iCTV = iCTV;
                 //iUser.LogIn("praveen", ref pMsg);
@@ -84,6 +86,7 @@ namespace CBBW.Areas.Security.Controllers
                         modelTrav = TempData["ETSData"] as ETSTravellingDetailsVM;
                         TempData["ETS"] = model;
                         TempData["ETSData"] = modelTrav;
+                        model.TourCatstatus = modelTrav.Tourcat;
                         model.etsHeader.NoteNumber = modelTrav.NoteNumber;
                         model.etsHeader.AttachFile = modelTrav.AttachFile;
                         model.Btnsubmit = modelTrav.btnSubmit;
@@ -207,6 +210,8 @@ namespace CBBW.Areas.Security.Controllers
                     if (_iETS.setETSTravDetailsNTourDetails(models.NoteNumber, TModel, models.dateTour, ref pMsg))
                     {
                         models.btnSubmit = 1;
+                        
+                        models.Tourcat= models.dateTour.Where(c => c.TourCategory.Contains("3")).ToList().Count>0?true:false;
                         TempData["ETSData"] = models;
                         result.bResponseBool = true;
 
@@ -227,7 +232,7 @@ namespace CBBW.Areas.Security.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
 
         }
-        public ActionResult TravellingDetails(int Btnsubmit = 0)
+        public ActionResult TravellingDetails(int Btnsubmit = 0, string ServiceTypeCode = "1")
         {
             ETSTravellingDetailsVM modeltravvm = new ETSTravellingDetailsVM();
             try
@@ -246,6 +251,8 @@ namespace CBBW.Areas.Security.Controllers
                         modeltravvm.NoteNumber = model.NoteNumber;
                         modeltravvm.AttachFile = model.AttachFile;
                         modeltravvm.CenterCodenName = model.CenterCodeName;
+                        var DateNo = _iEMN.GetTourInfoForServiceType(ServiceTypeCode, ref pMsg);
+                        modeltravvm.TourFromdateStr = DateTime.Today.AddDays(DateNo.MaxDayAllowed).ToString("yyyy-MM-dd");
                         modeltravvm.TodateStr = DateTime.Today.AddDays(3).ToString("yyyy-MM-dd");
                         modeltravvm.FromdateStr = DateTime.Today.ToString("yyyy-MM-dd");
 
@@ -352,6 +359,9 @@ namespace CBBW.Areas.Security.Controllers
                 modelvmobj.PersonDtls = _iETS.GetETSTravellingPerson(NoteNumber, ref pMsg);
                 modelvmobj.CanDelete = CanDelete;// == 1 ? true : false;
                 modelvmobj.HeaderText = CanDelete == 1 ? "Delete" : "View";
+                ETSTravellingDetailsVM modelvm = new ETSTravellingDetailsVM();
+                modelvm.dateTour = _iETS.GetETSDateWiseTour(NoteNumber, ref pMsg);
+                modelvmobj.TourCatstatus = modelvm.dateTour.Where(c => c.NoteNumber == NoteNumber && c.TourCategoryId.Contains("3")).ToList().Count > 0 ? true : false;
 
             }
             catch (Exception ex) { ex.ToString(); }
@@ -361,6 +371,7 @@ namespace CBBW.Areas.Security.Controllers
         [HttpPost]
         public ActionResult Details(ETSHeaderEntryVM modelobj, string Submit)
         {
+           
             string baseUrl = "/Security/ETS/Details?NoteNumber=" + modelobj.NoteNumber + "&CanDelete=" + modelobj.CanDelete + "&CBUID=" + modelobj.CBUID;
             ViewBag.HeaderText = modelobj.HeaderText;
             if (Submit == "Delete")
@@ -380,7 +391,7 @@ namespace CBBW.Areas.Security.Controllers
             }
             modelobj.etsHeader = _iETS.GetETSHdrEntry(modelobj.NoteNumber, ref pMsg);
             modelobj.PersonDtls = _iETS.GetETSTravellingPerson(modelobj.NoteNumber, ref pMsg);
-
+           
             return View(modelobj);
         }
         public ActionResult TravellingDetailsView(string NoteNumber, int CBUID)
@@ -524,10 +535,20 @@ namespace CBBW.Areas.Security.Controllers
         //}
         public JsonResult GetETSHdrDetails(string NoteNumber)
         {
+
             ETSHeaderEntryVM result = new ETSHeaderEntryVM();
+            if (NoteNumber != "") { 
+            ETSTravellingDetailsVM modelvm = new ETSTravellingDetailsVM();
             result.NoteNumber = NoteNumber;
             result.etsHeader = _iETS.GetETSHdrEntry(NoteNumber, ref pMsg);
             result.PersonDtls = _iETS.GetETSTravellingPerson(NoteNumber, ref pMsg);
+             modelvm.dateTour = _iETS.GetETSDateWiseTour(NoteNumber, ref pMsg);
+             result.TourCatstatus = modelvm.dateTour.Where(c =>c.NoteNumber== NoteNumber && c.TourCategoryId.Contains("3")).ToList().Count > 0 ? true : false;
+            }
+            else
+            {
+                result = null;
+            }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetEmployeeNoName(string NoteNo)
@@ -850,7 +871,9 @@ namespace CBBW.Areas.Security.Controllers
             EHGMaster master = EHGMaster.GetInstance;
             if (PTval == 1)
             {
-                result = master.TourCategoryForNZB.Where(x => x.ID == 4).ToList();
+                //result = master.TourCategoryForNZB.Where(x => x.ID == 4).ToList();
+                long[] id = { 1, 2, 3,4, 5 };
+                result = master.TourCategoryForNZB.Where(x => id.Contains(x.ID)).ToList();
             }
             else
             {

@@ -438,9 +438,8 @@ namespace CBBW.Areas.Security.Controllers
             var result = new
             {
                 iTotalRecords = noteList.Count==0?0:noteList.FirstOrDefault().TotalCount,
-                //iPages=10,
-                //iCurrentPage=1,
-                iTotalDisplayRecords = noteList.Count(),
+                //iTotalDisplayRecords = noteList.Count(),
+                iTotalDisplayRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
                 iDisplayLength = iDisplayLength,
                 iDisplayStart = iDisplayStart,
                 aaData = noteList

@@ -70,13 +70,13 @@
                                     Date  :
                                 </label>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" value="@Model.emnHeader.RatifiedDatestr" disabled>
+                                    <input type="text" class="form-control" value="@Model.emnHeader.EntryDateDisplay" disabled>
                                 </div>
                                 <label class="col-form-label col-md-1">
                                     Time  :
                                 </label>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" value="@Model.emnHeader.RatifiedTime" disabled>
+                                    <input type="text" class="form-control" value="@Model.emnHeader.EntryTime" disabled>
                                 </div>
                             </div>
                             <div class="row d-flex align-items-center mb-4">
@@ -200,7 +200,16 @@
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
                             It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As It Is selected:
-                            <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                            @if (Model.TourCatStatus)
+                            {
+                                <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                            }
+                            else
+                            {
+                                <input type="text" class="form-control width-85 pointer-none" value="-" disabled="">
+
+                            }
+
                         </li>
                     </ul>
                 </div>

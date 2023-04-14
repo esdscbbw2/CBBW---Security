@@ -204,8 +204,6 @@ async function getInitialData() {
                    
                     NoteNumber.val(item.NoteNumber);
                     RefNoteNumber.val(item.RefNoteNumber);
-                   
-                   
                     $(item.tfdfbdetails).each(function (indexs, travitem) {
 
                         if (indexs > 0) {
@@ -217,7 +215,7 @@ async function getInitialData() {
              
                         }
 
-                        getMultiselectDataWithSelectedValues(TourCategory.attr('id'), '/TFD/GetTourCategories', travitem.TourCategory);
+                        getMultiselectDataWithSelectedValues(TourCategory.attr('id'), '/TFD/GetTourCategories?NoteNumber=' + item.RefNoteNumber, travitem.TourCategory);
                         TourCategory.isValid();
                         TourDateWiseDropdownvalue(rowid, travitem.TourCategory, travitem.TourCategory, travitem.CenterCodeName);
                         CenterCodeName.isValid();

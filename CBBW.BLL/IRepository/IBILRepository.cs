@@ -23,6 +23,7 @@ namespace CBBW.BLL.IRepository
         bool RemoveBILNoteNumber(string NoteNumber, int RemoveTag, int ActiveTag, ref string pMsg);
         IEnumerable<CustomOptionsWithString> GetBILNoteNumberList(int CentreCode, int status, ref string pMsg);
         bool SetApprovalTADABillGeneration(TADABillGeneration model, ref string pMsg);
+        bool SetApprovalTADABillApprovalData(TADABillGeneration model, ref string pMsg);
         bool SetAnPFinalSubmit(int status, List<ApprovalNoteNo> dtldata, ref string pMsg);
         IEnumerable<CustomComboOptions> GetDeptWiseEmployeeList(int DeptId, int CentreCode, ref string pMsg);
         List<TravellingDetails> GetTraveelingDetails(int EmployeeNumber, int CentreCode, string NoteNumber, ref string pMsg);

@@ -1,0 +1,276 @@
+﻿@model CBBW.Areas.Security.ViewModel.Testing.PunchingVM
+@{
+    Layout = null;
+}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="~/UIContent/CSS/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/UIContent/CSS/dataTables.bootstrap5.min.css" rel="stylesheet" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+    <link href="~/UIContent/CSS/style.css" rel="stylesheet" />
+    <link href="~/UIContent/CSS/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/UIContent/CSS/sweetalert2.min.css" rel="stylesheet" />
+    <!-- Time Picker CSS -->
+    
+    <link rel='stylesheet' href='~/UIContent/CSS/bootstrap-datetimepicker.min.css'>
+    <title>Charbhai Bidi Works - A Bidi Manufacturing Company</title>
+    <style>
+        .punch-outer img {
+            width: 250px;
+        }
+
+        .punch-outer .datelabel {
+                width: 200px;
+                top: 9px;
+
+        }
+
+          .punch-outer .timePicker {
+                background-size: 5%;
+                font-size: 13px;
+            padding: 8px 35px 7px 10px;
+
+        }
+
+        .punch-outer .CustomDateFormatCloneRow {
+            padding: 8px 35px 7px 10px;
+        }
+        .punch-outer .form-control {
+            padding: 8px 35px 7px 10px;
+        }
+        .punch-outer   .col-form-label {
+                font-size: 15px;
+                font-weight: 600;
+                background-position: right 3% bottom 50%;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid p-0 login-bg-img">
+        <div class="content-wrapper justify-content-center align-items-center position-relative bg-transparent overflow-auto">
+            <div class="login-inner">
+                <div class="row w-100">
+                    <div class="col-md-4 mx-auto">
+                        <div class="login-outer punch-outer">
+                            <div class="text-center">
+                                <img src="~/img/charbhai-logo-center.jpg" alt="Charbhai Bidi Works - logo" class="img-fluid">
+                            </div>
+                            @using (Html.BeginForm())
+                            {
+                                //@Html.HiddenFor(m => m.EmployeeNumber)
+                                //@Html.HiddenFor(m => m.PunchDate)
+                                //@Html.HiddenFor(m => m.PunchTime)
+                                @*<form action="" class="pt-5">*@
+                                <div class="row d-flex align-items-center mb-4">
+                                    <label class="col-form-label col-md-4">
+                                        Center Code   :
+                                    </label>
+                                    <div class="col-md-8">
+                                        @Html.DropDownListFor(m => m.CentreCode,
+                                               new SelectList(Model.CentreList, "ID", "DisplayText"), "Select a centre",
+                                               htmlAttributes: new
+                                               {
+                                                   @class = "form-select pointer",
+                                                   @onchange = "CentreCodeChanged()"
+                                               })
+                                    </div>
+                                </div>
+                                <div class="row d-flex align-items-center mb-4">
+                                    <label class="col-form-label col-md-4">
+                                        Employee No.  :
+                                    </label>
+                                    <div class="col-md-8">
+                                        @*<select id="cEmployeeNumber" class="form-select is-invalid"
+                                                    onchange="EmployeeNumberChanged()"
+                                                    aria-label="Default select example">
+                                                <option selected=""> Select Employee No.</option>
+
+                                            </select>*@
+                                        @Html.TextBoxFor(m => m.EmployeeNumber,
+                                       htmlAttributes: new { @class = "form-control", @onchange = "EmployeeNumberChanged()" })
+                                    </div>
+                                </div>
+                                <div class="row d-flex align-items-center mb-4">
+                                    <label class="col-form-label col-md-4">
+                                        Date  :
+                                    </label>
+                                    <div class="col-md-8">
+                                        <div class="position-relative pointer">
+                                            @Html.TextBoxFor(m => m.PunchDate,
+                                                   htmlAttributes: new
+                                                        {
+                                                       @class = "form-control pointer CustomDateFormatCloneRow valid",
+                                                       type = "date",
+                                                       onblur = "PunchDateChanged()"
+                                                   })
+                                            @*<input id="cPunchDate" type="date" value="@DateTime.Now"
+                                                class="form-control pointer customDt is-invalid"
+                                                onchange="PunchDateChanged()">*@
+                                            @*<label id="customDatelbl" class="datelabel pointer">Select Date</label>*@
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row d-flex align-items-center mb-4">
+                                    <label class="col-form-label col-md-4">
+                                        Time  :
+                                    </label>
+                                    <div class="col-md-8">
+                                        <div class="input-group date pointer position-static placeholder-dark">
+                                            @Html.TextBoxFor(m => m.PunchTime,
+                                                   htmlAttributes: new
+                                                   {
+                                                       @class = "form-control timePicker pointer valid",
+                                                       type = "text",
+                                                       onblur = "PunchTimeChanged()",
+                                                       placeholder = "Select time"
+                                                   })
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="mt-5">
+                                    <button type="submit"
+                                            class="btn btn-primary w-100">
+                                        PUNCH
+                                    </button>
+                                </div>
+                            }
+                            @*</form>*@
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row w-100 mt-3">
+                    <div class="col-md-8 mx-auto">
+                        <div class="footer-bottom" style="padding-top: 2rem;">
+                            <p class="copyright-text border-0"> © 2023. Charbhai Bidi Works.  All Rights Reserved.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- Optional JavaScript; choose one of the two! -->
+    <script src="~/UIContent/JS/jquery.min.js"></script>
+    <script src="~/UIContent/JS/bootstrap.bundle.min.js"></script>
+    <script src="~/UIContent/JS/multiselect.js"></script>
+    <script src="~/UIContent/JS/popper.min.js"></script>
+    <script src="~/UIContent/JS/jquery.dataTables.min.js"></script>
+    <script src="~/UIContent/JS/dataTables.bootstrap5.min.js"></script>
+    <script src="~/UIContent/JS/feather.min.js"></script>
+    
+    <!--<script src="js/sweetalert2.all.min.js"></script>-->
+
+    <script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
+    <script src="~/UIContent/JS/sweetalert2.all.min.js"></script>
+    <script src="~/UIContent/JS/moment.min.js"></script>
+    <script src="~/UIContent/JS/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/Testing/PunchingJS.js"></script>
+    <!-- time Picker Script -->
+    <script>
+        $(document).ready(function () {
+            //var mymsg = '@ViewBag.ErrMsg';
+            if ('@ViewBag.ErrMsg' != '') {
+                Swal.fire({
+                    title: 'Failed to submit',
+                    text: "@ViewBag.ErrMsg",
+                    icon: 'warning',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        //cancel: 'Cancel',
+                        confirm: 'Ok'
+                    },
+                    //cancelButtonClass: 'btn-cancel',
+                    confirmButtonColor: '#2527a2',
+                });
+            };
+            if ('@ViewBag.Msg' != '') {
+                Swal.fire({
+                    title: 'Confirmation',
+                    text: "@ViewBag.Msg",
+                    icon: 'success',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        confirm: 'Ok'
+                    },
+                    confirmButtonColor: '#2527a2',
+                });
+            };
+            @*if ('@ViewBag.BtnActive' != '') {
+                $('#BackBtnActive').val(1);
+            };
+            alert('@ViewBag.BtnActive');*@
+        });
+    </script>
+    <script>
+        var firstOpen = true;
+        var time;
+
+        $('.timePicker').datetimepicker({
+            useCurrent: false,
+            format: "hh:mm A"
+        }).on('dp.show', function () {
+            if (firstOpen) {
+                time = moment().startOf('day');
+                firstOpen = false;
+            } else {
+                time = "01:00 PM"
+            }
+
+            $(this).data('DateTimePicker').date(time);
+        });
+    </script>
+    <!-- date Picker Script -->
+
+    <script>
+        $.fn.CustomDateFormat = function () {
+
+            var that = this;
+            var parentid = that.attr('id');
+
+            var lblid = parentid + 'lbl';
+
+            var dt = this.val();
+            var e = dt;
+            if (dt.indexOf('/') != -1) {
+                var e = dt.split('/').reverse().join('/');
+            } else {
+                var e = dt.split('-').reverse().join('/');
+            }
+
+            $('#' + lblid).html(e);
+
+
+            //that.addClass('is-valid').removeClass('is-invalid')
+        };
+
+        function changeDate() {
+            var target = changeDate.caller.arguments[0].target;
+            var targetCtrl = $(target);
+            targetCtrl.CustomDateFormat();
+
+        }
+
+    </script>
+</body>
+
+</html>

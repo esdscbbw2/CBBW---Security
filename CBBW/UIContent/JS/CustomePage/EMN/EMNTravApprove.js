@@ -21,7 +21,6 @@ async function GetVechileType(selectedval) {
     }
 };
 async function GetAuthEmployee(selectedval, Vtype) {
-    debugger;
     var NoteNo = $('#NoteNumber').val();
     var pubTran = $('#travDetails_PublicTransports').val();
     var DropdownCtrl = $('#EmployeeNonName');
@@ -42,8 +41,8 @@ async function GetAuthEmployee(selectedval, Vtype) {
             DropdownCtrl.clearValidateClass();
             DropdownCtrl.makeDisable();
             DropdownCtrl.makeDisable();
-            VehicleAlloc.isValid();
-            EligibleVeh.isValid();
+            VehicleAlloc.addClass('is-valid').removeClass('is-invalid');
+            EligibleVeh.addClass('is-valid').removeClass('is-invalid');
             dateDetails.hide();
 
         }
@@ -53,14 +52,14 @@ async function GetAuthEmployee(selectedval, Vtype) {
         DropdownCtrl.val('NA');
         DropdownCtrl.clearValidateClass();
         DropdownCtrl.makeDisable();
-        VehicleAlloc.isValid();
-        EligibleVeh.isValid();
+        VehicleAlloc.addClass('is-valid').removeClass('is-invalid');
+        EligibleVeh.addClass('is-valid').removeClass('is-invalid');
         dateDetails.hide();
     } else {
        // DropdownCtrl.isInvalid();
         getDropDownDataWithSelectedValue(DropdownCtrl.attr('id'), 'Select', '/Security/EMN/GetEmployeeNoName?Noteno=' + NoteNo, selectedval)
     }
-    //  EnableSubmitBtnActive();
+      EnableSubmitBtnActive();
 };
 function ValidateControlCtrl() {
     var target = ValidateControlCtrl.caller.arguments[0].target;
@@ -130,7 +129,6 @@ function EnableSubmitBtnActive() {
     var x = getDivInvalidCount('TravDetails');
     var y = getDivInvalidCount('dateDetails');
     var DWTBtn = $('#btnSubmit');
-    //alert(x); alert(y);
     if ((x + y) * 1 > 0) {
         DWTBtn.makeDisable();
     }
@@ -202,7 +200,7 @@ function SaveDataTravClicked() {
 
 };
 async function getInitialData() {
-    debugger;
+  
     var selectedval = "";
     var Vtype = "";
     var NoteNo = $('#NoteNumber');
@@ -236,7 +234,7 @@ async function getInitialData() {
         })();
 
     }
-
+    EnableSubmitBtnActive();
 
 };
 $(function () {

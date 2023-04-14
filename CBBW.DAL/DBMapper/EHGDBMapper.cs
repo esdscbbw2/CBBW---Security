@@ -119,6 +119,19 @@ namespace CBBW.DAL.DBMapper
                         result.EntryTime = dr["EntryTime"].ToString();
                     else
                         result.EntryTime = result.EntryDate.ToString("hh:mm ss");
+                    
+                    if (!DBNull.Value.Equals(dr["RFIDCardIn"]))
+                        result.RFIDCardIn = dr["RFIDCardIn"].ToString();
+                    if (!DBNull.Value.Equals(dr["RFIDCardOut"]))
+                        result.RFIDCardOut = dr["RFIDCardOut"].ToString();
+                    if (!DBNull.Value.Equals(dr["ActualTourInTime"]))
+                        result.ActualTourInTime = dr["ActualTourInTime"].ToString();
+                    if (!DBNull.Value.Equals(dr["ActualTourOutTime"]))
+                        result.ActualTourOutTime = dr["ActualTourOutTime"].ToString();
+                    if (!DBNull.Value.Equals(dr["ActualKmIn"]))
+                        result.ActualKmIn =int.Parse(dr["ActualKmIn"].ToString());
+                    if (!DBNull.Value.Equals(dr["UserRemarks"]))
+                        result.UserRemarks = dr["UserRemarks"].ToString();
                 }
             }
             catch { }

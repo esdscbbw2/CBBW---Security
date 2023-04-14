@@ -103,6 +103,10 @@ namespace CBBW.BLL.Repository
         {
             return _entities.GetHGOpenOrNot(CentreCode, ref pMsg);
         }
+        public bool SetPunchIN(int CentreCode, int EmployeeNumber, DateTime PunchDate, string PunchTime, ref string pMsg) 
+        {
+            return _entities.SetPunchIN(CentreCode,EmployeeNumber,PunchDate,PunchTime,ref pMsg);
+        }
 
 
     }

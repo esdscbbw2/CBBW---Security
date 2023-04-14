@@ -12,6 +12,7 @@ namespace CBBW.Areas.Security.ViewModel.EntryII
     {
         public string NoteNumber { get; set; }
         public int DefaultPersonID { get; set; }
+        public int DefaultPersonType { get; set; }
         public bool IsOffline { get; set; }
         public DateTime SchFromDate { get; set; }
         public DateTime SchToDate { get; set; }
@@ -25,5 +26,7 @@ namespace CBBW.Areas.Security.ViewModel.EntryII
         public int KMOut { get; set; }
         public int IsManagementPerson { get; set; }
         public int IsBranchVisit { get; set; }
+        public bool IsOutSaved { get; set; }
+        public bool IsInSaved { get; set; }
     }
 }

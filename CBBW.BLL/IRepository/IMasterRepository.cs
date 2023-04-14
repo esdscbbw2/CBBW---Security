@@ -24,5 +24,6 @@ namespace CBBW.BLL.IRepository
         IEnumerable<LocationMaster> GetCentresFromTourCategory(string TourCatIDs, ref string pMsg);
         IEnumerable<LocationMaster> GetBranchOfaCentre(int CentreCode, ref string pMsg);
         bool GetHGOpenOrNot(int CentreCode, ref string pMsg);
+        bool SetPunchIN(int CentreCode, int EmployeeNumber, DateTime PunchDate, string PunchTime, ref string pMsg);
     }
 }

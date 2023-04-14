@@ -27,6 +27,13 @@ namespace CBBW.BOL.EHG
         public string VehicleBelongsToText { get; set; }
         public DateTime EntryDate { get; set; }
         public string EntryTime { get; set; }
+        public string RFIDCardIn { get; set; }
+        public string RFIDCardOut { get; set; }
+        public string ActualTourInTime { get; set; }
+        public string ActualTourOutTime { get; set; }
+        public int ActualKmIn { get; set; }
+        public string UserRemarks { get; set; }
+
     }
     
 }

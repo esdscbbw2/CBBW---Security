@@ -6,10 +6,13 @@
     });
     Notenumberchanged($('#NoteNumber2').val(), Empno);
     var btnDisplays = $('#submitcount').val();
+
     if (btnDisplays == 1) {
         $('#NoteNumber2').makeDisable();
+        $('#Required').makeEnabled();
     } else {
         $('#NoteNumber2').makeEnabled();
+        $('#Required').makeDisable();
     }
 });
 function Notenumberchanged(notenumber, Empno) {
@@ -229,6 +232,8 @@ function EnableSubmitBtn() {
     var SubmitBtn = $('#SubmitBtn');
     if (z <= 0 && btn == 1) {
         SubmitBtn.makeEnabled();
+    } else {
+        SubmitBtn.makeDisable();
     }
 };
 

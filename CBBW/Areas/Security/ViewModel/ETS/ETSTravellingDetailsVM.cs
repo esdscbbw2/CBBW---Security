@@ -20,6 +20,8 @@ namespace CBBW.Areas.Security.ViewModel.ETS
         public int PersonType { get; set; }
         public string FromdateStr { get; set; }
         public string TodateStr { get; set; }
+        public string TourFromdateStr { get; set; }
+        
         public int btnSubmit { get; set; }
         public List<Employee> EmpName { get; set; }
         public ETSTravellingDetails travDetails { get; set; }
@@ -29,6 +31,7 @@ namespace CBBW.Areas.Security.ViewModel.ETS
         public ETSApproveTravDetails appTravData { get; set; }
         public int VehicleTypeProvided { get; set; }
         public string ReasonVehicleProvided { get; set; }
+        public bool Tourcat { get; set; }
 
     }
 }

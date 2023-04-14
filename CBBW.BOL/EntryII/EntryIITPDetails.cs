@@ -21,6 +21,8 @@ namespace CBBW.BOL.EntryII
         public int Isdriver { get; set; }
         public bool IsVehicleProvided { get; set; }
         public string AuthorisedEmpNoName { get; set; }
+        public bool IsInSaved { get; set; }
+        public bool IsOutSaved { get; set; }
 
     }
     public class EntryIITPDetails : EntryIIPersons
@@ -54,6 +56,8 @@ namespace CBBW.BOL.EntryII
         public string LastCentreCodes { get; set; }
         public int LastCentreDistance { get; set; }
         public int RequiredTimeinMinutes { get; set; }
+        //public bool IsOutSaved { get; set; }
+        //public bool IsInSaved { get; set; }
     }
     public class LocationWisePersons  : EntryIITPDetails
     {

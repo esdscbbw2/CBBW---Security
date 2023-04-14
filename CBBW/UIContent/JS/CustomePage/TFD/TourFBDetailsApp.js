@@ -5,7 +5,6 @@
 });
 
 async function getInitialData() {
-    debugger;
     $("#tbody2").empty();
     var rowid = 0;
     var TourCategory = $('#TourCategory');
@@ -23,8 +22,7 @@ async function getInitialData() {
         dataType: 'json',
         success: function (data) {
             $(data).each(function (index, item) {
-               
-                debugger;
+
                 if (index > 0) {
                     rowid = CloneRowReturningID('tbody1', 'tbody2', index - 1, true, false);
                         TourCategory = $('#TourCategory_' + rowid);
@@ -46,6 +44,10 @@ async function getInitialData() {
                  GetConDept(ConcernDeptCode.attr('id'), item.NoteNumber, item.ConcernDeptCode);
                 if (item.ConcernDeptCode >0) {
                     ConcernDeptCode.isValid();
+                    $('#CIGI').makeEnabled();
+                    $('.content ').removeClass('border-red').addClass('border-green')
+                    $('#CIGI').val('1').isValid();
+
                 }
                
                 IDs.html(item.ID);
@@ -79,7 +81,7 @@ function ValidateCloneRowCtrl() {
     if (targetid.indexOf('_') >= 0) { targetid = targetid.split('_')[0] }
     var isvalid = validatectrl(targetid, targetCtrl.val(), $(tblRow).attr('id'));
     if (isvalid) { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
-
+    $('#CIGI').makeEnabled();
     EnableSubmitBtn();
 };
 function validatectrl(targetid, value, rowid) {
@@ -89,7 +91,9 @@ function validatectrl(targetid, value, rowid) {
         case "CIGI":
             isvalid = validatectrl_YesNoCombo(value);
             if (isvalid) {
-                $('.content ').removeClass('border-red').addClass('border-green')
+                $('.content ').removeClass('border-red').addClass('border-green');
+            } else {
+                $('.content ').removeClass('border-green').addClass('border-red');
             }
             break;
         case "ConcernDeptCode":

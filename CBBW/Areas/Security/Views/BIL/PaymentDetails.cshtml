@@ -215,6 +215,8 @@
                                         <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">Remarks  </th>
 
                                     </tr>
+                              
+
                                 </thead>
                                 <tbody>
                                     <tr>
@@ -222,12 +224,21 @@
                                           @Model.DeptName
                                         </td>
                                         <td class="text-center">
-                                            <div class="d-flex">
-                                                @Model.RequisitionNo
-                                                <div class="position-relative pointer w-50">
-                                                    @Model.RequisitionDatestr
-                                                </div>
-                                            </div>
+                                           <table class="w-100">
+                                              <tbody>
+                                                  <tr>
+                                                      <td class="text-center  w-50">
+                                                          @Model.RequisitionNo
+                                                      </td>
+                                                      <td class="text-center" style="border-left: 1px solid #ccc;">
+                                                          <div class="position-relative pointer">
+                                                              @Model.RequisitionDatestr
+                                                          </div>
+                                                      </td>
+                                                  </tr>
+                                              </tbody>
+                                           </table>
+                                           
                                         </td>
                                         <td class="text-center">
                                         @Model.PreparedEmpName

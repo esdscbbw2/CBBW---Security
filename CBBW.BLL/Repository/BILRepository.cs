@@ -107,6 +107,11 @@ namespace CBBW.BLL.Repository
             return _BILEntities.SetAnPFinalSubmit(status, dtldata, ref pMsg);
         }
 
+        public bool SetApprovalTADABillApprovalData(TADABillGeneration model, ref string pMsg)
+        {
+            return _BILEntities.SetTADABillGenerationApprovalData(model, ref pMsg);
+        }
+
         public bool SetApprovalTADABillGeneration(TADABillGeneration model, ref string pMsg)
         {
             return _BILEntities.SetApprovalTADABillGeneration(model, ref pMsg);

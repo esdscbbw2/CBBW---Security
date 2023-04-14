@@ -42,6 +42,7 @@ function NotenumberChanged(mVal) {
     var notenumberCtrl = $('#NoteNumber');
     var notenumber = notenumberCtrl.val();
     var notetype = notenumber.substring(7, 10);
+    var submitBtn = $('#btnSubmit');
     $('#lblNoteDesc').html(GetNoteDescription(notetype));
     if (notenumber != '') {
         notenumberCtrl.isValid();
@@ -54,6 +55,8 @@ function NotenumberChanged(mVal) {
         dataType: 'json',
         success: function (data) {
             $(data).each(function (index, item) {
+                $('#NoteDateCtrl').val(item.EntryDateDisplay);
+                $('#NoteTimeCtrl').val(item.EntryTime);
                 $('#CentreCodenName').val(item.CenterName);
                 $('#EPTourDesc').val(item.EPTourText);
                 $('#AppStat').val(item.IsApprovedDisplay);
@@ -61,7 +64,15 @@ function NotenumberChanged(mVal) {
                 $('#AppReason').val(item.NotAppReason);
                 $('#ratStat').val(item.IsRatifiedDisplay);
                 $('#RatDT').val(item.RetDateTimeDisplay);
-                $('#ratReason').val(item.RetReason);                
+                $('#ratReason').val(item.RetReason);
+                if (item.IsDataToSave == 1) { submitBtn.makeEnabled(); } else { submitBtn.makeDisable(); }
+                var ratDivCtrl = $('#mratDiv');
+                if (item.IsRatifiedDisplay == '-') {
+                    ratDivCtrl.addClass('alert-danger').removeClass('alert-success');
+                }
+                else {
+                    ratDivCtrl.addClass('alert-success').removeClass('alert-danger');
+                }
             });
         }
     });

@@ -26,5 +26,6 @@ namespace CBBW.Areas.Security.ViewModel.EMN
         public int CanDelete { get; set; }
         public int CBUID { get; set; }
         public string HeaderText { get; set; }
+        public bool TourCatStatus { get; set; }
     }
 }

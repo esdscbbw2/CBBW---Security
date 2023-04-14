@@ -149,7 +149,7 @@
                         <ul style="list-style:none;">
                             <li style="font-size: 16px;">
                                 The Details Displayed & Entered Are As Per Rule & Policy Of The Company. Hence Entered & Saved The Transaction As Required:
-                                <select style="width: 10%;" id="Checked" onchange="ValidateControl();" class="form-select content border-red is-invalid" aria-label="Default select example">
+                                <select disabled style="width: 10%;" id="Checked" onchange="ValidateControl();" class="form-select content border-red is-invalid" aria-label="Default select example">
                                     <option selected="" value="-1">-</option>
                                     <option value="1">Yes</option>
 
@@ -235,13 +235,13 @@
                 }).then(callback);
                 function callback(result) {
                     if (result.value) {
-                        $('#SubmitCount').val(0);
-                        var Active = GetInActiveInDD('EmployeeNo');
-                        if (Active) {
-                            $('#SubmitBtn').makeEnabled();
-                        } else {
-                            $('#SubmitBtn').makeDisabled();
-                        }
+                        //$('#SubmitCount').val(0);
+                        //var Active = GetInActiveInDD('EmployeeNo');
+                        //if (Active) {
+                        //    $('#SubmitBtn').makeEnabled();
+                        //} else {
+                        //    $('#SubmitBtn').makeDisabled();
+                        //}
                     }
                 }
 

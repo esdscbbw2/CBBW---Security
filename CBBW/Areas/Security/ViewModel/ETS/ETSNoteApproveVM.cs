@@ -23,6 +23,7 @@ namespace CBBW.Areas.Security.ViewModel.ETS
         public int IsRatified { get; set; }
         public string RatifiedReason { get; set; }
         public int btnDisplay { get; set; }
+        public bool TourCatstatus { get; set; }
 
     }
 }

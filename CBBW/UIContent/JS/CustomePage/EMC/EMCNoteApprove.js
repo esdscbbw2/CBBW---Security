@@ -29,6 +29,10 @@ function Notenumberchanged(notenumber) {
                 $(data).each(function (index, item) {
                     $('#CenterCodeName').val(item.emnHeader.CenterCodeName);
                     $('#AttachFile').val(item.emnHeader.AttachFile);
+                    $('#EntryDate').val(item.emnHeader.EntryDateDisplay);
+                    $('#EntryTime').val(item.emnHeader.EntryTime);
+                    
+                    
                     if (item.emnHeader.IsEPTour == true) {
                         $('#IsEPTour').val('Yes');
 

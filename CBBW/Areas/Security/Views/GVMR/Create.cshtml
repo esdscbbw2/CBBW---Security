@@ -48,7 +48,7 @@
                                      htmlAttributes: new
                                      {
                                          @class = "form-select canclear pointer is-invalid",
-                                              onchange = "ValidateControl()"
+                                              onchange = "ValidateControls()"
                                      })
                             </div>
 
@@ -221,8 +221,6 @@
                             </tbody>
                             <tbody id="tbody4"></tbody>
 
-
-
                             <tbody id="tbody1">
                                 <tr id="0" class="add-row">
 
@@ -273,7 +271,7 @@
                                                class="form-control w-200" id="0_ActualTripOutKM" disabled>
                                     </td>
                                     <td class="text-center">
-                                        <textarea data-name="Remark" id="0_Remark" class="form-control canclear pointer" cols="20" rows="2" data-toggle="tooltip" data-placement="bottom" title="Remark"></textarea>
+                                        <textarea data-name="Remark"  oncopy="return false" onpaste="return false"  onkeypress="keypressCountWord(this);" id="0_Remark" class="form-control canclear pointer" cols="20" rows="2" data-toggle="tooltip" data-placement="bottom" title="Remark"></textarea>
                                     </td>
                                 </tr>
 
@@ -388,7 +386,7 @@
                 format: "hh:mm A"
             }).on('dp.show', function () {
                 if (firstOpen) {
-                    time = moment().startOf('day');
+                    //time = moment().startOf('day');
                     firstOpen = false;
                 } else {
                     time = "01:00 PM"

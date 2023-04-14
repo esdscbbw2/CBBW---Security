@@ -55,9 +55,9 @@
                                     <tr>
                                         <td class="text-center">@(item.PublicTransport?"Yes":"No")</td>
                                         <td class="text-center">@item.VehicleTypeText</td>
-                                        <td class="text-center">@item.ReasonVehicleReq</td>
+                                        <td class="text-center">@(string.IsNullOrEmpty(item.ReasonVehicleReq)?"NA": item.ReasonVehicleReq)</td>
                                         <td class="text-center">@item.VehicleTypeProvidedText</td>
-                                        <td class="text-center">@item.ReasonVehicleProvided</td>
+                                        <td class="text-center">@(string.IsNullOrEmpty(item.ReasonVehicleProvided)?"NA": item.ReasonVehicleProvided)</td>
                                         <td class="text-center">@item.SchFromDateDisplay</td>
                                         <td class="text-center">@item.SchFromTime</td>
                                         <td class="text-center">@item.SchTourToDateDisplay</td>

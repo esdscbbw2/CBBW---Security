@@ -24,5 +24,7 @@ namespace CBBW.Areas.Security.ViewModel.EntryII
         public List<RFID> RFIDCardList { get; set; }
         public bool IsVehicleProvided { get; set; }
         public int RequiredKMIn { get; set; }
+        public bool IsOutSaved { get; set; }
+        public bool IsInSaved { get; set; }
     }
 }

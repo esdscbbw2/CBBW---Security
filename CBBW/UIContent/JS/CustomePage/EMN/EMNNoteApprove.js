@@ -32,6 +32,11 @@ function Notenumberchanged(notenumber) {
             $(data).each(function (index, item) {
                 $('#CenterCodeName').val(item.emnHeader.CenterCodeName);
                 $('#AttachFile').val(item.emnHeader.AttachFile);
+                $('#EntryDate').val(item.emnHeader.EntryDateDisplay);
+                $('#EntryTime').val(item.emnHeader.EntryTime);
+                if (item.TourCatStatus) {
+                    $('#OtherPlace').val('Yes')
+                } else { $('#OtherPlace').val('-') }
                // if ($('#CenterCodeName').val() != "") { $('#btnTravDetails').makeEnabled();}
                 getTravellingPersonData('-1');
             });

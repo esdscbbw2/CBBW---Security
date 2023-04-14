@@ -234,6 +234,30 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+        public DataTable GetPunchingsV4(int CentreCode,bool IsMainLocation,DateTime SchFromDate,string SchFromTime, List<EmpDate> dtldata, ref string pMsg)
+        {
+            try
+            {
+                CommonTable dtl = new CommonTable(dtldata);
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[5];
+                para[paracount] = new SqlParameter("@CentreCode", SqlDbType.Int);
+                para[paracount++].Value = CentreCode;
+                para[paracount] = new SqlParameter("@IsMainLocation", SqlDbType.Bit);
+                para[paracount++].Value = IsMainLocation;
+                para[paracount] = new SqlParameter("@SchFromDate", SqlDbType.Date);
+                para[paracount++].Value = SchFromDate;
+                para[paracount] = new SqlParameter("@SchFromTime", SqlDbType.NVarChar);
+                para[paracount++].Value = SchFromTime;
+                para[paracount] = new SqlParameter("@PunchEmpDate", SqlDbType.Structured);
+                para[paracount++].Value = dtl.UDTable;
+                using (SQLHelper sql = new SQLHelper("[ENT].[GetPunchingsV4]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
         public DataTable GetLastPunchingCentresV3(int CentreCode, List<EmpDate> dtldata, ref string pMsg)
         {
             try
@@ -388,6 +412,19 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return 0; }
         }
+        public DataTable GetEntryIINoteStatus(string NoteNumber, int CentreCode, ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("select * from [ENT].[GetEntryIINoteStatus]('" + NoteNumber + "'," + CentreCode + ")", CommandType.Text))
+                {
+                    return sql.GetDataTable();
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+
+
 
 
     }

@@ -23,5 +23,6 @@ namespace CBBW.Areas.Security.ViewModel.ETS
         public int CanDelete { get; set; }
         public int CBUID { get; set; }
         public string HeaderText { get; set; }
+        public bool TourCatstatus { get; set; }
     }
 }

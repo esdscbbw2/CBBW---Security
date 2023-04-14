@@ -258,7 +258,7 @@ new { Area = "Security" })'">
                                         </td>
                                         <td class="text-center">
                                             @*<div id="0_ActualTime" class="form-group"></div>*@
-                                            <input id="0_ActualTime" type="text" style="width: 154px;" class="form-control timePicker pointer is-invalid displaytime" onchange="ValidateControls()" placeholder="-">
+                                            <input id="0_ActualTime" type="text" style="width: 154px;" class="form-control timePicker pointer is-invalid displaytime" onblur="ValidateControls()" placeholder="-">
 
                                         </td>
                                         <td class="text-center">
@@ -480,7 +480,7 @@ new { Area = "Security" })'">
                 format: "hh:mm A"
             }).on('dp.show', function () {
                 if (firstOpen) {
-                    time = moment().startOf('day');
+                   // time = moment().startOf('day');
                     firstOpen = false;
                 } else {
                     time = "01:00 PM"
@@ -497,6 +497,13 @@ new { Area = "Security" })'">
             var url = '/Security/MaterialGatePass/VehicleMaterialOutView?NoteNumber=' + notenumber +'&CBUID=2';
             window.location.href = url;
         };
+        function btnClearClicked() {
+            var notenumber = $("#NoteNumber").val();
+            var url = '/Security/MaterialGatePass/VehicleMaterialInDetails?NoteNumber=' + notenumber + '&CBUID=1';
+            window.location.href = url;
+        };
+
+        
     </script>
 
 }

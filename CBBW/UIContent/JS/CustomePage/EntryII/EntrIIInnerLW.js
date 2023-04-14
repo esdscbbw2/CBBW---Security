@@ -1,4 +1,44 @@
-﻿function KMChanged() {
+﻿function ValidateControl() {
+    var target = ValidateControl.caller.arguments[0].target;
+    var targetid = $(target).attr('id');
+    //alert(targetid);
+    var isvalid = validatectrl(targetid, $(target).val());
+    if (isvalid) {
+        $(target).removeClass('is-invalid').addClass('is-valid');
+    } else {
+        $(target).removeClass('is-valid').addClass('is-invalid');
+    }
+    SubmitButtonStat();
+
+};
+function validatectrl(targetid, value) {
+    var isvalid = false;
+    switch (targetid) {
+        case "LWVRemarks":
+            if (value.length > 1 && WordCount(value) <= 100) {
+                if (IsAlphaNumericWithSpace(value)) {
+                    isvalid = true;
+                }
+            }
+            break;
+        case "DriverNoForManagement":
+            if (value >= 1) { isvalid = true; }
+            break;
+    }
+
+
+    return isvalid;
+};
+function SubmitButtonStat() {
+    var isactive = true;
+    var myBtn = $('#btnSubmit');
+    var x = $('#VDTable').find('.is-invalid').length;
+    if (x > 0) { isactive = false; }
+
+    if (isactive) { myBtn.makeEnabled(); } else { myBtn.makeDisable(); }
+};
+
+function KMChanged() {
     var targetCtrl = $(KMChanged.caller.arguments[0].target);
     var timerid = targetCtrl.attr('id');
     var datadivid = 'V' + timerid;
@@ -165,8 +205,10 @@ function ATIBluredLN() {
 };
 $(document).ready(function () {
     var defPerson = $('#DefaultPersonID').val();
-    $('#' + defPerson).attr('checked', true);
-    VisiblePersonRow(defPerson);
+    var defPersonType = $('#DefaultPersonType').val();
+    //alert(defPerson);
+    $('#' + defPerson + '_' + defPersonType).attr('checked', true);
+    VisiblePersonRow(defPerson + '_' + defPersonType);
     RFIDInChanged();
     RFIDOutChanged();
 });
@@ -237,4 +279,45 @@ $(document).ready(function () {
         RFIDInCtrl.makeEnabled();
         RFIDOutCtrl.makeEnabled();
     }
+});
+$(document).ready(function () {
+    //var kmInCtrl = $('#cActualKmIn');
+    var rfidoutCtrl = $('#RFIDCardOut');
+    var rfidinCtrl = $('#RFIDCardIn');
+    var tOuttimeCtrl = $('#TourOutTimeCtrl');
+    var tIntimeCtrl = $('#TourInTimeCtrl');
+    var kmoutCtrl = $('#KMOutCtrl');
+    var kminCtrl = $('#KMInCtrl');
+    var isOut = $('#IsOutSaved').val();
+    var isIn = $('#IsInSaved').val();
+    //alert(isOut + ' - ' + isIn);
+    var isactive = 'True'; //$('#VehicleDetails_IsActive').val();
+    if (isactive == 'True') {
+        if (isIn == 'True') {
+            tIntimeCtrl.makeDisable();
+            rfidinCtrl.makeDisable();
+            kminCtrl.makeDisable()
+            if (isOut == 'True') {
+                rfidoutCtrl.makeDisable();
+                tOuttimeCtrl.makeDisable();
+                kmoutCtrl.makeDisable();
+                //kmInCtrl.makeDisable();
+            }
+            else {
+                rfidoutCtrl.makeEnabled();
+                tOuttimeCtrl.makeEnabled();
+                kmoutCtrl.makeEnabled();
+            }
+        }
+        else {
+            tOuttimeCtrl.makeDisable();
+            rfidoutCtrl.makeDisable();
+            rfidinCtrl.makeEnabled();
+            tIntimeCtrl.makeEnabled();
+            //kmInCtrl.makeDisable();
+            kmoutCtrl.makeDisable();
+            kminCtrl.makeEnabled();
+        }
+    }
+    
 });

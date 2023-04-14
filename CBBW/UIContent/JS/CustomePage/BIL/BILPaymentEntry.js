@@ -63,7 +63,6 @@ function removeClonebtn() {
     CheckList.prop('checked', true);
     VisibleRowsEnable(lastRowId);
 };
-
 function EnableAddBtnInCloneRowIfOnlyLastV2(tblRow, addBtnBaseID) {
     var tblrow = $(tblRow);
     var rowid = tblrow.attr('id');
@@ -74,7 +73,6 @@ function EnableAddBtnInCloneRowIfOnlyLastV2(tblRow, addBtnBaseID) {
     addbtn.tooltip('hide');
     addbtn.makeDisable();
 };
-
 function EnableAddBtn(tblRow, addBtnBaseID, CheckId) {
     var tblrow = $(tblRow);
     var rowid = tblrow.attr('id')
@@ -311,7 +309,6 @@ function ChangeNoteNumber() {
             data: { NoteNumber: TargetVal },
             dataType: 'json',
             success: function (data) {
-
                 $(data).each(function (index, item) {
                     if (TargetVal != "-1") {
                         if (rowid > 0) {
@@ -344,6 +341,8 @@ function ChangeNoteNumber() {
                         
                     }
                 });
+                $('#Checked').val('-1').addClass('is-invalid valid').removeClass('is-valid');
+                $('#Checked').makeDisable();
             },
             error: function (xhr, status) {
                 alert(xhr.responseText);
@@ -552,7 +551,9 @@ function validatectrl(targetid, value) {
             isvalid = validatectrl_ValidatestringLength(value);
             if (isvalid) {
                 $('.content').removeClass('border-red').addClass('border-green');
+                $('#BtnSubmit').makeEnabled();
             } else {
+                $('#BtnSubmit').makeDisable();
                 $('.content').removeClass('border-green').addClass('border-red');
             }
 
@@ -639,7 +640,8 @@ function SaveDetails() {
                     }).then(callback);
                     function callback(result) {
                         if (result.value) {
-                            $('#BtnSubmit').makeEnabled();
+                            
+                            $('#Checked').makeEnabled();
                             //var url = "/Security/EMN/Index"
                             //window.location.href = url;
                         }
@@ -796,7 +798,7 @@ function decrementQty(e) {
 function AEDincrementQty() {
     var target = $(AEDincrementQty.caller.arguments[0].target);
     var mid = target.attr('id');
-    var maxvalue = $('#' + mid + 'Max').html() * 1;
+    var maxvalue = $('#E' + mid + 'Max').html() * 1;
     var txtcTrl = $('#E' + mid);
     var mValue = txtcTrl.val() * 1;
     mValue += 1;

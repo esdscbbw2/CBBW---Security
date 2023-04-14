@@ -167,7 +167,7 @@
                                 @Html.TextBoxFor(x => x.ETotalAmount, new { @minlength = "0", @class = "form-control", @readonly = "readonly" })
                             </td>
                             <td class="text-center">
-                                @Html.TextAreaFor(x => x.EReamrk, new { @class = "form-control", @onkeypress = "keypressCountWord(this);" })
+                                @Html.TextAreaFor(x => x.EReamrk, new { @oncopy = "return false", @onpaste = "return false", @class = "form-control", @onkeypress = "keypressCountWord(this);" })
                             </td>
                         </tr>
                     </tbody>
@@ -235,12 +235,12 @@
                                     @Html.DropDownListFor(model => model.PreparedEmpNo, new SelectList("", "ID", "DisplayText"), "Select", htmlAttributes: new { @class = "form-select pointer is-invalid", @onchange = "ValidateControl()" })
                                 </td>
                                 <td class="text-center">
-                                    @Html.TextBoxFor(x => x.RequisitionAmt, new { @class = "form-control numbers is-invalid", @onchange = "ValidateControl()", autocomplete = "off", onkeyup = "return isPytmFormDA(event);", onkeypress = "return numbervalidate(event)" })
+                                    @Html.TextBoxFor(x => x.RequisitionAmt, new { @Value =(Model.ATotalAmount),@class = "form-control numbers is-invalid", @onchange = "ValidateControl()", autocomplete = "off", onkeyup = "return isPytmFormDA(event);", onkeypress = "return numbervalidate(event)", @readonly = "readonly" })
                                 </td>
                                 <td class="text-center" id="DisplayETotalAmount">
                                 </td>
                                 <td>
-                                    @Html.TextAreaFor(x => x.Remark, new { @class = "form-control", @onchange = "ValidateControl()", @onkeypress = "keypressCountWord(this);" })
+                                    @Html.TextAreaFor(x => x.Remark, new {@oncopy = "return false",@onpaste = "return false",  @class = "form-control", @onchange = "ValidateControl()", @onblur = "keypressCountWord(this);" })
                                 </td>
                             </tr>
 

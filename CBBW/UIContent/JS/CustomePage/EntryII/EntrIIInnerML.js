@@ -1,4 +1,43 @@
-﻿function RFIDInChanged() {
+﻿function ValidateControl() {
+    var target = ValidateControl.caller.arguments[0].target;
+    var targetid = $(target).attr('id');
+    //alert(targetid);
+    var isvalid = validatectrl(targetid, $(target).val());
+    if (isvalid) {
+        $(target).removeClass('is-invalid').addClass('is-valid');
+    } else {
+        $(target).removeClass('is-valid').addClass('is-invalid');
+    }
+    SubmitButtonStat();
+    
+};
+function validatectrl(targetid, value) {
+    var isvalid = false;
+    switch (targetid) {       
+        case "MLVRemarks":
+            if (value.length > 1 && WordCount(value) <= 100) {
+                if (IsAlphaNumericWithSpace(value)) {
+                    isvalid = true;
+                }
+            }
+            break;
+        case "DriverNoForManagement":
+            if (value >= 1) { isvalid = true; }
+            break;
+    }
+
+    
+    return isvalid;
+};
+function SubmitButtonStat() {
+    var isactive = true;
+    var myBtn = $('#btnSubmit');
+    var x = $('#VDTable').find('.is-invalid').length;
+    if (x > 0) { isactive = false; }
+
+    if (isactive) { myBtn.makeEnabled(); } else { myBtn.makeDisable(); }
+};
+function RFIDInChanged() {
     var targetCtrl = $('#RFIDCardIn');
     var divCtrl = $('#VTourInTimeCtrl');
     var timCtrl = $('#TourInTimeCtrl');
@@ -187,4 +226,35 @@ $(document).ready(function () {
             },
         });
     });
+});
+$(document).ready(function () {
+    var kmInCtrl = $('#cActualKmIn');
+    var rfidoutCtrl = $('#RFIDCardOut');
+    var rfidinCtrl = $('#RFIDCardIn');
+    var tOuttimeCtrl = $('#TourOutTimeCtrl');
+    var tIntimeCtrl = $('#TourInTimeCtrl');
+    var isOut = $('#IsOutSaved').val();
+    var isIn = $('#IsInSaved').val();
+    //alert(isOut + ' - ' + isIn);
+    if (isOut == 'True') {
+        tOuttimeCtrl.makeDisable();
+        rfidoutCtrl.makeDisable();
+        if (isIn == 'True') {
+            rfidinCtrl.makeDisable();
+            tIntimeCtrl.makeDisable();
+            kmInCtrl.makeDisable();
+        }
+        else {
+            rfidinCtrl.makeEnabled();
+            tIntimeCtrl.makeEnabled();
+            kmInCtrl.makeEnabled();
+        }
+    }
+    else {
+        tOuttimeCtrl.makeEnabled();
+        rfidoutCtrl.makeEnabled();
+        rfidinCtrl.makeDisable();
+        tIntimeCtrl.makeDisable();
+        kmInCtrl.makeDisable();
+    }
 });

@@ -531,7 +531,9 @@ function addOfficeWorkCloneBtnClick() {
     $('#ToDate_' + rowid).val('');
     //$('#FromDate_' + rowid).val('');
     $('#lblFromDate_' + rowid).html(frmdtlblSource.html());
-    $('#FromTime_' + rowid).val('');
+    //$('#FromTime_' + rowid).val('');
+    $('#FromTime_' + rowid).isValid();
+    $('#FromTime_' + rowid).attr('disabled', 'disabled');
     $('#txtDDPersonType_' + rowid).val('');
     $('#FromDate_' + rowid).isValid();
     $('#FromDate_' + rowid).attr('disabled', 'disabled');

@@ -14,6 +14,7 @@
         @Html.HiddenFor(m => m.etsHeader.CenterName)
         @Html.HiddenFor(m => m.etsHeader.CenterCodeName)
         @Html.HiddenFor(m => m.Btnsubmit)
+        @Html.HiddenFor(m => m.TourCatstatus)
         <div class="">
             <div class="row newTable">
                 <div class="fixedElement">
@@ -323,14 +324,28 @@
                     <div class="bgColor mt-4 bg-transparent text-left" id="Questions">
                         <div class="bgColor mt-4 bg-transparent content text-left">
                             <ul style="list-style:none;">
-                                <li style="font-size: 16px;">
-                                    It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
-                                    <select id="otherplace" style="width: 110px;" class="form-select is-invalid" onchange="ValidateControl()" aria-label="Default select example">
-                                        <option selected="">-</option>
-                                        <option value="0">Yes</option>
-                                        <option value="1">No</option>
-                                    </select>
-                                </li>
+                                @if (Model.TourCatstatus)
+                                {
+                                    <li style="font-size: 16px;">
+                                        It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
+                                        <select id="otherplace" style="width: 110px;" class="form-select is-invalid" onchange="ValidateControl()" aria-label="Default select example">
+                                            <option selected="">-</option>
+                                            <option value="0">Yes</option>
+                                            <option value="1">No</option>
+                                        </select>
+                                    </li>
+                                    
+                                }
+                                else
+                                {
+                            <li style="font-size: 16px;">
+                                It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
+                                <select disabled id="otherplace" style="width: 110px;" class="form-select" aria-label="Default select example">
+                                    <option selected value="-">-</option>
+                                </select>
+                            </li>
+                                }
+
                             </ul>
                         </div>
                         <div class="bgColor mt-4 bg-transparent content text-left">
@@ -359,10 +374,10 @@
                         </div>
                     </div>
 
-                    
+
 
                 </div>
-                </div>
+            </div>
         </div>
     }
 </div>
@@ -402,11 +417,11 @@
                 text: "Are you sure you want to delete this?",
                 icon: 'success',
                 html: `<div style="text-align:left;">
-                                                                <div class="form-group">
-                                                                    <label class="swal-label">Attach File (Only Pdf,Png & Jpg Files)</label>
-                                                                    <input type="file" id="uploadCtrl" name="uploadCtrl" class="form-control" placeholder="">
-                                                                </div>
-                                                            </div>`,
+                                                                    <div class="form-group">
+                                                                        <label class="swal-label">Attach File (Only Pdf,Png & Jpg Files)</label>
+                                                                        <input type="file" id="uploadCtrl" name="uploadCtrl" class="form-control" placeholder="">
+                                                                    </div>
+                                                                </div>`,
                 cancelButtonClass: 'btn-cancel',
                 cancelButtonText: 'Cancel',
                 confirmButtonText: 'Submit',
@@ -503,7 +518,7 @@
                             window.location.href = url;
                         }
                     }
-                } 
+                }
             });
         });
         $(document).ready(function () {
@@ -512,12 +527,12 @@
                 window.open(url);
             });
 
-          
 
-            
+
+
 
         });
-        
+
     </script>
 }
 

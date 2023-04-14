@@ -51,8 +51,6 @@
 
                 </div>
             </div>
-
-
             <div class="card mb-4 mt-4">
                 <div class="card-body approvalForm">
                     <form class="form-sample form-inline row ms-auto">
@@ -69,18 +67,17 @@
                                            })
 
                             </div>
-
                             <label class="col-form-label col-md-1">
                                 Date  :
                             </label>
                             <div class="col-md-2">
-                                <input type="text" class="form-control" value="@DateTime.Today.ToString("dd-MM-yyyy")" disabled>
+                                <input id="cNoteDate" type="text" class="form-control" value="" disabled>
                             </div>
                             <label class="col-form-label col-md-1">
                                 Time  :
                             </label>
                             <div class="col-md-2">
-                                <input type="text" class="form-control" value="@DateTime.Now.ToString("hh:mm tt")" disabled>
+                                <input id="cNoteTime" type="text" class="form-control" value="" disabled>
                             </div>
 
                         </div>

@@ -37,5 +37,6 @@ namespace CBBW.BLL.IRepository
         int GetTravelKmsOfANote(string NoteNumber, DateTime TillDate, int FromLocation, ref string pMsg);
         EntryIIInnerView GetEntryIIData(string NoteNumber, int CentreCode, bool IsMainlocation, ref string pMsg);
         int IsMainLocationEntered(string NoteNumber, ref string pMsg);
+        NoteStatus GetEntryIINoteStatus(string NoteNumber, int CentreCode, ref string pMsg);
     }
 }

@@ -12,6 +12,7 @@
     @Html.HiddenFor(m => m.CanDelete)
     @Html.HiddenFor(m => m.CBUID)
     @Html.HiddenFor(x => x.tfdHdr.NoteNumber)
+    @Html.HiddenFor(x=>x.tfdHdr.ApprovalTime)
     <div class="">
         <div class="row newTable" id="AllData">
             <div class="fixedElement">
@@ -182,7 +183,7 @@
                                         <label>Date &amp; Time Of Approval :</label>
                                     </div>
                                     <div class="col-md-2">
-                                        <input type="text" class="form-control" value="@Model.tfdHdr.ApprovalDTstr @Model.tfdHdr.ApprovalTime" disabled>
+                                        <input type="text" class="form-control" value="@Model.tfdHdr.ApprovalDTstr @Model.tfdHdr.ApprovalTime" readonly>
                                     </div>
                                     <div class="col-md-2 col-form-label">
                                         <label>Reason If not Approved :</label>

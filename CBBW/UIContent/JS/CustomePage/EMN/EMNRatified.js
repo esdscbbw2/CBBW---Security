@@ -27,6 +27,8 @@ function Notenumberchanged(notenumber) {
             $(data).each(function (index, item) {
                 $('#CenterCodeName').val(item.emnHeader.CenterCodeName);
                 $('#AttachFile').val(item.emnHeader.AttachFile);
+                $('#EntryDate').val(item.emnHeader.EntryDateDisplay);
+                $('#EntryTime').val(item.emnHeader.EntryTime);
                 var approv = item.emnHeader.IsApproved == true ? "Yes" : "No"
                 if (notenumber == null || notenumber == "") {
                     $('#IsApproved').val('-');
@@ -37,6 +39,10 @@ function Notenumberchanged(notenumber) {
                     $('#ApprovedDateTime').val(item.emnHeader.ApproveDatestr + " " + item.emnHeader.ApproveTime);
                     $('#ApprovedReason').val(item.emnHeader.ApprovedReason);
                 }
+
+                if (item.TourCatStatus) {
+                    $('#OtherPlace').val('Yes')
+                } else { $('#OtherPlace').val('-') }
                
                 getTravellingPersonData('-1')
                // if ($('#CenterCodeName').val() != "") { $('#btnTravDetails').makeEnabled(); }

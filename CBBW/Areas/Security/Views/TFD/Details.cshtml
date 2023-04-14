@@ -72,7 +72,8 @@
                                             </label>
 
                                             <div class="col-md-4">
-                                                @Html.TextBoxFor(x => x.tfdHdr.EntEntryTime, new { @class = "form-control", @readonly = "readonly" })
+                                                <input type="text" class="form-control" value="@Model.tfdHdr.EntEntryTime" disabled>
+                                                @*@Html.TextBoxFor(x => x.tfdHdr.EntEntryTime, new { @class = "form-control", @readonly = "readonly" })*@
 
                                             </div>
                                         </div>

@@ -210,6 +210,12 @@ namespace CBBW.DAL.Entities
             _DBResponseMapper.Map_DBResponse(_datasync.SetApprovalTADABillGeneration(model, ref pMsg), ref pMsg, ref result);
             return result;
         }
+        public bool SetTADABillGenerationApprovalData(TADABillGeneration model, ref string pMsg)
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_datasync.SetTADABillGenerationApprovalData(model, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
         public bool SetAnPFinalSubmit(int status, List<ApprovalNoteNo> dtldata, ref string pMsg)
         {
             bool result = false;

@@ -18,6 +18,7 @@ namespace CBBW.BOL.GVMR
         public string VehicleType { get; set; }
         public string ModelName { get; set; }
         public DateTime EntryDate { get; set; }
+        public string EntryDateDisplay { get; set; }
         public string EntryTime { get; set; }
         public string MonthYear { get; set; }
         public int DriverNo { get; set; }

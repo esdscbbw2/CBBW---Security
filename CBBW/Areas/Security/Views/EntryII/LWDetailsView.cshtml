@@ -235,7 +235,7 @@
                                             <td class="text-center">@(item.RequiredTourInTime.Hour==0?"-":item.ActualTourOutTime.ToString("hh:mm tt"))</td>
                                             <td class="text-center">@item.EMPunchStatus</td>
                                             <td class="text-center">@item.ActualTourInDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
-                                            <td class="text-center">@(item.ActualTourInTime.Hour==0?"-":item.ActualTourOutTime.ToString("hh:mm tt"))</td>
+                                            <td class="text-center">@(item.ActualTourInTime.Hour==0?"-":item.ActualTourInTime.ToString("hh:mm tt"))</td>
                                             <td class="text-center">@item.DWToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
                                             <td class="text-center">@item.ActualTourOutDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
                                             <td class="text-center">@(item.ActualTourOutTime.Hour==0?"-":item.ActualTourOutTime.ToString("hh:mm tt"))</td>

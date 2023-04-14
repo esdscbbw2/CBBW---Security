@@ -22,6 +22,10 @@ namespace CBBW.BLL.Repository
         {
             return _MGPEntities.getApprovedNoteNumbers(Centercode, ref pMsg);
         }
+        public IEnumerable<MGPNotes> GetNoteNumbersfromMGP(int Centercode, ref string pMsg)
+        {
+            return _MGPEntities.GetNoteNumbersfromMGP(Centercode, ref pMsg);
+        }
         public List<MGPOutInDetails> getMGPOutDetails(string NoteNumber, ref string pMsg)
         {
            return _MGPEntities.getMGPOutDetails(NoteNumber, ref pMsg);

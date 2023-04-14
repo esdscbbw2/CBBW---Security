@@ -64,10 +64,10 @@ function Notenumberchanged(notenumber) {
                     $('#tfdHdr_RefNoteNumber').val(item.tfdHdr.RefNoteNumber);
                     $('#tfdHdr_AuthEmployeeName').val(item.tfdHdr.AuthEmployeeName);
                     $('#tfdHdr_EntEntryDatestr').val(item.tfdHdr.EntEntryDatestr);
-                    var str = item.tfdHdr.EntEntryTime;
-                    var lastIndex = str.lastIndexOf(".");
-                    str = str.substring(0, lastIndex);
-                    $('#tfdHdr_EntEntryTime').val(str);
+                    //var str = item.tfdHdr.EntEntryTime;
+                    //var lastIndex = str.lastIndexOf(".");
+                    //str = str.substring(0, lastIndex);
+                    $('#tfdHdr_EntEntryTime').val(item.tfdHdr.EntEntryTime);
                     $('#tfdHdr_TourFromDatestr').val(item.tfdHdr.TourFromDatestr);
                     $('#tfdHdr_TourToDatestr').val(item.tfdHdr.TourToDatestr);
                     $('#tfdHdr_PurposeOfVisit').val(item.tfdHdr.PurposeOfVisit);

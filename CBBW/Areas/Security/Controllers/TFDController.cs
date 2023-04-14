@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -8,6 +9,7 @@ using CBBW.BLL.IRepository;
 using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.EHG;
+using CBBW.BOL.Master;
 using CBBW.BOL.TFD;
 
 namespace CBBW.Areas.Security.Controllers
@@ -106,8 +108,8 @@ namespace CBBW.Areas.Security.Controllers
                         model.Notelist = _iTFD.GetNoteNumberList(user.CentreCode, 1, ref pMsg);
                         //model.NoteNumber = model.Notelist.Where(x => x.NoteNumber == TourFBVM.RefNoteNumber).FirstOrDefault().NoteNumber;
                         model.NoteNo = Vmhdr.NoteNo;
-                        model.tfdHdr.NoteNumber = Vmhdr.tfdHdr.NoteNumber;
-                        model.tfdHdr.RefNoteNumber = Vmhdr.tfdHdr.RefNoteNumber;
+                        model.tfdHdr.NoteNumber = TourFBVM.NoteNumber;
+                        model.tfdHdr.RefNoteNumber = TourFBVM.RefNoteNumber;
                         model.submitcount = TourFBVM.submitcount;
                         model.tfdHdr.AuthEmployeeCode = Vmhdr.tfdHdr.AuthEmployeeCode;
                         TempData["TFDDetails"] = TourFBVM;
@@ -172,6 +174,7 @@ namespace CBBW.Areas.Security.Controllers
         {
             TFDHdrVM result = new TFDHdrVM();
             result.tfdHdr = _iTFD.GetTFDHeaderData(NoteNumber, user.CentreCode, 1, ref pMsg);
+            result.tfdHdr.EntEntryTime = string.IsNullOrEmpty(result.tfdHdr.EntEntryTime) ? "" : result.tfdHdr.EntEntryTime.Substring(0, 8);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetENTAuthEmployeeList(string Notenumber)
@@ -242,6 +245,7 @@ namespace CBBW.Areas.Security.Controllers
 
                 if (_iTFD.SetTFDFeedBackDetails(fbmodel.NoteNumber, fbmodel.tfdfbdetails, ref pMsg))
                 {
+                    TempData["TFDDetails"] = null;
                     fbmodel.submitcount = 1;
                     TempData["BtnSubmit"] = 1;
                     TempData["TFDDetails"] = fbmodel;
@@ -290,9 +294,11 @@ namespace CBBW.Areas.Security.Controllers
             modelvm.CanDelete = CanDelete;
             modelvm.CBUID = CBUID;
             modelvm.tfdHdr = _iTFD.GetTFDHeaderDetails(NoteNumber, user.CentreCode, 1, ref pMsg);
-            var pos = modelvm.tfdHdr.EntEntryTime.LastIndexOf('.');
-            var Entrydate = modelvm.tfdHdr.EntEntryTime.Substring(0, pos);
-            modelvm.tfdHdr.EntEntryTime = Entrydate;
+            modelvm.tfdHdr.EntEntryTime = string.IsNullOrEmpty(modelvm.tfdHdr.EntEntryTime) ? "" : modelvm.tfdHdr.EntEntryTime.Substring(0,8);
+            //var pos = modelvm.tfdHdr.EntEntryTime.LastIndexOf('.');
+            //var Entrytimes = modelvm.tfdHdr.EntEntryTime.Substring(0, pos);
+            //modelvm.tfdHdr.EntEntryTime = Entrytimes;
+            //modelvm.tfdHdr.EntEntryTime = DateTime.ParseExact(modelvm.tfdHdr.EntEntryTime, "HH:mm:ss",CultureInfo.InvariantCulture).ToString();
             return View(modelvm);
         }
         [HttpPost]
@@ -313,7 +319,7 @@ namespace CBBW.Areas.Security.Controllers
             else if (Submit == "FBD")
             {
                 TempData["BackUrl"] = baseUrl;
-                return RedirectToAction("TourFeedBackDetailsView", "TFD", new { NoteNumber = modelobj.tfdHdr.NoteNumber, CBUID = modelobj.CBUID, ApprovalTime = modelobj.tfdHdr.ApprovalTime });
+                return RedirectToAction("TourFeedBackDetailsView", "TFD", new { NoteNumber = modelobj.tfdHdr.NoteNumber, CBUID = modelobj.CBUID });
             }
 
             return View(modelobj);
@@ -386,7 +392,7 @@ namespace CBBW.Areas.Security.Controllers
                 }
                 else if (Submit == "TFBD")
                 {
-                    return RedirectToAction("TourFBDetailsApproval", "TFD", new { NoteNumber = model.tfdHdr.NoteNumber});
+                    return RedirectToAction("TourFBDetailsApproval", "TFD", new { NoteNumber = model.NoteNo });
                 }
 
             }
@@ -483,9 +489,10 @@ namespace CBBW.Areas.Security.Controllers
             modelvm.CanDelete = CanDelete;
             modelvm.CBUID = CBUID;
             modelvm.tfdHdr = _iTFD.GetTFDHeaderDetails(NoteNumber, user.CentreCode, 1, ref pMsg);
-            var indexp = modelvm.tfdHdr.EntEntryTime.LastIndexOf('.');
-            var time = modelvm.tfdHdr.EntEntryTime.Substring(0, indexp);
-            modelvm.tfdHdr.EntEntryTime = time;
+            //var indexp = modelvm.tfdHdr.EntEntryTime.LastIndexOf('.');
+            //var time = modelvm.tfdHdr.EntEntryTime.Substring(0, indexp);
+            //modelvm.tfdHdr.EntEntryTime = time;
+            modelvm.tfdHdr.EntEntryTime = string.IsNullOrEmpty(modelvm.tfdHdr.EntEntryTime) ? "" : modelvm.tfdHdr.EntEntryTime.Substring(0, 8);
             return View(modelvm);
         }
         [HttpPost]
@@ -504,7 +511,7 @@ namespace CBBW.Areas.Security.Controllers
                 }
                 else if (Submit == "TFBD")
                 {
-                    return RedirectToAction("TourFeedBackDetailsView", "TFD", new { NoteNumber = model.tfdHdr.NoteNumber });
+                    return RedirectToAction("TourFeedBackDetailsView", "TFD", new { NoteNumber = model.tfdHdr.NoteNumber, ApprovalTime = model.tfdHdr.ApprovalTime });
                 }
 
             }
@@ -528,9 +535,10 @@ namespace CBBW.Areas.Security.Controllers
         {
             TFDHdrVM modelvm = new TFDHdrVM();
             modelvm.tfdHdr = _iTFD.GetTFDHeaderDetails(NoteNumber, user.CentreCode, 1, ref pMsg);
-            var indexp = modelvm.tfdHdr.EntEntryTime.LastIndexOf('.');
-            var time = modelvm.tfdHdr.EntEntryTime.Substring(0, indexp);
-            modelvm.tfdHdr.EntEntryTime = time;
+            //var indexp = modelvm.tfdHdr.EntEntryTime.LastIndexOf('.');
+            //var time = modelvm.tfdHdr.EntEntryTime.Substring(0, indexp);
+            //modelvm.tfdHdr.EntEntryTime = time;
+            modelvm.tfdHdr.EntEntryTime=string.IsNullOrEmpty(modelvm.tfdHdr.EntEntryTime) ? "" : modelvm.tfdHdr.EntEntryTime.Substring(0, 8);
             return Json(modelvm, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetTourCategories(int PTval = 0,string NoteNumber=null)
@@ -553,19 +561,21 @@ namespace CBBW.Areas.Security.Controllers
 
         public JsonResult GetLocationsFromTypes(string TypeIDs,string NoteNumber=null)
         {
-            IEnumerable<CustomComboOptions> result=null;
+            IEnumerable<LocationMaster> result=null;
             if (NoteNumber != null)
             {
                 IEnumerable<TFDDateWiseTourData> modelobj = _iTFD.GetENTDateWiseTourData(NoteNumber, 0, 0, 0, 2, ref pMsg);
                 var LocationsCode = modelobj.Select(x=>x.LocationsCode).FirstOrDefault();
-                long[] Locids = !string.IsNullOrEmpty(LocationsCode) ? LocationsCode.Split(',').Select(long.Parse).ToArray() : new long[] { };
-                var locatioins = _iCTV.getLocationsFromType(TypeIDs, ref pMsg);
+                int[] Locids = !string.IsNullOrEmpty(LocationsCode) ? LocationsCode.Split(',').Select(int.Parse).ToArray() : new int[] { };
+                TypeIDs = TypeIDs.Replace('_', ',');
+                IEnumerable<LocationMaster> locatioins = _master.GetCentresFromTourCategory(TypeIDs, ref pMsg);
+
                 result = locatioins.Where(x => Locids.Contains(x.ID)).ToList();
 
             }
             else
             {
-               result = _iCTV.getLocationsFromType(TypeIDs, ref pMsg);
+               result = _master.GetCentresFromTourCategory(TypeIDs, ref pMsg);
             }
             
 

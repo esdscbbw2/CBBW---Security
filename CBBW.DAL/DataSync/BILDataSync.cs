@@ -272,6 +272,7 @@ namespace CBBW.DAL.DataSync
             {
 
                 int paracount = 0;
+                
                 SqlParameter[] para = new SqlParameter[24];
                 para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NVarChar, 25);
                 para[paracount++].Value = hdrmodel.NoteNumber;
@@ -280,58 +281,96 @@ namespace CBBW.DAL.DataSync
                 para[paracount] = new SqlParameter("@ApprovalReason", SqlDbType.NVarChar);
                 para[paracount++].Value = hdrmodel.ApprovalReason = hdrmodel.ApprovalReason != null ? hdrmodel.ApprovalReason : "NA";
                 para[paracount] = new SqlParameter("@AEDAmount", SqlDbType.Float);
-                para[paracount++].Value = hdrmodel.AEDAmount;
+                para[paracount++].Value = hdrmodel.AEDAmount= hdrmodel.AEDAmount>0? hdrmodel.AEDAmount:0;
                 para[paracount] = new SqlParameter("@ATAAmount", SqlDbType.Float);
-                para[paracount++].Value = hdrmodel.ATAAmount;
+                para[paracount++].Value = hdrmodel.ATAAmount = hdrmodel.ATAAmount > 0 ? hdrmodel.ATAAmount : 0;
                 para[paracount] = new SqlParameter("@ALocAmount", SqlDbType.Float);
-                para[paracount++].Value = hdrmodel.ALocAmount;
+                para[paracount++].Value = hdrmodel.ALocAmount = hdrmodel.ALocAmount > 0 ? hdrmodel.ALocAmount : 0;
                 para[paracount] = new SqlParameter("@ALodAmount", SqlDbType.Float);
-                para[paracount++].Value = hdrmodel.ALodAmount;
+                para[paracount++].Value = hdrmodel.ALodAmount = hdrmodel.ALodAmount > 0 ? hdrmodel.ALodAmount : 0;
                 para[paracount] = new SqlParameter("@ATotalAmount", SqlDbType.Float);
-                para[paracount++].Value = hdrmodel.ATotalAmount;
+                para[paracount++].Value = hdrmodel.ATotalAmount = hdrmodel.ATotalAmount > 0 ? hdrmodel.ATotalAmount : 0;
                 para[paracount] = new SqlParameter("@AReamrk", SqlDbType.NVarChar);
-                para[paracount++].Value = hdrmodel.AReamrk != null ? hdrmodel.AReamrk : "NA";
+                para[paracount++].Value = hdrmodel.AReamrk= hdrmodel.AReamrk != null ? hdrmodel.AReamrk : "NA";
                 para[paracount] = new SqlParameter("@EEDAmount", SqlDbType.Float);
-                para[paracount++].Value = hdrmodel.EEDAmount;
+                para[paracount++].Value = hdrmodel.EEDAmount = hdrmodel.EEDAmount > 0 ? hdrmodel.EEDAmount : 0;
                 para[paracount] = new SqlParameter("@ETAAmount", SqlDbType.Float);
-                para[paracount++].Value = hdrmodel.ETAAmount;
+                para[paracount++].Value = hdrmodel.ETAAmount = hdrmodel.ETAAmount > 0 ? hdrmodel.ETAAmount : 0;
                 para[paracount] = new SqlParameter("@ELocAmount", SqlDbType.Float);
-                para[paracount++].Value = hdrmodel.ELocAmount;
+                para[paracount++].Value = hdrmodel.ELocAmount = hdrmodel.ELocAmount > 0 ? hdrmodel.ELocAmount : 0;
                 para[paracount] = new SqlParameter("@ELodAmount", SqlDbType.Float);
-                para[paracount++].Value = hdrmodel.ELodAmount;
+                para[paracount++].Value = hdrmodel.ELodAmount = hdrmodel.ELodAmount > 0 ? hdrmodel.ELodAmount : 0;
                 para[paracount] = new SqlParameter("@ETotalAmount", SqlDbType.Float);
-                para[paracount++].Value = hdrmodel.ETotalAmount;
+                para[paracount++].Value = hdrmodel.ETotalAmount = hdrmodel.ETotalAmount > 0 ? hdrmodel.ETotalAmount : 0;
                 para[paracount] = new SqlParameter("@EReamrk", SqlDbType.NVarChar);
                 para[paracount++].Value = hdrmodel.EReamrk = hdrmodel.EReamrk != null ? hdrmodel.EReamrk : "NA";
                 para[paracount] = new SqlParameter("@status", SqlDbType.Int);
                 para[paracount++].Value = hdrmodel.status;
-
-                para[paracount] = new SqlParameter("@DeptCode", SqlDbType.Int);
-                para[paracount++].Value = hdrmodel.DeptCode != 0 ? hdrmodel.DeptCode : 0;
+              
+               para[paracount] = new SqlParameter("@DeptCode", SqlDbType.Int);
+                para[paracount++].Value = hdrmodel.DeptCode = hdrmodel.DeptCode != 0 ? hdrmodel.DeptCode : 0;
                 para[paracount] = new SqlParameter("@DeptName", SqlDbType.NVarChar, 100);
-                para[paracount++].Value = hdrmodel.DeptName != null ? hdrmodel.DeptName : "NA";
-                para[paracount] = new SqlParameter("@RequisitionDate", SqlDbType.DateTime);
-                if (hdrmodel.RequisitionDate.Year != 0001)
-                {
-                    para[paracount++].Value = hdrmodel.RequisitionDate;
-                }
-                para[paracount] = new SqlParameter("@RequisitionNo", SqlDbType.Int);
-                para[paracount++].Value = hdrmodel.RequisitionNo != 0 ? hdrmodel.RequisitionNo : 0;
-                para[paracount] = new SqlParameter("@PreparedEmpNo", SqlDbType.Int);
-                para[paracount++].Value = hdrmodel.PreparedEmpNo != 0 ? hdrmodel.PreparedEmpNo : 0;
-                para[paracount] = new SqlParameter("@PreparedEmpName", SqlDbType.NVarChar, 100);
-                para[paracount++].Value = hdrmodel.PreparedEmpName != null ? hdrmodel.PreparedEmpName : "NA";
-                para[paracount] = new SqlParameter("@RequisitionAmt", SqlDbType.Float);
-                para[paracount++].Value = hdrmodel.RequisitionAmt != 0 ? hdrmodel.RequisitionAmt : 0;
-                para[paracount] = new SqlParameter("@Remark", SqlDbType.NVarChar);
-                para[paracount++].Value = hdrmodel.Remark != null ? hdrmodel.Remark : "NA";
-
+               para[paracount++].Value = hdrmodel.DeptName=hdrmodel.DeptName != null ? hdrmodel.DeptName : "NA";
+               para[paracount] = new SqlParameter("@RequisitionDate", SqlDbType.DateTime);
+               if (hdrmodel.RequisitionDate.Year != 0001)
+               {
+                   para[paracount++].Value = hdrmodel.RequisitionDate;
+               }
+               para[paracount] = new SqlParameter("@RequisitionNo", SqlDbType.Int);
+               para[paracount++].Value = hdrmodel.RequisitionNo=hdrmodel.RequisitionNo != 0 ? hdrmodel.RequisitionNo : 0;
+               para[paracount] = new SqlParameter("@PreparedEmpNo", SqlDbType.Int);
+               para[paracount++].Value = hdrmodel.PreparedEmpNo= hdrmodel.PreparedEmpNo != 0 ? hdrmodel.PreparedEmpNo : 0;
+               para[paracount] = new SqlParameter("@PreparedEmpName", SqlDbType.NVarChar, 100);
+               para[paracount++].Value = hdrmodel.PreparedEmpName=hdrmodel.PreparedEmpName != null ? hdrmodel.PreparedEmpName : "NA";
+               para[paracount] = new SqlParameter("@RequisitionAmt", SqlDbType.Float);
+               para[paracount++].Value = hdrmodel.RequisitionAmt >0 ? hdrmodel.RequisitionAmt : 0;
+               para[paracount] = new SqlParameter("@Remark", SqlDbType.NVarChar);
+               para[paracount++].Value = hdrmodel.Remark=hdrmodel.Remark != null ? hdrmodel.Remark : "NA";
+                
                 using (SQLHelper sql = new SQLHelper("[BIL].[SetApprovalTADABillGeneration]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) 
+            { pMsg = ex.Message; return null; }
+        }
+
+        public DataTable SetTADABillGenerationApprovalData(TADABillGeneration hdrmodel, ref string pMsg)
+        {
+            try
+            {
+
+                int paracount = 0;
+
+                SqlParameter[] para = new SqlParameter[10];
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NVarChar, 25);
+                para[paracount++].Value = hdrmodel.NoteNumber;
+                para[paracount] = new SqlParameter("@IsApproved", SqlDbType.Bit);
+                para[paracount++].Value = hdrmodel.IsApproved;
+                para[paracount] = new SqlParameter("@ApprovalReason", SqlDbType.NVarChar);
+                para[paracount++].Value = hdrmodel.ApprovalReason = hdrmodel.ApprovalReason != null ? hdrmodel.ApprovalReason : "NA";
+                para[paracount] = new SqlParameter("@AEDAmount", SqlDbType.Float);
+                para[paracount++].Value = hdrmodel.AEDAmount = hdrmodel.AEDAmount > 0 ? hdrmodel.AEDAmount : 0;
+                para[paracount] = new SqlParameter("@ATAAmount", SqlDbType.Float);
+                para[paracount++].Value = hdrmodel.ATAAmount = hdrmodel.ATAAmount > 0 ? hdrmodel.ATAAmount : 0;
+                para[paracount] = new SqlParameter("@ALocAmount", SqlDbType.Float);
+                para[paracount++].Value = hdrmodel.ALocAmount = hdrmodel.ALocAmount > 0 ? hdrmodel.ALocAmount : 0;
+                para[paracount] = new SqlParameter("@ALodAmount", SqlDbType.Float);
+                para[paracount++].Value = hdrmodel.ALodAmount = hdrmodel.ALodAmount > 0 ? hdrmodel.ALodAmount : 0;
+                para[paracount] = new SqlParameter("@ATotalAmount", SqlDbType.Float);
+                para[paracount++].Value = hdrmodel.ATotalAmount = hdrmodel.ATotalAmount > 0 ? hdrmodel.ATotalAmount : 0;
+                para[paracount] = new SqlParameter("@AReamrk", SqlDbType.NVarChar);
+                para[paracount++].Value = hdrmodel.AReamrk = hdrmodel.AReamrk != null ? hdrmodel.AReamrk : "NA";
+                para[paracount] = new SqlParameter("@status", SqlDbType.Int);
+                para[paracount++].Value = hdrmodel.status;
+                using (SQLHelper sql = new SQLHelper("[BIL].[SetTADABillGenerationApprovalData]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex)
+            { pMsg = ex.Message; return null; }
         }
         public DataTable SetAnPFinalSubmit( int status,List<ApprovalNoteNo> dtldata, ref string pMsg)
         {
@@ -425,11 +464,11 @@ namespace CBBW.DAL.DataSync
             try
             {
                 int paracount = 0;
-                SqlParameter[] para = new SqlParameter[3];
+                SqlParameter[] para = new SqlParameter[2];
                 para[paracount] = new SqlParameter("@EmployeeNumber", SqlDbType.Int);
                 para[paracount++].Value = EmployeeNumber;
-                para[paracount] = new SqlParameter("@CentreCode", SqlDbType.Int);
-                para[paracount++].Value = CentreCode;
+                //para[paracount] = new SqlParameter("@CentreCode", SqlDbType.Int);
+                //para[paracount++].Value = CentreCode;
                 para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NVarChar, 25);
                 para[paracount++].Value = NoteNumber;
 

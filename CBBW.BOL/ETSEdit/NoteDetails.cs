@@ -46,6 +46,7 @@ namespace CBBW.BOL.ETSEdit
         public string DesgCodenNameOfAE { get; set; }
         public int VehicleType { get; set; }
         public int IsMLEntered { get; set; }
+        public int IsDataToSave { get; set; }
     }
 
 }

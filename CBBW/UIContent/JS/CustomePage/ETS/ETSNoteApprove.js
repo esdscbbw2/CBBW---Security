@@ -23,7 +23,17 @@ function Notenumberchanged(notenumber) {
         success: function (data) {
             $(data).each(function (index, item) {
                 $('#CenterCodeName').val(item.etsHeader.CenterCodeName);
-                $('#AttachFile').val(item.etsHeader.AttachFile)
+                $('#AttachFile').val(item.etsHeader.AttachFile);
+                $('#EntryDate').val(item.etsHeader.EntryDateDisplay);
+                $('#EntryTime').val(item.etsHeader.EntryTime);
+
+
+                if (item.TourCatstatus) {
+                    $('#OtherPlace').val('Yes')
+                } else {
+                    $('#OtherPlace').val('-')
+                }
+               
                 DisplayTPDetails(item.PersonDtls);
                
                 if ($('#CenterCodeName').val() != "") { $('#btnTravDetails').makeEnabled();}

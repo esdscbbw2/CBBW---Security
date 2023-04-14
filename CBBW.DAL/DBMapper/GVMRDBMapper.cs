@@ -75,11 +75,14 @@ namespace CBBW.DAL.DBMapper
                         result.IsActive = bool.Parse(dr["IsActive"].ToString());
                     if (!DBNull.Value.Equals(dr["SchToDate"]))
                         result.SchToDate = DateTime.Parse(dr["SchToDate"].ToString());
-                    
+                    result.EntryDateDisplay = MyDBLogic.ConvertDateToString(result.EntryDate);
                     result.ActualTripInDateDisplay = MyDBLogic.ConvertDateToString(result.ActualTripInDate);
                     result.ActualTripOutDateDisplay = MyDBLogic.ConvertDateToString(result.ActualTripOutDate);
-                    result.SchFromDateDisplay = MyDBLogic.ConvertDateToString(result.SchFromDate);
-                    result.ToDateVal = MyDBLogic.ConvertDateToString(result.SchToDate);
+
+                    //result.SchFromDateDisplay = MyDBLogic.ConvertDateToString(result.SchFromDate);
+                    //result.ToDateVal = MyDBLogic.ConvertDateToString(result.SchToDate);
+                    result.SchFromDateDisplay = result.SchFromDate.ToString("yyyy-MM-dd");
+                    result.ToDateVal = result.SchToDate.ToString("yyyy-MM-dd");
                 }
             }
             catch(Exception ex) { ex.ToString(); }

@@ -95,6 +95,7 @@ namespace CBBW.Areas.Security.Controllers
                         modelTrav = TempData["EMNData"] as EMNTravellingDetailsVM;
                         TempData["EMN"] = model;
                         TempData["EMNData"] = modelTrav;
+                        model.TourCatStatus = modelTrav.Tourcat;
                         model.emnHeader.NoteNumber = modelTrav.NoteNumber;
                         model.emnHeader.AttachFile = modelTrav.AttachFile;
                         model.Btnsubmit = modelTrav.btnSubmit;
@@ -257,6 +258,7 @@ namespace CBBW.Areas.Security.Controllers
                     if (_iEMN.setEMNTravDetailsNTourDetails(models.NoteNumber, TModel, models.dateTour, ref pMsg))
                     {
                         models.btnSubmit = 1;
+                        models.Tourcat = models.dateTour.Where(c => c.TourCategory.Contains("3")).ToList().Count > 0 ? true : false;
                         TempData["EMNData"] = models;
                         result.bResponseBool = true;
 
@@ -355,6 +357,9 @@ namespace CBBW.Areas.Security.Controllers
                 //modelvmobj.PersonDtls = _iEMN.GetEMNTravellingPerson(NoteNumber, ref pMsg);
                 modelvmobj.CanDelete = CanDelete;// == 1 ? true : false;
                 modelvmobj.HeaderText = CanDelete == 1 ? "Delete" : "View";
+                EMNTravellingDetailsVM modelvm = new EMNTravellingDetailsVM();
+                modelvm.dateTour = _iEMN.GetEMNDateWiseTour(NoteNumber, ref pMsg);
+                modelvmobj.TourCatStatus = modelvm.dateTour.Where(c => c.NoteNumber == NoteNumber && c.TourCategoryId.Contains("3")).ToList().Count > 0 ? true : false;
 
             }
             catch (Exception ex) { ex.ToString(); }
@@ -564,6 +569,10 @@ namespace CBBW.Areas.Security.Controllers
                 modelvmobj.CanDelete = CanDelete;// == 1 ? true : false;
                 modelvmobj.HeaderText = "Approval";
 
+                EMNTravellingDetailsVM modelvm = new EMNTravellingDetailsVM();
+                modelvm.dateTour = _iEMN.GetEMNDateWiseTour(NoteNumber, ref pMsg);
+                modelvmobj.TourCatStatus = modelvm.dateTour.Where(c => c.NoteNumber == NoteNumber && c.TourCategoryId.Contains("3")).ToList().Count > 0 ? true : false;
+
 
             }
             catch (Exception ex) { ex.ToString(); }
@@ -726,6 +735,9 @@ namespace CBBW.Areas.Security.Controllers
                 modelvmobj.CanDelete = CanDelete;// == 1 ? true : false;
                 modelvmobj.HeaderText = "Ratification";
 
+                EMNTravellingDetailsVM modelvm = new EMNTravellingDetailsVM();
+                modelvm.dateTour = _iEMN.GetEMNDateWiseTour(NoteNumber, ref pMsg);
+                modelvmobj.TourCatStatus = modelvm.dateTour.Where(c => c.NoteNumber == NoteNumber && c.TourCategoryId.Contains("3")).ToList().Count > 0 ? true : false;
 
             }
             catch (Exception ex) { ex.ToString(); }
@@ -787,6 +799,10 @@ namespace CBBW.Areas.Security.Controllers
             EMNHeaderEntryVM result = new EMNHeaderEntryVM();
             result.NoteNumber = NoteNumber;
             result.emnHeader = _iEMN.GetEMNHdrEntry(NoteNumber, ref pMsg);
+            EMNTravellingDetailsVM modelvm = new EMNTravellingDetailsVM();
+            modelvm.dateTour = _iEMN.GetEMNDateWiseTour(NoteNumber, ref pMsg);
+            result.TourCatStatus = modelvm.dateTour.Where(c => c.NoteNumber == NoteNumber && c.TourCategoryId.Contains("3")).ToList().Count > 0 ? true : false;
+
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetTravellingPersonForEMN(string NoteNumber,int CenterCode,int status=0)

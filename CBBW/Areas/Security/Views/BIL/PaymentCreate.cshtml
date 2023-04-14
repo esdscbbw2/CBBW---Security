@@ -47,109 +47,110 @@
                 </div>
             </div>
 
-            <div class="col-md-12 mb-4"  id="AllData">
-                <div class="col-md-12 mt-4 pt-3">
-                    <div class="table-responsive max-content btnalign">
-                        <table class="table table-bordered w-100" id="BILTable">
-                            <thead>
-                                <tr>
-                                    <th scope="col" style="vertical-align: middle;">SL.No.</th>
-                                    <th scope="col" style="text-align: center; vertical-align: middle;"></th>
-                                    <th scope="col" rowspan="2" style="background: pink;color: #000;">Action</th>
-                                    <th scope="col" style="vertical-align: middle;">Ref. Bill No. & Date   </th>
-                                    <th scope="col" style="text-align: center; vertical-align: middle;">Center Code & Name</th>
-                                    <th scope="col" style="text-align: center; vertical-align: middle;">Person Type</th>
-                                    <th scope="col" style="text-align: center; vertical-align: middle;">Employee No. & Name  </th>
-                                    <th scope="col" style="text-align: center; vertical-align: middle;">Designation Code & Name </th>
-                                    <!-- <th scope="col" style="text-align: center; vertical-align: middle;"> Ref. E.P Note No. & Date</th> -->
-                                    <th scope="col" style="text-align: center; vertical-align: middle;">Tour From Date & Time  </th>
-                                    <th scope="col" style="text-align: center; vertical-align: middle;">Tour To Date & Time  </th>
-                                    <th scope="col" style="text-align: center; vertical-align: middle;">No. Of Days On Tour </th>
-                                    <th scope="col" style="text-align: center; vertical-align: middle;">Purpose Of Visit </th>
+            <div class="col-md-12 mb-4">
+                <div id="AllData">
+                    <div class="col-md-12 mt-4 pt-3">
+                        <div class="table-responsive max-content btnalign">
+                            <table class="table table-bordered w-100" id="BILTable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" style="vertical-align: middle;">SL.No.</th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;"></th>
+                                        <th scope="col" rowspan="2" style="background: pink;color: #000;">Action</th>
+                                        <th scope="col" style="vertical-align: middle;">Ref. Bill No. & Date   </th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">Center Code & Name</th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">Person Type</th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">Employee No. & Name  </th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">Designation Code & Name </th>
+                                        <!-- <th scope="col" style="text-align: center; vertical-align: middle;"> Ref. E.P Note No. & Date</th> -->
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">Tour From Date & Time  </th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">Tour To Date & Time  </th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">No. Of Days On Tour </th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">Purpose Of Visit </th>
 
-                                </tr>
-                            </thead>
-                            <tbody id="tbody1">
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody1">
 
-                                <tr id="0" class="add-row">
-                                    <th scope="row" class="text-center">1</th>
-                                    <td class="text-center">
-                                        <div class="form-check ms-3">
-                                            <input class="form-check-input alterID CheckList" id="CheckList" disabled onchange="VisibleRows(); changeColor(this);" type="radio" name="thing">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="actionBtn d-block">
-                                            <button id="AddBtn" type="button" disabled
-                                                    class="btn primaryLink alterID cloneBtn addBtn"
-                                                    onclick="AddClonebtn()"
-                                                    data-toggle="tooltip"
-                                                    data-placement="top" title="Add">
-                                                <i data-feather="plus"></i>
-                                            </button>
-                                            <button id="DeleteBtn" type="button"
-                                                    class="btn secondaryLink inVisible alterID cloneBtn removeBtn"
-                                                    onclick="removeClonebtn()"
-                                                    data-toggle="tooltip"
-                                                    data-placement="top" title="Delete">
-                                                <i data-feather="x"></i>
-                                            </button>
-                                        </span>
-                                    </td>
-                                    <td>
+                                    <tr id="0" class="add-row">
+                                        <th scope="row" class="text-center">1</th>
+                                        <td class="text-center">
+                                            <div class="form-check ms-3">
+                                                <input class="form-check-input alterID CheckList" id="CheckList" disabled onchange="VisibleRows(); changeColor(this);" type="radio" name="thing">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="actionBtn d-block">
+                                                <button id="AddBtn" type="button" disabled
+                                                        class="btn primaryLink alterID cloneBtn addBtn"
+                                                        onclick="AddClonebtn()"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top" title="Add">
+                                                    <i data-feather="plus"></i>
+                                                </button>
+                                                <button id="DeleteBtn" type="button"
+                                                        class="btn secondaryLink inVisible alterID cloneBtn removeBtn"
+                                                        onclick="removeClonebtn()"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top" title="Delete">
+                                                    <i data-feather="x"></i>
+                                                </button>
+                                            </span>
+                                        </td>
+                                        <td>
 
-                                        <select class="form-select max-content-input is-invalid alterID inValidTag xPerson"
-                                                data-name="NoteNumbers"
-                                                aria-label="Default select example"
-                                                onchange="ValidateCloneRowCtrl();ChangeNoteNumber();"
-                                                id="NoteNumbers">
-                                        </select>
+                                            <select class="form-select max-content-input is-invalid alterID inValidTag xPerson"
+                                                    data-name="NoteNumbers"
+                                                    aria-label="Default select example"
+                                                    onchange="ValidateCloneRowCtrl();ChangeNoteNumber();"
+                                                    id="NoteNumbers">
+                                            </select>
 
-                                    </td>
+                                        </td>
 
-                                    <td id="EmployeeCodes" data-name="EmployeeCodes"
-                                        class="text-center alterID  inVisible"> </td>
-                                    <td id="RefNoteNumbers" data-name="RefNoteNumbers"
-                                        class="text-center alterID  inVisible"> </td>
+                                        <td id="EmployeeCodes" data-name="EmployeeCodes"
+                                            class="text-center alterID  inVisible"> </td>
+                                        <td id="RefNoteNumbers" data-name="RefNoteNumbers"
+                                            class="text-center alterID  inVisible"> </td>
 
-                                    <td id="CenterCodeName" data-name="CenterCodeName"
-                                        class="text-center alterID "> </td>
-                                    <td id="PersonTypetxt" data-name="PersonTypetxt"
-                                        class="text-center alterID "> </td>
+                                        <td id="CenterCodeName" data-name="CenterCodeName"
+                                            class="text-center alterID "> </td>
+                                        <td id="PersonTypetxt" data-name="PersonTypetxt"
+                                            class="text-center alterID "> </td>
 
-                                    <td id="EmployeeCodeName" data-name="EmployeeCodeName"
-                                        class="text-center alterID "> </td>
+                                        <td id="EmployeeCodeName" data-name="EmployeeCodeName"
+                                            class="text-center alterID "> </td>
 
-                                    <td id="DesigCodeName" data-name="DesigCodeName"
-                                        class="text-center alterID "> </td>
-                                    <td id="TourFromDate" data-name="TourFromDate"
-                                        class="text-center alterID "> </td>
+                                        <td id="DesigCodeName" data-name="DesigCodeName"
+                                            class="text-center alterID "> </td>
+                                        <td id="TourFromDate" data-name="TourFromDate"
+                                            class="text-center alterID "> </td>
 
-                                    <td id="TourToDate" data-name="TourToDate"
-                                        class="text-center alterID htmlVal"> </td>
+                                        <td id="TourToDate" data-name="TourToDate"
+                                            class="text-center alterID htmlVal"> </td>
 
-                                    <td id="NoOfDays" data-name="NoOfDays"
-                                        class="text-center alterID "> </td>
-                                    <td class="text-center">
-                                        <textarea name="PurposeOfVisit" id="PurposeOfVisit" class="form-control pointer-default" cols="20" rows="2" data-toggle="tooltip" data-placement="bottom" title="" readonly=""></textarea>
-                                    </td>
+                                        <td id="NoOfDays" data-name="NoOfDays"
+                                            class="text-center alterID "> </td>
+                                        <td class="text-center">
+                                            <textarea name="PurposeOfVisit" id="PurposeOfVisit" class="form-control pointer-default" cols="20" rows="2" data-toggle="tooltip" data-placement="bottom" title="" readonly=""></textarea>
+                                        </td>
 
 
-                                </tr>
-                            </tbody>
-                            <tbody id="tbody2"></tbody>
-                        </table>
+                                    </tr>
+                                </tbody>
+                                <tbody id="tbody2"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="ExpensesDetailsDiv" class="inVisible">
                     </div>
                 </div>
-                <div id="ExpensesDetailsDiv" class="inVisible">
-                </div>
-
                 <div class="col-md-12">
                     <div class="bgColor mt-4 bg-transparent content border-red text-left">
                         <ul style="list-style:none;">
                             <li style="font-size: 16px;">
                                 Verified & Checked All The System Generated Bills With Amounts, Found Accurate & As Required:
-                                <select style="width: 10%;" id="Checked" onchange="ValidateControl();" class="form-select content border-red is-invalid" aria-label="Default select example">
+                                <select disabled style="width: 10%;" id="Checked" onchange="ValidateControl();" class="form-select content border-red is-invalid" aria-label="Default select example">
                                     <option selected="" value="-1">-</option>
                                     <option value="1">Yes</option>
 

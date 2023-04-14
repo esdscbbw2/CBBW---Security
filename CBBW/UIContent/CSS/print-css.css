@@ -6,14 +6,6 @@
     margin: 0;
     padding: 0;
 }
-.bill-table {
-   border-collapse: separate;
-   border-spacing: 0;
-}
-
-textarea.form-control {
- height:100%;
-}
 
 #page-wrap {
     width: 1320px;
@@ -32,7 +24,8 @@ table {
     border-collapse: collapse;
 }
 
-    table td, table th {
+    table td,
+    table th {
         border: 1px solid black;
         padding: 5px;
     }
@@ -66,7 +59,8 @@ table {
     overflow: hidden;
 }
 
-    #logo:hover, #logo.edit {
+    #logo:hover,
+    #logo.edit {
         border: 1px solid #000;
         margin-top: 0px;
         max-height: 125px;
@@ -76,7 +70,8 @@ table {
     display: none;
 }
 
-#logo:hover #logoctr, #logo.edit #logoctr {
+#logo:hover #logoctr,
+#logo.edit #logoctr {
     display: block;
     text-align: right;
     line-height: 25px;
@@ -99,11 +94,16 @@ table {
     display: block;
 }
 
-.edit #save-logo, .edit #cancel-logo {
+.edit #save-logo,
+.edit #cancel-logo {
     display: inline;
 }
 
-.edit #image, #save-logo, #cancel-logo, .edit #change-logo, .edit #delete-logo {
+.edit #image,
+#save-logo,
+#cancel-logo,
+.edit #change-logo,
+.edit #delete-logo {
     display: none;
 }
 
@@ -161,7 +161,8 @@ table {
         width: 175px;
     }
 
-        #items td.description textarea, #items td.item-name textarea {
+        #items td.description textarea,
+        #items td.item-name textarea {
             width: 100%;
         }
 
@@ -206,8 +207,6 @@ table {
         width: 100%;
         text-align: center;
     }
-
-
 
 .delete-wpr {
     position: relative;
@@ -257,7 +256,29 @@ table {
     max-height: 351px;
 }
 
+.bill-table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+textarea.form-control {
+    height: 100%;
+}
+
+.print-logo {
+    display: none;
+}
+
 @media print {
+    .ta-da-report-table .bill-table thead th {
+        color: #000;
+        background: #f3f3f3 !important;
+    }
+
+    .ta-da-report-table .table > :not(:last-child) > :last-child > * {
+        border-bottom-color: #dee2e6;
+    }
+
     #page-wrap {
         width: 1000px;
         margin: 0 auto;
@@ -281,6 +302,7 @@ table {
 
     .page-name {
         display: block !important;
+        padding-bottom: 20px;
     }
 
     .bill-input {
@@ -294,5 +316,25 @@ table {
     .table-height {
         max-height: 100%;
         overflow: auto;
+    }
+
+    .print-logo {
+        display: block;
+        text-align: center;
+    }
+
+        .print-logo img {
+            width: 280px;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+    .padd-20 {
+        padding-top: 20px;
+        display: block;
+    }
+
+    .heading_text_btn2 h2 {
+        font-size: 25px;
     }
 }

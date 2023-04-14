@@ -144,6 +144,8 @@ function Notenumberchanged(notenumber) {
                 $('#txtVehicleType').val(item.VehicleType);
                 $('#txtModelName').val(item.ModelName);
                 $('#txtDriverNonName').val(item.DriverNonName);
+                $('#cNoteDate').val(item.EntryDatestr);
+                $('#cNoteTime').val(item.EntryTime);
                 if (item.ApprovalFor == 0 || item.ApprovalFor == 2) { osbtn.removeAttr('disabled'); }
                 else if (item.ApprovalFor == 1) { lsbtn.removeAttr('disabled'); }
                 else if (item.ApprovalFor == 3) { lsbtn.removeAttr('disabled'); osbtn.removeAttr('disabled'); }

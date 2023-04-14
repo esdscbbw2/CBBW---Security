@@ -294,6 +294,11 @@ namespace CBBW.DAL.Entities
         {
             return _datasync.GetHGOpenOrNot(CentreCode, ref pMsg);
         }
-    
+        public bool SetPunchIN(int CentreCode, int EmployeeNumber, DateTime PunchDate, string PunchTime, ref string pMsg) 
+        {
+            bool result = false;
+            _dbresmapper.Map_DBResponse(_datasync.SetPunchIN(CentreCode,EmployeeNumber,PunchDate,PunchTime, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
     }
 }

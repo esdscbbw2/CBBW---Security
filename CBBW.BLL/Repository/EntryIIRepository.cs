@@ -123,10 +123,11 @@ namespace CBBW.BLL.Repository
             MLPersonsInfo result = _EntryIIEntities.GetMainLocationTPs(NoteNumber,ref pMsg);
             if (result != null && result.PersonInfo!=null) 
             {
-                CentreCode = result.PersonInfo.FirstOrDefault().MainLocationCode;
+                MainLocationPersons mPerson = result.PersonInfo.FirstOrDefault();
+                CentreCode = mPerson.MainLocationCode;
                 if (result.EmpDatesForPunching != null) 
                 {
-                    Punchings = _EntryIIEntities.GetPunchingsV3(CentreCode, result.EmpDatesForPunching, ref pMsg);
+                    Punchings = _EntryIIEntities.GetPunchingsV4(CentreCode,true, mPerson.SchFromDate,mPerson.SchFromTime, result.EmpDatesForPunching, ref pMsg);
                 }
                 if (result.EmpDatesForReq != null)
                 {
@@ -150,18 +151,18 @@ namespace CBBW.BLL.Repository
                     else 
                     { 
                         item.ActualTourOutDate = item.SchFromDate;
-                        item.ActualTourOutTime = DateTime.Parse(item.SchFromTime);
+                        //item.ActualTourOutTime = DateTime.Parse(item.SchFromTime);
                     }
                     if (PunchIn != null)
                     {
                         if (item.Isdriver != 1)
-                            PunchIn.PunchIn = PunchIn.EarlyMorningPunch != null ? PunchIn.EarlyMorningPunch : PunchIn.PunchIn;
+                            PunchIn.PunchIn = PunchIn.EarlyMorningPunch.Hour>0 ? PunchIn.EarlyMorningPunch : PunchIn.PunchIn;
                         item.ActualTourInDate = PunchIn.PunchDate == null || PunchIn.PunchDate.Year == 1 ? item.SchToDate : PunchIn.PunchDate;
                         item.ActualTourInTime = PunchIn.PunchIn;
                     }
                     else
                         item.ActualTourInDate = item.SchToDate;
-                    item.TourStatus = item.SchToDate <= DateTime.Today ? 1 : 0;
+                    item.TourStatus = item.SchToDate <= DateTime.Today ? item.ActualTourInTime.Year>1 & item.ActualTourOutTime.Year>1?1:0 : 0;
                 }
             }
             
@@ -180,7 +181,7 @@ namespace CBBW.BLL.Repository
             {
                 if (result.EmpDatesForPunching != null)
                 {
-                    Punchings = _EntryIIEntities.GetPunchingsV3(CentreCode, result.EmpDatesForPunching, ref pMsg);
+                    Punchings = _EntryIIEntities.GetPunchingsV4(CentreCode,false,DateTime.Today,"0:01 AM", result.EmpDatesForPunching, ref pMsg);
                     LastPunchings = _EntryIIEntities.GetLastPunchingCentresV3(CentreCode, result.EmpDatesForPunching, ref pMsg);
                 }
                 FirstDayTour=result.PersonDateWiseDetails.Min(o=>o.MCurDate);
@@ -258,6 +259,14 @@ namespace CBBW.BLL.Repository
         public int IsMainLocationEntered(string NoteNumber, ref string pMsg)
         {
             return _EntryIIEntities.IsMainLocationEntered(NoteNumber, ref pMsg);
+        }
+        public List<PunchInDetails> GetPunchingsV4(int CentreCode, bool IsMainLocation, DateTime SchFromDate, string SchFromTime, List<EmpDate> dtldata, ref string pMsg)
+        {
+            return _EntryIIEntities.GetPunchingsV4(CentreCode, IsMainLocation, SchFromDate, SchFromTime, dtldata, ref pMsg);
+        }
+        public NoteStatus GetEntryIINoteStatus(string NoteNumber, int CentreCode, ref string pMsg)
+        {
+            return _EntryIIEntities.GetEntryIINoteStatus(NoteNumber,CentreCode,ref pMsg);
         }
 
 

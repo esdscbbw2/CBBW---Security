@@ -61,7 +61,8 @@ namespace CBBW.Areas.Security.Controllers
             var result = new
             {
                 iTotalRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
-                iTotalDisplayRecords = noteList.Count(),
+                //iTotalDisplayRecords = noteList.Count(),
+                iTotalDisplayRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
                 iDisplayLength = iDisplayLength,
                 iDisplayStart = iDisplayStart,
                 aaData = noteList
@@ -273,6 +274,7 @@ namespace CBBW.Areas.Security.Controllers
                     if (_iEMC.setEMCTravDetailsNTourDetails(models.NoteNumber, TModel, models.dateTour, ref pMsg))
                     {
                         models.btnSubmit = 1;
+                        models.Tourcat = models.dateTour.Where(c => c.TourCategory.Contains("3")).ToList().Count > 0 ? true : false;
                         TempData["EMCData"] = models;
                         result.bResponseBool = true;
 
@@ -420,7 +422,7 @@ namespace CBBW.Areas.Security.Controllers
             var result = new
             {
                 iTotalRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
-                iTotalDisplayRecords = noteList.Count(),
+                iTotalDisplayRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
                 iDisplayLength = iDisplayLength,
                 iDisplayStart = iDisplayStart,
                 aaData = noteList

@@ -6,11 +6,17 @@
 {
     @Html.HiddenFor(m => m.NoteNumber)
     @Html.HiddenFor(m => m.DefaultPersonID)
+    @Html.HiddenFor(m => m.DefaultPersonType)
     @Html.HiddenFor(m => m.IsOffline)
+    @Html.HiddenFor(m => m.VehicleDetails.IsActive)
     @Html.HiddenFor(m => m.SchFromDate)
     @Html.HiddenFor(m => m.SchToDate)
     @Html.HiddenFor(m => m.IsManagementPerson)
     @Html.HiddenFor(m => m.IsBranchVisit)
+    @Html.HiddenFor(m => m.VehicleDetails.ActualTourOutTime)
+    @Html.HiddenFor(m => m.VehicleDetails.ActualTourInTime)
+    @Html.HiddenFor(m => m.IsOutSaved)
+    @Html.HiddenFor(m => m.IsInSaved)
     <div class="row newTable">
         <div class="fixedElement">
             <div class="col-md-12" style="position: relative;">
@@ -102,7 +108,7 @@
                                             <td class="text-center htmlVal" data-name="VehicleType">@Model.VehicleDetails.VehicleType </td>
                                             <td class="text-center htmlVal" data-name="ModelName">@Model.VehicleDetails.ModelName </td>
                                             <td class="text-center">
-                                                <div id="RFIDInDiv" class="inVisible htmlVal" data-name="InRFIDCard"></div>
+                                                <div id="RFIDInDiv" class="inVisible htmlVal" data-name="InRFIDCard">@Model.RFIDCardIn</div>
                                                 @Html.DropDownListFor(m => m.RFIDCardIn,
                                                 new SelectList(Model.RFIDCardList, "RFIDCardNo", "RFIDCardNo"), "NA",
                                                 htmlAttributes: new
@@ -113,21 +119,21 @@
                                             </td>
                                             <td class="text-center htmlVal" data-name="ActualTourInDate">@Model.SchFromDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
                                             <td class="text-center">
-                                                <div id="VTourInTimeCtrl" class="htmlVal " data-name="ActualTourInTime">-</div>
+                                                <div id="VTourInTimeCtrl" class="htmlVal " data-name="ActualTourInTime">@(string.IsNullOrEmpty(Model.VehicleDetails.ActualTourInTime)?"-": Model.VehicleDetails.ActualTourInTime)</div>
                                                 <div>
                                                     <input id="TourInTimeCtrl" type="text" class="form-control timePicker"
-                                                           onblur="TimeInCtrlBlured()"
+                                                           onblur="TimeInCtrlBlured()" value="@Model.VehicleDetails.ActualTourInTime"
                                                            placeholder="Select Time">
                                                 </div>
                                             </td>
-                                            <td class="text-center" >
+                                            <td class="text-center">
                                                 <div id="VKMInCtrl" class="htmlVal @(Model.IsBranchVisit==1?"inVisible":"")" data-name="KMIn">
                                                     @Model.VehicleDetails.KMIn
                                                 </div>
-                                                <input id="KMInCtrl" type="text" onchange="KMChanged()" class="form-control @(Model.IsBranchVisit==1?"":"inVisible")">
+                                                <input id="KMInCtrl" value="@Model.VehicleDetails.KMIn" type="text" onchange="KMChanged()" class="form-control @(Model.IsBranchVisit==1?"":"inVisible")">
                                             </td>
                                             <td class="text-center">
-                                                <div id="RFIDOutDiv" class="inVisible htmlVal" data-name="OutRFIDCard"></div>
+                                                <div id="RFIDOutDiv" class="inVisible htmlVal" data-name="OutRFIDCard">@Model.RFIDCardOut</div>
                                                 @Html.DropDownListFor(m => m.RFIDCardOut,
                                                 new SelectList(Model.RFIDCardList, "RFIDCardNo", "RFIDCardNo"), "NA",
                                                 htmlAttributes: new
@@ -138,23 +144,23 @@
                                             </td>
                                             <td class="text-center htmlVal" data-name="ActualTourOutDate">@Model.SchToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
                                             <td class="text-center" data-name="">
-                                                <div id="VTourOutTimeCtrl" class="htmlVal " data-name="ActualTourOutTime">-</div>
+                                                <div id="VTourOutTimeCtrl" class="htmlVal " data-name="ActualTourOutTime">@(string.IsNullOrEmpty(Model.VehicleDetails.ActualTourOutTime)?"-": Model.VehicleDetails.ActualTourOutTime)</div>
                                                 <div>
                                                     <input id="TourOutTimeCtrl" type="text" class="form-control timePicker"
-                                                           onblur="TimeInCtrlBlured()"
+                                                           onblur="TimeInCtrlBlured()" value="@Model.VehicleDetails.ActualTourOutTime"
                                                            placeholder="Select Time">
                                                 </div>
                                             </td>
-                                            <td class="text-center" >
+                                            <td class="text-center">
                                                 <div id="VKMOutCtrl" class="htmlVal @(Model.IsBranchVisit==1?"inVisible":"")" data-name="KMOut">
                                                     @Model.VehicleDetails.KMOut
-                                                </div>                                                
-                                                <input id="KMOutCtrl" type="text" onchange="KMChanged()" class="form-control @(Model.IsBranchVisit==1?"":"inVisible")">
+                                                </div>
+                                                <input id="KMOutCtrl" value="@Model.VehicleDetails.KMOut" type="text" onchange="KMChanged()" class="form-control @(Model.IsBranchVisit==1?"":"inVisible")">
                                             </td>
                                             <td class="text-center">
-                                                <textarea data-name="VRemarks" name="" id=""
-                                                          cols="20" rows="2"
-                                                          class="form-control pointer-default"></textarea>
+                                                <textarea data-name="VRemarks" name="" id="LWVRemarks"
+                                                          cols="20" rows="2" onblur="ValidateControl()"
+                                                          class="form-control pointer-default">@Model.VehicleDetails.UserRemarks</textarea>
                                                 <div class="inVisible htmlVal" data-name="DriverID">@Model.VehicleDetails.DriverNumber</div>
                                                 <div class="inVisible htmlVal" data-name="DriverName">@Model.VehicleDetails.DriverName</div>
                                             </td>
@@ -340,7 +346,7 @@
                                                                placeholder="Select Time">
                                                     </div>
                                                 </td>
-                                                <td class="text-center htmlVal" data-name="DWToDate">@item.DWToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
+                                                <td class="text-center htmlVal" data-name="DWToDate">@item.SchToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
                                                 <td class="text-center htmlVal" data-name="ActualTourOutDate">@item.ActualTourOutDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)</td>
                                                 <td class="text-center">
                                                     <div id="VATO_@SL" class="@(Model.IsOffline||item.PersonType==3||item.PersonType==4?"inVisible":"") htmlVal" data-name="ActualTourOutTime">

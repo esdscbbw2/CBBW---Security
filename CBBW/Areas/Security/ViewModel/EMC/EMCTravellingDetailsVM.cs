@@ -30,6 +30,6 @@ namespace CBBW.Areas.Security.ViewModel.EMC
         public int VehicleTypeProvided { get; set; }
         public string ReasonVehicleProvided { get; set; }
         public int IsEPTour { get; set; }
-
+        public bool Tourcat { get; set; }
     }
 }

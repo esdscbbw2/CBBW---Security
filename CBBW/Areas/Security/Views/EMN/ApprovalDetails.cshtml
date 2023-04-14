@@ -198,7 +198,15 @@
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
                             It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As It Is selected:
-                            <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                            @if (Model.TourCatStatus)
+                            {
+                                <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                            }
+                            else
+                            {
+                                <input type="text" class="form-control width-85 pointer-none" value="-" disabled="">
+
+                            }
                         </li>
                     </ul>
                 </div>

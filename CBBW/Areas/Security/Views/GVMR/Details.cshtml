@@ -41,15 +41,17 @@
                                 Date  :
                             </label>
                             <div class="col-md-2">
-                                @Html.TextBox("EntryDate", DateTime.Today.ToString("dd/MM/yyyy"),
-                              htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                                @Html.TextBoxFor(m => m.EntryDateDisplay, htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })
+                                @*@Html.TextBox("EntryDate", DateTime.Today.ToString("dd/MM/yyyy"),
+                              htmlAttributes: new { @class = "form-control", disabled = "disabled" })*@
                             </div>
                             <label class="col-form-label col-md-1">
                                 Time  :
                             </label>
                             <div class="col-md-2">
-                                @Html.TextBox("EntryTime", DateTime.Now.ToString("hh:mm tt"),
-                              htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                                @Html.TextBoxFor(m => m.EntryTime, htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })
+                                @*@Html.TextBox("EntryTime", DateTime.Now.ToString("hh:mm tt"),
+                              htmlAttributes: new { @class = "form-control", disabled = "disabled" })*@
                             </div>
 
 

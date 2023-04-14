@@ -14,7 +14,7 @@
 
                     <h2>TA & DA Bill Statement & Payment – Report     </h2>
                     <div class="rightButton">
-                        <button type="button" id="Printbtn" disabled class="btn btn-white" onclick="window.print()">
+                        <button type="button" id="Printbtn" disabled  class="btn btn-white" onclick="window.print()">
                             <i data-feather="printer"></i>
                             Print / View
                         </button>
@@ -26,6 +26,9 @@
 
 </div>
 <div id="page-wrap" style="margin-bottom: 30px;">
+    <div class="print-logo">
+        <img src="~/UIContent/CSS/img/print-logo.png" alt="" />
+    </div>
     <div class="heading_text_btn2  page-name d-block mt-4 pb-4">
         <h2 class="text-center">TA & DA Bill Statement & Payment – Report </h2>
     </div>
@@ -33,7 +36,7 @@
 
     <div id="identity">
 
-        <table class="table  table-bordered table-form">
+        <table class="table padd-20  table-bordered table-form mt-3">
             <tbody>
                 <tr style="border:0;">
                     <td colspan="3">
@@ -57,15 +60,15 @@ htmlAttributes: new
                                     <td style="width:20%">
                                         <div class="inner-padding" style="display: flex;">
                                             <h6 class="form-sample-label">Date:</h6>
-                                            <input type="text" class="form-control" value="@DateTime.Today.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)" disabled>
+                                            <input type="text" class="form-control" id="DT" disabled>
                                         </div>
                                     </td>
-                                    @*<td style="width: 32%;">
+                                    <td style="width: 32%;">
                                         <div class="inner-padding" style="display: flex;">
-                                            <h6 class="form-sample-label ps-0">Time:</h6>
-                                            <input type="text" class="form-control" value="@DateTime.Now.ToString("hh:mm tt")" disabled>
+                                            <h6 class="form-sample-label ps-0">Print Date & Time:</h6>
+                                            <input type="text" class="form-control" value="@DateTime.Today.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)  @DateTime.Now.ToString("hh:mm tt")" disabled>
                                         </div>
-                                    </td>*@
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -131,7 +134,7 @@ htmlAttributes: new
 
     <div style="clear:both"></div>
 
-    <div id="customer">
+    <div id="customer" class="ta-da-report-table">
         <div id="TPDiv" class="inVisible">
         </div>
 
@@ -258,6 +261,21 @@ htmlAttributes: new
 
         .bill-table td {
             border: 1px solid #dee2e6;
+        }
+        .bill-table thead th {
+            color: #fff;
+            background: #3a3cab !important;
+            print-color-adjust: exact;
+            border: 1px solid #dee2e6;
+        }
+
+
+        .inner-padding .form-control {
+            display: block;
+        }
+
+        .inner-padding .form-select {
+            display: block;
         }
     </style>
 }
