@@ -222,10 +222,10 @@ async function getInitialData() {
         })();
        
         GetEmpEligibilty(parseInt($.trim(EmpNoName.val())), VehicleTypeProvided.val());
-        VehicleTypeProvideds.isValid();
-        EligibleVeh.val('1').isValid();
-        VehicleAlloc.val('1').isValid();
-        EmployeeNonName.isValid();
+        VehicleTypeProvideds.addClass('is-valid valid').removeClass('is-invalid');
+        EligibleVeh.val('1').addClass('is-valid valid').removeClass('is-invalid');
+        VehicleAlloc.val('1').addClass('is-valid valid').removeClass('is-invalid');
+        EmployeeNonName.addClass('is-valid valid').removeClass('is-invalid');
 
     } else {
         (async function () {

@@ -21,7 +21,6 @@ async function GetVechileType(selectedval) {
     }
 };
 async function GetAuthEmployee(selectedval, Vtype) {
-    debugger;
     var NoteNo = $('#NoteNumber').val();
     var pubTran = $('#travDetails_PublicTransports').val();
     var DropdownCtrl = $('#EmployeeNonName');
@@ -223,10 +222,10 @@ async function getInitialData() {
         })();
        
         GetEmpEligibilty(parseInt($.trim(EmpNoName.val())), VehicleTypeProvided.val());
-        VehicleTypeProvideds.isValid();
-        EligibleVeh.val('1').isValid();
-        VehicleAlloc.val('1').isValid();
-        EmployeeNonName.isValid();
+        VehicleTypeProvideds.addClass('is-valid valid').removeClass('is-invalid');
+        EligibleVeh.val('1').addClass('is-valid valid').removeClass('is-invalid');
+        VehicleAlloc.val('1').addClass('is-valid valid').removeClass('is-invalid');
+        EmployeeNonName.addClass('is-valid valid').removeClass('is-invalid');
 
     } else {
         (async function () {

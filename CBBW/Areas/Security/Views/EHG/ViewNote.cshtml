@@ -123,7 +123,7 @@
                 </div>
             </div>
             <div id="ViewApprovDiv" class="card mt-4 mb-4">
-                <div class="card-body">
+                <div class="card-body alert text-dark @(Model.HeaderData.AppDateTime.Year==1?"alert-danger":"alert-success")">
                     <div class="row d-flex align-items-center">
                         <div class="col-md-2 col-form-label">
                             <label>Approved :</label>
@@ -389,7 +389,7 @@
                 </ul>
             </div>
             <div id="ApprovDiv" class="card mt-4 mb-4">
-                <div class="card-body">
+                <div class="card-body alert text-dark @(Model.HeaderData.AppDateTime.Year==1?"alert-danger":"alert-success")">
                     <div class="row d-flex align-items-center">
                         <div class="col-md-2 col-form-label">
                             <label>Approved :</label>

@@ -198,9 +198,7 @@ namespace CBBW.DAL.Entities
             return result;
         }
         #endregion
-
         #region For In Details
-
         public List<MGPCurrentInDetails> getMGPCurrentOutDetailsForIn(string NoteNumber, ref string pMsg)
         {
             List<MGPCurrentInDetails> result = new List<MGPCurrentInDetails>();
@@ -223,8 +221,6 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
-
-
         public List<MGPReferenceDCDetails> getReferenceInDCDetails(string VehicleNo, DateTime FromDT, DateTime ToDT, ref string pMsg)
         {
             List<MGPReferenceDCDetails> result = new List<MGPReferenceDCDetails>();
@@ -247,7 +243,6 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
-
         public List<MGPItemWiseDetails> getItemWiseInDetails(string NoteNumber, ref string pMsg)
         {
             List<MGPItemWiseDetails> result = new List<MGPItemWiseDetails>();
@@ -270,7 +265,6 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
-
         public bool setMGPInDetails(MGPInSave mgpouthdr, List<MGPReferenceDCDetails> mgprefdcdetails, ref string pMsg)
         {
             bool result = false;
@@ -278,12 +272,7 @@ namespace CBBW.DAL.Entities
             return result;
         }
         #endregion
-
-
         #region For List Page (Index page)
-        
-       
-
         public List<MGPNoteList> getMGPDetailsforListPage(int DisplayLength, int DisplayStart, int SortColumn, string SortDirection, string SearchText, ref string pMsg)
         {
             List<MGPNoteList> result = new List<MGPNoteList>();
@@ -301,10 +290,7 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
-
         #endregion
-
-
         #region In/Out Button Active
         public ButtonActive getMGPButtonStatus(string NoteNumber, ref string pMsg)
         {
@@ -315,6 +301,101 @@ namespace CBBW.DAL.Entities
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     result = _datamapper.Map_ButtonActive(dt.Rows[0]);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
+        #endregion
+
+        #region For Rport
+        public PrintHeader GetMGPDetailsForPrint(string NoteNumber, ref string pMsg)
+        {
+            PrintHeader result = new PrintHeader();
+            try
+            {
+                ds = _datasync.GetMGPDetailsForPrint(NoteNumber, ref pMsg);
+                if (ds != null)
+                {
+                    DataTable dt = null;
+                    dt = ds.Tables[0];
+                    if (ds.Tables[0] != null && ds.Tables[0].Rows.Count > 0)
+                    {
+                       
+                        result.ReportHdr = _datamapper.Map_ReportHdr(dt.Rows[0]); 
+                    }
+                    List<ReportInOutDetails> INOuT = new List<ReportInOutDetails>();
+                    dt = ds.Tables[1];
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+                            INOuT.Add(_datamapper.Map_ReportInOutDetails(dt.Rows[i]));
+                        }
+                    }
+                    result.reportInOutdetails = INOuT;
+                    List<ReportDCDetails> DC = new List<ReportDCDetails>();
+                    dt = ds.Tables[2];
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+                            DC.Add(_datamapper.Map_ReportDCDetails(dt.Rows[i]));
+                        }
+                    }
+                    result.reportDCdetails = DC;
+                    List<MGPItemWiseDetails> ItemWise = new List<MGPItemWiseDetails>();
+                    dt = ds.Tables[3];
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+                            ItemWise.Add(_datamapper.Map_MGPItemWiseDetails(dt.Rows[i]));
+                        }
+                    }
+                    result.reportItemWisedetails = ItemWise;
+
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
+
+        public PrintHeader GetMGPDetailsForPrintV2(string NoteNumber,DateTime SchFromDate, ref string pMsg)
+        {
+            PrintHeader result = new PrintHeader();
+            try
+            {
+                ds = _datasync.GetMGPDetailsForPrintV2(NoteNumber, SchFromDate, ref pMsg);
+                if (ds != null)
+                {
+                    DataTable dt = null;
+                    dt = ds.Tables[0];
+                    if (ds.Tables[0] != null && ds.Tables[0].Rows.Count > 0)
+                    {
+                        result.ReportHdr = _datamapper.Map_ReportHdrV2(dt.Rows[0]);
+                    }
+                    List<ReportDCDetails> DC = new List<ReportDCDetails>();
+                    dt = ds.Tables[1];
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+                            DC.Add(_datamapper.Map_ReportDCDetails(dt.Rows[i]));
+                        }
+                    }
+                    result.reportDCdetails = DC;
+                    List<MGPItemWiseDetails> ItemWise = new List<MGPItemWiseDetails>();
+                    dt = ds.Tables[2];
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+                            ItemWise.Add(_datamapper.Map_MGPItemWiseDetails(dt.Rows[i]));
+                        }
+                    }
+                    result.reportItemWisedetails = ItemWise;
+
                 }
             }
             catch (Exception ex) { pMsg = ex.Message; }

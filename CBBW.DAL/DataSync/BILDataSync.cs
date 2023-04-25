@@ -130,7 +130,7 @@ namespace CBBW.DAL.DataSync
             {
 
                 int paracount = 0;
-                SqlParameter[] para = new SqlParameter[26];
+                SqlParameter[] para = new SqlParameter[27];
                 para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.VarChar, 25);
                 para[paracount++].Value = hdrmodel.NoteNumber;
                 para[paracount] = new SqlParameter("@RefNoteNumber", SqlDbType.VarChar, 25);
@@ -196,6 +196,8 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = hdrmodel.PurposeOfVisit;
                 para[paracount] = new SqlParameter("@IsVehicleProvided", SqlDbType.Bit);
                 para[paracount++].Value = hdrmodel.IsVehicleProvided;
+                para[paracount] = new SqlParameter("@TADADenied", SqlDbType.Bit);
+                para[paracount++].Value = hdrmodel.TADADenied;
 
                 using (SQLHelper sql = new SQLHelper("[BIL].[SetTADABillGeneration]", CommandType.StoredProcedure))
                 {
@@ -245,7 +247,6 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-
         public DataTable RemoveBILNoteNumber(string NoteNumber, int RemoveTag, int ActiveTag, ref string pMsg)
         {
             try

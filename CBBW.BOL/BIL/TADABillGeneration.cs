@@ -102,6 +102,7 @@ namespace CBBW.BOL.BIL
         public int MaxLodgingExp { get; set; }
         public int MaxLocalConv { get; set; }
         public bool IsVehicleProvided { get; set; }
+        public bool TADADenied { get; set; }
         public bool IsApprovalSubmit { get; set; }
         public bool IsPaymenttSubmit { get; set; }
 

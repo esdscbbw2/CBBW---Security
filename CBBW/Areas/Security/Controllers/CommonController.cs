@@ -6,8 +6,10 @@ using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using CBBW.BLL.IRepository;
+using CBBW.BOL;
 using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
+using SelectPdf;
 
 namespace CBBW.Areas.Security.Controllers
 {
@@ -76,5 +78,17 @@ namespace CBBW.Areas.Security.Controllers
             result.FileName = _imgname;
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult GeneratePdf(string ViewUrl, string PdfFileName)
+        {
+            PdfFileName = "MGP_" + PdfFileName;
+            var converter = new HtmlToPdf();
+            var doc = converter.ConvertUrl(MyCodeHelper.BaseUrl + ViewUrl);
+
+            var pdfPath = Server.MapPath("~/Upload/pdf/" + PdfFileName + ".pdf");
+            doc.Save(pdfPath);
+
+            return File(pdfPath, "application/pdf", PdfFileName + ".pdf");
+        }
+    
     }
 }

@@ -44,5 +44,8 @@ namespace CBBW.BLL.IRepository
         #region IN/Out Button Active
         ButtonActive getMGPButtonStatus(string NoteNumber, ref string pMsg);
         #endregion
+
+        PrintHeader GetMGPDetailsForPrint(string NoteNumber, ref string pMsg);
+        PrintHeader GetMGPDetailsForPrintV2(string NoteNumber, DateTime SchFromDate, ref string pMsg);
     }
 }

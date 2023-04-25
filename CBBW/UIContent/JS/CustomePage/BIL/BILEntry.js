@@ -95,6 +95,8 @@ function ChangeEmployee(EmployeeNo) {
             dataType: 'json',
             success: function (data) {
                 $(data).each(function (index, item) {
+                    $('#TAAmount').attr('readonly', 'readonly');
+                    $('#DAAmount').attr('readonly', 'readonly');
                     var date = new Date(parseInt(item.ActualTourInDate.substr(6)));
                     if (date.getFullYear() != 0001) {
                         $('#NoteNumber').val(item.NoteNumber);
@@ -107,7 +109,7 @@ function ChangeEmployee(EmployeeNo) {
                                 $('#DADeducted').val(item.DADeducted);
                                 $('#EDAllowance').val(item.EAmount);
                                 $('#TourFromDateNTime').val(item.ActualTourInDatestr + "-" + item.ActualTourInTime);
-                                $('#TourToDateNTime').val(item.ActualTourOutDatestr + "'-" + item.ActualTourOutTime);
+                                $('#TourToDateNTime').val(item.ActualTourOutDatestr + "-" + item.ActualTourOutTime);
                                 $('#TourFromDate').val(item.ActualTourInDatestr);
                                 $('#TourToDate').val(item.ActualTourOutDatestr);
                                 $('#NoOfDays').val(item.TotalNoOfDays);
@@ -122,12 +124,21 @@ function ChangeEmployee(EmployeeNo) {
                                 $('#LodgingMax').val(item.MaxLodgingExp);
                                 $('#TourFromTime').val(item.ActualTourInTime);
                                 $('#TourToTime').val(item.ActualTourOutTime);
+                                $('#TADADenied').val(item.TADADenied);
 
-                                if (item.IsVehicleProvided) {
-                                    $('#TAAmount').attr('readonly', 'readonly');
-                                } else {
-                                    $('#TAAmount').removeAttr('readonly', 'readonly');
+                                if (item.TADADenied) {
+                                   // $('#TAAmount').attr('readonly', 'readonly');
+                                   // $('#DAAmount').attr('readonly', 'readonly');
+                                } else if (!item.TADADenied){
+                                    if (!item.IsVehicleProvided) {
+                                        $('#TAAmount').removeAttr('readonly', 'readonly');
+                                        $('#DAAmount').removeAttr('readonly', 'readonly');
+                                    } else if (item.IsVehicleProvided) {
+                                       // $('#TAAmount').attr('readonly', 'readonly');
+                                        $('#DAAmount').removeAttr('readonly', 'readonly'); 
+                                    }
                                 }
+
                                 $('#IsVehicleProvided').val(item.IsVehicleProvided);
                             }
                             else if (item.status == 2) {
@@ -153,11 +164,26 @@ function ChangeEmployee(EmployeeNo) {
                                 $('#LocalConveyance').attr('max', item.MaxLocalConv);
                                 $('#LocalConveyanceMax').val(item.MaxLocalConv);
                                 $('#LodgingMax').val(item.MaxLodgingExp);
-                                if (item.IsVehicleProvided) {
-                                    $('#TAAmount').attr('readonly', 'readonly');
-                                } else {
-                                    $('#TAAmount').removeAttr('readonly', 'readonly');
-                                }
+
+                                if (item.TADADenied) {
+                                    // $('#TAAmount').attr('readonly', 'readonly');
+                                    // $('#DAAmount').attr('readonly', 'readonly');
+                                } else if (!item.TADADenied) {
+                                    if (!item.IsVehicleProvided) {
+                                        $('#TAAmount').removeAttr('readonly', 'readonly');
+                                        $('#DAAmount').removeAttr('readonly', 'readonly');
+                                    } else if (item.IsVehicleProvided) {
+                                        // $('#TAAmount').attr('readonly', 'readonly');
+                                        $('#DAAmount').removeAttr('readonly', 'readonly');
+
+                                    }
+                                } 
+                                //if (item.IsVehicleProvided) {
+                                //    $('#TAAmount').attr('readonly', 'readonly');
+                                //} else {
+                                //    $('#TAAmount').removeAttr('readonly', 'readonly');
+                                //}
+                                $('#TADADenied').val(item.TADADenied);
                                 $('#IsVehicleProvided').val(item.IsVehicleProvided);
                             }
                             $('#Deducted').makeEnabled();
@@ -330,7 +356,10 @@ function TPDBtnClicked() {
 
 function numbervalidate(key) {
     var presskeys = (key.which) ? key.which : key.presskeys;
-    if (!(presskeys == 8 || presskeys == 46) && (presskeys < 48 || presskeys > 57)) {
+    //if (!(presskeys == 8 || presskeys == 46) && (presskeys < 48 || presskeys > 57)) {
+    //    return false;
+    //}
+    if (String.fromCharCode(presskeys).match(/[^0-9]/g)) {
         return false;
     }
 }

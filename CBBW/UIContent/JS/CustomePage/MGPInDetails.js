@@ -46,7 +46,7 @@
                 $("#" + index + "_NoteNumber").val(_val);
                 $("#" + index + "_ID").val(item.ID);
                 $("#" + index + "_VehicleNo").val(item.VehicleNo);
-                $("#" + index + "_DriverName").html(item.DriverNo + " / " + item.DriverName);//Display Only
+                $("#" + index + "_DriverName").html(item.DriverName);//Display Only
                 $("#" + index + "_DesigCN").html(item.DesignationCode + " / " + item.DesignationText);//Display only
                 $("#" + index + "_TripType").html(item.TripTypeStr);//Display only
                 $("#" + index + "_LocationCN").html(item.FromLocationName);
@@ -344,12 +344,51 @@ function ValidateControls() {
     
     activateSubmitBtn();
 };
+
 function validatectrl(targetid, value) {
-    var isvalid = false; 
-    if (value == "" || value == null) { isvalid = false; } else { isvalid = true }
-    activateSubmitBtn();
+    var isvalid = false;
+    if (value == "" || value == null) {
+        isvalid = false;
+    } else {
+        if (targetid == '0_ActualTime') {
+            var time = formatAMPM(new Date);
+            if (CompareTime(time, value)) {
+                isvalid = true;
+            } else {
+                isvalid = false;
+                AlertMessage();
+            }
+        } else {
+            isvalid = true;
+        }
+
+    }
+
     return isvalid;
 
+};
+function formatAMPM(date) {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    hours = hours < 10 ? '0' + hours : hours;
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+}
+function AlertMessage() {
+    Swal.fire({
+        title: 'Error',
+        text: 'Please Select Current time Or Greater Than!',
+        icon: 'question',
+        customClass: 'swal-wide',
+        buttons: {
+            confirm: 'Ok'
+        },
+        confirmButtonColor: '#2527a2',
+    });
 }
 function OnclickHistoryDCDetails(ctrl) {
     $("#savebtndisables").removeClass('is-invalid').addClass('is-valid');

@@ -1,7 +1,6 @@
 ﻿@using System.Globalization;
 @using CBBW.Areas.Security.ViewModel.EntryII;
 @model MLInnerPageVM
-
 @Html.HiddenFor(m => m.NoteNumber)
 @Html.HiddenFor(m => m.DefaultPersonID)
 @Html.HiddenFor(m => m.IsOffline)
@@ -11,6 +10,7 @@
 @Html.HiddenFor(m => m.VehicleDetails.ActualTourInTime)
 @Html.HiddenFor(m => m.IsOutSaved)
 @Html.HiddenFor(m => m.IsInSaved)
+@Html.HiddenFor(m => m.RequiredKMIn)
 <div class="row newTable">
     <div class="fixedElement">
         <div class="col-md-12" style="position: relative;">
@@ -157,13 +157,13 @@
                                         <td class="text-center">
                                             <div class="qty">
                                                 <input id="cActualKmIn" data-name="KMIn" type="text" name="qty"
-                                                       maxlength="12"
+                                                       maxlength="12" onchange="ValidateActualKMIn()"
                                                        value="@(Model.VehicleDetails.ActualKmIn>0?Model.VehicleDetails.ActualKmIn:Math.Round(Model.RequiredKMIn*1.15,0))"
                                                        title="" class="input-text">
                                                 <div class="qty_inc_dec">
-                                                    <i class="increment" onclick="incrementQty()">
+                                                    <i class="increment" onclick="incrementQty(); ValidateActualKMIn();">
                                                         <i data-feather="chevron-up"></i>
-                                                    </i><i class="decrement" onclick="decrementQty()">
+                                                    </i><i class="decrement" onclick="decrementQty(); ValidateActualKMIn();">
                                                         <i data-feather="chevron-down"></i>
                                                     </i>
                                                 </div>
@@ -661,8 +661,8 @@
             value = isNaN(value) ? 1 : value;
             value++;
             document.querySelector('input[name="qty"]').value = value;
-            cardQty.innerHTML = value;
-            cardQty.classList.add("rotate-x");
+            //cardQty.innerHTML = value;
+            //cardQty.classList.add("rotate-x");
         }
         function decrementQty() {
             var value = document.querySelector('input[name="qty"]').value;
@@ -670,8 +670,8 @@
             value = isNaN(value) ? 1 : value;
             value > 1 ? value-- : value;
             document.querySelector('input[name="qty"]').value = value;
-            cardQty.innerHTML = value;
-            cardQty.classList.add("rotate-x");
+            //cardQty.innerHTML = value;
+            //cardQty.classList.add("rotate-x");
         }
     </script>
 }

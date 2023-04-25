@@ -120,15 +120,22 @@
                             From Date :
                         </label>
                         <div class="col-md-2">
-                            @Html.TextBoxFor(m => m.FromDate, "{0:dd/MM/yyyy}",
-                           htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                            <input id="FromDate" 
+                                   value="@Model.FromDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)" 
+                                   class="form-control canclear" disabled />
+                            @*@Html.TextBoxFor(m => m.FromDate, "{0:dd/MM/yyyy}",
+                           htmlAttributes: new { @class = "form-control", 
+                               disabled = "disabled" })*@
                         </div>
                         <label class="col-form-label col-md-2">
                             To Date :
                         </label>
                         <div class="col-md-2">
-                            @Html.TextBoxFor(m => m.ToDate, "{0:dd/MM/yyyy}",
-                           htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                            @*@Html.TextBoxFor(m => m.ToDate, "{0:dd/MM/yyyy}",
+        htmlAttributes: new { @class = "form-control", disabled = "disabled" })*@
+                            <input id="ToDate"
+                                   value="@Model.ToDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)"
+                                   class="form-control canclear" disabled />
                         </div>
                     </div>
                     <div class="row">
@@ -196,9 +203,9 @@
                             Date & Time Approved :
                         </label>
                         <div class="col-md-2">
-                            @Html.TextBoxFor(m => m.ApprovedDateTime,
-                           htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })
-
+                            @*@Html.TextBoxFor(m => m.ApprovedDateTime,
+                           htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })*@
+                            <input id="ApprovedDateTime" value="@Model.ApprovedDateTime.ToString("dd/MM/yyyy hh:mm:ss tt",CultureInfo.InvariantCulture)" class="form-control canclear" disabled/>
                         </div>
                         <label class="col-form-label col-md-2">
                             Reason If Not Approved :
@@ -251,19 +258,11 @@
                     </div>
                 </div>
             </div>
-            <div class="bgColor mt-4 bg-transparent border-0">
-                <ul style="list-style:none; display: flex; align-items: center; justify-content: center; margin: 0;">
-                    <li style="font-size: 18px;">
+            <div class="bgColor mt-4 bg-transparent text-center">
+                <ul style="list-style:none;">
+                    <li style="font-size: 16px;">
                         The Entry Is Done As Per Policy &amp; As Required:
-                        @*<select id="submitConfirmation" disabled="disabled"
-                                style="width:110px"
-                                class="form-select canclear"
-                                aria-label="Default select example">
-                            <option value="">-</option>
-                            <option selected value="1">Yes</option>
-                        </select>*@
-                        <input type="text" disabled="disabled"                              
-                               value="Yes" style="width:50px"/>
+                        <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
                     </li>
                 </ul>
             </div>

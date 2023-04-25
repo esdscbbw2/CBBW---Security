@@ -148,48 +148,50 @@
                 </div>
 
                 <div class="card mt-4 mb-4">
-                    <div class="card-body  alert alert-success text-dark approvalForm">
-                        <form class="form-sample form-inline row ms-auto">
-                            <div class="row d-flex align-items-center">
-                                <div class="col-md-2 col-form-label">
-                                    <label>Approved :</label>
-                                </div>
-                                <div class="col-md-2">
-                                    @if (Model.tfdHdr.ApprovalTime != null)
-                                    {
-                                        if (Model.tfdHdr.IsApproved == true)
+ 
+                    <div id="approve" class="card-body  alert alert-danger text-dark approvalForm">
+                    
+                            <form class="form-sample form-inline row ms-auto">
+                                <div class="row d-flex align-items-center">
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Approved :</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        @if (Model.tfdHdr.ApprovalTime != null)
                                         {
-                                            <input type="text" class="form-control" value="Yes" disabled="">
+                                            if (Model.tfdHdr.IsApproved == true)
+                                            {
+                                                <input type="text" class="form-control" value="Yes" disabled="">
+                                            }
+                                            else if (Model.tfdHdr.IsApproved == false)
+                                            {
+                                                <input type="text" class="form-control" value="No" disabled="">
+                                            }
+
+
                                         }
-                                        else if (Model.tfdHdr.IsApproved == false)
+                                        else
                                         {
-                                            <input type="text" class="form-control" value="No" disabled="">
+                                            <input type="text" class="form-control" value="-" disabled="">
                                         }
 
-
-                                    }
-                                    else
-                                    {
-                                        <input type="text" class="form-control" value="-" disabled="">
-                                    }
-
+                                    </div>
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Date &amp; Time Of Approval :</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control" value="@Model.tfdHdr.ApprovalDTstr @Model.tfdHdr.ApprovalTime" disabled="">
+                                    </div>
+                                    <div class="col-md-2 col-form-label">
+                                        <label>Reason If Not Approved :</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <textarea name="" id="" cols="30" rows="2" readonly class="form-control">@Model.tfdHdr.Remark</textarea>
+                                    </div>
                                 </div>
-                                <div class="col-md-2 col-form-label">
-                                    <label>Date &amp; Time Of Approval :</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control" value="@Model.tfdHdr.ApprovalDTstr @Model.tfdHdr.ApprovalTime" disabled="">
-                                </div>
-                                <div class="col-md-2 col-form-label">
-                                    <label>Reason If Not Approved :</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <textarea name="" id="" cols="30" rows="2" readonly class="form-control">@Model.tfdHdr.Remark</textarea>
-                                </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
-                </div>
 
                 <div class="col-md-12 mt-4 pt-3">
                     <div class="card">
@@ -219,7 +221,7 @@
                             <li style="font-size: 16px;">
                                 The “Tour Feed Back Details” Are Entered With The Best Of Knowledge, The Details Entered Are Correct & As Required:
 
-                                <input type="text" class="form-control border-green" value="Yes" disabled="">
+                                <input type="text"   class="form-control content border-green  width-85 pointer-none"  value="Yes" disabled="">
 
                             </li>
                         </ul>
@@ -247,6 +249,11 @@
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
     <script src="~/UIContent/JS/CustomePage/TFD/TFDDetails.js"></script>
     <script>
+        $(document).ready(function () {
+            if ($('#tfdHdr_ApprovalTime)').val() != null || $('#tfdHdr_ApprovalTime').val() != "") {
+                $('#approve').removeClass('alert-danger').addClass('alert-success');
+        }
+        });
         if ('@ViewBag.ErrMsg' != '') {
                 Swal.fire({
                     title: 'Failed to submit',
@@ -294,7 +301,15 @@
             var TourDetailsDiv = $('#TourDiv');
             TourDetailsDiv.addClass('inVisible');
             var targetCtrl = $(VisibleRows.caller.arguments[0].target);
-            var mID = targetCtrl.attr('id');
+            var mID = 0
+            
+            if (EmpNo==1) {
+                mID = EmpNo;
+               
+            } else {
+                mID= targetCtrl.attr('id');
+            }
+             
             var PType = $('#PersonType_' + mID).html();
             var EmployeeNo = $('#AuthEmployeeCode_' + mID).html();
             // var PName = $('#PersonName_' + mID).html();

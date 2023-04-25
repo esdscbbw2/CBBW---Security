@@ -17,6 +17,7 @@ namespace CBBW.BOL.MGP
         public string EntryTime { get; set; }
         public int CenterCode { get; set; }
         public string VehicleNo { get; set; }
+        public string RefNote { get; set; }
         public string VehicleType { get; set; }
         public string ModelName { get; set; }
         public string FortheMonthnYear { get; set; }

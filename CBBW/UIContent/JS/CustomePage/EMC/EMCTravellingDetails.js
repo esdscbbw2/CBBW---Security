@@ -83,7 +83,6 @@ $(document).ready(function () {
 
 });
 function ValidateControl() {
-    debugger;
     var target = ValidateControl.caller.arguments[0].target;
     var targetid = $(target).attr('id');
     var tblRow = target.closest('.add-row');
@@ -97,7 +96,7 @@ function ValidateControl() {
     //    fireSweetAlert($(target).val());
     //}
 
-    if (targetid == "SchFromDate") { Datechange($(target).val()); }
+    if (targetid == "SchFromDate") { Datechange($(target).val()); $('#SchFromTime').makeEnabled(); $('#SchFromTime').val('').isInvalid(); }
     if (targetid == "SchTourToDate") { SetDatechange($(target).val()); } else {
         //$('#SchToDate').val('');
         //$('#SchToDate').isInvalid()
@@ -178,7 +177,17 @@ function validatectrl(targetid, value, rowid) {
             isvalid = validatectrl_ValidateLength(value);
             break;
         case "SchFromTime":
-            isvalid = validatectrl_ValidateLength(value);
+            if (CompareDates()) {
+                var time = formatAMPM(new Date);
+                if (CompareTime(time, value)) {
+                    isvalid = true;
+                } else {
+                    isvalid = false;
+                    AlertMessage();
+                }
+            } else {
+                isvalid = validatectrl_ValidateLength(value);
+            }
             break;
         case "SchTourToDate":
             isvalid = validatectrl_ValidateLength(value);
@@ -229,6 +238,43 @@ function validatectrl(targetid, value, rowid) {
 
     return isvalid;
 };
+
+function CompareDates() {
+    var Val = false;
+    var dt = new Date;
+    var dateFString = (dt.getFullYear() + '-'
+        + ('0' + (dt.getMonth() + 1)).slice(-2)
+        + '-' + ('0' + (dt.getDate())).slice(-2));
+    var To = new Date($('#SchFromDate').val());
+    var dateTString = (To.getFullYear() + '-'
+        + ('0' + (To.getMonth() + 1)).slice(-2)
+        + '-' + ('0' + (To.getDate())).slice(-2));
+    if (dateFString == dateTString) { Val = true; }
+    return Val;
+}
+function formatAMPM(date) {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    hours = hours < 10 ? '0' + hours : hours;
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+}
+function AlertMessage() {
+    Swal.fire({
+        title: 'Error',
+        text: 'Please Select Current time Or Greater Than!',
+        icon: 'question',
+        customClass: 'swal-wide',
+        buttons: {
+            confirm: 'Ok'
+        },
+        confirmButtonColor: '#2527a2',
+    });
+}
 function validatectrl_YesNoCombo(value) {
 
     if (value * 1 >= 0) {

@@ -128,9 +128,9 @@
                                             </td>
                                             <td class="text-center">
                                                 <div id="VKMInCtrl" class="htmlVal @(Model.IsBranchVisit==1?"inVisible":"")" data-name="KMIn">
-                                                    @Model.VehicleDetails.KMIn
+                                                    @(Model.VehicleDetails.ActualKmIn>0? Model.VehicleDetails.ActualKmIn: Model.VehicleDetails.KMIn)
                                                 </div>
-                                                <input id="KMInCtrl" value="@Model.VehicleDetails.KMIn" type="text" onchange="KMChanged()" class="form-control @(Model.IsBranchVisit==1?"":"inVisible")">
+                                                <input id="KMInCtrl" value="@(Model.VehicleDetails.ActualKmIn>0? Model.VehicleDetails.ActualKmIn: Model.VehicleDetails.KMIn)" type="text" onchange="KMChanged()" class="form-control @(Model.IsBranchVisit==1?"":"inVisible")">
                                             </td>
                                             <td class="text-center">
                                                 <div id="RFIDOutDiv" class="inVisible htmlVal" data-name="OutRFIDCard">@Model.RFIDCardOut</div>
@@ -152,10 +152,10 @@
                                                 </div>
                                             </td>
                                             <td class="text-center">
-                                                <div id="VKMOutCtrl" class="htmlVal @(Model.IsBranchVisit==1?"inVisible":"")" data-name="KMOut">
-                                                    @Model.VehicleDetails.KMOut
+                                                <div id="VKMOutCtrl" class="htmlVal" data-name="KMOut">
+                                                    @Model.VehicleDetails.ActualKmIn
                                                 </div>
-                                                <input id="KMOutCtrl" value="@Model.VehicleDetails.KMOut" type="text" onchange="KMChanged()" class="form-control @(Model.IsBranchVisit==1?"":"inVisible")">
+                                                @*<input id="KMOutCtrl" value="@Model.VehicleDetails.KMOut" type="text" onchange="KMChanged()" class="form-control @(Model.IsBranchVisit==1?"":"inVisible")">*@
                                             </td>
                                             <td class="text-center">
                                                 <textarea data-name="VRemarks" name="" id="LWVRemarks"

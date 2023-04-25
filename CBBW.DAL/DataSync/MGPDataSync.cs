@@ -12,7 +12,6 @@ namespace CBBW.DAL.DataSync
     public class MGPDataSync
     {
         #region For Listing Page (Index page)
-       
         public DataTable getMGPDetailsforListPage(int DisplayLength, int DisplayStart, int SortColumn, string SortDirection, string SearchText, ref string pMsg)
         {
             try
@@ -55,10 +54,7 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-
-    
         #endregion
-
         #region For Out Details
         public DataTable getNoteNumbersForMatGatePass(int CenterCode, ref string pMsg)
         {
@@ -360,10 +356,42 @@ namespace CBBW.DAL.DataSync
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
         #endregion
+        #region For Report
+        public DataSet GetMGPDetailsForPrint(string NoteNumber, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[1];
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
+                para[paracount++].Value = NoteNumber;
 
+                using (SQLHelper sql = new SQLHelper("[MGP].[GetMGPDetailsForPrint]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataSet(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataSet GetMGPDetailsForPrintV2(string NoteNumber,DateTime SchFromDate, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[2];
+                para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
+                para[paracount++].Value = NoteNumber;
+                para[paracount] = new SqlParameter("@SchFromDate", SqlDbType.Date);
+                para[paracount++].Value = SchFromDate;
 
-
-
+                using (SQLHelper sql = new SQLHelper("[MGP].[GetMGPDetailsForPrintReport]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataSet(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        #endregion
 
     }
 }

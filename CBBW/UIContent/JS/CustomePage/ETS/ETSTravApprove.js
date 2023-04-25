@@ -58,7 +58,9 @@ async function GetAuthEmployee(selectedval, Vtype) {
         EligibleVeh.isValid();
         dateDetails.hide();
     } else {
-        DropdownCtrl.isInvalid();
+        if (selectedval == "" || selectedval == null) {
+            DropdownCtrl.isInvalid();
+        }
         getDropDownDataWithSelectedValue(DropdownCtrl.attr('id'), 'Select', '/Security/ETS/GetEmployeeNoName?Noteno=' + NoteNo, selectedval)
     }
    EnableSubmitBtnActive();
@@ -226,11 +228,11 @@ async function getInitialData() {
             const r8 = await GetVechileType(VehicleTypeProvided.val());
             const r9 = await GetAuthEmployee($.trim(EmpNoName.val()), VehicleTypeProvided.val());
         })();
-        EmployeeNonName.isValid();
+        EmployeeNonName.addClass('is-valid valid').removeClass('is-invalid');
         GetEmpEligibilty(parseInt($.trim(EmpNoName.val())), VehicleTypeProvided.val());
-        VehicleTypeProvideds.isValid();
-        EligibleVeh.val('1').isValid();
-        VehicleAlloc.val('1').isValid();
+        VehicleTypeProvideds.addClass('is-valid valid').removeClass('is-invalid');
+        EligibleVeh.val('1').addClass('is-valid valid').removeClass('is-invalid');
+        VehicleAlloc.val('1').addClass('is-valid valid').removeClass('is-invalid');
         
         } else {
         (async function () {

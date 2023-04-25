@@ -46,6 +46,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Select.HtmlToPdf, Version=22.2.0.0, Culture=neutral, PublicKeyToken=e0ae9f6e27a97018, processorArchitecture=MSIL">
+      <HintPath>..\packages\Select.HtmlToPdf.22.2.0\lib\net40\Select.HtmlToPdf.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -602,6 +605,9 @@
     <Content Include="Areas\Security\Views\TADARules\EmptyView.cshtml" />
     <Content Include="Areas\Security\Views\EHG\NotOpen.cshtml" />
     <Content Include="Areas\Security\Views\Testing\Index.cshtml" />
+    <Content Include="Areas\Security\Views\MaterialGatePass\PrintViewV2.cshtml" />
+    <Content Include="Areas\Security\Views\Shared\_PrintLayout.cshtml" />
+    <Content Include="Areas\Security\Views\MaterialGatePass\PrintView.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />
@@ -635,6 +641,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Security\Data\" />
+    <Folder Include="Upload\pdf\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

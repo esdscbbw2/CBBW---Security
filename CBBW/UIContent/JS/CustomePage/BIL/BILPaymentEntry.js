@@ -48,7 +48,9 @@
     addbtn.makeDisable();
     checklist.makeDisable();
     $('#BtnSubmit').makeDisable();
-    $('#Checked').val('');
+    $('#Checked').val('-1').isInvalid();
+    $('#Checked').makeDisable();
+    $('.content').removeClass('border-green').addClass('border-red');
 
 }
 function removeClonebtn() {
@@ -202,6 +204,7 @@ function RequisitionData() {
     var Datestr = $('#RequisitionDatestr');
     Deptcode.val() > 0 ? Deptcode.isValid() : Deptcode.isInvalid();
     RequisitionNo.val() > 0 ? RequisitionNo.isValid() : RequisitionNo.isInvalid();
+   
     if (Datestr.val() != '01/01/0001') {
         $('#RequisitionDatelbl').html(Datestr.val());
         $('#RequisitionDate').val($('#RequisitionDatestrDisplay').val());
@@ -549,11 +552,13 @@ function validatectrl(targetid, value) {
             break;
         case "Checked":
             isvalid = validatectrl_ValidatestringLength(value);
+            debugger;
             if (isvalid) {
+                $('#BtnSubmit').removeAttr('disabled', 'disabled');
                 $('.content').removeClass('border-red').addClass('border-green');
-                $('#BtnSubmit').makeEnabled();
+              
             } else {
-                $('#BtnSubmit').makeDisable();
+                $('#BtnSubmit').attr('disabled', 'disabled');
                 $('.content').removeClass('border-green').addClass('border-red');
             }
 
@@ -642,6 +647,7 @@ function SaveDetails() {
                         if (result.value) {
                             
                             $('#Checked').makeEnabled();
+                            $('#SubmitBtn').makeDisable();
                             //var url = "/Security/EMN/Index"
                             //window.location.href = url;
                         }
@@ -818,7 +824,10 @@ function TotalExp() {
 };
 function numbervalidate(key) {
     var presskeys = (key.which) ? key.which : key.presskeys;
-    if (!(presskeys == 8 || presskeys == 46) && (presskeys < 48 || presskeys > 57)) {
+    //if (!(presskeys == 8 || presskeys == 46) && (presskeys < 48 || presskeys > 57)) {
+    //    return false;
+    //}
+    if (String.fromCharCode(presskeys).match(/[^0-9]/g)) {
         return false;
     }
 }

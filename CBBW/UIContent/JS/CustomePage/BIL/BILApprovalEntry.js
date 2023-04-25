@@ -48,7 +48,9 @@
     addbtn.makeDisable();
     checklist.makeDisable();
     $('#BtnSubmit').makeDisable();
-    $('#Checked').val('');
+    $('#Checked').val('-1').isInvalid();
+    $('#Checked').makeDisable();
+    $('.content').removeClass('border-green').addClass('border-red');
 
 }
 function removeClonebtn() {
@@ -65,8 +67,6 @@ function removeClonebtn() {
     VisibleRowsEnable(lastRowId);
 
 };
-
-
 function EnableAddBtnInCloneRowIfOnlyLastV2(tblRow, addBtnBaseID) {
     var tblrow = $(tblRow);
     var rowid = tblrow.attr('id');
@@ -77,8 +77,6 @@ function EnableAddBtnInCloneRowIfOnlyLastV2(tblRow, addBtnBaseID) {
     addbtn.tooltip('hide');
     addbtn.makeDisable();
 };
-
-
 function EnableAddBtn(tblRow, addBtnBaseID,CheckId) {
     var tblrow = $(tblRow);
     var rowid = tblrow.attr('id')
@@ -149,6 +147,7 @@ function VisibleRows() {
 function VisibleRowsEnable(rowid) {
     $('#SubmitCount').val(0);
     $('#BtnSubmit').makeDisable();
+    $('#Checked').makeDisable();
     var ExpensesDetailsDiv = $('#ExpensesDetailsDiv');
     var EmployeeCode = $('#EmployeeCodes');
     var RefNoteNumber = $('#RefNoteNumbers');
@@ -353,7 +352,6 @@ function TPDBtnClicked() {
             success: function (result) {
                 iDiv.html(result);
                 modalDiv.modal('show');
-                $('#Checked').makeEnabled();
                 $('#IsApproves').makeEnabled();
                 $('#ApproveReason').makeEnabled();
                 EnableSubmitBtn();
@@ -413,6 +411,7 @@ function ValidateCloneRowCtrl() {
 function validatectrl(targetid, value) {
     var isvalid = false;
     switch (targetid) {
+        
         case "NoteNumbers":
             isvalid = validatectrl_ValidatestringLength(value);
          break;
@@ -429,12 +428,12 @@ function validatectrl(targetid, value) {
             isvalid = validatectrl_ValidatestringLength(value);
             if (isvalid) {
                 $('.content').removeClass('border-red').addClass('border-green');
+                $('#BtnSubmit').makeEnabled();
             } else {
                 $('.content').removeClass('border-green').addClass('border-red');
+                $('#BtnSubmit').makeDisable();
             }
             break;
-
-
     }
     return isvalid;
 };
@@ -451,7 +450,7 @@ function validatectrl_ValidatestringLength(value) {
 };
 function validatectrl_ValidateLength(value) {
     debugger;
-    if (value.length > 0) {
+    if (value.length >= 0) {
         return true;
     } else { return false; }
 };
@@ -467,6 +466,8 @@ function EnableSubmitBtn() {
     var SubmitBtn = $('#SubmitBtn');
     if (z <= 0 && btn == 1) {
         SubmitBtn.makeEnabled();
+    } else {
+        SubmitBtn.makeDisable();
     }
 };
 function SaveDetails() {
@@ -496,6 +497,7 @@ function SaveDetails() {
         success: function (data) {
             $(data).each(function (index, item) {
                 if (item.bResponseBool == true) {
+                    $('#SubmitCount').val(0);
                     Swal.fire({
                         title: 'Confirmation',
                         text: ' Data Saved Successfully for '+ notenumber ,
@@ -509,7 +511,8 @@ function SaveDetails() {
                     }).then(callback);
                     function callback(result) {
                         if (result.value) {
-                            $('#BtnSubmit').makeEnabled();
+                            $('#SubmitBtn').makeDisable();
+                            $('#Checked').makeEnabled();
                             //var url = "/Security/EMN/Index"
                             //window.location.href = url;
                         }
@@ -620,9 +623,17 @@ function TotalExp() {
 };
 function numbervalidate(key) {
     var presskeys = (key.which) ? key.which : key.presskeys;
-    if (!(presskeys == 8 || presskeys == 46) && (presskeys < 48 || presskeys > 57)) {
+    if (String.fromCharCode(presskeys).match(/[^0-9]/g)) {
         return false;
     }
+    //if (!(presskeys == 8 || presskeys == 46) && (presskeys < 48 || presskeys > 57)) {
+    //    return false;
+    //}
+    //var regex = new RegExp("^[^<>';.:]+$");
+    //if (!regex.test(key)) {
+    //    event.preventDefault();
+    //    return false;
+    //}
 }
 function isNumber(evt) {
     evt = (evt) ? evt : window.event;
@@ -635,7 +646,6 @@ function isNumber(evt) {
     var mids = $(targetCtrl).attr('id');
     var maxvalue = $('#' + mids + 'Max').html() * 1;
     var txtcTrl = $('#' + mids);
-   
     var mValue = txtcTrl.val();
     var mValuetatol = mValue > maxvalue ? maxvalue : mValue;
     txtcTrl.val(mValuetatol);

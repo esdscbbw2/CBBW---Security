@@ -22,7 +22,7 @@ namespace CBBW.Areas.Security.Controllers
         string mNoteNumber;
         bool btnactive;
         UserInfo user;
-        public MaterialGatePassController(IMGPRepository IMGP,ICTVRepository ICTV,IUserRepository iUser)
+        public MaterialGatePassController(IMGPRepository IMGP, ICTVRepository ICTV, IUserRepository iUser)
         {
             _IMGP = IMGP;
             _ICTV = ICTV;
@@ -39,7 +39,7 @@ namespace CBBW.Areas.Security.Controllers
         {
             TempData["MGPV"] = null;
             TempData["MGPVM"] = null;
-         
+
             TempData.Remove("MGPV");
             // IEnumerable<MGPListDetails> model = _IMGP.getMGPDetailsforListPage(ref pMsg);
             return View();
@@ -54,25 +54,25 @@ namespace CBBW.Areas.Security.Controllers
                 {
                     model = TempData["MGPVM"] as MGPNotes;
                 }
-                
+
                 model.ListofNotes = _IMGP.getApprovedNoteNumbers(user.CentreCode, ref pMsg);
                 if (TempData["btnactivetrue"] != null)
                 {
                     TempData["btnactive"] = TempData["btnactivetrue"];
                     //string noteno= TempData["notenumber"] as string;
-                   // TempData["notenumber"] = noteno;
+                    // TempData["notenumber"] = noteno;
                     //model.ListofNotes.Select(x=>x.NoteNo==noteno);
                 }
                 else
                 {
                     TempData["btnactive"] = false;
                 }
-                if (TempData["notenumber"] != null) 
-                { 
+                if (TempData["notenumber"] != null)
+                {
                     model.NoteNo = TempData["notenumber"] as string;
                     TempData["notenumber"] = model.NoteNo;
                 }
-                if (TempData["btnactivetrue"] != null) 
+                if (TempData["btnactivetrue"] != null)
                 {
                     model.ISSubmitActive = int.Parse(TempData["btnactivetrue"].ToString());
                 }
@@ -86,14 +86,14 @@ namespace CBBW.Areas.Security.Controllers
         [HttpPost]
         public ActionResult Create(MGPNotes model, string Submit)
         {
-           
+
             if (TempData["MGPVM"] != null)
             {
                 model.ListofNotes = (TempData["MGPVM"] as MGPNotes).ListofNotes;
             }
             else { model.ListofNotes = _IMGP.getApprovedNoteNumbers(user.CentreCode, ref pMsg); }
             //TempData["MGPVM"] = model;
-            if (Submit== "CMOD")
+            if (Submit == "CMOD")
             {
                 return RedirectToAction("VehicleMaterialOutDetails",
                  new { Area = "Security", CBUID = 1, NoteNumber = model.NoteNo });
@@ -104,41 +104,44 @@ namespace CBBW.Areas.Security.Controllers
                     new { Area = "Security", CBUID = 1, NoteNumber = model.NoteNo });
             }
 
-            if (TempData["OUTorIN"] as string == "In") {
-                string noteno=TempData["notenumber"] as string;
+            if (TempData["OUTorIN"] as string == "In")
+            {
+                string noteno = TempData["notenumber"] as string;
                 var mID = TempData["IDs"];
                 if (_IMGP.spUpdateOutDetailsflag(noteno, Convert.ToInt32(mID), 2, ref pMsg))
                 {
                     model.ISSubmitActive = 0;
                     ViewBag.Msg = "Note Updated Successfully.";
-                    TempData["MGPVM"]=null;
+                    TempData["MGPVM"] = null;
                 }
                 else
                 {
                     ViewBag.ErrMsg = "Note Updation Failed.";
                 }
             }
-            else { 
-            if (TempData["notenumber"] != null) { 
-            string noteno = TempData["notenumber"] as string;
-            List<MGPOutInDetails> outinmodel = new List<MGPOutInDetails>();
-            outinmodel = _IMGP.getMGPOutDetails(noteno, ref pMsg);
+            else
+            {
+                if (TempData["notenumber"] != null)
+                {
+                    string noteno = TempData["notenumber"] as string;
+                    List<MGPOutInDetails> outinmodel = new List<MGPOutInDetails>();
+                    outinmodel = _IMGP.getMGPOutDetails(noteno, ref pMsg);
 
-                long mID = 0;
-                if (outinmodel != null && outinmodel.Count > 0) 
-                { mID = outinmodel.OrderByDescending(x => x.ID).FirstOrDefault().ID; }
-            
-                if (_IMGP.spUpdateOutDetailsflag(noteno, mID,1, ref pMsg))
-                {
-                    model.ISSubmitActive = 0;
-                    ViewBag.Msg = "Note Updated Successfully.";
+                    long mID = 0;
+                    if (outinmodel != null && outinmodel.Count > 0)
+                    { mID = outinmodel.OrderByDescending(x => x.ID).FirstOrDefault().ID; }
+
+                    if (_IMGP.spUpdateOutDetailsflag(noteno, mID, 1, ref pMsg))
+                    {
+                        model.ISSubmitActive = 0;
+                        ViewBag.Msg = "Note Updated Successfully.";
+                    }
+                    else
+                    {
+                        ViewBag.ErrMsg = "Note Updation Failed.";
+                    }
+
                 }
-                else 
-                {
-                    ViewBag.ErrMsg = "Note Updation Failed.";
-                }
-                
-            }
             }
             model.EntryDate = DateTime.Today;
             model.EntryTime = DateTime.Now.ToString("hh:mm:ss tt");
@@ -152,9 +155,9 @@ namespace CBBW.Areas.Security.Controllers
         }
         public ActionResult VehicleMaterialOutDetails(string NoteNumber, int CBUID)
         {
-           
+
             MGPOutInVM model = new MGPOutInVM();
-            
+
             if (CBUID == 1)
             {
                 ViewBag.CallBackUrl = "/Security/MaterialGatePass/Create";
@@ -172,11 +175,11 @@ namespace CBBW.Areas.Security.Controllers
             MGPOutSave mgpoutsave = new MGPOutSave();
             foreach (var item in model.ListCurrentOutData)
             {
-                mgpoutsave.NoteNumber=item.NoteNumber;
+                mgpoutsave.NoteNumber = item.NoteNumber;
                 mgpoutsave.DriverNo = item.DriverNo;
                 mgpoutsave.Drivername = (item.Drivername == null || item.Drivername == "") ? "NA" : item.Drivername;
                 mgpoutsave.DesignationCode = item.DesignationCode;
-                mgpoutsave.DesignationName=(item.DesignationName == null || item.DesignationName == "") ? "NA": item.DesignationName;
+                mgpoutsave.DesignationName = (item.DesignationName == null || item.DesignationName == "") ? "NA" : item.DesignationName;
                 mgpoutsave.TripType = item.TripType;
                 mgpoutsave.TripTypeStr = item.TripTypeStr;
                 mgpoutsave.ToLocationCodeName = item.ToLocationCodeName;
@@ -188,10 +191,10 @@ namespace CBBW.Areas.Security.Controllers
                 mgpoutsave.RFIDCard = item.RFIDCard;
                 mgpoutsave.ActualTripOutDate = item.ActualTripOutDate;
                 mgpoutsave.ActualTripOutTime = item.ActualTripOutTime;
-                mgpoutsave.OutRemarks = item.OutRemarks == null?"NA": item.OutRemarks;
-              
+                mgpoutsave.OutRemarks = item.OutRemarks == null ? "NA" : item.OutRemarks;
+
             }
-           // string msg = "";
+            // string msg = "";
             CustomAjaxResponse result = new CustomAjaxResponse();
             if (_IMGP.setMGPOutDetails(mgpoutsave, model.ListofMGPReferenceDCData, ref pMsg))
             {
@@ -200,33 +203,33 @@ namespace CBBW.Areas.Security.Controllers
                 TempData["OUTorIN"] = "out";
                 result.bResponseBool = true;
                 result.sResponseString = "Data successfully updated.";
-              
+
             }
             else
             {
                 result.bResponseBool = false;
-               // result.sResponseString = msg;
+                // result.sResponseString = msg;
             }
             return Json(result, JsonRequestBehavior.AllowGet);
 
         }
-         public JsonResult GetReferenceDCDetails(string VehicleNo, string FromDT)
+        public JsonResult GetReferenceDCDetails(string VehicleNo, string FromDT)
         {
 
             //VehicleNo = "AP25X1541";
             DateTime FromDTs = DateTime.Parse(FromDT);
-                DateTime    ToDT= new DateTime(2022, 8, 15);
+            DateTime ToDT = new DateTime(2022, 8, 15);
             //UserInfo user = getLogInUserInfo();
             MGPOutInVM model = new MGPOutInVM();
             model.ListofMGPReferenceDCDetails = _IMGP.getReferenceDCDetails(VehicleNo, FromDTs, ToDT, ref pMsg);
-            return Json(model.ListofMGPReferenceDCDetails, JsonRequestBehavior.AllowGet) ;
+            return Json(model.ListofMGPReferenceDCDetails, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetHistoryDCDetails(long ID)
         {
-        
+
             //UserInfo user = getLogInUserInfo();
             MGPOutInVM model = new MGPOutInVM();
-            model.ListMGPHistoryDCDetails = _IMGP.getMGPHistoryDCDetails(ID,1, ref pMsg);
+            model.ListMGPHistoryDCDetails = _IMGP.getMGPHistoryDCDetails(ID, 1, ref pMsg);
             return Json(model.ListMGPHistoryDCDetails, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetItemWiseDetails(string NoteNumber)
@@ -244,7 +247,7 @@ namespace CBBW.Areas.Security.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetcurentOutDetails(string NoteNumber)
-        { 
+        {
             List<MGPVehicleOutDetails> model = new List<MGPVehicleOutDetails>();
             model = _IMGP.getSchDtlsForMGP(NoteNumber, ref pMsg);
             return Json(model, JsonRequestBehavior.AllowGet);
@@ -253,7 +256,7 @@ namespace CBBW.Areas.Security.Controllers
         {
             List<MGPOutInDetails> model = new List<MGPOutInDetails>();
             model = _IMGP.getMGPOutDetails(NoteNumber, ref pMsg);
-            var data= model.OrderByDescending(x => x.ID).Take(1);
+            var data = model.OrderByDescending(x => x.ID).Take(1);
             TempData["OutData"] = data;
             return Json(data, JsonRequestBehavior.AllowGet);
         }
@@ -265,9 +268,9 @@ namespace CBBW.Areas.Security.Controllers
         public ActionResult SaveVehicleMaterialInDCDetails(MGPSaveInDetailsVM model)
         {
             MGPInSave mgpinsave = new MGPInSave();
-            foreach(var item in model.ListCurrentInData)
+            foreach (var item in model.ListCurrentInData)
             {
-                mgpinsave.ID= item.ID;
+                mgpinsave.ID = item.ID;
                 mgpinsave.NoteNumber = item.NoteNumber;
                 mgpinsave.RFIDCardIn = item.RFIDCardIn;
                 mgpinsave.FromLocationType = item.FromLocationType;
@@ -277,12 +280,12 @@ namespace CBBW.Areas.Security.Controllers
                 mgpinsave.LoadPercentageIn = item.LoadPercentageIn;
                 mgpinsave.ActualTripInDate = item.ActualTripInDate;
                 mgpinsave.ActualTripInTime = item.ActualTripInTime;
-                mgpinsave.RequiredKmIn = item.RequiredKmIn>0? item.RequiredKmIn:0;
-                mgpinsave.ActualKmIn = item.ActualKmIn>0? item.ActualKmIn:0;
+                mgpinsave.RequiredKmIn = item.RequiredKmIn > 0 ? item.RequiredKmIn : 0;
+                mgpinsave.ActualKmIn = item.ActualKmIn > 0 ? item.ActualKmIn : 0;
                 mgpinsave.KMRunInTrip = item.KMRunInTrip;
-                mgpinsave.RemarkIn = item.RemarkIn==null?"NA": item.RemarkIn;
+                mgpinsave.RemarkIn = item.RemarkIn == null ? "NA" : item.RemarkIn;
 
-             }
+            }
 
             CustomAjaxResponse result = new CustomAjaxResponse();
             if (_IMGP.setMGPInDetails(mgpinsave, model.ListofMGPReferenceInDCData, ref pMsg))
@@ -301,7 +304,7 @@ namespace CBBW.Areas.Security.Controllers
                 // result.sResponseString = msg;
             }
             return Json(result, JsonRequestBehavior.AllowGet);
-           
+
         }
         [HttpPost]
         public ActionResult VehicleMaterialInDetails(MGPInDetailsVM model)
@@ -313,7 +316,7 @@ namespace CBBW.Areas.Security.Controllers
                 {
                     model = TempData["MGPout"] as MGPInDetailsVM;
                 }
-               
+
                 TempData["MGPout"] = model;
 
             }
@@ -328,10 +331,11 @@ namespace CBBW.Areas.Security.Controllers
             MGPInDetailsVM model = new MGPInDetailsVM();
             try
             {
-                if (TempData["MGPout"] != null) {
+                if (TempData["MGPout"] != null)
+                {
                     model = TempData["MGPout"] as MGPInDetailsVM;
                 }
-                
+
                 model.ListInDetails = _IMGP.getMGPOutDetails(NoteNumber, ref pMsg);
             }
             catch (Exception ex) { ex.ToString(); }
@@ -345,10 +349,11 @@ namespace CBBW.Areas.Security.Controllers
                 model = _IMGP.getMGPCurrentOutDetailsForIn(NoteNumber, ref pMsg);
                 return Json(model, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 return Json(ex.ToString());
             }
-            
+
         }
         public JsonResult GetHistoryInforView(string NoteNumber)
         {
@@ -374,7 +379,7 @@ namespace CBBW.Areas.Security.Controllers
                 model.ListofMGPReferenceInDCDetails = _IMGP.getReferenceInDCDetails(VehicleNo, FromDTs, ToDT, ref pMsg);
                 return Json(model.ListofMGPReferenceInDCDetails, JsonRequestBehavior.AllowGet);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Json(ex.ToString());
             }
@@ -391,7 +396,7 @@ namespace CBBW.Areas.Security.Controllers
 
             //UserInfo user = getLogInUserInfo();
             MGPOutInVM model = new MGPOutInVM();
-            model.ListMGPHistoryDCDetails = _IMGP.getMGPHistoryDCDetails(ID,2, ref pMsg);
+            model.ListMGPHistoryDCDetails = _IMGP.getMGPHistoryDCDetails(ID, 2, ref pMsg);
             return Json(model.ListMGPHistoryDCDetails, JsonRequestBehavior.AllowGet);
         }
         #endregion
@@ -414,7 +419,7 @@ namespace CBBW.Areas.Security.Controllers
         #region For View Pages
         public JsonResult getNoteList(int iDisplayLength, int iDisplayStart, int iSortCol_0,
           string sSortDir_0, string sSearch)
-        
+
         {
             List<MGPNoteList> noteList = _IMGP.getMGPDetailsforListPage(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, ref pMsg);
 
@@ -437,15 +442,16 @@ namespace CBBW.Areas.Security.Controllers
                 {
                     model = TempData["MGPV"] as MGPNotes;
                 }
-                else { 
+                else
+                {
 
                     model.ListofNotes = _IMGP.GetNoteNumbersfromMGP(user.CentreCode, ref pMsg);
-                    model.ListofNotes = model.ListofNotes.Where(x=>x.NoteNo==NoteNumber);
-                   // model.NoteNo = NoteNumber;
+                    model.ListofNotes = model.ListofNotes.Where(x => x.NoteNo == NoteNumber);
+                    model.RefNote = NoteNumber;
                 }
-                
+
             }
-            catch(Exception ex) { ex.ToString(); }
+            catch (Exception ex) { ex.ToString(); }
             TempData["MGPV"] = model;
             return View(model);
         }
@@ -457,9 +463,10 @@ namespace CBBW.Areas.Security.Controllers
             {
                 model.ListofNotes = (TempData["MGPV"] as MGPNotes).ListofNotes;
             }
-            else { 
+            else
+            {
                 model.ListofNotes = _IMGP.GetNoteNumbersfromMGP(user.CentreCode, ref pMsg);
-                model.ListofNotes = (IEnumerable<MGPNote>)model.ListofNotes.Where(x => x.NoteNo == model.NoteNo).OrderByDescending(x=>x.NoteNo).FirstOrDefault();
+                model.ListofNotes = (IEnumerable<MGPNote>)model.ListofNotes.Where(x => x.NoteNo == model.NoteNo).OrderByDescending(x => x.NoteNo).FirstOrDefault();
             }
             if (Submit == "CMOD")
             {
@@ -484,7 +491,7 @@ namespace CBBW.Areas.Security.Controllers
             }
             else
             {
-                ViewBag.CallBackUrl = "/Security/MaterialGatePass/VehicleMaterialInDetails?NoteNumber="+ NoteNumber;
+                ViewBag.CallBackUrl = "/Security/MaterialGatePass/VehicleMaterialInDetails?NoteNumber=" + NoteNumber;
             }
             //UserInfo user = getLogInUserInfo();
             ViewBag.ListofMatOut = _IMGP.getMGPOutDetails(NoteNumber, ref pMsg);
@@ -497,9 +504,9 @@ namespace CBBW.Areas.Security.Controllers
             MGPInDetailsVM model = new MGPInDetailsVM();
             try
             {
-                
-              ViewBag.CallBackUrl = "/Security/MaterialGatePass/Details";
-                
+
+                ViewBag.CallBackUrl = "/Security/MaterialGatePass/Details";
+
                 model.ListInDetails = _IMGP.getMGPOutDetails(NoteNumber, ref pMsg);
             }
             catch (Exception ex) { ex.ToString(); }
@@ -507,8 +514,49 @@ namespace CBBW.Areas.Security.Controllers
         }
         #endregion
         #region For Report
+        public ActionResult PrintView(string NoteNumber)
+        {
+            PrintHeader Result = new PrintHeader();
+            try
+            {
 
-       
+                if (NoteNumber != null || NoteNumber != "")
+                {
+                    Result = _IMGP.GetMGPDetailsForPrint(NoteNumber, ref pMsg);
+                    Result.ReportHdr.MonthName = System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat.AbbreviatedMonthNames[Result.ReportHdr.FortheMonth - 1].ToString();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
+            return View(Result);
+        }
+        public ActionResult PrintViewV2(string Notenumber = null)
+        {
+            //Notenumber = "200001-CTV-20230414-00003";
+            //DateTime cDate = new DateTime(2023, 04, 14);
+             DateTime cDate = DateTime.Today;
+            PrintHeader obj1 = new PrintHeader();
+            try
+            {
+                if (Notenumber != null)
+                {
+                    obj1 = _IMGP.GetMGPDetailsForPrintV2(Notenumber, cDate, ref pMsg);
+                    if (obj1.ReportHdr.FortheMonth > 0)
+                    {
+                        obj1.ReportHdr.MonthName = System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat.AbbreviatedMonthNames[obj1.ReportHdr.FortheMonth - 1].ToString();
+                    }
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                 ex.ToString();
+            }
+            return View(obj1);
+        }
         #endregion
 
 

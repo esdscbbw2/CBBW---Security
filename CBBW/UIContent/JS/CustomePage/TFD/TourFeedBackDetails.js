@@ -110,8 +110,6 @@ function validatectrl(targetid, value, rowid) {
 
     return isvalid;
 };
-
-
 function validatectrl_YesNoCombo(value) {
 
     if (value * 1 >= 0) {

@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -118,6 +119,9 @@
     <Compile Include="MGP\MGPOutInDetails.cs" />
     <Compile Include="MGP\MGPReferenceDCDetails.cs" />
     <Compile Include="MGP\MGPVehicleOutDetails.cs" />
+    <Compile Include="MGP\ReportDCDetails.cs" />
+    <Compile Include="MGP\ReportHdr.cs" />
+    <Compile Include="MGP\ReportInOutDetails.cs" />
     <Compile Include="MGP\RFID.cs" />
     <Compile Include="MyCodeHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -162,7 +162,7 @@ namespace CBBW.BLL.Repository
                     }
                     else
                         item.ActualTourInDate = item.SchToDate;
-                    item.TourStatus = item.SchToDate <= DateTime.Today ? item.ActualTourInTime.Year>1 & item.ActualTourOutTime.Year>1?1:0 : 0;
+                        item.TourStatus = item.SchToDate <= DateTime.Today ? item.ActualTourInTime==item.ActualTourOutTime?0: item.ActualTourInTime.Year>1 & item.ActualTourOutTime.Year>1?1:0 : 0;
                 }
             }
             

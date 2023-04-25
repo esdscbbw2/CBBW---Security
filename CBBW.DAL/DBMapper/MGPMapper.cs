@@ -277,7 +277,6 @@ namespace CBBW.DAL.DBMapper
             return result;
         }
         #endregion
-
         #region For In Details
         public MGPCurrentInDetails Map_MGPCurrentInDetails(DataRow dr)
         {
@@ -338,13 +337,8 @@ namespace CBBW.DAL.DBMapper
             catch (Exception ex) { ex.ToString(); }
             return result;
         }
-
         #endregion
-
         #region For List Page(Index page)
-  
-
-
         public MGPNoteList Map_MGPNoteList(DataRow dr)
         {
             MGPNoteList result = new MGPNoteList();
@@ -371,8 +365,6 @@ namespace CBBW.DAL.DBMapper
             return result;
         }
         #endregion
-
-
         #region In/Out Button Active
         public ButtonActive Map_ButtonActive(DataRow dr)
         {
@@ -392,6 +384,213 @@ namespace CBBW.DAL.DBMapper
             return result;
         }
         #endregion
+        #region For Report
+        public ReportHdr Map_ReportHdr(DataRow dr)
+        {
+            ReportHdr result = new ReportHdr();
+            try
+            {
+                if (dr != null)
+                {
+                    if (!DBNull.Value.Equals(dr["NoteNumber"]))
+                        result.NoteNumber = dr["NoteNumber"].ToString();
+                    if (!DBNull.Value.Equals(dr["CenterCode"]))
+                        result.CenterCode = int.Parse(dr["CenterCode"].ToString());
+                    if (!DBNull.Value.Equals(dr["CenterName"]))
+                        result.CenterName = dr["CenterName"].ToString();
+                    if (!DBNull.Value.Equals(dr["FortheMonth"]))
+                        result.FortheMonth =int.Parse(dr["FortheMonth"].ToString());
+                    if (!DBNull.Value.Equals(dr["FortheYear"]))
+                        result.FortheYear = int.Parse(dr["FortheYear"].ToString());
+                    if (!DBNull.Value.Equals(dr["Vehicleno"]))
+                        result.Vehicleno = dr["Vehicleno"].ToString();
+                    if (!DBNull.Value.Equals(dr["VehicleType"]))
+                        result.VehicleType = dr["VehicleType"].ToString();
+                    if (!DBNull.Value.Equals(dr["ModelName"]))
+                        result.ModelName = dr["ModelName"].ToString();
+                    if (!DBNull.Value.Equals(dr["IsMatOutActive"]))
+                        result.IsMatOutActive =bool.Parse(dr["IsMatOutActive"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsMatInActive"]))
+                        result.IsMatInActive = bool.Parse(dr["IsMatInActive"].ToString());
+
+                }
+            }
+            catch { }
+            return result;
+        }
+        public ReportHdr Map_ReportHdrV2(DataRow dr)
+        {
+            ReportHdr result = new ReportHdr();
+            try
+            {
+                if (dr != null)
+                {
+                    if (!DBNull.Value.Equals(dr["NoteNumber"]))
+                        result.NoteNumber = dr["NoteNumber"].ToString();
+                    if (!DBNull.Value.Equals(dr["EntryDate"]))
+                        result.EntryDate = DateTime.Parse(dr["EntryDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["EntryTime"]))
+                        result.EntryTime = dr["EntryTime"].ToString();
+                    if (!DBNull.Value.Equals(dr["CenterCode"]))
+                        result.CenterCode = int.Parse(dr["CenterCode"].ToString());
+                    if (!DBNull.Value.Equals(dr["CenterName"]))
+                        result.CenterName = dr["CenterName"].ToString();
+                    if (!DBNull.Value.Equals(dr["FortheMonth"]))
+                        result.FortheMonth = int.Parse(dr["FortheMonth"].ToString());
+                    if (!DBNull.Value.Equals(dr["FortheYear"]))
+                        result.FortheYear = int.Parse(dr["FortheYear"].ToString());
+                    if (!DBNull.Value.Equals(dr["Vehicleno"]))
+                        result.Vehicleno = dr["Vehicleno"].ToString();
+                    if (!DBNull.Value.Equals(dr["VehicleType"]))
+                        result.VehicleType = dr["VehicleType"].ToString();
+                    if (!DBNull.Value.Equals(dr["ModelName"]))
+                        result.ModelName = dr["ModelName"].ToString();
+                    if (!DBNull.Value.Equals(dr["DriverNo"]))
+                        result.DriverNo = int.Parse(dr["DriverNo"].ToString());
+                    if (!DBNull.Value.Equals(dr["DriverName"]))
+                        result.DriverName = dr["DriverName"].ToString();
+                    if (!DBNull.Value.Equals(dr["TripType"]))
+                        result.TripType = dr["TripType"].ToString();
+                    if (!DBNull.Value.Equals(dr["ActualTripOutDate"]))
+                        result.ActualTripOutDate = DateTime.Parse(dr["ActualTripOutDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["ActualTripOutTime"]))
+                        result.ActualTripOutTime = dr["ActualTripOutTime"].ToString();
+                    if (!DBNull.Value.Equals(dr["KMSOut"]))
+                        result.KMSOut = int.Parse(dr["KMSOut"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsMatOutActive"]))
+                        result.IsMatOutActive = bool.Parse(dr["IsMatOutActive"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsMatInActive"]))
+                        result.IsMatInActive = bool.Parse(dr["IsMatInActive"].ToString());
+                    result.EntryDateStr = MyDBLogic.ConvertDateToString(result.EntryDate);
+                    result.ActualTripOutDateStr = MyDBLogic.ConvertDateToString(result.ActualTripOutDate);
+
+                }
+            }
+            catch { }
+            return result;
+        }
+        public ReportInOutDetails Map_ReportInOutDetails(DataRow dr)
+        {
+            ReportInOutDetails result = new ReportInOutDetails();
+            try
+            {
+                if (dr != null)
+                {
+                    if (!DBNull.Value.Equals(dr["ID"]))
+                        result.ID = long.Parse(dr["ID"].ToString());
+                    if (!DBNull.Value.Equals(dr["NoteNo"]))
+                        result.NoteNo = dr["NoteNo"].ToString();
+                    if (!DBNull.Value.Equals(dr["DriverNo"]))
+                        result.DriverNo = int.Parse(dr["DriverNo"].ToString());
+                    if (!DBNull.Value.Equals(dr["DriverName"]))
+                        result.DriverName = dr["DriverName"].ToString();
+                    if (!DBNull.Value.Equals(dr["DesignationCode"]))
+                        result.DesignationCode = int.Parse(dr["DesignationCode"].ToString());
+                    if (!DBNull.Value.Equals(dr["DesignationText"]))
+                        result.DesignationText = dr["DesignationText"].ToString();
+                    if (!DBNull.Value.Equals(dr["TripType"]))
+                        result.TripType = int.Parse(dr["TripType"].ToString());
+                    if (!DBNull.Value.Equals(dr["ToLocationCodenName"]))
+                        result.ToLocationCodenName = dr["ToLocationCodenName"].ToString();
+                    if (!DBNull.Value.Equals(dr["CarryingOutMaterial"]))
+                        result.CarryingOutMaterial = bool.Parse(dr["CarryingOutMaterial"].ToString());
+                    if (!DBNull.Value.Equals(dr["LoadPercentage"]))
+                        result.LoadPercentage = float.Parse(dr["LoadPercentage"].ToString());
+                    if (!DBNull.Value.Equals(dr["RFIDOut"]))
+                        result.RFIDOut = dr["RFIDOut"].ToString();
+                    if (!DBNull.Value.Equals(dr["SchFromDate"]))
+                        result.SchFromDate = DateTime.Parse(dr["SchFromDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["ActualTripOutDate"]))
+                        result.ActualTripOutDate =DateTime.Parse(dr["ActualTripOutDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["ActualTripOutTime"]))
+                        result.ActualTripOutTime = dr["ActualTripOutTime"].ToString();
+                    if (!DBNull.Value.Equals(dr["KMSOut"]))
+                        result.KMSOut = long.Parse(dr["KMSOut"].ToString());
+                    if (!DBNull.Value.Equals(dr["OutRemarks"]))
+                        result.OutRemarks = dr["OutRemarks"].ToString();
+
+                    if (!DBNull.Value.Equals(dr["OutActive"]))
+                        result.OutActive = bool.Parse(dr["OutActive"].ToString());
+                    if (!DBNull.Value.Equals(dr["EntryInDate"]))
+                        result.EntryInDate = DateTime.Parse(dr["EntryInDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["EntryInTime"]))
+                        result.EntryInTime = dr["EntryInTime"].ToString();
+                    if (!DBNull.Value.Equals(dr["RFIDCardIn"]))
+                        result.RFIDCardIn = dr["RFIDCardIn"].ToString();
+                    if (!DBNull.Value.Equals(dr["FromLocationType"]))
+                        result.FromLocationType =int.Parse(dr["FromLocationType"].ToString());
+                    if (!DBNull.Value.Equals(dr["FromLocationCode"]))
+                        result.FromLocationCode = int.Parse(dr["FromLocationCode"].ToString());
+                    if (!DBNull.Value.Equals(dr["FromLocationName"]))
+                        result.FromLocationName = dr["FromLocationName"].ToString();
+                    if (!DBNull.Value.Equals(dr["CarryingInMaterial"]))
+                        result.CarryingInMaterial = bool.Parse(dr["CarryingInMaterial"].ToString());
+                    if (!DBNull.Value.Equals(dr["LoadPercentageIn"]))
+                        result.LoadPercentageIn = float.Parse(dr["LoadPercentageIn"].ToString());
+                    if (!DBNull.Value.Equals(dr["ActualTripInDate"]))
+                        result.ActualTripInDate = DateTime.Parse(dr["ActualTripInDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["ActualTripInTime"]))
+                        result.ActualTripInTime = dr["ActualTripInTime"].ToString();
+
+                    if (!DBNull.Value.Equals(dr["RequiredKmIn"]))
+                        result.RequiredKmIn = long.Parse(dr["RequiredKmIn"].ToString());
+                    if (!DBNull.Value.Equals(dr["ActualKmIn"]))
+                        result.ActualKmIn = long.Parse(dr["ActualKmIn"].ToString());
+                    if (!DBNull.Value.Equals(dr["KMRunInTrip"]))
+                        result.KMRunInTrip = long.Parse(dr["KMRunInTrip"].ToString());
+                    if (!DBNull.Value.Equals(dr["RemarkIn"]))
+                        result.RemarkIn = dr["RemarkIn"].ToString();
+                    if (!DBNull.Value.Equals(dr["InActive"]))
+                        result.InActive = bool.Parse(dr["InActive"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsVehicleOut"]))
+                        result.IsVehicleOut = bool.Parse(dr["IsVehicleOut"].ToString());
+
+
+                }
+            }
+            catch { }
+            return result;
+        }
+        public ReportDCDetails Map_ReportDCDetails(DataRow dr)
+        {
+            ReportDCDetails result = new ReportDCDetails();
+            try
+            {
+                if (dr != null)
+                {
+                    if (!DBNull.Value.Equals(dr["MGPOutInDetailsId"]))
+                        result.MGPOutInDetailsId = long.Parse(dr["MGPOutInDetailsId"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsOutorIn"]))
+                        result.IsOutorIn = int.Parse(dr["IsOutorIn"].ToString());
+                    if (!DBNull.Value.Equals(dr["NoteNo"]))
+                        result.NoteNo =dr["NoteNo"].ToString();
+                    if (!DBNull.Value.Equals(dr["VehicleNo"]))
+                        result.VehicleNo = dr["VehicleNo"].ToString();
+                    if (!DBNull.Value.Equals(dr["NoteDate"]))
+                        result.NoteDate = DateTime.Parse(dr["NoteDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["FromLocationCode"]))
+                        result.FromLocationCode = int.Parse(dr["FromLocationCode"].ToString());
+                    if (!DBNull.Value.Equals(dr["FromLocationType"]))
+                        result.FromLocationType = int.Parse(dr["FromLocationType"].ToString());
+                    if (!DBNull.Value.Equals(dr["FromLocationName"]))
+                        result.FromLocationName = dr["FromLocationName"].ToString();
+                    if (!DBNull.Value.Equals(dr["ToLocationCode"]))
+                        result.ToLocationCode = int.Parse(dr["ToLocationCode"].ToString());
+                    if (!DBNull.Value.Equals(dr["ToLocationType"]))
+                        result.ToLocationType = int.Parse(dr["ToLocationType"].ToString());
+                    if (!DBNull.Value.Equals(dr["ToLocationName"]))
+                        result.ToLocationName = dr["ToLocationName"].ToString();
+                    if (!DBNull.Value.Equals(dr["CheckFound"]))
+                        result.CheckFound = dr["CheckFound"].ToString();
+                    result.NoteDateStr = MyDBLogic.ConvertDateToString(result.NoteDate);
+                }
+            }
+            catch { }
+            return result;
+        }
+        #endregion
+
+
     }
 }
 

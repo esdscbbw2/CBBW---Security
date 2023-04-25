@@ -94,6 +94,16 @@ namespace CBBW.BLL.Repository
         {
             return _MGPEntities.getMGPButtonStatus(NoteNumber,ref pMsg);
         }
+
+        public PrintHeader GetMGPDetailsForPrint(string NoteNumber, ref string pMsg)
+        {
+            return _MGPEntities.GetMGPDetailsForPrint(NoteNumber, ref pMsg);
+        }
+
+        public PrintHeader GetMGPDetailsForPrintV2(string NoteNumber, DateTime SchFromDate, ref string pMsg)
+        {
+            return _MGPEntities.GetMGPDetailsForPrintV2(NoteNumber, SchFromDate, ref pMsg);
+        }
         #endregion
     }
 }

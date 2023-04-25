@@ -1,0 +1,704 @@
+﻿@using CBBW.BOL.MGP
+@model PrintHeader
+@{
+
+}
+
+<div class="container">
+    <div class="row newTable">
+        <div class="fixedElement">
+            <div class="col-md-12">
+                <div class="heading_text_btn mb-3 mt-4">
+                    <h2>Material Gate Pass (For Company Transport) – ENTRY </h2>
+                    <div class="rightButton">
+                        <button type="submit" class="btn btn-white" onclick="window.print()">
+                            <i data-feather="printer"></i>
+                            Print
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@if (Model != null)
+{
+    <div id="page-wrapp" style="margin-bottom: 30px;">
+        <div class="print-logo">
+            <img src="img/print-logo.png" alt="">
+        </div>
+        <div class="heading_text_btn2  page-name d-block mt-4 pb-4">
+            <h2 class="text-center">Material Gate Pass (For Company Transport) – ENTRY </h2>
+        </div>
+        <div id="identity">
+            <table class="table  table-bordered padd-20 table-form">
+                <tbody>
+                    <tr style="border:0;">
+                        <td colspan="3">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td style="width:50%">
+                                            <div class="inner-padding bill-no-outer" style="display: flex;">
+                                                <h6 class="form-sample-label">Ref. Company Transport Vehicle Trip Schedule – ENTRY Note No. :</h6>
+
+                                                <input type="text" class="form-control bill-input" value="@Model.ReportHdr.NoteNumber" disabled="" style="background-color: #e9ecef;">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="inner-padding" style="display: flex;">
+                                                <h6 class="form-sample-label">Print Date:</h6>
+                                                <input type="text" class="form-control" value="@DateTime.Now.ToString("dd/MM/yyyy")" disabled="" style="background-color: #e9ecef;">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="inner-padding" style="display: flex;">
+                                                <h6 class="form-sample-label ps-0">Print Time:</h6>
+                                                <input type="text" class="form-control" value="@DateTime.Now.ToString("hh:mm tt")" disabled="" style="background-color: #e9ecef;">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td stle="width:50%">
+                            <div class="inner-padding" style="display: flex;">
+                                <h6 class="form-sample-label" style="width:41%">Center Code & Name :</h6>
+                                <input type="text" class="form-control" value="@Model.ReportHdr.CenterName" disabled="" style="background-color: #e9ecef;">
+                            </div>
+                        </td>
+                        <td colspan="2">
+                            <div class="inner-padding" style="display: flex;">
+                                <h6 class="form-sample-label" style="width:42%">Month & Year :</h6>
+                                <input type="text" class="form-control" value="@Model.ReportHdr.MonthName -@Model.ReportHdr.FortheYear" disabled="" style="background-color: #e9ecef;">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:50%">
+                            <div class="inner-padding" style="display: flex;">
+                                <h6 class="form-sample-label" style="width:41%">Vehicle No. :</h6>
+                                <input type="text" class="form-control" value="@Model.ReportHdr.Vehicleno" disabled="" style="background-color: #e9ecef; width:100%">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="inner-padding" style="display: flex;">
+                                <h6 class="form-sample-label">Vehicle Type :</h6>
+                                <input type="text" class="form-control" value="@Model.ReportHdr.VehicleType" disabled="" style="background-color: #e9ecef;">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="inner-padding" style="display: flex;">
+                                <h6 class="form-sample-label">Model Name:</h6>
+                                <input type="text" class="form-control" value="@Model.ReportHdr.ModelName" disabled="" style="background-color: #e9ecef;">
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="clear:both"></div>
+        @if (Model != null)
+        {
+            if (Model.reportInOutdetails.Where(x => x.OutActive == true).Count() > 0)
+            {
+                int sl = 1;
+                int sl1 = 1;
+                int sl2 = 1;
+                foreach (var item in Model.reportInOutdetails.Where(x => x.OutActive == true))
+                {
+                    <div id="customer">
+                        <div class="group_outer">
+                            <div class="heading_text_btn2 d-block text-center mb-2">
+                                <h2 class="text-center"> Vehicle & Material Out Details:</h2>
+                            </div>
+                            <h4 style="font-size: 15px; padding-top: 20px;">
+                                Schedule Trip From Date: <b>@item.SchFromDate.ToShortDateString() </b>
+                            </h4>
+                            <div class="heading_text_btn2 d-block mb-4">
+                                <h2 class="text-center">A. Vehicle Out Details:</h2>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table bill-table table-bordered ">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;width:2%;">SL.No.</th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                                Driver No. & Name
+                                            </th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                                Designation Code & Name
+                                            </th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                                Trip Type
+                                            </th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">To Location Code & Name</th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                                Carrying Out Material?
+                                            </th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                                Loaded Material Out %
+                                            </th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                                RFID Card No.
+                                            </th>
+
+                                            <th colspan="2" style="text-align: center; vertical-align: middle;" scope="col">
+                                                Actual Trip OUT
+                                            </th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">KM Out</th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                                Remarks
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;">Date</th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;">Time</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-center">
+                                                @sl
+                                            </td>
+                                            <td class="text-center">
+                                                @item.DriverNo / @item.DriverName
+
+                                            </td>
+                                            <td class="text-center">@item.DesignationCode / @item.DesignationText </td>
+                                            <td class="text-center">@item.TripType </td>
+                                            <td class="text-center">@item.ToLocationCodenName </td>
+                                            <td class="text-center">@item.CarryingOutMaterial</td>
+                                            <td class="text-center">@item.LoadPercentage %</td>
+                                            <td class="text-center">
+                                                @item.RFIDOut
+                                            </td>
+
+                                            <td class="text-center">@item.ActualTripOutDate.ToShortDateString() </td>
+                                            <td class="text-center">@item.ActualTripOutTime</td>
+                                            <td class="text-center">@item.KMSOut</td>
+                                            <td class="text-center">
+                                                @item.OutRemarks
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="mt-4">
+                                <div class="heading_text_btn2 d-block mb-3">
+                                    <h2 class="text-center">
+                                        B. Material Out Details:
+                                    </h2>
+                                </div>
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <div id="">
+                                            @if (Model.reportDCdetails.Where(x => x.MGPOutInDetailsId == item.ID && x.IsOutorIn == 1).Count() > 0)
+                                            {
+                                                foreach (var xitem in Model.reportDCdetails.Where(x => x.MGPOutInDetailsId == item.ID && x.IsOutorIn == 1))
+                                                {
+                                                    <div class="col-md-12">
+                                                        <div id="item-wise-table">
+                                                            <div class="heading_text_btn2 d-block mb-3">
+                                                                <h2 class="text-center"> Reference DC Details </h2>
+                                                            </div>
+                                                            <div class="table-responsive newTable">
+                                                                <table class="table bill-table table-bordered ">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                                                                Ref. Note No.
+                                                                            </th>
+                                                                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                                                                Date
+                                                                            </th>
+                                                                            <th style="text-align: center; vertical-align: middle;" scope="col">
+                                                                                From Location Code & Name
+                                                                            </th>
+                                                                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                                                                To Location Code & Name
+                                                                            </th>
+                                                                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2" width="15%">
+                                                                                Checked Material Out & Found OK?
+                                                                            </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+
+
+                                                                        <tr>
+                                                                            <td class="text-center">
+                                                                                MM @sl1
+                                                                            </td>
+                                                                            <td class="text-center"> @xitem.NoteDate.ToShortDateString() </td>
+                                                                            <td class="text-center">
+                                                                                @xitem.FromLocationCode / @xitem.FromLocationName
+                                                                            </td>
+                                                                            <td class="text-center">
+                                                                                @xitem.ToLocationCode / @xitem.ToLocationName
+                                                                            </td>
+                                                                            <td class="text-center">
+                                                                                @xitem.CheckFound
+                                                                            </td>
+                                                                        </tr>
+
+
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <div class="heading_text_btn2 d-block mb-3 pt-3">
+                                                                <h2 class="text-center"> Item wise Details</h2>
+                                                            </div>
+                                                            <h4 style="font-size: 15px;">Ref. Note No.: <b>@xitem.NoteNo</b></h4>
+                                                            <div class="table-responsive newTable">
+                                                                <table class="table bill-table table-bordered ">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                                                                Item Type
+                                                                            </th>
+                                                                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                                                                Item Code & Name
+                                                                            </th>
+                                                                            <th style="text-align: center; vertical-align: middle;" scope="col" rowspan="2">
+                                                                                UOM
+                                                                            </th>
+                                                                            <th scope="col" style="text-align: center; vertical-align: middle;" colspan="2">
+                                                                                DC Quantity
+                                                                            </th>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th scope="col" style="text-align: center; vertical-align: middle;">BAGs</th>
+                                                                            <th scope="col" style="text-align: center; vertical-align: middle; ">KGs</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        @foreach (var zitem in Model.reportItemWisedetails.Where(x => x.NoteNumber == xitem.NoteNo))
+                                                                        {
+                                                                            <tr>
+                                                                                <td class="text-center">@zitem.ItemTypeText</td>
+                                                                                <td class="text-center">
+                                                                                    @zitem.ItemCode /@zitem.ItemText
+                                                                                </td>
+                                                                                <td class="text-center">
+                                                                                    @zitem.UOMCode / @zitem.UOMText
+                                                                                </td>
+                                                                                <td class="text-center">
+                                                                                    @zitem.QuantityBag
+                                                                                </td>
+                                                                                <td class="text-center">
+                                                                                    @zitem.QuantityKg
+                                                                                </td>
+                                                                            </tr>
+                                                                        }
+
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    sl1++;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <span>No Data Available</span>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    sl++;
+                }
+            }
+
+        }
+
+        <div style="clear:both"></div>
+        @if (Model != null)
+        {
+            if (Model.reportInOutdetails.Where(x => x.InActive == true).Count() > 0)
+            {
+                int sl = 1;
+                int sl1 = 1;
+                int sl2 = 1;
+                foreach (var item in Model.reportInOutdetails.Where(x => x.InActive == true))
+                {
+                    <div id="customer">
+                        <div class="group_outer">
+                            <div class="heading_text_btn2 d-block text-center mb-2">
+                                <h2 class="text-center"> Vehicle & Material In Details:</h2>
+                            </div>
+                            <h4 style="font-size: 15px; padding-top: 20px;">
+                                Schedule Trip From Date: <b>@item.SchFromDate.ToShortDateString() </b>
+                            </h4>
+                            <div class="heading_text_btn2 d-block mb-4">
+                                <h2 class="text-center">A. Vehicle In Details:</h2>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table bill-table table-bordered ">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;width:2%;">SL.No.</th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                                Driver No. & Name
+                                            </th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                                Designation Code & Name
+                                            </th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                                Trip Type
+                                            </th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">To Location Code & Name</th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                                Carrying Out Material?
+                                            </th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                                Loaded Material Out %
+                                            </th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                                RFID Card No.
+                                            </th>
+
+                                            <th colspan="2" style="text-align: center; vertical-align: middle;" scope="col">
+                                                Actual Trip OUT
+                                            </th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">Actual KM IN</th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">Actual KM IN</th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">K.M Run In The Trip</th>
+                                            <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
+                                                Remarks
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;">Date</th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;">Time</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-center">
+                                                @sl
+                                            </td>
+                                            <td class="text-center">
+                                                @item.DriverNo / @item.DriverName
+
+                                            </td>
+                                            <td class="text-center">@item.DesignationCode / @item.DesignationText </td>
+                                            <td class="text-center">@item.TripType </td>
+                                            <td class="text-center">@item.FromLocationName </td>
+                                            <td class="text-center">@item.CarryingOutMaterial</td>
+                                            <td class="text-center">@item.LoadPercentageIn %</td>
+                                            <td class="text-center">
+                                                @item.RFIDCardIn
+                                            </td>
+
+                                            <td class="text-center">@item.ActualTripInDate.ToShortDateString() </td>
+                                            <td class="text-center">@item.ActualTripInTime</td>
+                                            <td class="text-center">@item.RequiredKmIn</td>
+                                            <td class="text-center">@item.ActualKmIn</td>
+                                            <td class="text-center">@item.KMRunInTrip</td>
+                                            <td class="text-center">
+                                                @item.RemarkIn
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="mt-4">
+                                <div class="heading_text_btn2 d-block mb-3">
+                                    <h2 class="text-center">
+                                        B. Material In Details:
+                                    </h2>
+                                </div>
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <div id="">
+                                            @if (Model.reportDCdetails.Where(x => x.MGPOutInDetailsId == item.ID && x.IsOutorIn == 2).Count() > 0)
+                                            {
+                                                foreach (var xitem in Model.reportDCdetails.Where(x => x.MGPOutInDetailsId == item.ID && x.IsOutorIn == 2))
+                                                {
+                                                    <div class="col-md-12">
+                                                        <div id="item-wise-table">
+                                                            <div class="heading_text_btn2 d-block mb-3">
+                                                                <h2 class="text-center"> Reference DC Details </h2>
+                                                            </div>
+                                                            <div class="table-responsive newTable">
+                                                                <table class="table bill-table table-bordered ">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                                                                Ref. Note No.
+                                                                            </th>
+                                                                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                                                                Date
+                                                                            </th>
+                                                                            <th style="text-align: center; vertical-align: middle;" scope="col">
+                                                                                From Location Code & Name
+                                                                            </th>
+                                                                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                                                                To Location Code & Name
+                                                                            </th>
+                                                                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2" width="15%">
+                                                                                Checked Material Out & Found OK?
+                                                                            </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+
+
+                                                                        <tr>
+                                                                            <td class="text-center">
+                                                                                MM @sl1
+                                                                            </td>
+                                                                            <td class="text-center"> @xitem.NoteDate.ToShortDateString() </td>
+                                                                            <td class="text-center">
+                                                                                @xitem.FromLocationCode / @xitem.FromLocationName
+                                                                            </td>
+                                                                            <td class="text-center">
+                                                                                @xitem.ToLocationCode / @xitem.ToLocationName
+                                                                            </td>
+                                                                            <td class="text-center">
+                                                                                @xitem.CheckFound
+                                                                            </td>
+                                                                        </tr>
+
+
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <div class="heading_text_btn2 d-block mb-3 pt-3">
+                                                                <h2 class="text-center"> Item wise Details</h2>
+                                                            </div>
+                                                            <h4 style="font-size: 15px;">Ref. Note No.: <b>@xitem.NoteNo</b></h4>
+                                                            <div class="table-responsive newTable">
+                                                                <table class="table bill-table table-bordered ">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                                                                Item Type
+                                                                            </th>
+                                                                            <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                                                                Item Code & Name
+                                                                            </th>
+                                                                            <th style="text-align: center; vertical-align: middle;" scope="col" rowspan="2">
+                                                                                UOM
+                                                                            </th>
+                                                                            <th scope="col" style="text-align: center; vertical-align: middle;" colspan="2">
+                                                                                DC Quantity
+                                                                            </th>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th scope="col" style="text-align: center; vertical-align: middle;">BAGs</th>
+                                                                            <th scope="col" style="text-align: center; vertical-align: middle; ">KGs</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        @foreach (var zitem in Model.reportItemWisedetails.Where(x => x.NoteNumber == xitem.NoteNo))
+                                                                        {
+                                                                            <tr>
+                                                                                <td class="text-center">@zitem.ItemTypeText</td>
+                                                                                <td class="text-center">
+                                                                                    @zitem.ItemCode /@zitem.ItemText
+                                                                                </td>
+                                                                                <td class="text-center">
+                                                                                    @zitem.UOMCode / @zitem.UOMText
+                                                                                </td>
+                                                                                <td class="text-center">
+                                                                                    @zitem.QuantityBag
+                                                                                </td>
+                                                                                <td class="text-center">
+                                                                                    @zitem.QuantityKg
+                                                                                </td>
+                                                                            </tr>
+                                                                        }
+
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    sl1++;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <span>No Data Available</span>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    sl++;
+                }
+            }
+        }
+
+        <table class="table table-bordered  mt-4  table-form" style="border: 1px solid #198754;">
+            <tbody>
+                <tr style="border:0;">
+                    <td colspan="3">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="inner-padding" style="display: flex;">
+                                            <h6 class="form-sample-label" style="font-size: 16px;">
+                                                If The Driver Name Given In The System &amp; The Person Driving The Vehicle Are Same:
+                                            </h6>
+                                            <input type="text" class=" form-control" value="Yes" disabled="" style="background-color: #e9ecef;border: 1px solid #198754;width:10%">
+                                        </div>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered  mt-4  table-form" style="border: 1px solid #198754;">
+            <tbody>
+                <tr style="border:0;">
+                    <td colspan="3">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="inner-padding" style="display: flex;">
+                                            <h6 class="form-sample-label" style="font-size: 16px;">
+                                                Have You Collected / Given Back The Mobile Phone To The Driver Who Is Driving The Vehicle:
+                                            </h6>
+                                            <input type="text" class=" form-control" value="Yes" disabled="" style="background-color: #e9ecef;border: 1px solid #198754;width:10%">
+                                        </div>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="footer-sec">
+            <div class="container">
+                <div class="col-md-12">
+                    <p class="text-center">
+                        © 2023. <a href="#">Charbhai Bidi Works.</a> All Rights Reserved.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+else
+{
+    <div>Data Not Available</div>
+}
+
+
+
+@section headers
+    {
+    <link href="~/UIContent/CSS/print-css.css" rel="stylesheet" />
+    <style>
+        .hide {
+            display: none;
+        }
+
+        .myVehicleDiv {
+            display: none;
+        }
+        /*
+        .customSelect {
+            display: none;
+        } */
+
+        .table-form {
+            border: 1px solid #ccc;
+        }
+
+            .table-form td {
+                border: 0;
+            }
+
+        .inner-padding {
+            padding: 0.5rem;
+            align-items: center;
+        }
+
+        .form-sample-label {
+            font-weight: 500;
+            font-size: 13px;
+            margin-bottom: 0;
+            line-height: 1.5;
+            padding: 0px 15px 0 0;
+        }
+
+        .bg-grey {
+            background-color: #e9ecef;
+            opacity: 1;
+        }
+
+        .form-control {
+            display: block;
+            height: 33px;
+            width: 100%;
+            padding: .375rem .75rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #212529;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            border-radius: .25rem;
+            transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+        }
+
+        .form-select {
+            height: 33px;
+        }
+
+        .table-bordered > :not(caption) > * {
+            border-width: 0px 0;
+        }
+
+        .bill-table thead th {
+            color: #fff;
+            background: #3a3cab !important;
+            print-color-adjust: exact;
+            border: 1px solid #dee2e6;
+        }
+
+        .bill-table td {
+            border: 1px solid #dee2e6;
+        }
+
+        .group_outer {
+            border: 1px solid #dee2e6;
+            padding: 20px 10px;
+        }
+    </style>
+}

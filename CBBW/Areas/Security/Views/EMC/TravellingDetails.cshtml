@@ -138,7 +138,7 @@
                                             </td>
                                             <td class="text-center">
                                                 <div class="input-group clear date pointer position-static placeholder-dark">
-                                                    <input id="SchFromTime" type="text"
+                                                    <input disabled id="SchFromTime" type="text"
                                                            data-name="SchFromTime"
                                                            onblur="ValidateControl()"
                                                            class="form-control clear is-invalid timePicker"
@@ -298,6 +298,11 @@
 
         .pointer {
             cursor: pointer;
+        }
+        input[type="date"]::before {
+        
+            right: 30px;
+         
         }
     </style>
 

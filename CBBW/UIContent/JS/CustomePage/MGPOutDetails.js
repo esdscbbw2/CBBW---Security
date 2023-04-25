@@ -46,7 +46,7 @@
                 }
                 
                 $("#" + index + "_NotNos").val(item.NoteNumber);
-                $("#" + index + "_DrivernNo").html(item.DriverNo + " / " + item.Drivername);//Display Only
+                $("#" + index + "_DrivernNo").html(item.Drivername);//Display Only
                 $("#" + index + "_DriverName").val(item.Drivername);
                 $("#" + index + "_DriverNo").val(item.DriverNo);
                 $("#" + index + "_VehicleNo").val(item.VehicleNumber);
@@ -400,13 +400,40 @@ function ValidateControl() {
 
 };
 function validatectrl(targetid, value) {
-   // alert(targetid);
     var isvalid = false;
-    if (value == "" || value == null) { isvalid = false; } else { isvalid = true; }
-   // activateSubmitBtn();
+        if (value == "" || value == null)
+        {
+            isvalid = false;
+        } else {
+            if (targetid == '0_ActualTripTime') {
+                 var time = formatAMPM(new Date);
+                if (CompareTime(time,value)) {
+                    isvalid = true;
+                } else {
+                    isvalid = false;
+                    AlertMessage();
+                }
+            } else {
+                isvalid = true;
+            }
+           
+        }
+    
     return isvalid;
 
 };
+function AlertMessage() {
+    Swal.fire({
+        title: 'Error',
+        text: 'Please Select Current time Or Greater Than!',
+        icon: 'question',
+        customClass: 'swal-wide',
+        buttons: {
+            confirm: 'Ok'
+        },
+        confirmButtonColor: '#2527a2',
+    });
+}
 function DatePicker(val) {
         var minDate = new Date();
     var maxDate = new Date();
@@ -420,7 +447,6 @@ function DatePicker(val) {
     });
    
 }
-
 function RFIDOutChanged(RFId, TripDate) {
     if (RFId != '' && RFId!=0) {
         $.ajax({

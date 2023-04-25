@@ -138,7 +138,7 @@
                                             </td>
                                             <td class="text-center">
                                                 <div class="input-group clear date pointer position-static placeholder-dark">
-                                                    <input id="SchFromTime" type="text"
+                                                    <input disabled id="SchFromTime" type="text"
                                                            data-name="SchFromTime"
                                                            onblur="ValidateControl()"
                                                            class="form-control clear is-invalid timePicker"
@@ -312,19 +312,20 @@
         var firstOpen = true;
         var time;
         $('.timePicker').datetimepicker({
-            //minDate: moment(),
+            //minDate: moment($('#SchFromDate').val()),
             useCurrent: false,
             format: "hh:mm A"
         }).on('dp.show', function () {
             if (firstOpen) {
-                //minDate: moment(),
                     time = moment().startOf('day');
-                firstOpen = false;
+                    firstOpen = false;
             } else {
                 time = "01:00 PM"
             }
             $(this).data('DateTimePicker').date(time);
         });
+
+       
     </script>
     <script>
         

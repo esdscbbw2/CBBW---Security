@@ -45,6 +45,8 @@ namespace CBBW.BOL.BIL
 		public float Lodging { get; set; }
 		public float TotalExpenses { get; set; }
 		public bool IsVehicleProvided { get; set; }
+		public bool TADADenied { get; set; }
+		
 		public string TourFromDateNTime { get; set; }
 		public string TourToDateNTime { get; set; }
 

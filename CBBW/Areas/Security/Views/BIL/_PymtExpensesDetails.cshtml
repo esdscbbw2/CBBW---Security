@@ -27,6 +27,19 @@
             content: "\f107";
             font: normal normal normal 21px/1 FontAwesome;
         }
+    .save-button {
+        position: relative;
+        padding: 4px 19px 4px 33px;
+    }
+
+        .save-button::after {
+            position: absolute;
+            top: 3px;
+            right: 21px;
+            width: 100%;
+            content: "\f046";
+            font: normal normal normal 21px/1 FontAwesome;
+        }
 </style>
 
 
@@ -254,7 +267,7 @@
 
                 </div>
                 <div class="text-center">
-                    <button type="button" id="SubmitBtn" disabled onclick="SaveDetails();" class="btn btn-green mt-2  me-2">
+                    <button type="button" id="SubmitBtn" disabled onclick="SaveDetails();" class="save-button btn btn-green mt-2  me-2">
                         <i data-feather="check-circle"></i>
                         Save
                     </button>

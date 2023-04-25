@@ -577,10 +577,15 @@ namespace CBBW.Areas.Security.Controllers
             {
                result = _master.GetCentresFromTourCategory(TypeIDs, ref pMsg);
             }
-            
 
-            return Json(result, JsonRequestBehavior.AllowGet);
 
+           List<LocationMaster> result2 = new List<LocationMaster>();
+           foreach (var item in result.Select(o => new { o.ID, o.DisplayText }).Distinct().ToList())
+            {
+                result2.Add(new LocationMaster() { ID = item.ID, DisplayText = item.DisplayText });
+            }
+
+            return Json(result2, JsonRequestBehavior.AllowGet);
 
         }
         #endregion

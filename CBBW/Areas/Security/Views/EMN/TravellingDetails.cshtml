@@ -90,7 +90,7 @@
                                             <td class="text-center">
                                                 <select id="PublicTransport"
                                                         onchange="ValidateControl()"
-                                                        data-name="PublicTransport" class="form-select w-200 clear is-invalid" aria-label="Default select example">
+                                                        data-name="PublicTransport" class="form-select clear is-invalid" aria-label="Default select example">
                                                     <option selected="" value="-1">Select</option>
                                                     <option value="1">Yes</option>
                                                     <option value="0">No </option>
@@ -137,7 +137,7 @@
                                             </td>
                                             <td class="text-center">
                                                 <div class="input-group clear date pointer position-static placeholder-dark">
-                                                    <input id="SchFromTime" type="text"
+                                                    <input disabled id="SchFromTime" type="text"
                                                            data-name="SchFromTime"
                                                            onblur="ValidateControl()"
                                                            class="form-control clear is-invalid timePicker"
@@ -164,15 +164,15 @@
                                 </table>
                             </div>
                             @*<form class="form-sample form-inline row ms-auto mt-4 pt-3 mb-2">
-                                <div class="row d-flex align-items-center" style="padding-top: 40px;">
-                                    <div class="col-form-label col-md-3">
-                                        <label>Authorized Employee No. & Name :</label>
+                                    <div class="row d-flex align-items-center" style="padding-top: 40px;">
+                                        <div class="col-form-label col-md-3">
+                                            <label>Authorized Employee No. & Name :</label>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <input type="text" class="form-control" value="-" disabled="">
+                                        </div>
                                     </div>
-                                    <div class="col-md-5">
-                                        <input type="text" class="form-control" value="-" disabled="">
-                                    </div>
-                                </div>
-                            </form>*@
+                                </form>*@
                         </div>
                     </div>
                     <div class="col-md-12 pt-3 mt-3 pb-3">
@@ -296,7 +296,11 @@
         .pointer {
             cursor: pointer;
         }
+        input[type="date"]::before {
+            right: 30px;
+        }
     </style>
+
 
 }
 @section scripts{
@@ -304,6 +308,7 @@
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
     <script src="~/UIContent/JS/CustomePage/EMN/EMNTravellingDetails.js"></script>
     <script>
+
         var firstOpen = true;
         var time;
         $('.timePicker').datetimepicker({
@@ -313,7 +318,7 @@
         }).on('dp.show', function () {
             if (firstOpen) {
                 //minDate: moment(),
-                    time = moment().startOf('day');
+                time = moment().startOf('day');
                 firstOpen = false;
             } else {
                 time = "01:00 PM"
@@ -322,7 +327,7 @@
         });
     </script>
     <script>
-        
+
             function BackUrls() {
                 debugger;
                 var url = "@ViewBag.BackUrl";
@@ -330,7 +335,7 @@
 
                 window.location.href = urlbk;
             };
-        
+
     </script>
 
     <script>

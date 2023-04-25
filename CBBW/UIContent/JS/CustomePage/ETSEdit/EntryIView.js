@@ -35,6 +35,12 @@
                 $('#VehicleType').val(item.VehicleType);
                 $('#AuthorisedEmpNonName').val(item.AuthorisedEmpNonName);
                 $('#DesgCodenNameOfAE').val(item.DesgCodenNameOfAE);
+                if (item.IsApprovedDisplay == '-') {
+                    $('#AppDivE1').addClass('alert-danger').removeClass('alert-success');
+                } else { $('#AppDivE1').removeClass('alert-danger').addClass('alert-success'); }
+                if (item.IsRatifiedDisplay == '-') {
+                    $('#RatDivE1').addClass('alert-danger').removeClass('alert-success');
+                } else { $('#RatDivE1').removeClass('alert-danger').addClass('alert-success'); }
                 var TPDetailsDiv = $('#TPDiv');
                 var dataSourceURL = '/EntryI/TPView?NoteNumber=' + notenumber;
                 $.ajax({

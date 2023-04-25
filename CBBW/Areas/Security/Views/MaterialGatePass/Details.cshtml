@@ -10,6 +10,7 @@
 
     @using (Html.BeginForm("Details", "MaterialGatePass", FormMethod.Post))
     {
+        @Html.HiddenFor(M => M.RefNote);
         <div class="row newTable">
 
             <div class="fixedElement">
@@ -25,10 +26,14 @@
                         </div>
                         <h2>@ViewBag.Title</h2>
                         <div class="rightButton">
-                            <button type="submit" class="btn btn-white" onclick="window.location.href='#';">
+                            @*<button type="button" class="btn btn-white"  id="Print">
+            <i data-feather="printer"></i>
+            Print / View
+        </button>*@
+                            <a class="btn btn-white" href="@Url.Action("GeneratePdf","Common", new { ViewUrl ="/MaterialGatePass/PrintViewV2?Notenumber="+Model.RefNote ,PdfFileName="MGP_"+Model.RefNote })">
                                 <i data-feather="printer"></i>
                                 Print / View
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -57,9 +62,10 @@
         new SelectList(Model.ListofNotes, "NoteNo", "NoteNo"),
         htmlAttributes: new
         {
-            @class = "form-select",
-            disabled = "disabled"
+            @class = "inVisible form-select"
+
         })
+                                    <input type="text" id="driversame" class="form-control"  value="@Model.RefNote" disabled="">
                                 </div>
 
                                 <label class="col-form-label col-md-1">
@@ -140,13 +146,14 @@
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
                             If The Driver Name Given In The System & The Person Driving The Vehicle Are Same:
-                            <select id="driversame" style="width:110px"
+                            @*<select id="driversame" style="width:110px"
                                     class="form-select"
                                     aria-label="Default select example" disabled>
 
                                 <option selected value="Yes">Yes</option>
 
-                            </select>
+                            </select>*@
+                            <input type="text" id="driversame" class="form-control content  width-85 pointer-none"  value="Yes" disabled="">
                         </li>
                     </ul>
                 </div>
@@ -156,12 +163,8 @@
                         <li style="font-size: 16px;">
                             Have You Collected / Given Back The Mobile Phone To The Driver Who Is Driving The Vehicle:
 
-                            <select id="vehicledriver" style="width:110px"
-                                    class="form-select" aria-label="Default select example" disabled>
-
-                                <option selected value="Yes">Yes</option>
-
-                            </select>
+                            <input type="text" id="vehicledriver"  class="form-control content  width-85 pointer-none"value="Yes" disabled="">
+                            
                         </li>
                     </ul>
                 </div>
@@ -248,6 +251,13 @@
               
             });
         });
+        $(document).ready(function () {
+            $('#Print').click(function () {
+                var url = "/Security/MaterialGatePass/PrintView?NoteNumber=" + $('#NoteNo').val();
+                window.open(url);
+            });
+        });
+
     </script>
     
 }

@@ -462,6 +462,7 @@ new { Area = "Security" })'">
 
     <script src="js/moment.min.js"></script>
     <script src="js/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
     <script src="~/UIContent/JS/CustomePage/MGPInDetails.js"></script>
     <script>
 
@@ -476,16 +477,13 @@ new { Area = "Security" })'">
             var time;
 
             $('.timePicker').datetimepicker({
+                minDate: new Date,
                 useCurrent: false,
                 format: "hh:mm A"
+            }).setOptions({
+                minTime: formatAMPM(new Date)
             }).on('dp.show', function () {
-                if (firstOpen) {
-                   // time = moment().startOf('day');
-                    firstOpen = false;
-                } else {
-                    time = "01:00 PM"
-                }
-
+                time: moment(new Date);
                 $(this).data('DateTimePicker').date(time);
             });
         });
@@ -494,7 +492,7 @@ new { Area = "Security" })'">
             //var targetid = $(ctrl).attr("id");
             //var targetval = $(ctrl).attr('data-value');
             var notenumber = $("#NoteNumber").val();
-            var url = '/Security/MaterialGatePass/VehicleMaterialOutView?NoteNumber=' + notenumber +'&CBUID=2';
+            var url = '/Security/MaterialGatePass/VehicleMaterialOutView?NoteNumber=' + notenumber + '&CBUID=2';
             window.location.href = url;
         };
         function btnClearClicked() {
@@ -503,7 +501,7 @@ new { Area = "Security" })'">
             window.location.href = url;
         };
 
-        
+
     </script>
 
 }

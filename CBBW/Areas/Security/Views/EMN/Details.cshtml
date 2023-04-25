@@ -16,7 +16,9 @@
         @Html.HiddenFor(m => m.emnHeader.AttachFile)
         @Html.HiddenFor(m => m.emnHeader.CenterCodeName)
         @Html.HiddenFor(m => m.HeaderText)
-        @Html.HiddenFor(m=>m.emnHeader.NoteNumber)
+        @Html.HiddenFor(m => m.emnHeader.NoteNumber)
+        @Html.HiddenFor(m => m.emnHeader.ApproveTime)
+        @Html.HiddenFor(m => m.emnHeader.RatifiedTime)
 
 
         <div class="row newTable">
@@ -167,7 +169,7 @@
                                         <input type="text" class="form-control" value="@Model.emnHeader.IsRatifieds" disabled="">
                                     </div>
                                     <div class="col-md-2 col-form-label">
-                                        <label>Date & Time Of &nbsp; Ratification :</label>
+                                        <label>Date & Time Of  Ratification :</label>
                                     </div>
                                     <div class="col-md-2">
                                         <input type="text" class="form-control" value="@Model.emnHeader.RatifiedDatestr @Model.emnHeader.RatifiedTime" disabled="">
@@ -194,7 +196,7 @@
                                         <input type="text" class="form-control" value="@Model.emnHeader.IsRatifieds" disabled="">
                                     </div>
                                     <div class="col-md-2 col-form-label">
-                                        <label>Date & Time Of &nbsp; Ratification :</label>
+                                        <label>Date & Time Of  Ratification :</label>
                                     </div>
                                     <div class="col-md-2">
                                         <input type="text" class="form-control" value="@Model.emnHeader.RatifiedDatestr @Model.emnHeader.RatifiedTime" disabled="">

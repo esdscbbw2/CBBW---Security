@@ -31,6 +31,19 @@
             content: "\f107";
             font: normal normal normal 21px/1 FontAwesome;
         }
+    .save-button {
+        position: relative;
+        padding: 4px 19px 4px 33px;
+    }
+    .save-button::after {
+        position: absolute;
+        top: 3px;
+        right: 21px;
+        width: 100%;
+        content: "\f046";
+        font: normal normal normal 21px/1 FontAwesome;
+    }
+
 </style>
 
 <div class="col-md-12">
@@ -89,7 +102,7 @@
                             </th>
                             <td class="text-center">
                                 <div class="qty mx-auto">
-                                    @Html.TextBoxFor(x => x.AEDAmount, new {@id="AED",@class = "form-control only-numeric calculate", autocomplete = "off", onkeyup = "return isNumber(event);", onkeypress = "return numbervalidate(event)" })
+                                    @Html.TextBoxFor(x => x.AEDAmount, new {@id="AED",@class = "form-control only-numeric calculate",autocomplete = "off", onkeyup = "return isNumber(event);", onkeypress = "return numbervalidate(event)" })
                                     <div class="qty_inc_dec">
                                         <div id="ED" class="increment" onclick="AEDincrementQty()">
                                             <i data-feather="chevron-up">
@@ -210,10 +223,11 @@
             <i data-feather="check-circle"></i>
             Save
         </button>*@
-                <button type="button" id="SubmitBtn" disabled onclick="SaveDetails();" class="btn btn-green mt-2  me-2">
-                    <i data-feather="check-circle"></i>
+                <button type="button" id="SubmitBtn" disabled onclick="SaveDetails();" class="btn save-button btn-green mt-2  me-2">
+                  
                     Save
                 </button>
+               
             </div>
         </div>
     </div>

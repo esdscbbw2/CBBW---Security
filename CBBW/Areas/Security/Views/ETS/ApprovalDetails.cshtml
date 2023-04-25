@@ -16,6 +16,7 @@
         @Html.HiddenFor(m => m.etsHeader.AttachFile)
         @Html.HiddenFor(m => m.etsHeader.CenterCodeName)
         @Html.HiddenFor(m => m.HeaderText)
+        @Html.HiddenFor(m => m.etsHeader.RatifiedTime)
 
 
         <div class="row newTable">
@@ -98,20 +99,20 @@
                 </div>
 
                 <div class="card mb-4 mt-4">
-                    <div class="card-body  alert alert-danger text-dark approvalForm">
+                    <div id="Ratificate" class="card-body  alert alert-danger text-dark approvalForm">
                         <form class="form-sample form-inline row ms-auto">
                             <div class="row d-flex align-items-center">
                                 <div class="col-md-2 col-form-label">
                                     <label>Ratified :</label>
                                 </div>
                                 <div class="col-md-2">
-                                   
 
 
-                                        <input type="text" class="form-control" value="@Model.etsHeader.IsRatifieds" disabled="">
-                                                                    </div>
+
+                                    <input type="text" class="form-control" value="@Model.etsHeader.IsRatifieds" disabled="">
+                                </div>
                                 <div class="col-md-2 col-form-label">
-                                    <label>Date & Time Of &nbsp; Ratification :</label>
+                                    <label>Date & Time Of  Ratification :</label>
                                 </div>
                                 <div class="col-md-2">
                                     <input type="text" class="form-control" value="@Model.etsHeader.RatifiedDatestr @Model.etsHeader.RatifiedTime" disabled="">
@@ -299,6 +300,10 @@
 
     <script>
         $(document).ready(function () {
+            
+            if ($('#etsHeader_RatifiedTime').val() != null || $('#etsHeader_RatifiedTime').val() != "") {
+                $('#Ratificate').removeClass('alert-danger').addClass('alert-success');
+            }
 
             $('#btnViewDoc').click(function () {
                 var docfilename = $('#etsHeader_AttachFile').val();

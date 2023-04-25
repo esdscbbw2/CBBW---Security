@@ -25,36 +25,34 @@
             <table id="tblmgp" class="table w-100 table-bordered btnalign mt-4">
                 <thead>
                     <tr>
-                        <th scope="col"> SL.No.</th>
-                        <th scope="col">Note No.</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Center Code & Name</th>
-                        <th scope="col" style="background: pink;color: #000;">Action</th>
-                    </tr>
-                </thead>
+                        <th scope="col" rowspan="2" colspan="1"> SL.No.</th>
+                        <th scope="col" rowspan="1" colspan="1">Note No.</th>
+                        <th scope="col" rowspan="1" colspan="1">Date</th>
+                        <th scope="col" rowspan="1" colspan="1">Center Code & Name</th>
 
-                <thead>
+
+                        <th scope="col" rowspan="2" colspan="1" style="background: pink;color: #000;">Action</th>
+                    </tr>
                     <tr>
-                        <th scope="col">&nbsp;</th>
-                        <th scope="col">
+                        <th scope="col" rowspan="1" colspan="1">
                             <div class="form-group">
                                 <input id="filterNoteno" type="text" class="form-control tblSearch" placeholder="Search...">
                             </div>
                         </th>
-                        <th scope="col">
+                        <th scope="col" rowspan="1" colspan="1">
                             <div class="form-group">
                                 <input id="filterDate" type="text" class="form-control tblSearch" placeholder="Search...">
                             </div>
                         </th>
-                        <th scope="col">
+                        <th scope="col" rowspan="1" colspan="1">
                             <div class="form-group">
                                 <input id="filterCenterCN" type="text" class="form-control tblSearch" placeholder="Search...">
                             </div>
                         </th>
-
-                        <th scope="col">&nbsp;</th>
                     </tr>
                 </thead>
+
+               
                 <tbody>
                     <tr></tr>
                     @*@if (Model != null && Model.Count > 0)

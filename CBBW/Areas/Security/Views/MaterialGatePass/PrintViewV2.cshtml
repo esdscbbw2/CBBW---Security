@@ -1,0 +1,339 @@
+﻿@using System.Globalization;
+@model CBBW.BOL.MGP.PrintHeader
+@{
+    Layout = "~/Areas/Security/Views/Shared/_PrintLayout.cshtml";
+    
+}
+<style>
+
+    .page-name {
+        display: block !important;
+        padding-bottom: 20px;
+    }
+
+ 
+
+    .heading_text_btn2 h3 {
+        font-size: 22px;
+    }
+    #page-wrap {
+        width: 1320px;
+    }
+    .bill-table thead th {
+        color: #000;
+        background: #f3f3f3 !important;
+        print-color-adjust: exact;
+        border: 1px solid #dee2e6;
+    }
+    .bill-table td {
+        border: 1px solid #dee2e6;
+    }
+
+
+   .table > :not(:last-child) > :last-child > * {
+        border-bottom-color: #dee2e6;
+    }
+    #page-wrap table td, table th {
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+        user-select: none;
+    }
+
+</style>
+<div id="identity">
+    <table class="table  table-bordered padd-20 label-width table-form">
+        <tbody>
+            <tr style="border:0;">
+                <td>
+                    <table class="w-100">
+                        <tbody>
+                            <tr>
+                                <td style="width:30%">
+                                    <div class="inner-padding">
+                                        <h6 class="form-sample-label">Ref. Company Transport Vehicle Trip Schedule – ENTRY Note No. :</h6>
+                                    </div>
+                                </td>
+                                <td style="width:25%">
+                                    <div class="form-sample-value">
+                                        <p>@Model.ReportHdr.NoteNumber</p>
+                                    </div>
+                                </td>
+
+                                <td style="width:15%">
+                                    <div class="inner-padding">
+                                        <h6 class="form-sample-label">Date:</h6>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-sample-value">
+                                        <p>@Model.ReportHdr.EntryDateStr</p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="inner-padding">
+                                        <h6 class="form-sample-label ">Time:</h6>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-sample-value">
+                                        <p>@Model.ReportHdr.EntryTime</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr style="border:0;">
+                <td>
+                    <table class="w-100">
+                        <tbody>
+                            <tr>
+                                <td style="width:30%">
+                                    <div class="inner-padding">
+                                        <h6 class="form-sample-label">Center Code & Name :</h6>
+                                    </div>
+                                </td>
+                                <td style="width:25%">
+                                    <div class="form-sample-value">
+                                        <p>@Model.ReportHdr.CenterName</p>
+                                    </div>
+                                </td>
+
+                                <td style="width:15%">
+
+                                    <div class="inner-padding">
+                                        <h6 class="form-sample-label">Month & Year :</h6>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-sample-value">
+                                        <p>@Model.ReportHdr.MonthName -@Model.ReportHdr.FortheYear</p>
+                                    </div>
+                                </td>
+                                <td>
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    &nbsp;
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr style="border:0;">
+                <td>
+                    <table class="w-100">
+                        <tbody>
+                            <tr>
+                                <td style="width:30%">
+                                    <div class="inner-padding">
+                                        <h6 class="form-sample-label ">Vehicle No. :</h6>
+                                    </div>
+                                </td>
+                                <td style="width:25%">
+
+                                    <div class="form-sample-value">
+                                        <p>@Model.ReportHdr.Vehicleno</p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="inner-padding">
+                                        <h6 class="form-sample-label">Vehicle Type :</h6>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-sample-value">
+                                        <p>@Model.ReportHdr.VehicleType</p>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="inner-padding">
+                                        <h6 class="form-sample-label">Model Name :</h6>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-sample-value">
+                                        <p>@Model.ReportHdr.ModelName</p>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr style="border:0;">
+                <td>
+                    <table class="w-100">
+                        <tbody>
+                            <tr>
+                                <td style="width:30%">
+                                    <div class="inner-padding">
+                                        <h6 class="form-sample-label ">Driver No. & Name :</h6>
+                                    </div>
+                                </td>
+                                <td style="width:25%">
+
+                                    <div class="form-sample-value">
+                                        <p>@Model.ReportHdr.DriverName</p>
+                                    </div>
+                                </td>
+                                <td style="width:15%">
+                                    <div class="inner-padding">
+                                        <h6 class="form-sample-label">Trip Type :</h6>
+
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-sample-value">
+                                        <p>
+                                            @Model.ReportHdr.TripType
+                                        </p>
+
+                                    </div>
+                                </td>
+
+
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr style="border:0;">
+                <td>
+                    <table class="w-100">
+                        <tbody>
+                            <tr>
+                                <td style="width:30%">
+                                    <div class="inner-padding">
+                                        <h6 class="form-sample-label">Actual Trip OUT Date :<h6>
+
+                                    </div>
+                                </td>
+                                <td style="width:25%">
+
+                                    <div class="form-sample-value">
+                                        <p>@Model.ReportHdr.ActualTripOutDateStr</p>
+                                    </div>
+                                </td>
+                                <td style="width:15%">
+                                    <div class="inner-padding">
+                                        <h6 class="form-sample-label">Actual Trip OUT Time :</h6>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-sample-value">
+                                        <p>@Model.ReportHdr.ActualTripOutTime</p>
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="inner-padding">
+                                        <h6 class="form-sample-label">KM Out :</h6>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-sample-value">
+                                        <p>@Model.ReportHdr.KMSOut</p>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+
+<div style="clear:both"></div>
+
+<div id="customer">
+    <div class="mb-4">
+        <div class="heading_text_btn2 d-block text-center mb-4 pt-2">
+            <h2 class="text-center"> Material Out Details:</h2>
+        </div>
+        <div class="table-responsive ">
+            <table class="table bill-table table-bordered ">
+                <thead>
+                    <tr>
+                        <th scope="col" style="text-align: center; vertical-align: middle;width:24%">
+                            Ref. Note No.
+                        </th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;">
+                            Date
+                        </th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;width:25%;">
+                            Item Description
+                        </th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;">From Location Code & Name</th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;">
+                            To Location Code & Name
+                        </th>
+                        <th scope="col" style="text-align: center; vertical-align: middle; width: 12%;">
+                            Checked Material Out & Found OK?
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.reportDCdetails != null)
+                    {
+
+                        foreach (var item in Model.reportDCdetails)
+                        {
+                            <tr>
+                                <td class="text-center">
+                                    @item.NoteNo
+                                </td>
+                                <td class="text-center">
+                                    @item.NoteDateStr
+
+                                </td>
+                                @if (Model.reportItemWisedetails != null)
+                                {
+                                    <td class="text-center">
+                                        @foreach (var itemwise in Model.reportItemWisedetails)
+                                        {
+                                            @itemwise.ItemText;
+                                            <span>,</span>
+
+
+                                        }
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>-</td>
+                                }
+                                <td class="text-center">@item.FromLocationName </td>
+                                <td class="text-center">@item.ToLocationName </td>
+
+                                @*<td class="text-center">@item.FromLocationCode -@item.FromLocationName </td>
+                                <td class="text-center">@item.ToLocationCode- @item.ToLocationName </td>*@
+                                <td class="text-center">@item.CheckFound</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>No Data Available</tr>
+                    }
+
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div style="clear:both"></div>

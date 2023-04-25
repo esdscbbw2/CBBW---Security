@@ -17,6 +17,7 @@
         @Html.HiddenFor(m => m.emnHeader.CenterCodeName)
         @Html.HiddenFor(m => m.emnHeader.NoteNumber)
         @Html.HiddenFor(m => m.HeaderText)
+        @Html.HiddenFor(m => m.emnHeader.ApproveTime)
 
 
         <div class="row newTable">
@@ -92,7 +93,7 @@
                 </div>
 
                 <div class="card mb-4 mt-4">
-                    <div class="card-body  alert alert-danger text-dark approvalForm">
+                    <div id="approve" class="card-body  alert alert-danger text-dark approvalForm">
                         <form class="form-sample form-inline row ms-auto">
                             <div class="row d-flex align-items-center">
                                 <div class="col-md-2 col-form-label">
@@ -365,6 +366,9 @@
 
     <script>
         $(document).ready(function () {
+            if ($('#emnHeader_ApproveTime').val() != null || $('#emnHeader_ApproveTime').val() != "") {
+                $('#approve').removeClass('alert-danger').addClass('alert-success');
+            }
             $('#btnBack').click(function () {
                 var url = "/Security/EMN/RTFNIndex";
                 window.location.href = url;

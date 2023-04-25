@@ -212,7 +212,7 @@ function GetDateUsingRFID() {
     }
 
    
-    _vals = _vals == 'NA' || _val == '-1' ? 0 : _vals;
+    _vals = _vals == 'NA' || _vals == '-1' ? 0 : _vals;
     RFIDInChangedOUT(_vals, dateString, rowids)
 };
 
@@ -283,17 +283,118 @@ function ValidateControls() {
     } else {
         $(target).removeClass('is-valid').addClass('is-invalid');
     }
+
+//    if (targetid == '0_ActualTripInDate') {
+//        if ($('#0_ActualInRFIDCard').val() == 'NA') {
+//            $('#0_ActualTripInTime').makeEnabled(); $('#0_ActualTripInTime').val('').isInvalid();
+//        }
+//    }
+    
+//if (targetid == '0_ActualTripOutDate') {
+//    if ($('#0_ActualOutRFIDCard').val() == 'NA') {
+//        $('#0_ActualTripOutTime').makeEnabled(); $('#0_ActualTripOutTime').val('').isInvalid();
+//    }
+//    }
+
     activateSubmitBtn();
 
 };
 function validatectrl(targetid, value) {
     var isvalid = false;
     
-    if (value == "" || value == null || value == "-1") { isvalid = false; } else { isvalid = true }
-    activateSubmitBtn();
+    if (value == "" || value == null || value == "-1") {
+        isvalid = false;
+    } else {
+        isvalid = true;
+        //if (targetid == '0_ActualTripInTime') {
+        //    debugger;
+        //    if (CompareDatesIn()) {
+
+        //        var time = formatAMPM(new Date);
+        //        if (CompareTime(time, value)) {
+        //            isvalid = true;
+        //        } else {
+        //            isvalid = false;
+        //            AlertMessage();
+        //        }
+        //    } else {
+        //        isvalid = true;
+        //    }
+        //} else if (targetid == '0_ActualTripOutTime') {
+        //    if (CompareDatesOut()) {
+        //        var time = formatAMPM(new Date);
+        //        if (CompareTime(time, value)) {
+        //            isvalid = true;
+        //        } else {
+        //            isvalid = false;
+        //            AlertMessage();
+        //        }
+        //    } else {
+        //        isvalid = true;
+        //    }
+        //}
+
+        //else {
+        //    isvalid = true;
+        //}
+
+
+    }
+   
     return isvalid;
 
 };
+function CompareDatesIn() {
+    debugger;
+    var Val = false;
+    var dt = new Date;
+    var dateFString = (dt.getFullYear() + '-'
+        + ('0' + (dt.getMonth() + 1)).slice(-2)
+        + '-' + ('0' + (dt.getDate())).slice(-2));
+    alert($('#0_ActualTripInDate').val());
+    var To = new Date($('#0_ActualTripInDate').val());
+    var dateTString = (To.getFullYear() + '-'
+        + ('0' + (To.getMonth() + 1)).slice(-2)
+        + '-' + ('0' + (To.getDate())).slice(-2));
+    if (dateFString == dateTString) { Val = true; }
+    return Val;
+}
+function CompareDatesOut() {
+    var Val = false;
+    var dt = new Date;
+    var dateFString = (dt.getFullYear() + '-'
+        + ('0' + (dt.getMonth() + 1)).slice(-2)
+        + '-' + ('0' + (dt.getDate())).slice(-2));
+    var To = new Date($('#0_ActualTripOutDate').val());
+    var dateTString = (To.getFullYear() + '-'
+        + ('0' + (To.getMonth() + 1)).slice(-2)
+        + '-' + ('0' + (To.getDate())).slice(-2));
+    if (dateFString == dateTString) { Val = true; }
+    return Val;
+}
+function formatAMPM(date) {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    hours = hours < 10 ? '0' + hours : hours;
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+}
+function AlertMessage() {
+    Swal.fire({
+        title: 'Error',
+        text: 'Please Select Current time Or Greater Than!',
+        icon: 'question',
+        customClass: 'swal-wide',
+        buttons: {
+            confirm: 'Ok'
+        },
+        confirmButtonColor: '#2527a2',
+    });
+}
 function activateSubmitBtn() {
 
     var btnSubmit = $('#btnSubmit');

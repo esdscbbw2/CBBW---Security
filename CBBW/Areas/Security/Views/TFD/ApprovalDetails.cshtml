@@ -189,7 +189,8 @@
                                         <label>Reason If not Approved :</label>
                                     </div>
                                     <div class="col-md-2">
-                                        @Html.TextBoxFor(x => x.tfdHdr.Remark, new { @class = "form-control", @readonly = "readonly" })
+                                        <textarea name="" id="" cols="30" rows="2" readonly class="form-control">@Model.tfdHdr.Remark</textarea>
+                                        @*@Html.TextBoxFor(x => x.tfdHdr.Remark, new { @class = "form-control", @readonly = "readonly" })*@
                                     </div>
                                 </div>
                             </form>

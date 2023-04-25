@@ -119,6 +119,8 @@ namespace CBBW.DAL.DBMapper
                         result.PersonType = dr["PersonType"].ToString();
                     if (!DBNull.Value.Equals(dr["IsVehicleProvided"]))
                         result.IsVehicleProvided = bool.Parse(dr["IsVehicleProvided"].ToString());
+                    if (!DBNull.Value.Equals(dr["TADADenied"]))
+                        result.TADADenied = bool.Parse(dr["TADADenied"].ToString());
                     result.ActualTourInDatestr = MyDBLogic.ConvertDateToString(result.ActualTourInDate);
                     result.ActualTourOutDatestr = MyDBLogic.ConvertDateToString(result.ActualTourOutDate);
 
@@ -278,7 +280,8 @@ namespace CBBW.DAL.DBMapper
                         result.IsApprovalSubmit = bool.Parse(dr["IsApprovalSubmit"].ToString());
                     if (!DBNull.Value.Equals(dr["IsPaymenttSubmit"]))
                         result.IsPaymenttSubmit = bool.Parse(dr["IsPaymenttSubmit"].ToString());
-
+                    if (!DBNull.Value.Equals(dr["TADADenied"]))
+                        result.TADADenied = bool.Parse(dr["TADADenied"].ToString());
                     result.RequisitionDatestrDisplay =result.RequisitionDate.ToString("yyyy-MM-dd");
                     result.RequisitionDatestr = MyDBLogic.ConvertDateToString(result.RequisitionDate);
                     result.TourFromDateNTime = MyDBLogic.ConvertDateToString(result.TourFromDate);

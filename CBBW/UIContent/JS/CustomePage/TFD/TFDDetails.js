@@ -45,6 +45,7 @@ async function GetEmployeeList(notenumber, selectedvalue) {
 }
 async function GetTPDetails(notenumber) {
     // var notenumber = $('#NoteNumber').val();
+    $('.CheckList').prop('checked', false);
     var TPDetailsDiv = $('#TPDiv');
     var dataSourceURL = '/TFD/TPView?NoteNumber=' + notenumber;
     $.ajax({
@@ -55,6 +56,8 @@ async function GetTPDetails(notenumber) {
         success: function (result) {
             TPDetailsDiv.removeClass('inVisible');
             TPDetailsDiv.html(result);
+            $("#1").prop('checked', true);
+            VisibleRows(1);
         },
         error: function (xhr, status) {
             TPDetailsDiv.html(xhr.responseText);

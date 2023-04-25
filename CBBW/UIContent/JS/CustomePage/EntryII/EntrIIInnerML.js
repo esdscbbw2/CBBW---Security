@@ -1,4 +1,12 @@
-﻿function ValidateControl() {
+﻿function ValidateActualKMIn() {
+    var reqKmIn = $('#RequiredKMIn').val();
+    reqKmIn = Math.round(reqKmIn * 1.15);
+    var myCtrl = $('#cActualKmIn');
+    if (myCtrl.val() > reqKmIn) {
+        myCtrl.val(reqKmIn);
+    };
+};
+function ValidateControl() {
     var target = ValidateControl.caller.arguments[0].target;
     var targetid = $(target).attr('id');
     //alert(targetid);
@@ -213,8 +221,8 @@ $(document).ready(function () {
                     } else {
                         Swal.fire({
                             title: 'Confirmation',
-                            text: 'Failed To Save Date Wise Tour Details.',
-                            icon: 'question',
+                            text: 'Failed To Save Date Wise Tour Details. Message:' + item.sResponseString,
+                            icon: 'error',
                             customClass: 'swal-wide',
                             buttons: {
                                 confirm: 'Ok'

@@ -46,7 +46,7 @@ namespace CBBW.Areas.Security.Controllers
             return View();
         }
         public JsonResult GetIndexListPage(int iDisplayLength, int iDisplayStart, int iSortCol_0,
-   string sSortDir_0, string sSearch)
+        string sSortDir_0, string sSearch)
         {
             List<IndexList> noteList = _iBIL.GetIndexListPage(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, user.CentreCode, 1, ref pMsg);
 
@@ -164,6 +164,7 @@ namespace CBBW.Areas.Security.Controllers
                     model.PurposeOfVisit = model.PurposeOfVisit != null ? model.PurposeOfVisit : "NA";
                     model.EmpNo = model.EmployeeNo;
                     model.IsVehicleProvided = model.IsVehicleProvided;
+                    model.TADADenied = model.TADADenied;
                     if (_iBIL.SetSetTADABillGeneration(model, ref pMsg))
                     {
                         ViewBag.Msg = "Employee Number " + model.EmployeeCodeName + " Save Successfully.";
@@ -234,7 +235,7 @@ namespace CBBW.Areas.Security.Controllers
             return View();
         }
         public JsonResult GetApprovalIndexListPage(int iDisplayLength, int iDisplayStart, int iSortCol_0,
-   string sSortDir_0, string sSearch)
+        string sSortDir_0, string sSearch)
         {
             List<IndexList> noteList = _iBIL.GetIndexListPage(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, user.CentreCode, 2, ref pMsg);
 
@@ -306,7 +307,7 @@ namespace CBBW.Areas.Security.Controllers
             return View();
         }
         public JsonResult GetPaymentIndexListPage(int iDisplayLength, int iDisplayStart, int iSortCol_0,
-  string sSortDir_0, string sSearch)
+        string sSortDir_0, string sSearch)
         {
             List<IndexList> noteList = _iBIL.GetIndexListPage(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, user.CentreCode, 3, ref pMsg);
 
@@ -650,6 +651,7 @@ namespace CBBW.Areas.Security.Controllers
                 Model.IsVehicleProvided = models.IsVehicleProvided;
                 Model.ActualTourInTime = models.TourFromTime;
                 Model.ActualTourOutTime = models.TourToTime;
+                Model.TADADenied = models.TADADenied;
                 Model.status = 2;
                 return Json(Model, JsonRequestBehavior.AllowGet);
             }
