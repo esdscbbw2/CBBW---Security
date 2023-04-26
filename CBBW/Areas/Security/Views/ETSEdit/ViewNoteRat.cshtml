@@ -82,13 +82,13 @@
                         </div>
                     </div>
                     <div id="by_HG_tour_purpose">
-                        <div class="row d-flex align-items-center mb-4 mr-15">
+                        <div class="row d-flex align-items-center mb-4">
                             <label class="col-form-label col-md-2">Tour “Purpose Of Allotment” : </label>
                             <div class="col-md-6">
                                 <input type="text" class="form-control" value="@Model.NoteDetails.POAText" disabled>
                             </div>
                         </div>
-                        <div class="row d-flex align-items-center mb-4 mr-15">
+                        <div class="row d-flex align-items-center mb-4">
                             <label class="col-form-label col-md-2">Is E.P Tour : </label>
                             <div class="col-md-6">
                                 <input type="text" class="form-control" value="@Model.NoteDetails.EPTourText" disabled>
@@ -98,7 +98,7 @@
                 </div>
             </div>
             <div class="card mt-4 mb-4">
-                <div class="card-body alert alert-danger approvalForm text-dark ">
+                <div class="card-body alert approvalForm text-dark @(Model.NoteDetails.AppDateTime.Year==1?"alert-danger":"alert-success")">
                     <div class="row d-flex align-items-center">
                         <div class="col-md-2 col-form-label">
                             <label>Approved :</label>
@@ -166,7 +166,7 @@
                 </ul>
             </div>
             <div class="card mb-4 mt-4">
-                <div class="card-body approvalForm alert alert-danger text-dark">
+                <div class="card-body approvalForm alert text-dark @(Model.NoteDetails.RetDateTime.Year==1?"alert-danger":"alert-success")">
                     <div class="row d-flex align-items-center">
                         <div class="col-md-2 col-form-label">
                             <label>Ratified :</label>

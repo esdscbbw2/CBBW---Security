@@ -843,7 +843,7 @@ async function getDropDownDataWithSelectedValueWithColor(DropDownID, defaultText
 async function getMultiselectDataWithSelectedValues(multiselectID, dataSourceURL, commaSeparatedSelectedValues) {
     var multiselectCtrl = $('#' + multiselectID);
     var i = commaSeparatedSelectedValues.indexOf(',');
-    //alert(commaSeparatedSelectedValues + ' - ' + i);
+    //alert(dataSourceURL);
     $.ajax({
         url: dataSourceURL,
         method: 'GET',
@@ -862,7 +862,8 @@ async function getMultiselectDataWithSelectedValues(multiselectID, dataSourceURL
                 },
             });
             multiselectCtrl.multiselect('clearSelection');
-            if (i > 0) {
+            //alert(commaSeparatedSelectedValues);
+            if (i >= 0) {
                 multiselectCtrl.val(commaSeparatedSelectedValues.split(','));
             } else {
                 multiselectCtrl.val(commaSeparatedSelectedValues);

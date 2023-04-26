@@ -157,9 +157,10 @@ async function getInitialData() {
                 else {
                     tourcatCtrl.val(item.TourCatCodes).multiselect('refresh');
                 }
-                tourcatCtrl.isValid();                
+                tourcatCtrl.isValid();
+                //alert(item.TourCatCodes);
                 (async function () {
-                    const r1 = await getMultiselectDataWithSelectedValues(centrecodeCtrl.attr('id'), '/Security/EHG/GetTourLocations?CategoryIDs=', item.CenterCodes);
+                    const r1 = await getMultiselectDataWithSelectedValues(centrecodeCtrl.attr('id'), '/Security/EHG/GetTourLocations?CategoryIDs=' + item.TourCatCodes, item.CenterCodes);
                 })();
                 centrecodeCtrl.isValid();
                 addbtnCtrl.makeDisable();

@@ -1,6 +1,7 @@
 ﻿@model CBBW.Areas.Security.ViewModel.ETSEdit.TourCancelVM
 @{
     Layout = null;
+    string maxcanceldate = @Model.DWTDetailsCurrent.Select(o => o.SchToDate).Max().AddDays(-1).ToString("yyyy-MM-dd");
 }
 <div class="table-responsive ">
     <table class="table table-bordered w-100 btnalign" id="tblTourCancel">
@@ -56,7 +57,7 @@
                                     <input id="FromDate_@sl" type="date"
                                            data-name="EditToDate"
                                            onchange="ValidateEditDateCtrl()"
-                                           max="@item.TourCancelMaxDateStr"
+                                           max="@maxcanceldate"
                                            min="@item.TourCancelMinDateStr"
                                            class="form-control pointer CustomDateFormatCloneRow valid CancelDate">
                                     <label id="lblFromDate_@sl" style="width:100px"

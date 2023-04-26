@@ -52,6 +52,20 @@ function NotenumberChanged() {
                 $('#IsCancelled').val(item.IsCancelled);
                 $('#POA').val(item.POA);
                 $('#EPTour').val(item.EPTour);
+                var ratDivCtrl = $('#mratDiv');
+                if (item.IsRatifiedDisplay == '-') {
+                    ratDivCtrl.addClass('alert-danger').removeClass('alert-success');
+                }
+                else {
+                    ratDivCtrl.addClass('alert-success').removeClass('alert-danger');
+                }
+                var appDivCtrl = $('#mappDiv');
+                if (item.IsApprovedDisplay == '-') {
+                    appDivCtrl.addClass('alert-danger').removeClass('alert-success');
+                }
+                else {
+                    appDivCtrl.addClass('alert-success').removeClass('alert-danger');
+                }
                 if (item.POA == 1) {
                     TEBtn.makeEnabled();
                     IEBtn.makeDisable();
