@@ -49,6 +49,7 @@
     <Compile Include="BIL\TADAReport.cs" />
     <Compile Include="BIL\TADARuleData.cs" />
     <Compile Include="BIL\TravellingDetails.cs" />
+    <Compile Include="CTV2\CTVNoteList4DT.cs" />
     <Compile Include="CTV\CTVHdrDtl.cs" />
     <Compile Include="CTV\LocVehSchFromMat.cs" />
     <Compile Include="CTV\LTSDriVerChange.cs" />

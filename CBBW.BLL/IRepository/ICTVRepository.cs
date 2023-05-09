@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CBBW.BOL.CTV;
+using CBBW.BOL.CTV2;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.Master;
 
@@ -11,6 +12,10 @@ namespace CBBW.BLL.IRepository
 {
     public interface ICTVRepository
     {
+        #region For CTV2
+        List<CTVNoteList4DT> GetNoteListForDataTable(int DisplayLength, int DisplayStart, int SortCol, string SortDirection,
+            string SearchText, int CentreCode, bool IsApproved, ref string pMsg);
+        #endregion For CTV2
         string getNewTripScheduleNo(string SchPattern, ref string pMsg);
         TripScheduleHdr NewTripScheduleNo(string SchPattern, ref string pMsg);
         IEnumerable<CustomComboOptions> getLocationTypes(ref string pMsg);

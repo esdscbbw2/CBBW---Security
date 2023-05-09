@@ -88,6 +88,7 @@
     <Compile Include="Entities\TADAEntities.cs" />
     <Compile Include="Entities\TFDEntities.cs" />
     <Compile Include="Entities\TourEntities.cs" />
+    <Compile Include="ParamMapper\CommonParamMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLHelper.cs" />
   </ItemGroup>

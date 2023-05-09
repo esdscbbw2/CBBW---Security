@@ -138,6 +138,7 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="Areas\Security\Controllers\BILController.cs" />
     <Compile Include="Areas\Security\Controllers\CommonController.cs" />
+    <Compile Include="Areas\Security\Controllers\CTV2Controller.cs" />
     <Compile Include="Areas\Security\Controllers\CTVController.cs" />
     <Compile Include="Areas\Security\Controllers\EHGController.cs" />
     <Compile Include="Areas\Security\Controllers\EMCController.cs" />
@@ -608,6 +609,7 @@
     <Content Include="Areas\Security\Views\MaterialGatePass\PrintViewV2.cshtml" />
     <Content Include="Areas\Security\Views\Shared\_PrintLayout.cshtml" />
     <Content Include="Areas\Security\Views\MaterialGatePass\PrintView.cshtml" />
+    <Content Include="Areas\Security\Views\CTV2\Index.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />

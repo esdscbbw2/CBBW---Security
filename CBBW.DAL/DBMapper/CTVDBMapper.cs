@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CBBW.BOL.CTV;
+using CBBW.BOL.CTV2;
 using CBBW.BOL.CustomModels;
 using CBBW.DAL.DBLogic;
 
@@ -12,6 +13,45 @@ namespace CBBW.DAL.DBMapper
 {
     public class CTVDBMapper
     {
+        #region For V2
+        public CTVNoteList4DT Map_CTVNoteList4DT(DataRow dr)
+        {
+            CTVNoteList4DT result = new CTVNoteList4DT();
+            try
+            {
+                if (dr != null)
+                {
+                    if (!DBNull.Value.Equals(dr["RowNum"]))
+                        result.RowNum =int.Parse(dr["RowNum"].ToString());
+                    if (!DBNull.Value.Equals(dr["TotalCount"]))
+                        result.TotalCount = int.Parse(dr["TotalCount"].ToString());
+                    if (!DBNull.Value.Equals(dr["TotalRecords"]))
+                        result.TotalRecords = int.Parse(dr["TotalRecords"].ToString());
+
+                    if (!DBNull.Value.Equals(dr["NoteNumber"]))
+                        result.NoteNumber = dr["NoteNumber"].ToString();
+                    if (!DBNull.Value.Equals(dr["CentreCode"]))
+                        result.CentreCode =int.Parse(dr["CentreCode"].ToString());
+                    if (!DBNull.Value.Equals(dr["CentreCodenName"]))
+                        result.CentreCodenName = dr["CentreCodenName"].ToString();
+                    if (!DBNull.Value.Equals(dr["VehicleNumber"]))
+                        result.VehicleNumber = dr["VehicleNumber"].ToString();
+                    if (!DBNull.Value.Equals(dr["ForTheMonthnYear"]))
+                        result.ForTheMonthnYear = dr["ForTheMonthnYear"].ToString();
+                    if (!DBNull.Value.Equals(dr["EntryDate"]))
+                        result.EntryDate = DateTime.Parse(dr["EntryDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsApproved"]))
+                        result.IsApproved = bool.Parse(dr["IsApproved"].ToString());
+                    if (!DBNull.Value.Equals(dr["EntryTime"]))
+                        result.EntryTime = dr["EntryTime"].ToString();
+                    result.CanDelete = result.EntryDate == DateTime.Today && !result.IsApproved ? true : false;
+                    result.CanEdit = result.IsApproved ? true : false;
+                }
+            }
+            catch { }
+            return result;
+        }
+        #endregion For V2
         public VehicleInfo Map_VehicleInfo(DataRow dr)
         {
             VehicleInfo result = new VehicleInfo();

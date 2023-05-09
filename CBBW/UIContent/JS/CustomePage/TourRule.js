@@ -1,5 +1,4 @@
-﻿
-function validateallcontrol2() {
+﻿function validateallcontrol2() {
     var btnsubmit = $('#btnSubmit');
 
     if ($('.is-invalid').length > 0) {
@@ -396,7 +395,7 @@ $(document).ready(function () {
     MakeBodyDisable();
     var lasteffdt = $('#EffectiveDateOfLastPartiallyFilledRule').val();
     if (lasteffdt != '') {
-        $('#mEffectiveDate').val(lasteffdt);
+        $('#mEffectiveDate').val(lasteffdt).attr('disabled','disabled');
         $('#lblmEffectiveDate').html(ChangeDateFormat(lasteffdt));
         ChangeEffectiveDate();
     }

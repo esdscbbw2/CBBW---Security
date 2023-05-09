@@ -520,7 +520,7 @@
                 function callback(result) {
                     if (result.value) {
                         var effDt = $('#EffectiveDate').val();
-                        $('#mEffectiveDate').val(effDt);
+                        $('#mEffectiveDate').val(effDt).attr('disabled', 'disabled');
                         ChangeEffectiveDate();
                     }
                 }

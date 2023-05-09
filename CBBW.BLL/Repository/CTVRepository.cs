@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CBBW.BLL.IRepository;
 using CBBW.BOL.CTV;
+using CBBW.BOL.CTV2;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.Master;
 using CBBW.DAL.Entities;
@@ -20,6 +21,17 @@ namespace CBBW.BLL.Repository
             _CTVEntities = new CTVEntities();
             _MasterEntities = new MasterEntities();
         }
+        #region For CTV2
+        public List<CTVNoteList4DT> GetNoteListForDataTable(int DisplayLength, int DisplayStart, int SortCol, string SortDirection,
+            string SearchText, int CentreCode, bool IsApproved, ref string pMsg)
+        {
+            return _CTVEntities.GetNoteListForDataTable(DisplayLength, DisplayStart, SortCol, SortDirection, SearchText, CentreCode, IsApproved, ref pMsg); 
+        }
+
+
+
+
+        #endregion For CTV2
         public bool CheckScheduleDateAvailibility(string VehicleNo, DateTime ScheduleDate, ref string pMsg)
         {
             bool result = false;

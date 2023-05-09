@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CBBW.BOL.CTV;
+using CBBW.BOL.CTV2;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.EHG;
 using CBBW.DAL.DataSync;
@@ -25,6 +26,29 @@ namespace CBBW.DAL.Entities
             _CTVDBMapper = new CTVDBMapper();
             _DBResponseMapper = new DBResponseMapper();
         }
+        #region For CTV2
+        public List<CTVNoteList4DT> GetNoteListForDataTable(int DisplayLength, int DisplayStart, int SortCol, string SortDirection,
+            string SearchText, int CentreCode, bool IsApproved, ref string pMsg)
+        {
+            List<CTVNoteList4DT> result = new List<CTVNoteList4DT>();
+            try
+            {
+                dt = _datasync.GetNoteListForDataTable(DisplayLength,DisplayStart,SortCol,SortDirection,SearchText,CentreCode,IsApproved, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        result.Add(_CTVDBMapper.Map_CTVNoteList4DT(dt.Rows[i]));                        
+                    }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
+
+
+
+        #endregion For CTV2
         public string getNewCTVNoteNo(string SchPattern, ref string pMsg) 
         {
             string noteno = string.Empty;

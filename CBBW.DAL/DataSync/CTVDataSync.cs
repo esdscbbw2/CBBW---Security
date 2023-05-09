@@ -6,11 +6,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CBBW.BOL.CTV;
+using CBBW.DAL.ParamMapper;
 
 namespace CBBW.DAL.DataSync
 {
     public class CTVDataSync
     {
+        CommonParamMapper _CommonParamMapper;
+        public CTVDataSync()
+        {
+            _CommonParamMapper = new CommonParamMapper();
+        }
+        #region For CTV2
+        public DataTable GetNoteListForDataTable(int DisplayLength, int DisplayStart, int SortCol, string SortDirection,
+            string SearchText, int CentreCode,bool IsApproved, ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("[CTV].[GetNoteListForDataTable]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(_CommonParamMapper.MapParam_DisplayListWithCentreCodenIsApproved(DisplayLength,DisplayStart,SortCol,SortDirection,SearchText,CentreCode,IsApproved,ref pMsg), ref pMsg);
+                }                
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        #endregion For CTV2
         public DataTable getNewCTVNoteNo(string CTVPattern, ref string pMsg)
         {
             try
