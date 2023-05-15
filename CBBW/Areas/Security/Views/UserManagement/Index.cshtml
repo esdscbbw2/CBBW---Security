@@ -1,0 +1,66 @@
+﻿
+@{
+    
+}
+<div class="row newTable">
+    <div class="fixedElement">
+        <div class="col-md-12" style="position: relative;">
+            <div class="heading_text_btn mb-4 mt-4">
+                <div class="leftButton">
+                    <button type="submit" class="btn btn-primary me-2" 
+                            onclick="window.location.href='/Security/UserManagement/AddUser';">
+                        <i data-feather="plus-circle"></i>
+                        Add
+                    </button>
+                </div>
+                <h2>User Management – Listing  </h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive mb-4">
+        <table class="table table-bordered btnalign" id="example">
+            <thead>
+                <tr>
+                    <th scope="col" rowspan="2"> SL.No.</th>
+                    <th scope="col">Employee No. & Name</th>
+                    <th scope="col">User</th>
+                    <th scope="col"> Role </th>
+                    <th scope="col"> Center Code </th>
+                    <th scope="col" rowspan="2" style="background: pink;color: #000;">Action</th>
+                </tr>
+                <tr>
+                    <th scope="col">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search...">
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search...">
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search...">
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search...">
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+@section headers
+{
+    
+}
+@section scripts{
+    <script src="~/UIContent/JS/CustomePage/RBACUser/Index.js"></script>
+
+}

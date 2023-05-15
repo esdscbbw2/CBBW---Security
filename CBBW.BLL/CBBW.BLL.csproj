@@ -57,6 +57,7 @@
     <Compile Include="IRepository\IMasterRepository.cs" />
     <Compile Include="IRepository\IMGPRepository.cs" />
     <Compile Include="IRepository\IMyHelperRepository.cs" />
+    <Compile Include="IRepository\IRBACUserRepository.cs" />
     <Compile Include="IRepository\ITADARulesRepository.cs" />
     <Compile Include="IRepository\ITFDRepository.cs" />
     <Compile Include="IRepository\IToursRuleRepository.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="Repository\MasterRepositoryUser2.cs" />
     <Compile Include="Repository\MGPRepository.cs" />
     <Compile Include="Repository\MyHelperRepository.cs" />
+    <Compile Include="Repository\RBACUserRepository.cs" />
     <Compile Include="Repository\TADARulesRepository.cs" />
     <Compile Include="Repository\TFDRepository.cs" />
     <Compile Include="Repository\ToursRuleRepository.cs" />

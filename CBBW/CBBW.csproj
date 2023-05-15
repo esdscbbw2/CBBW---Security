@@ -154,6 +154,7 @@
     <Compile Include="Areas\Security\Controllers\TestingController.cs" />
     <Compile Include="Areas\Security\Controllers\TFDController.cs" />
     <Compile Include="Areas\Security\Controllers\TourRuleController.cs" />
+    <Compile Include="Areas\Security\Controllers\UserManagementController.cs" />
     <Compile Include="Areas\Security\Helpers\EditHistory.cs" />
     <Compile Include="Areas\Security\ViewModel\BIL\BILExpensesVM.cs" />
     <Compile Include="Areas\Security\ViewModel\BIL\BILHdrVM.cs" />
@@ -193,6 +194,7 @@
     <Compile Include="Areas\Security\ViewModel\MGPOutInVM.cs" />
     <Compile Include="Areas\Security\ViewModel\OtherTripSchDisplayVM.cs" />
     <Compile Include="Areas\Security\ViewModel\OtherTripScheduleEntryVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\RBACUser\AddUserVM.cs" />
     <Compile Include="Areas\Security\ViewModel\Rule\TADARuleViewVM.cs" />
     <Compile Include="Areas\Security\ViewModel\Rule\TADARuleVM.cs" />
     <Compile Include="Areas\Security\ViewModel\TADATransViewModel.cs" />
@@ -363,6 +365,7 @@
     <Content Include="UIContent\JS\CustomePage\BIL\BILLReport.js" />
     <Content Include="UIContent\JS\CustomePage\BIL\BILPaymentEntry.js" />
     <Content Include="UIContent\JS\CustomePage\CommonReusable.js" />
+    <Content Include="UIContent\JS\CustomePage\CommonReusableV2.js" />
     <Content Include="UIContent\JS\CustomePage\CreateRuleTADA.js" />
     <Content Include="UIContent\JS\CustomePage\CTVApproval.js" />
     <Content Include="UIContent\JS\CustomePage\CTVHdrEntry.js" />
@@ -407,6 +410,8 @@
     <Content Include="UIContent\JS\CustomePage\MGPOutDetails.js" />
     <Content Include="UIContent\JS\CustomePage\OtherTripSchEdit.js" />
     <Content Include="UIContent\JS\CustomePage\OtherTripSchedule.js" />
+    <Content Include="UIContent\JS\CustomePage\RBACUser\AddUser.js" />
+    <Content Include="UIContent\JS\CustomePage\RBACUser\Index.js" />
     <Content Include="UIContent\JS\CustomePage\SecurityRuleValidation.js" />
     <Content Include="UIContent\JS\CustomePage\TADARule\TADARuleEntry.js" />
     <Content Include="UIContent\JS\CustomePage\TADARule\TADARuleParam.js" />
@@ -610,6 +615,8 @@
     <Content Include="Areas\Security\Views\Shared\_PrintLayout.cshtml" />
     <Content Include="Areas\Security\Views\MaterialGatePass\PrintView.cshtml" />
     <Content Include="Areas\Security\Views\CTV2\Index.cshtml" />
+    <Content Include="Areas\Security\Views\UserManagement\Index.cshtml" />
+    <Content Include="Areas\Security\Views\UserManagement\AddUser.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />

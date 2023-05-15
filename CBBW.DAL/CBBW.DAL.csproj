@@ -55,6 +55,7 @@
     <Compile Include="DataSync\GVMRDataSync.cs" />
     <Compile Include="DataSync\MasterDataSync.cs" />
     <Compile Include="DataSync\MGPDataSync.cs" />
+    <Compile Include="DataSync\RBACUserDataSync.cs" />
     <Compile Include="DataSync\RulesDataSync.cs" />
     <Compile Include="DataSync\TFDDataSync.cs" />
     <Compile Include="DbConnectionString.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="DBMapper\GVMRDBMapper.cs" />
     <Compile Include="DBMapper\MasterDBMapper.cs" />
     <Compile Include="DBMapper\MGPMapper.cs" />
+    <Compile Include="DBMapper\RBACUserDBMapper.cs" />
     <Compile Include="DBMapper\RulesDBMapper.cs" />
     <Compile Include="DBMapper\TFDDBMapper.cs" />
     <Compile Include="Entities\BILEntities.cs" />
@@ -84,6 +86,7 @@
     <Compile Include="Entities\GVMREntities.cs" />
     <Compile Include="Entities\MasterEntities.cs" />
     <Compile Include="Entities\MGPEntities.cs" />
+    <Compile Include="Entities\RBACUserEntities.cs" />
     <Compile Include="Entities\SingletonEntity.cs" />
     <Compile Include="Entities\TADAEntities.cs" />
     <Compile Include="Entities\TFDEntities.cs" />

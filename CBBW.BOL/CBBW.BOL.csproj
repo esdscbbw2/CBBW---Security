@@ -126,6 +126,8 @@
     <Compile Include="MGP\RFID.cs" />
     <Compile Include="MyCodeHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RBACUsers\Employee.cs" />
+    <Compile Include="RBACUsers\MyRole.cs" />
     <Compile Include="TADA\TADAParam.cs" />
     <Compile Include="TADA\TADAPubTransOption.cs" />
     <Compile Include="TADA\TADARule.cs" />

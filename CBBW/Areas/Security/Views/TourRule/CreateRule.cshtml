@@ -436,7 +436,11 @@
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
     <script src="~/UIContent/JS/CustomePage/TourRule.js"></script>
     <script>
-        
+        $(document).ready(function () {
+            $('.form-control').focus(function () {
+                $(this).tooltip('show');
+            });
+        });
     </script>
     <script type="text/javascript">
 

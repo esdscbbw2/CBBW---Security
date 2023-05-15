@@ -81,7 +81,6 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-        
         public DataTable getLCVMCVVehicles(ref string pMsg) 
         {
             try

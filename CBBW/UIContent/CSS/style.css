@@ -796,6 +796,9 @@ strong {
 .swal-wide {
     width: 400px !important;
 }
+.swal-wide-error {
+    width: 400px !important;
+}
 
 .wid-100 .form-control {
     width: 100px;
@@ -1930,3 +1933,64 @@ visibility: visible;
 .btn-light-blue:hover {
     color: #000;
  }
+
+.my-error .swal2-header::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    content: '';
+    background-color: #de1644;
+    height: 170px;
+}
+
+.my-success .swal2-header::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    content: '';
+    background-color: #27a225;
+    height: 170px;
+}
+
+.my-info .swal2-header::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    content: '';
+    background-color: #8fbae2;
+    height: 170px;
+}
+.my-warning .swal2-header::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    content: '';
+    background-color: orangered;
+    height: 170px;
+}
+.swal2-icon.swal2-error [class^=swal2-x-mark-line] {
+    background-color: #fff !important;
+}
+
+.border-black {
+    border: 1px solid #787878;
+}
+
+.bg-blue {
+    background:#deebf7;
+}
+
+.btn-light-red {
+    color: #b5212f;
+    background-color: #fdeff1;
+    border-color: #b5212f;
+    font-size: 15px;
+}
+.info-header {
+    background-color:orange !important;
+
+}

@@ -1,0 +1,220 @@
+﻿@using CBBW.Areas.Security.ViewModel.RBACUser;
+@model AddUserVM
+@{
+
+}
+<div class="row newTable">
+    <div class="fixedElement">
+        <div class="col-md-12">
+            <div class="heading_text_btn mb-3 mt-4">
+                <div class="leftButton">
+                    <button type="submit" class="btn btn-primary me-2" onclick="window.location.href='user_mngmt_listing.html';">
+                        <i data-feather="arrow-left-circle"></i>
+                        Back
+                    </button>
+                    <button type="submit" class="btn btn-secondary me-2" onclick="window.location.href='user_mngmt_listing.html';">
+                        <i data-feather="upload"></i>
+                        Submit
+                    </button>
+                    <button type="submit" class="btn btn-white">
+                        <i data-feather="x-circle"></i>
+                        Clear
+                    </button>
+                </div>
+                <h2>User Management – Add  </h2>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12 mb-4">
+        <div class="card mt-4">
+            <div class="card-body approvalForm">
+                <form class="form-sample form-inline row ms-auto">
+                    <div class="row d-flex align-items-center mb-4">
+                        <label class="col-form-label col-md-2">
+                            Employee No. & Name :
+                        </label>
+                        <div class="col-md-4">
+                            <select class="form-select" aria-label="Default select example" onchange="showDiv(this)">
+                                <option value="" selected> Select Employee</option>
+                                @if(Model.EmployeeList!=null && Model.EmployeeList.Count > 0) 
+                                {
+                                    foreach(var item in Model.EmployeeList) 
+                                    {<option data-desc="@item.Designation" value="@item.EmployeeNumber">@item.EmployeeNumber / @item.EmployeeName</option> }
+                                }
+                            </select>
+                        </div>
+                        <label class="col-form-label col-md-2">
+                            Designation :
+                        </label>
+                        <div class="col-md-4">
+                            <div id="for_all" style="display:block;">
+                                <input type="text" class="form-control" value="" disabled>
+                            </div>
+                            <div id="for_opt1" style="display:none;">
+                                <input type="text" class="form-control" value="Sr. Manager" disabled>
+                            </div>
+                            <div id="for_opt2" style="display:none;">
+                                <input type="text" class="form-control" value="Jr. Developer" disabled>
+                            </div>
+                            <div id="for_opt3" style="display:none;">
+                                <input type="text" class="form-control" value="Driver" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center mb-4">
+
+                        <label class="col-form-label col-md-2">
+                            User Name :
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center mb-4">
+                        <label class="col-form-label col-md-2">
+                            Password :
+                        </label>
+                        <div class="col-md-4 position-relative">
+                            <input type="password" class="input-field form-control" name=" password" value="">
+                            <span class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                        </div>
+                        <label class="col-form-label col-md-2">
+                            Confirm  Password :
+                        </label>
+                        <div class="col-md-4 position-relative">
+                            <input type="password" class="input-field form-control" name="Confirm password" value="">
+                            <span class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center mb-4">
+
+                        <label class="col-form-label col-md-2">
+                            Effective Date :
+                        </label>
+                        <div class="col-md-4">
+                            <div class="position-relative pointer">
+                                <input type="date" class="form-control pointer" onchange="changeDateFormat(this)">
+                                <label class="datelabel pointer">Select Date </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <div class="form-check">
+                                <input class="form-check-input float-none" type="checkbox" id="check1" name="option1" value="something">
+                                <label for="" class="ps-2">Is-Active</label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row d-flex align-items-center mt-4">
+                        <div class="table-responsive btnalign">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th width="40%">Role</th>
+                                        <th width="40%">Center Codes</th>
+                                        <th width="20%" style="background: pink;color: #000;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table_body">
+                                    <tr>
+                                        <td onclick="toastDiv()">
+                                            <select multiple="multiple" class="form-select example-getting-started1" aria-label="Default select example">
+                                                <option value="1">R1</option>
+                                                <option value="2">R2</option>
+                                                <option value="3">R3</option>
+                                                <option value="4">R4</option>
+                                                <option value="5">R5 </option>
+                                                <option value="6">R6 </option>
+                                                <option value="7">R7 </option>
+                                                <option value="8">R8 </option>
+                                                <option value="9">R9 </option>
+                                                <option value="10">R10 </option>
+                                            </select>
+
+                                        </td>
+                                        <td width="15%">
+                                            <select multiple="multiple" class="form-select example-getting-started1" aria-label="Default select example">
+                                                <option value="1">C1</option>
+                                                <option value="2">C2</option>
+                                                <option value="3">C3</option>
+                                                <option value="4">C4</option>
+                                                <option value="5">C5 </option>
+                                                <option value="6">C6 </option>
+                                                <option value="7">C7 </option>
+                                                <option value="8">C8 </option>
+                                                <option value="9">C9 </option>
+                                                <option value="10">C10 </option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <span class="actionBtn">
+                                                <button type="button" class="btn secondaryLink" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                    <i data-feather="x" onclick="remove_tr(this)"></i>
+                                                </button>
+                                                <button type="button" class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Add">
+                                                    <i data-feather="plus" onclick="create_tr('table_body')"></i>
+                                                </button>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="toast show" id="toast">
+                                <div class="toast-header">
+                                    Permission for Below Pages
+                                    <button type="button" onclick="closetoast()" class="btn-close close-btn" data-bs-dismiss="toast"></button>
+                                </div>
+                                <div class="toast-body">
+                                    Tour Rule, TADA Rule, CTV Entry, CTV approval etc...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section headers
+{
+    <style>
+        .hide {
+            display: none;
+        }
+
+        .none {
+            display: none;
+        }
+
+        .modal-lg,
+        .modal-xl {
+            max-width: 700px;
+        }
+
+        .datelabel {
+            font-size: 14px !important;
+        }
+
+        .close-btn {
+            position: absolute;
+            right: 3%;
+            top: 6px;
+            color: black;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        #toast {
+            position: relative;
+            display: none;
+        }
+    </style>
+}
+@section scripts{
+    <script src="~/UIContent/JS/CustomePage/RBACUser/AddUser.js"></script>
+
+}
