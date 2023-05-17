@@ -8,40 +8,44 @@
         <div class="col-md-12">
             <div class="heading_text_btn mb-3 mt-4">
                 <div class="leftButton">
-                    <button type="submit" class="btn btn-primary me-2" onclick="window.location.href='user_mngmt_listing.html';">
+                    <button type="button" class="btn btn-primary me-2" 
+                            onclick="window.location.href='/Security/UserManagement/Index';">
                         <i data-feather="arrow-left-circle"></i>
                         Back
                     </button>
-                    <button type="submit" class="btn btn-secondary me-2" onclick="window.location.href='user_mngmt_listing.html';">
+                    <button id="btnSubmit" type="submit" class="btn btn-secondary me-2" 
+                            onclick="window.location.href='user_mngmt_listing.html';">
                         <i data-feather="upload"></i>
                         Submit
                     </button>
-                    <button type="submit" class="btn btn-white">
+                    <button type="button" onclick="ClearBtnClicked('/Security/UserManagement/AddUser')" 
+                            class="btn btn-white">
                         <i data-feather="x-circle"></i>
                         Clear
                     </button>
                 </div>
                 <h2>User Management – Add  </h2>
-
             </div>
         </div>
     </div>
-
-    <div class="col-md-12 mb-4">
+    <div id="HdrDiv" class="col-md-12 mb-4">
         <div class="card mt-4">
             <div class="card-body approvalForm">
-                <form class="form-sample form-inline row ms-auto">
+                @*<form class="form-sample form-inline row ms-auto">*@
                     <div class="row d-flex align-items-center mb-4">
                         <label class="col-form-label col-md-2">
                             Employee No. & Name :
                         </label>
                         <div class="col-md-4">
-                            <select class="form-select" aria-label="Default select example" onchange="showDiv(this)">
+                            <select id="EmployeeNumber" class="form-select is-invalid"
+                                    aria-label="Default select example">
                                 <option value="" selected> Select Employee</option>
-                                @if(Model.EmployeeList!=null && Model.EmployeeList.Count > 0) 
+                                @if (Model.EmployeeList != null && Model.EmployeeList.Count > 0)
                                 {
-                                    foreach(var item in Model.EmployeeList) 
-                                    {<option data-desc="@item.Designation" value="@item.EmployeeNumber">@item.EmployeeNumber / @item.EmployeeName</option> }
+                                    foreach (var item in Model.EmployeeList)
+                                    {
+                                        <option data-desc="@item.Designation" value="@item.EmployeeNumber">@item.EmployeeNumber / @item.EmployeeName</option>
+                                    }
                                 }
                             </select>
                         </div>
@@ -49,27 +53,20 @@
                             Designation :
                         </label>
                         <div class="col-md-4">
-                            <div id="for_all" style="display:block;">
-                                <input type="text" class="form-control" value="" disabled>
-                            </div>
-                            <div id="for_opt1" style="display:none;">
-                                <input type="text" class="form-control" value="Sr. Manager" disabled>
-                            </div>
-                            <div id="for_opt2" style="display:none;">
-                                <input type="text" class="form-control" value="Jr. Developer" disabled>
-                            </div>
-                            <div id="for_opt3" style="display:none;">
-                                <input type="text" class="form-control" value="Driver" disabled>
+                            <div>
+                                <input id="EmpDesg" type="text" 
+                                       class="form-control" disabled>
                             </div>
                         </div>
                     </div>
                     <div class="row d-flex align-items-center mb-4">
-
                         <label class="col-form-label col-md-2">
                             User Name :
                         </label>
                         <div class="col-md-4">
-                            <input type="text" class="form-control">
+                            <input id="UserName" type="text" 
+                                   class="form-control is-invalid"
+                                   title="User Name Should Be Alpha Numeric Without Space.">
                         </div>
                     </div>
                     <div class="row d-flex align-items-center mb-4">
@@ -77,26 +74,36 @@
                             Password :
                         </label>
                         <div class="col-md-4 position-relative">
-                            <input type="password" class="input-field form-control" name=" password" value="">
+                            <input type="password" id="NewPassword" 
+                                   class="input-field form-control is-invalid valid"
+                                   name=" password" value=""
+                                   title="Password Should Atleast 6 Characters Containing Atleast One Uppercase, One Lowercase, One Digit & One Special Character ">
                             <span class="fa fa-fw fa-eye field-icon toggle-password"></span>
                         </div>
                         <label class="col-form-label col-md-2">
                             Confirm  Password :
                         </label>
                         <div class="col-md-4 position-relative">
-                            <input type="password" class="input-field form-control" name="Confirm password" value="">
+                            <input type="password" id="CnfPassword" 
+                                   class="input-field form-control is-invalid valid"
+                                   name="Confirm password" value=""
+                                   title="Confirm Password Should Exactly The Same Password Given In Password Input Box">
                             <span class="fa fa-fw fa-eye field-icon toggle-password"></span>
                         </div>
                     </div>
                     <div class="row d-flex align-items-center mb-4">
-
                         <label class="col-form-label col-md-2">
                             Effective Date :
                         </label>
                         <div class="col-md-4">
                             <div class="position-relative pointer">
-                                <input type="date" class="form-control pointer" onchange="changeDateFormat(this)">
-                                <label class="datelabel pointer">Select Date </label>
+                                <input id="EffectiveDate" type="date" 
+                                       min="@DateTime.Today.ToString("yyyy-MM-dd")"
+                                       class="form-control pointer is-invalid"
+                                       onchange="changeDateFormat(this)"
+                                       title="Accept Today Or Future Dates">
+                                <label id="lblEffectiveDate" style="width:100px"
+                                       class="datelabel pointer">Select Date </label>
                             </div>
                         </div>
                         <div class="col-md-6 text-end">
@@ -118,48 +125,55 @@
                                         <th width="20%" style="background: pink;color: #000;">Action</th>
                                     </tr>
                                 </thead>
-                                <tbody id="table_body">
-                                    <tr>
+                                <tbody id="tbody1">
+                                    <tr id="0" class="add-row">
                                         <td onclick="toastDiv()">
-                                            <select multiple="multiple" class="form-select example-getting-started1" aria-label="Default select example">
-                                                <option value="1">R1</option>
-                                                <option value="2">R2</option>
-                                                <option value="3">R3</option>
-                                                <option value="4">R4</option>
-                                                <option value="5">R5 </option>
-                                                <option value="6">R6 </option>
-                                                <option value="7">R7 </option>
-                                                <option value="8">R8 </option>
-                                                <option value="9">R9 </option>
-                                                <option value="10">R10 </option>
+                                            <select id="ctrlRoles" onchange="RolesChanged()" 
+                                                    class="form-select ApplyMultiSelectWithSelectAll alterID inValidTag is-invalid">
+                                                @if(Model.RoleList!=null && Model.RoleList.Count > 0)
+                                                {
+                                                    foreach (var item in Model.RoleList) 
+                                                    {
+                                                        <option value="@item.RoleId">@item.RoleName</option>
+                                                    }
+                                                }
                                             </select>
 
                                         </td>
                                         <td width="15%">
-                                            <select multiple="multiple" class="form-select example-getting-started1" aria-label="Default select example">
-                                                <option value="1">C1</option>
-                                                <option value="2">C2</option>
-                                                <option value="3">C3</option>
-                                                <option value="4">C4</option>
-                                                <option value="5">C5 </option>
-                                                <option value="6">C6 </option>
-                                                <option value="7">C7 </option>
-                                                <option value="8">C8 </option>
-                                                <option value="9">C9 </option>
-                                                <option value="10">C10 </option>
+                                            <select id="ctrlCentres" onchange="CentreChanged()" 
+                                                    class="form-select ApplyMultiSelectWithSelectAll alterID inValidTag is-invalid">
+                                                @if (Model.CentreList != null && Model.CentreList.Count > 0)
+                                                {
+                                                    foreach (var item in Model.CentreList)
+                                                    {
+                                                        <option value="@item.ID">@item.DisplayText</option>
+                                                    }
+                                                }
                                             </select>
                                         </td>
                                         <td>
                                             <span class="actionBtn">
-                                                <button type="button" class="btn secondaryLink" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                    <i data-feather="x" onclick="remove_tr(this)"></i>
+                                                <button id="trRemoveBtn" type="button" 
+                                                        class="btn secondaryLink inVisible removeBtn cloneBtn " 
+                                                        data-toggle="tooltip" data-placement="top" 
+                                                        onclick="RowRemoveBtnWithEffectSubmitClicked('tbody2','btnSubmit','HdrDiv')"
+                                                        title="Delete">
+                                                    <i data-feather="x"></i>
                                                 </button>
-                                                <button type="button" class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Add">
-                                                    <i data-feather="plus" onclick="create_tr('table_body')"></i>
+                                                <button id="trAddBtn" type="button" 
+                                                        class="btn primaryLink addBtn cloneBtn" 
+                                                        data-toggle="tooltip" data-placement="top"
+                                                        onclick="RowAddBtnWithEffectSubmitClicked('tbody1','tbody2',true,true,true,'btnSubmit','HdrDiv')"
+                                                        title="Add">
+                                                    <i data-feather="plus"></i>
                                                 </button>
                                             </span>
                                         </td>
                                     </tr>
+                                </tbody>
+                                <tbody id="tbody2">
+
                                 </tbody>
                             </table>
                             <div class="toast show" id="toast">
@@ -173,7 +187,7 @@
                             </div>
                         </div>
                     </div>
-                </form>
+                @*</form>*@
             </div>
         </div>
     </div>
@@ -215,6 +229,57 @@
     </style>
 }
 @section scripts{
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/RBACUser/AddUser.js"></script>
+    <script>
+        function changeSpan(e) {
+            let valid = document.querySelectorAll(".valid");
+            valid.forEach((e) => {
+                if (e.classList.contains("valid") && e.type == "password") {
+                    e.nextElementSibling.style.right = "10%"
+                }
+            })
+        }
+        changeSpan()
+    </script>
+    <script>
+        $(window).scroll(function (e) {
+            var $el = $('.fixedElement');
+            var isPositionFixed = ($el.css('position') == 'fixed');
+            if ($(this).scrollTop() > 200 && !isPositionFixed) {
+                $el.css({
+                    'position': 'sticky',
+                    'top': '0px'
+                });
+            }
+            if ($(this).scrollTop() < 200 && isPositionFixed) {
+                $el.css({
+                    'position': 'static',
+                    'top': '0px'
+                });
+            }
+        });
+    </script>
+    <script>
+        let toggle_password = document.querySelectorAll(".toggle-password");
+        toggle_password.forEach(element => {
+            element.addEventListener("click", (e) => {
+                if (e.currentTarget.previousElementSibling.type == "password") {
+                    e.currentTarget.previousElementSibling.setAttribute("type", "text");
+                    if (!(e.currentTarget.previousElementSibling.value == "")) {
+                        e.currentTarget.classList.remove("fa-fw")
+                        e.currentTarget.classList.add("fa-eye-slash")
+                    }
+                }
+                else {
+                    e.currentTarget.previousElementSibling.setAttribute("type", "password");
+                    if (!(e.currentTarget.previousElementSibling.value == "")) {
+                        e.currentTarget.classList.add("fa-fw")
+                        e.currentTarget.classList.remove("fa-eye-slash")
+                    }
+                }
+            })
+        });
 
+    </script>
 }

@@ -1570,9 +1570,11 @@ input[type="date"]::before {
     font-size: 10px !important;
 }
 
-input[type="date"].valid::before {
+input[type="date"].valid::before, 
+input[type="password"].valid::before {
     right: 32px;
 }
+
 
 .btn-green {
     color: #FFF;
@@ -1592,7 +1594,8 @@ input[type="date"].valid::before {
     width: auto;
 }
 
-input[type="date"].valid::before {
+input[type="date"].valid::before, 
+input[type="password"].valid::before {
     right: 32px;
 }
 
@@ -1630,7 +1633,7 @@ input[type="date"].valid::before {
 }
 
 .border-green {
-    border-color: #198754;
+    border-color: #198754 !important;
     border-style: solid;
 }
 
@@ -1981,7 +1984,7 @@ visibility: visible;
 }
 
 .bg-blue {
-    background:#deebf7;
+    background:#deebf7 !important;
 }
 
 .btn-light-red {
@@ -1993,4 +1996,9 @@ visibility: visible;
 .info-header {
     background-color:orange !important;
 
+}
+.field-icon {
+    position: absolute;
+    right: 4%;
+    top: 23%;
 }
