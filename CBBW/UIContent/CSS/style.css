@@ -1465,6 +1465,9 @@ strong {
 .pointer-none {
     cursor: unset;
 }
+.nodrop {
+    cursor: no-drop !important;
+}
 
 .swal2-container {
     z-index: 99999 !important;

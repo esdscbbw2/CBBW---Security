@@ -160,6 +160,8 @@
     <Compile Include="Areas\Security\ViewModel\BIL\BILHdrVM.cs" />
     <Compile Include="Areas\Security\ViewModel\BIL\DaDetailsVM.cs" />
     <Compile Include="Areas\Security\ViewModel\BIL\VMReport.cs" />
+    <Compile Include="Areas\Security\ViewModel\CTV\AddOtherTripVM.cs" />
+    <Compile Include="Areas\Security\ViewModel\CTV\CreateNoteVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EMC\EMCHeaderEntryVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EMC\EMCNoteApproveVM.cs" />
     <Compile Include="Areas\Security\ViewModel\EMC\EMCTravellingDetailsVM.cs" />
@@ -369,6 +371,8 @@
     <Content Include="UIContent\JS\CustomePage\CreateRuleTADA.js" />
     <Content Include="UIContent\JS\CustomePage\CTVApproval.js" />
     <Content Include="UIContent\JS\CustomePage\CTVHdrEntry.js" />
+    <Content Include="UIContent\JS\CustomePage\CTV\CreateNote.js" />
+    <Content Include="UIContent\JS\CustomePage\CTV\CreateOtherTrip.js" />
     <Content Include="UIContent\JS\CustomePage\EHGCreateNote.js" />
     <Content Include="UIContent\JS\CustomePage\EHGDateWiseTourDtl.js" />
     <Content Include="UIContent\JS\CustomePage\EHGNoteApproval.js" />
@@ -617,6 +621,9 @@
     <Content Include="Areas\Security\Views\CTV2\Index.cshtml" />
     <Content Include="Areas\Security\Views\UserManagement\Index.cshtml" />
     <Content Include="Areas\Security\Views\UserManagement\AddUser.cshtml" />
+    <Content Include="Areas\Security\Views\CTV2\ApprovalIndex.cshtml" />
+    <Content Include="Areas\Security\Views\CTV2\CreateNote.cshtml" />
+    <Content Include="Areas\Security\Views\CTV2\CreateOtherTrip.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />

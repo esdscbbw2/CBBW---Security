@@ -1,12 +1,77 @@
-﻿//Section - Common Button Functionality
+﻿//Section - Input Controll Functionalities
+function FillCashCadingDropDown(myCtrlID, url, IsIDString,DefaultText) {
+    var myCtrl = $('#' + myCtrlID);
+    $.ajax({
+        url: url,
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            myCtrl.empty();
+            myCtrl.append($('<option/>', { value: "-1", text: DefaultText }));
+            $(data).each(function (index, item) {
+                if (IsIDString) {
+                    myCtrl.append($('<option/>', { value: item.IDStr, text: item.DisplayText}));
+                } else {
+                    myCtrl.append($('<option/>', { value: item.ID, text: item.DisplayText }));
+                }
+            });
+        }
+    });
+};
+function FillCashCadingMultiSelect(myCtrlID, url,IsIDString) {
+    var myCtrl = $('#' + myCtrlID);
+    $.ajax({
+        url: url,
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            myCtrl.empty();
+            myCtrl.multiselect('destroy');
+            $(data).each(function (index, item) {
+                if (IsIDString) {
+                    myCtrl.append($('<option/>', { value: item.IDStr, text: item.DisplayText }));}
+                else { myCtrl.append($('<option/>', { value: item.ID, text: item.DisplayText })); }
+            });
+            myCtrl.attr('multiple', 'multiple');
+            myCtrl.multiselect({
+                templates: {
+                    button: '<button id="B0" type="button" class="multiselect dropdown-toggle btn btn-primary w-100 selectBox" data-bs-toggle="dropdown" aria-expanded="false"><span class="multiselect-selected-text"></span></button>',
+                },
+            });
+            myCtrl.multiselect('clearSelection');
+            myCtrl.multiselect('refresh');
+        }
+    });
+};
+
+//Section - Common Button Functionality
 function ClearBtnClicked(pageurl) {
-    MyAlertWithRedirection(5, 'All Recently Unsaved Data Will Be Lost.', pageurl)
-    window.location.href = pageurl;
+    if ($('#IsBackDenied').val() == 1) {
+        MyAlertWithRedirection(5, 'All Recently Unsaved Data Will Be Lost.', pageurl);
+    }
+    else {
+        window.location.href = pageurl;
+    }
 };
 function SubmitBtnStatus(SubmitBtnID, ControlDivID) {
     var SubmitBtn = $('#' + SubmitBtnID);
     var x = DivInvalidCount(ControlDivID);
     if (x == 0) { SubmitBtn.makeEnable(); } else { SubmitBtn.makeDisable() }
+    $('#IsBackDenied').val(1);
+};
+function BackBtnClicked() {
+    $.ajax({
+        url: "/Security/Common/BackButtonClicked",
+        success: function (result) { window.location.href = result; }
+    });
+};
+function NormalBackBtnClicked(pageurl) {
+    if ($('#IsBackDenied').val() == 1) {
+        MyAlertWithRedirection(2, 'Are You Sure Want to Go Back?', pageurl)
+    }
+    else {
+        window.location.href = pageurl;
+    }
 };
 //Section - Table Row Cloaning
 function RowSpanRemoveBtnClicked() {
@@ -101,7 +166,7 @@ function TableRowCloaning(sourceTBody, destinationTBody, rowid, IsRemoveBtn, IsA
     });
     cloneready.find('.inValidTag').each(function () {
         that = $(this);
-        //that.val('');
+        that.val('');
         that.isInvalid();
     });
     cloneready.find('.inVisibleTag').each(function () {
@@ -197,7 +262,7 @@ function TableRowCloaning(sourceTBody, destinationTBody, rowid, IsRemoveBtn, IsA
         $(this).focus(function () {
             $(this).tooltip('show');
         });
-    });
+    });    
     if (rowid == 0) {
         if (maxrows == 0) {
             destinationbody.append(cloneready);
@@ -215,6 +280,26 @@ function TableRowCloaning(sourceTBody, destinationTBody, rowid, IsRemoveBtn, IsA
     return r;
 };
 //Section - Date Time Functions
+function IsValidTimeSelected(InputDate, InputTime) {
+    //InputDate='2023-05-22' InputTime='20:22'
+    var targetDateTime = new Date(InputDate + ' ' + InputTime);
+    var currentDateTime = new Date();
+    if (targetDateTime.getTime() >= currentDateTime.getTime() - 59000) {
+        return true;
+    } else {
+        return false;
+    }
+};
+function IsCurrentDate(InputDate) {
+    //InputDate='2023-05-22'
+    var targetDate = new Date(InputDate);
+    var currentDate = new Date();
+    if (targetDate.setHours(0, 0, 0, 0) === currentDate.setHours(0, 0, 0, 0)) {
+        return true;
+    } else {
+        return false;
+    }
+};
 $.fn.ApplyCustomDateFormat = function () {
     var that = this;
     var parentid = that.attr('id');
@@ -227,8 +312,38 @@ $.fn.ApplyCustomDateFormat = function () {
     else {
         var e = dt.split('-').reverse().join('/');
     }
-    $('#' + lblid).html(e);
+    if (dt != '') { $('#' + lblid).html(e); } else { $('#' + lblid).html('Select A Date'); }
+    
     //that.addClass('is-valid').removeClass('is-invalid')
+};
+$.fn.DisableDates = function () {
+    var that = this;
+    var disabledDates = ["2023-05-21", "2023-05-25", "2023-05-29"];
+    that.datepicker({
+        beforeShowDay: function (date) {
+            var formattedDate = $.datepicker.formatDate("yy-mm-dd", date);
+            return [disabledDates.indexOf(formattedDate) === -1];
+        }
+    });
+};
+function DisableDatesInCalendar(disabledDates, CtrlID) {
+    var dateInput = document.getElementById(CtrlID);
+    dateInput.addEventListener("input", function () {
+        var selectedDate = this.value;
+        // Check if the selected date is in the array of disabled dates
+        if (disabledDates.includes(selectedDate)) {
+            this.value = ""; // Clear the input value
+            MyAlert(5, 'Local Trip Schedule Is Done On This Date. Please Select Another Date.')
+            //alert("This date is disabled. Please select another date.");
+        }
+    });
+};
+function GetDisableDates() {
+    var dates = [];
+    dates.push("2023-05-25");
+    dates.push("2023-05-28");
+    dates.push("2023-05-31");
+    return dates;
 };
 //Section - Helper Functions
 function DivInvalidCount(mdivID) {
@@ -281,19 +396,26 @@ function UnLockSection(id) {
     $('#' + id).removeClass('sectionB');
 };
 function LockControl(id) {
-    $('#' + id).attr('disabled', 'disabled');
+    var myCtrl = $('#' + id);
+    myCtrl.attr('disabled', 'disabled');
+    if (myCtrl.hasClass('EntrynDisabledForEntry')) { myCtrl.EntrynDisabledForEntry(); }
 };
 function UnLockControl(id) {
-    $('#' + id).removeAttr('disabled');
+    var myCtrl = $('#' + id);
+    myCtrl.removeAttr('disabled');
+    if (myCtrl.hasClass('EntrynDisabledForEntry')) { myCtrl.EntrynEnableForEntry(); }
 };
 $.fn.EntrynDisabledForEntry = function () {
     var that = this;
     that.val('');
-    that.attr('disabled', 'disabled').addClass('bg-blue border-blue');
+    that.attr('disabled', 'disabled')
+        .addClass('bg-blue border-blue nodrop');
 };
 $.fn.EntrynEnableForEntry = function () {
     var that = this;
-    that.removeAttr('disabled').addClass('is-invalid').removeClass('bg-blue border-blue is-valid');
+    that.removeAttr('disabled')
+        .addClass('is-invalid')
+        .removeClass('bg-blue border-blue is-valid nodrop');
     that.val('');
 };
 $.fn.EntryDoneDisableMode = function () {
@@ -355,6 +477,14 @@ $.fn.makeEnable = function () {
 $.fn.makeDisable = function () {
     var that = this;
     that.attr('disabled', 'disabled');
+};
+$.fn.makeVisible = function () {
+    var that = this;
+    that.removeClass('inVisible');
+};
+$.fn.makeInVisible = function () {
+    var that = this;
+    that.AddClass('inVisible');
 };
 //Section Start- SweetAlert Templates
 function MyAlert(MessageType, MessageText) {
@@ -631,7 +761,9 @@ $(document).ready(function () {
         $(this).tooltip('show');
     });
     $('input[type="date"]').each(function () {
-        $(this).ApplyCustomDateFormat();
+        $(this).on("change", function () {
+            $(this).ApplyCustomDateFormat();
+        });        
     });
     $('.ApplyMultiSelectWithSelectAll').each(function () {
         that = $(this);
@@ -657,4 +789,40 @@ $(document).ready(function () {
         that.multiselect('clearSelection');
         that.multiselect('refresh');
     });
+    $('.timePickerPreDateCtrl').each(function () {
+        var myDtCtrl = $('#' + $(this).attr('id').split('-')[1]);
+        $(this).datetimepicker({
+            format: "hh:mm A"
+        }).on("dp.show", function (e) {
+            time = "01:00 PM"
+        }).on("dp.change", function (e) {
+            var myDate = myDtCtrl.val();
+            $(this).isValid();
+            if (myDate != '') {
+                if (!IsValidTimeSelected(myDate, $(this).val())) {
+                    $(this).isInvalid();
+                    MyAlert(4, "Selected Time Should Be Greater Than The Current Time.");
+                }                
+            }
+        });
+    });
+    
 });
+//dummy functions
+
+var setMin = function (currentDateTime) {
+    this.setOptions({
+        minDate: '-1970/01/02'
+    });
+    this.setOptions({
+        minTime: 0
+    });
+};
+
+function getCurrentTime() {
+    var currentDate = new Date();
+    var currentHour = currentDate.getHours();
+    var currentMinute = currentDate.getMinutes();
+    alert(('0' + currentHour).slice(-2) + ':' + ('0' + currentMinute).slice(-2));
+    return ('0' + currentHour).slice(-2) + ':' + ('0' + currentMinute).slice(-2);
+}

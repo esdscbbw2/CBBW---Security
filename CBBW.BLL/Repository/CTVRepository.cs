@@ -62,6 +62,7 @@ namespace CBBW.BLL.Repository
         }
         public IEnumerable<LocationMaster> GetLocationsFromTypes(string LocationTypeIDs, ref string pMsg) 
         {
+            List<LocationMaster> result=new List<LocationMaster>();
             List<LocationMaster> locations = new List<LocationMaster>();
             MasterData masterdata = MasterData.GetInstance;
             if (masterdata.AllLocations != null && masterdata.AllLocations.Count > 0)
@@ -77,7 +78,9 @@ namespace CBBW.BLL.Repository
                     }
                 }
             }
-            return locations;
+            if(locations!=null && locations.Count>0)
+                result = locations.OrderBy(o =>o.TypeID).ThenBy(o=>o.ID).ToList();
+            return result;
         }
         public IEnumerable<CustomComboOptions> getLocationsFromType(string LocationTypeIDs, ref string pMsg)
         {            

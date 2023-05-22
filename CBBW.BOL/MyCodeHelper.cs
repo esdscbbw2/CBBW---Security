@@ -22,5 +22,43 @@ namespace CBBW.BOL
             catch { }
             return result;
         }
+        public static string GetNotePattern(string ModuleName) 
+        {
+            ModuleName = ModuleName.ToUpper();
+            string result = "";
+            switch (ModuleName)
+            {
+                case "CTV":
+                    result= "200001-CTV-" + DateTime.Today.ToString("yyyyMMdd") + "-";
+                    break;
+                default:
+                    break;
+            }
+            return result;
+        }
+        public static DateTime FirstDayOfTheFortNight() 
+        {
+            DateTime now = DateTime.Now;
+            if (now.Day <= 15) 
+            {
+                return new DateTime(now.Year, now.Month, 1);
+            } 
+            else 
+            {
+                return new DateTime(now.Year, now.Month, 16);
+            }
+        }
+        public static DateTime LastDayOfTheFortNight()
+        {
+            DateTime now = DateTime.Now;
+            if (now.Day <= 15)
+            {
+                return new DateTime(now.Year, now.Month, 15);
+            }
+            else
+            {
+                return new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year, now.Month));
+            }
+        }
     }
 }

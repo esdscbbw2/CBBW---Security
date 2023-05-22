@@ -1,0 +1,229 @@
+﻿@using System.Globalization;
+@using CBBW.Areas.Security.ViewModel.CTV;
+@model CreateNoteVM
+@{
+    ViewBag.Title = "CTV Entry";
+}
+<div id="HdrDiv" class="row newTable">
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(m => m.NoteNumber)
+        @Html.HiddenFor(m => m.IsBackDenied)
+        <div class="col-md-12">
+            <div class="heading_text_btn mb-3 mt-4">
+                <div class="leftButton">
+                    <button type="button" class="btn btn-primary me-2"
+                            onclick="NormalBackBtnClicked('/Security/CTV2/Index')">
+                        <i data-feather="arrow-left-circle"></i>
+                        Back
+                    </button>
+                    <button id="btnSubmit" type="submit" name="Submit" value="create"
+                            class="btn btn-secondary me-2" disabled="disabled"
+                            @*onclick="window.location.href='vehicle_trip_schedule.html';"*@>
+                        <i data-feather="upload"></i>
+                        Submit
+                    </button>
+                    <button type="button" onclick="ClearBtnClicked('/Security/CTV2/CreateNote')"
+                            class="btn btn-white">
+                        <i data-feather="x-circle"></i>
+                        Clear
+                    </button>
+                </div>
+                <h2 style="text-align: right;">“Company Transport” Vehicle Trip Schedule - Entry</h2>
+            </div>
+        </div>
+        <div class="col-md-12 mb-4">
+            <div class="col-md-12">
+                <div class="d-flex justify-content-center mt-2 upper-tab-buttons">
+                    <button type="submit" name="Submit" value="TourRule" class="btn btn-primary me-2">
+                        To Check  “Tour Rules”
+                    </button>
+                    <button type="submit" name="Submit" value="TADARule" class="btn btn-primary me-2">
+                        To Check “TA & DA Rules”
+                    </button>
+                    <button type="submit" name="Submit" value="LocalVehicleSchedule" class="btn btn-primary">
+                        To Check “Local Vehicle Schedule”
+                    </button>
+                </div>
+            </div>
+            <div class="card mb-4 mt-4">
+                <div class="card-body formInputWidth">
+                    <div class="row">
+                        <label class="col-form-label col-md-2">
+                            Note No. :
+                        </label>
+                        <div class="col-md-2">
+                            @Html.TextBoxFor(m => m.NoteNumber, htmlAttributes: new { @class = "form-control", disabled = "disabled", id = "Noteno2" })
+                            @*<input type="text" class="form-control" value="200001-CTV-20220930-00001" disabled>*@
+                        </div>
+                        <label class="col-form-label col-md-2">
+                            Date :
+                        </label>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" value="@DateTime.Today.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)" disabled>
+                        </div>
+                        <label class="col-form-label col-md-2">
+                            Time :
+                        </label>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" value="@DateTime.Now.ToString("hh:mm tt",CultureInfo.InvariantCulture)" disabled>
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col-md-12 mt-3 mb-3">
+                            <div class="row g-3 align-items-center">
+                                <label class="col-form-label col-md-2">Center Code & Name : </label>
+                                <div class="col-md-6">
+                                    @Html.TextBoxFor(m => m.CentreCodeName, htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <label class="col-form-label col-md-2">
+                            For The Month & Year :
+                        </label>
+                        <div class="col-md-2">
+                            @Html.TextBoxFor(m => m.ForTheMonthYear,
+                           htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                        </div>
+                        <label class="col-form-label col-md-2">
+                            From Date :
+                        </label>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" value="@Model.FromDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)" disabled>
+                        </div>
+                        <label class="col-form-label col-md-2">
+                            To Date :
+                        </label>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" value="@Model.ToDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)" disabled>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mt-3 mb-3">
+                            <div class="row g-3 align-items-center">
+                                <label class="col-form-label col-md-2">Vehicle No. : </label>
+                                <div class="col-md-4">
+                                    @Html.DropDownListFor(m => m.VehicleNumber,
+                                       new SelectList(Model.ListofVehicles, "VehicleNumber", "VehicleNumber"), "Select a vehicle",
+                                       htmlAttributes: new
+                                       {
+                                           @class = "form-select pointer canclear"
+                                       })
+                                </div>
+                                <div id="divErrorX" class="col-md-6">
+                                    <div id="divError" class="alert alert-danger alert-dismissible fade">
+                                        @*<button type="button" class="btn-close" data-bs-dismiss="alert"></button>*@
+                                        <label id="lblError">asd</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                            <label class="col-form-label col-md-2">
+                                Vehicle Type :
+                            </label>
+                            <div class="col-md-4">
+                                <input id="cVehicleType" type="text"
+                                       class="form-control" value="" disabled>
+                            </div>
+                            <label class="col-form-label col-md-2">
+                                Model Name :
+                            </label>
+                            <div class="col-md-4">
+                                <input id="cModelName" type="text"
+                                       class="form-control" value="" disabled>
+                            </div>                        
+                    </div>
+                        <div class="row">
+                            <div class="col-md-12 mt-3 mb-3">
+                                <div class="row g-3 align-items-center">
+                                    <label class="col-form-label col-md-2">Driver No. & Name : </label>
+                                    <div class="col-md-6">
+                                        <input id="cDriverNumberName" type="text" class="form-control" value="" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="card mb-4 mt-4">
+                <div class="card-body  alert alert-danger text-dark approvalForm">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-md-2 col-form-label">
+                            <label>Approved :</label>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" value="" disabled="">
+                        </div>
+                        <div class="col-md-2 col-form-label">
+                            <label>Date &amp; Time Of Approval :</label>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" value="" disabled="">
+                        </div>
+                        <div class="col-md-2 col-form-label">
+                            <label>Reason If Not Approved :</label>
+                        </div>
+                        <div class="col-md-2">
+                            <textarea name="" id="" cols="10" rows="2" class="form-control pointer-default" readonly></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="d-flex justify-content-center mt-2">
+                    <button id="btnLVT" type="submit" name="Submit" value="LVT"
+                            class="btn btn-primary me-2" disabled="disabled"
+                            @*onclick="window.location.href='local_vehicle_schedule_details_entry.html';"*@>
+                        Local Vehicle Schedule - Date Wise Vehicle Trip Details Entry
+                    </button>
+                    <button id="btnOVT" type="submit" name="Submit" value="OVT"
+                            class="btn btn-primary" disabled="disabled"
+                            @*onclick="window.location.href='other_trip_schedule_details_entry.html';"*@>
+                        Other Trip Schedule - Date Wise Vehicle Trip Details Entry
+                    </button>
+                </div>
+                <div class="row mt-3" style="padding:0px">
+                    <div class="col-6">
+                        <div id="divErrorLVS" class="alert alert-danger alert-dismissible fade show inVisible">
+                            @*<button type="button" class="btn-close" data-bs-dismiss="alert"></button>*@
+                            <label id="lblErrorLVS"></label>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div id="divErrorOTS" class="alert alert-danger alert-dismissible fade show inVisible">
+                            @*<button type="button" class="btn-close" data-bs-dismiss="alert"></button>*@
+                            <label id="lblErrorOTS"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="Section3" class="bgColor mt-4 bg-transparent text-center">
+                <ul style="list-style:none;">
+                    <li style="font-size: 16px;">
+                        The Entry Is Done As Per Policy & As Required:
+                        <select id="AcceptCmb" style="width:110px" 
+                                class="form-select EntrynDisabledForEntry"
+                                aria-label="Default select example ">
+                            <option selected="">-</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    }
+</div>
+@section headers
+{
+    
+}
+@section scripts{
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CTV/CreateNote.js"></script>
+    
+}

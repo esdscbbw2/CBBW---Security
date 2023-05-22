@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using CBBW.Areas.Security.ViewModel;
 using CBBW.BLL.IRepository;
 using CBBW.BOL.CTV;
+using CBBW.BOL.CTV2;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.Master;
 using CBBW.DAL.DataSync;
@@ -825,5 +826,36 @@ namespace CBBW.Areas.Security.Controllers
         //    //int x = 1;
         //    return Json(_iCTV.GetNoteNumbersTobeApproved(EmpNo, centrecode,ref pMsg), JsonRequestBehavior.AllowGet);
         //}
+        #region Ajax Calling - New
+        public JsonResult GetEntryNoteList(int iDisplayLength, int iDisplayStart, int iSortCol_0,
+            string sSortDir_0, string sSearch)
+        {
+            List<CTVNoteList4DT> noteList = _iCTV.GetNoteListForDataTable(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, user.CentreCode, false, ref pMsg);
+            var result = new
+            {
+                iTotalRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
+                iTotalDisplayRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
+                iDisplayLength = iDisplayLength,
+                iDisplayStart = iDisplayStart,
+                aaData = noteList
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetApprovedNoteList(int iDisplayLength, int iDisplayStart, int iSortCol_0,
+            string sSortDir_0, string sSearch)
+        {
+            List<CTVNoteList4DT> noteList = _iCTV.GetNoteListForDataTable(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, user.CentreCode, true, ref pMsg);
+            var result = new
+            {
+                iTotalRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
+                iTotalDisplayRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
+                iDisplayLength = iDisplayLength,
+                iDisplayStart = iDisplayStart,
+                aaData = noteList
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion
     }
 }

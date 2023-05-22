@@ -107,7 +107,10 @@ namespace CBBW.BLL.Repository
         {
             return _entities.SetPunchIN(CentreCode,EmployeeNumber,PunchDate,PunchTime,ref pMsg);
         }
-
+        public string GetNewNoteNumber(string NotePattern,ref string pMsg) 
+        {
+            return _entities.getNewNoteNumber(NotePattern, ref pMsg);
+        }
 
     }
 }

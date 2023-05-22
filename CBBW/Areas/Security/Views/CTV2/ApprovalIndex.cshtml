@@ -11,12 +11,17 @@
                 <div class="col-md-12" style="position: relative;">
                     <div class="heading_text_btn mb-4 mt-4">
                         <div class="leftButton">
-                            <button type="button" class="btn btn-primary me-2"
-                                    onclick="window.location.href='/Security/CTV2/CreateNote'">
+                            <button type="submit" name="Submit" value="Add" class="btn btn-primary me-2"
+                                    @*onclick="window.location.href='@Url.Action("Create", "CTV",
+                                    new { Area = "Security"})'"*@>
                                 <i data-feather="plus-circle"></i>
                                 Add
                             </button>
                         </div>
+
+                        @*<button type="button" class="btn primaryLink" data-toggle="tooltip" data-placement="top"
+                            onclick="window.location.href='@Url.Action("Details", "CTVTripSchedule",
+                                    new { Area = "Security", noteno = item.NoteNo})'">*@
                         <h2>“Company Transport” Vehicle Trip Schedule – ENTRY</h2>
                     </div>
                 </div>
@@ -24,7 +29,7 @@
             </div>
         }
         <div class="table-responsive mb-4">
-            <table class="table table-bordered btnalign w-100" 
+            <table class="table table-bordered btnalign w-100"
                    id="tblNoteList">
                 <thead>
                     <tr>
@@ -38,7 +43,7 @@
                     <tr>
                         <th scope="col">
                             <div class="form-group">
-                                <input id="filterNoteNo" type="text" 
+                                <input id="filterNoteNo" type="text"
                                        class="form-control column-search"
                                        data-column-index="1"
                                        placeholder="Search...">
@@ -46,19 +51,19 @@
                         </th>
                         <th scope="col">
                             <div class="form-group">
-                                <input id="filtercentrCode" type="text" 
+                                <input id="filtercentrCode" type="text"
                                        class="form-control column-search" placeholder="Search...">
                             </div>
                         </th>
                         <th scope="col">
                             <div class="form-group">
-                                <input id="filterVehicleNo" type="text" 
+                                <input id="filterVehicleNo" type="text"
                                        class="form-control column-search" placeholder="Search...">
                             </div>
                         </th>
                         <th scope="col">
                             <div class="form-group">
-                                <input id="filterMonthnYear" type="text" 
+                                <input id="filterMonthnYear" type="text"
                                        class="form-control column-search" placeholder="Search...">
                             </div>
                         </th>
@@ -93,15 +98,15 @@
                             var mbtns = '<span class="actionBtn d-block">';
                             mbtns = mbtns + viewBtn;
                             //mbtns = mbtns + deleteBtn + editBtn;
-                            if (row.CanDelete) { mbtns = mbtns + deleteBtn; }
-                            if (row.CanEdit) { mbtns = mbtns + editBtn; }
+                            //if (row.CanDelete) { mbtns = mbtns + deleteBtn; }
+                            //if (row.CanEdit) { mbtns = mbtns + editBtn; }
                             mbtns = mbtns + '</span>';
                             return type === 'display' ? mbtns : data;
                         }
                     },
                 ],
                 bServerSide: true,
-                sAjaxSource: '/Security/CTV2/GetEntryNoteList',
+                sAjaxSource: '/Security/CTV2/GetApprovedNoteList',
                 "pagingType": "input",
             });
             $('input.column-search').on('keyup', function () {
