@@ -14,6 +14,46 @@ namespace CBBW.DAL.DBMapper
     public class CTVDBMapper
     {
         #region For V2
+        public CTVSlots Map_CTVSlots(DataTable LVSlots, DataTable AvblSlots) 
+        {
+            CTVSlots result = new CTVSlots();
+            string lvslot = "";
+            string avblslot = "";
+            try
+            {
+                if (LVSlots != null && LVSlots.Rows.Count > 0)
+                {
+                    DateTime fromdt = DateTime.Today;
+                    DateTime todt = DateTime.Today;
+                    for (int i = 0; i < LVSlots.Rows.Count; i++) 
+                    {
+                        if (!DBNull.Value.Equals(LVSlots.Rows[i]["FromDate"]))
+                            fromdt=DateTime.Parse(LVSlots.Rows[i]["FromDate"].ToString());
+                        if (!DBNull.Value.Equals(LVSlots.Rows[i]["ToDate"]))
+                            todt = DateTime.Parse(LVSlots.Rows[i]["ToDate"].ToString());
+                        for(DateTime d= fromdt;d<= todt; d=d.AddDays(1)) 
+                        {
+                            lvslot = lvslot + d.ToString("yyyy-MM-dd")+",";
+                        }
+                    }
+                }
+                if (AvblSlots != null && AvblSlots.Rows.Count > 0)
+                {
+                    for (int i = 0; i < AvblSlots.Rows.Count; i++)
+                    {
+                        if (!DBNull.Value.Equals(AvblSlots.Rows[i]["FromDate"]))
+                            avblslot = avblslot+ DateTime.Parse(AvblSlots.Rows[i]["FromDate"].ToString()).ToString("yyyy-MM-dd")+",";
+                        if (!DBNull.Value.Equals(AvblSlots.Rows[i]["ToDate"]))
+                            avblslot = avblslot + DateTime.Parse(AvblSlots.Rows[i]["ToDate"].ToString()).ToString("yyyy-MM-dd") + ",";
+
+                    }
+                }
+                result.OccupiedSlots = string.IsNullOrEmpty(lvslot)?"":lvslot.TrimEnd(',');
+                result.AvailableSlots = string.IsNullOrEmpty(avblslot)?"":avblslot.TrimEnd(','); 
+            }
+            catch { }
+            return result;
+        }
         public CTVNoteList4DT Map_CTVNoteList4DT(DataRow dr)
         {
             CTVNoteList4DT result = new CTVNoteList4DT();

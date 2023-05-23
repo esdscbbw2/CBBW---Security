@@ -300,5 +300,11 @@ namespace CBBW.DAL.Entities
             _dbresmapper.Map_DBResponse(_datasync.SetPunchIN(CentreCode,EmployeeNumber,PunchDate,PunchTime, ref pMsg), ref pMsg, ref result);
             return result;
         }
+        public int GetCentreCodeFromLocation(int LocationTypeCode, int LocationCode, ref string pMsg) 
+        {
+            return _datasync.GetCentreCodeFromLocation(LocationTypeCode, LocationCode, ref pMsg);
+        }
+
+
     }
 }

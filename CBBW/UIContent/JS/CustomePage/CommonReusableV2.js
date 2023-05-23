@@ -43,7 +43,6 @@ function FillCashCadingMultiSelect(myCtrlID, url,IsIDString) {
         }
     });
 };
-
 //Section - Common Button Functionality
 function ClearBtnClicked(pageurl) {
     if ($('#IsBackDenied').val() == 1) {
@@ -74,6 +73,12 @@ function NormalBackBtnClicked(pageurl) {
     }
 };
 //Section - Table Row Cloaning
+function RowAddButtonStatus(btnID) {
+    var myCtrl = $('#' + btnID);
+    var row = myCtrl.closest('tr');
+    var invalidcount = row.find('.is-invalid').length;
+    if (invalidcount > 0) { myCtrl.makeDisable(); } else { myCtrl.makeEnable();}
+};
 function RowSpanRemoveBtnClicked() {
     var $row = $(RowSpanRemoveBtnClicked.caller.arguments[0].target.closest('.add-row'));
     var nextrow = $row.next();
@@ -262,7 +267,10 @@ function TableRowCloaning(sourceTBody, destinationTBody, rowid, IsRemoveBtn, IsA
         $(this).focus(function () {
             $(this).tooltip('show');
         });
-    });    
+    });
+    cloneready.find('.EntrynDisabledForEntry').each(function () {
+        $(this).EntrynDisabledForEntry();
+    });
     if (rowid == 0) {
         if (maxrows == 0) {
             destinationbody.append(cloneready);
@@ -280,6 +288,13 @@ function TableRowCloaning(sourceTBody, destinationTBody, rowid, IsRemoveBtn, IsA
     return r;
 };
 //Section - Date Time Functions
+function GetCurrentTime() {
+    var currentDate = new Date();
+    var currentHour = currentDate.getHours();
+    var currentMinute = currentDate.getMinutes();
+    alert(('0' + currentHour).slice(-2) + ':' + ('0' + currentMinute).slice(-2));
+    return ('0' + currentHour).slice(-2) + ':' + ('0' + currentMinute).slice(-2);
+}
 function IsValidTimeSelected(InputDate, InputTime) {
     //InputDate='2023-05-22' InputTime='20:22'
     var targetDateTime = new Date(InputDate + ' ' + InputTime);
@@ -333,17 +348,22 @@ function DisableDatesInCalendar(disabledDates, CtrlID) {
         // Check if the selected date is in the array of disabled dates
         if (disabledDates.includes(selectedDate)) {
             this.value = ""; // Clear the input value
-            MyAlert(5, 'Local Trip Schedule Is Done On This Date. Please Select Another Date.')
+            MyAlert(4, 'Local Trip Schedule Is Done On This Date. Please Select Another Date.')
             //alert("This date is disabled. Please select another date.");
         }
     });
 };
-function GetDisableDates() {
-    var dates = [];
-    dates.push("2023-05-25");
-    dates.push("2023-05-28");
-    dates.push("2023-05-31");
-    return dates;
+function GetDisableDates() {    
+    return $('#Slots_OccupiedSlots').val().split(',');
+    //$.each(slots, function (index, value) {
+    //    dates.push(value);
+    //});
+
+    //var dates = [];
+    //dates.push("2023-05-25");
+    //dates.push("2023-05-28");
+    //dates.push("2023-05-31");
+    //return dates;
 };
 //Section - Helper Functions
 function DivInvalidCount(mdivID) {
@@ -354,6 +374,9 @@ function DivInvalidCount(mdivID) {
 };
 function WordCount(value) {
     return $.trim(value).split(" ").length;
+};
+function ExtractLocationCodeFromTypeLocationCodes(locCodes) {
+    locCodes='2-1,2-2,3-4'
 };
 //Section - Style Functions
 function LockSection(id) {
@@ -375,7 +398,7 @@ function LockSection(id) {
     $('#' + id).find('.EntryDoneDisableMode').each(function () {
         $(this).EntryDoneDisableMode();
     });
-    $('#' + id).addClass('sectionB');
+    $('#' + id).addClass('sectionB');    
 };
 function UnLockSection(id) {
     $('#' + id).find('input').each(function () {
@@ -391,7 +414,7 @@ function UnLockSection(id) {
         $(this).removeAttr('disabled');
     });
     $('#' + id).find('.EntrynDisabledForEntry').each(function () {
-        $(this).EntrynEnableForEntry();
+        $(this).EntrynDisabledForEntry();
     });
     $('#' + id).removeClass('sectionB');
 };
@@ -409,7 +432,7 @@ $.fn.EntrynDisabledForEntry = function () {
     var that = this;
     that.val('');
     that.attr('disabled', 'disabled')
-        .addClass('bg-blue border-blue nodrop');
+        .addClass('bg-blue border-red nodrop');
 };
 $.fn.EntrynEnableForEntry = function () {
     var that = this;
@@ -806,7 +829,9 @@ $(document).ready(function () {
             }
         });
     });
-    
+    $('.EntrynDisabledForEntry').each(function () {
+        $(this).EntrynDisabledForEntry();
+    });
 });
 //dummy functions
 
@@ -819,10 +844,3 @@ var setMin = function (currentDateTime) {
     });
 };
 
-function getCurrentTime() {
-    var currentDate = new Date();
-    var currentHour = currentDate.getHours();
-    var currentMinute = currentDate.getMinutes();
-    alert(('0' + currentHour).slice(-2) + ':' + ('0' + currentMinute).slice(-2));
-    return ('0' + currentHour).slice(-2) + ':' + ('0' + currentMinute).slice(-2);
-}

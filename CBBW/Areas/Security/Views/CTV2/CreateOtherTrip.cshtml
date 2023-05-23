@@ -6,6 +6,8 @@
 }
 @Html.HiddenFor(m => m.NoteNumber)
 @Html.HiddenFor(m => m.IsBackDenied)
+@Html.HiddenFor(m => m.Slots.OccupiedSlots)
+@Html.HiddenFor(m => m.Slots.AvailableSlots)
 <div id="HdrDiv">
     <div class="row newTable">
         <div class="fixedElement">
@@ -55,9 +57,9 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12">
+        <div id="tblOTVAdd" class="col-md-12">
             <div class="table-responsive max-content newTable mt-4">
-                <table class="table table-bordered btnalign" id="tblOTV">
+                <table class="table table-bordered btnalign">
                     <thead>
                         <tr>
                             <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
@@ -96,7 +98,7 @@
                                         <input id="FromDate_0" type="date"
                                                min="@(DateTime.Today.ToString("yyyy-MM-dd"))"
                                                onchange="FromDateChanged()"
-                                               class="form-control is-invalid valid alterID disableDates inValidTag">
+                                               class="form-control is-invalid valid alterID disableDates">
                                         <label id="lblFromDate_0" class="datelabel alterID" style="width:100px">Select A Date</label>
                                     </div>
                                 </div>
@@ -104,18 +106,17 @@
                             <td>
                                 <div class="form-group ">
                                     <div class="input-group date pointer position-static">
-                                        <input id="time-FromDate_0" type="text" onblur="SchTimeChanged()"
-                                               class="form-control is-invalid pointer inValidTag timePickerPreDateCtrl alterID"
+                                        <input id="time-FromDate_0" type="text"
+                                               onchange="FromTimeChanged()"
+                                               class="form-control EntrynDisabledForEntry pointer timePickerPreDateCtrlV2 alterID"
                                                placeholder="1:00 PM">
-
-                                        @*<span class="input-group-addon pointer calender-ico"><i class="fa fa-clock-o" aria-hidden="true"></i></span>*@
                                     </div>
                                 </div>
                             </td>
                             <td>
                                 <div class="form-group">
                                     <select id="FromLocationType_0"
-                                            class="form-select is-invalid alterID"
+                                            class="form-select alterID EntrynDisabledForEntry fromloctype"
                                             onchange="ChangeFromLocationType()">
                                         <option value="">Select Location Type</option>
                                         @if (Model.LocationTypes != null)
@@ -130,8 +131,9 @@
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <select id="FromLocation_0" class="form-select is-invalid alterID inValidTag"
-                                            onchange="ChangeLocation()"
+                                    <select id="FromLocation_0"
+                                            class="form-select alterID EntrynDisabledForEntry fromloc"
+                                            onchange="ChangeFromLocation()"
                                             aria-label="Default select example">
                                         <option value="-1">Select location</option>
                                     </select>
@@ -140,7 +142,7 @@
                             <td>
                                 <div class="form-group">
                                     <select id="ToLocationType_0"
-                                            class="form-select is-invalid ApplyMultiSelect alterID"
+                                            class="form-select ApplyMultiSelect alterID EntrynDisabledForEntry"
                                             onchange="ChangeToLocationType()">
                                         @if (Model.LocationTypes != null)
                                         {
@@ -155,21 +157,22 @@
                             <td>
                                 <div class="form-group">
                                     <select id="ToLocation_0"
-                                            class="form-select is-invalid alterID inValidTag"
-                                            onchange="ChangeLocationTo()"
+                                            class="form-select alterID EntrynDisabledForEntry toloc"
+                                            onchange="ChangeToLocation()"
                                             aria-label="Default select example">
                                     </select>
                                 </div>
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <input id="ToDate_0" type="text" disabled="disabled"
-                                           class="form-control is-invalid alterID">
+                                    <input id="ToDate_0" type="text"
+                                           class="form-control alterID EntrynDisabledForEntry">
                                 </div>
                             </td>
                             <td>
                                 <span class="actionBtn">
-                                    <button id="AddBtn_0" type="button" class="btn primaryLink addBtn cloneBtn"
+                                    <button id="AddBtn_0" type="button" disabled="disabled"
+                                            class="btn primaryLink addBtn cloneBtn"
                                             data-toggle="tooltip" onclick="AddBtnClicked('tbody1','tbody2',true,true,true,'btnSubmit','HdrDiv')"
                                             data-placement="top" title="Add">
                                         <i data-feather="plus"></i>
@@ -334,13 +337,14 @@
 </div>
 @section headers
 {
-    
+
 }
 @section scripts{
     <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/CTV/CreateOtherTrip.js"></script>
     <script>
         
+
 
     </script>
 }

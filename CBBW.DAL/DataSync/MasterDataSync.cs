@@ -10,6 +10,22 @@ namespace CBBW.DAL.DataSync
 {
     public class MasterDataSync
     {
+        public int GetCentreCodeFromLocation(int LocationTypeCode, int LocationCode, ref string pMsg)
+        {
+            try
+            {
+                if (LocationTypeCode == 2) { return LocationCode; }
+                else 
+                {
+                    using (SQLHelper sql = new SQLHelper("SELECT [MTR].[GetCentreCodeFromLocation](" + LocationTypeCode + "," + LocationCode + ")", CommandType.Text))
+                    {
+                        return int.Parse(sql.ExecuteScaler(ref pMsg).ToString());
+                    }
+                }
+                
+            }
+            catch (Exception ex) { pMsg = ex.Message; return 0; }
+        }
         public DataTable getVehicleEligibilityStatement(int EligibleVT,int ProvidedVT, ref string pMsg)
         {
             try

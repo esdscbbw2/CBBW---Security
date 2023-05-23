@@ -45,6 +45,33 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
+        public CTVSlots GetSlots(string VehicleNo, int IncludeOTVSch, ref string pMsg) 
+        {
+            CTVSlots result = new CTVSlots();
+            try
+            {
+                ds = _datasync.getVehicleSlotVacency(VehicleNo, IncludeOTVSch, ref pMsg);
+                if (ds != null)
+                {
+                    DataTable bookedslots = null; DataTable avblslots = null; DataRow hdr = null;
+                    if (ds.Tables[2] != null && ds.Tables[2].Rows.Count > 0)
+                    {
+                        avblslots = ds.Tables[2];
+                    }
+                    if (ds.Tables[1] != null && ds.Tables[1].Rows.Count > 0)
+                    {
+                        bookedslots = ds.Tables[1];
+                    }                    
+                    return _CTVDBMapper.Map_CTVSlots(bookedslots, avblslots);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message;return null; }
+            return result;
+        }
+        public DateTime GetToDate(DateTime FromDate, int FromCentre, string ToCentre, ref string pMsg) 
+        {
+            return _datasync.GetToDate(FromDate, FromCentre, ToCentre, ref pMsg);
+        }
 
 
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using CBBW.BOL.CTV2;
 using CBBW.BOL.CustomModels;
 
 namespace CBBW.Areas.Security.ViewModel.CTV
@@ -11,6 +12,7 @@ namespace CBBW.Areas.Security.ViewModel.CTV
         public string NoteNumber { get; set; }
         public string VehicleNumber { get; set; }
         public int IsBackDenied { get; set; }
+        public CTVSlots Slots { get; set; }
         public IEnumerable<CustomComboOptions> LocationTypes { get; set; }
     }
 }

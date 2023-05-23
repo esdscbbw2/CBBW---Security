@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,6 +9,7 @@ using CBBW.BLL.IRepository;
 using CBBW.BOL;
 using CBBW.BOL.CTV;
 using CBBW.BOL.CTV2;
+using CBBW.BOL.CustomModels;
 using CBBW.BOL.Master;
 
 namespace CBBW.Areas.Security.Controllers
@@ -64,6 +66,7 @@ namespace CBBW.Areas.Security.Controllers
             model.NoteNumber= CastNoteNumberFromTemp(); 
             model.VehicleNumber= CastVehicleNumberFromTemp("");
             model.LocationTypes = _iCTV.getLocationTypes(ref pMsg).OrderBy(o=>o.ID);
+            model.Slots = _iCTV.GetSlots(model.VehicleNumber, 0, ref pMsg);
             return View(model);
         }
         #region Ajax Calling
@@ -109,7 +112,25 @@ namespace CBBW.Areas.Security.Controllers
             IEnumerable<LocationMaster> result = _iCTV.GetLocationsFromTypes(TypeIDs, ref pMsg);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
+        public JsonResult GetToDate(string FromDate, int FromLocationType,
+            int FromLocation, string ToLocation)
+        {
+            CustomAjaxResponse result = new CustomAjaxResponse();
+            DateTime tdt = _iCTV.GetToDate(DateTime.Parse(FromDate), FromLocationType,FromLocation,ToLocation, ref pMsg);
+            if (tdt != new DateTime(1, 1, 1))
+            {
+                result.bResponseBool = true;
+                result.sResponseString = tdt.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture);
+                result.sResponseString2 = tdt.ToString("yyyy-MM-dd");
+            }
+            else
+            {
+                result.sResponseString = "";
+                result.sResponseString2 = "";
+                result.bResponseBool = false;
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
         #endregion Ajax Calling
         private string CastNoteNumberFromTemp()
         {

@@ -30,6 +30,24 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+        public DateTime GetToDate(DateTime FromDate,int FromCentre,string ToCentre, ref string pMsg)
+        {
+            DateTime result = new DateTime();
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("select * from [CTV].[GetSchToDate]('"+ FromDate.ToString("yyyy-MM-dd")+ "',"+ FromCentre + ",'"+ ToCentre + "')", CommandType.Text))
+                {
+                    DataTable dt=sql.GetDataTable();
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        if (!DBNull.Value.Equals(dt.Rows[0]["ToDate"]))
+                            result = DateTime.Parse(dt.Rows[0]["ToDate"].ToString());
+                    }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
         #endregion For CTV2
         public DataTable getNewCTVNoteNo(string CTVPattern, ref string pMsg)
         {

@@ -12,5 +12,6 @@ namespace CBBW.BOL.CustomModels
         public int iRespinseInteger { get; set; }
         public bool bResponseBool { get; set; }
         public string sResponseString { get; set; }
+        public string sResponseString2 { get; set; }
     }
 }

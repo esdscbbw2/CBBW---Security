@@ -15,6 +15,8 @@ namespace CBBW.BLL.IRepository
         #region For CTV2
         List<CTVNoteList4DT> GetNoteListForDataTable(int DisplayLength, int DisplayStart, int SortCol, string SortDirection,
             string SearchText, int CentreCode, bool IsApproved, ref string pMsg);
+        CTVSlots GetSlots(string VehicleNo, int IncludeOTVSch, ref string pMsg);
+        DateTime GetToDate(DateTime FromDate, int FromLocationType, int FromLocation, string ToLocations, ref string pMsg);
         #endregion For CTV2
         string getNewTripScheduleNo(string SchPattern, ref string pMsg);
         TripScheduleHdr NewTripScheduleNo(string SchPattern, ref string pMsg);

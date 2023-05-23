@@ -27,8 +27,15 @@ namespace CBBW.BLL.Repository
         {
             return _CTVEntities.GetNoteListForDataTable(DisplayLength, DisplayStart, SortCol, SortDirection, SearchText, CentreCode, IsApproved, ref pMsg); 
         }
-
-
+        public CTVSlots GetSlots(string VehicleNo, int IncludeOTVSch, ref string pMsg) 
+        {
+            return _CTVEntities.GetSlots(VehicleNo, IncludeOTVSch, ref pMsg);
+        }
+        public DateTime GetToDate(DateTime FromDate, int FromLocationType,int FromLocation, string ToLocations, ref string pMsg) 
+        {
+            int FromCentreCode =_MasterEntities.GetCentreCodeFromLocation(FromLocationType, FromLocation,ref pMsg);
+            return _CTVEntities.GetToDate(FromDate, FromCentreCode, ToLocations, ref pMsg);
+        }
 
 
         #endregion For CTV2
