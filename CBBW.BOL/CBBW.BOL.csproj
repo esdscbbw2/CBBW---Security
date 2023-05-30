@@ -35,6 +35,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -50,6 +51,7 @@
     <Compile Include="BIL\TADARuleData.cs" />
     <Compile Include="BIL\TravellingDetails.cs" />
     <Compile Include="CTV2\CTVNoteList4DT.cs" />
+    <Compile Include="CTV2\CTVOtherTripDtls.cs" />
     <Compile Include="CTV2\CTVSlots.cs" />
     <Compile Include="CTV\CTVHdrDtl.cs" />
     <Compile Include="CTV\LocVehSchFromMat.cs" />

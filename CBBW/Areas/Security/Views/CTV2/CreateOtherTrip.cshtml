@@ -59,7 +59,7 @@
         </div>
         <div id="tblOTVAdd" class="col-md-12">
             <div class="table-responsive max-content newTable mt-4">
-                <table class="table table-bordered btnalign">
+                <table class="table table-bordered btnalign table-last-col" id="myTable">
                     <thead>
                         <tr>
                             <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
@@ -80,7 +80,7 @@
                             <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
                                 Scheduled Trip To Date
                             </th>
-                            <th scope="col" style="text-align: center;background-color:pink;color:#000; vertical-align: middle;" rowspan="2">
+                            <th scope="col" class="action" style="text-align: center;background-color:pink;color:#000; vertical-align: middle;" rowspan="2">
                                 Actions
                             </th>
                         </tr>
@@ -90,15 +90,15 @@
                         </tr>
                     </thead>
                     <tbody id="tbody1">
-                        <tr id="0" class="add-row">
+                        <tr id="0" class="add-row alterID">
                             <th scope="row">1</th>
                             <td>
                                 <div class="form-group">
                                     <div class="position-relative">
-                                        <input id="FromDate_0" type="date"
+                                        <input id="FromDate_0" type="date" data-name="FromDate"
                                                min="@(DateTime.Today.ToString("yyyy-MM-dd"))"
                                                onchange="FromDateChanged()"
-                                               class="form-control is-invalid valid alterID disableDates">
+                                               class="form-control is-invalid valid alterID rowlock disableDates inValidTag">
                                         <label id="lblFromDate_0" class="datelabel alterID" style="width:100px">Select A Date</label>
                                     </div>
                                 </div>
@@ -106,17 +106,19 @@
                             <td>
                                 <div class="form-group ">
                                     <div class="input-group date pointer position-static">
-                                        <input id="time-FromDate_0" type="text"
+                                        <input id="time-FromDate_0" 
+                                               type="text" data-name="FromTime"
                                                onchange="FromTimeChanged()"
-                                               class="form-control EntrynDisabledForEntry pointer timePickerPreDateCtrlV2 alterID"
+                                               class="form-control rowlock EntrynDisabledForEntry pointer timePickerPreDateCtrlV2 alterID"
                                                placeholder="1:00 PM">
                                     </div>
                                 </div>
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <select id="FromLocationType_0"
-                                            class="form-select alterID EntrynDisabledForEntry fromloctype"
+                                    <select id="FromLocationType_0" 
+                                            data-name="FromLocationTypeCode" data-name-text="FromLocationTypeText" 
+                                            class="form-select rowlock alterID EntrynDisabledForEntry fromloctype"
                                             onchange="ChangeFromLocationType()">
                                         <option value="">Select Location Type</option>
                                         @if (Model.LocationTypes != null)
@@ -132,7 +134,8 @@
                             <td>
                                 <div class="form-group">
                                     <select id="FromLocation_0"
-                                            class="form-select alterID EntrynDisabledForEntry fromloc"
+                                            data-name="FromLocationCode" data-name-text="FromLocationText" 
+                                            class="form-select rowlock alterID EntrynDisabledForEntry fromloc"
                                             onchange="ChangeFromLocation()"
                                             aria-label="Default select example">
                                         <option value="-1">Select location</option>
@@ -140,9 +143,10 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="form-group">
+                                <div id="ConToLocationType_0" class="form-group alterID">
                                     <select id="ToLocationType_0"
-                                            class="form-select ApplyMultiSelect alterID EntrynDisabledForEntry"
+                                            data-name="ToLocationTypeCodes" data-name-text="ToLocationTypeText" 
+                                            class="form-select ApplyMultiSelect alterID inValidTag"
                                             onchange="ChangeToLocationType()">
                                         @if (Model.LocationTypes != null)
                                         {
@@ -155,31 +159,38 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="form-group">
+                                <div id="ConToLocation_0" class="form-group alterID">
                                     <select id="ToLocation_0"
-                                            class="form-select alterID EntrynDisabledForEntry toloc"
-                                            onchange="ChangeToLocation()"
-                                            aria-label="Default select example">
+                                            data-name-text="ToLocationText"
+                                            class="form-select alterID EntrynDisabledForEntry"
+                                            onchange="ChangeToLocation()">
                                     </select>
+                                    <label id="UCSToLocation_0"
+                                           data-name="ToLocationCodes"
+                                           class="alterID inVisible htmlVal toloc"
+                                           style="width:100px">x</label>
+                                    <label id="TUCSToLocation_0"
+                                           class="alterID inVisible htmlVal toloc"
+                                           style="width:100px">x</label>
                                 </div>
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <input id="ToDate_0" type="text"
-                                           class="form-control alterID EntrynDisabledForEntry">
+                                    <input id="ToDate_0" type="text" data-name="ToDate" 
+                                           class="form-control alterID EntrynDisabledForEntry is-invalid">
                                 </div>
                             </td>
-                            <td>
+                            <td class="last-action">
                                 <span class="actionBtn">
-                                    <button id="AddBtn_0" type="button" disabled="disabled"
-                                            class="btn primaryLink addBtn cloneBtn"
-                                            data-toggle="tooltip" onclick="AddBtnClicked('tbody1','tbody2',true,true,true,'btnSubmit','HdrDiv')"
+                                    <button id="AddBtn_0" type="button" disabled 
+                                            class="btn primaryLink rowlock alterID addBtn cloneBtn"
+                                            data-toggle="tooltip" onclick="AddBtnClicked('tbody1','tbody2',true,true,false,'btnSubmit','HdrDiv')"
                                             data-placement="top" title="Add">
                                         <i data-feather="plus"></i>
                                     </button>
-
-                                    <button id="DeleteBtn_0" type="button" class="btn secondaryLink inVisible removeBtn cloneBtn"
-                                            data-toggle="tooltip" onclick="RowRemoveBtnWithEffectSubmitClicked('tbody2','btnSubmit','HdrDiv')"
+                                    <button id="DeleteBtn_0" type="button" 
+                                            class="btn secondaryLink alterID rowlock inVisible removeBtn cloneBtn"
+                                            data-toggle="tooltip" onclick="RemoveBtnClicked('tbody2','btnSubmit','HdrDiv','myTable')"
                                             data-placement="top" title="Delete">
                                         <i data-feather="x"></i>
                                     </button>
@@ -193,6 +204,7 @@
             </div>
         </div>
     </div>
+    <br/>
     <div class="sectionB">
         <div class="col-md-12">
             <div class="heading_text_btn2 d-block mb-4">
@@ -305,15 +317,16 @@
         </div>
     </div>
     <div class="col-md-12">
-        <div class="bgColor mb-4 mt-3">
+        <div id="tblOTVStatement" class="bgColor mt-4 bg-transparent content border-red text-left">
             <ul style="list-style:none; margin: 0; padding: 0;">
                 <li style="font-size: 16px;">
-                    It Is Ensured That This Trip Is Prepared As Center Code/Name “Other Place” & In Factual It Is Taking Place The Same Way As It Is selected:
-                    <select id="CCOth" class="form-select canclear pointer"
-                            style="width:110px" disabled="disabled"
-                            onchange="ValidateControl()"
+                    It Is Ensured That This Trip Is Prepared As Center Code/Name “Other Place” & In Factual It Is Taking Place The Same Way As It Is Selected:
+                    <select id="StatementOthLoc" disabled 
+                            class="form-select"
+                            style="width:110px"
+                            onchange="ValidateStatementOthLoc()"
                             aria-label="Default select example">
-                        <option selected value="-1">-</option>
+                        <option selected value="">-</option>
                         <option value="1">Yes</option>
                         <option value="0">No</option>
                         @*<option selected value="0">No</option>*@
@@ -321,11 +334,11 @@
                 </li>
                 <li style="font-size: 16px;">
                     The Other Trip Schedule Is Taken Up With The Knowledge Of DIC P&A That Transpired Through Mail:
-                    <select id="DIC" class="form-select canclear pointer is-invalid"
+                    <select id="StatementDIC" class="form-select is-invalid"
                             style="width:110px"
-                            onchange="ValidateControl()"
+                            onchange="ValidateStatementDIC()"
                             aria-label="Default select example">
-                        <option selected value="-1">-</option>
+                        <option selected value="">-</option>
                         <option value="1">Yes</option>
                         <option value="0">No</option>
                         @*<option selected value="0">No</option>*@
@@ -337,14 +350,29 @@
 </div>
 @section headers
 {
+    <style>
+        input[type="date"]:disabled + label {
+            background: #e9ecef;
+        }
 
+        .table-last-col thead th.action {
+            position: sticky;
+            top: 0;
+            right: 0px;
+        }
+
+        .table-last-col tr .last-action {
+            position: sticky;
+            top: 0;
+            right: 0px;
+            background-color: #ffffff;
+            z-index: 9999;
+        }
+
+    </style>
 }
 @section scripts{
     <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/CTV/CreateOtherTrip.js"></script>
-    <script>
-        
-
-
-    </script>
+    
 }

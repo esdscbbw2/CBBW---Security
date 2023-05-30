@@ -14,6 +14,8 @@ namespace CBBW.BOL.CTV
         public string EmployeeName { get; set; }
         public string UserName { get; set; }
         public bool IsOffline { get; set; }
+        public string IPAddress { get; set; }
+        public string ComputerName { get; set; }
         public UserInfo()
         {
 

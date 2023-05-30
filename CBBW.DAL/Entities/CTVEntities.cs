@@ -72,6 +72,36 @@ namespace CBBW.DAL.Entities
         {
             return _datasync.GetToDate(FromDate, FromCentre, ToCentre, ref pMsg);
         }
+        public bool SetCTVOtherTrip(CTVOtherTrip data, ref string pMsg)
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_datasync.SetCTVOtherTrip(data, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
+        public CTVOtherTrip GetOthTripSchEntryData(string NoteNumber,ref string pMsg) 
+        {
+            CTVOtherTrip result = new CTVOtherTrip();
+            List<CTVOtherTripDtls> data = new List<CTVOtherTripDtls>();
+            try
+            {
+                dt = _datasync.GetOthTripSchEntryData(NoteNumber, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        data.Add(_CTVDBMapper.Map_CTVOtherTripDtls(dt.Rows[i]));
+                    }
+                    if (!DBNull.Value.Equals(dt.Rows[0]["TripPurpose"]))
+                        result.TripPurpose = dt.Rows[0]["TripPurpose"].ToString();
+                    if (!DBNull.Value.Equals(dt.Rows[0]["IsOtherPlaceStatement"]))
+                        result.IsOtherPlaceStatement =bool.Parse(dt.Rows[0]["IsOtherPlaceStatement"].ToString());
+                }
+                result.NoteNumber = NoteNumber;
+                result.TripDetails = data;                
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
 
 
 

@@ -41,7 +41,8 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-! function($) {
+var userseq = '';
+! function ($) {
     "use strict"; // jshint ;_;
 
     if (typeof ko !== 'undefined' && ko.bindingHandlers && !ko.bindingHandlers.multiselect) {
@@ -49,6 +50,7 @@
             after: ['options', 'value', 'selectedOptions', 'enable', 'disable'],
 
             init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+                
                 var $element = $(element);
                 var config = ko.toJS(valueAccessor());
 
@@ -173,7 +175,6 @@
      * @returns {Multiselect}
      */
     function Multiselect(select, options) {
-
         this.$select = $(select);
 
         // Placeholder via data attributes
@@ -219,7 +220,7 @@
 
     Multiselect.prototype = {
 
-        defaults: {
+        defaults: {            
             /**
              * Default text function will either print 'None selected' in case no
              * option is selected or a list of the selected options up to a length
@@ -251,13 +252,13 @@
                     return options.length + ' ' + this.nSelectedText;
                 } else {
                     var selected = '';
-                    var delimiter = this.delimiterText;
-
-                    options.each(function() {
+                    var delimiter = this.delimiterText;                    
+                    options.each(function () {
                         var label = ($(this).attr('label') !== undefined) ? $(this).attr('label') : $(this).text();
-                        selected += label + delimiter;
+                        selected += label + delimiter;                        
                     });
-
+                    // abcd - 30.05.2023
+                    //selected = userseq;
                     return selected.substr(0, selected.length - 2);
                 }
             },
@@ -356,7 +357,7 @@
              * @param {jQuery} $container
              */
             onInitialized: function($select, $container) {
-
+                
             },
             enableHTML: false,
             buttonClass: 'btn btn-default',
@@ -414,7 +415,7 @@
         /**
          * Builds the container of the multiselect.
          */
-        buildContainer: function() {
+        buildContainer: function () {
             this.$container = $(this.options.buttonContainer);
             this.$container.on('show.bs.dropdown', this.options.onDropdownShow);
             this.$container.on('hide.bs.dropdown', this.options.onDropdownHide);
@@ -502,7 +503,6 @@
          * Uses createDivider and createOptionValue to create the necessary options.
          */
         buildDropdownOptions: function() {
-
             this.$select.children().each($.proxy(function(index, element) {
 
                 var $element = $(element);
@@ -651,6 +651,7 @@
                             var $option = this.getOptionByValue($checkbox.val());
 
                             $option.prop('selected', checked);
+                            
                         }
                     }
 
@@ -1226,7 +1227,6 @@
             if (!$.isArray(deselectValues)) {
                 deselectValues = [deselectValues];
             }
-
             for (var i = 0; i < deselectValues.length; i++) {
                 var value = deselectValues[i];
 
@@ -1236,7 +1236,6 @@
 
                 var $option = this.getOptionByValue(value);
                 var $checkbox = this.getInputByValue(value);
-
                 if ($option === undefined || $checkbox === undefined) {
                     continue;
                 }
@@ -1489,14 +1488,12 @@
          */
         updateButtonText: function() {
             var options = this.getSelected();
-
             // First update the displayed button text.
             if (this.options.enableHTML) {
                 $('.multiselect .multiselect-selected-text', this.$container).html(this.options.buttonText(options, this.$select));
             } else {
                 $('.multiselect .multiselect-selected-text', this.$container).text(this.options.buttonText(options, this.$select));
-            }
-
+            }            
             // Now update the title attribute of the button.
             $('.multiselect', this.$container).attr('title', this.options.buttonTitle(options, this.$select));
         },
@@ -1506,25 +1503,27 @@
          *
          * @returns {jQUery}
          */
-        getSelected: function() {
+        getSelected: function () {
             return $('option', this.$select).filter(":selected");
         },
-
         /**
          * Gets a select option by its value.
          *
          * @param {String} value
          * @returns {jQuery}
          */
-        getOptionByValue: function(value) {
-
+        getOptionByValue: function(value) {            
             var options = $('option', this.$select);
             var valueToCompare = value.toString();
-
             for (var i = 0; i < options.length; i = i + 1) {
                 var option = options[i];
                 if (option.value === valueToCompare) {
-                    return $(option);
+                    //User Click Sequence - 30.05.2023
+                    //if (userseq.indexOf(option.text + ', ') > -1) {
+                    //    userseq = userseq.replace(option.text + ', ', '');
+                    //} else { userseq += option.text + ', '; }
+                    //User Click Sequence End;
+                    return $(option);                    
                 }
             }
         },
@@ -1568,7 +1567,7 @@
         }
     };
 
-    $.fn.multiselect = function(option, parameter, extraOptions) {
+    $.fn.multiselect = function (option, parameter, extraOptions) {
         return this.each(function() {
             var data = $(this).data('multiselect');
             var options = typeof option === 'object' && option;

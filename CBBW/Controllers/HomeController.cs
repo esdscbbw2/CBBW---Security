@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CBBW.BLL.IRepository;
+using CBBW.BOL;
 using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.Master;
@@ -38,6 +39,8 @@ namespace CBBW.Controllers
         public ActionResult LogIn() 
         {
             UserInfo model = new UserInfo();
+            //model.IPAddress = MyCodeHelper.GetIPAddress();
+            //model.ComputerName = MyCodeHelper.GetComputerName();
             return View(model);
         }
         [HttpPost]

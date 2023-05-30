@@ -17,6 +17,8 @@ namespace CBBW.BLL.IRepository
             string SearchText, int CentreCode, bool IsApproved, ref string pMsg);
         CTVSlots GetSlots(string VehicleNo, int IncludeOTVSch, ref string pMsg);
         DateTime GetToDate(DateTime FromDate, int FromLocationType, int FromLocation, string ToLocations, ref string pMsg);
+        bool SetCTVOtherTrip(CTVOtherTrip data, ref string pMsg);
+        CTVOtherTrip GetOthTripSchEntryData(string NoteNumber, ref string pMsg);
         #endregion For CTV2
         string getNewTripScheduleNo(string SchPattern, ref string pMsg);
         TripScheduleHdr NewTripScheduleNo(string SchPattern, ref string pMsg);

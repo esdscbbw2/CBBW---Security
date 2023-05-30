@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CBBW.BOL;
 using CBBW.BOL.CTV;
+using CBBW.BOL.CTV2;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.EHG;
 using CBBW.BOL.EntryII;
@@ -20,6 +21,40 @@ namespace CBBW.DAL.DataSync
     public partial class CommonTable
     {
         public DataTable UDTable { get; set; }
+        public CommonTable(List<CTVOtherTripDtls> customoptions)
+        {
+            UDTable = new DataTable();
+            UDTable.Columns.Add("dFromDate", typeof(DateTime));
+            UDTable.Columns.Add("sFromTime", typeof(string));
+            UDTable.Columns.Add("dToDate", typeof(DateTime));
+            UDTable.Columns.Add("iFromLocationType", typeof(int));
+            UDTable.Columns.Add("sFromLocationTypeName", typeof(string));
+            UDTable.Columns.Add("iFromLocation", typeof(int));
+            UDTable.Columns.Add("sFromLocationName", typeof(string));
+            UDTable.Columns.Add("sToLocationTypeCodes", typeof(string));
+            UDTable.Columns.Add("sToLocationCodes", typeof(string));
+            UDTable.Columns.Add("sToLocationTypeTexts", typeof(string));
+            UDTable.Columns.Add("sToLocationTexts", typeof(string));
+            if (customoptions != null && customoptions.Count > 0)
+            {
+                foreach (CTVOtherTripDtls obj in customoptions)
+                {
+                    DataRow dr = UDTable.NewRow();
+                    dr["dFromDate"] = DateTime.Parse(obj.FromDate);
+                    dr["sFromTime"] = obj.FromTime;
+                    dr["dToDate"] = DateTime.ParseExact(obj.ToDate, "dd/MM/yyyy", null);
+                    dr["iFromLocationType"] = obj.FromLocationTypeCode;
+                    dr["sFromLocationTypeName"] = obj.FromLocationTypeText;
+                    dr["iFromLocation"] = obj.FromLocationCode;
+                    dr["sFromLocationName"] = obj.FromLocationText;
+                    dr["sToLocationTypeCodes"] = obj.ToLocationTypeCodes;
+                    dr["sToLocationCodes"] = obj.ToLocationCodes;
+                    dr["sToLocationTypeTexts"] = obj.ToLocationTypeText;
+                    dr["sToLocationTexts"] = obj.ToLocationText;                    
+                    UDTable.Rows.Add(dr);
+                }
+            }
+        }
         public CommonTable(List<CustomCheckBoxOption> customoptions)
         {
             UDTable = new DataTable();

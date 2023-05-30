@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace CBBW.BOL
 {
@@ -59,6 +61,21 @@ namespace CBBW.BOL
             {
                 return new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year, now.Month));
             }
+        }
+        public static DateTime ConvertStringToDate(string dateString) 
+        {
+            return DateTime.ParseExact(dateString, "dd/MM/yyyy", null);
+        }
+        public static string GetIPAddress() 
+        {
+            string ipAddress = HttpContext.Current.Request.UserHostAddress;
+            return ipAddress;
+        }
+        public static string GetComputerName()
+        {
+            string ComName=Dns.GetHostName();
+            //string ComName = HttpContext.Current.Request.UserHostName;
+            return ComName;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -86,6 +87,47 @@ namespace CBBW.DAL.DBMapper
                         result.EntryTime = dr["EntryTime"].ToString();
                     result.CanDelete = result.EntryDate == DateTime.Today && !result.IsApproved ? true : false;
                     result.CanEdit = result.IsApproved ? true : false;
+                }
+            }
+            catch { }
+            return result;
+        }
+        public CTVOtherTripDtls Map_CTVOtherTripDtls(DataRow dr) 
+        {
+            CTVOtherTripDtls result = new CTVOtherTripDtls();
+            try
+            {
+                if (dr != null)
+                {
+                    if (!DBNull.Value.Equals(dr["FromDate"])) 
+                    {
+                        result.FromDate = DateTime.Parse(dr["FromDate"].ToString()).ToString("yyyy-MM-dd");
+                        result.FromDateDisplay = DateTime.Parse(dr["FromDate"].ToString()).ToString("dd/MM/yyyy",CultureInfo.InvariantCulture);
+                    }                        
+                    if (!DBNull.Value.Equals(dr["FromTime"]))
+                        result.FromTime = dr["FromTime"].ToString();
+                    if (!DBNull.Value.Equals(dr["ToDate"])) 
+                    {
+                        result.ToDate = DateTime.Parse(dr["ToDate"].ToString()).ToString("yyyy-MM-dd");
+                        result.ToDateDisplay = DateTime.Parse(dr["ToDate"].ToString()).ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    }                        
+                    if (!DBNull.Value.Equals(dr["FromLocationType"]))
+                        result.FromLocationTypeCode = int.Parse(dr["FromLocationType"].ToString());
+                    if (!DBNull.Value.Equals(dr["FromLocationTypeName"]))
+                        result.FromLocationTypeText = dr["FromLocationTypeName"].ToString();
+                    if (!DBNull.Value.Equals(dr["FromLocation"]))
+                        result.FromLocationCode =int.Parse(dr["FromLocation"].ToString());
+                    if (!DBNull.Value.Equals(dr["FromLocationName"]))
+                        result.FromLocationText = dr["FromLocationName"].ToString();
+                    if (!DBNull.Value.Equals(dr["ToLocationTypeCodes"]))
+                        result.ToLocationTypeCodes = dr["ToLocationTypeCodes"].ToString();
+                    if (!DBNull.Value.Equals(dr["ToLocationTypes"]))
+                        result.ToLocationTypeText =dr["ToLocationTypes"].ToString();
+                    if (!DBNull.Value.Equals(dr["ToLocationCodes"]))
+                        result.ToLocationCodes = dr["ToLocationCodes"].ToString();
+                    if (!DBNull.Value.Equals(dr["ToLocations"]))
+                        result.ToLocationText = dr["ToLocations"].ToString(); 
+                    
                 }
             }
             catch { }

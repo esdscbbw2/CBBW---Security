@@ -7,8 +7,16 @@
 <div id="HdrDiv" class="row newTable">
     @using (Html.BeginForm())
     {
+        @Html.HiddenFor(m => m.IsLocalDtlSaved)
+        @Html.HiddenFor(m => m.IsOthDtlSaved)
+        @Html.HiddenFor(m => m.IsLocalAvbl)
+        @Html.HiddenFor(m => m.IsOtherAvbl)
         @Html.HiddenFor(m => m.NoteNumber)
         @Html.HiddenFor(m => m.IsBackDenied)
+        @Html.HiddenFor(m => m.VehicleType)
+        @Html.HiddenFor(m => m.ModelName)
+        @Html.HiddenFor(m => m.DriverNo)
+        @Html.HiddenFor(m => m.DriverName)
         <div class="col-md-12">
             <div class="heading_text_btn mb-3 mt-4">
                 <div class="leftButton">
@@ -46,7 +54,7 @@
                     </button>
                 </div>
             </div>
-            <div class="card mb-4 mt-4">
+            <div id="VehicleSection" class="card mb-4 mt-4">
                 <div class="card-body formInputWidth">
                     <div class="row">
                         <label class="col-form-label col-md-2">
@@ -109,7 +117,8 @@
                                        new SelectList(Model.ListofVehicles, "VehicleNumber", "VehicleNumber"), "Select a vehicle",
                                        htmlAttributes: new
                                        {
-                                           @class = "form-select pointer canclear"
+                                           @class = "form-select pointer is-invalid",
+                                           @onchange= "VehicleNoChanged()"
                                        })
                                 </div>
                                 <div id="divErrorX" class="col-md-6">
@@ -122,32 +131,32 @@
                         </div>
                     </div>
                     <div class="row">
-                            <label class="col-form-label col-md-2">
-                                Vehicle Type :
-                            </label>
-                            <div class="col-md-4">
-                                <input id="cVehicleType" type="text"
-                                       class="form-control" value="" disabled>
-                            </div>
-                            <label class="col-form-label col-md-2">
-                                Model Name :
-                            </label>
-                            <div class="col-md-4">
-                                <input id="cModelName" type="text"
-                                       class="form-control" value="" disabled>
-                            </div>                        
+                        <label class="col-form-label col-md-2">
+                            Vehicle Type :
+                        </label>
+                        <div class="col-md-4">
+                            <input id="cVehicleType" type="text"
+                                   class="form-control" value="" disabled>
+                        </div>
+                        <label class="col-form-label col-md-2">
+                            Model Name :
+                        </label>
+                        <div class="col-md-4">
+                            <input id="cModelName" type="text"
+                                   class="form-control" value="" disabled>
+                        </div>
                     </div>
-                        <div class="row">
-                            <div class="col-md-12 mt-3 mb-3">
-                                <div class="row g-3 align-items-center">
-                                    <label class="col-form-label col-md-2">Driver No. & Name : </label>
-                                    <div class="col-md-6">
-                                        <input id="cDriverNumberName" type="text" class="form-control" value="" disabled>
-                                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mt-3 mb-3">
+                            <div class="row g-3 align-items-center">
+                                <label class="col-form-label col-md-2">Driver No. & Name : </label>
+                                <div class="col-md-6">
+                                    <input id="cDriverNumberName" type="text" class="form-control" value="" disabled>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
             </div>
             <div class="card mb-4 mt-4">
                 <div class="card-body  alert alert-danger text-dark approvalForm">
@@ -173,7 +182,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12">
+            <div id="btnSection" class="col-md-12">
                 <div class="d-flex justify-content-center mt-2">
                     <button id="btnLVT" type="submit" name="Submit" value="LVT"
                             class="btn btn-primary me-2" disabled="disabled"
@@ -201,12 +210,13 @@
                     </div>
                 </div>
             </div>
-            <div id="Section3" class="bgColor mt-4 bg-transparent text-center">
+            <div id="Section3" class="bgColor mt-4 bg-transparent border-red text-center">
                 <ul style="list-style:none;">
                     <li style="font-size: 16px;">
                         The Entry Is Done As Per Policy & As Required:
-                        <select id="AcceptCmb" style="width:110px" 
-                                class="form-select EntrynDisabledForEntry"
+                        <select id="AcceptCmb" style="width:110px"
+                                onchange="ValidateAcceptCmb()"
+                                class="form-select is-invalid"
                                 aria-label="Default select example ">
                             <option selected="">-</option>
                             <option value="1">Yes</option>

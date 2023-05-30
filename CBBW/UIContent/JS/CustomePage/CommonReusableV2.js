@@ -1,4 +1,95 @@
-﻿//Section - Input Controll Functionalities
+﻿// Section - Data Picking
+function GetDataFromTable(tableName) {
+    //The fields should have an attribute "data-name", Which is the property name of the MVC object
+    var schrecords = '';
+    var dataname;
+    var datavalue;
+    var mrecord = '';
+    $('#' + tableName + ' tbody tr').each(function () {
+        mRow = $(this);
+        mRow.find('[data-name]').each(function () {
+            that = $(this);
+            dataname = that.attr('data-name');
+            if (that.hasClass('htmlVal')) {
+                datavalue = that.html();
+            }
+            else { datavalue = that.val(); }
+            mrecord = mrecord + '"' + dataname + '":"' + datavalue + '",';
+        });
+        mRow.find('[data-name-text]').each(function () {
+            that = $(this);
+            dataname = that.attr('data-name-text');
+            thatid = that.attr('id');
+            datavalue = $('#' + thatid + ' option:selected').toArray().map(item => item.text).join();
+            mrecord = mrecord + '"' + dataname + '":"' + datavalue + '",';
+        });
+        mrecord = mrecord.replace(/,\s*$/, "");
+        schrecords = schrecords + '{' + mrecord + '},';
+        mrecord = '';
+    });
+    schrecords = schrecords.replace(/,\s*$/, "");
+    schrecords = '[' + schrecords + ']';
+    //alert(schrecords);
+    return schrecords;
+};
+//Section - Input Controll Functionalities
+function GetDataFromAjax(url) {
+    return $.ajax({
+        url: url,
+        method: "GET",
+        dataType: "json"
+    });
+};
+function refreshDropdown(data, myCtrlID, IsIDString, DefaultText) {
+    var myCtrl = $("#" + myCtrlID);
+    myCtrl.empty(); // Clear existing options
+    myCtrl.append($('<option/>', { value: "", text: DefaultText })); // Adding Default Text
+    $.each(data, function (index, item) {
+        if (IsIDString) {
+            myCtrl.append($('<option/>', { value: item.IDStr, text: item.DisplayText }));
+        } else {
+            myCtrl.append($('<option/>', { value: item.ID, text: item.DisplayText }));
+        }
+    });
+}
+function assignValueToDropdown(myCtrlID,value) {
+    // Assign the specified value to the dropdown    
+    if (value != '') { $("#" + myCtrlID).val(value).isValid(); }
+}
+function refreshMultiselect(data, myCtrlID, IsIDString) {
+    var myCtrl = $("#" + myCtrlID);
+    myCtrl.empty();
+    myCtrl.multiselect('destroy');
+    //myCtrl.append($('<option/>', { value: "", text: DefaultText })); // Adding Default Text
+    $.each(data, function (index, item) {
+        if (IsIDString) {
+            myCtrl.append($('<option/>', { value: item.IDStr, text: item.DisplayText }));
+        }
+        else { myCtrl.append($('<option/>', { value: item.ID, text: item.DisplayText })); }
+    });
+    myCtrl.attr('multiple', 'multiple');
+    myCtrl.multiselect({
+        templates: {
+            button: '<button id="B0" type="button" class="multiselect dropdown-toggle btn btn-primary w-100 selectBox" data-bs-toggle="dropdown" aria-expanded="false"><span class="multiselect-selected-text"></span></button>',
+        },
+    });
+    myCtrl.multiselect('clearSelection');
+    myCtrl.multiselect('refresh');
+}
+function assignValueToMultiSelect(myCtrlID, value) {
+    if (value != '') {
+        xCtrl=$("#" + myCtrlID);
+        var i = value.indexOf(',');
+        if (i >= 0) {
+            xCtrl.val(value.split(','));
+        } else {
+            xCtrl.val(value);
+        }
+
+        xCtrl.multiselect('refresh');
+        xCtrl.isValid();
+    }
+}
 function FillCashCadingDropDown(myCtrlID, url, IsIDString,DefaultText) {
     var myCtrl = $('#' + myCtrlID);
     $.ajax({
@@ -73,12 +164,6 @@ function NormalBackBtnClicked(pageurl) {
     }
 };
 //Section - Table Row Cloaning
-function RowAddButtonStatus(btnID) {
-    var myCtrl = $('#' + btnID);
-    var row = myCtrl.closest('tr');
-    var invalidcount = row.find('.is-invalid').length;
-    if (invalidcount > 0) { myCtrl.makeDisable(); } else { myCtrl.makeEnable();}
-};
 function RowSpanRemoveBtnClicked() {
     var $row = $(RowSpanRemoveBtnClicked.caller.arguments[0].target.closest('.add-row'));
     var nextrow = $row.next();
@@ -122,6 +207,22 @@ function RowRemoveBtnWithEffectSubmitClicked(destinationTBody, SubmitBtnID, Ctrl
         $(this).html(sl);
         sl += 1;
     });
+    SubmitBtnStatus(SubmitBtnID, CtrlContainerID);
+};
+function RowRemoveBtnWithEnablePreRow(destinationTBody, SubmitBtnID, CtrlContainerID, TableID) {
+    var r = $(RowRemoveBtnWithEnablePreRow.caller.arguments[0].target.closest('.add-row'));
+    r.find('.cloneBtn').tooltip('hide');
+    if (r.attr("id") == 0) {
+    } else {
+        r.remove();
+    };
+    var sl = 2;
+    $('#' + destinationTBody + ' th').each(function () {
+        $(this).html(sl);
+        sl += 1;
+    });
+    var lastRow = $('#' + TableID + ' tr:last');
+    UnLockRow(lastRow.attr('id'));    
     SubmitBtnStatus(SubmitBtnID, CtrlContainerID);
 };
 function RowAddBtnClick(sourceTBody, destinationTBody, IsRemoveBtn, IsAddBtn, IsAddBtnEnable) {
@@ -254,7 +355,7 @@ function TableRowCloaning(sourceTBody, destinationTBody, rowid, IsRemoveBtn, IsA
             that.removeClass('inVisible');
         } else { that.addClass('inVisible'); }
     });
-    sourcebody.find('.btn').each(function () {
+    sourcebody.find('.cloneBtn').each(function () {
         that = $(this);
         that.on('mouseenter', function () {
             $(this).tooltip('show');
@@ -270,6 +371,9 @@ function TableRowCloaning(sourceTBody, destinationTBody, rowid, IsRemoveBtn, IsA
     });
     cloneready.find('.EntrynDisabledForEntry').each(function () {
         $(this).EntrynDisabledForEntry();
+    });
+    cloneready.find('.btn-default').each(function () {
+        $(this).removeClass('nodrop disabled');
     });
     if (rowid == 0) {
         if (maxrows == 0) {
@@ -375,48 +479,100 @@ function DivInvalidCount(mdivID) {
 function WordCount(value) {
     return $.trim(value).split(" ").length;
 };
-function ExtractLocationCodeFromTypeLocationCodes(locCodes) {
-    locCodes='2-1,2-2,3-4'
-};
 //Section - Style Functions
+function LockRow(id) {
+    var myCtrl = $('#' + id);
+    myCtrl.find('.rowlock').each(function () {
+        $(this).attr('disabled', 'disabled')
+            .addClass('nodrop').tooltip('hide');
+    });
+    myCtrl.find('.btn-default').each(function () {
+        $(this).addClass('nodrop disabled');
+    });
+};
+function UnLockRow(id) {    
+    var myCtrl = $('#' + id);
+    myCtrl.find('.rowlock').each(function () {
+        var that = $(this);
+        that.removeAttr('disabled').removeClass('nodrop');
+    });
+    myCtrl.find('.btn-default').each(function () {
+        $(this).removeClass('nodrop disabled');
+    });
+    myCtrl.find('.addBtn').each(function () {
+        var x = myCtrl.find('.is-invalid').length;
+        var that = $(this);
+        if (x == 0) { that.removeAttr('disabled').removeClass('nodrop'); }
+        else { that.attr('disabled', 'disabled'); }
+    });
+};
+function LockAllRowExceptLast(tableID) {
+    var lastRow = $('#' + tableID + ' tr:last').attr('id');
+    $("#" + tableID + " tbody tr").each(function () {
+        var that = $(this);
+        if (lastRow !== that.attr('id')) {
+            LockRow(that.attr('id'));
+        } else {
+            UnLockRow(that.attr('id'));
+            //if (that.find('.is-invalid').length == 0) {
+            //    that.find('.addBtn').removeAttr('disabled');
+            //}
+        }
+    });
+};
 function LockSection(id) {
-    $('#' + id).find('input').each(function () {
+    var myCtrl = $('#' + id);
+    myCtrl.find('input').each(function () {
+        $(this).attr('disabled', 'disabled').addClass('nodrop');
+    });
+    myCtrl.find('select').each(function () {
+        $(this).attr('disabled', 'disabled').addClass('nodrop');
+    });
+    myCtrl.find('textarea').each(function () {
         $(this).attr('disabled', 'disabled');
     });
-    $('#' + id).find('select').each(function () {
+    myCtrl.find('button').each(function () {
         $(this).attr('disabled', 'disabled');
     });
-    $('#' + id).find('textarea').each(function () {
-        $(this).attr('disabled', 'disabled');
-    });
-    $('#' + id).find('button').each(function () {
-        $(this).attr('disabled', 'disabled');
-    });
-    $('#' + id).find('.EntrynDisabledForEntry').each(function () {
-        $(this).EntrynDisabledForEntry();
-    });
-    $('#' + id).find('.EntryDoneDisableMode').each(function () {
-        $(this).EntryDoneDisableMode();
-    });
-    $('#' + id).addClass('sectionB');    
+    //myCtrl.find('.EntrynDisabledForEntry').each(function () {
+    //    $(this).EntrynDisabledForEntry();
+    //});
+    //myCtrl.find('.EntryDoneDisableMode').each(function () {
+    //    $(this).EntryDoneDisableMode();
+    //});
+    myCtrl.addClass('sectionB');
 };
 function UnLockSection(id) {
-    $('#' + id).find('input').each(function () {
+    var myCtrl = $('#' + id);
+    myCtrl.find('input').each(function () {
+        $(this).removeAttr('disabled').removeClass('nodrop');
+    });
+    myCtrl.find('select').each(function () {
+        $(this).removeAttr('disabled').removeClass('nodrop');;
+    });
+    myCtrl.find('textarea').each(function () {
         $(this).removeAttr('disabled');
     });
-    $('#' + id).find('select').each(function () {
-        $(this).removeAttr('disabled');
+    myCtrl.find('button').each(function () {
+        if ($(this).hasClass('addBtn')) {  }
+        else { $(this).removeAttr('disabled'); }        
     });
-    $('#' + id).find('textarea').each(function () {
-        $(this).removeAttr('disabled');
+    //myCtrl.find('.addBtn').each(function () {
+    //    $(this).attr('disabled', 'disabled');
+    //});
+    myCtrl.find('.EntrynDisabledForEntry').each(function () {
+        $(this).attr('disabled', 'disabled').addClass('nodrop');
     });
-    $('#' + id).find('button').each(function () {
-        $(this).removeAttr('disabled');
+    myCtrl.find('.ApplyMultiSelect').each(function () {
+        if ($(this).val() == '') {
+            LockMultiSelect('Con' + $(this).attr('id'));
+            $(this).isInvalid();
+        } else {
+            UnLockMultiSelect('Con' + $(this).attr('id'));
+            $(this).isValid();
+        }
     });
-    $('#' + id).find('.EntrynDisabledForEntry').each(function () {
-        $(this).EntrynDisabledForEntry();
-    });
-    $('#' + id).removeClass('sectionB');
+    myCtrl.removeClass('sectionB');
 };
 function LockControl(id) {
     var myCtrl = $('#' + id);
@@ -428,11 +584,25 @@ function UnLockControl(id) {
     myCtrl.removeAttr('disabled');
     if (myCtrl.hasClass('EntrynDisabledForEntry')) { myCtrl.EntrynEnableForEntry(); }
 };
+function LockMultiSelect(id) {
+    var myCtrl = $('#' + id);
+    myCtrl.find('.btn-default').each(function () {
+        $(this).addClass('nodrop disabled bg-blue');
+    });    
+};
+function UnLockMultiSelect(id) {
+    var myCtrl = $('#' + id);
+    myCtrl.find('.btn-default').each(function () {
+        $(this).removeClass('nodrop disabled bg-blue');
+        $(this).removeAttr('disabled');
+    });
+};
 $.fn.EntrynDisabledForEntry = function () {
     var that = this;
     that.val('');
     that.attr('disabled', 'disabled')
-        .addClass('bg-blue border-red nodrop');
+        .addClass('bg-blue border-red nodrop is-invalid')
+        .removeClass('is-valid');
 };
 $.fn.EntrynEnableForEntry = function () {
     var that = this;
@@ -505,9 +675,22 @@ $.fn.makeVisible = function () {
     var that = this;
     that.removeClass('inVisible');
 };
-$.fn.makeInVisible = function () {
+$.fn.makeInvisible = function () {
     var that = this;
     that.AddClass('inVisible');
+};
+$.fn.isRed = function () {
+    var that = this;
+    that.addClass('border-red').removeClass('border-green');
+};
+$.fn.isGreen = function () {
+    var that = this;
+    that.addClass('border-green').removeClass('border-red');
+};
+function MakeDivGreen(divID) {
+    var mDiv = $('#' + divID);
+    x = mDiv.find('.is-invalid').length;
+    if (x > 0) { mDiv.isRed(); } else { mDiv.isGreen(); }
 };
 //Section Start- SweetAlert Templates
 function MyAlert(MessageType, MessageText) {
@@ -811,7 +994,7 @@ $(document).ready(function () {
         });
         that.multiselect('clearSelection');
         that.multiselect('refresh');
-    });
+    });    
     $('.timePickerPreDateCtrl').each(function () {
         var myDtCtrl = $('#' + $(this).attr('id').split('-')[1]);
         $(this).datetimepicker({

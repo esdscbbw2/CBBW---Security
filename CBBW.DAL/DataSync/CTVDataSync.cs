@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CBBW.BOL.CTV;
+using CBBW.BOL.CTV2;
 using CBBW.DAL.ParamMapper;
 
 namespace CBBW.DAL.DataSync
@@ -47,6 +48,39 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
+        }
+        public DataTable SetCTVOtherTrip(CTVOtherTrip data, ref string pMsg)
+        {
+            try
+            {
+                CommonTable schdtlData = new CommonTable(data.TripDetails);
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[4];
+                para[paracount] = new SqlParameter("@NoteNo", SqlDbType.NVarChar, 25);
+                para[paracount++].Value = data.NoteNumber;
+                para[paracount] = new SqlParameter("@TripPurpose", SqlDbType.NVarChar);
+                para[paracount++].Value = data.TripPurpose;
+                para[paracount] = new SqlParameter("@IsOtherPlaceStatement", SqlDbType.Bit);
+                para[paracount++].Value = data.IsOtherPlaceStatement;
+                para[paracount] = new SqlParameter("@TripDtl", SqlDbType.Structured);
+                para[paracount++].Value = schdtlData.UDTable;
+                using (SQLHelper sql = new SQLHelper("[CTV].[SetOtherTripSchV2]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable GetOthTripSchEntryData(string NoteNumber, ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("select * from [CTV].[GetOthTripSchEntryData]('" + NoteNumber + "')", CommandType.Text))
+                {
+                    return sql.GetDataTable(ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message;return null; }
         }
         #endregion For CTV2
         public DataTable getNewCTVNoteNo(string CTVPattern, ref string pMsg)

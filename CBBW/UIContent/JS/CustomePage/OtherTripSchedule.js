@@ -957,7 +957,8 @@ function getToDate(rowid) {
                                             activateSubmitBtn();
                                         }
                                     });
-                                } else {
+                                }
+                                else {
                                     todateCtrl.removeClass('is-valid').addClass('is-invalid');
                                     Swal.fire({
                                         title: 'Warning!',
@@ -972,7 +973,8 @@ function getToDate(rowid) {
                                         confirmButtonColor: '#2527a2',
                                     });
                                 }
-                            } else {
+                            }
+                            else {
                                 todateCtrl.removeClass('is-valid').addClass('is-invalid');
                                 Swal.fire({
                                     title: 'Warning!',

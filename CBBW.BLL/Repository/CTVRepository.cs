@@ -36,6 +36,14 @@ namespace CBBW.BLL.Repository
             int FromCentreCode =_MasterEntities.GetCentreCodeFromLocation(FromLocationType, FromLocation,ref pMsg);
             return _CTVEntities.GetToDate(FromDate, FromCentreCode, ToLocations, ref pMsg);
         }
+        public bool SetCTVOtherTrip(CTVOtherTrip data, ref string pMsg) 
+        {
+            return _CTVEntities.SetCTVOtherTrip(data, ref pMsg);
+        }
+        public CTVOtherTrip GetOthTripSchEntryData(string NoteNumber, ref string pMsg) 
+        {
+            return _CTVEntities.GetOthTripSchEntryData(NoteNumber, ref pMsg);
+        }
 
 
         #endregion For CTV2

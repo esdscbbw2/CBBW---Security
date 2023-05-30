@@ -43,8 +43,8 @@
                                 </div>
                                 <div class="input-container">
                                     <i class="fa fa-lock icon"></i>
-                                    <input type="password" disabled 
-                                           class="input-field form-control bg-blue border-green" 
+                                    <input type="password" disabled
+                                           class="input-field form-control bg-blue border-green"
                                            id="" placeholder="Password">
                                 </div>
 
@@ -67,6 +67,13 @@
                     <div class="row w-100 mt-3">
                         <div class="col-md-8 mx-auto">
                             <div class="footer-bottom">
+                                @*<div>
+                                    <h1>Client IP Address</h1>
+                                    <p id="clientIpAddress">Loading...</p>
+                                </div>
+                                <div>IP Address : @Model.IPAddress</div>
+                                <div>Computer Name : @Model.ComputerName</div>*@
+                                
                                 <p>
                                     For Authorized Used Only Activities on this system are subject to being monitored or recorded for all users, authorized or unauthorized. Use of the system is considered consent to such monitoring. Any evidence of possible criminal
                                     activity may be provided to law enforcement.
@@ -95,6 +102,15 @@
     <script src="js/dataTables.bootstrap5.min.js"></script>-->
     <!-- sweet alert -->
     <!--<script src="js/sweetalert2.all.min.js"></script>-->
+    @*<script>
+        $(document).ready(function () {
+            $.getJSON('https://api.ipify.org?format=json', function (data) {
+                var ipAddress = data.ip;
+                //var ipAddress = data.continentName;
+                $('#clientIpAddress').text('Client IP Address: ' + ipAddress);
+            });
+        });
+    </script>*@
     <script>
 
         $(document).ready(function () {

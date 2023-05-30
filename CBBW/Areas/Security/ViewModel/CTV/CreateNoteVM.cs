@@ -21,7 +21,15 @@ namespace CBBW.Areas.Security.ViewModel.CTV
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
         public string VehicleNumber { get; set; }
+        public string VehicleType { get; set; }
+        public string ModelName { get; set; }
+        public string DriverName { get; set; }
+        public int DriverNo { get; set; }
         public IEnumerable<VehicleNo> ListofVehicles { get; set; }
         public int IsBackDenied { get; set; }
+        public int IsOthDtlSaved { get; set; }
+        public int IsLocalDtlSaved { get; set; }
+        public int IsLocalAvbl { get; set; }
+        public int IsOtherAvbl { get; set; }
     }
 }

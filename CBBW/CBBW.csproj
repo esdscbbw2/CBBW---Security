@@ -624,6 +624,8 @@
     <Content Include="Areas\Security\Views\CTV2\ApprovalIndex.cshtml" />
     <Content Include="Areas\Security\Views\CTV2\CreateNote.cshtml" />
     <Content Include="Areas\Security\Views\CTV2\CreateOtherTrip.cshtml" />
+    <Content Include="Areas\Security\Views\CTV2\AllVehicleTripSchFromMat.cshtml" />
+    <Content Include="Areas\Security\Views\CTV2\LocVehTripSch.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />

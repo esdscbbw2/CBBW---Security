@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using CBBW.BOL;
 using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
 
@@ -9,6 +10,11 @@ namespace CBBW.Areas.Security.ViewModel
 {
     public class LocalVehicleTripScheduleVM
     {
+        public LocalVehicleTripScheduleVM()
+        {
+            this.SCHFromDate = MyCodeHelper.FirstDayOfTheFortNight();
+            this.SCHToDate = MyCodeHelper.LastDayOfTheFortNight();
+        }
         public DateTime SCHFromDate { get; set; }
         public DateTime SCHToDate { get; set; }
         public string VehicleNo { get; set; }
