@@ -9,10 +9,12 @@ $.fn.makeDisable = function () {
 $.fn.isInvalid = function () {
     var that = this;
     that.addClass('is-invalid').removeClass('is-valid');
+    LockNextSLUCtrls(that.attr('id'));
 };
 $.fn.isValid = function () {
     var that = this;
     that.addClass('is-valid').removeClass('is-invalid');
+    SLUNextCtrl(that.attr('id'));
 };
 $.fn.clearValidateClass = function () {
     var that = this;
@@ -24,9 +26,9 @@ function ValidateControl() {
     //alert(targetid);
     var isvalid = validatectrl(targetid, $(target).val());
     if (isvalid) {
-        $(target).removeClass('is-invalid').addClass('is-valid');
+        $(target).isValid();
     } else {
-        $(target).removeClass('is-valid').addClass('is-invalid');        
+        $(target).isInvalid();        
     }
     if (targetid == 'AuthorisedEmpNoForManagement' ||
         targetid == 'DriverNoForManagement' || 
@@ -663,6 +665,7 @@ function ForManagementDivRemoveInValidStatus() {
     
 };
 function POADropdownChanged() {
+    //LockNextCtrls('ehgHeader_PurposeOfAllotment');
     var ForManagementDiv = $('#for_Management');
     var ForOfficeWorkDiv = $('#for_OfficeWork');
     var POADropdown = $('#ehgHeader_PurposeOfAllotment');
@@ -700,7 +703,10 @@ function POADropdownChanged() {
     //    ForOfficeWorkDiv.addClass('inVisible');
     //    ForManagementDiv.addClass('inVisible');
     //}
-    if (selectedvt > 0) { POADropdown.isValid(); } else { POADropdown.isInvalid() }
+    if (selectedvt > 0) {
+        POADropdown.isValid();
+        UnlockNextCtrl('ehgHeader_PurposeOfAllotment');
+    } else { POADropdown.isInvalid() }
     EnableDateWiseTourBtn();
 };
 async function getInitialDataForTravelingPerson() {
@@ -793,6 +799,25 @@ async function getInitialDataForTravelingPerson() {
         }
     });
 };
+$(document).ready(function () {
+    //For Auto Display Initially.
+    var uploadedDoc = $('#ehgHeader_DocFileName').val();
+    var UploadBtn = $('#btnScan');
+    var ViewUploadBtn=$('#btnScanView');
+    if (uploadedDoc != '') {
+        UploadBtn.addClass('inVisible');
+        ViewUploadBtn.removeClass('inVisible');
+        UnLockSection('Section1');
+        LockSection('AppDiv');
+        LockSection('BtnDiv');
+        LockSection('StatementDiv');
+    } else {
+        UploadBtn.removeClass('inVisible');
+        ViewUploadBtn.addClass('inVisible');
+        LockSection('Section1');
+    }
+    
+});
 $(document).ready(function () {
     var VehicletypeCtrl = $('#ehgHeader_VehicleType');
     var POADropdown = $('#ehgHeader_PurposeOfAllotment');

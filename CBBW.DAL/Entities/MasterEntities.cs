@@ -180,12 +180,12 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
-        public IEnumerable<CustomComboOptions> getDriverList(ref string pMsg)
+        public IEnumerable<CustomComboOptions> getDriverList(ref string pMsg,int CentreCode=13,string ExDriverName="#")
         {
             List<CustomComboOptions> result = new List<CustomComboOptions>();
             try
             {
-                dt = _datasync.getDriverList(ref pMsg);
+                dt = _datasync.getDriverList(CentreCode,ExDriverName, ref pMsg);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     for (int i = 0; i < dt.Rows.Count; i++)

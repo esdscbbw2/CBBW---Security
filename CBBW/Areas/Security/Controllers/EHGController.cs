@@ -127,11 +127,11 @@ namespace CBBW.Areas.Security.Controllers
         }
         public ActionResult Index()
         {
-            if (_master.GetHGOpenOrNot(user.CentreCode, ref pMsg))
-                return View();
-            else
-                return RedirectToAction("NotOpen");
-            //return View();
+            //if (_master.GetHGOpenOrNot(user.CentreCode, ref pMsg))
+            //    return View();
+            //else
+            //    return RedirectToAction("NotOpen");
+            return View();
         }
         public ActionResult NoteApproveList() 
         {
@@ -169,6 +169,7 @@ namespace CBBW.Areas.Security.Controllers
                 if (model.OtherStaffList == null) { model.OtherStaffList = model.getOtherStaffList(user.CentreCode); }
             }
             TempData["EHG"] = model;
+            model.ehgHeader.DocFileName = "abc.pdf"; // Dummy code
             return View(model);
         }
         [HttpPost]

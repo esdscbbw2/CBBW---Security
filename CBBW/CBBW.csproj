@@ -371,9 +371,10 @@
     <Content Include="UIContent\JS\CustomePage\CreateRuleTADA.js" />
     <Content Include="UIContent\JS\CustomePage\CTVApproval.js" />
     <Content Include="UIContent\JS\CustomePage\CTVHdrEntry.js" />
+    <Content Include="UIContent\JS\CustomePage\CTV\CreateLocTrip.js" />
     <Content Include="UIContent\JS\CustomePage\CTV\CreateNote.js" />
     <Content Include="UIContent\JS\CustomePage\CTV\CreateOtherTrip.js" />
-    <Content Include="UIContent\JS\CustomePage\EHGCreateNote.js" />
+    <Content Include="UIContent\JS\CustomePage\EHG\EHGCreateNote.js" />
     <Content Include="UIContent\JS\CustomePage\EHGDateWiseTourDtl.js" />
     <Content Include="UIContent\JS\CustomePage\EHGNoteApproval.js" />
     <Content Include="UIContent\JS\CustomePage\EHGVehicleAllotment.js" />
@@ -412,6 +413,7 @@
     <Content Include="UIContent\JS\CustomePage\MGPass.js" />
     <Content Include="UIContent\JS\CustomePage\MGPInDetails.js" />
     <Content Include="UIContent\JS\CustomePage\MGPOutDetails.js" />
+    <Content Include="UIContent\JS\CustomePage\mySLUCtrl.js" />
     <Content Include="UIContent\JS\CustomePage\OtherTripSchEdit.js" />
     <Content Include="UIContent\JS\CustomePage\OtherTripSchedule.js" />
     <Content Include="UIContent\JS\CustomePage\RBACUser\AddUser.js" />

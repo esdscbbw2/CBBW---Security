@@ -1,8 +1,26 @@
-﻿function ValidateAcceptCmb() {
+﻿function DriverNoChanged() {
+    var myCtrl = $('#cDriverNumberName');
+    if (myCtrl.val() != '') {
+        if (isAlphabateWithMaxLimit(myCtrl.val(), 15)) {
+            myCtrl.isValid();
+            $('#DriverName').val(myCtrl.val());            
+        }
+        else { myCtrl.isInvalid(); }
+        //myCtrl.isInvalid();
+    }
+    else {
+        myCtrl.isInvalid();
+    }
+    $('#DriverNo').val(0);
+    $('#IsDriverEntered').val(1);
+    UpdateBtns();
+};
+function ValidateAcceptCmb() {
     var myCtrl = $('#AcceptCmb');
     if (myCtrl.val() == 1) {
         myCtrl.isValid();
         $('#VehicleNumber').makeDisable();
+        $('#cDriverNumberName').makeDisable();
         LockSection('btnSection');
         $('#Section3').isGreen();
         SubmitBtnStatus('btnSubmit', 'HdrDiv');
@@ -11,6 +29,7 @@
         myCtrl.isInvalid();
         $('#Section3').isRed();
         $('#VehicleNumber').makeEnable();
+        if ($('#DriverNo').val() == 0) { $('#cDriverNumberName').makeEnable(); }
         UnLockSection('btnSection');
         UpdateBtns();
     }
@@ -23,13 +42,23 @@ function VehicleNoChanged() {
         url='/CTV2/GetVehicleInfo?VehicleNumber=' + vno;
         GetDataFromAjax(url).done(function (data) {
             UpdateControlls(data);
-            UpdateBtns();            
+            UpdateBtns();
         });
-    } else {
+    }
+    else {
         myCtrl.isInvalid();
         $('#IsOtherAvbl').val(0);
         $('#IsLocalAvbl').val(0);
         $('#divError').removeClass('show');
+        var drivernameCtrl = $('#cDriverNumberName');
+        drivernameCtrl.val('').removeClass('is-valid is-invalid');
+        drivernameCtrl.makeDisable();
+        $('#cVehicleType').val('');
+        $('#cModelName').val('');
+        $('#VehicleType').val('');
+        $('#ModelName').val('');
+        $('#DriverName').val('');
+        $('#DriverNo').val('');
         UpdateBtns();
     }
 };
@@ -47,10 +76,11 @@ function UpdateControlls(data) {
     $('#IsOtherAvbl').val(0);
     $('#IsLocalAvbl').val(0);
     $(data).each(function (index, item) {
-        if (item.IsSuccess) {
+        if (item.IsSuccess) {          
             errorDiv.removeClass('show');
             myCtrl.isValid();
             if (item.IsActive) {
+                if (item.IsSlotAvbl) { $('#IsOtherAvbl').val(1); }
                 if (item.LocalTripRecords > 0) {
                     $('#IsLocalAvbl').val(1);
                     btnLS.makeEnable();
@@ -58,8 +88,7 @@ function UpdateControlls(data) {
                         btnOS.makeDisable();
                     }
                     else {
-                        if (item.IsSlotAvbl) {
-                            $('#IsOtherAvbl').val(1);
+                        if (item.IsSlotAvbl) {                            
                             btnOS.makeEnable();
                         }
                         else {
@@ -104,45 +133,64 @@ function UpdateControlls(data) {
             btnLS.makeDisable();
             MyAlert(4, item.Msg);
         }
+        var drivernameCtrl = $('#cDriverNumberName');
         $('#cVehicleType').val(item.VehicleType);
         $('#cModelName').val(item.ModelName);
-        $('#cDriverNumberName').val(item.DriverNonName);
+        //$('#cDriverNumber').val(item.DriverNo);
+        drivernameCtrl.val(item.DriverNonName);
         $('#VehicleType').val(item.VehicleType);
         $('#ModelName').val(item.ModelName);
-        $('#DriverName').val(item.DriverNonName);
+        $('#DriverName').val(item.DriverName);
+        $('#DriverNo').val(item.DriverNo);
+        if (item.DriverName == 'NA') {
+            drivernameCtrl.makeEnable();
+            drivernameCtrl.val('').isInvalid();
+        } else { drivernameCtrl.makeDisable() }
     });
 };
 function UpdateBtns() {
-    var IsStatement = false;
     var btnLS = $('#btnLVT');
     var btnOS = $('#btnOVT');
-    var IsLocalAvbl = $('#IsLocalAvbl').val();
-    var IsOtherAvbl = $('#IsOtherAvbl').val();
-    var IsLocalDtlSaved = $('#IsLocalDtlSaved').val();
-    var IsOthDtlSaved = $('#IsOthDtlSaved').val();
-    if (IsLocalAvbl == 1) {
-        btnLS.makeEnable();
-        if (IsLocalDtlSaved == 1) {
+    var x = $('#VehicleSection').find('.is-invalid').length;
+    if (x == 0) {
+        var IsStatement = false;
+        var IsLocalAvbl = $('#IsLocalAvbl').val();
+        var IsOtherAvbl = $('#IsOtherAvbl').val();
+        var IsLocalDtlSaved = $('#IsLocalDtlSaved').val();
+        var IsOthDtlSaved = $('#IsOthDtlSaved').val();
+        //alert('IsLocalAvbl: ' + IsLocalAvbl + " IsLocalDtlSaved: " + IsLocalDtlSaved + " IsOtherAvbl: " + IsOtherAvbl);
+        if (IsLocalAvbl == 1) {
+            btnLS.makeEnable();
+            if (IsLocalDtlSaved == 1) {
+                if (IsOtherAvbl == 1) {
+                    btnOS.makeEnable();
+                    IsStatement = true;
+                    // if (IsOthDtlSaved == 1) { IsStatement = true; } //Unlock this code if want to mandatorily save other trip schedule before proceeding.
+                }
+                else { btnOS.makeDisable(); IsStatement = true; }
+            } else {
+                btnOS.makeDisable();
+            }
+        }
+        else {
+            btnLS.makeDisable();
             if (IsOtherAvbl == 1) {
                 btnOS.makeEnable();
-                if (IsOthDtlSaved == 1) { IsStatement = true;}
-            } else { btnOS.makeDisable(); IsStatement = true; }
+                if (IsOthDtlSaved == 1) { IsStatement = true; }
+            } else { btnOS.makeDisable(); }
+        }
+        if (IsStatement) {
+            UnLockSection('Section3');
         } else {
-            btnOS.makeDisable();
+            LockSection('Section3');
         }
     }
     else {
         btnLS.makeDisable();
-        if (IsOtherAvbl == 1) {
-            btnOS.makeEnable();
-            if (IsOthDtlSaved == 1) { IsStatement = true;}
-        } else { btnOS.makeDisable(); }
-    }
-    if (IsStatement) {
-        UnLockSection('Section3');
-    } else {
+        btnOS.makeDisable();
         LockSection('Section3');
     }
+    
     SubmitBtnStatus('btnSubmit', 'HdrDiv');
 };
 $("#VehicleNumber2").on("change", function () {
@@ -237,10 +285,24 @@ $("#VehicleNumber2").on("change", function () {
 });
 function GetInitialData() {
     var vnCtrl= $('#VehicleNumber');
-    if (vnCtrl.val() != '') { vnCtrl.isValid(); } else { vnCtrl.isInvalid(); }
-    $('#cVehicleType').val($('#VehicleType').val());
-    $('#cModelName').val($('#ModelName').val());
-    $('#cDriverNumberName').val($('#DriverName').val());
+    if (vnCtrl.val() != '') {
+        vnCtrl.isValid();
+        $('#cVehicleType').val($('#VehicleType').val());
+        $('#cModelName').val($('#ModelName').val());
+        var drivernameCtrl = $('#cDriverNumberName');
+        drivernameCtrl.val($('#DriverName').val());
+        if ($('#IsDriverEntered').val() == 1) {
+            drivernameCtrl.makeEnable();
+            drivernameCtrl.isValid();
+        } else { drivernameCtrl.makeDisable(); }
+        if ($('#IsLocalDtlSaved').val() == 1 || $('#IsOthDtlSaved').val() == 1) {
+            vnCtrl.makeDisable();
+            drivernameCtrl.makeDisable();
+        }       
+    }
+    else {
+        vnCtrl.isInvalid();
+    }    
     UpdateBtns();
 };
 $(document).ready(function () {

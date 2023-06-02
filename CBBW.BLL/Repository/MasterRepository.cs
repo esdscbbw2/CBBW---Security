@@ -40,9 +40,9 @@ namespace CBBW.BLL.Repository
             if (string.IsNullOrEmpty(result)) { result = "0 / NA"; }
             return result;
         }
-        public IEnumerable<CustomComboOptions> getDriverList(ref string pMsg)
+        public IEnumerable<CustomComboOptions> getDriverList(ref string pMsg, int CentreCode = 13, string ExDrivername = "#")
         {
-           return _entities.getDriverList(ref pMsg);
+           return _entities.getDriverList(ref pMsg,CentreCode,ExDrivername);
         }
         public IEnumerable<CustomComboOptions> getEmployeeList(int centreCode, int functionalDesg, int isOtherStaff, ref string pMsg)
         {

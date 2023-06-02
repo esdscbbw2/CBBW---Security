@@ -67,9 +67,9 @@ namespace CBBW.BLL.Repository
         {
             return _CTVEntities.CreateCTVHdr(model, ref pMsg);
         }
-        public List<VehicleNo> getLCVMCVVehicleList(ref string pMsg)
+        public List<VehicleNo> getLCVMCVVehicleList(ref string pMsg, int CentreCode = 13)
         {
-            return _CTVEntities.getLCVMCVVehicleList(ref pMsg);
+            return _CTVEntities.getLCVMCVVehicleList(CentreCode,ref pMsg);
         }
         public List<LocVehSchFromMat> getLocalVehicleSChedules(string VehicleNo, DateTime FromDate, DateTime ToDate, ref string pMsg)
         {
@@ -185,7 +185,7 @@ namespace CBBW.BLL.Repository
                     result.FromDate = new DateTime(result.FortheYear, result.FortheMonth, 16);
                     result.ToDate = new DateTime(result.FortheYear, result.FortheMonth, 1).AddMonths(1).AddDays(-1);
                 }
-                result.ListofVehicles = _CTVEntities.getLCVMCVVehicleList(ref pMsg);
+                result.ListofVehicles = _CTVEntities.getLCVMCVVehicleList(result.CenterCode,ref pMsg);
             }
             catch { }
             return result;
@@ -226,9 +226,9 @@ namespace CBBW.BLL.Repository
             return _CTVEntities.setCTVApproval(Notenumber,EmployeeNumber,Isapproved,
                 ApprovalDatetime,DisApprovalReason,ref pMsg);
         }
-        public IEnumerable<CustomComboOptions> getDriverList(string ExpDriverName, ref string pMsg)
+        public IEnumerable<CustomComboOptions> getDriverList(string ExpDriverName, ref string pMsg, int CentreCode = 13)
         {
-            return _CTVEntities.getDriverList(ExpDriverName, ref pMsg);
+            return _CTVEntities.getDriverList(ExpDriverName, ref pMsg,CentreCode);
         }
         public bool setLocalTripSchDriver(string Notenumber, List<LTSDriVerChange> dtldata, ref string pMsg)
         {

@@ -33,6 +33,28 @@ function GetDataFromTable(tableName) {
     return schrecords;
 };
 //Section - Input Controll Functionalities
+function PostDataInAjax(url,BodyParamInJson) {
+    return $.ajax({
+        method: 'POST',
+        url: url,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        data: BodyParamInJson
+    });
+};
+function HandleResponseOfPostRequest(data,AfterSucessRedirectUrl) {
+    //REsponse should come in "CustomAjaxResponse" object.
+    $(data).each(function (index, item) {
+        if (item.bResponseBool == true) {
+            if (AfterSucessRedirectUrl == '') {
+                MyAlert(1, "Data Saved Successfully.");
+            } else { MyAlertWithRedirection(1, "Data Saved Successfully.", AfterSucessRedirectUrl); }
+        }
+        else {
+            MyAlert(3, item.sResponseString);
+        }
+    });
+};
 function GetDataFromAjax(url) {
     return $.ajax({
         url: url,
@@ -479,7 +501,11 @@ function DivInvalidCount(mdivID) {
 function WordCount(value) {
     return $.trim(value).split(" ").length;
 };
-//Section - Style Functions
+//Section - Style Function
+/**For Sequential Lock Unlock
+ * 
+ * 
+ */
 function LockRow(id) {
     var myCtrl = $('#' + id);
     myCtrl.find('.rowlock').each(function () {
@@ -519,6 +545,31 @@ function LockAllRowExceptLast(tableID) {
             //}
         }
     });
+};
+function UnlockNextCtrl(myCtrlID) {
+    var myCtrl = $('#' + myCtrlID);
+    var myDiv = myCtrl.closest('.inputDiv');
+    const inputControls = myDiv.find('.inputCtrl');
+    const currentIndex = inputControls.index(myCtrl);
+    if (currentIndex < inputControls.length - 1) {
+        if (inputControls.eq(currentIndex + 1).is(":visible")) {
+            UnLockControl(inputControls.eq(currentIndex + 1).attr('id'));           
+        } else {
+            UnlockNextCtrl(inputControls.eq(currentIndex + 1).attr('id'));
+        }        
+    }
+};
+function LockNextCtrls(myCtrlID) {
+    var myCtrl = $('#' + myCtrlID);
+    var myDiv = myCtrl.closest('.inputDiv');
+    const inputControls = myDiv.find('.inputCtrl');
+    const currentIndex = inputControls.index(myCtrl);
+    if (currentIndex < inputControls.length - 1) {
+        if (inputControls.eq(currentIndex + 1).is(":visible")) {
+            LockControl(inputControls.eq(currentIndex + 1).attr('id'));
+        }
+        LockNextCtrls(inputControls.eq(currentIndex + 1).attr('id'));
+    }
 };
 function LockSection(id) {
     var myCtrl = $('#' + id);
@@ -571,6 +622,9 @@ function UnLockSection(id) {
             UnLockMultiSelect('Con' + $(this).attr('id'));
             $(this).isValid();
         }
+    });
+    myCtrl.find('.AlwaysLock').each(function () {
+        $(this).attr('disabled', 'disabled').addClass('nodrop');
     });
     myCtrl.removeClass('sectionB');
 };
@@ -654,6 +708,14 @@ function isNumeric(input) {
     var regex = /^[0-9]+$/;
     return regex.test(input);
 }
+function isAlphabateWithMaxLimit(input, maxLimit) {
+    if (input.length > maxLimit) { return false; }
+    else {
+        return input.match(/^[a-zA-Z]+$/);
+        //var regex = /^[a-zA-Z]+$/;
+        //return regex.test(input);
+    }    
+};
 //Section Start - Runtime Classess
 $.fn.isInvalid = function () {
     var that = this;
@@ -666,10 +728,12 @@ $.fn.isValid = function () {
 $.fn.makeEnable = function () {
     var that = this;
     that.removeAttr('disabled');
+    that.removeClass('nodrop');
 };
 $.fn.makeDisable = function () {
     var that = this;
     that.attr('disabled', 'disabled');
+    that.addClass('nodrop');
 };
 $.fn.makeVisible = function () {
     var that = this;
@@ -1015,6 +1079,7 @@ $(document).ready(function () {
     $('.EntrynDisabledForEntry').each(function () {
         $(this).EntrynDisabledForEntry();
     });
+    
 });
 //dummy functions
 

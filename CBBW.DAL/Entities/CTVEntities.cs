@@ -135,12 +135,12 @@ namespace CBBW.DAL.Entities
             catch(Exception ex) { pMsg = ex.Message; }
             return result;
         }
-        public List<VehicleNo> getLCVMCVVehicleList(ref string pMsg)
+        public List<VehicleNo> getLCVMCVVehicleList(int CentreCode,ref string pMsg)
         {
             List<VehicleNo> result = new List<VehicleNo>();
             try
             {
-                dt = _datasync.getLCVMCVVehicles(ref pMsg);
+                dt = _datasync.getLCVMCVVehicles(CentreCode,ref pMsg);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     for (int i = 0; i < dt.Rows.Count; i++)
@@ -352,12 +352,12 @@ namespace CBBW.DAL.Entities
             catch(Exception ex) { pMsg = ex.Message; }
             return tripSchedule;
         }
-        public IEnumerable<CustomComboOptions> getDriverList(string ExpDriverName,ref string pMsg)
+        public IEnumerable<CustomComboOptions> getDriverList(string ExpDriverName,ref string pMsg,int CentreCode=13)
         {
             List<CustomComboOptions> result = new List<CustomComboOptions>();
             try
             {
-                dt = _datasync.getDriverList(ExpDriverName,ref pMsg);
+                dt = _datasync.getDriverList(CentreCode,ExpDriverName,ref pMsg);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     for (int i = 0; i < dt.Rows.Count; i++)

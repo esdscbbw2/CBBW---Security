@@ -25,7 +25,7 @@ namespace CBBW.BLL.IRepository
         IEnumerable<CustomComboOptions> getLocationTypes(ref string pMsg);
         IEnumerable<CustomComboOptions> getLocationsFromType(string LocationTypeIDs, ref string pMsg);
         IEnumerable<CustomComboOptions> getLocationsFromType(int LocationTypeID, ref string pMsg);
-        List<VehicleNo> getLCVMCVVehicleList(ref string pMsg);
+        List<VehicleNo> getLCVMCVVehicleList(ref string pMsg, int CentreCode = 13);
         VehicleInfo getVehicleInfo(string VehicleNo, ref string pMsg);
         UserInfo getUserInfo(string UserName, ref string pMsg);
         bool CreateNewCTVHdr(TripScheduleHdr model, ref string pMsg);
@@ -45,7 +45,7 @@ namespace CBBW.BLL.IRepository
             DateTime ApprovalDatetime, string DisApprovalReason, ref string pMsg);
         IEnumerable<TripScheduleHdr> getApprovedCtvSchedule(int PageSize, int PageNumber, int SortCol, string SortDirection,
             string SearchText, int centercode, ref string pMsg);
-        IEnumerable<CustomComboOptions> getDriverList(string ExpDriverName, ref string pMsg);
+        IEnumerable<CustomComboOptions> getDriverList(string ExpDriverName, ref string pMsg,int CentreCode=13);
         bool setLocalTripSchDriver(string Notenumber, List<LTSDriVerChange> dtldata, ref string pMsg);
         bool setLocalTripSchDtls(string Notenumber, List<LocVehSchFromMat> dtldata, ref string pMsg);
         bool EditOthTripSchDtl(string Notenumber, string TripPurpose, List<OthTripTemp> dtldata, ref string pMsg);

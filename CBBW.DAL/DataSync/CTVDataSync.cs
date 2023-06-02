@@ -133,11 +133,11 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-        public DataTable getLCVMCVVehicles(ref string pMsg) 
+        public DataTable getLCVMCVVehicles(int CentreCode,ref string pMsg) 
         {
             try
             {
-                using (SQLHelper sql = new SQLHelper("select * from [CTV].[getListofVehicles]()", CommandType.Text))
+                using (SQLHelper sql = new SQLHelper("select * from [CTV].[getListofVehicles]("+ CentreCode + ")", CommandType.Text))
                 {
                     return sql.GetDataTable();
                 }
@@ -465,11 +465,11 @@ namespace CBBW.DAL.DataSync
 
         ///From Punus project - end
         ///
-        public DataTable getDriverList(string ExpDriverName,ref string pMsg)
+        public DataTable getDriverList(int CentreCode,string ExpDriverName,ref string pMsg)
         {
             try
             {
-                using (SQLHelper sql = new SQLHelper("select * from [MTR].[getDriverList]('"+ ExpDriverName + "')", CommandType.Text))
+                using (SQLHelper sql = new SQLHelper("select * from [MTR].[getDriverList]('"+ ExpDriverName + "',"+CentreCode+")", CommandType.Text))
                 {
                     return sql.GetDataTable();
                 }

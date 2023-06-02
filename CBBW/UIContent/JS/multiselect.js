@@ -1568,12 +1568,14 @@ var userseq = '';
     };
 
     $.fn.multiselect = function (option, parameter, extraOptions) {
-        return this.each(function() {
+        return this.each(function () {
+            //userseq = "";
             var data = $(this).data('multiselect');
             var options = typeof option === 'object' && option;
 
             // Initialize the multiselect.
             if (!data) {
+                //userseq = "";
                 data = new Multiselect(this, options);
                 $(this).data('multiselect', data);
             }

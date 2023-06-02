@@ -221,11 +221,11 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-        public DataTable getDriverList(ref string pMsg)
+        public DataTable getDriverList(int CentreCode,string exDriverName,ref string pMsg)
         {
             try
             {
-                using (SQLHelper sql = new SQLHelper("select * from [MTR].[getDriverList]('#')", CommandType.Text))
+                using (SQLHelper sql = new SQLHelper("select * from [MTR].[getDriverList]('"+ exDriverName + "',"+CentreCode+")", CommandType.Text))
                 {
                     return sql.GetDataTable();
                 }

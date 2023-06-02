@@ -17,6 +17,7 @@
         @Html.HiddenFor(m => m.ModelName)
         @Html.HiddenFor(m => m.DriverNo)
         @Html.HiddenFor(m => m.DriverName)
+        @Html.HiddenFor(m => m.IsDriverEntered)
         <div class="col-md-12">
             <div class="heading_text_btn mb-3 mt-4">
                 <div class="leftButton">
@@ -31,7 +32,7 @@
                         <i data-feather="upload"></i>
                         Submit
                     </button>
-                    <button type="button" onclick="ClearBtnClicked('/Security/CTV2/CreateNote')"
+                    <button type="button" onclick="ClearBtnClicked('/Security/CTV2/CreateNote?isClear=1')"
                             class="btn btn-white">
                         <i data-feather="x-circle"></i>
                         Clear
@@ -118,7 +119,7 @@
                                        htmlAttributes: new
                                        {
                                            @class = "form-select pointer is-invalid",
-                                           @onchange= "VehicleNoChanged()"
+                                           @onchange = "VehicleNoChanged()"
                                        })
                                 </div>
                                 <div id="divErrorX" class="col-md-6">
@@ -150,9 +151,25 @@
                         <div class="col-md-12 mt-3 mb-3">
                             <div class="row g-3 align-items-center">
                                 <label class="col-form-label col-md-2">Driver No. & Name : </label>
-                                <div class="col-md-6">
-                                    <input id="cDriverNumberName" type="text" class="form-control" value="" disabled>
+                                <div class="col-md-4">
+                                    <input id="cDriverNumberName" type="text"
+                                           onkeyup="DriverNoChanged()"
+                                           title="Accept Maximum 15 Alphabates."
+                                           class="form-control" value="" disabled>
                                 </div>
+                                @*<div class="col-md-4">
+                                        <div class="d-flex">
+                                            <select id="" class="form-select w-60 me-2">
+                                                <option value="">1</option>
+                                                <option value="">2</option>
+                                            </select>
+                                            <input id="" type="text"
+                                                   onkeyup="DriverNoChanged()"
+                                                   title="Accept Maximum 15 Alphabates."
+                                                   class="form-control w-40" value="AAAAAAAAAAAAAAA">
+                                        </div>
+
+                                    </div>*@
                             </div>
                         </div>
                     </div>
@@ -230,7 +247,14 @@
 </div>
 @section headers
 {
-    
+    <style>
+        .w-60{
+            width:60%;
+        }
+        .w-40{
+            width:40%;
+        }
+    </style>
 }
 @section scripts{
     <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>

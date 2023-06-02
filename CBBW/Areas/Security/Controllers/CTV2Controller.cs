@@ -12,7 +12,6 @@ using CBBW.BOL.CTV2;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.Master;
 using CBBW.Areas.Security.ViewModel;
-
 namespace CBBW.Areas.Security.Controllers
 {
     public class CTV2Controller : Controller
@@ -43,9 +42,10 @@ namespace CBBW.Areas.Security.Controllers
             TempData["CTVCreate"] = null;
             return RedirectToAction("CreateNote");
         }
-        public ActionResult CreateNote() 
+        public ActionResult CreateNote(int isClear=0) 
         {
             CreateNoteVM model = CastCTVCreateTempData();            
+            if (isClear == 1) { model.VehicleNumber = ""; }
             return View(model);
         }
         [HttpPost]
@@ -56,10 +56,12 @@ namespace CBBW.Areas.Security.Controllers
             model.VehicleType = modelobj.VehicleType;
             model.ModelName = modelobj.ModelName;
             model.DriverName = modelobj.DriverName;
+            model.DriverNo = modelobj.DriverNo;
             model.IsLocalAvbl = modelobj.IsLocalAvbl;
             model.IsOtherAvbl = modelobj.IsOtherAvbl;
             model.IsOthDtlSaved = modelobj.IsOthDtlSaved;
             model.IsLocalDtlSaved = modelobj.IsLocalDtlSaved;
+            model.IsDriverEntered = modelobj.IsDriverEntered;
             model.DriverNo = MyCodeHelper.GetEmpNoFromString(modelobj.DriverName);
             TempData["CTVCreate"] = model;
             if (Submit == "OVT")
@@ -115,8 +117,9 @@ namespace CBBW.Areas.Security.Controllers
             if (CBUID == 2 || CBUID == 3) { ViewBag.HeaderSign = "APPROVAL"; }
             else if (CBUID == 1) { ViewBag.HeaderSign = "ENTRY"; model.IsSaveVisible = 1; }
             model.NoteNo = parentmodel.NoteNumber;
-            //model.VehicleNo= parentmodel.VehicleNumber;
-            model.VehicleNo = "AP25X7140";
+            model.VehicleNo= parentmodel.VehicleNumber;
+            //model.VehicleNo = "AP25X7140";
+            model.DriverCodenName = parentmodel.DriverNo + " / " + parentmodel.DriverName;
             model.LVSchDtl = _iCTV.getLocalVehicleSChedules(model.VehicleNo, model.SCHFromDate, model.SCHToDate, ref pMsg).OrderBy(o => o.FromDate).ToList();
             return View(model);
         }
@@ -201,6 +204,35 @@ namespace CBBW.Areas.Security.Controllers
             }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+        [HttpPost]
+        public JsonResult SetLocData(string NoteNumber,string VehicleNo)
+        {
+            LocalVehicleTripScheduleVM model = new LocalVehicleTripScheduleVM();
+            List<LocVehSchFromMat> data =_iCTV.getLocalVehicleSChedules(VehicleNo,model.SCHFromDate,model.SCHToDate, ref pMsg).OrderBy(o => o.FromDate).ToList();
+            CustomAjaxResponse result = new CustomAjaxResponse();
+            if (data != null && data.Count > 0) 
+            {
+                if (_iCTV.setLocalTripSchDtls(NoteNumber, data, ref pMsg))
+                {
+                    result.bResponseBool = true;
+                    result.sResponseString = "Data successfully updated.";
+                    CreateNoteVM parentmodel = CastCTVCreateTempData();
+                    parentmodel.IsLocalDtlSaved = 1;
+                    TempData["CTVCreate"] = parentmodel;
+                }
+                else
+                {
+                    result.bResponseBool = false;
+                    result.sResponseString = pMsg;
+                }
+            }
+            else
+            {
+                result.bResponseBool = false;
+                result.sResponseString = "No Data Found To Update";
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
         public JsonResult GetOtheEntryData(string NoteNumber)
         {
             CTVOtherTrip result = _iCTV.GetOthTripSchEntryData(NoteNumber, ref pMsg);
@@ -218,7 +250,7 @@ namespace CBBW.Areas.Security.Controllers
             {
                 model = new CreateNoteVM();
                 model.NoteNumber=_iMaster.GetNewNoteNumber(MyCodeHelper.GetNotePattern("CTV"), ref pMsg);
-                model.ListofVehicles = _iCTV.getLCVMCVVehicleList(ref pMsg);
+                model.ListofVehicles = _iCTV.getLCVMCVVehicleList(ref pMsg, user.CentreCode);
                 model.CentreCodeName = user.CentreCode + " / " + user.CentreName;
             }
             TempData["CTVCreate"] = model;

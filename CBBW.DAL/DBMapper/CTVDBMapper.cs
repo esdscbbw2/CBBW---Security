@@ -165,11 +165,11 @@ namespace CBBW.DAL.DBMapper
                         result.IsSlotAvbl = bool.Parse(dr["SloatAVBL"].ToString());
 
                     result.IsActive = result.VehicleStatus == "ACTIVE" ? true : false;
-                    if (result.DriverName!=null && result.DriverName.IndexOf("-") > 0) 
-                    { 
-                        String[] spearator = {"-"};
-                        result.DriverName = result.DriverName.Split(spearator, StringSplitOptions.RemoveEmptyEntries)[1];
-                    }                    
+                    //if (result.DriverName!=null && result.DriverName.IndexOf("-") > 0) 
+                    //{ 
+                    //    String[] spearator = {"-"};
+                    //    result.DriverName = result.DriverName.Split(spearator, StringSplitOptions.RemoveEmptyEntries)[1];
+                    //}                    
                     result.DriverNonName = result.DriverNo + "/" + result.DriverName;
                 }
             }

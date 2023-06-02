@@ -31,5 +31,6 @@ namespace CBBW.Areas.Security.ViewModel.CTV
         public int IsLocalDtlSaved { get; set; }
         public int IsLocalAvbl { get; set; }
         public int IsOtherAvbl { get; set; }
+        public int IsDriverEntered { get; set; }
     }
 }
