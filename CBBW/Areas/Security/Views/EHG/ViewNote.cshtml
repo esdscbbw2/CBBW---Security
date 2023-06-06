@@ -129,7 +129,7 @@
                             <label>Approved :</label>
                         </div>
                         <div class="col-md-2">
-                            <input type="text" class="form-control" value="@(Model.HeaderData.AppDateTime.ToString("dd/MM/yyyy hh:mm tt",CultureInfo.InvariantCulture).Substring(0,10)=="01/01/0001"?"":Model.HeaderData.IsApproved?"Yes":"No")" disabled>
+                            <input type="text" class="form-control ApproveCtrl" value="@(Model.HeaderData.AppDateTime.ToString("dd/MM/yyyy hh:mm tt",CultureInfo.InvariantCulture).Substring(0,10)=="01/01/0001"?"":Model.HeaderData.IsApproved?"Yes":"No")" disabled>
                         </div>
                         <div class="col-md-2 col-form-label">
                             <label>Date &amp; Time Of Approval :</label>

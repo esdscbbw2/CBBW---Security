@@ -41,7 +41,7 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-var userseq = '';
+var usercindex = 0;
 ! function ($) {
     "use strict"; // jshint ;_;
 
@@ -256,9 +256,7 @@ var userseq = '';
                     options.each(function () {
                         var label = ($(this).attr('label') !== undefined) ? $(this).attr('label') : $(this).text();
                         selected += label + delimiter;                        
-                    });
-                    // abcd - 30.05.2023
-                    //selected = userseq;
+                    });                    
                     return selected.substr(0, selected.length - 2);
                 }
             },
@@ -404,7 +402,7 @@ var userseq = '';
                 ul: '<ul class="multiselect-container dropdown-menu"></ul>',
                 filter: '<li class="multiselect-item filter"><div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span><input class="form-control multiselect-search" type="text"></div></li>',
                 filterClearBtn: '<span class="input-group-btn"><button class="btn btn-default multiselect-clear-filter" type="button"><i class="glyphicon glyphicon-remove-circle"></i></button></span>',
-                li: '<li><a tabindex="0"><label></label></a></li>',
+                li: '<li><a tabindex="0" userclickindex="0"><label></label></a></li>',
                 divider: '<li class="multiselect-item divider"></li>',
                 liGroup: '<li class="multiselect-item multiselect-group"><label></label></li>'
             }
@@ -602,7 +600,8 @@ var userseq = '';
                 }
             }, this));
 
-            $('li a', this.$ul).on('mousedown', function(e) {
+            $('li a', this.$ul).on('mousedown', function (e) {
+                $(this).attr('userclickindex', usercindex); //By ESDS 06.06.2023
                 if (e.shiftKey) {
                     // Prevent selecting text by Shift+click
                     return false;
@@ -823,7 +822,7 @@ var userseq = '';
          *
          * @param {jQuery} element
          */
-        createOptionValue: function(element) {
+        createOptionValue: function(element) { //abcd
             var $element = $(element);
             if ($element.is(':selected')) {
                 $element.prop('selected', true);
@@ -1487,15 +1486,40 @@ var userseq = '';
          * Update the button text and its title based on the currently selected options.
          */
         updateButtonText: function() {
-            var options = this.getSelected();
-            // First update the displayed button text.
+            //var options = this.getSelected();
+            //// First update the displayed button text.
+            //if (this.options.enableHTML) {
+            //    $('.multiselect .multiselect-selected-text', this.$container).html(this.options.buttonText(options, this.$select));
+            //} else {
+            //    $('.multiselect .multiselect-selected-text', this.$container).text(this.options.buttonText(options, this.$select));
+            //}
+            //$('.multiselect', this.$container).attr('title', this.options.buttonTitle(options, this.$select));
+
+            ////Get User click sequence data- ESDS 06.06.2023
+            var mycontainer = this.$container;
+            var labels = [];
+            var mtext = "";
+            mycontainer.find(".active").each(function () {
+                var ind = $(this).find("a").attr("userclickindex");
+                var labelHtml = $(this).find("a .checkbox").html().split('>')[1];
+                labels.push({ index: ind, html: labelHtml });
+            });
+            labels.sort(function (a, b) {
+                return a.index - b.index;
+            });
+            for (var i = 0; i < labels.length; i++) {
+                mtext = mtext+labels[i].html+', ';
+            }
+            mtext = mtext == '' ? "Not Selected" : mtext.substring(0, mtext.length - 2);
+           
             if (this.options.enableHTML) {
-                $('.multiselect .multiselect-selected-text', this.$container).html(this.options.buttonText(options, this.$select));
+                $('.multiselect .multiselect-selected-text', this.$container).html(mtext);
             } else {
-                $('.multiselect .multiselect-selected-text', this.$container).text(this.options.buttonText(options, this.$select));
-            }            
+                $('.multiselect .multiselect-selected-text', this.$container).text(mtext);
+            }
             // Now update the title attribute of the button.
-            $('.multiselect', this.$container).attr('title', this.options.buttonTitle(options, this.$select));
+            $('.multiselect', this.$container).attr('title', mtext);
+             ////END Get User click sequence data- ESDS 06.06.2023
         },
 
         /**
@@ -1518,11 +1542,7 @@ var userseq = '';
             for (var i = 0; i < options.length; i = i + 1) {
                 var option = options[i];
                 if (option.value === valueToCompare) {
-                    //User Click Sequence - 30.05.2023
-                    //if (userseq.indexOf(option.text + ', ') > -1) {
-                    //    userseq = userseq.replace(option.text + ', ', '');
-                    //} else { userseq += option.text + ', '; }
-                    //User Click Sequence End;
+                    usercindex += 1;  // By ESDS - 06.06.2023                  
                     return $(option);                    
                 }
             }

@@ -30,10 +30,12 @@ $.fn.makeReadOnly = function () {
 $.fn.isInvalid = function () {
     var that = this;
     that.addClass('is-invalid valid').removeClass('is-valid');
+    SLUInvalid(that.attr('id'));
 };
 $.fn.isValid = function () {
     var that = this;
     that.addClass('is-valid valid').removeClass('is-invalid');
+    SLUValid(that.attr('id'));
 };
 $.fn.isRed = function () {
     var that = this;

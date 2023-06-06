@@ -720,10 +720,12 @@ function isAlphabateWithMaxLimit(input, maxLimit) {
 $.fn.isInvalid = function () {
     var that = this;
     that.addClass('is-invalid valid').removeClass('is-valid');
+    LockNextSLUCtrls(that.attr('id'));
 };
 $.fn.isValid = function () {
     var that = this;
     that.addClass('is-valid valid').removeClass('is-invalid');
+    SLUNextCtrl(that.attr('id'));
 };
 $.fn.makeEnable = function () {
     var that = this;
@@ -777,6 +779,9 @@ function MyAlert(MessageType, MessageText) {
             break;
         case 5:
             IsOK = MyWarningAlert(MessageText);
+            break;
+        case 6:
+            IsOK = MyConfirmationAlertV2(MessageText);
             break;
         default:
             IsOK = MyInformationAlert(MessageText);
@@ -894,6 +899,26 @@ function MyConfirmationAlert(MessageText) {
         cancelButtonClass: 'btn-cancel',
         confirmButtonColor: '#2527a2',
         showCancelButton: true,
+    }).then(callback);
+    function callback(result) {
+        if (result.value) {
+            IsOK = true;
+        }
+    }
+    return IsOK;
+};
+function MyConfirmationAlertV2(MessageText) {
+    var IsOK = false;
+    Swal.fire({
+        title: 'Confirmation',
+        text: MessageText,
+        icon: 'question',
+        customClass: 'swal-wide',
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        cancelButtonClass: 'btn-cancel',
+        confirmButtonColor: '#2527a2',
+        showCancelButton: false,
     }).then(callback);
     function callback(result) {
         if (result.value) {

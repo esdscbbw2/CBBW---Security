@@ -9,12 +9,12 @@ $.fn.makeDisable = function () {
 $.fn.isInvalid = function () {
     var that = this;
     that.addClass('is-invalid').removeClass('is-valid');
-    LockNextSLUCtrls(that.attr('id'));
+    SLUInvalid(that.attr('id'));
 };
 $.fn.isValid = function () {
     var that = this;
     that.addClass('is-valid').removeClass('is-invalid');
-    SLUNextCtrl(that.attr('id'));
+    SLUValid(that.attr('id'));
 };
 $.fn.clearValidateClass = function () {
     var that = this;
@@ -563,11 +563,11 @@ function VehicleTypeChanged() {
     var dwtBtnCtrl = $('#DateWiseTourBtn2');
     var vadBtnCtrl = $('#VADBtn');    
     var selectedvt = VehicletypeCtrl.val();
+    
     $('#VehicleType').val(selectedvt);
     if (selectedvt == 1) {
         POACtrl.removeClass('inVisible');
-        POADropdown.isInvalid();
-        
+        //POADropdown.isInvalid();
         POA2WhCtrl.addClass('inVisible');        
         ForOfficeWorkDiv.addClass('inVisible');
         ForManagementDiv.addClass('inVisible');
@@ -594,6 +594,7 @@ function VehicleTypeChanged() {
         //dwtBtnCtrl.makeDisable();
         //vadBtnCtrl.makeDisable();
     };
+    
     if (selectedvt > 0) {
         VehicletypeCtrl.isValid();
     }
