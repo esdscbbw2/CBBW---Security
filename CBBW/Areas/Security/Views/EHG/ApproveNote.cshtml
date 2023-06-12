@@ -251,7 +251,7 @@
                     <li style="font-size: 16px;">
                         Checked Tour Details & Vehicle Allotment With The “Initiated This Doc. With The Instruction Of” Person. Hence Satisfied & Approved:
                         <select id="AppOption2" style="width:110px" 
-                                class="form-select is-invalid SLUCtrl"
+                                class="form-select is-invalid SLUCtrl LUPS"
                                 onchange="ValidateControl()"
                                 aria-label="Default select example" disabled>
                             <option selected="">-</option>
@@ -262,7 +262,7 @@
                 </ul>
             </div>
             <div class="card mt-4 mb-4">
-                <div class="card-body alert alert-danger text-dark SLUSection approvalForm">
+                <div id="AppForm1" class="card-body alert alert-danger text-dark SLUSection approvalForm">
                     <div class="row d-flex align-items-center">
                         <div class="col-md-2 col-form-label">
                             <label>Approved :</label>
@@ -270,12 +270,12 @@
                         <div class="col-md-2">
                             @Html.DropDownListFor(m => m.AppStatus,
                        new[] {
-                           new SelectListItem { Text = "-", Value = "-1" },
+                           new SelectListItem { Text = "-", Value = "" },
                            new SelectListItem { Text = "Yes", Value = "1" },
                            new SelectListItem { Text = "No", Value = "0" }},
                        htmlAttributes: new
                        {
-                           @class = "form-select pointer is-invalid ApproveCtrl",
+                           @class = "form-select pointer is-invalid SLUCtrl ApproveCtrl LUPS",
                            @onchange = "ValidateControl()",
                            disabled = "disabled"
                        })
@@ -296,7 +296,7 @@
                                 @class = "form-control",
                                 rows = "3",
                                 type = "text",
-                                onblur = "ValidateControl()",
+                                onkeyup = "ValidateControl()",
                                 disabled = "disabled"
                             })
                         </div>

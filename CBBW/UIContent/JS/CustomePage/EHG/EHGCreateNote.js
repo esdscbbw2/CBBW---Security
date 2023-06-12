@@ -277,7 +277,8 @@ function validatectrl(targetid, value) {
             isvalid = validatectrl_ValidateLength(value);
             break;
         case "PurposeOfVisit":
-            if (value.length > 1 && WordCount(value) <= 200) {
+            if (value.length > 1 && value <= 200) {
+            //if (value.length > 1 && WordCount(value) <= 200) {
                 if (IsAlphaNumericWithSpace(value)) {
                     isvalid = true;
                 }                

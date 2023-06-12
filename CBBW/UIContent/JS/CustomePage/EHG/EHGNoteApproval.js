@@ -39,15 +39,21 @@ function validatectrl(targetid, value) {
             if (value ==1) { isvalid = true; }
             break;
         case "AppStatus":
-            if (value >= 0) {
-                var mCtrl = $('#ReasonForDisApproval');
-                if (value == 1) { mCtrl.val('').makeDisable(); mCtrl.clearValidateClass(); }
-                else { mCtrl.val('').makeEnabled(); mCtrl.isInvalid(); }
-                isvalid = true;
+            var mCtrl = $('#ReasonForDisApproval');
+            if (value != '') {
+                if (value >= 0) {                    
+                    if (value == 1) { mCtrl.val('').makeDisable(); mCtrl.clearValidateClass(); }
+                    else { mCtrl.val('').makeEnabled(); mCtrl.isInvalid(); mCtrl.removeClass('nodrop'); }
+                    isvalid = true;
+                }
             }
+            else { isvalid = false; mCtrl.val('').makeDisable(); mCtrl.clearValidateClass(); }
             break;
         case "ReasonForDisApproval":
-            if (value !='') { isvalid = true; }
+            if (value != '') {
+                isvalid = true;
+                $('#AppForm1').isApprovalDone();
+            } else { $('#AppForm1').isApprovalNotDone(); }
             break;
     }
     return isvalid;

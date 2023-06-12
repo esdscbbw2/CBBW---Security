@@ -58,7 +58,7 @@ function LockPreviousSections(myCtrl) {
     mySection = myCtrl.closest('.SLUSection');
     var allSections = $('.SLUSection');
     var currentSecIndex = allSections.index(mySection);
-    if (currentSecIndex < allSections.length - 1) {
+    if (currentSecIndex <= allSections.length - 1) {
         for (var i = 0; i < currentSecIndex; i++) {
             if (allSections.eq(i).is(":visible")) { LockSLUSection(allSections.eq(i)); }
         }
@@ -68,7 +68,7 @@ function UnLockPreviousSections(myCtrl) {
     mySection = myCtrl.closest('.SLUSection');
     var allSections = $('.SLUSection');
     var currentSecIndex = allSections.index(mySection);
-    if (currentSecIndex < allSections.length - 1) {
+    if (currentSecIndex <= allSections.length - 1) {
         for (var i = 0; i < currentSecIndex; i++) {
             if (allSections.eq(i).is(":visible")) { UnLockSLUSectionAllCtrl(allSections.eq(i)); }
         }
@@ -124,7 +124,7 @@ $(document).ready(function () {
         var that = $(this);
         var mDiv = that.closest('.approvalForm');
         var app = that.val().toUpperCase();
-        if (app == "YES" || app == "NO") {
+        if (app == "YES" || app == "NO" || app == "1") {
             mDiv.isApprovalDone();
         } else {
             mDiv.isApprovalNotDone();
@@ -159,7 +159,7 @@ $(document).ready(function () {
         var that = $(this);
         var mDiv = that.closest('.approvalForm');
         var app = that.val().toUpperCase();
-        if (app == "YES" || app == "NO") {
+        if (app == "YES" || app == "NO" || app =="1") {
             mDiv.isApprovalDone();
         } else {
             mDiv.isApprovalNotDone();
@@ -210,7 +210,7 @@ $.fn.actApprovalSection = function () {
     var y = that.find('.is-invalid').length;
     if (y <= 0) {
         var app = that.find('.ApproveCtrl').eq(0).val().toUpperCase();
-        if (app == "YES" || app == "NO") { that.isApprovalDone(); } else { that.isApprovalNotDone();}
+        if (app == "YES" || app == "NO" || app == "1" || app == "0") { that.isApprovalDone(); } else { that.isApprovalNotDone();}
     }
     else { that.isApprovalNotDone(); }
 };
@@ -375,9 +375,9 @@ function LockSLUSection(mySection) {
         mySection.find('.SLUCtrl').each(function () {
             LockSLUCtrl($(this));
         });
-        //mySection.find('.btn').each(function () {
-        //    $(this).makeSLUDisable();
-        //});
+        mySection.find('.SLUBtn').each(function () {
+            $(this).makeSLUDisable();
+        });
         mySection.addClass('sectionB');
     }    
 };
@@ -389,7 +389,11 @@ function UnLockSLUSection(mySection) {
             if (i == 0) { UnLockSLUCtrl($(this)); }
             else { LockSLUCtrl($(this)); }
             i += 1;
-        });        
+        });
+        mySection.find('.SLUBtn').each(function () {
+            var x = $(this).attr('id');
+            $(this).makeSLUEnable();
+        });
     }    
 };
 function UnLockSLUSectionAllCtrl(mySection) {
@@ -397,6 +401,10 @@ function UnLockSLUSectionAllCtrl(mySection) {
         mySection.removeClass('sectionB');
         mySection.find('.SLUCtrl').each(function () {
             UnLockSLUCtrl($(this));
+        });
+        mySection.find('.SLUBtn').each(function () {
+            var x = $(this).attr('id');
+            $(this).makeSLUEnable();
         });
     }
 };
