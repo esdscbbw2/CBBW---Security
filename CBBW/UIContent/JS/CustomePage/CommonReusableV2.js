@@ -1,4 +1,21 @@
-﻿// Section - Data Picking
+﻿// File Uploading
+var cW;
+function OpenFileInNewTab(filepath) {
+    if (filepath == null || filepath == '') {
+        MyAlert(3, 'Unable To Find Uploaded File.');
+    } else {
+        if (cW === undefined || (cW != undefined && cW.closed)) {
+            cW = window.open(filepath);
+        }
+        else {
+            MyAlertWithCallBack(5,'File Is Already Opened.', FocusTab)            
+        }
+    }    
+};
+function FocusTab() {
+    cW.focus();
+};
+// Section - Data Picking
 function GetDataFromTable(tableName) {
     //The fields should have an attribute "data-name", Which is the property name of the MVC object
     var schrecords = '';
@@ -502,10 +519,7 @@ function WordCount(value) {
     return $.trim(value).split(" ").length;
 };
 //Section - Style Function
-/**For Sequential Lock Unlock
- * 
- * 
- */
+
 function LockRow(id) {
     var myCtrl = $('#' + id);
     myCtrl.find('.rowlock').each(function () {
@@ -716,16 +730,29 @@ function isAlphabateWithMaxLimit(input, maxLimit) {
         //return regex.test(input);
     }    
 };
+function ValidateEmployeeForTour(Employees,FromDate,Todate) {
+    var url = '/EHG/GetEmployeeValidationForTour?Employees=' + Employees + '&FromDate=' + FromDate + '&ToDate=' + Todate;
+    GetDataFromAjax(url).done(function (data) {
+        if (data.bResponseBool == true) {
+            //MyAlert(1, 'Validation Successful');
+            return true;
+        }
+        else {
+            MyAlert(3, data.sResponseString);
+            return false;
+        }
+    });
+};
 //Section Start - Runtime Classess
 $.fn.isInvalid = function () {
     var that = this;
     that.addClass('is-invalid valid').removeClass('is-valid');
-    LockNextSLUCtrls(that.attr('id'));
+    that.isInvalidCtrl();
 };
 $.fn.isValid = function () {
     var that = this;
     that.addClass('is-valid valid').removeClass('is-invalid');
-    SLUNextCtrl(that.attr('id'));
+    that.isValidCtrl();
 };
 $.fn.makeEnable = function () {
     var that = this;
@@ -763,30 +790,60 @@ function MyAlert(MessageType, MessageText) {
     //MessageType 0-Information Alert, 1-Success Alert,2-Confirmation Alert,
     //MessageType  3- Eror Alert. 4- Validation Failed Alert,5-Warning Alert,
    
-    var IsOK = false;
     switch (MessageType) {
         case 1:
-            IsOK = MySuccessAlert(MessageText);
+            MySuccessAlert(MessageText,'');
             break;
         case 2:
-            IsOK = MyConfirmationAlert(MessageText);
+            MyConfirmationAlert(MessageText,'');
             break;
         case 3:
-            IsOK = MyErrorAlert(MessageText);
+            MyErrorAlert(MessageText,'');
             break;
         case 4:
-            IsOK = MyValidationFailedAlert(MessageText);
+            MyValidationFailedAlert(MessageText,'');
             break;
         case 5:
-            IsOK = MyWarningAlert(MessageText);
+            MyWarningAlert(MessageText,'');
             break;
         case 6:
-            IsOK = MyConfirmationAlertV2(MessageText);
+            MyConfirmationAlertV2(MessageText,'');
             break;
         default:
-            IsOK = MyInformationAlert(MessageText);
+            MyInformationAlert(MessageText, '');
+            break;
     }
-    return IsOK;
+};
+function MyAlertWithCallBack(MessageType, MessageText, callBackFunctionName) {
+    //MessageType 0-Information Alert, 1-Success Alert,2-Confirmation Alert,
+    //MessageType  3- Eror Alert. 4- Validation Failed Alert,5-Warning Alert,
+    debugger;
+    switch (MessageType) {
+        case 1:
+            MySuccessAlert(MessageText, callBackFunctionName);
+            break;
+        case 2:
+            MyConfirmationAlert(MessageText, callBackFunctionName);
+            break;
+        case 3:
+            MyErrorAlert(MessageText, callBackFunctionName);
+            break;
+        case 4:
+            MyValidationFailedAlert(MessageText, callBackFunctionName);
+            break;
+        case 5:
+            MyWarningAlert(MessageText, callBackFunctionName);
+            break;
+        case 6:
+            MyConfirmationAlertV2(MessageText, callBackFunctionName);
+            break;
+        case 7:
+            MyConfirmationCancelAlert(MessageText, callBackFunctionName);
+            break;
+        default:
+            MyInformationAlert(MessageText, callBackFunctionName);
+            break;
+    }
 };
 function MyAlertWithRedirection(MessageType, MessageText, RedirectUrl) {
     //MessageType 0-Information Alert, 1-Success Alert,2-Confirmation Alert,
@@ -809,10 +866,10 @@ function MyAlertWithRedirection(MessageType, MessageText, RedirectUrl) {
             break;
         default:
             MyInformationAlertWithRedirection(MessageText, RedirectUrl);
+            break;
     }
 };
-function MySuccessAlert(MessageText) {
-    var IsOK = false;
+function MySuccessAlert(MessageText, callback) {
     Swal.fire({
         title: 'Success',
         text: MessageText,
@@ -822,16 +879,15 @@ function MySuccessAlert(MessageText) {
             confirm: 'Ok'
         },
         confirmButtonColor: '#2527a2',
-    }).then(callback);
-    function callback(result) {
-        if (result.value) {
-            IsOK=true;
+    }).then(function (result) {
+        if (result.isConfirmed) {
+            if (callback!='' && typeof callback === 'function') {
+                callback();
+            }
         }
-    }
-    return IsOK;
+    });
 };
-function MyInformationAlert(MessageText) {
-    var IsOK = false;
+function MyInformationAlert(MessageText, callback) {
     Swal.fire({
         title: 'Information',
         text: MessageText,
@@ -841,16 +897,15 @@ function MyInformationAlert(MessageText) {
             confirm: 'Ok'
         },
         confirmButtonColor: '#2527a2',
-    }).then(callback);
-    function callback(result) {
-        if (result.value) {
-            IsOK = true;
+    }).then(function (result) {
+        if (result.isConfirmed) {
+            if (callback != '' && typeof callback === 'function') {
+                callback();
+            }
         }
-    }
-    return IsOK;
+    });
 };
-function MyValidationFailedAlert(MessageText) {
-    var IsOK = false;
+function MyValidationFailedAlert(MessageText, callback) {
     Swal.fire({
         title: 'Validation Failed',
         text: MessageText,
@@ -860,16 +915,15 @@ function MyValidationFailedAlert(MessageText) {
             confirm: 'Ok'
         },
         confirmButtonColor: '#2527a2',
-    }).then(callback);
-    function callback(result) {
-        if (result.value) {
-            IsOK = true;
+    }).then(function (result) {
+        if (result.isConfirmed) {
+            if (callback != '' && typeof callback === 'function') {
+                callback();
+            }
         }
-    }
-    return IsOK;
+    });
 };
-function MyErrorAlert(MessageText) {
-    var IsOK = false;
+function MyErrorAlert(MessageText, callback) {
     Swal.fire({
         title: 'Error Occurred',
         text: MessageText,
@@ -879,16 +933,15 @@ function MyErrorAlert(MessageText) {
             confirm: 'Ok'
         },
         confirmButtonColor: '#2527a2',
-    }).then(callback);
-    function callback(result) {
-        if (result.value) {
-            IsOK = true;
+    }).then(function (result) {
+        if (result.isConfirmed) {
+            if (callback != '' && typeof callback === 'function') {
+                callback();
+            }
         }
-    }
-    return IsOK;
+    });
 };
-function MyConfirmationAlert(MessageText) {
-    var IsOK = false;
+function MyConfirmationAlert(MessageText, callback) {
     Swal.fire({
         title: 'Confirmation',
         text: MessageText,
@@ -899,16 +952,15 @@ function MyConfirmationAlert(MessageText) {
         cancelButtonClass: 'btn-cancel',
         confirmButtonColor: '#2527a2',
         showCancelButton: true,
-    }).then(callback);
-    function callback(result) {
-        if (result.value) {
-            IsOK = true;
-        }
-    }
-    return IsOK;
+    }).then(function (result) {
+        if (result.isConfirmed) {
+            if (callback != '' && callback != 'NA' && typeof callback === 'function') {
+                callback();
+            }
+        }       
+    });
 };
-function MyConfirmationAlertV2(MessageText) {
-    var IsOK = false;
+function MyConfirmationAlertV2(MessageText, callback) {
     Swal.fire({
         title: 'Confirmation',
         text: MessageText,
@@ -919,16 +971,34 @@ function MyConfirmationAlertV2(MessageText) {
         cancelButtonClass: 'btn-cancel',
         confirmButtonColor: '#2527a2',
         showCancelButton: false,
-    }).then(callback);
-    function callback(result) {
-        if (result.value) {
-            IsOK = true;
+    }).then(function (result) {
+        if (result.isConfirmed) {
+            if (callback != '' && typeof callback === 'function') {
+                callback();
+            }
         }
-    }
-    return IsOK;
+    });
 };
-function MyWarningAlert(MessageText) {
-    var IsOK = false;
+function MyConfirmationCancelAlert(MessageText, callback) {
+    Swal.fire({
+        title: 'Confirmation',
+        text: MessageText,
+        icon: 'question',
+        customClass: 'swal-wide',
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        cancelButtonClass: 'btn-cancel',
+        confirmButtonColor: '#2527a2',
+        showCancelButton: false,
+    }).then(function (result) {
+        if (!result.isConfirmed) {
+            if (callback != '' && typeof callback === 'function') {
+                callback();
+            }
+        }
+    });
+};
+function MyWarningAlert(MessageText, callback) {
     Swal.fire({
         title: 'Warning',
         text: MessageText,
@@ -938,13 +1008,13 @@ function MyWarningAlert(MessageText) {
             confirm: 'Ok'
         },
         confirmButtonColor: '#2527a2',
-    }).then(callback);
-    function callback(result) {
-        if (result.value) {
-            IsOK = true;
+    }).then(function (result) {
+        if (result.isConfirmed) {
+            if (callback != '' && typeof callback === 'function') {
+                callback();
+            }
         }
-    }
-    return IsOK;
+    });
 };
 function MySuccessAlertWithRedirection(MessageText, RedirectUrl) {
     Swal.fire({

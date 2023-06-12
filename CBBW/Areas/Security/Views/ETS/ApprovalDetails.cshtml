@@ -297,10 +297,10 @@
 
 }
 @section scripts{
-
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
     <script>
         $(document).ready(function () {
-            
+
             if ($('#etsHeader_RatifiedTime').val() != null || $('#etsHeader_RatifiedTime').val() != "") {
                 $('#Ratificate').removeClass('alert-danger').addClass('alert-success');
             }
@@ -308,7 +308,7 @@
             $('#btnViewDoc').click(function () {
                 var docfilename = $('#etsHeader_AttachFile').val();
                 var filepath = "/Upload/Forms/" + docfilename;
-                if (docfilename.length > 2) { window.open(filepath); }
+                if (docfilename.length > 2) { OpenWindow(filepath); }
                 else {
                     Swal.fire({
                         title: 'Information',

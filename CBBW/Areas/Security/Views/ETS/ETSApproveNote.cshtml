@@ -8,7 +8,7 @@
 @using (Html.BeginForm())
 {
     @Html.HiddenFor(x => x.btnDisplay)
-    
+
 
 
     <div class="">
@@ -189,7 +189,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="bgColor mt-4 bg-transparent text-left">
+                <div class="bgColor content border-green mt-4 bg-transparent text-left">
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
                             It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As It Is selected:
@@ -205,7 +205,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="bgColor mt-4 bg-transparent text-left" id="TravDetails">
+                <div class="bgColor content  border-red  mt-4 bg-transparent text-left" id="TravDetails">
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
                             Tour Is Approved / Rejected After Written Information & Consent Of COO. When Ever Required, VB Document Shall Be Produced:
@@ -266,7 +266,9 @@
 }
 @section scripts{
     <script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/ETS/ETSNoteApprove.js"></script>
 
     <script>

@@ -8,8 +8,6 @@
 @using (Html.BeginForm())
 {
     @Html.HiddenFor(x => x.btnDisplay)
-
-
     <div class="">
         <div class="row newTable">
             <div class="fixedElement">
@@ -77,7 +75,7 @@
                                     Date  :
                                 </label>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" value=""id="EntryDate" disabled>
+                                    <input type="text" class="form-control" value="" id="EntryDate" disabled>
                                 </div>
                                 <label class="col-form-label col-md-1">
                                     Time  :
@@ -242,7 +240,9 @@
 }
 @section scripts{
     <script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/EMC/EMCNoteApprove.js"></script>
 
     <script>
@@ -283,11 +283,11 @@
         $('#APPRej').change(function () {
             if ($('#APPRej').val() == "1") {
                 $("#TravDetails").addClass("border-green").removeClass("border-red");
-            }else {
+            } else {
                 $("#TravDetails").addClass("border-red").removeClass("border-green");
-                }
+            }
         });
-        
+
     </script>
 
 }

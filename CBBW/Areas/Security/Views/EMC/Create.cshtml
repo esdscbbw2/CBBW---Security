@@ -117,7 +117,7 @@
                                         Is E.P Tour  :
                                     </label>
                                     <div class="col-md-6">
-                                        <select onchange="ValidateControl();EPTourChange();" class="form-select EPTourSelector1 is-invalid" aria-label="Default select example" id="IsEPTour">
+                                        <select disabled onchange="ValidateControl();EPTourChange();" class="form-select EPTourSelector1 is-invalid" aria-label="Default select example" id="IsEPTour">
                                             <option selected value="-1">-</option>
                                             <option value="1">Yes</option>
                                             <option value="0">No</option>
@@ -285,11 +285,11 @@
                         </div>
                     </div>
 
-                    <div class="bgColor mt-4 bg-transparent text-center" id="Questions">
+                    <div class="bgColor mt-4 bg-transparent text-center border-red Policy" id="Questions">
                         <ul style="list-style:none;">
                             <li style="font-size: 16px;">
                                 The Entry Is Done As Per Policy & As Required:
-                                <select id="Policy" style="width: 110px;" class="form-select is-invalid" onchange="ValidateControl()" aria-label="Default select example">
+                                <select id="Policy" disabled style="width: 110px;" class="form-select is-invalid" onchange="ValidateControl()" aria-label="Default select example">
                                     <option selected value="-1">-</option>
                                     <option value="1">Yes</option>
                                     <option value="0">No</option>
@@ -319,14 +319,16 @@
 
 
 @section scripts{
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/EMC/EMCEntry.js"></script>
     <script>
         function btnScanViewClicked() {
             var filename = $('#emnHeader_AttachFile').val();
             var filepath = "/Upload/Forms/" + filename;
             if (filename != '') {
-                window.open(filepath);
+                OpenWindow(filepath);
             } else {
                 Swal.fire({
                     title: 'No Files Found.',
@@ -347,11 +349,11 @@
                 text: "Are you sure you want to delete this?",
                 icon: 'success',
                 html: `<div style="text-align:left;">
-                                                                    <div class="form-group">
-                                                                        <label class="swal-label">Attach File (Only Pdf,Png & Jpg Files)</label>
-                                                                        <input type="file" id="uploadCtrl" name="uploadCtrl" class="form-control" placeholder="">
-                                                                    </div>
-                                                                </div>`,
+                                                                            <div class="form-group">
+                                                                                <label class="swal-label">Attach File (Only Pdf,Png & Jpg Files)</label>
+                                                                                <input type="file" id="uploadCtrl" name="uploadCtrl" class="form-control" placeholder="">
+                                                                            </div>
+                                                                        </div>`,
                 cancelButtonClass: 'btn-cancel',
                 cancelButtonText: 'Cancel',
                 confirmButtonText: 'Submit',
@@ -367,7 +369,7 @@
                     if (files.length > 0) {
                         data.append("MyImages", files[0]);
                         $.ajax({
-                            url: "/Common/UploadFile",
+                            url: "/Security/Common/UploadFile",
                             type: "POST",
                             processData: false,
                             contentType: false,
@@ -379,7 +381,9 @@
                                         $('#btnScan').addClass('inVisible');
                                         $('#btnScanView').removeClass('inVisible');
                                         var filepath = "/Upload/Forms/" + item.FileName;
-                                        window.open(filepath);
+                                        OpenWindow(filepath);
+                                        $('#IsEPTour').removeAttr('disabled');
+
                                     }
                                     else {
                                         Swal.fire({

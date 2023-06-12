@@ -147,7 +147,7 @@
                                             </td>
                                             <td class="text-center">
                                                 <div class="position-relative clear pointer">
-                                                    <input id="SchTourToDate" type="date" max="@Model.TourFromdateStr"
+                                                    <input id="SchTourToDate" type="date"
                                                            data-name="SchTourToDate"
                                                            onchange="ValidateControl()"
                                                            class="form-control pointer clear is-invalid CustomDateFormatCloneRow">
@@ -299,17 +299,18 @@
         .pointer {
             cursor: pointer;
         }
+
         input[type="date"]::before {
-        
             right: 30px;
-         
         }
     </style>
 
 }
 @section scripts{
     <script src="~/UIContent/JS/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/EMC/EMCTravellingDetails.js"></script>
     <script>
         var firstOpen = true;
@@ -321,7 +322,7 @@
         }).on('dp.show', function () {
             if (firstOpen) {
                 //minDate: moment(),
-                    time = moment().startOf('day');
+                time = moment().startOf('day');
                 firstOpen = false;
             } else {
                 time = "01:00 PM"
@@ -330,7 +331,7 @@
         });
     </script>
     <script>
-        
+
             function BackUrls() {
                 debugger;
                 var url = "@ViewBag.BackUrl";
@@ -338,7 +339,7 @@
 
                 window.location.href = urlbk;
             };
-        
+
     </script>
 
     <script>

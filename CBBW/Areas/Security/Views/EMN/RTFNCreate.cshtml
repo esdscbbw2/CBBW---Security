@@ -7,278 +7,280 @@
 <div class="">
     @using (Html.BeginForm())
     {
-    <div class="row newTable">
-        <div class="fixedElement">
-            <div class="col-md-12">
-                <div class="heading_text_btn mb-3 mt-4">
-                    <div class="leftButton">
-                        <button type="button" id="btnBack" class="btn btn-primary me-2">
-                            <i data-feather="arrow-left-circle"></i>
-                            Back
-                        </button>
-                        <button type="button" onclick="SaveDataClicked()" id="btnSubmit" class="btn btn-secondary me-2" disabled>
-                            <i data-feather="upload"></i>
-                            Submit
-                        </button>
-                        <button type="button" onclick="Buttonclear()" class="btn btn-white">
-                            <i data-feather="x-circle"></i>
-                            Clear
-                        </button>
-                    </div>
-
-                    <h2>Employees Travelling Schedule Details – RATIFICATION (FOR MFG. CENTERS RECORDED AT NZB) </h2>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12 d-flex justify-content-between">
-            <div class="text-left pt-2 pb-2">
-                <button type="button" id="btnViewDoc" class="btn btn-light-green">
-                    To Check Attached “Travelling Request Form” Click Here
-
-                </button>
-                <input type="hidden" id="AttachFile" />
-            </div>
-            <div class="text-right pt-2 pb-2">
-                <div class="upper-tab-buttons">
-                    <button type="button" class="btn btn-primary me-2" id="btnTourRule">
-                        To Check  “Tour Rules”   Click Here
-                    </button>
-                    <button type="button" class="btn btn-primary " onclick="window.open('/Security/TADARules/ViewRedirection?CBUID=1');">
-                        To Check “TA & DA Rules”   Click Here
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-12 mb-4">
-            <div class="card mb-4 mt-4">
-                <div class="card-body approvalForm">
-                    <form class="form-sample form-inline row ms-auto">
-                        <div class="row d-flex align-items-center mb-4">
-                            <label class="col-form-label col-md-2">
-                                Ref. Employees Travelling  Schedule Details – ENTRY Note No. :
-                            </label>
-                            <div class="col-md-3">
-                                @Html.DropDownListFor(m => m.NoteNumber,
-new SelectList(Model.Notelist, "NoteNumber", "NoteNumber"),
-"Select Note Number",
-htmlAttributes: new
-{
-    @class = "form-select pointer is-invalid"
-})
-                            </div>
-                            <label class="col-form-label col-md-1">
-                                Date  :
-                            </label>
-                            <div class="col-md-2">
-                                <input type="text" class="form-control" value="" id="EntryDate" disabled>
-                            </div>
-                            <label class="col-form-label col-md-1">
-                                Time  :
-                            </label>
-                            <div class="col-md-2">
-                                <input type="text" class="form-control" value="" id="EntryTime" disabled>
-                            </div>
-                        </div>
-                        <div class="row d-flex align-items-center mb-4">
-                            <label class="col-form-label col-md-2">
-                                Center Code & Name  :
-                            </label>
-                            <div class="col-md-6">
-                                <input type="text" class="form-control" value="" id="CenterCodeName" readonly>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="card mt-4 mb-4">
-                <div class="card-body alert alert-success approvalForm text-dark ">
-                    <div class="row d-flex align-items-center">
-                        <div class="col-md-2 col-form-label">
-                            <label>Approved :</label>
-                        </div>
-                        <div class="col-md-2">
-                            <input type="text" class="form-control width-85 pointer-none" id="IsApproved" value="" disabled="">
-                        </div>
-                        <div class="col-md-2 col-form-label">
-                            <label>Date &amp; Time Of Approval :</label>
-                        </div>
-                        <div class="col-md-2">
-                            <input type="text" id="ApprovedDateTime" class="form-control" value="" disabled="">
-                        </div>
-                        <div class="col-md-2 col-form-label">
-                            <label>Reason If Not Approved :</label>
+        <div class="row newTable">
+            <div class="fixedElement">
+                <div class="col-md-12">
+                    <div class="heading_text_btn mb-3 mt-4">
+                        <div class="leftButton">
+                            <button type="button" id="btnBack" class="btn btn-primary me-2">
+                                <i data-feather="arrow-left-circle"></i>
+                                Back
+                            </button>
+                            <button type="button" onclick="SaveDataClicked()" id="btnSubmit" class="btn btn-secondary me-2" disabled>
+                                <i data-feather="upload"></i>
+                                Submit
+                            </button>
+                            <button type="button" onclick="Buttonclear()" class="btn btn-white">
+                                <i data-feather="x-circle"></i>
+                                Clear
+                            </button>
                         </div>
 
-                        <div class="col-md-2">
-                            <textarea name="" id="ApprovedReason" cols="20" rows="2" class="form-control pointer-default" readonly data-toggle="tooltip" data-placement="bottom">  </textarea>
-
-                        </div>
-
+                        <h2>Employees Travelling Schedule Details – RATIFICATION (FOR MFG. CENTERS RECORDED AT NZB) </h2>
                     </div>
                 </div>
             </div>
-            <div class="col-md-12 mt-4 pt-3">
-                <div class="heading_text_btn2 d-block mb-4">
-                    <h2>
-                        Travelling Person - Details
-                    </h2>
-                </div>
+            <div class="col-md-12 d-flex justify-content-between">
+                <div class="text-left pt-2 pb-2">
+                    <button type="button" id="btnViewDoc" class="btn btn-light-green">
+                        To Check Attached “Travelling Request Form” Click Here
 
-                <div class="card" id="TravellingPerson">
-                    <div class="card-body">
+                    </button>
+                    <input type="hidden" id="AttachFile" />
+                </div>
+                <div class="text-right pt-2 pb-2">
+                    <div class="upper-tab-buttons">
+                        <button type="button" class="btn btn-primary me-2" id="btnTourRule">
+                            To Check  “Tour Rules”   Click Here
+                        </button>
+                        <button type="button" class="btn btn-primary " onclick="window.open('/Security/TADARules/ViewRedirection?CBUID=1');">
+                            To Check “TA & DA Rules”   Click Here
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-4">
+                <div class="card mb-4 mt-4">
+                    <div class="card-body approvalForm">
                         <form class="form-sample form-inline row ms-auto">
                             <div class="row d-flex align-items-center mb-4">
-                                <div class="col-md-2 col-form-label">
-                                    <label>For Center Code & Name :</label>
+                                <label class="col-form-label col-md-2">
+                                    Ref. Employees Travelling  Schedule Details – ENTRY Note No. :
+                                </label>
+                                <div class="col-md-3">
+                                    @Html.DropDownListFor(m => m.NoteNumber,
+    new SelectList(Model.Notelist, "NoteNumber", "NoteNumber"),
+    "Select Note Number",
+    htmlAttributes: new
+    {
+        @class = "form-select pointer is-invalid"
+    })
                                 </div>
+                                <label class="col-form-label col-md-1">
+                                    Date  :
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" value="" id="EntryDate" disabled>
+                                </div>
+                                <label class="col-form-label col-md-1">
+                                    Time  :
+                                </label>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" value="" id="EntryTime" disabled>
+                                </div>
+                            </div>
+                            <div class="row d-flex align-items-center mb-4">
+                                <label class="col-form-label col-md-2">
+                                    Center Code & Name  :
+                                </label>
                                 <div class="col-md-6">
-
-                                    <select class="form-select alterID inValidTag" style="width: 60%;"
-                                            data-name="CenterCNtxt" data-name-text="CenterCNtxt"
-                                            aria-label="Default select example"
-                                            id="CenterCN" onchange="CenterCNChanged();">
-                                    </select>
+                                    <input type="text" class="form-control" value="" id="CenterCodeName" readonly>
                                 </div>
                             </div>
                         </form>
-                        <div class="table-responsive btnalign">
-                            <table class="table table-bordered w-100" id="Traveltbl">
-                                <thead>
-                                    <tr>
-                                        <th scope="col" style="vertical-align: middle;">SL.No.</th>
-                                        <th scope="col" style="text-align: center; vertical-align: middle;">
-                                            Person Type
-                                        </th>
-                                        <th scope="col" style="text-align: center; vertical-align: middle;">Employee No. & Name</th>
-                                        <th scope="col" style="text-align: center; vertical-align: middle;">
-                                            Designation Code & Name
-                                        </th>
-                                        <!-- <th scope="col" style="text-align: center; vertical-align: middle;"> Is He Back With Vehicle</th> -->
-                                        <th scope="col" style="text-align: center; vertical-align: middle;">
-                                            Eligible Company Vehicle Type
-                                        </th>
-                                        <th scope="col" style="text-align: center; vertical-align: middle;">
-                                            T.A & D.A Denied
-                                        </th>
-
-                                    </tr>
-
-                                </thead>
-                                <tbody id="tbody1">
-                                    <tr id="0" class="add-row">
-                                        <th scope="row" class="text-center">1</th>
-                                        <td class="text-center"><div id="DDPersonType" class="htmlVal alterID"></div></td>
-                                        <td class="text-center"><div id="EmployeeNo" class="htmlVal alterID"></div></td>
-                                        <td class="text-center"><div id="DesgCodenName" class="htmlVal alterID"></div> </td>
-                                        <td class="text-center"> <div id="EgblVehicleTypeName" class="htmlVal alterID"></div> </td>
-                                        <td class="text-center"><div id="TaDaDenied" class="htmlVal alterID"></div></td>
-
-                                    </tr>
-                                </tbody>
-                                <tbody id="tbody2"></tbody>
-                            </table>
-                        </div>
-
                     </div>
                 </div>
-            </div>
-            <div class="col-md-12">
-                <div class="d-flex justify-content-center mt-4">
-                    <button type="submit" name="Submit" value="btnTravDetails" id="btnTravDetails" disabled class="btn btn-primary me-2">
-                        Travelling Details
-                    </button>
-                </div>
-            </div>
-            <div class="bgColor mt-4 bg-transparent text-left">
-                <ul style="list-style:none;">
-                    <li style="font-size: 16px;">
-                        It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As It Is selected:
-                        <input type="text" id="OtherPlace" class="form-control width-85 pointer-none" value="" disabled="">
-                    </li>
-                </ul>
-            </div>
-            <div class="bgColor mt-4 bg-transparent text-left">
-                <ul style="list-style:none;">
-                    <li style="font-size: 16px;">
-                        It Is Ensured That This Person Is Carrying Laptop As Provided To Him. The Same Has Been Confirmed (as per leave rules):
-                        <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
-                    </li>
-                </ul>
-            </div>
-            <div class="bgColor mt-4 bg-transparent text-left">
-                <ul style="list-style:none;">
-                    <li style="font-size: 16px;">
-                        The Entry Is Done As Per Policy & As Required:
-                        <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
-                    </li>
-                </ul>
-            </div>
-            <div class="bgColor mt-4 bg-transparent text-left">
-                <ul style="list-style:none;">
-                    <li style="font-size: 16px;">
-                        Tour Is Approved / Rejected After Written Information & Consent Of COO. When Ever Required, VB Document Shall Be Produced:
-                        <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
-                    </li>
-                </ul>
-            </div>
-            <div class="bgColor mt-4 bg-transparent text-left">
-                <ul style="list-style:none;">
-                    <li style="font-size: 16px;">
-                        This Tour Schedule Has Been Selected As “Other Place” with A Proper Reason:
-                        <select id="OtherP" data-name="OtherP" data-name-text="OtherPtxt"
-                                onchange="ValidateControl()"
-                                class="form-select is-invalid clear"
-                                aria-label="Default select example" style="width: 110px;">
-                            <option selected value="-1"> -</option>
-                            <option value="1">Yes</option>
-                            <option value="0">No</option>
-                        </select>
-                    </li>
-                </ul>
-            </div>
-            <div class="card mb-4 mt-4">
-                <div class="card-body alert alert-danger approvalForm text-dark ">
-                    <form class="form-sample form-inline row ms-auto">
+                <div class="card mt-4 mb-4">
+                    <div class="card-body alert alert-success approvalForm text-dark ">
                         <div class="row d-flex align-items-center">
                             <div class="col-md-2 col-form-label">
-                                <label>Ratified :</label>
+                                <label>Approved :</label>
                             </div>
                             <div class="col-md-2">
-                                <select name="IsRatified" id="IsRatified" data-name="IsRatified" data-name-text="IsRatifiedtxt"
-                                        onchange="ValidateControl()"
-                                        class="form-select is-invalid clear"
-                                        aria-label="Default select example" style="width: 110px;">
-                                    <option selected value="-1"> -</option>
-                                    <option value="1">Yes</option>
-                                    <option value="0">No</option>
-                                </select>
+                                <input type="text" class="form-control width-85 pointer-none" id="IsApproved" value="" disabled="">
                             </div>
                             <div class="col-md-2 col-form-label">
-                                <label>Date & Time Of &nbsp; Ratification :</label>
+                                <label>Date &amp; Time Of Approval :</label>
                             </div>
                             <div class="col-md-2">
-                                <input type="text" class="form-control" value="@DateTime.Today.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture) @DateTime.Now.ToString("hh:mm tt")" disabled="">
+                                <input type="text" id="ApprovedDateTime" class="form-control" value="" disabled="">
                             </div>
                             <div class="col-md-2 col-form-label">
-                                <label>Reason If Not Ratified :</label>
+                                <label>Reason If Not Approved :</label>
                             </div>
+
                             <div class="col-md-2">
-                                <textarea maxlength="200" name="RatifiedReason" id="RatifiedReason" onchange="ValidateControl()" data-name="ApproveReason" class="form-control is-invalid clear" cols="10" rows="2"></textarea>
+                                <textarea name="" id="ApprovedReason" cols="20" rows="2" class="form-control pointer-default" readonly data-toggle="tooltip" data-placement="bottom">  </textarea>
 
                             </div>
+
                         </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
+                <div class="col-md-12 mt-4 pt-3">
+                    <div class="heading_text_btn2 d-block mb-4">
+                        <h2>
+                            Travelling Person - Details
+                        </h2>
+                    </div>
 
+                    <div class="card" id="TravellingPerson">
+                        <div class="card-body">
+                            <form class="form-sample form-inline row ms-auto">
+                                <div class="row d-flex align-items-center mb-4">
+                                    <div class="col-md-2 col-form-label">
+                                        <label>For Center Code & Name :</label>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                        <select class="form-select alterID inValidTag" style="width: 60%;"
+                                                data-name="CenterCNtxt" data-name-text="CenterCNtxt"
+                                                aria-label="Default select example"
+                                                id="CenterCN" onchange="CenterCNChanged();">
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="table-responsive btnalign">
+                                <table class="table table-bordered w-100" id="Traveltbl">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" style="vertical-align: middle;">SL.No.</th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;">
+                                                Person Type
+                                            </th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;">Employee No. & Name</th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;">
+                                                Designation Code & Name
+                                            </th>
+                                            <!-- <th scope="col" style="text-align: center; vertical-align: middle;"> Is He Back With Vehicle</th> -->
+                                            <th scope="col" style="text-align: center; vertical-align: middle;">
+                                                Eligible Company Vehicle Type
+                                            </th>
+                                            <th scope="col" style="text-align: center; vertical-align: middle;">
+                                                T.A & D.A Denied
+                                            </th>
+
+                                        </tr>
+
+                                    </thead>
+                                    <tbody id="tbody1">
+                                        <tr id="0" class="add-row">
+                                            <th scope="row" class="text-center">1</th>
+                                            <td class="text-center"><div id="DDPersonType" class="htmlVal alterID"></div></td>
+                                            <td class="text-center"><div id="EmployeeNo" class="htmlVal alterID"></div></td>
+                                            <td class="text-center"><div id="DesgCodenName" class="htmlVal alterID"></div> </td>
+                                            <td class="text-center"> <div id="EgblVehicleTypeName" class="htmlVal alterID"></div> </td>
+                                            <td class="text-center"><div id="TaDaDenied" class="htmlVal alterID"></div></td>
+
+                                        </tr>
+                                    </tbody>
+                                    <tbody id="tbody2"></tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="d-flex justify-content-center mt-4">
+                        <button type="submit" name="Submit" value="btnTravDetails" id="btnTravDetails" disabled class="btn btn-primary me-2">
+                            Travelling Details
+                        </button>
+                    </div>
+                </div>
+                <div class="bgColor mt-4 bg-transparent border-green text-left">
+                    <ul style="list-style:none;">
+                        <li style="font-size: 16px;">
+                            It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As It Is selected:
+                            <input type="text" id="OtherPlace" class="form-control width-85 pointer-none" value="" disabled="">
+                        </li>
+                    </ul>
+                </div>
+                <div class="bgColor mt-4 bg-transparent border-green text-left">
+                    <ul style="list-style:none;">
+                        <li style="font-size: 16px;">
+                            It Is Ensured That This Person Is Carrying Laptop As Provided To Him. The Same Has Been Confirmed (as per leave rules):
+                            <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                        </li>
+                    </ul>
+                </div>
+                <div class="bgColor mt-4 bg-transparent border-green text-left">
+                    <ul style="list-style:none;">
+                        <li style="font-size: 16px;">
+                            The Entry Is Done As Per Policy & As Required:
+                            <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                        </li>
+                    </ul>
+                </div>
+                <div class="bgColor mt-4 bg-transparent border-green text-left">
+                    <ul style="list-style:none;">
+                        <li style="font-size: 16px;">
+                            Tour Is Approved / Rejected After Written Information & Consent Of COO. When Ever Required, VB Document Shall Be Produced:
+                            <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                        </li>
+                    </ul>
+                </div>
+                <div class="bgColor mt-4 bg-transparent OtherP  border-red text-left" id="TraveDetails">
+                    <ul style="list-style:none;">
+                        <li style="font-size: 16px;">
+                            This Tour Schedule Has Been Selected As “Other Place” with A Proper Reason:
+                            <select id="OtherP" data-name="OtherP" data-name-text="OtherPtxt"
+                                    onchange="ValidateControl()"
+                                    class="form-select is-invalid clear"
+                                    aria-label="Default select example" style="width: 110px;">
+                                <option selected value="-1"> -</option>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card mb-4 mt-4" id="Approval">
+                    <div class="card-body alert alert-danger approvalForm text-dark ">
+                        <form class="form-sample form-inline row ms-auto">
+                            <div class="row d-flex align-items-center">
+                                <div class="col-md-2 col-form-label">
+                                    <label>Ratified :</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <select name="IsRatified" id="IsRatified" data-name="IsRatified" data-name-text="IsRatifiedtxt"
+                                            onchange="ValidateControl()"
+                                            class="form-select is-invalid clear"
+                                            aria-label="Default select example" style="width: 110px;">
+                                        <option selected value="-1"> -</option>
+                                        <option value="1">Yes</option>
+                                        <option value="0">No</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 col-form-label">
+                                    <label>Date & Time Of &nbsp; Ratification :</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" value="@DateTime.Today.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture) @DateTime.Now.ToString("hh:mm tt")" disabled="">
+                                </div>
+                                <div class="col-md-2 col-form-label">
+                                    <label>Reason If Not Ratified :</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <textarea maxlength="200" name="RatifiedReason" id="RatifiedReason" onchange="ValidateControl()" data-name="ApproveReason" class="form-control is-invalid clear" cols="10" rows="2"></textarea>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
         </div>
-    </div>
     }
 </div>
 @section scripts{
     <script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/EMN/EMNRatified.js"></script>
 
     <script>

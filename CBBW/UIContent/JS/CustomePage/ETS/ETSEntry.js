@@ -1,24 +1,4 @@
-﻿$.fn.makeEnabled = function () {
-    var that = this;
-    that.removeAttr('disabled');
-};
-$.fn.makeDisable = function () {
-    var that = this;
-    that.attr('disabled', 'disabled');
-};
-$.fn.isInvalid = function () {
-    var that = this;
-    that.addClass('is-invalid').removeClass('is-valid');
-};
-$.fn.isValid = function () {
-    var that = this;
-    that.addClass('is-valid').removeClass('is-invalid');
-};
-$.fn.clearValidateClass = function () {
-    var that = this;
-    that.removeClass('is-valid').removeClass('is-invalid');
-};
-function AddClonebtn() {
+﻿function AddClonebtn() {
     var insrow = AddClonebtn.caller.arguments[0].target.closest('.add-row');
 
     var insrowid = $(insrow).attr('id');
@@ -43,24 +23,24 @@ function EnableTravellingBtn() {
     var DWTBtn = $('#VADBtn');
     var Btnsubmit = $('#Btnsubmit').val();
 
-    if (Btnsubmit == 1) { DWTBtn.makeEnabled(); }
+    if (Btnsubmit == 1) { DWTBtn.makeEnabled(); DWTBtn.removeClass('nodrop'); }
     
     if ((x + y) * 1 > 0) {
         DWTBtn.makeDisable();
     }
     else {
-        DWTBtn.makeEnabled();
+        DWTBtn.makeEnabled(); DWTBtn.removeClass('nodrop');
     }
 };
 function DDPersonTypeChanged() {
     var target = DDPersonTypeChanged.caller.arguments[0].target;
     var tblRow = target.closest('.add-row');
     var targetCtrl = $(target);
+
     var docname = $('#etsHeader_AttachFile').val();
     if (docname != '') {
-    //var targetindexid = target.closest('.add-row');
-    var targetid = targetCtrl.attr('id');
-    var mValue = targetCtrl.val();
+     var targetid = targetCtrl.attr('id');
+     var mValue = targetCtrl.val();
         var selectvalue = 0;
         var Empval = "";
         GetDDPersonTypeChanged(targetid, mValue, selectvalue, Empval);
@@ -79,11 +59,9 @@ function DDPersonTypeChanged() {
             confirmButtonColor: '#2527a2',
         });
     }
-
 };
 function GetDDPersonTypeChanged(targetid, mValue, selectedvalue, Empval) {
    // alert(targetid + '--' + mValue + '--' + selectedvalue);
-    debugger;
     var cmbCtrl = $('#cmb' + targetid);
     var txtCtrl = $('#txt' + targetid);
    
@@ -170,9 +148,9 @@ function ValidateControl() {
     var targetid = $(target).attr('id');
     var isvalid = validatectrl(targetid, $(target).val());
     if (isvalid) {
-        $(target).removeClass('is-invalid').addClass('is-valid');
+        $(target).isValid();
     } else {
-        $(target).removeClass('is-valid').addClass('is-invalid');
+        $(target).isInvalid();
     }
     //$('#BackBtnActive').val(1);
     EnableSubmitBtn();
@@ -193,19 +171,49 @@ function ValidateCloneRowCtrl() {
 };
 function validatectrl(targetid, value) {
     var isvalid = false;
+    var carryLaptop = $('#carryLaptop');
+    var Policy = $('#Policy');
+
+
     switch (targetid) {
         case "TaDaDenied":
+            if (value == 1) {
+                MyAlert(6, 'You Will Continue With TADA Denied Yes..!!');
+            }
             isvalid = validatectrl_YesNoCombo(value);
-            
             break;
         case "otherplace":
             isvalid = validatectrl_YesOrNo(value);
+            if (isvalid) {
+              //  $('#ID3').removeClass('border-red').addClass('border-green');
+                //UnLockControl(carryLaptop.attr('id'));
+               
+            }
+            else {
+                //$('.content').removeClass('border-green').addClass('border-red');
+                //LockControl(carryLaptop.attr('id'));
+                //Policy.val('').isInvalid();
+                //carryLaptop.val('').isInvalid();
+               
+            }
             break;
         case "carryLaptop":
             isvalid = validatectrl_YesOrNo(value);
+            if (isvalid) {
+                //$('.content').removeClass('border-red').addClass('border-green');
+                //UnLockControl(Policy.attr('id'));
+
+            }
+            else {
+                //$('.content').removeClass('border-green').addClass('border-red');
+                //LockControl(Policy.attr('id'));
+                //Policy.val('').isInvalid();
+            }
             break;
         case "Policy":
             isvalid = validatectrl_YesOrNo(value);
+            //if (isvalid) { $('.content').removeClass('border-red').addClass('border-green'); }
+            //else { $('.content').removeClass('border-green').addClass('border-red'); }
             break;
     }
     return isvalid;
@@ -402,6 +410,18 @@ function SaveFinalSubmit() {
     });
 }
 $(document).ready(function () {
+    var Btnsubmit = $('#Btnsubmit').val();
+    if (Btnsubmit == 0) {
+        if ($.isEmptyObject($('#etsHeader_AttachFile').val())) { LockSection('TravellingPerson'); }
+        else { UnLockSection('TravellingPerson');}
+        LockSection('Questions');
+    }
+    if (Btnsubmit == 1) {
+        UnLockSection('Questions');
+        LockControl('carryLaptop');
+        LockControl('Policy');
+    }
+
     (async function () {
         const r1 = await getInitialData();
     })();

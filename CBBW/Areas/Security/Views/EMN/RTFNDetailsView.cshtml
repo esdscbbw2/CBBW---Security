@@ -304,7 +304,7 @@
             $('#btnViewDoc').click(function () {
                 var docfilename = $('#emnHeader_AttachFile').val();
                 var filepath = "/Upload/Forms/" + docfilename;
-                if (docfilename.length > 2) { window.open(filepath); }
+                if (docfilename.length > 2) { OpenWindow(filepath); }
                 else {
                     Swal.fire({
                         title: 'Information',

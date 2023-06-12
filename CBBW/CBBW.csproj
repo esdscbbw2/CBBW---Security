@@ -375,7 +375,7 @@
     <Content Include="UIContent\JS\CustomePage\CTV\CreateNote.js" />
     <Content Include="UIContent\JS\CustomePage\CTV\CreateOtherTrip.js" />
     <Content Include="UIContent\JS\CustomePage\EHG\EHGCreateNote.js" />
-    <Content Include="UIContent\JS\CustomePage\EHGDateWiseTourDtl.js" />
+    <Content Include="UIContent\JS\CustomePage\EHG\EHGDateWiseTourDtl.js" />
     <Content Include="UIContent\JS\CustomePage\EHGNoteApproval.js" />
     <Content Include="UIContent\JS\CustomePage\EHGVehicleAllotment.js" />
     <Content Include="UIContent\JS\CustomePage\EMC\EMCEntry.js" />

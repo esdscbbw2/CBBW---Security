@@ -80,6 +80,12 @@ $(document).ready(function () {
         GetTourCategory("2");
     }
 
+    var dateDetails = $('#dateDetails');
+    var btnSubmit = $('#btnSubmit').val();
+    if (btnSubmit * 1 == 0) {
+        LockSection(dateDetails.attr('id'));
+    }
+
 
 });
 function ValidateControl() {
@@ -132,6 +138,10 @@ function ValidateCloneRowCtrl() {
         if (todate <= calculatedFromdate) {
             $(tblRow).find('.addBtn').makeDisable();
         }
+        $(tblRow).find('.btn-default').each(function () {
+            $(this).removeClass('nodrop disabled bg-blue');
+            $(this).removeAttr('disabled');
+        });
     }
     EnableAddBtnInCloneRowIfOnlyLastV2(tblRow, 'AddBtn');
     EnableSubmitBtn();
@@ -190,6 +200,7 @@ function validatectrl(targetid, value, rowid) {
             }
             break;
         case "SchTourToDate":
+            ValidateEmployeeForTour($('#EmplyoyeeNoList').val(), $('#SchFromDate').val(), value);
             isvalid = validatectrl_ValidateLength(value);
             break;
         case "dateTour_SchToDate":
@@ -238,7 +249,6 @@ function validatectrl(targetid, value, rowid) {
 
     return isvalid;
 };
-
 function CompareDates() {
     var Val = false;
     var dt = new Date;
@@ -304,7 +314,10 @@ function EnableSubmitBtn() {
     if ((x + y) * 1 <= 0) {
         if (mEnable) { DWTBtn.makeEnabled(); } else { DWTBtn.makeDisable(); }
     } else { DWTBtn.makeDisable(); }
-
+    var dateDetails = $('#dateDetails');
+    if (x * 1 <= 0) {
+        UnLockSection(dateDetails.attr('id'));
+    } else { LockSection(dateDetails.attr('id')); }
 
 };
 function AddClonebtn() {
@@ -397,6 +410,7 @@ function Datechange(evt) {
     $('#SchTourToDate').isInvalid();
     $('#SchTourToDate').attr('min', evt);
     $('#lblSchTourToDate').html('Select Date');
+    GetTourMaxDaysAllow(evt);
 
 };
 function SetDatechange(evt) {
@@ -598,7 +612,6 @@ function Buttonclear() {
     $("#tbody2").empty();
     ClearallDropdownData('');
 }
-
 $(document).ready(function () {
 
     (async function () {
@@ -698,3 +711,14 @@ async function getInitialData() {
         }
     });
 };
+function GetTourMaxDaysAllow(Fromdate) {
+    $.ajax({
+        url: '/ETS/GetTourMaxDaysAllow',
+        method: 'GET',
+        data: { FromDate: Fromdate },
+        dataType: 'json',
+        success: function (data) {
+            $('#SchTourToDate').attr('max', data);
+        }
+    });
+}

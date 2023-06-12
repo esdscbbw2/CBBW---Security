@@ -11,6 +11,7 @@ using CBBW.BOL.EHG;
 using CBBW.BOL.EMC;
 using CBBW.BOL.EMN;
 using CBBW.BOL.ETS;
+using CBBW.BOL.GVMR;
 using CBBW.BOL.Master;
 using CBBW.BOL.MGP;
 using CBBW.BOL.TADA;
@@ -424,6 +425,49 @@ namespace CBBW.DAL.DataSync
                 }
             }
         }
+        //public CommonTable(List<GVMRDataSave> customoptions)
+        //{
+        //    UDTable = new DataTable();
+        //    UDTable.Columns.Add("iGvmrid", typeof(int));
+        //    UDTable.Columns.Add("sNoteNo", typeof(string));
+        //    UDTable.Columns.Add("sActualInRFIDCard", typeof(string));
+        //    UDTable.Columns.Add("dActualTripInDate", typeof(DateTime));
+        //    UDTable.Columns.Add("sActualTripInTime", typeof(string));
+        //    UDTable.Columns.Add("lActualTripInKM", typeof(long));
+        //    UDTable.Columns.Add("sActualOutRFIDCard", typeof(string));
+        //    UDTable.Columns.Add("dActualTripOutDate", typeof(DateTime));
+        //    UDTable.Columns.Add("sActualTripOutTime", typeof(string));
+        //    UDTable.Columns.Add("lActualTripOutKM", typeof(long));
+        //    UDTable.Columns.Add("sRemark", typeof(string));
+        //    UDTable.Columns.Add("iCenterCode", typeof(int));
+        //    if (customoptions != null && customoptions.Count > 0)
+        //    {
+        //        foreach (GVMRDataSave obj in customoptions)
+        //        {
+        //            DataRow dr = UDTable.NewRow();
+        //            dr["iGvmrid"] = obj.Gvmrid;
+        //            dr["sNoteNo"] = obj.NoteNo;
+        //            dr["sActualInRFIDCard"] = obj.ActualInRFIDCard;
+        //            dr["dActualTripInDate"] = obj.ActualTripInDate;
+        //            dr["sActualTripInTime"] = obj.ActualTripInTime;
+        //            dr["lActualTripInKM"] = obj.ActualTripInKM;
+        //            dr["sActualOutRFIDCard"] = obj.ActualOutRFIDCard;
+        //            dr["dActualTripOutDate"] = obj.ActualTripOutDate;
+        //            dr["sActualTripOutTime"] = obj.ActualTripOutTime;
+        //            dr["lActualTripOutKM"] = obj.ActualTripOutKM;
+        //            dr["sRemark"] = obj.Remark;
+        //            dr["iCenterCode"] = obj.CenterCode;
+        //            UDTable.Rows.Add(dr);
+        //        }
+        //    }
+        //}
+
+
+
+
+
+
+
 
     }
 }

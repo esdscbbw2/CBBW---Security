@@ -65,7 +65,18 @@ namespace CBBW.BOL
         public static DateTime ConvertStringToDate(string dateString) 
         {
             return DateTime.ParseExact(dateString, "dd/MM/yyyy", null);
+        }        
+        public static string GetCommaSeparatedString(List<int> ObjectList)
+        {
+            string Result = string.Empty;
+            foreach (var item in ObjectList)
+            {
+                Result = Result + item.ToString() + ",";
+            }
+            Result = Result.Substring(0, Result.Length - 1);
+            return Result;
         }
+
         public static string GetIPAddress() 
         {
             string ipAddress = HttpContext.Current.Request.UserHostAddress;
@@ -77,5 +88,6 @@ namespace CBBW.BOL
             //string ComName = HttpContext.Current.Request.UserHostName;
             return ComName;
         }
+
     }
 }

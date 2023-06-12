@@ -75,7 +75,7 @@
                                     Date  :
                                 </label>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" value=""  id="EntryDate" disabled>
+                                    <input type="text" class="form-control" value="" id="EntryDate" disabled>
                                 </div>
                                 <label class="col-form-label col-md-1">
                                     Time  :
@@ -186,7 +186,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="bgColor mt-4 bg-transparent text-left">
+                <div class="bgColor border-green mt-4 bg-transparent text-left">
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
                             It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As It Is selected:
@@ -206,7 +206,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="bgColor mt-4 bg-transparent text-left">
+                <div class="bgColor content border-red mt-4 bg-transparent text-left" id="OtherPdiv">
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
                             This Tour Schedule Has Been Selected As “Other Place” And It Is Genuine & As Required:
@@ -221,7 +221,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="card mb-4 mt-4">
+                <div class="card mb-4 mt-4" id="DivRati">
                     <div class="card-body alert alert-danger approvalForm text-dark ">
                         <form class="form-sample form-inline row ms-auto">
                             <div class="row d-flex align-items-center">
@@ -266,7 +266,9 @@
 }
 @section scripts{
     <script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/ETS/ETSRatified.js"></script>
 
     <script>
@@ -276,7 +278,7 @@
                 window.open(url);
             });
 
-          
+
         });
     </script>
 

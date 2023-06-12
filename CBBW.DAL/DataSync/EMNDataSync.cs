@@ -125,7 +125,7 @@ namespace CBBW.DAL.DataSync
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
         public DataTable SetEMNDetailsFinalSubmit(EMNHeader hdrmodel, ref string pMsg)
-        {
+        {  
             try
             {
                 int paracount = 0;
@@ -138,7 +138,6 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = hdrmodel.AttachFile;
                 para[paracount] = new SqlParameter("@status", SqlDbType.Int);
                 para[paracount++].Value = hdrmodel.Status;
-
                 using (SQLHelper sql = new SQLHelper("[EMN].[SetEMNDetailsFinalSubmit]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataTable(para, ref pMsg);
@@ -154,7 +153,6 @@ namespace CBBW.DAL.DataSync
                 SqlParameter[] para = new SqlParameter[1];
                 para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
                 para[paracount++].Value = NoteNumber;
-
                 using (SQLHelper sql = new SQLHelper("[EMN].[getEMNHdrEntry]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataTable(para, ref pMsg);

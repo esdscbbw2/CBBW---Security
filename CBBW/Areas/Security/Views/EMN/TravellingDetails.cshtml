@@ -13,6 +13,7 @@
         @Html.HiddenFor(x => x.AttachFile);
         @Html.HiddenFor(x => x.CenterCodenName);
         @Html.HiddenFor(x => x.btnSubmit);
+        @Html.HiddenFor(x => x.EmplyoyeeNoList);
         <div class="row newTable">
             <div class="fixedElement">
                 <div class="col-md-12">
@@ -147,7 +148,7 @@
                                             <td class="text-center">
                                                 <div class="position-relative clear pointer">
                                                     <input id="SchTourToDate" type="date"
-                                                           data-name="SchTourToDate" max="@Model.TourFromdateStr"
+                                                           data-name="SchTourToDate"
                                                            onchange="ValidateControl()"
                                                            class="form-control pointer clear is-invalid CustomDateFormatCloneRow">
                                                     <label id="lblSchTourToDate" style="width:85px"
@@ -296,6 +297,7 @@
         .pointer {
             cursor: pointer;
         }
+
         input[type="date"]::before {
             right: 30px;
         }
@@ -305,7 +307,9 @@
 }
 @section scripts{
     <script src="~/UIContent/JS/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/EMN/EMNTravellingDetails.js"></script>
     <script>
 

@@ -5,11 +5,16 @@
 
     Notenumberchanged($('#NoteNumber').val());
     var btnDisplays = $("#btnDisplay").val();
-
+    var Approval = $("#Approval");
+    var TraveDetails = $("#TraveDetails");
     if (btnDisplays == 1) {
         $('#NoteNumber').makeDisable();
+        UnLockSection(TraveDetails.attr('id'));
+        LockSection(Approval.attr('id'));
     } else {
         $('#NoteNumber').makeEnabled();
+        LockSection(TraveDetails.attr('id'));
+        LockSection(Approval.attr('id'));
     }
 });
 function Notenumberchanged(notenumber) {
@@ -61,7 +66,7 @@ $(document).ready(function () {
     $('#btnViewDoc').click(function () {
         var docfilename = $('#AttachFile').val();
         var filepath = "/Upload/Forms/" + docfilename;
-        if (docfilename.length > 2) { window.open(filepath); }
+        if (docfilename.length > 2) { OpenWindow(filepath); }
         else {
             Swal.fire({
                 title: 'Information',
@@ -102,9 +107,18 @@ function ValidateControl() {
 };
 function validatectrl(targetid, value) {
     var isvalid = false;
+    var Approval = $('#Approval')
     switch (targetid) {
         case "OtherP":
             isvalid = validatectrl_YesNoCombo(value);
+            if (isvalid) {
+                $('.OtherP').removeClass('border-red').addClass('border-green');
+                UnLockControl(Approval.attr('id'));
+            }
+            else {
+                $('.OtherP').removeClass('border-green').addClass('border-red');
+                LockControl(Approval.attr('id'));
+            }
             break;
         case "IsRatified":
             isvalid = validatectrl_YesNoComboApproval(value);

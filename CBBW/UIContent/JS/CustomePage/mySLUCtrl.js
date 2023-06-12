@@ -2,178 +2,124 @@
  * Follow The Instruction
  * 1. Container Should Have "SLUContainer" Class
  * 2. Controlls Should Have "SLUCtrl" Class
- * 3. Controlls Should Have "NOSLU" Class To Always Remain In Disabled State.
- * 4. "SLUBtn" Class For Buttons "SLUBtnOK" Class Is Used To Determine The Data Saved Inside The Inner Screen Or Not.
- * 6. "SLUStatement" Class For Div To Show Green Or Red Borders
- * 7. "SLUSection" Class Is For Sequentially Locking Unlocking Sections.
- * 8. Every Element Using SLU Classes Must Have Unique IDs
- * 9. "approvalForm" Class For Div & "ApproveCtrl" For Approve Status To Show Approval Patern.
+ * 3. Sections Should Have "SLUSection" Class
+ * 4. "SLUBtn" Class For Buttons "SLUBtnOK" Class Is Used Dynamically Aftre Button Functionalities Done Successfully 
+ * 5. "SLUStatement" Class For Div To Show Green Or Red Borders
+ * 6. "approvalForm" Class For Div & "ApproveCtrl" For Approve Status To Show Approval Patern.
+ * 7. "LUPS" Class Is Applicable To Controlls. (If Control Is Invald Then Unlock Previous Section )
+ * 8. "SLUAddBtn" & "SLURemoveBtn" Class Is For Table Row Cloaning Buttons.
+ * 9. "EC" Class Is Used In Table Row Controlls. By Changing The Value All Next Rows Will Be Deleted
  */
-//////////
-function SLUValid(myCtrlID) {
-    SLUNextCtrl(myCtrlID); //Unlock the next visible control.
-    var mySection = $('#' + myCtrlID).closest('.SLUSection'); //Geting the section of the control.
-    var mySectionID = mySection.attr('id');
-    
-    var nextSectionID = GetNextSLUSectionID(mySectionID); //Getting next section id of myCtrl
-    if (nextSectionID != 'NA') {
-        if (IsValidSection(mySectionID)) { //Check Elligibility of current section to lock/unlock the next section
-            UnLockSLUSection(nextSectionID);//unlock next section
+////////// These Functions may call from out side /////
+function SLUValid(myCtrl) {
+    SLUNextCtrl(myCtrl); //Unlock the next visible control.
+    var mySection = myCtrl.closest('.SLUSection'); //Geting the section of the control.
+    var nextSection = GetNextSLUSection(mySection); //Getting next section id of myCtrl
+    if (nextSection != null) {
+        if (IsValidSection(mySection)) { //Check Elligibility of current section to lock/unlock the next section
+            UnLockSLUSection(nextSection);//unlock next section
         }
         else {
-            LockSLUSection(nextSectionID);//lock next section 
+            //LockSLUSection(nextSection);//lock next section
+            LockNextSections(myCtrl);
         }
-    } else { IsValidSection(mySectionID);}
+    } else { IsValidSection(mySection); }
+    if (myCtrl.hasClass('LUPS')) { LockPreviousSections(myCtrl); }
 };
-function SLUInvalid(myCtrlID) {
-    LockNextCtrlsInContainer(myCtrlID);
-    var mySection = $('#' + myCtrlID).closest('.SLUSection'); //Geting the section of the control.
-    var mySectionID = mySection.attr('id');
-    var nextSectionID = GetNextSLUSectionID(mySectionID);
-    LockSLUSection(nextSectionID);//lock next section
+function SLUInvalid(myCtrl) {
+    LockNextCtrlsInContainer(myCtrl);
+    var mySection = myCtrl.closest('.SLUSection');
+    //LockSLUSection(GetNextSLUSection(mySection));//lock next section
+    LockNextSections(myCtrl);
+    IsValidSection(mySection);
+    if (myCtrl.hasClass('LUPS')) { UnLockPreviousSections(myCtrl); }
 };
-function SLUNextCtrl(myCtrlID) {
-    var myCtrl = $('#' + myCtrlID);
-    var myDiv = myCtrl.closest('.SLUContainer');
-    const inputControls = myDiv.find('.SLUCtrl');
-    const currentIndex = inputControls.index(myCtrl);
-    if (currentIndex < inputControls.length - 1) {
-        if (inputControls.eq(currentIndex + 1).is(":visible")) {
-            UnLockSLUCtrl(inputControls.eq(currentIndex + 1).attr('id'));
-        }
-        else {
-            SLUNextCtrl(inputControls.eq(currentIndex + 1).attr('id'));
-        }
-    }
-};
-function LockNextCtrlsInContainer(myCtrlID) {
-    var myCtrl = $('#' + myCtrlID);
-    var myDiv = myCtrl.closest('.SLUContainer');
-    const inputControls = myDiv.find('.SLUCtrl');
-    const currentIndex = inputControls.index(myCtrl);
-    if (currentIndex < inputControls.length - 1) {
-        if (inputControls.eq(currentIndex + 1).is(":visible")) {
-            LockSLUCtrl(inputControls.eq(currentIndex + 1).attr('id'));
-        }
-        LockNextCtrlsInContainer(inputControls.eq(currentIndex + 1).attr('id'));
-    }
-};
-///////// Helper functions
-function LockSLUSection(id) {
-    var mySection = $('#' + id);
-    mySection.find('.SLUCtrl').each(function () {
-        LockSLUCtrl($(this).attr('id'));
-    });
-    mySection.addClass('sectionB');
-};
-function UnLockSLUSection(id) {
-    var mySection = $('#' + id);
-    mySection.removeClass('sectionB');
-    var i = 0;
-    mySection.find('.SLUCtrl').each(function () {
-        if (i == 0) { UnLockSLUCtrl($(this).attr('id')); }
-        else { LockSLUCtrl($(this).attr('id')); }
-        i += 1;
-    });    
-};
-function IsValidSection(mySectionID) {
-    var mySection = $('#' + mySectionID);
-    if (mySection.hasClass('SLUStatement')) { //if section is a statement section
-        MakeSLUSectionGreen(mySectionID);
-    }
-    if (mySection.hasClass('approvalForm')) { //if section is a approval/ratification section
-        mySection.actApprovalSection();
-    }
-    return IsEnabledSection(mySection);
-};
-function GetNextSLUSectionID(currentSectionID) {
-    var nextSectionID = "NA"
-    alert(currentSectionID + ' - ' + nextSectionID);
-    var mySection = $('#' + currentSectionID);
+function LockNextSections(myCtrl) {
+    mySection = myCtrl.closest('.SLUSection');
     var allSections = $('.SLUSection');
     var currentSecIndex = allSections.index(mySection);
-    var x = 0;
     if (currentSecIndex < allSections.length - 1) {
-        for (var i = currentSecIndex+1; i < allSections.length; i++) {
-            if (allSections.eq(i).is(":visible")) { x = i; }
+        for (var i = currentSecIndex + 1; i < allSections.length; i++) {
+            if (allSections.eq(i).is(":visible")) { LockSLUSection(allSections.eq(i)); }
         }
-        nextSectionID = allSections.eq(x).attr('id');
     }
-    alert(currentSectionID+' - '+nextSectionID);
-    return nextSectionID;
 };
-function IsEnabledSection(mySection) {
-    var isvalid = false;
-    var x = mySection.find('.is-invalid').length;
-    var btns = mySection.find('.SLUBtn').length;
-    var okbtns = mySection.find('.SLUBtnOK').length;
-    if (x <= 0 && btns == okbtns) { isvalid = true; }
-    return isvalid;
+function UnLockNextSections(myCtrl) {
+    mySection = myCtrl.closest('.SLUSection');
+    var allSections = $('.SLUSection');
+    var currentSecIndex = allSections.index(mySection);
+    if (currentSecIndex < allSections.length - 1) {
+        for (var i = currentSecIndex + 1; i < allSections.length; i++) {
+            if (allSections.eq(i).is(":visible")) { UnLockSLUSection(allSections.eq(i)); }
+        }
+    }
 };
-function LockSLUCtrl(id) {
-    var myCtrl = $('#' + id);
-    myCtrl.attr('disabled', 'disabled');
-    myCtrl.addClass('nodrop');
-    //For Multiselect
-    var closestDiv = myCtrl.closest("div");
-    closestDiv.find('.btn-default').each(function () {
-        $(this).addClass('nodrop disabled bg-blue');
-    });
+function LockPreviousSections(myCtrl) {
+    mySection = myCtrl.closest('.SLUSection');
+    var allSections = $('.SLUSection');
+    var currentSecIndex = allSections.index(mySection);
+    if (currentSecIndex < allSections.length - 1) {
+        for (var i = 0; i < currentSecIndex; i++) {
+            if (allSections.eq(i).is(":visible")) { LockSLUSection(allSections.eq(i)); }
+        }
+    }
 };
-function UnLockSLUCtrl(id) {
-    var myCtrl = $('#' + id);
-    myCtrl.removeAttr('disabled');
-    myCtrl.removeClass('nodrop');
-    //For Multiselect
-    var closestDiv = myCtrl.closest("div");
-    closestDiv.find('.btn-default').each(function () {
-        $(this).removeClass('nodrop disabled bg-blue');
-        $(this).removeAttr('disabled');
-    });
+function UnLockPreviousSections(myCtrl) {
+    mySection = myCtrl.closest('.SLUSection');
+    var allSections = $('.SLUSection');
+    var currentSecIndex = allSections.index(mySection);
+    if (currentSecIndex < allSections.length - 1) {
+        for (var i = 0; i < currentSecIndex; i++) {
+            if (allSections.eq(i).is(":visible")) { UnLockSLUSectionAllCtrl(allSections.eq(i)); }
+        }
+    }
+};
+function LockNextContainers(myCtrl) {
+    mySection = myCtrl.closest('.SLUContainer');
+    var allSections = $('.SLUContainer');
+    var currentSecIndex = allSections.index(mySection);
+    if (currentSecIndex < allSections.length - 1) {
+        for (var i = currentSecIndex + 1; i < allSections.length; i++) {
+            if (allSections.eq(i).is(":visible")) { LockSLUContainer(allSections.eq(i)); }
+        }
+    }
+};
+function UnLockNextContainers(myCtrl) {
+    mySection = myCtrl.closest('.SLUContainer');
+    var allSections = $('.SLUContainer');
+    var currentSecIndex = allSections.index(mySection);
+    if (currentSecIndex < allSections.length - 1) {
+        for (var i = currentSecIndex + 1; i < allSections.length; i++) {
+            if (allSections.eq(i).is(":visible")) { UnLockSLUContainer(allSections.eq(i)); }
+        }
+    }
+};
+function LockPreviousContainers(myCtrl) {
+    mySection = myCtrl.closest('.SLUContainer');
+    var allSections = $('.SLUContainer');
+    var currentSecIndex = allSections.index(mySection);
+    if (currentSecIndex < allSections.length - 1) {
+        for (var i = 0; i < currentSecIndex; i++) {
+            if (allSections.eq(i).is(":visible")) { LockSLUContainer(allSections.eq(i)); }
+        }
+    }
+};
+function UnLockPreviousContainers(myCtrl) {
+    mySection = myCtrl.closest('.SLUContainer');
+    var allSections = $('.SLUContainer');
+    var currentSecIndex = allSections.index(mySection);
+    if (currentSecIndex < allSections.length - 1) {
+        for (var i = 0; i < currentSecIndex; i++) {
+            if (allSections.eq(i).is(":visible")) { UnLockSLUContainerAllCtrl(allSections.eq(i)); }
+        }
+    }
 };
 ///////////////////////////////////////////////////////////////////////////////
-
-
-
-//function SLUSection(currentSectionID) {    
-//    var mySection = $('#' + currentSectionID);
-//    if (mySection.hasClass('approvalForm')) { mySection.actApprovalSection(); }
-//    if (mySection.hasClass('SLUStatement')) { MakeSLUSectionGreen(currentSectionID); }
-//    if (IsEnabledSLUSection(currentSectionID)) {
-//        //alert(GetNextSLUSectionID(currentSectionID));
-//        UnLockSLUSection(GetNextSLUSectionID(currentSectionID));
-//    }
-//    else {
-//        LockSLUSection(GetNextSLUSectionID(currentSectionID));
-//    }    
-//};
-
-//function SLUNextSection(mySectionID) {    
-//    var mySection = $('#' + mySectionID);
-//    var invalidcount = mySection.find('.is-invalid').length;
-//    var btns = mySection.find('.SLUBtn').length;
-//    var okbtns = mySection.find('.SLUBtnOK').length;
-//    if (!mySection.is(":visible")) { invalidcount = 0; btns = okbtns; }
-//    var allSections = $('.SLUSection');
-//    var currentSecIndex = allSections.index(mySection);
-//    if (invalidcount <= 0 && btns == okbtns) {        
-//        if (currentSecIndex < allSections.length - 1) {
-//            if (allSections.eq(currentSecIndex + 1).is(":visible")) {
-//                UnLockSLUSection(allSections.eq(currentSecIndex + 1).attr('id'));
-//                //if (allSections.eq(currentSecIndex + 1).hasClass('SLUStatement')) {
-//                //    MakeSLUSectionGreen(allSections.eq(currentSecIndex + 1).attr('id'));
-//                //}
-//            }
-//            else {
-//                SLUNextSection(allSections.eq(currentSecIndex + 1).attr('id'));
-//            }
-//        }
-//    }    
-//};
 $(document).ready(function () {
     $('.SLUCtrl').focus(function () {
-        LockNextCtrlsInContainer($(this).attr('id'));
-    });
+        LockNextCtrlsInContainer($(this));
+        $(this).tooltip('show');
+    });    
     $('.ApproveCtrl').each(function () {
         var that = $(this);
         var mDiv = that.closest('.approvalForm');
@@ -184,32 +130,41 @@ $(document).ready(function () {
             mDiv.isApprovalNotDone();
         }
     });
+    $('.SLUStatement').each(function () {
+        StyleStatementSection($(this));
+    });
+    //Enable First section and disable the rest
+    var i = 0;
+    $('.SLUSection').each(function () {
+        that = $(this);
+        if (i == 0) {
+            UnLockSLUSection(that);
+        }
+        if (IsValidSection(that)) {
+            UnLockSLUSection(GetNextSLUSection(that));
+        } else { LockSLUSection(GetNextSLUSection(that)); }         
+        i += 1;
+    });
+    //Table Row Cloaning
+    $('.SLUAddBtn').click(function () {
+        $(this).RowAddButtonClicked();
+    });
+    $('.SLURemoveBtn').click(function () {
+        $(this).RowRemoveButtonClicked();
+    });
+    $('.EC').on('change', function () {
+        $(this).RemoveAllNextRows();
+    });
+
+    // Use The Below Code Only UI Design Not In Functional Developement
+    //$('.SLUCtrl').on('change keyup', function () {
+    //    var that = $(this);
+    //    if (that.val() != '') {
+    //        that.isValidCtrl();
+    //    } else { that.isInvalidCtrl(); }
+    //});
 });
-
-//function LockNextSLUSection(id) {
-//    var mySection = $('#' + id);
-//    var allSections = $('.SLUSection');
-//    var currentSecIndex = allSections.index(mySection);
-//    if (currentSecIndex < allSections.length - 1) {
-//        if (allSections.eq(currentSecIndex + 1).is(":visible")) {
-//            LockSLUSection(allSections.eq(currentSecIndex + 1).attr('id'));
-//        }
-//        LockNextSLUSection(allSections.eq(currentSecIndex + 1).attr('id'));
-//    }
-//};
-
-//function UnLockSLUSection(id) {
-//    var mySection = $('#' + id);
-//    mySection.removeClass('sectionB');
-//    var myCtrl = mySection.find('.SLUCtrl').eq(0);
-//    myCtrl.focus();
-//    LockNextSLUCtrls(myCtrl.attr('id'));
-//    //mySection.find('.SLUCtrl').each(function () {
-//    //    UnLockSLUCtrl($(this).attr('id'));
-//    //});    
-//};
-
-
+///////// Helper functions
 $.fn.SLUEntrynDisabledForEntry = function () {
     var that = this;
     that.val('');
@@ -250,39 +205,221 @@ $.fn.actApprovalSection = function () {
     }
     else { that.isApprovalNotDone(); }
 };
-$.fn.isInvalid = function () {
+$.fn.isInvalidCtrl = function () {
     var that = this;
     that.addClass('is-invalid valid').removeClass('is-valid');
-    SLUInvalid(that.attr('id'));
+    SLUInvalid(that);
 };
-$.fn.isValid = function () {
+$.fn.isValidCtrl = function () {
     var that = this;
     that.addClass('is-valid valid').removeClass('is-invalid');
-    SLUValid(that.attr('id'));
+    SLUValid(that);
 };
-function MakeSLUSectionGreen(divID) {    
-    var mDiv = $('#' + divID);
-    x = mDiv.find('.is-invalid').length;
-    if (x > 0) { mDiv.isSLURed(); } else { mDiv.isSLUGreen(); }
+$.fn.ButtonOk = function () {
+    var that = this;
+    //alert(that.attr('id'));
+    that.addClass('SLUBtnOK');
+    var mySection = that.closest('.SLUSection');
+    var myNextSection=GetNextSLUSection(mySection);
+    if (IsValidSection(mySection)) {
+        UnLockSLUSection(myNextSection);
+    } else { LockSLUSection(myNextSection); }
+    if (that.hasClass('LUPS')) { LockPreviousSections(that); }
 };
-function GetNextSLUSectionID(currentSectionID) {
-    var nextSectionID = "NA"
-    var mySection = $('#' + currentSectionID);
+$.fn.ButtonNotOk = function () {
+    var that = this;
+    that.removeClass('SLUBtnOK');
+    var mySection = that.closest('.SLUSection');
+    var myNextSection = GetNextSLUSection(mySection);
+    if (IsValidSection(mySection)) {
+        UnLockSLUSection(myNextSection);
+    } else { LockSLUSection(myNextSection); }
+    if (that.hasClass('LUPS')) { UnLockPreviousSections(that); }
+};
+$.fn.RowAddButtonClicked = function () {
+    var that = this;
+    var myContainer = that.closest('.SLUContainer');
+    LockSLUContainer(myContainer);
+};
+$.fn.RowRemoveButtonClicked = function () {
+    var that = this;
+    //alert(that.attr('id'));
+    var myContainer = that.closest('.SLUContainer');
+    var mySection = that.closest('.SLUSection');
+    const allcontainers = mySection.find('.SLUContainer');
+    const currentIndex = allcontainers.index(myContainer);
+    if (currentIndex > 0) { UnLockSLUContainerAllCtrl(allcontainers.eq(currentIndex-1)); }
+};
+$.fn.RemoveAllNextRows = function () {
+    var that = this;
+    var myContainer = that.closest('.SLUContainer');
+    var mySection = that.closest('.SLUSection');
+    const allcontainers = mySection.find('.SLUContainer');
+    const currentIndex = allcontainers.index(myContainer);
+    if (currentIndex < allcontainers.length - 1) {
+        for (var i = currentSecIndex + 1; i < allcontainers.length; i++) {
+            allcontainers.eq(i).remove();
+        }
+    }
+};
+$.fn.makeSLUEnable = function () {
+    var that = this;
+    that.removeAttr('disabled');
+    that.removeClass('nodrop');
+};
+$.fn.makeSLUDisable = function () {
+    var that = this;
+    that.attr('disabled', 'disabled');
+    that.addClass('nodrop');
+};
+function LockNextCtrlsInContainer(myCtrl) {
+    var myDiv = myCtrl.closest('.SLUContainer');
+    const inputControls = myDiv.find('.SLUCtrl');
+    const currentIndex = inputControls.index(myCtrl);
+    if (currentIndex < inputControls.length - 1) {
+        if (inputControls.eq(currentIndex + 1).is(":visible") || inputControls.eq(currentIndex + 1).prop('multiple')) {
+            LockSLUCtrl(inputControls.eq(currentIndex + 1));
+        }
+        LockNextCtrlsInContainer(inputControls.eq(currentIndex + 1));
+    }
+};
+function SLUNextCtrl(myCtrl) {
+    //alert('SLUNextCtrl '+myCtrl.attr('id'));
+    var myDiv = myCtrl.closest('.SLUContainer');
+    const inputControls = myDiv.find('.SLUCtrl');
+    const currentIndex = inputControls.index(myCtrl);    
+    if (currentIndex < inputControls.length - 1) {
+        if (inputControls.eq(currentIndex + 1).is(":visible") || inputControls.eq(currentIndex + 1).prop('multiple')) {
+            UnLockSLUCtrl(inputControls.eq(currentIndex + 1));
+        }
+        else {
+            SLUNextCtrl(inputControls.eq(currentIndex + 1));
+        }
+    }
+};
+function GetNextSLUSection(mySection) {
+    var nextSection=null;
     var allSections = $('.SLUSection');
     var currentSecIndex = allSections.index(mySection);
+    var x = 0;
     if (currentSecIndex < allSections.length - 1) {
-        nextSectionID = allSections.eq(currentSecIndex + 1).attr('id');
+        for (var i = currentSecIndex + 1; i < allSections.length; i++) {
+            if (allSections.eq(i).is(":visible")) { x = i; break; }
+        }
+        //nextSectionID = allSections.eq(x).attr('id');
+        nextSection = allSections.eq(x);
     }
-    return nextSectionID;
+    return nextSection;
 };
-//function GetNextSLUCtrlID(currentCtrlID, currentContainerID) {
-//    var nextCtrlID = "NA"
-//    var myCtrl = $('#' + currentCtrlID);
-//    var nextCtrl = myCtrl.next(".SLUCtrl");
-//    if (nextCtrl.length > 0) {
-//        if (nextCtrl.closest('.SLUContainer').attr('id') == currentContainerID) {
-//            nextCtrlID = nextCtrl.attr('id');
-//        }
-//    }
-//    return nextCtrlID;
-//};
+function IsValidSection(mySection) {
+    //var mySection = $('#' + mySectionID);
+    if (mySection.hasClass('SLUStatement')) { //if section is a statement section
+        StyleStatementSection(mySection);
+    }
+    if (mySection.hasClass('approvalForm')) { //if section is a approval/ratification section
+        mySection.actApprovalSection();
+    }
+    return IsEnabledSection(mySection);
+};
+function StyleStatementSection(myDiv) {
+    var x = myDiv.find('.is-invalid').length;
+    if (x > 0) { myDiv.isSLURed(); } else { myDiv.isSLUGreen(); }
+};
+function IsEnabledSection(mySection) {
+    var isvalid = false;
+    var x = mySection.find('.is-invalid').length;
+    var btns = mySection.find('.SLUBtn').length;
+    var okbtns = mySection.find('.SLUBtnOK').length;
+    if (x <= 0 && btns == okbtns) { isvalid = true; }
+    return isvalid;
+};
+// Locking Unlocking elements
+function LockSLUContainer(myContainer) {
+    if (myContainer != null) {
+        myContainer.find('.SLUCtrl').each(function () {
+            LockSLUCtrl($(this));
+        });
+    }    
+    //myContainer.addClass('sectionB');
+};
+function UnLockSLUContainer(myContainer) {
+    if (myContainer != null) {        
+        var i = 0;
+        myContainer.find('.SLUCtrl').each(function () {
+            if (i == 0) { UnLockSLUCtrl($(this)); }
+            else { LockSLUCtrl($(this)); }
+            i += 1;
+        });
+        //myContainer.removeClass('sectionB');
+    }
+};
+function UnLockSLUContainerAllCtrl(myContainer) {
+    if (myContainer != null) {
+        //myContainer.removeClass('sectionB');
+        myContainer.find('.SLUCtrl').each(function () {
+            UnLockSLUCtrl($(this));
+        });
+    }
+};
+function LockSLUSection(mySection) {
+    if (mySection != null) {
+        mySection.find('.SLUCtrl').each(function () {
+            LockSLUCtrl($(this));
+        });
+        //mySection.find('.btn').each(function () {
+        //    $(this).makeSLUDisable();
+        //});
+        mySection.addClass('sectionB');
+    }    
+};
+function UnLockSLUSection(mySection) {
+    if (mySection != null) {
+        mySection.removeClass('sectionB');
+        var i = 0;
+        mySection.find('.SLUCtrl').each(function () {
+            if (i == 0) { UnLockSLUCtrl($(this)); }
+            else { LockSLUCtrl($(this)); }
+            i += 1;
+        });        
+    }    
+};
+function UnLockSLUSectionAllCtrl(mySection) {
+    if (mySection != null) {
+        mySection.removeClass('sectionB');
+        mySection.find('.SLUCtrl').each(function () {
+            UnLockSLUCtrl($(this));
+        });
+    }
+};
+function LockSLUCtrl(myCtrl) {
+    if (myCtrl != null) {
+        myCtrl.attr('disabled', 'disabled');
+        myCtrl.addClass('nodrop');
+        //For Multiselect
+        if (myCtrl.prop('multiple')) {
+            var closestDiv = myCtrl.closest("div");
+            closestDiv.find('.btn-default').each(function () {
+                $(this).addClass('nodrop disabled bg-blue');
+            });
+        }        
+        // For Custom CSS
+        if (myCtrl.hasClass('EntrynDisabledForEntry')) { myCtrl.SLUEntrynDisabledForEntry(); }
+    }
+};
+function UnLockSLUCtrl(myCtrl) {
+    if (myCtrl != null) {
+        myCtrl.removeAttr('disabled');
+        myCtrl.removeClass('nodrop');
+        //For Multiselect
+        if (myCtrl.prop('multiple')) {
+            var closestDiv = myCtrl.closest('div');
+            closestDiv.find('.btn-default').each(function () {
+                $(this).removeClass('nodrop disabled bg-blue');
+                $(this).removeAttr('disabled');
+            });
+        }              
+        // For Custom CSS
+        if (myCtrl.hasClass('EntrynDisabledForEntry')) { myCtrl.SLUEntrynEnableForEntry(); }
+    }
+};
+

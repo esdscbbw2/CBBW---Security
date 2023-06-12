@@ -111,6 +111,13 @@ namespace CBBW.BLL.Repository
         {
             return _entities.getNewNoteNumber(NotePattern, ref pMsg);
         }
-
+        public bool GetEmployeeValidationForTour(int CentreCode, string EmployeeNumbers, DateTime FromDate, DateTime ToDate, ref string pMsg)
+        {
+            return _entities.GetEmployeeValidationForTour(CentreCode, EmployeeNumbers,FromDate,DateTime.Today,ref pMsg);
+        }
+        public IEnumerable<CustomComboOptions> GetEmployeeListV2(int centreCode, ref string pMsg)
+        {
+            return _entities.getEmployeeListV2(centreCode, ref pMsg);
+        }
     }
 }

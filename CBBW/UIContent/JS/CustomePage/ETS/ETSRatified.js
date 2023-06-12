@@ -5,11 +5,16 @@
 
     Notenumberchanged($('#NoteNumber').val());
     var btnDisplays = $("#btnDisplay").val();
-
+    var OtherPdiv = $('#OtherPdiv');
+    var DivRati = $('#DivRati');
     if (btnDisplays == 1) {
         $('#NoteNumber').makeDisable();
+        UnLockSection(OtherPdiv.attr('id'));
+        LockSection(DivRati.attr('id'));
     } else {
         $('#NoteNumber').makeEnabled();
+        LockSection(OtherPdiv.attr('id'));
+        LockSection(DivRati.attr('id'));
     }
 });
 function Notenumberchanged(notenumber) {
@@ -80,7 +85,7 @@ $(document).ready(function () {
     $('#btnViewDoc').click(function () {
         var docfilename = $('#AttachFile').val();
         var filepath = "/Upload/Forms/" + docfilename;
-        if (docfilename.length > 2) { window.open(filepath); }
+        if (docfilename.length > 2) { OpenWindow(filepath); }
         else {
             Swal.fire({
                 title: 'Information',
@@ -121,9 +126,20 @@ function ValidateControl() {
 };
 function validatectrl(targetid, value) {
     var isvalid = false;
+    var DivRati = $('#DivRati');
     switch (targetid) {
         case "OtherP":
             isvalid = validatectrl_YesNoCombo(value);
+            if (isvalid) {
+                $('.content').removeClass('border-red').addClass('border-green');
+                UnLockSection(DivRati.attr('id'));
+
+            }
+            else {
+                $('.content').removeClass('border-green').addClass('border-red');
+                LockSection(DivRati.attr('id'));
+                $('#IsRatified').val('').isInvalid();
+            }
             break;
         case "IsRatified":
             isvalid = validatectrl_YesNoComboApproval(value);

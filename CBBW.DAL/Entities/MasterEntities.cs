@@ -180,6 +180,23 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
+        public IEnumerable<CustomComboOptions> getEmployeeListV2(int centreCode,ref string pMsg)
+        {
+            List<CustomComboOptions> result = new List<CustomComboOptions>();
+            try
+            {
+                dt = _datasync.getEmployeeListV2(centreCode, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        result.Add(_dbresmapper.Map_CustomComboOptions(dt.Rows[i]));
+                    }
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
         public IEnumerable<CustomComboOptions> getDriverList(ref string pMsg,int CentreCode=13,string ExDriverName="#")
         {
             List<CustomComboOptions> result = new List<CustomComboOptions>();
@@ -304,7 +321,12 @@ namespace CBBW.DAL.Entities
         {
             return _datasync.GetCentreCodeFromLocation(LocationTypeCode, LocationCode, ref pMsg);
         }
-
+        public bool GetEmployeeValidationForTour(int CentreCode, string EmployeeNumbers, DateTime FromDate, DateTime ToDate, ref string pMsg) 
+        {
+            bool result = false;
+            _dbresmapper.Map_DBResponse(_datasync.GetEmployeeValidationForTour(CentreCode, EmployeeNumbers, FromDate, ToDate, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
 
     }
 }

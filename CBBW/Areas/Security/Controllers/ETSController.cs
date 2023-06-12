@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using CBBW.Areas.Security.ViewModel.EHG;
 using CBBW.Areas.Security.ViewModel.ETS;
 using CBBW.BLL.IRepository;
+using CBBW.BOL;
 using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.EHG;
@@ -45,7 +46,7 @@ namespace CBBW.Areas.Security.Controllers
             catch (Exception ex) { pMsg = ex.ToString(); }
 
         }
-      
+
         #region For Entry Process
         public ActionResult Index()
         {
@@ -132,7 +133,7 @@ namespace CBBW.Areas.Security.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
 
         }
-       
+
         [HttpPost]
         public ActionResult SetTravelingPersonDetails(ETSHeaderEntryVM modelvm)
         {
@@ -154,7 +155,6 @@ namespace CBBW.Areas.Security.Controllers
                     modelvm = TempData["ETS"] as ETSHeaderEntryVM;
                     TempData["ETS"] = modelvm;
                     result.bResponseBool = true;
-
                 }
                 else
                 {
@@ -165,7 +165,6 @@ namespace CBBW.Areas.Security.Controllers
                             TempData["ETS"] = modelvm;
                             result.bResponseBool = true;
                             result.sResponseString = "Data successfully updated.";
-
                         }
                         else
                         {
@@ -210,13 +209,10 @@ namespace CBBW.Areas.Security.Controllers
                     if (_iETS.setETSTravDetailsNTourDetails(models.NoteNumber, TModel, models.dateTour, ref pMsg))
                     {
                         models.btnSubmit = 1;
-                        
-                        models.Tourcat= models.dateTour.Where(c => c.TourCategory.Contains("3")).ToList().Count>0?true:false;
+                        models.Tourcat = models.dateTour.Where(c => c.TourCategory.Contains("3")).ToList().Count > 0 ? true : false;
                         TempData["ETSData"] = models;
                         result.bResponseBool = true;
-
                         result.sResponseString = "Data successfully updated.";
-
                     }
                     else
                     {
@@ -243,6 +239,7 @@ namespace CBBW.Areas.Security.Controllers
 
                     if (TempData["ETS"] != null)
                     {
+                        modeltravvm.EmplyoyeeNoList = MyCodeHelper.GetCommaSeparatedString(model.PersonDtls.Where(x=>x.EmployeeNo!=0).Select(x=>x.EmployeeNo).ToList());
 
                         if (model.PersonDtls.Where(x => x.PersonType == 2 || x.PersonType == 4).FirstOrDefault() != null)
                             modeltravvm.PersonType = model.PersonDtls.Where(x => x.PersonType == 2 || x.PersonType == 4).FirstOrDefault().PersonType > 0 ? 4 : 1;
@@ -252,11 +249,11 @@ namespace CBBW.Areas.Security.Controllers
                         modeltravvm.AttachFile = model.AttachFile;
                         modeltravvm.CenterCodenName = model.CenterCodeName;
                         var DateNo = _iEMN.GetTourInfoForServiceType(ServiceTypeCode, ref pMsg);
-                        modeltravvm.TourFromdateStr = DateTime.Today.AddDays(DateNo.MaxDayAllowed).ToString("yyyy-MM-dd");
-                        modeltravvm.TodateStr = DateTime.Today.AddDays(3).ToString("yyyy-MM-dd");
                         modeltravvm.FromdateStr = DateTime.Today.ToString("yyyy-MM-dd");
-
-
+                        modeltravvm.TodateStr = DateTime.Today.AddDays(3).ToString("yyyy-MM-dd");
+                        //modeltravvm.TourFromdateStr = DateTime.Today.AddDays(DateNo.MaxDayAllowed).ToString("yyyy-MM-dd");
+                        //modeltravvm.TodateStr = DateTime.Today.AddDays(3).ToString("yyyy-MM-dd");
+                        //modeltravvm.FromdateStr = DateTime.Today.ToString("yyyy-MM-dd");
                     }
 
                 }
@@ -270,10 +267,27 @@ namespace CBBW.Areas.Security.Controllers
             {
                 ex.ToString();
             }
-
-
             return View(modeltravvm);
         }
+
+        public JsonResult GetTourMaxDaysAllow(DateTime FromDate)
+        {
+            string MaxDate = null;
+            try
+            {
+                var DateNo = _iEMN.GetTourInfoForServiceType("1", ref pMsg);
+                if (DateNo != null)
+                {
+                    MaxDate = FromDate.AddDays(DateNo.MaxDayAllowed).ToString("yyyy-MM-dd");
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
+            return Json(MaxDate, JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult GetTraveelingDetailsReverseData()
         {
             CustomAjaxResponse result = new CustomAjaxResponse();
@@ -371,7 +385,7 @@ namespace CBBW.Areas.Security.Controllers
         [HttpPost]
         public ActionResult Details(ETSHeaderEntryVM modelobj, string Submit)
         {
-           
+
             string baseUrl = "/Security/ETS/Details?NoteNumber=" + modelobj.NoteNumber + "&CanDelete=" + modelobj.CanDelete + "&CBUID=" + modelobj.CBUID;
             ViewBag.HeaderText = modelobj.HeaderText;
             if (Submit == "Delete")
@@ -391,7 +405,7 @@ namespace CBBW.Areas.Security.Controllers
             }
             modelobj.etsHeader = _iETS.GetETSHdrEntry(modelobj.NoteNumber, ref pMsg);
             modelobj.PersonDtls = _iETS.GetETSTravellingPerson(modelobj.NoteNumber, ref pMsg);
-           
+
             return View(modelobj);
         }
         public ActionResult TravellingDetailsView(string NoteNumber, int CBUID)
@@ -520,7 +534,7 @@ namespace CBBW.Areas.Security.Controllers
             return View(modelvms);
 
         }
-      
+
         //public JsonResult GetApprovalTravDetailsforReverseData(string NoteNumber)
         //{
         //    ETSTravellingDetailsVM modelvms = new ETSTravellingDetailsVM();
@@ -530,20 +544,21 @@ namespace CBBW.Areas.Security.Controllers
 
         //    }
         //    catch (Exception ex) { ex.ToString(); }
-            
+
         //    return Json(modelvms.travDetails, JsonRequestBehavior.AllowGet);
         //}
         public JsonResult GetETSHdrDetails(string NoteNumber)
         {
 
             ETSHeaderEntryVM result = new ETSHeaderEntryVM();
-            if (NoteNumber != "") { 
-            ETSTravellingDetailsVM modelvm = new ETSTravellingDetailsVM();
-            result.NoteNumber = NoteNumber;
-            result.etsHeader = _iETS.GetETSHdrEntry(NoteNumber, ref pMsg);
-            result.PersonDtls = _iETS.GetETSTravellingPerson(NoteNumber, ref pMsg);
-             modelvm.dateTour = _iETS.GetETSDateWiseTour(NoteNumber, ref pMsg);
-             result.TourCatstatus = modelvm.dateTour.Where(c =>c.NoteNumber== NoteNumber && c.TourCategoryId.Contains("3")).ToList().Count > 0 ? true : false;
+            if (NoteNumber != "")
+            {
+                ETSTravellingDetailsVM modelvm = new ETSTravellingDetailsVM();
+                result.NoteNumber = NoteNumber;
+                result.etsHeader = _iETS.GetETSHdrEntry(NoteNumber, ref pMsg);
+                result.PersonDtls = _iETS.GetETSTravellingPerson(NoteNumber, ref pMsg);
+                modelvm.dateTour = _iETS.GetETSDateWiseTour(NoteNumber, ref pMsg);
+                result.TourCatstatus = modelvm.dateTour.Where(c => c.NoteNumber == NoteNumber && c.TourCategoryId.Contains("3")).ToList().Count > 0 ? true : false;
             }
             else
             {
@@ -565,12 +580,12 @@ namespace CBBW.Areas.Security.Controllers
                     CustomComboOptionsWithString cmb = new CustomComboOptionsWithString();
                     //Employee emp = new Employee();
                     //emp.EmployeeNonName = item.EmployeeNonName;
-                    cmb.ID= item.EmployeeNonName;
+                    cmb.ID = item.EmployeeNonName;
                     cmb.DisplayText = item.EmployeeNonName;
                     results.Add(cmb);
                 }
             }
-            
+
             return Json(results, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
@@ -582,8 +597,8 @@ namespace CBBW.Areas.Security.Controllers
                 ETSNoteApproveVM Travmodel = new ETSNoteApproveVM();
                 Travmodel.travdetails.NoteNumber = model.NoteNumber;
                 Travmodel.travdetails.VehicleTypeProvided = model.VehicleTypeProvided;
-                Travmodel.travdetails.ReasonVehicleProvided = model.ReasonVehicleProvided!=null? model.ReasonVehicleProvided:"NA";
-                Travmodel.travdetails.EmployeeNonName = model.EmployeeNonName!=null? model.EmployeeNonName:"NA";
+                Travmodel.travdetails.ReasonVehicleProvided = model.ReasonVehicleProvided != null ? model.ReasonVehicleProvided : "NA";
+                Travmodel.travdetails.EmployeeNonName = model.EmployeeNonName != null ? model.EmployeeNonName : "NA";
                 Travmodel.travdetails.ApprovedReason = "NA";
                 Travmodel.travdetails.status = 2;
                 if (_iETS.SetETSApprovalData(Travmodel.travdetails, ref pMsg))
@@ -609,7 +624,7 @@ namespace CBBW.Areas.Security.Controllers
             {
                 modelvmobj.etsHeader = _iETS.GetETSHdrEntry(NoteNumber, ref pMsg);
                 if (modelvmobj.etsHeader.IsRatified.HasValue)
-                 {
+                {
                     modelvmobj.etsHeader.IsRatifieds = modelvmobj.etsHeader.IsRatified == true ? "Yes" : "No";
                 }
                 else
@@ -617,7 +632,7 @@ namespace CBBW.Areas.Security.Controllers
                     modelvmobj.etsHeader.IsRatifieds = "-";
                 }
                 modelvmobj.etsHeader.RatifiedDatestr = modelvmobj.etsHeader.RatifiedDatestr != "01/01/0001" ? modelvmobj.etsHeader.RatifiedDatestr : "-";
-       
+
                 modelvmobj.etsHeader.RatifiedTime = modelvmobj.etsHeader.RatifiedTime != null ? modelvmobj.etsHeader.RatifiedTime : "-";
                 modelvmobj.etsHeader.RatifiedReason = modelvmobj.etsHeader.RatifiedReason != null ? modelvmobj.etsHeader.RatifiedReason : "-";
                 modelvmobj.PersonDtls = _iETS.GetETSTravellingPerson(NoteNumber, ref pMsg);
@@ -726,7 +741,7 @@ namespace CBBW.Areas.Security.Controllers
                 CustomAjaxResponse result = new CustomAjaxResponse();
                 modelobj.ratified.NoteNumber = modelobj.NoteNumber;
                 modelobj.ratified.IsRatified = modelobj.IsRatified == 1 ? true : false;
-                modelobj.ratified.RatifiedReason = modelobj.RatifiedReason!=null? modelobj.RatifiedReason:"NA";
+                modelobj.ratified.RatifiedReason = modelobj.RatifiedReason != null ? modelobj.RatifiedReason : "NA";
                 modelobj.ratified.status = 1;
                 if (_iETS.SetETSRatifiedData(modelobj.ratified, ref pMsg))
                 {
@@ -836,7 +851,7 @@ namespace CBBW.Areas.Security.Controllers
                 }
                 else
                 {
-                    result = master.VehicleTypes.Where(x => x.ID != 3).ToList(); 
+                    result = master.VehicleTypes.Where(x => x.ID != 3).ToList();
                 }
             }
             else
@@ -847,7 +862,7 @@ namespace CBBW.Areas.Security.Controllers
                 }
                 else if (TypeVal == 2)
                 {
-                    result = master.VehicleTypes.Where(x => x.ID!=1).ToList();
+                    result = master.VehicleTypes.Where(x => x.ID != 1).ToList();
                 }
                 else
                 {
@@ -872,7 +887,7 @@ namespace CBBW.Areas.Security.Controllers
             if (PTval == 1)
             {
                 //result = master.TourCategoryForNZB.Where(x => x.ID == 4).ToList();
-                long[] id = { 1, 2, 3,4, 5 };
+                long[] id = { 1, 2, 3, 4, 5 };
                 result = master.TourCategoryForNZB.Where(x => id.Contains(x.ID)).ToList();
             }
             else
@@ -909,7 +924,7 @@ namespace CBBW.Areas.Security.Controllers
         }
         public JsonResult getVehicleEligibilityStatement(int EligibleVT, int ProvidedVT)
         {
-        
+
             return Json(_master.getVehicleEligibilityStatement(EligibleVT, ProvidedVT, ref pMsg), JsonRequestBehavior.AllowGet);
 
         }
@@ -936,5 +951,7 @@ namespace CBBW.Areas.Security.Controllers
             return model;
         }
         #endregion
+
+        
     }
 }

@@ -169,7 +169,7 @@ namespace CBBW.Areas.Security.Controllers
                 if (model.OtherStaffList == null) { model.OtherStaffList = model.getOtherStaffList(user.CentreCode); }
             }
             TempData["EHG"] = model;
-            model.ehgHeader.DocFileName = "abc.pdf"; // Dummy code
+            //model.ehgHeader.DocFileName = "1e627a46-27ee-4085-98c4-4fad3a2d638c.png"; // Dummy code
             return View(model);
         }
         [HttpPost]
@@ -177,7 +177,7 @@ namespace CBBW.Areas.Security.Controllers
         {            
             if (Submit == "create")
             {
-                if (model.ehgHeader.VehicleType == 1 && model.ehgHeader.PurposeOfAllotment == 1)
+                if (model.VehicleType == 1 && model.POA == 1)
                 {
                     model.ehgHeader.AuthorisedEmployeeName = model.AuthorisedEmpNameForManagement;
                     model.ehgHeader.AuthorisedEmpNo = model.AuthorisedEmpNoForManagement;
@@ -351,7 +351,7 @@ namespace CBBW.Areas.Security.Controllers
         {
             CategoryIDs = CategoryIDs.Replace('_', ',');
             IEnumerable<LocationMaster> result =_master.GetCentresFromTourCategory(CategoryIDs, ref pMsg);
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return Json(result.Where(o=>o.CentreCode!=user.CentreCode).ToList(), JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetTourCategories()
         {
@@ -396,7 +396,8 @@ namespace CBBW.Areas.Security.Controllers
             //else
             //    result = model.StaffList;
             EHGHeaderEntryVM tempobj = new EHGHeaderEntryVM(true);
-            result = tempobj.getStaffList(user.CentreCode);
+            //result = tempobj.getStaffList(user.CentreCode);
+            result = _master.GetEmployeeListV2(user.CentreCode,ref pMsg);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetTPDetails(string NoteNumber)
@@ -505,6 +506,21 @@ namespace CBBW.Areas.Security.Controllers
                 }
             }
             //return RedirectToAction("index");
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult GetEmployeeValidationForTour(string Employees,DateTime FromDate,DateTime ToDate )
+        {
+            CustomAjaxResponse result = new CustomAjaxResponse();            
+            if (_master.GetEmployeeValidationForTour(user.CentreCode, Employees, FromDate, ToDate, ref pMsg))
+            {
+                result.bResponseBool = true;
+                result.sResponseString = "Validated Successfully.";
+            }
+            else
+            {
+                result.bResponseBool = false;
+                result.sResponseString = pMsg;
+            }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         #endregion

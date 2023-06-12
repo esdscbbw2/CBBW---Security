@@ -1,4 +1,41 @@
-﻿
+﻿/////   Verified
+$(document).ready(function () {
+    $('.ApplyMultiSelect').each(function () {
+        that = $(this);
+        that.prop('multiple', 'multiple');
+        that.multiselect({
+            templates: {
+                button: '<button type="button" class="multiselect dropdown-toggle btn btn-primary w-100 selectBox" data-bs-toggle="dropdown" aria-expanded="false"><span class="multiselect-selected-text"></span></button>',
+            },
+        });
+        that.multiselect('clearSelection');
+        that.multiselect('refresh');
+    });
+});
+function TourCategoryChanged(destinationCtrlID, datasourceURL) {
+    var target = TourCategoryChanged.caller.arguments[0].target;
+    var targetCtrl = $(target);
+    var targetid = targetCtrl.attr('id');
+    //alert(targetid);
+    var rowid = $(target.closest('.add-row')).attr("id");
+    var i = targetid.indexOf('_');
+    if (i >= 0) { destinationCtrlID = destinationCtrlID + '_' + rowid; }
+    var x = '';
+    $('#' + targetid + ' option:selected').each(function () {
+        x = x + '_' + $(this).val();
+    });
+    datasourceURL = datasourceURL + x;
+    GetDataFromAjax(datasourceURL).done(function(data) {
+        refreshMultiselect(data, destinationCtrlID,false);        
+    });
+    //alert(datasourceURL);
+    //(async function () {
+    //    const r1 = await getMultiselectData(destinationCtrlID, datasourceURL);
+    //})();
+    if (targetCtrl.val().length > 0) { targetCtrl.isValidCtrl(); } else { targetCtrl.isInvalidCtrl(); }
+};
+
+/////////////////////////////////
 function EnableAddBtnInCloneRowIfOnlyLastV2(tblRow, addBtnBaseID) {
     //If The Add Button Is Exist In The Last Row Then Only Enable 
     var mTodate = $('#TodateStr').val();
@@ -34,30 +71,32 @@ function addCloneBtnClick() {
     var addbtn = $('#AddBtn');
     if (insrowid > 0) { addbtn = $('#AddBtn_' + insrowid); }
     var clonerowid = CloneRowReturningID('tbody1', 'tbody2', $(insrow).attr('id') * 1, false, false);
+    //alert(clonerowid);
     var preToDate = $(insrow).find('.todt').val();
     var curFromDate = CustomDateChange(preToDate, 1, '/');
     $('#FromDateLbl_' + clonerowid).html(curFromDate);
     $('#btnSubmit').makeDisable();
-    //$('#CenterCode_' + clonerowid).isInvalid();
-    $('#ToDate_' + clonerowid).isInvalid();
+    //$('#CenterCode_' + clonerowid).isInvalidCtrl();
+    $('#ToDate_' + clonerowid).isInvalidCtrl();
     var mCentreCode = $('#CenterCode_' + clonerowid);
     mCentreCode.empty();
     mCentreCode.multiselect('destroy');
     mCentreCode.removeAttr('multiple');
     mCentreCode.multiselect('refresh');
-    mCentreCode.isInvalid();
-
+    mCentreCode.isInvalidCtrl();
     addbtn.tooltip('hide');
     addbtn.makeDisable();
+    //UnLockSLUContainer($('#' + clonerowid));
 };
 function ValidateCloneRowCtrl() {
+    debugger;
     var target = ValidateCloneRowCtrl.caller.arguments[0].target;
     var tblRow = target.closest('.add-row');
     var targetCtrl = $(target);
     var targetid = targetCtrl.attr('id');
     if (targetid.indexOf('_') >= 0) { targetid = targetid.split('_')[0] }
     var isvalid = validatectrl(targetid, targetCtrl.val(), $(tblRow).attr('id'));
-    if (isvalid) { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }    
+    if (isvalid) { targetCtrl.isValidCtrl(); } else { targetCtrl.isInvalidCtrl(); }    
     $('#DWBackBtnActive').val(1);
     if (targetid == 'ToDate') {
         RestRowsDeleted('table1', $(tblRow).attr('id'));
@@ -82,16 +121,17 @@ function validatectrl(targetid, value,rowid) {
                     isvalid = true;
                 }
                 else {
-                    Swal.fire({
-                        title: 'Invalid Date Range!',
-                        text: 'To Date Must Be Greater Or Equal To From Date.',
-                        icon: 'error',
-                        customClass: 'swal-wide',
-                        buttons: {
-                            confirm: 'Ok'
-                        },
-                        confirmButtonColor: '#2527a2',
-                    });
+                    MyAlert(4, 'To Date Must Be Greater Or Equal To From Date.');
+                    //Swal.fire({
+                    //    title: 'Invalid Date Range!',
+                    //    text: 'To Date Must Be Greater Or Equal To From Date.',
+                    //    icon: 'error',
+                    //    customClass: 'swal-wide',
+                    //    buttons: {
+                    //        confirm: 'Ok'
+                    //    },
+                    //    confirmButtonColor: '#2527a2',
+                    //});
                     isvalid = false;
                 }
             }
@@ -99,16 +139,17 @@ function validatectrl(targetid, value,rowid) {
         case "CenterCode":
             if (value != '') {
                 if ($('#ehgHeader_CenterCode').val() == value) {
-                    Swal.fire({
-                        title: 'Invalid Centre Code!',
-                        text: 'Cannot Use Screen Initiated Centre Code',
-                        icon: 'error',
-                        customClass: 'swal-wide',
-                        buttons: {
-                            confirm: 'Ok'
-                        },
-                        confirmButtonColor: '#2527a2',
-                    });
+                    MyAlert(4, 'Cannot Use Screen Initiated Centre Code');
+                    //Swal.fire({
+                    //    title: 'Invalid Centre Code!',
+                    //    text: 'Cannot Use Screen Initiated Centre Code',
+                    //    icon: 'error',
+                    //    customClass: 'swal-wide',
+                    //    buttons: {
+                    //        confirm: 'Ok'
+                    //    },
+                    //    confirmButtonColor: '#2527a2',
+                    //});
                 }
                 else {
                     isvalid = true;
@@ -140,7 +181,7 @@ async function getInitialData() {
         success: function (data) {
             $(data).each(function (index, item) {
                 if (index > 0) {
-                    rowid = CloneRowReturningID('tbody1', 'tbody2', index - 1, true, false);
+                    rowid = CloneRowReturningID('tbody1', 'tbody2', index - 1,false, false);
                     fromdateCtrl = $('#FromDateLbl_' + rowid);
                     todateCtrl = $('#ToDate_' + rowid);
                     lbltodateCtrl = $('#lblToDate_' + rowid);
@@ -149,7 +190,7 @@ async function getInitialData() {
                     addbtnCtrl = $('#AddBtn_' + rowid) ;
                 }
                 fromdateCtrl.html(item.FromDateStrDisplay);
-                todateCtrl.val(item.ToDateStr).isValid();
+                todateCtrl.val(item.ToDateStr).isValidCtrl();
                 lbltodateCtrl.html(item.ToDateStrDisplay);
                 if (item.TourCatCodes.indexOf(',') > 0) {
                     tourcatCtrl.val(item.TourCatCodes.split(',')).multiselect('refresh');
@@ -157,12 +198,12 @@ async function getInitialData() {
                 else {
                     tourcatCtrl.val(item.TourCatCodes).multiselect('refresh');
                 }
-                tourcatCtrl.isValid();
-                //alert(item.TourCatCodes);
+                tourcatCtrl.isValidCtrl();
+                //alert(item.CenterCodes);
                 (async function () {
                     const r1 = await getMultiselectDataWithSelectedValues(centrecodeCtrl.attr('id'), '/Security/EHG/GetTourLocations?CategoryIDs=' + item.TourCatCodes, item.CenterCodes);
-                })();
-                centrecodeCtrl.isValid();
+                })();                
+                centrecodeCtrl.isValidCtrl();
                 addbtnCtrl.makeDisable();
             });
         }
@@ -213,11 +254,7 @@ $(document).ready(function () {
         }
     });
 });
-$(document).ready(function () {
-    (async function () {
-        const r1 = await getMultiselectData('TourCategory', '/EHG/GetTourCategories');
-    })();
-});
+
 $(document).ready(function () {
     $('#FromDateLbl').html($('#FromdateStrForDisplay').val());
     (async function () {

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using CBBW.Areas.Security.ViewModel.EHG;
 using CBBW.Areas.Security.ViewModel.EMN;
 using CBBW.BLL.IRepository;
+using CBBW.BOL;
 using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.EHG;
@@ -24,7 +25,6 @@ namespace CBBW.Areas.Security.Controllers
         IEMNRepository _iEMN;
         EMNTravellingDetailsVM modelTrav;
         EMNHeaderEntryVM model;
-        
         ICTVRepository _iCTV;
         public EMNController(ICTVRepository iCTV, IUserRepository iUser, IEMNRepository iEMN, IMyHelperRepository myHelper, IMasterRepository master)
         {
@@ -54,7 +54,6 @@ namespace CBBW.Areas.Security.Controllers
     string sSortDir_0, string sSearch)
         {
             List<EMNNoteList> noteList = _iEMN.GetEMNNZBDetailsforListPage(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, user.CentreCode, 1, ref pMsg);
-
             var result = new
             {
                 iTotalRecords = noteList.Count == 0 ? 0 : noteList.FirstOrDefault().TotalCount,
@@ -108,8 +107,6 @@ namespace CBBW.Areas.Security.Controllers
 
                     }
                 }
-
-
             }
             catch (Exception ex)
             {
@@ -127,7 +124,6 @@ namespace CBBW.Areas.Security.Controllers
             }
             else
             {
-               
                 hdrmodel.emnHeader.Status = 1;
                 hdrmodel.emnHeader.NoteNumber = hdrmodel.NoteNumber;
                 hdrmodel.emnHeader.AttachFile = hdrmodel.AttachFile;
@@ -136,18 +132,15 @@ namespace CBBW.Areas.Security.Controllers
                 {
                     result.bResponseBool = true;
                     result.sResponseString = "Data successfully updated.";
-                   
                 }
                 else
                 {
                     result.bResponseBool = false;
                     result.sResponseString = pMsg;
                 }
-               
             }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-        
         [HttpPost]
         public ActionResult SetTravelingPersonDetails(EMNHeaderEntryVM modelvm)
         {
@@ -203,6 +196,10 @@ namespace CBBW.Areas.Security.Controllers
                 {
                     if (TempData["EMN"] != null)
                     {
+                        EMNHeaderEntryVM modelhdr = new EMNHeaderEntryVM();
+                        modelhdr.PersonDtls = _iEMN.GetEMNTravellingPerson(NoteNumber, user.CentreCode, 1, ref pMsg);
+                        modeltravvm.EmplyoyeeNoList = MyCodeHelper.GetCommaSeparatedString(modelhdr.PersonDtls.Where(x => x.EmployeeNo != 0 && x.NoteNumber== NoteNumber).Select(x => x.EmployeeNo).ToList());
+
                         if (model.PersonDtls.Where(x => x.PersonType == 2 || x.PersonType == 4).FirstOrDefault() != null)
                             modeltravvm.PersonType = model.PersonDtls.Where(x => x.PersonType == 2 || x.PersonType == 4).FirstOrDefault().PersonType > 0 ? 4 : 1;
                         else
@@ -211,9 +208,12 @@ namespace CBBW.Areas.Security.Controllers
                         modeltravvm.AttachFile = model.AttachFile;
                         modeltravvm.CenterCodenName = model.CenterCodeName;
                         var DateNo = _iEMN.GetTourInfoForServiceType(ServiceTypeCode, ref pMsg);
-                        modeltravvm.TourFromdateStr = DateTime.Today.AddDays(DateNo.MaxDayAllowed).ToString("yyyy-MM-dd");
-                        modeltravvm.TodateStr = DateTime.Today.AddDays(3).ToString("yyyy-MM-dd");
                         modeltravvm.FromdateStr = DateTime.Today.ToString("yyyy-MM-dd");
+                        modeltravvm.TodateStr = DateTime.Today.AddDays(3).ToString("yyyy-MM-dd");
+
+                        //modeltravvm.TourFromdateStr = DateTime.Today.AddDays(DateNo.MaxDayAllowed).ToString("yyyy-MM-dd");
+                        //modeltravvm.TodateStr = DateTime.Today.AddDays(3).ToString("yyyy-MM-dd");
+                        //modeltravvm.FromdateStr = DateTime.Today.ToString("yyyy-MM-dd");
                     }
                 }
                 string baseUrl = "/Security/EMN/Create?NoteNumber=" + model.NoteNumber;
@@ -606,8 +606,6 @@ namespace CBBW.Areas.Security.Controllers
 
             return View(modelvm);
         }
-
-
         #endregion
         #region RIFC
         public JsonResult GetEMNRTFCNforListPage(int iDisplayLength, int iDisplayStart, int iSortCol_0,

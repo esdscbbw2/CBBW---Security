@@ -8,7 +8,7 @@
 @using (Html.BeginForm())
 {
     @Html.HiddenFor(x => x.btnDisplay)
-    
+
 
     <div class="">
         <div class="row newTable">
@@ -16,7 +16,7 @@
                 <div class="col-md-12">
                     <div class="heading_text_btn mb-3 mt-4">
                         <div class="leftButton">
-                            <button type="button" id="btnBack"  class="btn btn-primary me-2" >
+                            <button type="button" id="btnBack" class="btn btn-primary me-2">
                                 <i data-feather="arrow-left-circle"></i>
                                 Back
                             </button>
@@ -191,13 +191,13 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <div class="d-flex justify-content-center mt-4">
+                    <div class="d-flex justify-content-center  mt-4">
                         <button type="submit" name="Submit" value="btnTravDetails" id="btnTravDetails" disabled class="btn btn-primary me-2">
                             Travelling Details
                         </button>
                     </div>
                 </div>
-                <div class="bgColor mt-4 bg-transparent text-left">
+                <div class="bgColor mt-4 bg-transparent  border-green  text-left">
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
                             It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As It Is selected:
@@ -205,7 +205,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="bgColor mt-4 bg-transparent text-left">
+                <div class="bgColor mt-4 bg-transparent border-green text-left">
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
                             It Is Ensured That This Person Is Carrying Laptop As Provided To Him. The Same Has Been Confirmed (as per leave rules):
@@ -213,7 +213,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="bgColor mt-4 bg-transparent text-left">
+                <div class="bgColor mt-4 bg-transparent border-green text-left">
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
                             The Entry Is Done As Per Policy & As Required:
@@ -221,7 +221,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="bgColor mt-4 bg-transparent text-left" id="TravDetails">
+                <div class="bgColor mt-4 bg-transparent APPRej border-red text-left" id="TravDetails">
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
                             Tour Is Approved / Rejected After Written Information & Consent Of COO. When Ever Required, VB Document Shall Be Produced:
@@ -236,7 +236,7 @@
                         </li>
                     </ul>
                 </div>
-                
+
                 <div class="card mt-4 mb-4" id="dateDetails">
                     <div class="card-body alert alert-danger approvalForm text-dark ">
                         <div class="row d-flex align-items-center">
@@ -283,7 +283,9 @@
 }
 @section scripts{
     <script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/EMN/EMNNoteApprove.js"></script>
 
     <script>
@@ -303,13 +305,13 @@
                 }).then(callback);
                 function callback(result) {
                     if (result.value) {
-                        
+
                         window.location.href = url;
                     }
 
                 }
             } else {
-               
+
                 window.location.href = url;
             };
         });

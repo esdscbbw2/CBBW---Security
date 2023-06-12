@@ -32,6 +32,7 @@ namespace CBBW.BOL.ETS
         public string EmployeeNonName { get; set; }
     }
 
+
     public class ETSApproveTravDetails
     {
         public string NoteNumber { get; set; }

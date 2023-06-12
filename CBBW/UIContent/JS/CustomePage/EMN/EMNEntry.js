@@ -22,14 +22,14 @@ function EnableTravellingBtn() {
     var DWTBtn = $('#VADBtn');
     var Btnsubmit = $('#Btnsubmit').val();
   
-    if (Btnsubmit == 1) { DWTBtn.makeEnabled(); }
+    if (Btnsubmit == 1) { DWTBtn.makeEnabled(); DWTBtn.ButtonOk(); }
     if ((x + y) * 1 > 0) {
         DWTBtn.makeDisable();
-       
+        DWTBtn.ButtonNotOk();
     }
     else {
         DWTBtn.makeEnabled();
-      
+        DWTBtn.ButtonOk();
     }
 };
 function EnableTavPersonBtn() {
@@ -157,12 +157,15 @@ $(document).ready(function () {
     var NoteNumber = $('#emnHeader_NoteNumber').val();
     if ($('#Btnsubmit').val() == 0) {
         GetAllCenterCodeList();
-    } else if ($('#Btnsubmit').val() == 1) {
+        LockSection('Questions');
+        if ($.isEmptyObject($('#emnHeader_AttachFile').val())) { LockSection('TPDiv'); }
+        else { UnLockSection('TPDiv'); }
 
+    } else if ($('#Btnsubmit').val() == 1) {
         GetSavedCenterCodeList(NoteNumber, centercode);
         $('#CenterCN').isValid();
         getInitialData(centercode, status);
-
+       // UnLockSection('Questions');
     }
    
     (async function () {
@@ -187,9 +190,9 @@ function ValidateControl() {
     var targetid = $(target).attr('id');
     var isvalid = validatectrl(targetid, $(target).val());
     if (isvalid) {
-        $(target).removeClass('is-invalid').addClass('is-valid');
+        $(target).isValid();
     } else {
-        $(target).removeClass('is-valid').addClass('is-invalid');
+        $(target).isInvalid();
     }
     //$('#BackBtnActive').val(1);
     EnableSubmitBtn();
@@ -212,17 +215,38 @@ function validatectrl(targetid, value) {
     var isvalid = false;
     switch (targetid) {
         case "TaDaDenied":
+            if (value == 1) {
+                MyAlert(6, 'You Will Continue With TADA Denied Yes..!!');
+            }
             isvalid = validatectrl_YesNoCombo(value);
-            
             break;
         case "otherplace":
             isvalid = validatectrl_YesOrNo(value);
+            //if (isvalid) {
+            //    $('.otherplace').removeClass('border-red').addClass('border-green');
+            //}
+            //else {
+            //    $('.otherplace').removeClass('border-green').addClass('border-red');
+            //}
             break;
         case "carryLaptop":
             isvalid = validatectrl_YesOrNo(value);
+            //if (isvalid) {
+            //    $('.carryLaptop').removeClass('border-red').addClass('border-green');
+            //}
+            //else {
+            //    $('.carryLaptop').removeClass('border-green').addClass('border-red');
+            //}
             break;
         case "Policy":
             isvalid = validatectrl_YesOrNo(value);
+            //if (isvalid) {
+            //    $('.Policy').removeClass('border-red').addClass('border-green');
+            //}
+            //else {
+            //    $('.Policy').removeClass('border-green').addClass('border-red');
+            //}
+            break;
         case "CenterCN":
             isvalid = validatectrl_ValidatestringLength(value);
             break;
@@ -517,17 +541,13 @@ async function getInitialData(CenterCode, status) {
                         EmptyTPTable();
                         EnableTavPersonBtn();
                         EnableTravellingBtn();
-
                     }
                 if ($('#Btnsubmit').val() == 1) {
-                    $('#otherplace').removeAttr("disabled", "disabled");
-                    $('#carryLaptop').removeAttr("disabled", "disabled");
-                    $('#Policy').removeAttr("disabled", "disabled");
+                    //$('#otherplace').removeAttr("disabled", "disabled");
+                    //$('#carryLaptop').removeAttr("disabled", "disabled");
+                    //$('#Policy').removeAttr("disabled", "disabled");
                     $("#Traveltbl").find("input,button,textarea,select").attr("disabled", "disabled");
-                
-           
                     $('#SaveTP').makeDisable();
-
                 }
             });
         }

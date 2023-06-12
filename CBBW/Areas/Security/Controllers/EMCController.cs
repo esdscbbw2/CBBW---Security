@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using CBBW.Areas.Security.ViewModel.EHG;
 using CBBW.Areas.Security.ViewModel.EMC;
 using CBBW.BLL.IRepository;
+using CBBW.BOL;
 using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.EHG;
@@ -213,6 +214,7 @@ namespace CBBW.Areas.Security.Controllers
                     if (TempData["EMC"] != null)
                     {
 
+                        modeltravvm.EmplyoyeeNoList = MyCodeHelper.GetCommaSeparatedString(model.PersonDtls.Where(x => x.EmployeeNo != 0).Select(x => x.EmployeeNo).ToList());
                         if (model.PersonDtls.Where(x => x.PersonType == 2 || x.PersonType == 4).FirstOrDefault() != null)
                             modeltravvm.PersonType = model.PersonDtls.Where(x => x.PersonType == 2 || x.PersonType == 4).FirstOrDefault().PersonType > 0 ? 4 : 1;
                         else
@@ -222,13 +224,13 @@ namespace CBBW.Areas.Security.Controllers
                         modeltravvm.NoteNumber = model.NoteNumber;
                         modeltravvm.AttachFile = model.AttachFile;
                         modeltravvm.CenterCodenName = model.CenterCodeName;
-                        
+
                         var DateNo = _iEMN.GetTourInfoForServiceType(ServiceTypeCode, ref pMsg);
-                        modeltravvm.TourFromdateStr = DateTime.Today.AddDays(DateNo.MaxDayAllowed).ToString("yyyy-MM-dd");
-                        modeltravvm.TodateStr = DateTime.Today.AddDays(3).ToString("yyyy-MM-dd");
                         modeltravvm.FromdateStr = DateTime.Today.ToString("yyyy-MM-dd");
-
-
+                        modeltravvm.TodateStr = DateTime.Today.AddDays(3).ToString("yyyy-MM-dd");
+                        //modeltravvm.TourFromdateStr = DateTime.Today.AddDays(DateNo.MaxDayAllowed).ToString("yyyy-MM-dd");
+                        //modeltravvm.TodateStr = DateTime.Today.AddDays(3).ToString("yyyy-MM-dd");
+                        //modeltravvm.FromdateStr = DateTime.Today.ToString("yyyy-MM-dd");
                     }
 
                 }

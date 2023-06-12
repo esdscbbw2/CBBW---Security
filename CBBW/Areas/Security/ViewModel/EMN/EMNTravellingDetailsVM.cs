@@ -30,6 +30,7 @@ namespace CBBW.Areas.Security.ViewModel.EMN
         public int VehicleTypeProvided { get; set; }
         public string ReasonVehicleProvided { get; set; }
         public bool Tourcat { get; set; }
+        public string EmplyoyeeNoList { get; set; }
 
     }
 }

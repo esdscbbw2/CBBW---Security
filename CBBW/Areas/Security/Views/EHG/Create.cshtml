@@ -64,14 +64,15 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12">
+        <div class="col-md-12 SLUSection">
             <div class="text-center pt-2 pb-2">
-                <button id="btnScan" type="button" class="btn btn-light-red @(string.IsNullOrEmpty(Model.ehgHeader.DocFileName)?"":"inVisible")"
+                <button id="btnScan" type="button" 
+                        class="btn SLUBtn btn-light-red @(string.IsNullOrEmpty(Model.ehgHeader.DocFileName)?"":"inVisible SLUBtnOK")"
                         onclick="fireSweetAlert()">
                     Scan & Attach
                     “Travelling Request Form”
                 </button>
-                <button id="btnScanView" type="button" class="btn btn-light-green @(string.IsNullOrEmpty(Model.ehgHeader.DocFileName)?"inVisible":"")"
+                <button id="btnScanView" type="button" class="btn SLUCtrl btn-light-green @(string.IsNullOrEmpty(Model.ehgHeader.DocFileName)?"inVisible":"")"
                         onclick="btnScanViewClicked()">
                     View Attached “Travelling Request Form”
                 </button>
@@ -127,12 +128,12 @@
                         </label>
                         <div class="col-md-6">
                             @Html.DropDownListFor(m => m.ehgHeader.VehicleType,
-                new SelectList(Model.VehicleTypes, "ID", "DisplayText"),
-                "Select Vehicle Type To Be Allotted",
-                htmlAttributes: new
-                {
-                    @class = "form-select pointer is-invalid SLUCtrl"
-                })
+                            new SelectList(Model.VehicleTypes, "ID", "DisplayText"),
+                            "Select Vehicle Type To Be Allotted",
+                            htmlAttributes: new
+                            {
+                                @class = "form-select pointer is-invalid SLUCtrl"
+                            })
                         </div>
                     </div>
                     <div id="for_LV" class="inVisible">
@@ -158,7 +159,7 @@
                             </label>
                             <div class="col-md-6">
                                 <input id="POA2Wheeler" type="text"
-                                       class="form-control AlwaysLock"
+                                       class="form-control"
                                        value="NA" disabled>
                             </div>
                         </div>
@@ -190,7 +191,7 @@
                                        "Select Employee Number",
                                        htmlAttributes: new
                                        {
-                                           @class = "form-select SLUCtrl is-invalid EntrynDisabledForEntry",
+                                           @class = "form-select SLUCtrl is-invalid",
                                            @onchange = "ValidateControl()"
                                        })
                         </div>
@@ -203,12 +204,11 @@
                             @Html.TextBoxFor(m => m.ehgHeader.InitiatorCodenName,
                            htmlAttributes: new
                                 {
-                                    @class = "form-control AlwaysLock",
+                                    @class = "form-control",
                                     disabled = "disabled"
                                 })
                         </div>
                     </div>
-
                 </div>
             </div>
             <div id="AppDiv" class="card mb-4 mt-4 ">
@@ -236,7 +236,6 @@
 
                 </div>
             </div>
-
             <div class="col-md-12 mt-4 pt-3 inVisible" id="for_Management">
                 <div class="heading_text_btn2 d-block mb-4">
                     <h2>
@@ -246,7 +245,7 @@
                 <div class="card SLUSection" id="sManagementDiv">
                     <div class="card-body">
                         <div class="table-responsive max-content">
-                            <table class="table table-bordered w-100 SLUContainer" id="table">
+                            <table class="table table-bordered w-100" id="table">
                                 <thead>
                                     <tr>
                                         <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
@@ -287,7 +286,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    <tr class="SLUContainer">
                                         <th scope="row" class="text-center">Driver</th>
                                         <td class="text-center">
                                             @Html.DropDownListFor(m => m.DriverNoForManagement,
@@ -315,7 +314,6 @@
                                                        class="datelabel pointer">Select Date</label>
                                             </div>
                                         </td>
-
                                         <td class="text-center">
                                             <div class="input-group date pointer position-static placeholder-dark">
                                                 @Html.TextBoxFor(m => m.FromTimeForMang,
@@ -411,7 +409,7 @@
                                        "Select Employee Number",
                                        htmlAttributes: new
                                        {
-                                           @class = "form-select pointer is-invalid SLUCtrl",
+                                           @class = "form-select pointer is-invalid SLUCtrl LUPS",
                                            @onchange = "ValidateControl()"
                                        })
                             </div>
@@ -458,15 +456,15 @@
                                     </tr>
                                 </thead>
                                 <tbody id="tbody3">
-                                    <tr id="0" class="add-row">
+                                    <tr id="0" class="add-row SLUContainer">
                                         <th scope="row">1</th>
                                         <td class="text-center">
                                             <select style="width:200px"
-                                                    class="form-select w-200 is-invalid alterID inValidTag"
+                                                    class="form-select w-200 is-invalid SLUCtrl alterID inValidTag"
                                                     data-name="PersonType"
                                                     aria-label="Default select example"
                                                     id="DDPersonType" onchange="DDPersonTypeChanged()">
-                                                <option value="-1">Select Type</option>
+                                                <option value="">Select Type</option>
                                                 <option value="1">Staff</option>
                                                 <option value="2">Driver </option>
                                                 <option value="3">Others</option>
@@ -474,15 +472,15 @@
                                             </select>
                                         </td>
                                         <td class="text-center">
-                                            <select class="form-select alterID inValidTag pickPersonName xPerson"
+                                            <select class="form-select alterID inValidTag SLUCtrl pickPersonName xPerson"
                                                     data-name="EmployeeNo" data-name-text="EmployeeNonNamecmb"
                                                     aria-label="Default select example"
                                                     onchange="DDPickPersonChanged(0)"
                                                     id="cmbDDPersonType">
                                             </select>
                                             <input type="text" style="width:300px" data-name="EmployeeNonName"
-                                                   class="form-control w-200 inVisible alterID pickPersonNametxt xPerson"
-                                                   onblur="DDPickPersonChanged(1)"
+                                                   class="form-control w-200 inVisible SLUCtrl alterID pickPersonNametxt xPerson"
+                                                   onchange="DDPickPersonChanged(1)"
                                                    id="txtDDPersonType">
                                         </td>
                                         <td id="DesgCodenName" data-name="DesignationCodenName"
@@ -492,7 +490,7 @@
                                                 <input id="FromDate" type="date"
                                                        data-name="FromDate"
                                                        onchange="ValidateCloneRowCtrl()"
-                                                       class="form-control pointer is-invalid alterID inValidTag CustomDateFormatCloneRow valid">
+                                                       class="form-control pointer SLUCtrl is-invalid alterID inValidTag CustomDateFormatCloneRow valid">
                                                 <label id="lblFromDate" style="width:100px"
                                                        class="datelabel pointer alterID">Select Date</label>
                                             </div>
@@ -503,7 +501,7 @@
                                                 <input id="FromTime" type="text"
                                                        data-name="FromTime"
                                                        onblur="ValidateCloneRowCtrl()"
-                                                       class="form-control is-invalid timePicker CustomTimeFormatCloneRow alterID inValidTag mTimePickerAlert"
+                                                       class="form-control is-invalid SLUCtrl timePicker CustomTimeFormatCloneRow alterID inValidTag mTimePickerAlert"
                                                        placeholder="Select Time">
                                             </div>
                                         </td>
@@ -511,8 +509,8 @@
                                             <div class="position-relative pointer" style="width:200px">
                                                 <input id="ToDate" type="date"
                                                        data-name="ToDate" title="To Date Should Be Latter Than From Date"
-                                                       onchange="ValidateCloneRowCtrl()"
-                                                       class="form-control pointer is-invalid alterID inValidTag CustomDateFormatCloneRow valid">
+                                                       onchange="CRToDateChanged();"
+                                                       class="form-control pointer is-invalid SLUCtrl alterID inValidTag CustomDateFormatCloneRow valid">
                                                 <label id="lblToDate" style="width:110px"
                                                        class="datelabel pointer alterID">Select Date</label>
                                             </div>
@@ -520,11 +518,11 @@
                                         <td class="text-center">
                                             <textarea name="" id="PurposeOfVisit" cols="20"
                                                       data-name="PurposeOfVisit"
-                                                      onchange="ValidateCloneRowCtrl()"
-                                                      class="form-control is-invalid alterID inValidTag" rows="3"></textarea>
+                                                      onkeyup="ValidateCloneRowCtrl()"
+                                                      class="form-control is-invalid alterID SLUCtrl inValidTag" rows="3"></textarea>
                                         </td>
                                         <td class="text-center">
-                                            <select id="TaDaDenied" class="form-select is-invalid alterID inValidTag"
+                                            <select id="TaDaDenied" class="form-select SLUCtrl is-invalid alterID inValidTag"
                                                     data-name="iTADADenied"
                                                     onchange="ValidateCloneRowCtrl()"
                                                     aria-label="Default select example">
@@ -536,7 +534,7 @@
                                         <td>
                                             <span class="actionBtn">
                                                 <button id="AddBtn" type="button" disabled
-                                                        class="btn primaryLink alterID cloneBtn addBtn"
+                                                        class="btn primaryLink alterID SLUCtrl cloneBtn addBtn"
                                                         onclick="addOfficeWorkCloneBtnClick()"
                                                         data-toggle="tooltip"
                                                         data-placement="top" title="Add">
@@ -568,7 +566,7 @@
                             <div class="col-md-5">
                                 <select id="DDAuthorisedEmpForWork" disabled
                                         onchange="DDAuthorisedEmpForWorkChanged()"
-                                        class="form-select is-invalid"
+                                        class="form-select is-invalid SLUCtrl LUPS"
                                         aria-label="Default select example">
                                 </select>
                             </div>
@@ -578,24 +576,27 @@
             </div>
             <div id="BtnDiv" class="col-md-12">
                 <div class="d-flex justify-content-center  mt-2">
-                    <button type="button" class="btn btn-primary me-2" disabled
+                    <button type="button" 
+                            class="btn btn-primary me-2 SLUBtn" disabled
                             onclick="DateWiseTourDtlClicked()"
                             id="DateWiseTourBtn2">
                         Date Wise Tour Details - Entry
                     </button>
-                    <button id="VADBtn" type="submit" class="btn btn-primary" disabled
+                    <button id="VADBtn" type="submit" 
+                            class="btn btn-primary SLUBtn" disabled
                             name="Submit" value="VAD">
                         Vehicle Allotment Details
                     </button>
                 </div>
             </div>
-            <div>
-                <div id="StatementDiv" class="bgColor border-red mt-4 bg-transparent text-center SLUSection SLUStatement">
+            <div id="StatementDiv" 
+                 class="bgColor mt-4 bg-transparent text-center SLUSection SLUStatement">
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
                             The Entry Is Done As Per Policy & As Required:
-                            <select id="AcceptCmb" style="width:110px" class="form-select"
-                                    aria-label="Default select example SLUCtrl">
+                            <select id="AcceptCmb" style="width:110px" 
+                                    class="form-select SLUCtrl LUPS is-invalid"
+                                    aria-label="Default select example ">
                                 <option selected="">-</option>
                                 <option value="1">Yes</option>
                                 <option value="0">No</option>
@@ -603,8 +604,7 @@
                         </li>
                     </ul>
                 </div>
-            </div>
-           
+                       
         </div>
     }
 </div>
@@ -618,7 +618,7 @@
     <script src="~/UIContent/JS/sweetalert2.all.min.js"></script>
     <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
-    @*<script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>*@
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/EHG/EHGCreateNote.js"></script>
     <script>
         $(document).ready(function () {
@@ -633,90 +633,7 @@
         });
     </script>
     <script>
-        function btnScanViewClicked() {
-            var filename = $('#ehgHeader_DocFileName').val();
-            var filepath = "/Upload/Forms/" + filename;
-            if (filename != '') {
-                window.open(filepath);
-            } else {
-                MyAlert(3, 'Unable To Find Uploaded File.');
-            }
-
-        };
-        function fireSweetAlert() {
-            Swal.fire({
-                title: 'Attach Travelling Request Form',
-                text: "Are you sure you want to delete this?",
-                icon: 'success',
-                html: `<div style="text-align:left;">
-                                                <div class="form-group">
-                                                    <label class="swal-label">Attach File(Only Pdf,Png & Jpg Files)</label>
-                                                    <input type="file" id="uploadCtrl" name="uploadCtrl" class="form-control" placeholder="">
-                                                </div>
-                                            </div>`,
-                cancelButtonClass: 'btn-cancel',
-                cancelButtonText: 'Cancel',
-                confirmButtonText: 'Submit',
-                confirmButtonColor: '#2527a2',
-                showCancelButton: true,
-            }).then(callback);
-            function callback(result) {
-                if (result.value) {
-                    var data = new FormData();
-                    var files = $("#uploadCtrl").get(0).files;
-                    if (files.length > 0) {
-                        data.append("MyImages", files[0]);
-                        $.ajax({
-                            url: "/Common/UploadFile",
-                            type: "POST",
-                            processData: false,
-                            contentType: false,
-                            data: data,
-                            success: function (response) {
-                                $(response).each(function (index, item) {
-                                    if (item.ResponseStat == 1) {
-                                        $('#ehgHeader_DocFileName').val(item.FileName);
-                                        $('#btnScan').addClass('inVisible');
-                                        $('#btnScanView').removeClass('inVisible');
-                                        var filepath = "/Upload/Forms/" + item.FileName;
-                                        window.open(filepath);
-                                        UnLockSection('Section1');
-                                    }
-                                    else {
-                                        MyAlert(3, item.ResponseMsg);
-                                        //Swal.fire({
-                                        //    title: 'Failed To Upload File.',
-                                        //    text: item.ResponseMsg,
-                                        //    icon: 'error',
-                                        //    customClass: 'swal-wide',
-                                        //    buttons: {
-                                        //        confirm: 'Ok'
-                                        //    },
-                                        //    confirmButtonColor: '#2527a2',
-                                        //});
-                                    }
-                                });
-                            },
-                            error: function (er) {
-                            }
-                        });
-                    }
-                    else {
-                        MyAlert(4, 'Select Only Pdf,Png & Jpg Files.');
-                        //Swal.fire({
-                        //    title: 'No Files Selected.',
-                        //    text: 'Select Only Pdf,Png & Jpg Files.',
-                        //    icon: 'error',
-                        //    customClass: 'swal-wide',
-                        //    buttons: {
-                        //        confirm: 'Ok'
-                        //    },
-                        //    confirmButtonColor: '#2527a2',
-                        //});
-                    }
-                }
-            }
-        }
+        
     </script>
     <script>
         var firstOpen = true;

@@ -124,7 +124,7 @@
                                         <label>Approved :</label>
                                     </div>
                                     <div class="col-md-2">
-                                        <input type="text" class="form-control" value="-" disabled="">
+                                        <input type="text" class="form-control ApproveCtrl" id="Approvestatus" value="-" disabled="">
                                     </div>
                                     <div class="col-md-2 col-form-label">
                                         <label>Date &amp; Time Of Approval :</label>
@@ -150,7 +150,7 @@
                                         <label>Ratified :</label>
                                     </div>
                                     <div class="col-md-2">
-                                        <input type="text" class="form-control" value="-" disabled="">
+                                        <input type="text" class="form-control ApproveCtrl" id="Ratifiedstatus" value="-" disabled="">
                                     </div>
                                     <div class="col-md-2 col-form-label">
                                         <label>Date & Time Of Ratification :</label>
@@ -203,7 +203,6 @@
                                             </tr>
 
                                         </thead>
-
 
                                         @if (Model.Btnsubmit == 1)
                                         {
@@ -322,49 +321,37 @@
                         </div>
                     </div>
                     <div id="Questions">
-                        <div class="bgColor mt-4 bg-transparent content text-left">
+                        <div  id="ID3" class="bgColor mt-4 bg-transparent content text-left @(Model.TourCatstatus?"SLUStatement SLUSection":"") ">
                             <ul style="list-style:none;">
-                                @if (Model.TourCatstatus)
-                                {
                                     <li style="font-size: 16px;">
                                         It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
-                                        <select id="otherplace" style="width: 110px;" class="form-select is-invalid" onchange="ValidateControl()" aria-label="Default select example">
+                                        
+                                        <select disabled id="otherplace"  style="width: 110px;" class="form-select @(Model.TourCatstatus?"is-invalid SLUCtrl":"") " onchange="ValidateControl()" aria-label="Default select example">
                                             <option selected="">-</option>
                                             <option value="0">Yes</option>
                                             <option value="1">No</option>
                                         </select>
                                     </li>
-                                    
-                                }
-                                else
-                                {
-                            <li style="font-size: 16px;">
-                                It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
-                                <select disabled id="otherplace" style="width: 110px;" class="form-select" aria-label="Default select example">
-                                    <option selected value="-">-</option>
-                                </select>
-                            </li>
-                                }
-
                             </ul>
                         </div>
-                        <div class="bgColor mt-4 bg-transparent content text-left">
+                        <div id="ID1" class="bgColor mt-4 bg-transparent content text-left SLUStatement SLUSection SLUContainer">
                             <ul style="list-style:none;">
                                 <li style="font-size: 16px;">
                                     It Is Ensured That This Person Is Carrying Laptop As Provided To Him. The Same Has Been Confirmed (as per leave rules):
-                                    <select id="carryLaptop" style="width: 110px;" class="form-select is-invalid" onchange="ValidateControl()" aria-label="Default select example">
-                                        <option selected="">-</option>
+                                    <select id="carryLaptop" style="width: 110px;" class="form-select is-invalid SLUCtrl" onchange="ValidateControl()" aria-label="Default select example">
+                                        <option selected value="">-</option>
                                         <option value="0">Yes</option>
                                         <option value="1">No</option>
                                     </select>
+                                  
                                 </li>
                             </ul>
                         </div>
-                        <div class="bgColor mt-4 bg-transparent content text-left">
+                        <div  id="ID2" class="bgColor mt-4 bg-transparent content text-left SLUStatement SLUSection">
                             <ul style="list-style:none;">
                                 <li style="font-size: 16px;">
                                     The Entry Is Done As Per Policy & As Required:
-                                    <select id="Policy" style="width: 110px;" class="form-select is-invalid" onchange="ValidateControl()" aria-label="Default select example">
+                                    <select id="Policy" style="width: 110px;" class="form-select is-invalid SLUCtrl" onchange="ValidateControl()" aria-label="Default select example">
                                         <option selected="">-</option>
                                         <option value="0">Yes</option>
                                         <option value="1">No</option>
@@ -389,14 +376,16 @@
 
 
 @section scripts{
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/ETS/ETSEntry.js"></script>
     <script>
         function btnScanViewClicked() {
             var filename = $('#etsHeader_AttachFile').val();
             var filepath = "/Upload/Forms/" + filename;
             if (filename != '') {
-                window.open(filepath);
+                OpenWindow(filepath);
             } else {
                 Swal.fire({
                     title: 'No Files Found.',
@@ -417,11 +406,11 @@
                 text: "Are you sure you want to delete this?",
                 icon: 'success',
                 html: `<div style="text-align:left;">
-                                                                    <div class="form-group">
-                                                                        <label class="swal-label">Attach File (Only Pdf,Png & Jpg Files)</label>
-                                                                        <input type="file" id="uploadCtrl" name="uploadCtrl" class="form-control" placeholder="">
-                                                                    </div>
-                                                                </div>`,
+                                                                                <div class="form-group">
+                                                                                    <label class="swal-label">Attach File (Only Pdf,Png & Jpg Files)</label>
+                                                                                    <input type="file" id="uploadCtrl" name="uploadCtrl" class="form-control" placeholder="">
+                                                                                </div>
+                                                                            </div>`,
                 cancelButtonClass: 'btn-cancel',
                 cancelButtonText: 'Cancel',
                 confirmButtonText: 'Submit',
@@ -429,6 +418,7 @@
                 showCancelButton: true,
             }).then(callback);
             function callback(result) {
+
                 if (result.value) {
                     //var url = "/Security/EHG/Index";
                     //window.location.href = url;
@@ -437,7 +427,7 @@
                     if (files.length > 0) {
                         data.append("MyImages", files[0]);
                         $.ajax({
-                            url: "/Common/UploadFile",
+                            url: "/Security/Common/UploadFile",
                             type: "POST",
                             processData: false,
                             contentType: false,
@@ -449,7 +439,12 @@
                                         $('#btnScan').addClass('inVisible');
                                         $('#btnScanView').removeClass('inVisible');
                                         var filepath = "/Upload/Forms/" + item.FileName;
-                                        window.open(filepath);
+                                        //window.open(filepath);
+                                        OpenWindow(filepath);
+                                        var Btnsubmit = $('#Btnsubmit').val();
+                                        if (Btnsubmit == 0) {
+                                            UnLockSection('TravellingPerson');
+                                        }
                                     }
                                     else {
                                         Swal.fire({

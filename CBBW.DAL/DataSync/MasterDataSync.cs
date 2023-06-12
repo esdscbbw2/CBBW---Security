@@ -10,6 +10,17 @@ namespace CBBW.DAL.DataSync
 {
     public class MasterDataSync
     {
+        public DataTable GetEmployeeValidationForTour(int CentreCode,string EmployeeNumbers,DateTime FromDate,DateTime ToDate, ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("select * from [EHG].[GetEmployeeValidationForTour](" + CentreCode + ",'"+ EmployeeNumbers + "','"+ FromDate .ToString("yyyy-MM-dd")+ "','"+ ToDate.ToString("yyyy-MM-dd") + "')", CommandType.Text))
+                {
+                    return sql.GetDataTable();
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
         public int GetCentreCodeFromLocation(int LocationTypeCode, int LocationCode, ref string pMsg)
         {
             try
@@ -214,7 +225,18 @@ namespace CBBW.DAL.DataSync
         {
             try
             {
-                using (SQLHelper sql = new SQLHelper("select * from [EHG].[getEmployees]("+functionalDesg+","+centreCode+","+ isOtherStaff + ")", CommandType.Text))
+                using (SQLHelper sql = new SQLHelper("select * from [EHG].[getEmployees](" + functionalDesg + "," + centreCode + "," + isOtherStaff + ")", CommandType.Text))
+                {
+                    return sql.GetDataTable();
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        public DataTable getEmployeeListV2(int centreCode, ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("select * from [MTR].[GetRegularEmployeeListForHG](" + centreCode + ")", CommandType.Text))
                 {
                     return sql.GetDataTable();
                 }

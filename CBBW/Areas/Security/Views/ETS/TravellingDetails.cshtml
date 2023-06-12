@@ -14,6 +14,7 @@
         @Html.HiddenFor(x => x.AttachFile);
         @Html.HiddenFor(x => x.CenterCodenName);
         @Html.HiddenFor(x => x.btnSubmit);
+        @Html.HiddenFor(x => x.EmplyoyeeNoList);
         <div class="row newTable">
             <div class="fixedElement">
                 <div class="col-md-12">
@@ -148,13 +149,11 @@
                                             <td class="text-center">
                                                 <div class="position-relative clear pointer">
                                                     <input id="SchTourToDate" type="date"
-                                                           data-name="SchTourToDate" max="@Model.TourFromdateStr"
+                                                           data-name="SchTourToDate"
                                                            onchange="ValidateControl()"
                                                            class="form-control pointer clear is-invalid CustomDateFormatCloneRow">
                                                     <label id="lblSchTourToDate" style="width:100px"
                                                            class="datelabel cleardate pointer alterID">Select Date</label>
-
-
                                                 </div>
                                             </td>
                                             <td class="text-center">
@@ -301,10 +300,10 @@
 
 }
 @section scripts{
-
     <script src="~/UIContent/JS/bootstrap-datetimepicker.min.js"></script>
-
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/ETS/TravellingDetails.js"></script>
 
 
@@ -317,18 +316,18 @@
             format: "hh:mm A"
         }).on('dp.show', function () {
             if (firstOpen) {
-                    time = moment().startOf('day');
-                    firstOpen = false;
+                time = moment().startOf('day');
+                firstOpen = false;
             } else {
-                time = "01:00 PM"
+                // time = "01:00 PM"
             }
             $(this).data('DateTimePicker').date(time);
         });
 
-       
+
     </script>
     <script>
-        
+
             function BackUrls() {
                 debugger;
                 var url = "@ViewBag.BackUrl";
@@ -336,7 +335,7 @@
 
                 window.location.href = urlbk;
             };
-        
+
     </script>
 
     <script>

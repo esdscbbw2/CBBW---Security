@@ -5,6 +5,7 @@
         MakevalueReset();
         PublicTransportchange(PublicTransport, PersonType, 0);
         GetTourCategory(PublicTransport);
+     
     });
 });
 function PublicTransportchange(PublicTransport, PersonType, vehicleType) {
@@ -28,8 +29,7 @@ async function GetTourCategory(PublicTransport) {
     (async function () {
         const r1 = await getMultiselectData('TourCategory', '/ETS/GetTourCategories?PTval=' + PublicTransport);
     })();
-
-
+   
 };
 function MakevalueReset() {
     $("#SchFromDate").val('').isInvalid();
@@ -62,7 +62,6 @@ $(document).ready(function () {
     $('#SchToDate').makeDisable();
 });
 function ValidateControl() {
-    
     var target = ValidateControl.caller.arguments[0].target;
     var targetid = $(target).attr('id');
     var tblRow = target.closest('.add-row');
@@ -72,27 +71,24 @@ function ValidateControl() {
     } else {
         $(target).removeClass('is-valid').addClass('is-invalid');
     }
-    //if (targetid == 'VehicleType') {
-    //    fireSweetAlert($(target).val());
-    //}
-
-    if (targetid == "SchFromDate") { Datechange($(target).val()); $('#SchFromTime').makeEnabled(); $('#SchFromTime').val('').isInvalid(); }
-    if (targetid == "SchTourToDate") { SetDatechange($(target).val()); } else {
+    if (targetid == "SchFromDate") {
+        Datechange($(target).val());
+        $('#SchFromTime').makeEnabled();
+        $('#SchFromTime').val('').isInvalid();
+    }
+    if (targetid == "SchTourToDate") {
+        SetDatechange($(target).val());
+    } else {
         $('#SchToDate').val('');
         $('#SchToDate').isInvalid()
         $('#SchToDate').makeDisable();
         $('#lblSchToDate').html('Select Date');
     }
-
     $('#SchToDate').val('');
     $('#SchToDate').isInvalid();
-
     $("#tbody2").empty();
     ClearallDropdownData(0);
-
-
     EnableSubmitBtn();
-
 };
 function ValidateCloneRowCtrl() {
 
@@ -111,6 +107,10 @@ function ValidateCloneRowCtrl() {
         if (todate <= calculatedFromdate) {
             $(tblRow).find('.addBtn').makeDisable();
         }
+        $(tblRow).find('.btn-default').each(function () {
+            $(this).removeClass('nodrop disabled bg-blue');
+            $(this).removeAttr('disabled');
+        });
     }
     EnableAddBtnInCloneRowIfOnlyLastV2(tblRow, 'AddBtn');
     EnableSubmitBtn();
@@ -162,14 +162,15 @@ function validatectrl(targetid, value, rowid) {
                         isvalid = true;
                     } else {
                         isvalid = false;
-                        AlertMessage();
+                        MyAlert(5, 'Please Select Current time Or Greater Than!');
                     }
                 } else {
                 isvalid = validatectrl_ValidateLength(value);
                 }
             break;
         case "SchTourToDate":
-            isvalid = validatectrl_ValidateLength(value);
+            ValidateEmployeeForTour($('#EmplyoyeeNoList').val(), $('#SchFromDate').val(), value);
+           isvalid = validatectrl_ValidateLength(value);
             break;
         case "dateTour_SchToDate":
             isvalid = validatectrl_ValidateLength(value);
@@ -249,7 +250,6 @@ function AlertMessage() {
         confirmButtonColor: '#2527a2',
     });
 }
-
 function validatectrl_YesNoCombo(value) {
 
     if (value * 1 >= 0) {
@@ -274,7 +274,11 @@ function EnableSubmitBtn() {
     if ((x + y) * 1 <= 0) {
         if (mEnable) { DWTBtn.makeEnabled(); } else { DWTBtn.makeDisable(); }
     } else { DWTBtn.makeDisable(); }
-
+    if (x * 1 <= 0) {
+        UnLockSection('dateDetails');
+    } else {
+        LockSection('dateDetails');
+    }
 
 };
 function AddClonebtn() {
@@ -356,7 +360,9 @@ function Datechange(evt) {
     $('#SchTourToDate').makeEnabled();
     $('#SchTourToDate').val('');
     $('#SchTourToDate').isInvalid();
+    
     $('#SchTourToDate').attr('min', evt);
+    GetTourMaxDaysAllow(evt);
     $('#lblSchTourToDate').html('Select Date');
 
 };
@@ -573,11 +579,13 @@ function ValueClears() {
     $('#lblSchFromDate').html('Select Date');
 };
 $(document).ready(function () {
-
+    var btnSubmit = $('#btnSubmit').val();
+    if (btnSubmit == 0) {
+        LockSection('dateDetails');
+    }
     (async function () {
         const r1 = await getInitialData();
     })();
-
 });
 async function getInitialData() {
     var rowid = 0;
@@ -665,3 +673,16 @@ async function getInitialData() {
         }
     });
 };
+function GetTourMaxDaysAllow(Fromdate) {
+    $.ajax({
+        url: '/ETS/GetTourMaxDaysAllow',
+        method: 'GET',
+        data: { FromDate: Fromdate },
+        dataType: 'json',
+        success: function (data) {
+            $('#SchTourToDate').attr('max', data);
+        }
+    });
+}
+
+

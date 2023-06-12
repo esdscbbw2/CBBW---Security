@@ -48,7 +48,7 @@
                 <h2 class="text-center"> Date Wise Tour Details Entry: </h2>
             </div>
         </div>
-        <div class="col-md-12 mb-4" id="HdrDiv">
+        <div class="col-md-12 mb-4 SLUSection" id="HdrDiv">
             <div class="col-md-12 pt-3">
                 <div class="card">
                     <div class="card-body">
@@ -71,7 +71,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="tbody1">
-                                    <tr id="0" class="add-row">
+                                    <tr id="0" class="add-row SLUContainer">
                                         <th scope="row">1</th>
                                         <td id="FromDateLbl" data-name="Fromdate"
                                             class="text-center alterID htmlVal rDate">
@@ -82,25 +82,33 @@
                                                        onchange="ValidateCloneRowCtrl()"
                                                        max="@Model.TodateStr"
                                                        min="@Model.FromdateStr"
-                                                       class="form-control pointer is-invalid alterID CustomDateFormatCloneRow todt valid">
+                                                       class="form-control pointer is-invalid alterID CustomDateFormatCloneRow todt valid SLUCtrl">
                                                 <label id="lblToDate" style="width:110px"
                                                        class="datelabel pointer alterID rDate">Select Date</label>
                                             </div>
                                         </td>
                                         <td class="text-center">
-                                            <div class="form-group">
+                                            <div id="ConTourCategory" class="form-group">
                                                 <select id="TourCategory" data-name="TourCatCodes" data-name-text="TourCatText"
-                                                        onchange="ChangeCashCadingSourceInCloaning('CenterCode', '/Security/EHG/GetTourLocations?CategoryIDs=')"
-                                                        class="form-select is-invalid alterID clonemultiselect"
+                                                        @*onchange="TourCategoryChanged()"*@
+                                                        onchange="TourCategoryChanged('CenterCode', '/Security/EHG/GetTourLocations?CategoryIDs=')"
+                                                        class="form-select is-invalid alterID ApplyMultiSelect clonemultiselect SLUCtrl"
                                                         aria-label="Default select example">
+                                                    @if (Model.TourCategory != null)
+                                                    {
+                                                        foreach (var item in Model.TourCategory)
+                                                        {
+                                                            <option value="@item.ID">@item.DisplayText</option>
+                                                        }
+                                                    }
                                                 </select>
                                             </div>
                                         </td>
-                                        <td class="text-center">
-                                            <div class="form-group">
+                                        <td class="text-center ">
+                                            <div id="ConCenterCode" class="form-group">
                                                 <select id="CenterCode" data-name="CenterCodes" data-name-text="CenterNames"
                                                         onchange="ValidateCloneRowCtrl()"
-                                                        class="form-select alterID is-invalid clonemultiselect"
+                                                        class="form-select alterID is-invalid clonemultiselect SLUCtrl"
                                                         aria-label="Default select example">
                                                 </select>
                                             </div>
@@ -109,7 +117,7 @@
                                         <td>
                                             <span class="actionBtn">
                                                 <button id="AddBtn" type="button"
-                                                        class="btn primaryLink alterID cloneBtn addBtn"
+                                                        class="btn primaryLink alterID cloneBtn addBtn SLUCtrl"
                                                         data-toggle="tooltip"
                                                         onclick="addCloneBtnClick()"
                                                         data-placement="top" title="Add">
@@ -117,7 +125,7 @@
                                                 </button>
 
                                                 <button id="DeleteBtn" type="button"
-                                                        class="btn secondaryLink inVisible alterID cloneBtn removeBtn"
+                                                        class="btn secondaryLink inVisible alterID cloneBtn removeBtn "
                                                         onclick="RemoveBtnClicked()"
                                                         data-toggle="tooltip"
                                                         data-placement="top" title="Delete">
@@ -142,14 +150,16 @@
 
 }
 @section scripts{
-
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
-    <script src="~/UIContent/JS/CustomePage/EHGDateWiseTourDtl.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
+    <script src="~/UIContent/JS/CustomePage/EHG/EHGDateWiseTourDtl.js"></script>
     <script>
         function trialBtnClick() {
             var notenumber = $('#ehgHeader_NoteNumber').val();
             var schrecords = getRecordsFromTableV2('table1');
-            var x = '{"NoteNumber":"' + notenumber+'","DateWiseList":' + schrecords + '}';
+            var x = '{"NoteNumber":"' + notenumber + '","DateWiseList":' + schrecords + '}';
+
             $.ajax({
                 method: 'POST',
                 url: '/EHG/SetDateWiseTourDtls',
@@ -160,18 +170,10 @@
                     $(data).each(function (index, item) {
                         if (item.bResponseBool == true) {
                             var url = "/Security/EHG/Create";
-                            window.location.href = url;
+                            MyAlertWithRedirection(1, 'Data Saved Successfully.', url);
+                            //window.location.href = url;
                         } else {
-                            Swal.fire({
-                                title: 'Confirmation',
-                                text: 'Failed To Save Date Wise Tour Details.',
-                                icon: 'question',
-                                customClass: 'swal-wide',
-                                buttons: {
-                                    confirm: 'Ok'
-                                },
-                                confirmButtonColor: '#2527a2',
-                            });
+                            MyAlert(3, 'Failed To Save Date Wise Tour Details.');
                         }
                     });
                 },

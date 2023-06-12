@@ -2,19 +2,20 @@
     $('#NoteNumber').change(function () {
         Notenumberchanged($(this).val());
     });
-
     Notenumberchanged($('#NoteNumber').val());
-
     var btnDisplays = $("#btnDisplay").val();
-    if (btnDisplays == 1) {
+    var TravDetails = $("#TravDetails");
+    var dateDetails = $("#dateDetails");
+    if (btnDisplays*1 == 1) {
         $('#NoteNumber').makeDisable();
+        UnLockSection(TravDetails.attr('id'));
+        LockSection(dateDetails.attr('id'));
     } else {
         $('#NoteNumber').makeEnabled();
+        LockSection(TravDetails.attr('id'));
+        LockSection(dateDetails.attr('id'));
     }
-    
-
 });
-
 function Notenumberchanged(notenumber) {
     var noteCtrl = $('#NoteNumber');
     if (notenumber != '') { noteCtrl.isValid(); } else { noteCtrl.isInvalid(); }
@@ -31,8 +32,6 @@ function Notenumberchanged(notenumber) {
                     $('#AttachFile').val(item.emnHeader.AttachFile);
                     $('#EntryDate').val(item.emnHeader.EntryDateDisplay);
                     $('#EntryTime').val(item.emnHeader.EntryTime);
-                    
-                    
                     if (item.emnHeader.IsEPTour == true) {
                         $('#IsEPTour').val('Yes');
 
@@ -77,7 +76,7 @@ $(document).ready(function () {
     $('#btnViewDoc').click(function () {
         var docfilename = $('#AttachFile').val();
         var filepath = "/Upload/Forms/" + docfilename;
-        if (docfilename.length > 2) { window.open(filepath); }
+        if (docfilename.length > 2) { OpenWindow(filepath); }
         else {
             Swal.fire({
                 title: 'Information',
@@ -119,9 +118,13 @@ function ValidateControl() {
 };
 function validatectrl(targetid, value) {
     var isvalid = false;
+    var dateDetails = $('#dateDetails');
     switch (targetid) {
         case "APPRej":
             isvalid = validatectrl_YesNoCombo(value);
+            if (isvalid) {
+                UnLockSection(dateDetails.attr('id'));
+            }
             break;
         case "IsApprove":
             isvalid = validatectrl_YesNoComboApproval(value);
@@ -140,13 +143,11 @@ function validatectrl_ValidateLength(value) {
     } else { return false; }
 };
 function validatectrl_YesNoCombo(value) {
-
     if (value * 1 > 0) {
         return true;
     } else { return false; }
 };
 function validatectrl_YesNoComboApproval(value) {
-
     if (value * 1 >= 0) {
         return true;
     } else { return false; }
@@ -243,7 +244,6 @@ async function getTravellingPersonData() {
             if (Datalenght > 0) {
                 $(data).each(function (indexs, items) {
                     if (indexs > 0) {
-
                         rowid = CloneRowWithNoControlsReturningID('tbody1', 'tbody2', indexs - 1)
                         DDPersonType = $('#DDPersonType_' + rowid);
                         EmployeeNo = $('#EmployeeNo_' + rowid);
@@ -252,7 +252,6 @@ async function getTravellingPersonData() {
                         TaDaDenied = $('#TaDaDenied_' + rowid);
                         EPNoteNumber = $('#EPNoteNumber_' + rowid);
                         NoteDate = $('#NoteDate_' + rowid);
-
                     }
                     DDPersonType.html(items.PersonTypeName);
                     EmployeeNo.html(items.EmployeeNonName);

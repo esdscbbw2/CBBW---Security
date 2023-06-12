@@ -26,5 +26,7 @@ namespace CBBW.BLL.IRepository
         bool GetHGOpenOrNot(int CentreCode, ref string pMsg);
         bool SetPunchIN(int CentreCode, int EmployeeNumber, DateTime PunchDate, string PunchTime, ref string pMsg);
         string GetNewNoteNumber(string NotePattern, ref string pMsg);
+        bool GetEmployeeValidationForTour(int CentreCode, string EmployeeNumbers, DateTime FromDate, DateTime ToDate, ref string pMsg);
+        IEnumerable<CustomComboOptions> GetEmployeeListV2(int centreCode, ref string pMsg);
     }
 }

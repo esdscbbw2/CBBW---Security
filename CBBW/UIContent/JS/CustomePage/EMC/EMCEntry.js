@@ -107,13 +107,11 @@ function GetDDPersonTypeChanged(targetid, mValue, selectedvalue, Empval) {
     }
 };
 function DDPickPersonChanged(x) {
-   
     var target = DDPickPersonChanged.caller.arguments[0].target;
     var tblRow = target.closest('.add-row');
     var mIndex = $(tblRow).attr('id');
     var targetCtrl = $(target);
     var mValue = targetCtrl.val();
-  
     //Check for Duplicate Person
     var dstat = 0;
     $('.xPerson').each(function () {
@@ -125,10 +123,7 @@ function DDPickPersonChanged(x) {
         mValue = mValue.length;
     }
     if (mValue > 0) { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
-
-   
     if (x == 1) { GetVehicleEligibility(mIndex, 0); } else { GetVehicleEligibility(mIndex, mValue);}
-
     if (dstat > 1) {
         targetCtrl.val('');
         targetCtrl.isInvalid();
@@ -146,20 +141,19 @@ function DDPickPersonChanged(x) {
         getDesgnCode(mIndex, mValue);
         EnableAddBtn(tblRow, 'AddBtn');
     }
-   
 };
 $(document).ready(function () {
-    var centercode = -1;
-    var status = 1;
-    var NoteNumber = $('#emnHeader_NoteNumber').val();
-    // if ($('#Btnsubmit').val() == 1) {
-  
     (async function () {
         const r2 = await getInitialData();
     })();
-    //}
-   
-    
+
+    if ($('#Btnsubmit').val() * 1 == 0) {
+        if ($.isEmptyObject($('#emnHeader_AttachFile').val())) { LockSection('TravellingPerson'); }
+    }
+    else { UnLockSection('TravellingPerson'); }
+    if ($('#Btnsubmit').val() * 1 == 1) {
+        $('#Policy').removeAttr('disabled');
+    }
     EnableTravellingBtn();
   
 });
@@ -198,10 +192,19 @@ function validatectrl(targetid, value) {
     var isvalid = false;
     switch (targetid) {
         case "TaDaDenied":
+            if (value == 1) {
+                MyAlert(6, 'You Will Continue With TADA Denied Yes..!!');
+            }
             isvalid = validatectrl_YesNoCombo(value);
             break;
         case "Policy":
             isvalid = validatectrl_YesOrNo(value);
+            if (isvalid) {
+                $('.Policy').removeClass('border-red').addClass('border-green');
+            }
+            else {
+                $('.Policy').removeClass('border-green').addClass('border-red');
+            }
             break;
         case "IsEPTour":
             isvalid = validatectrl_ValidatestringLength(value);
@@ -563,6 +566,7 @@ function EPTourChange() {
 
     } else {// EPTour.makeInVisible(); 
     }
+    UnLockSection('TravellingPerson');
     $('#VADBtn').makeDisable;
     EmptyTPTable();
     GetPersonType();

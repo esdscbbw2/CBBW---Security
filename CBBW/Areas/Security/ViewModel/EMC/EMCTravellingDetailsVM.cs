@@ -31,5 +31,6 @@ namespace CBBW.Areas.Security.ViewModel.EMC
         public string ReasonVehicleProvided { get; set; }
         public int IsEPTour { get; set; }
         public bool Tourcat { get; set; }
+        public string EmplyoyeeNoList { get; set; }
     }
 }
