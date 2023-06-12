@@ -37,14 +37,14 @@
         </div>
         <div class="col-md-12">
             <div class="text-center pt-2 pb-2">
-                <button id="btnViewDoc" type="button" class="btn btn-light-blue">
+                <button id="btnViewDoc" type="button" class="btn btn-light-green">
                     To Check Attached “Travelling Request Form”
                     Click Here
                 </button>
             </div>
         </div>
         <div class="col-md-12 mb-4">
-            <div class="card mb-4 mt-4">
+            <div class="card mb-4 mt-4 SLUSection">
                 <div class="card-body approvalForm">
                     @*<form class="form-sample form-inline row ms-auto">*@
                     <div class="row d-flex align-items-center mb-4">
@@ -57,7 +57,7 @@
                                 "Select Note Number",
                                 htmlAttributes: new
                                 {
-                                    @class = "form-select pointer"
+                                    @class = "form-select pointer is-invalid SLUCtrl"
                                 })
                         </div>
                         <label class="col-form-label col-md-1">
@@ -230,19 +230,19 @@
                     </div>
                 </div>
             </div>
-            <div id="btnsDiv" class="col-md-12">
+            <div id="btnsDiv" class="col-md-12 SLUSection">
                 <div class="d-flex justify-content-center mt-2">
-                    <button type="submit" name="Submit" value="DWT"
-                            class="btn btn-primary me-2">
+                    <button id="Btn1" type="submit" name="Submit" value="DWT"
+                            class="btn btn-primary me-2 SLUBtn SLUBtnOK">
                         Date Wise Tour Details - Entry
                     </button>
-                    <button type="submit" name="Submit" value="VAD"
-                            class="btn btn-primary">
+                    <button id="Btn2" type="submit" name="Submit" value="VAD"
+                            class="btn btn-primary SLUBtn">
                         Vehicle Allotment Details
                     </button>
                 </div>
             </div>
-            <div id="ApprovalOptionLi" class="bgColor mt-4 bg-transparent text-left">
+            <div id="ApprovalOptionLi" class="bgColor mt-4 bg-transparent text-left SLUSection SLUStatement">
                 <ul style="list-style:none;">
                     <li style="font-size: 16px;">
                         The Entry Is Done As Per Policy & As Required:
@@ -250,7 +250,8 @@
                     </li>
                     <li style="font-size: 16px;">
                         Checked Tour Details & Vehicle Allotment With The “Initiated This Doc. With The Instruction Of” Person. Hence Satisfied & Approved:
-                        <select id="AppOption2" style="width:110px" class="form-select is-invalid"
+                        <select id="AppOption2" style="width:110px" 
+                                class="form-select is-invalid SLUCtrl"
                                 onchange="ValidateControl()"
                                 aria-label="Default select example" disabled>
                             <option selected="">-</option>
@@ -261,7 +262,7 @@
                 </ul>
             </div>
             <div class="card mt-4 mb-4">
-                <div class="card-body alert alert-danger text-dark">
+                <div class="card-body alert alert-danger text-dark SLUSection approvalForm">
                     <div class="row d-flex align-items-center">
                         <div class="col-md-2 col-form-label">
                             <label>Approved :</label>
@@ -274,7 +275,7 @@
                            new SelectListItem { Text = "No", Value = "0" }},
                        htmlAttributes: new
                        {
-                           @class = "form-select pointer is-invalid",
+                           @class = "form-select pointer is-invalid ApproveCtrl",
                            @onchange = "ValidateControl()",
                            disabled = "disabled"
                        })
@@ -318,47 +319,21 @@
 }
 @section scripts{
     <script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
-    <script src="~/UIContent/JS/CustomePage/EHGNoteApproval.js"></script>>
-    <script>
-        $(document).ready(function () {
-            //var mymsg = '@ViewBag.ErrMsg';
-            if ('@ViewBag.ErrMsg' != '') {
-                Swal.fire({
-                    title: 'Failed to submit',
-                    text: "@ViewBag.ErrMsg",
-                    icon: 'warning',
-                    customClass: 'swal-wide',
-                    buttons: {
-                        //cancel: 'Cancel',
-                        confirm: 'Ok'
-                    },
-                    //cancelButtonClass: 'btn-cancel',
-                    confirmButtonColor: '#2527a2',
-                });
-            };
-            if ('@ViewBag.Msg' != '') {
-                Swal.fire({
-                    title: 'Confirmation',
-                    text: "@ViewBag.Msg",
-                    icon: 'success',
-                    customClass: 'swal-wide',
-                    buttons: {
-                        confirm: 'Ok'
-                    },
-                    confirmButtonColor: '#2527a2',
-                }).then(callback);
-                function callback(result) {
-                    if (result.value) {
-                        var url = "/Security/EHG/NoteApproveList";
-                        window.location.href = url;
-                    }
-                }
-            };
-            @*if ('@ViewBag.BtnActive' != '') {
-                $('#BackBtnActive').val(1);
-            };
-            alert('@ViewBag.BtnActive');*@
-        });
-    </script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
+    <script src="~/UIContent/JS/CustomePage/EHG/EHGNoteApproval.js"></script>
+    @*<script src="~/UIContent/JS/CustomePage/EHGNoteApproval.js"></script>>*@
+<script>
+    $(document).ready(function () {
+        if ('@ViewBag.ErrMsg' != '') {
+            var mymsg = '@ViewBag.ErrMsg';
+            MyAlert(3, mymsg);
+        };
+        if ('@ViewBag.Msg' != '') {
+            var mymsg = '@ViewBag.Msg';
+            MyAlertWithRedirection(1, mymsg, '/Security/EHG/NoteApproveList');
+        };            
+    });
+</script>
 }

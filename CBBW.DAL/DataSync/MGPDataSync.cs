@@ -12,13 +12,13 @@ namespace CBBW.DAL.DataSync
     public class MGPDataSync
     {
         #region For Listing Page (Index page)
-        public DataTable getMGPDetailsforListPage(int DisplayLength, int DisplayStart, int SortColumn, string SortDirection, string SearchText, ref string pMsg)
+        public DataTable getMGPDetailsforListPage(int DisplayLength, int DisplayStart, int SortColumn, string SortDirection, string SearchText,int CentreCode, ref string pMsg)
         {
             try
             {
                 SortDirection = SortDirection.Substring(0, 1).ToUpper();
                 int paracount = 0;
-                SqlParameter[] para = new SqlParameter[5];
+                SqlParameter[] para = new SqlParameter[6];
                 para[paracount] = new SqlParameter("@DisplayLength", SqlDbType.Int);
                 para[paracount++].Value = DisplayLength;
                 para[paracount] = new SqlParameter("@DisplayStart", SqlDbType.Int);
@@ -29,6 +29,8 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = SortDirection;
                 para[paracount] = new SqlParameter("@Search", SqlDbType.NVarChar, 255);
                 para[paracount++].Value = SearchText;
+                para[paracount] = new SqlParameter("@CentreCode", SqlDbType.Int);
+                para[paracount++].Value = CentreCode;
                 using (SQLHelper sql = new SQLHelper("[MGP].[getMGPDetailsforListPage]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataTable(para, ref pMsg);
@@ -186,7 +188,7 @@ namespace CBBW.DAL.DataSync
             {
                 CommonTable schdtlData = new CommonTable(mgprefdcdetails);
                 int paracount = 0;
-                SqlParameter[] para = new SqlParameter[18];
+                SqlParameter[] para = new SqlParameter[21];
 
                 para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NVarChar,25);
                 para[paracount++].Value = mgpouthdr.NoteNumber;
@@ -204,12 +206,18 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = mgpouthdr.TripTypeStr;
                 para[paracount] = new SqlParameter("@ToLocationCodeName", SqlDbType.NVarChar);
                 para[paracount++].Value = mgpouthdr.ToLocationCodeName;
+                para[paracount] = new SqlParameter("@LocationType", SqlDbType.Int);
+                para[paracount++].Value = mgpouthdr.LocationType;
                 para[paracount] = new SqlParameter("@CarryingOutMat", SqlDbType.Bit);
                 para[paracount++].Value = mgpouthdr.CarryingOutMat;
+                para[paracount] = new SqlParameter("@FromLocation", SqlDbType.Int);
+                para[paracount++].Value = mgpouthdr.FromLocation;
                 para[paracount] = new SqlParameter("@LoadPercentage", SqlDbType.Int);
                 para[paracount++].Value = mgpouthdr.LoadPercentage;
                 para[paracount] = new SqlParameter("@SchFromDate", SqlDbType.DateTime);
                 para[paracount++].Value =mgpouthdr.SchFromDate;
+                para[paracount] = new SqlParameter("@SchToDate", SqlDbType.DateTime);
+                para[paracount++].Value = mgpouthdr.SchToDate;
                 para[paracount] = new SqlParameter("@KMOUT", SqlDbType.Int);
                 para[paracount++].Value = mgpouthdr.KMOUT;
                 para[paracount] = new SqlParameter("@VehicleNumber", SqlDbType.NVarChar,20);
@@ -387,6 +395,22 @@ namespace CBBW.DAL.DataSync
                 using (SQLHelper sql = new SQLHelper("[MGP].[GetMGPDetailsForPrintReport]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataSet(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
+        #endregion
+
+
+
+        #region Material Percentage
+        public DataTable getMaterialPercent(string VehicleNo ,DateTime FromDT,int status , ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("SELECT * FROM [MTR].[GetMaterialPercent](" + VehicleNo + ","+ FromDT + ","+ status + ")", CommandType.Text))
+                {
+                    return sql.GetDataTable(ref pMsg);
                 }
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }

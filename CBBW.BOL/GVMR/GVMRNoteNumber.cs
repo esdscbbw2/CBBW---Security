@@ -19,5 +19,6 @@ namespace CBBW.BOL.GVMR
         public string LocationName { get; set; }
         public string VehicleNo { get; set; }
         public string MonthYear { get; set; }
+        public int CenterCode { get; set; }
     }
 }

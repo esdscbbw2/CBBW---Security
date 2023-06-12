@@ -39,11 +39,11 @@
                         </div>
                         <h2>@ViewBag.Title</h2>
                         @*<div class="rightButton">
-                            <button type="submit" class="btn btn-white" onclick="window.location.href='#';">
-                                <i data-feather="printer"></i>
-                                Print / View
-                            </button>
-                        </div>*@
+                                <button type="submit" class="btn btn-white" onclick="window.location.href='#';">
+                                    <i data-feather="printer"></i>
+                                    Print / View
+                                </button>
+                            </div>*@
                     </div>
                 </div>
 
@@ -66,6 +66,7 @@
                                            @class = "form-select canclear pointer is-invalid",
                                                 onchange = "ValidateControl()"
                                        })
+                                    <input class="form-control inVisible" disabled name="Note" id="NoteDisplay" />
                                 </div>
 
                                 <label class="col-form-label col-md-1">
@@ -150,12 +151,12 @@
                         </button>
                     </div>
                 </div>
-                <div class="bgColor mt-4 bg-transparent border-blue">
+                <div class="bgColor mt-4 bg-transparent content border-red">
 
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
                             If The Driver Name Given In The System & The Person Driving The Vehicle Are Same:
-                            <select id="driversame" style="width:110px"
+                            <select disabled id="driversame" style="width:110px"
                                     class="form-select canclear pointer is-invalid"
                                     onchange="ValidateControl()"
                                     aria-label="Default select example">
@@ -166,14 +167,14 @@
                         </li>
                     </ul>
                 </div>
-                <div class="bgColor mt-4 bg-transparent border-blue">
+                <div class="bgColor mt-4 bg-transparent contents border-red">
 
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
                             Have You Collected / Given Back The Mobile Phone To The Driver Who Is Driving The Vehicle:
 
-                            <select id="vehicledriver" style="width:110px"
-                                    class="form-select pointer canclear is-invalid"
+                            <select id="vehicledriver" disabled style="width:110px"
+                                    class="form-select  pointer canclear is-invalid"
                                     onchange="ValidateControl()" aria-label="Default select example">
                                 <option selected="">-</option>
                                 <option value="Yes">Yes</option>
@@ -206,6 +207,7 @@
 
 @section scripts{
     <script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
     <script src="~/UIContent/JS/CustomePage/MGPass.js"></script>
 

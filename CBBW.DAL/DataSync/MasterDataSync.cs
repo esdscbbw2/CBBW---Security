@@ -265,11 +265,11 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
-        public DataTable getVehicleList(string VehicleType,int wheeltype, ref string pMsg)
+        public DataTable getVehicleList(string VehicleType,int wheeltype, ref string pMsg, int CentreCode=0)
         {
             try
             {
-                using (SQLHelper sql = new SQLHelper("select * from [MTR].[getListofVehicles]('"+ VehicleType + "',"+ wheeltype + ")", CommandType.Text))
+                using (SQLHelper sql = new SQLHelper("select * from [MTR].[getListofVehicles]('"+ VehicleType + "',"+ wheeltype + ","+ CentreCode + ")", CommandType.Text))
                 {
                     return sql.GetDataTable();
                 }

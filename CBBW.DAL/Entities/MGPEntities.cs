@@ -273,12 +273,12 @@ namespace CBBW.DAL.Entities
         }
         #endregion
         #region For List Page (Index page)
-        public List<MGPNoteList> getMGPDetailsforListPage(int DisplayLength, int DisplayStart, int SortColumn, string SortDirection, string SearchText, ref string pMsg)
+        public List<MGPNoteList> getMGPDetailsforListPage(int DisplayLength, int DisplayStart, int SortColumn, string SortDirection, string SearchText,int CentreCode, ref string pMsg)
         {
             List<MGPNoteList> result = new List<MGPNoteList>();
             try
             {
-                dt = _datasync.getMGPDetailsforListPage(DisplayLength, DisplayStart, SortColumn, SortDirection, SearchText, ref pMsg);
+                dt = _datasync.getMGPDetailsforListPage(DisplayLength, DisplayStart, SortColumn, SortDirection, SearchText, CentreCode, ref pMsg);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     for (int i = 0; i < dt.Rows.Count; i++)
@@ -402,5 +402,20 @@ namespace CBBW.DAL.Entities
             return result;
         }
         #endregion
+
+        public Percentage getMaterialPercent(string VehicleNo, DateTime FromDT, int status, ref string pMsg)
+        {
+            Percentage result = new Percentage();
+            try
+            {
+                dt = _datasync.getMaterialPercent(VehicleNo, FromDT, status, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    result = _datamapper.Map_Percentage(dt.Rows[0]);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
     }
 }

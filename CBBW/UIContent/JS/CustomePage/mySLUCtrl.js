@@ -155,7 +155,16 @@ $(document).ready(function () {
     $('.EC').on('change', function () {
         $(this).RemoveAllNextRows();
     });
-
+    $('.ApproveCtrl').on('change', function () {
+        var that = $(this);
+        var mDiv = that.closest('.approvalForm');
+        var app = that.val().toUpperCase();
+        if (app == "YES" || app == "NO") {
+            mDiv.isApprovalDone();
+        } else {
+            mDiv.isApprovalNotDone();
+        }
+    });
     // Use The Below Code Only UI Design Not In Functional Developement
     //$('.SLUCtrl').on('change keyup', function () {
     //    var that = $(this);

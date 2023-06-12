@@ -1,5 +1,17 @@
 ﻿// File Uploading
 var cW;
+function OpenWindow(filepath) {
+    if (filepath == null || filepath == '') {
+        MyAlert(3, 'Unable To Find Uploaded File.');
+    } else {
+        if (cW === undefined || (cW != undefined && cW.closed)) {
+            cW = window.open(filepath);
+        }
+        else {
+            MyAlertWithCallBack(5, 'File Is Already Opened.', FocusTab)
+        }
+    }
+};
 function OpenFileInNewTab(filepath) {
     if (filepath == null || filepath == '') {
         MyAlert(3, 'Unable To Find Uploaded File.');
@@ -441,8 +453,9 @@ function GetCurrentTime() {
 function IsValidTimeSelected(InputDate, InputTime) {
     //InputDate='2023-05-22' InputTime='20:22'
     var targetDateTime = new Date(InputDate + ' ' + InputTime);
-    var currentDateTime = new Date();
-    if (targetDateTime.getTime() >= currentDateTime.getTime() - 59000) {
+    var currentDateTime = new Date().getTime() - 59000;
+    //alert('Target : ' + targetDateTime.getTime() + ' Current: ' + currentDateTime );
+    if (targetDateTime.getTime() >= currentDateTime) {
         return true;
     } else {
         return false;
@@ -817,7 +830,7 @@ function MyAlert(MessageType, MessageText) {
 function MyAlertWithCallBack(MessageType, MessageText, callBackFunctionName) {
     //MessageType 0-Information Alert, 1-Success Alert,2-Confirmation Alert,
     //MessageType  3- Eror Alert. 4- Validation Failed Alert,5-Warning Alert,
-    debugger;
+    //debugger;
     switch (MessageType) {
         case 1:
             MySuccessAlert(MessageText, callBackFunctionName);

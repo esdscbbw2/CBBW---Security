@@ -83,9 +83,9 @@ namespace CBBW.BLL.Repository
 
         #region For List Page (Index Page)
       
-        public List<MGPNoteList> getMGPDetailsforListPage(int DisplayLength, int DisplayStart, int SortColumn, string SortDirection, string SearchText, ref string pMsg)
+        public List<MGPNoteList> getMGPDetailsforListPage(int DisplayLength, int DisplayStart, int SortColumn, string SortDirection, string SearchText,int CentreCode, ref string pMsg)
         {
-            return _MGPEntities.getMGPDetailsforListPage(DisplayLength, DisplayStart, SortColumn, SortDirection, SearchText, ref pMsg);
+            return _MGPEntities.getMGPDetailsforListPage(DisplayLength, DisplayStart, SortColumn, SortDirection, SearchText, CentreCode, ref pMsg);
         }
         #endregion
 
@@ -103,6 +103,11 @@ namespace CBBW.BLL.Repository
         public PrintHeader GetMGPDetailsForPrintV2(string NoteNumber, DateTime SchFromDate, ref string pMsg)
         {
             return _MGPEntities.GetMGPDetailsForPrintV2(NoteNumber, SchFromDate, ref pMsg);
+        }
+
+        public Percentage getMaterialPercent(string VehicleNo, DateTime FromDT, int status, ref string pMsg)
+        {
+            return _MGPEntities.getMaterialPercent(VehicleNo, FromDT, status, ref pMsg);
         }
         #endregion
     }

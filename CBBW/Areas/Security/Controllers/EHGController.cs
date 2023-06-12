@@ -135,10 +135,11 @@ namespace CBBW.Areas.Security.Controllers
         }
         public ActionResult NoteApproveList() 
         {
-            if (_master.GetHGOpenOrNot(user.CentreCode, ref pMsg))
-                return View();
-            else
-                return RedirectToAction("NotOpen");
+            //if (_master.GetHGOpenOrNot(user.CentreCode, ref pMsg))
+            //    return View();
+            //else
+            //    return RedirectToAction("NotOpen");
+            return View();
         }
         public ActionResult NotOpen() 
         {
@@ -253,7 +254,7 @@ namespace CBBW.Areas.Security.Controllers
             {
                 VehicleAllotmentDetails obj = _iEHG.getVehicleAllotmentDetails(model.ehgHeader.NoteNumber, 0, ref pMsg);
                 model.VADetails = obj;
-                model.VehicleList = _master.getVehicleList("L.C.V", model.ehgHeader.VehicleType == 1 ? 4 : 2, ref pMsg);
+                model.VehicleList = _master.getVehicleList("L.C.V", model.ehgHeader.VehicleType == 1 ? 4 : 2, ref pMsg,user.CentreCode);
                 model.DriverList = _iEHG.getDriverListForOfficeWork(model.ehgHeader.NoteNumber, ref pMsg); 
                 if (model.VADetails == null || string.IsNullOrEmpty(model.VADetails.VehicleNumber))
                 {

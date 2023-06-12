@@ -57,7 +57,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive max-content">
-                            <table class="table table-bordered w-100" id="table">
+                            <table class="table table-last-col table-bordered w-100" id="table">
                                 <thead>
                                     <tr>
                                         <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">SL.No.</th>
@@ -208,6 +208,10 @@
                                                    class="form-control ">
                                             <input id="0_TolocCode" type="hidden"
                                                    class="form-control ">
+                                            <input id="0_LocationType" type="hidden"
+                                                   class="form-control ">
+                                            <input id="0_FromLocation" type="hidden"
+                                                   class="form-control ">
                                         </td>
                                         <td class="text-center">
                                             <div id="0_CarOut" class="form-group"> </div>
@@ -230,6 +234,8 @@
                                                    class="form-control ">
                                             <input id="0_SchTripdatetext" type="hidden"
                                                    class="form-control ">
+                                            <input id="0_SchToDate" type="hidden"
+                                                   class="form-control ">
                                         </td>
                                         <td class="text-center">
                                             <div id="0_ActualTripDates"></div>
@@ -249,7 +255,7 @@
                                             <div id="0_OutRemarks"></div>
                                             @*<input id="0_OutRemark" type="text" class="form-control">*@
                                         </td>
-                                        <td class="text-center">
+                                        <td class="text-center last-action">
                                             <div class="form-group" id="0_ActionDCNew"></div>
                                         </td>
                                     </tr>
@@ -423,10 +429,25 @@
         .pointer {
             cursor: pointer;
         }
+
+        .table-last-col thead th.action {
+            position: sticky;
+            top: 0;
+            right: 0px;
+        }
+
+        .table-last-col tr .last-action {
+            position: sticky;
+            top: 0;
+            right: 0px;
+            background-color: #ffffff;
+            z-index: 2;
+        }
     </style>
 }
 @section scripts{
     <script src="js/moment.min.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
     <script src="~/UIContent/JS/CustomePage/MGPOutDetails.js"></script>
     <script src="js/bootstrap-datetimepicker.min.js"></script>

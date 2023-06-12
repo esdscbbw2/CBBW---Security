@@ -306,7 +306,7 @@
                                                         {
                                                        @class = "form-control pointer CustomDateFormatCloneRow valid SLUCtrl",
                                                        type = "date",
-                                                       onblur = "ValidateControl()",
+                                                       onchange = "ValidateControl()",
                                                        max = Model.MaxFromDate,
                                                        min = Model.MinFromDate
                                                    })
@@ -319,9 +319,9 @@
                                                 @Html.TextBoxFor(m => m.FromTimeForMang,
                                                    htmlAttributes: new
                                                    {
-                                                       @class = "form-control timePicker pointer SLUCtrl",
+                                                       @class = "form-control pointer SLUCtrl timePickerPreDateCtrlV2ForMang",
                                                        type = "text",
-                                                       onblur = "ValidateControl()",
+                                                       //onblur = "ValidateControl()",
                                                        placeholder = "Select Time"
                                                    })
                                                 @*<input id="" type="text"
@@ -500,8 +500,8 @@
                                             <div class="input-group date pointer position-static">
                                                 <input id="FromTime" type="text"
                                                        data-name="FromTime"
-                                                       onblur="ValidateCloneRowCtrl()"
-                                                       class="form-control is-invalid SLUCtrl timePicker CustomTimeFormatCloneRow alterID inValidTag mTimePickerAlert"
+                                                       @*onblur="ValidateCloneRowCtrl()"*@
+                                                       class="form-control is-invalid SLUCtrl timePickerPreDateCtrlV2ForOffice CustomTimeFormatCloneRow alterID inValidTag mTimePickerAlert"
                                                        placeholder="Select Time">
                                             </div>
                                         </td>
@@ -526,7 +526,7 @@
                                                     data-name="iTADADenied"
                                                     onchange="ValidateCloneRowCtrl()"
                                                     aria-label="Default select example">
-                                                <option selected value="-1">-</option>
+                                                <option selected value="">-</option>
                                                 <option value="1">  Yes</option>
                                                 <option value="0"> No </option>
                                             </select>

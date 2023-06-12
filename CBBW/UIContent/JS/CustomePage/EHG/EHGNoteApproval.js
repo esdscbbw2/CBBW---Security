@@ -1,11 +1,14 @@
 ﻿function EnableBlockedControlls() {
     if ($('#DWTActive').val() == 1 && $('#VAActive').val() == 1) {
         $('#AppOption2').makeEnabled();
-        $('#AppStatus').makeEnabled();
+        //$('#AppStatus').makeEnabled();
+
     } else {
         $('#AppStatus').makeDisable();
         $('#AppOption2').makeDisable();
     }
+    if ($('#DWTActive').val() == 1) { $('#Btn1').ButtonOk(); } else { $('#Btn1').ButtonNotOk(); }
+    if ($('#VAActive').val() == 1) { $('#Btn2').ButtonOk(); } else { $('#Btn2').ButtonNotOk(); }
 };
 function EnableSubmitBtn() {
     var btnsubmit = $('#btnSubmit');
@@ -20,9 +23,11 @@ function ValidateControl() {
     var targetid = $(target).attr('id');
     var isvalid = validatectrl(targetid, $(target).val());
     if (isvalid) {
-        $(target).removeClass('is-invalid').addClass('is-valid');
+        //$(target).removeClass('is-invalid').addClass('is-valid');
+        $(target).isValidCtrl();
     } else {
-        $(target).removeClass('is-valid').addClass('is-invalid');
+        //$(target).removeClass('is-valid').addClass('is-invalid');
+        $(target).isInvalidCtrl();
     }
     $('#BackBtnActive').val(1);
     EnableSubmitBtn();
@@ -103,12 +108,18 @@ function DisplayTPDetails(data) {
 }
 function NoteNumberChanged(notenumber) {
     var noteCtrl = $('#NoteNumber');
-    if (notenumber != '') { noteCtrl.isValid(); } else { noteCtrl.isInvalid(); }
+    if (notenumber != '') {
+        //noteCtrl.addClass('is-valid').removeClass('is-invalid');
+        noteCtrl.isValidCtrl();
+    } else {
+        //noteCtrl.removeClass('is-valid').addClass('is-invalid');
+        noteCtrl.isInvalidCtrl();
+    }
     $('#tbody2').empty();
     $.ajax({
-        url: '/EHG/GetNoteHdrTPD',
+        url: '/EHG/GetNoteHdrTPD?NoteNumber=' + notenumber,
         method: 'GET',
-        data: { NoteNumber: notenumber },
+        //data: { NoteNumber: notenumber },
         dataType: 'json',
         success: function (data) {
             $(data).each(function (index, item) {
@@ -187,23 +198,11 @@ $(document).ready(function () {
     EnableBlockedControlls();
 });
 $(document).ready(function(){
-    $('#btnViewDoc').click(function () {
-        var docfilename = $('#DocFileName').val();
-        var filepath = "/Upload/Forms/" + docfilename;
-        if (docfilename.length > 2) { window.open(filepath); }
-        else {
-            Swal.fire({
-                title: 'Information',
-                text: "No Document Found For This Note",
-                icon: 'warning',
-                customClass: 'swal-wide',
-                buttons: {
-                    //cancel: 'Cancel',
-                    confirm: 'Ok'
-                },
-                //cancelButtonClass: 'btn-cancel',
-                confirmButtonColor: '#2527a2',
-            });
-        }
+    $('#btnViewDoc').click(function () {        
+        var filename = $('#DocFileName').val();
+        var filepath = "/Upload/Forms/" + filename;
+        if (filename != '') {
+            OpenFileInNewTab(filepath);
+        } else { MyAlert(3, 'Unable To Find Uploaded File.'); }
     });
 });

@@ -1,6 +1,6 @@
 ﻿@using System.Globalization;
-@using CBBW.Areas.Security.ViewModel;
-@model GVMRDetailsVM
+@using CBBW.BOL.GVMR;
+@model GVMRHeader
 @{
     ViewBag.Title = "Goods Vehicle Movement Recording (For Company Transport) – ENTRY";
 
@@ -62,7 +62,7 @@
                                 Center Code & Name  :
                             </label>
                             <div class="col-md-3">
-                                @Html.TextBoxFor(m => m.CenterName, htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })
+                                @Html.TextBoxFor(m => m.LocationName, htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })
                             </div>
                             <label class="col-form-label col-md-1">
                                 Month & Year  :
@@ -163,7 +163,7 @@
                                 @if (Model != null)
                                 {
 
-                                    foreach (var item in Model.gvmrdetailsview)
+                                    foreach (var item in Model.gvmrDetailslist)
                                     {
                                         <tr>
                                             <td scope="row" class="text-center">@item.LocationName</td>

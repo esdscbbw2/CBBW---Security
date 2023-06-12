@@ -36,5 +36,7 @@ namespace CBBW.BOL.MGP
     {
        public bool OutButtonActive { get; set; } 
        public bool InButtonActive { get; set; }
+        public bool IsGVMRSubmit { get; set; }
+   
     }
 }

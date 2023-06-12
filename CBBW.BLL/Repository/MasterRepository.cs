@@ -62,9 +62,9 @@ namespace CBBW.BLL.Repository
         //    result.ID = 3;result.DisplayText = "LV";
         //    return result;
         //}
-        public List<VehicleNo> getVehicleList(string VehicleType, int wheeltype, ref string pMsg)
+        public List<VehicleNo> getVehicleList(string VehicleType, int wheeltype, ref string pMsg, int CentreCode = 0)
         {
-            return _entities.getVehicleList(VehicleType, wheeltype, ref pMsg);
+            return _entities.getVehicleList(VehicleType, wheeltype, ref pMsg,CentreCode);
         }
         public IEnumerable<LocationMaster> GetCentresFromTourCategory(string TourCatIDs, ref string pMsg)
         {

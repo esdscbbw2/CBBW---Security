@@ -11,6 +11,7 @@ using CBBW.Areas.Security.ViewModel;
 using CBBW.BLL.IRepository;
 using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
+using CBBW.BOL.EntryII;
 using CBBW.BOL.MGP;
 namespace CBBW.Areas.Security.Controllers
 {
@@ -22,7 +23,8 @@ namespace CBBW.Areas.Security.Controllers
         string mNoteNumber;
         bool btnactive;
         UserInfo user;
-        public MaterialGatePassController(IMGPRepository IMGP, ICTVRepository ICTV, IUserRepository iUser)
+        IEntryIIRepository _iEntryIIRepository;
+        public MaterialGatePassController(IMGPRepository IMGP, IEntryIIRepository iEntryIIRepository, ICTVRepository ICTV, IUserRepository iUser)
         {
             _IMGP = IMGP;
             _ICTV = ICTV;
@@ -32,6 +34,7 @@ namespace CBBW.Areas.Security.Controllers
             //iUser.LogIn("praveen", ref pMsg);
             user = iUser.getLoggedInUser();
             ViewBag.LogInUser = user.UserName;
+            _iEntryIIRepository = iEntryIIRepository;
         }
         // GET: Security/MaterialGatePass
         #region For Out Details
@@ -60,7 +63,7 @@ namespace CBBW.Areas.Security.Controllers
                 {
                     TempData["btnactive"] = TempData["btnactivetrue"];
                     //string noteno= TempData["notenumber"] as string;
-                    // TempData["notenumber"] = noteno;
+                    //TempData["notenumber"] = noteno;
                     //model.ListofNotes.Select(x=>x.NoteNo==noteno);
                 }
                 else
@@ -126,7 +129,6 @@ namespace CBBW.Areas.Security.Controllers
                     string noteno = TempData["notenumber"] as string;
                     List<MGPOutInDetails> outinmodel = new List<MGPOutInDetails>();
                     outinmodel = _IMGP.getMGPOutDetails(noteno, ref pMsg);
-
                     long mID = 0;
                     if (outinmodel != null && outinmodel.Count > 0)
                     { mID = outinmodel.OrderByDescending(x => x.ID).FirstOrDefault().ID; }
@@ -140,7 +142,6 @@ namespace CBBW.Areas.Security.Controllers
                     {
                         ViewBag.ErrMsg = "Note Updation Failed.";
                     }
-
                 }
             }
             model.EntryDate = DateTime.Today;
@@ -148,9 +149,8 @@ namespace CBBW.Areas.Security.Controllers
             model.IsActive = true;
 
             //TempData["MGPVM"] = model;
-
             //return RedirectToAction("Index",
-            //    new { Area = "Security" });
+            //new { Area = "Security" });
             return View(model);
         }
         public ActionResult VehicleMaterialOutDetails(string NoteNumber, int CBUID)
@@ -183,16 +183,18 @@ namespace CBBW.Areas.Security.Controllers
                 mgpoutsave.TripType = item.TripType;
                 mgpoutsave.TripTypeStr = item.TripTypeStr;
                 mgpoutsave.ToLocationCodeName = item.ToLocationCodeName;
+                mgpoutsave.LocationType = item.LocationType;
                 mgpoutsave.CarryingOutMat = item.CarryingOutMat;
                 mgpoutsave.LoadPercentage = item.LoadPercentage;
                 mgpoutsave.SchFromDate = item.SchFromDate;
+                mgpoutsave.SchToDate = item.SchToDate;
                 mgpoutsave.KMOUT = item.KMOUT;
                 mgpoutsave.VehicleNumber = item.VehicleNumber;
                 mgpoutsave.RFIDCard = item.RFIDCard;
                 mgpoutsave.ActualTripOutDate = item.ActualTripOutDate;
                 mgpoutsave.ActualTripOutTime = item.ActualTripOutTime;
                 mgpoutsave.OutRemarks = item.OutRemarks == null ? "NA" : item.OutRemarks;
-
+                mgpoutsave.FromLocation = item.FromLocation;
             }
             // string msg = "";
             CustomAjaxResponse result = new CustomAjaxResponse();
@@ -367,7 +369,6 @@ namespace CBBW.Areas.Security.Controllers
             {
                 return Json(ex.ToString());
             }
-
         }
         public JsonResult GetRefInDCDetails(string VehicleNo, string FromDT)
         {
@@ -386,7 +387,6 @@ namespace CBBW.Areas.Security.Controllers
         }
         public JsonResult GetItemWiseInDetails(string NoteNumber)
         {
-
             MGPInDetailsVM model = new MGPInDetailsVM();
             model.ListofMGPItemWiseInDetails = _IMGP.getItemWiseDetails(NoteNumber, ref pMsg);
             return Json(model.ListofMGPItemWiseInDetails, JsonRequestBehavior.AllowGet);
@@ -421,7 +421,7 @@ namespace CBBW.Areas.Security.Controllers
           string sSortDir_0, string sSearch)
 
         {
-            List<MGPNoteList> noteList = _IMGP.getMGPDetailsforListPage(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, ref pMsg);
+            List<MGPNoteList> noteList = _IMGP.getMGPDetailsforListPage(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch,user.CentreCode, ref pMsg);
 
             var result = new
             {
@@ -444,7 +444,6 @@ namespace CBBW.Areas.Security.Controllers
                 }
                 else
                 {
-
                     model.ListofNotes = _IMGP.GetNoteNumbersfromMGP(user.CentreCode, ref pMsg);
                     model.ListofNotes = model.ListofNotes.Where(x => x.NoteNo == NoteNumber);
                     model.RefNote = NoteNumber;
@@ -504,9 +503,7 @@ namespace CBBW.Areas.Security.Controllers
             MGPInDetailsVM model = new MGPInDetailsVM();
             try
             {
-
                 ViewBag.CallBackUrl = "/Security/MaterialGatePass/Details";
-
                 model.ListInDetails = _IMGP.getMGPOutDetails(NoteNumber, ref pMsg);
             }
             catch (Exception ex) { ex.ToString(); }
@@ -558,8 +555,30 @@ namespace CBBW.Areas.Security.Controllers
             return View(obj1);
         }
         #endregion
-
-
-
+        public JsonResult GetRFIDPunchTime(string RFIDNumber, string PunchDate,bool IsDriver)
+        {
+            PunchInDetails result = new PunchInDetails();
+            try
+            {
+                if (IsDriver == true)
+                {
+                    result = _iEntryIIRepository.GetPunchingDetails(Convert.ToInt32(RFIDNumber), DateTime.Parse(PunchDate), user.CentreCode, "", ref pMsg);
+                }
+                else
+                {
+                    result = _iEntryIIRepository.GetPunchingDetails(0, DateTime.Parse(PunchDate), user.CentreCode, RFIDNumber, ref pMsg);
+                }
+            }
+            catch (Exception ex)
+            {
+               pMsg= ex.ToString();
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getMaterialPercent(string VehicleNo, DateTime FromDT, int status, ref string pMsg)
+        {
+            Percentage model = _IMGP.getMaterialPercent(VehicleNo, FromDT, status, ref pMsg);
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
     }
 }

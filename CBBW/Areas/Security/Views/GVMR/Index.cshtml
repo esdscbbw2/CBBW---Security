@@ -1,34 +1,37 @@
 ﻿@using System.Globalization;
 @using CBBW.BOL.GVMR
-@model List<GVMRNoteList>
+@model GVMRNoteList
 @{
     ViewBag.Title = "Goods Vehicle Movement Recording (For Company Transport) – ENTRY";
 }
-
-
 <div class="">
     <div class="row newTable">
         <div class="fixedElement">
             <div class="col-md-12" style="position: relative;">
                 <div class="heading_text_btn mb-4 mt-4">
                     <div class="leftButton">
-                        <button type="submit" class="btn btn-primary me-2" onclick="window.location.href='/Security/GVMR/Create';">
+                      
+                        <button type="submit" class="btn btn-primary me-2" onclick="
+                                  (@ViewBag.CenterCode == 13?window.location.href = '/Security/GVMR/Create':window.location.href='/Security/GVMR/CenterCodeWiseCreate');">
                             <i data-feather="plus-circle"></i>
                             Add
                         </button>
+                       
+                        @*<button type="submit" class="btn btn-primary me-2" onclick="window.location.href='/Security/GVMR/CenterCodeWiseCreate';">
+                            <i data-feather="plus-circle"></i>
+                            Add
+                        </button>*@
                     </div>
                     <h2>@ViewBag.Title </h2>
                 </div>
             </div>
         </div>
-
         <div class="table-responsive">
-
             <table id="tblmgp" class="table w-100 table-bordered btnalign mt-4">
                 <thead>
                     <tr>
                         <th scope="col" rowspan="2" colspan="1"> SL.No.</th>
-                        <th scope="col" rowspan="1" colspan="1">Note No.</th>
+                        <th scope="col" rowspan="1" colspan="1">Ref. Note No</th>
                         <th scope="col" rowspan="1" colspan="1">Center Code & Name</th>
                         <th scope="col" rowspan="1" colspan="1">Vehicle No.</th>
                         <th scope="col" rowspan="1" colspan="1">For The Month & Year</th>
@@ -56,51 +59,14 @@
                             </div>
                         </th>
                     </tr>
-
                 </thead>
-
                 <tbody>
                     <tr></tr>
-                    @*@if (Model != null && Model.Count > 0)
-                    {
-                        foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>@item.RowNumber</td>
-                                <td>@item.NoteNo</td>
-                                <td>@item.LocationName</td>
-                                <td>@item.VehicleNo</td>
-                                <td>@item.MonthYear</td>
-                                <td>
-                                    <span class="actionBtn">
-                                        <button type="button" class="btn primaryLink" value="btn" data-toggle="tooltip" data-placement="top"
-                                                title="Details">
-                                            <i data-feather="eye"></i>
-                                        </button>
-
-                                    </span>
-                                </td>
-                            </tr>
-
-                        }
-                    }*@
-
                 </tbody>
             </table>
-
-
         </div>
-
-
-
-
-
-
     </div>
 </div>
-
-
-
 
 @section headers
     {
@@ -135,8 +101,6 @@
                 e.stopPropagation();
             });
         });
-
-
 
         function GetDetailsPage(ctrl) {
             var targetid = $(ctrl).attr("id");

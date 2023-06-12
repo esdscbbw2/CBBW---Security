@@ -67,7 +67,7 @@ new { Area = "Security" })'">
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered w-100" id="table">
+                            <table class="table table-last-col table-bordered w-100" id="table">
                                 <thead>
                                     <tr>
                                         <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">SL.No.</th>
@@ -109,7 +109,7 @@ new { Area = "Security" })'">
                                             Remarks
 
                                         </th>
-                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;background: pink;color: #000;" width="15%">
+                                        <th scope="col" class="action" rowspan="2" style="text-align: center; vertical-align: middle;background: pink;color: #000;" width="15%">
                                             Action
 
                                         </th>
@@ -186,7 +186,7 @@ new { Area = "Security" })'">
                                                     <td class="text-center">
                                                         @item.RemarkIn
                                                     </td>
-                                                    <td class="text-center">
+                                                    <td class="text-center last-action">
                                                         <span class="actionBtn d-block">
 
                                                             <button type="button" onclick="OnclickHistoryDCDetails(this)" id="btn_@(sl)" data-value="@(item.ID)" class="btn primaryLink" data-toggle="tooltip" data-placement="top"
@@ -214,6 +214,8 @@ new { Area = "Security" })'">
                                         </td>
                                         <td class="text-center">
                                             <div id="0_DriverName" class="form-group"></div>
+                                            <input id="0_DriverNo" type="hidden"
+                                                   class="form-control ">
                                             <input id="0_NoteNumber" type="hidden"
                                                    class="form-control ">
                                             <input id="0_VehicleNo" type="hidden"
@@ -277,8 +279,10 @@ new { Area = "Security" })'">
                                         <td class="text-center">
                                             <div id="0_Remark" class="form-group"></div>
                                         </td>
-                                        <td class="text-center">
-                                            <div id="0_ActionIn" class="form-group"></div>
+                                        <td class="text-center last-action">
+                                            <div id="0_ActionIn" class="form-group">
+
+                                            </div>
                                         </td>
 
                                     </tr>
@@ -456,6 +460,24 @@ new { Area = "Security" })'">
         .pointer {
             cursor: pointer;
         }
+
+        .table-last-col thead th.action {
+            position: sticky;
+            top: 0;
+            right: 0px;
+        }
+
+        .table-last-col tr .last-action {
+            position: sticky;
+            top: 0;
+            right: 0px;
+            background-color: #ffffff;
+            z-index: 2;
+        }
+
+        .btn.primaryLink {
+            color: red;
+        }
     </style>
 }
 @section scripts{
@@ -463,6 +485,7 @@ new { Area = "Security" })'">
     <script src="js/moment.min.js"></script>
     <script src="js/bootstrap-datetimepicker.min.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/MGPInDetails.js"></script>
     <script>
 
@@ -505,4 +528,5 @@ new { Area = "Security" })'">
     </script>
 
 }
+
 

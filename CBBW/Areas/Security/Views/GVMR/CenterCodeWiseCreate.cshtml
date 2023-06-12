@@ -5,7 +5,6 @@
     ViewBag.Title = "Goods Vehicle Movement Recording (For Company Transport) – ENTRY";
 }
 
-@Html.HiddenFor(x => x.CenterCode)
 <div class="">
     <div class="row newTable">
         <div class="fixedElement">
@@ -16,7 +15,7 @@
                             <i data-feather="arrow-left-circle"></i>
                             Back
                         </button>
-                        <button disabled id="btnSubmit" type="button" onclick="SaveDataV2()" class="btn btn-secondary me-2"  >
+                        <button disabled id="btnSubmit" type="button" onclick="SaveData()" class="btn btn-secondary me-2">
                             <i data-feather="upload"></i>
                             Submit
                         </button>
@@ -57,7 +56,7 @@
                             </label>
                             <div class="col-md-2">
                                 @*<input type="text" data-name="EntryDate"
-                                       class="form-control" id="EntryDate" disabled>*@
+                                    class="form-control" id="EntryDate" disabled>*@
                                 @Html.TextBox("EntryDate", DateTime.Today.ToString("dd/MM/yyyy"),
                                     htmlAttributes: new { @class = "form-control", disabled = "disabled" })
                             </div>
@@ -78,8 +77,8 @@
                             </label>
                             <div class="col-md-3">
                                 @*<input type="text" data-name="CenterCode"
-                                       class="form-control" id="CenterCode" disabled>*@
-                                @Html.TextBoxFor(x=>x.CenterName,
+                                    class="form-control" id="CenterCode" disabled>*@
+                                @Html.TextBoxFor(x => x.CenterName,
                               htmlAttributes: new { @class = "form-control", disabled = "disabled" })
 
                             </div>
@@ -225,8 +224,7 @@
 
                             </tbody>
                             <tbody id="tbody4"></tbody>
-
-                            <tbody id="tbody1">
+                            <tbody id="tbody1" class="">
                                 <tr id="0" class="add-row curr-row">
 
                                     <td scope="row" class="text-center">
@@ -236,20 +234,19 @@
                                         <input type="hidden" data-name="Gvmrid"
                                                class="form-control w-200" id="0_Gvmrid">
                                     </td>
-                                    <td class="text-center" id="0_InRfid">
-                                        <input type="text" readonly data-name="ActualInRFIDCard"
-                                               class="form-control w-200" id="0_ActualInRFIDCard">
-                                        @*<select data-name="ActualInRFIDCard" onchange="GetActualDate(); ValidateControls();" id="0_ActualInRFIDCard" class="form-select wid-130 canclear is-invalid" aria-label="Default select example">
-                                        </select>*@
+                                    <td class="text-center">
+
+                                        <select data-name="ActualInRFIDCard" onchange="GetActualDate(); ValidateControls();" id="0_ActualInRFIDCard" class="form-select wid-130 canclear is-invalid SLUCtrl" aria-label="Default select example">
+                                        </select>
                                     </td>
                                     <td class="text-center">
                                         <input type="text" data-name="ActualTripInDate"
-                                               class="form-control w-200 canclear is-invalid" id="0_ActualTripInDate" readonly>
+                                               class="form-control w-200 canclear is-invalid SLUCtrl" onchange="ValidateControls();" id="0_ActualTripInDate" readonly>
 
                                     </td>
                                     <td class="text-center">
                                         <input type="text" data-name="ActualTripInTime"
-                                               class="form-control w-200 timePicker canclear is-invalid" readonly id="0_ActualTripInTime">
+                                               class="form-control w-200 timePicker canclear is-invalid SLUCtrl" onblur="ValidateControls();" id="0_ActualTripInTime">
 
                                     </td>
                                     <td class="text-center">
@@ -257,30 +254,28 @@
                                                class="form-control w-200" id="0_ActualTripInKM" readonly>
                                     </td>
                                     <td class="text-center">
-                                        <input type="text" readonly data-name="ActualOutRFIDCard"
-                                               class="form-control w-200" id="0_ActualOutRFIDCard">
-                                        @*<select data-name="ActualOutRFIDCard" id="0_ActualOutRFIDCard" onchange="GetDateUsingRFID();ValidateControls();" class="form-select wid-130 canclear is-invalid" aria-label="Default select example">
-                                        </select>*@
+
+                                        <select data-name="ActualOutRFIDCard" id="0_ActualOutRFIDCard" onchange="GetDateUsingRFID();ValidateControls();" class="form-select wid-130 canclear is-invalid SLUCtrl" aria-label="Default select example">
+                                        </select>
                                     </td>
                                     <td class="text-center">
                                         <input type="hidden" data-name="FromDateVal"
                                                class="form-control w-200" id="0_FromDateVal">
                                         <input type="hidden" data-name="ToDateVal"
                                                class="form-control w-200" id="0_ToDateVal">
-                                        <input type="text" class="form-control w-200 canclear is-invalid" id="0_ActualTripOutDate" readonly>
-                                        @*<input type="date" max="@Model.gvmrdetails.FirstOrDefault().ToDateVal" min="@Model.gvmrdetails.FirstOrDefault().FromDateVal"
-                                            class="form-control w-200 canclear is-invalid" id="0_ActualTripOutDate2" onchange="ValidateControls();" readonly>*@
+                                        <input type="text" class="form-control w-200 canclear is-invalid" onchange="ValidateControls();" id="0_ActualTripOutDate" readonly>
+
                                     </td>
                                     <td class="text-center">
                                         <input type="text" data-name="ActualTripOutTime"
-                                               class="form-control w-200 timePicker canclear is-invalid" id="0_ActualTripOutTime" readonly>
+                                               class="form-control w-200 timePicker canclear is-invalid SLUCtrl" onblur="ValidateControls();" id="0_ActualTripOutTime" readonly>
                                     </td>
                                     <td class="text-center">
                                         <input type="text" data-name="ActualTripOutKM"
                                                class="form-control w-200" id="0_ActualTripOutKM" readonly>
                                     </td>
                                     <td class="text-center">
-                                        <textarea data-name="Remark" oncopy="return false" onpaste="return false" onkeypress="keypressCountWord(this);" id="0_Remark" class="form-control canclear pointer" cols="20" rows="2" data-toggle="tooltip" data-placement="bottom" title="Remark"></textarea>
+                                        <textarea data-name="Remark" oncopy="return false" onpaste="return false" onkeypress="keypressCountWord(this);" id="0_Remark" class="form-control canclear pointer SLUCtrl" cols="20" rows="2" data-toggle="tooltip" data-placement="bottom" title="Remark"></textarea>
                                     </td>
                                 </tr>
 
@@ -314,9 +309,10 @@
 @section scripts{
     <script src="js/moment.min.js"></script>
     <script src="js/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
-    <script src="~/UIContent/JS/CustomePage/GVMR/GVMR.js"></script>
+    <script src="~/UIContent/JS/CustomePage/GVMR/CenterWiseGVMR.js"></script>
 
     <script>
         $(document).ready(function () {

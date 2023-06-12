@@ -20,7 +20,7 @@ namespace CBBW.BOL.MGP
         public string ToLocationCodeName { get; set; }
 
         public bool CarryingOutMat { get; set; }
-        public int LoadPercentage { get; set; }
+        public float LoadPercentage { get; set; }
         public DateTime SchFromDate { get; set; }
         public int KMOUT { get; set; }
         public string VehicleNumber { get; set; }
@@ -30,6 +30,10 @@ namespace CBBW.BOL.MGP
         public string OutRemarks { get; set; }
         public int ToLocationCode { get; set; }
         public string SchFromDatestr { get; set; }
+        public string SchToDatestr { get; set; }
+        public DateTime SchToDate { get; set; }
+        public int LocationType { get; set; }
+        public int FromLocation { get; set; }
         //public string VehicleNumber { get; set; }
         //public int FromCentreCode { get; set; }
         //public string FromCenterName { get; set; }
@@ -64,6 +68,9 @@ namespace CBBW.BOL.MGP
         public DateTime ActualTripOutDate { get; set; }
         public string ActualTripOutTime { get; set; }
         public string OutRemarks { get; set; }
+        public int LocationType { get; set; }
+        public DateTime SchToDate { get; set; }
+        public int FromLocation { get; set; }
     }
 
 
@@ -82,7 +89,6 @@ namespace CBBW.BOL.MGP
         public long RequiredKmIn { get; set; }
         public long ActualKmIn { get; set; }
         public long KMRunInTrip { get; set; }
-
         public string RemarkIn { get; set; }
     }
    

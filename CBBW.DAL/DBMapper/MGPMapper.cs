@@ -202,21 +202,24 @@ namespace CBBW.DAL.DBMapper
                         result.TripTypeStr = dr["TripTypeStr"].ToString();
                     if (!DBNull.Value.Equals(dr["ToLocationCodeName"]))
                         result.ToLocationCodeName = dr["ToLocationCodeName"].ToString();
-                    //if (!DBNull.Value.Equals(dr["ToLocationCode"]))
-                    //    result.ToLocationCode =int.Parse(dr["ToLocationCode"].ToString());
                     if (!DBNull.Value.Equals(dr["CarryingOutMat"]))
                         result.CarryingOutMat = bool.Parse(dr["CarryingOutMat"].ToString());
                     if (!DBNull.Value.Equals(dr["LoadPercentage"]))
-                        result.LoadPercentage = int.Parse(dr["LoadPercentage"].ToString());
+                        result.LoadPercentage = float.Parse(dr["LoadPercentage"].ToString());
                     if (!DBNull.Value.Equals(dr["SchFromDate"]))
                         result.SchFromDate = DateTime.Parse(dr["SchFromDate"].ToString());
                     if (!DBNull.Value.Equals(dr["KMOUT"]))
                         result.KMOUT = int.Parse(dr["KMOUT"].ToString());
                     if (!DBNull.Value.Equals(dr["VehicleNumber"]))
                         result.VehicleNumber = dr["VehicleNumber"].ToString();
-
-
+                    if (!DBNull.Value.Equals(dr["LocationType"]))
+                        result.LocationType = int.Parse(dr["LocationType"].ToString());
+                    if (!DBNull.Value.Equals(dr["SchToDate"]))
+                        result.SchToDate = DateTime.Parse(dr["SchToDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["FromLocation"]))
+                        result.FromLocation = int.Parse(dr["FromLocation"].ToString());
                     result.SchFromDatestr = MyDBLogic.ConvertDateToString(result.SchFromDate);
+                    result.SchToDatestr = MyDBLogic.ConvertDateToString(result.SchToDate);
                     //if (!DBNull.Value.Equals(dr["FromCentreCode"]))
                     //    result.FromCentreCode = int.Parse(dr["FromCentreCode"].ToString());
                     //if (!DBNull.Value.Equals(dr["FromCenterName"]))
@@ -242,7 +245,7 @@ namespace CBBW.DAL.DBMapper
 
                 }
             }
-            catch { }
+            catch(Exception ex) { ex.ToString(); }
             return result;
         }
         public MGPHistoryDCDetails Map_MGPHistoryDCDetails(DataRow dr)
@@ -377,6 +380,8 @@ namespace CBBW.DAL.DBMapper
                         result.OutButtonActive = bool.Parse(dr["OutButtonActive"].ToString());
                     if (!DBNull.Value.Equals(dr["InButtonActive"]))
                         result.InButtonActive = bool.Parse(dr["InButtonActive"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsGVMRSubmit"]))
+                        result.IsGVMRSubmit = bool.Parse(dr["IsGVMRSubmit"].ToString());
 
                 }
             }
@@ -589,6 +594,21 @@ namespace CBBW.DAL.DBMapper
             return result;
         }
         #endregion
+
+        public Percentage Map_Percentage(DataRow dr)
+        {
+            Percentage result = new Percentage();
+            try
+            {
+                if (dr != null)
+                {
+                    if (!DBNull.Value.Equals(dr["CapacityPercentage"]))
+                        result.CapacityPercentage =float.Parse(dr["CapacityPercentage"].ToString());
+                }
+            }
+            catch { }
+            return result;
+        }
 
 
     }

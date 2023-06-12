@@ -1,6 +1,5 @@
 ﻿$(document).ready(function () {
     var _val = $("#NoteNumber").val();
-
     $.ajax({
         url: '/MaterialGatePass/GetcurentOutDetails',
         method: 'GET',
@@ -26,6 +25,8 @@
                     cloneready.find('td').find('#0_Toloc').attr('id', index + '_Toloc');//Display only
                     cloneready.find('td').find('#0_TolocName').attr('id', index + '_TolocName');
                     cloneready.find('td').find('#0_TolocCode').attr('id', index + '_TolocCode')
+                    cloneready.find('td').find('#0_LocationType').attr('id', index + '_LocationType');
+                    cloneready.find('td').find('#0_FromLocation').attr('id', index + '_FromLocation');
                     cloneready.find('td').find('#0_CarOut').attr('id', index + '_CarOut');//Display only
                     cloneready.find('td').find('#0_CarryOut').attr('id', index + '_CarryOut');
                     cloneready.find('td').find('#0_LoadMat').attr('id', index + '_LoadMat');
@@ -33,6 +34,7 @@
                     cloneready.find('td').find('#0_RFIDs').attr('id', index + '_RFIDs');
                     cloneready.find('td').find('#0_SchTripDate').attr('id', index + '_SchTripDate');//Display only
                     cloneready.find('td').find('#0_SchTrip').attr('id', index + '_SchTrip');
+                    cloneready.find('td').find('#0_SchToDate').attr('id', index + '_SchToDate');
                     cloneready.find('td').find('#0_SchTripdatetext').attr('id', index + '_SchTripdatetext');
                     cloneready.find('td').find('#0_ActualTripDates').attr('id', index + '_ActualTripDates');
                     
@@ -41,12 +43,13 @@
                     cloneready.find('td').find('#0_KMOut').attr('id', index + '_KMOut');
                     cloneready.find('td').find('#0_OutRemarks').attr('id', index + '_OutRemarks');
                     cloneready.find('td').find('#0_ActionDCNew').attr('id', index + '_ActionDCNew');
+                
                     $('#tbody6').append(cloneready);
                    
                 }
                 
                 $("#" + index + "_NotNos").val(item.NoteNumber);
-                $("#" + index + "_DrivernNo").html(item.Drivername);//Display Only
+                $("#" + index + "_DrivernNo").html(item.DriverNo + " / " + item.Drivername );//Display Only
                 $("#" + index + "_DriverName").val(item.Drivername);
                 $("#" + index + "_DriverNo").val(item.DriverNo);
                 $("#" + index + "_VehicleNo").val(item.VehicleNumber);
@@ -60,22 +63,22 @@
                 $("#" + index + "_Toloc").html(item.ToLocationCodeName);//Display Only
                 $("#" + index + "_TolocName").val(item.ToLocationCodeName);
                 $("#" + index + "_TolocCode").val(item.ToLocationCode);
+                $("#" + index + "_LocationType").val(item.LocationType);
+                $("#" + index + "_FromLocation").val(item.FromLocation);
                 if (item.CarryingOutMat == true) {
                     $("#" + index + "_CarOut").html("Yes");//Display only
                 } else {
                     $("#" + index + "_CarOut").html("No");//Display only
                 }
-
                 $("#" + index + "_CarryOut").val(item.CarryingOutMat);
                 $("#" + index + "_LoadM").html(item.LoadPercentage+" %");//Display only
                 $("#" + index + "_LoadMat").val(item.LoadPercentage);
-
                 $("#" + index + "_RFIDs").val(item.RFIDCard).html('<select id="' + index + '_RFID" class="form-select pointer is-invalid" onchange="SelectedRFIDValid();ValidateControl()"  aria-label="Default select example"></select>');
                 $("#" + index + "_SchTripDate").html(item.SchFromDatestr);//display only
-                
                 $("#" + index + "_SchTripdatetext").val(item.SchFromDatestr);
                 $("#" + index + "_SchTrip").val(item.SchFromDate);
-                $("#" + index + "_ActualTripDates").val(item.ActualTripOutDate).html('<input id="' + index + '_ActualTripDate" type="text" placeholder="dd/mm/yyyy" disabled class="form-control pointer is-invalid ActualTripDates" onchange="ValidateControl()">');
+                $("#" + index + "_SchToDate").val(item.SchToDatestr);
+                $("#" + index + "_ActualTripDates").val(item.ActualTripOutDate).html('<input id="' + index + '_ActualTripDate" type="text" placeholder="dd/mm/yyyy" disabled class="form-control pointer is-invalid ActualTripDates" readonly onchange="ValidateControl()">');
                 $("#" + index + "_ActualTripTime").val(item.ActualTripOutTime);//.html('<input id="' + index + '_ActualTripTime"  type="text" class="form-control pointer is-invalid" onblur="ValidateControl()" placeholder="08:00PM">').addClass('timePicker');
                 $("#" + index + "_KM").html(item.KMOUT);//Display Only
                 $("#" + index + "_KMOut").val(item.KMOUT);
@@ -83,11 +86,11 @@
                // $("#" + index + "_ActionDCNew").html('<span class="actionBtn d-block"><button type="button" onclick="OnclickNewDCDetails(this)"  id="' + item.VehicleNumber + '" data-value="' + item.SchFromDatestr + '"   class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Details" data-placement="top" title="" data-bs-original-title="Pending"> <svg xmlns=http://www.w3.org/2000/svg width=24 height=24 viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round class="feather feather-alert-triangle"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1=12 y1=9 x2=12 y2=13></line><line x1=12 y1=17 x2=12.01 y2=17></line></svg></button>');
                 if (item.CarryingOutMat == true) {
                    
-                    $("#" + index + "_ActionDCNew").html('<span class="actionBtn d-block"><button type="button" onclick="OnclickNewDCDetails(this)"  id="' + item.VehicleNumber + '" data-value="' + item.SchFromDatestr + '"   class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Details" data-placement="top" title="" data-bs-original-title="Pending"> <svg xmlns=http://www.w3.org/2000/svg width=24 height=24 viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round class="feather feather-alert-triangle"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1=12 y1=9 x2=12 y2=13></line><line x1=12 y1=17 x2=12.01 y2=17></line></svg></button>');
+                    $("#" + index + "_ActionDCNew").html('<span class="actionBtn d-block"><button type="button" onclick="OnclickNewDCDetails(this)"  id="' + item.VehicleNumber + '" data-value="' + item.SchFromDatestr + '"   class="btn btn-secondary primaryLink" data-toggle="tooltip" data-placement="top" title="Details" data-placement="top" title="" data-bs-original-title="Pending"> <svg xmlns=http://www.w3.org/2000/svg width=24 height=24 viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round class="feather feather-alert-triangle"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1=12 y1=9 x2=12 y2=13></line><line x1=12 y1=17 x2=12.01 y2=17></line></svg></button>');
                 } else
                 {
                   
-                    $("#" + index + "_ActionDCNew").html('<span class="actionBtn d-block"><button type="button" onclick="DataNotAvailble(this)"  id="' + item.VehicleNumber + '" data-value="' + item.SchFromDatestr + '"   class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Details" data-placement="top" title="" data-bs-original-title="Pending"> <svg xmlns=http://www.w3.org/2000/svg width=24 height=24 viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round class="feather feather-alert-triangle"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1=12 y1=9 x2=12 y2=13></line><line x1=12 y1=17 x2=12.01 y2=17></line></svg></button>');
+                    $("#" + index + "_ActionDCNew").html('<span class="actionBtn d-block"><button type="button" onclick="DataNotAvailble(this)"  id="' + item.VehicleNumber + '" data-value="' + item.SchFromDatestr + '"   class="btn btn-secondary primaryLink" data-toggle="tooltip" data-placement="top" title="Details" data-placement="top" title="" data-bs-original-title="Pending"> <svg xmlns=http://www.w3.org/2000/svg width=24 height=24 viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round class="feather feather-alert-triangle"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1=12 y1=9 x2=12 y2=13></line><line x1=12 y1=17 x2=12.01 y2=17></line></svg></button>');
                 }
                 GetRFIDCardNos(index);
             })
@@ -95,7 +98,6 @@
            
         }
     });
-
 });
 function DataNotAvailble(ctrl) {
     $('#tbody2').empty();
@@ -141,6 +143,8 @@ function OnclickNewDCDetails(ctrl) {
     $('#tbody2').empty();
     var targetid = $(ctrl).attr("id");
     var targetval = $(ctrl).attr('data-value');
+
+
     $.ajax({
         url: '/Security/MaterialGatePass/GetReferenceDCDetails?VehicleNo=' + targetid + '&FromDT=' + targetval,
         method: 'GET',
@@ -165,8 +169,8 @@ function OnclickNewDCDetails(ctrl) {
                 }
                 $("#" + index + "_NotNumber").val(item.NoteNumber).html('<input id="' + index + '_NotNo" value="' + item.NoteNumber+'" type="text" disabled="disabled"class="form-control">');
                 $("#" + index + "_NotesDate").val(item.NoteDatestr).html('<input id="' + index + '_Date" value="' + item.NoteDatestr +'" type="text" disabled="disabled" class="form-control">');
-                $("#" + index + "_fromloc").val(item.FromLocationText).html('<input id="' + index + '_Frmloc" value="' + item.FromLocationText +'" type="text" disabled="disabled" class="form-control">');
-                $("#" + index + "_tonloc").val(item.ToLocationText).html('<input id="' + index + '_Tolocation" value="' + item.ToLocationText +'" type="text" disabled="disabled"  class="form-control">');
+                $("#" + index + "_fromloc").val(item.FromLocationText).html('<input id="' + index + '_Frmloc" value="' + item.FromLocationCode + '/' +item.FromLocationText +'" type="text" disabled="disabled" class="form-control">');
+                $("#" + index + "_tonloc").val(item.ToLocationText).html('<input id="' + index + '_Tolocation" value="' + item.ToLocationCode + '/' +item.ToLocationText +'" type="text" disabled="disabled"  class="form-control">');
                 $("#" + index + "_fokdiv").val(item.FindOk).html('<select id="' + index + '_fok"  value="' + item.FindOk + '" class="form-select pointer is-invalid" onchange="ValidateControl()" aria-label="Default select example"><option value="NA">-</option><option value="Yes">Yes</option><option value="No">No</option></select>');
                 $("#" + index + "_ActionItem").html('<button type="button" onclick="Detailsclick(this)"  id="' + index + '_btn" data-value="' + item.NoteNumber + '"   class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Details"><svg xmlns=http://www.w3.org/2000/svg width=24 height=24 viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx=12 cy=12 r=3></circle></svg></button>');
             })
@@ -292,11 +296,13 @@ function getVechCurrentOutRecords() {
                 'DesignationName': $('#' + rowid + '_DesgName').val(),
                 'TripType': $('#' + rowid + '_TripType').val(),
                 'TripTypeStr': $('#' + rowid + '_TripCode').val(),
-                'ToLocationCodeName': $('#' + rowid + '_TolocName').val(),
+                'ToLocationCodeName': $('#' + rowid + '_TolocName').val(), 
                 'CarryingOutMat': $('#' + rowid + '_CarryOut').val(),
                 'LoadPercentage': $('#' + rowid + '_LoadMat').val(),
-                
                 'SchFromDate': $('#' + rowid + '_SchTripdatetext').val(),
+                'SchToDate': $('#' + rowid + '_SchToDate').val(),
+                'LocationType': $('#' + rowid + '_LocationType').val(),
+                'FromLocation': $('#' + rowid + '_FromLocation').val(),
                 'KMOUT': $('#' + rowid + '_KMOut').val(),
                 'VehicleNumber': $('#' + rowid + '_VehicleNo').val(),
                 'RFIDCard': $('#' + rowid + '_RFID').val(),
@@ -387,9 +393,10 @@ function activateSubmitBtn() {
     }
 };
 function ValidateControl() {
-     //alert(targetid);
+     
     var target = ValidateControl.caller.arguments[0].target;
     var targetid = $(target).attr('id');
+
     var isvalid = validatectrl(targetid, $(target).val());
     if (isvalid) {
         $(target).removeClass('is-invalid').addClass('is-valid');
@@ -414,6 +421,19 @@ function validatectrl(targetid, value) {
                     AlertMessage();
                 }
             } else {
+                var index = targetid.split('_')[0];
+                var xx = index + '_fok';
+                if (targetid == xx) {
+                    if (value == 'No') {
+                        isvalid = false;
+                        FindOkAlertMessage();
+                    } else {
+                        isvalid = true;
+                    }
+                } else {
+                    isvalid = true;
+                }
+
                 isvalid = true;
             }
            
@@ -426,6 +446,18 @@ function AlertMessage() {
     Swal.fire({
         title: 'Error',
         text: 'Please Select Current time Or Greater Than!',
+        icon: 'question',
+        customClass: 'swal-wide',
+        buttons: {
+            confirm: 'Ok'
+        },
+        confirmButtonColor: '#2527a2',
+    });
+}
+function FindOkAlertMessage() {
+    Swal.fire({
+        title: 'Error',
+        text: 'Please Material Details!',
         icon: 'question',
         customClass: 'swal-wide',
         buttons: {
@@ -448,26 +480,89 @@ function DatePicker(val) {
    
 }
 function RFIDOutChanged(RFId, TripDate) {
-    if (RFId != '' && RFId!=0) {
+    if (RFId != '' || RFId != '') {
+        var RFIDval = null;
+        var IsDriver;
+        if (RFId == '0') {
+            RFIDval = $('#0_DriverNo').val();
+            IsDriver = true;
+        } else {
+            RFIDval = RFId;
+            IsDriver = false;
+        }
         $.ajax({
-            url: '/EntryII/GetRFIDPunchTime',
+            url: '/MaterialGatePass/GetRFIDPunchTime',
             method: 'GET',
-            data: { RFIDNumber: RFId, PunchDate: TripDate },
+            data: { RFIDNumber: RFIDval, PunchDate: TripDate, IsDriver: IsDriver},
             dataType: 'json',
             success: function (data) {
                 $(data).each(function (index, item) {
-                    $('#0_ActualTripTime').val(item.PunchOutStr);
-                    $('#0_ActualTripTime').removeClass('timePicker');
-                    $('#0_ActualTripTime').attr('readonly', 'readonly');
-                    $('#0_ActualTripTime').removeClass('is-invalid').addClass('is-valid');
+                    debugger;
+                    if (RFId == '0') {
+                        if (item.PunchOutStr == '-' || item.PunchOutStr == null) {
+                            PunchTimeEnable();
+                        } else {
+                            $('#0_ActualTripTime').val(item.PunchOutStr);
+                            $('#0_ActualTripTime').removeClass('timePicker');
+                            $('#0_ActualTripTime').attr('readonly', 'readonly');
+                            $('#0_ActualTripTime').removeClass('is-invalid').addClass('is-valid');
+                        }
+
+                    } else {
+                        if (item.PunchOutStr == '-' || item.PunchOutStr == null) {
+                            MyAlert(5, 'Punching Time Not Available..!!');
+                            TimeDateValueClear();
+                        }
+                        else {
+                            if (item.PunchOutStr < GetAddMinInCurrentTime(10)) {
+                                $('#0_ActualTripTime').val(GetCurrentTime())
+                                //$('#0_ActualTripTime').val(item.PunchOutStr);
+                                $('#0_ActualTripTime').removeClass('timePicker');
+                                $('#0_ActualTripTime').attr('readonly', 'readonly');
+                                $('#0_ActualTripTime').removeClass('is-invalid').addClass('is-valid');
+                            } else {
+                                MyAlert(5, 'Please Check Time..!!');
+                                TimeDateValueClear();
+                            }
+                        }
+                        
+                        
+                       
+                    }
                 });
             }
         });
     }
     else {
-        $('#0_ActualTripTime').val('');
-        $('#0_ActualTripTime').removeAttr('readonly', 'readonly');
-        $('#0_ActualTripTime').addClass('timePicker');
-        $('#0_ActualTripTime').removeClass('is-valid').addClass('is-invalid');
+        PunchTimeEnable();
     }
 };
+function PunchTimeEnable() {
+    $('#0_ActualTripTime').val('');
+    $('#0_ActualTripTime').removeAttr('readonly', 'readonly');
+    $('#0_ActualTripTime').addClass('timePicker');
+    $('#0_ActualTripTime').removeClass('is-valid').addClass('is-invalid');
+};
+function TimeDateValueClear() {
+    $('#0_ActualTripTime').val('');
+    $('#0_ActualTripTime').removeClass('timePicker');
+    $('#0_ActualTripTime').attr('readonly', 'readonly');
+    $('#0_ActualTripTime').removeClass('is-valid').addClass('is-invalid');
+    $('#0_ActualTripDate').val('');
+    $('#0_ActualTripDate').removeClass('is-valid').addClass('is-invalid');
+}
+function GetCurrentTime() {
+    var date = new Date();
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var newformat = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    var CurrTime = hours + ":" + minutes + " " + newformat;
+    return CurrTime;
+}
+
+function GetAddMinInCurrentTime(AddMin) {
+    return moment.utc(GetCurrentTime(), 'hh:mm').add(AddMin, 'minutes').format('hh:mm');
+}

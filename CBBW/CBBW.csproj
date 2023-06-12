@@ -359,6 +359,7 @@
     <Content Include="UIContent\CSS\themes\base\tabs.css" />
     <Content Include="UIContent\CSS\themes\base\theme.css" />
     <Content Include="UIContent\CSS\themes\base\tooltip.css" />
+    <Content Include="UIContent\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="UIContent\JS\bootstrap-datetimepicker.min.js" />
     <Content Include="UIContent\JS\bootstrap-multiselect.js" />
     <Content Include="UIContent\JS\bootstrap.bundle.min.js" />
@@ -376,7 +377,7 @@
     <Content Include="UIContent\JS\CustomePage\CTV\CreateOtherTrip.js" />
     <Content Include="UIContent\JS\CustomePage\EHG\EHGCreateNote.js" />
     <Content Include="UIContent\JS\CustomePage\EHG\EHGDateWiseTourDtl.js" />
-    <Content Include="UIContent\JS\CustomePage\EHGNoteApproval.js" />
+    <Content Include="UIContent\JS\CustomePage\EHG\EHGNoteApproval.js" />
     <Content Include="UIContent\JS\CustomePage\EHGVehicleAllotment.js" />
     <Content Include="UIContent\JS\CustomePage\EMC\EMCEntry.js" />
     <Content Include="UIContent\JS\CustomePage\EMC\EMCEntryDetailsJS.js" />
@@ -628,6 +629,7 @@
     <Content Include="Areas\Security\Views\CTV2\CreateOtherTrip.cshtml" />
     <Content Include="Areas\Security\Views\CTV2\AllVehicleTripSchFromMat.cshtml" />
     <Content Include="Areas\Security\Views\CTV2\LocVehTripSch.cshtml" />
+    <Content Include="Areas\Security\Views\GVMR\CenterCodeWiseCreate.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />
@@ -657,6 +659,10 @@
     <Content Include="UIContent\CSS\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="UIContent\CSS\img\beediworkers.webp" />
     <Content Include="Views\Home\LogIn.cshtml" />
+    <Content Include="UIContent\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="UIContent\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="UIContent\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="UIContent\fonts\glyphicons-halflings-regular.woff2" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -38,8 +38,10 @@ namespace CBBW.BOL.MGP
 		public int ActKmIn { get; set; }
 		public int RunningKm { get; set; }
 		
-			
+	}
 
-
+	public class Percentage
+	{
+		public float CapacityPercentage { get; set; }
 	}
 }

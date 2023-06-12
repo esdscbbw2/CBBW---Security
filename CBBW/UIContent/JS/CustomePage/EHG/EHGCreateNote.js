@@ -136,6 +136,30 @@ function addOfficeWorkCloneBtnClick() {
     $('#sOfficeworkDiv').removeClass('sectionB');
     UnLockSLUContainer($('#' + rowid));
     EnableDateWiseTourBtn();
+    //$('.timePickerPreDateCtrlV2ForOffice').each(function () {
+    //    var myDtCtrl = $('#FromDate');
+    //    if ($(this).attr('id').indexOf('_') >= 0) { myDtCtrl = $('#FromDate_' + $(this).attr('id').split('_')[1]); }
+
+    //    //var myNextCtrl = $('#FromLocationType_' + $(this).attr('id').split('_')[1]);
+    //    $(this).datetimepicker({
+    //        format: "hh:mm A"
+    //    }).on("dp.show", function (e) {
+    //        time = "01:00 PM"
+    //    }).on("dp.change", function (e) {
+    //        var myDate = myDtCtrl.val();
+    //        $(this).isValid();
+    //        if (myDate != '') {
+    //            //alert(IsValidTimeSelected(myDate, $(this).val()));
+    //            if (!IsValidTimeSelected(myDate, $(this).val())) {
+    //                $(this).isInvalid();
+    //                //myNextCtrl.EntrynDisabledForEntry();
+    //                MyAlert(4, "Selected Time Should Be Greater Than The Current Time.");
+    //            }
+    //            //IsIntervalChecking(myDate, $(this).val(), $(this).attr('id').split('_')[1]);
+    //        }
+
+    //    });
+    //});
 };
 function removeOfficeWorkCloneBtnClick() {
     var tblRow = removeOfficeWorkCloneBtnClick.caller.arguments[0].target.closest('.add-row');
@@ -243,8 +267,8 @@ function validatectrl(targetid, value) {
                 isvalid = true;
             }
             break;
-        case "FromDate":
-            isvalid = validatectrl_ValidateLength(value);
+        case "FromDate":            
+            if (value != '') { return true;}
             break;
         case "FromTime":
             isvalid = validatectrl_ValidateLength(value);
@@ -271,7 +295,15 @@ function validatectrl(targetid, value) {
             break;        
         case "FromdateForMang":
             if (value != '') {
-                if ($('#lblFromdateForMang').html() == 'Select Date') { isvalid = false; }
+                if ($('#lblFromdateForMang').html() == 'Select Date') {
+                    var today = new Date();
+                    var yesterday = new Date(today);
+                    yesterday.setDate(today.getDate() - 1);
+                    var formattedDate = yesterday.toISOString().split('T')[0];
+                    if (value == formattedDate) { isvalid = false; }
+                    else {
+                        isvalid = true; }
+                }
                 else {
                     isvalid = true;
                     var maxdays = $('#MaxDaysOfTourForEmp').val();
@@ -544,18 +576,18 @@ function ValidateCloneRowCtrl() {
     var lbltdtCtrl = $('#lblToDate');
     var tdtCtrl = $('#ToDate');
     var personCtrl = $('#cmbDDPersonType');
+    var addBtnCtrl = $('#AddBtn');
     if (targetid.indexOf('_') >= 0) {
         targetid = targetid.split('_')[0];
         fdtCtrl = $('#FromDate_' + $(tblRow).attr('id'));
         tdtCtrl = $('#ToDate_' + $(tblRow).attr('id'));
         lbltdtCtrl = $('#lblToDate_' + $(tblRow).attr('id'));
-        personCtrl = $('#cmbDDPersonType' + $(tblRow).attr('id'));
+        personCtrl = $('#cmbDDPersonType_' + $(tblRow).attr('id'));
+        addBtnCtrl = $('#AddBtn_'+ $(tblRow).attr('id'));
     }
     var isvalid = validatectrl(targetid, targetCtrl.val());
     //for todate>fromdate validation
-    if (targetid == 'TaDaDenied') {
-        MyAlertWithCallBack(6, 'Are You Sure To Deny The TADA Option?', 'CancelTadaDenied')
-    }
+    
     if (targetid == 'ToDate') {
         isvalid = CompareDateV2(fdtCtrl.val(), 0, targetCtrl.val(), 0);
         var url = '/EHG/GetEmployeeValidationForTour?Employees=' + personCtrl.val() + '&FromDate=' + fdtCtrl.val() + '&ToDate=' + tdtCtrl.val();
@@ -569,10 +601,17 @@ function ValidateCloneRowCtrl() {
         tdtCtrl.val('').isInvalidCtrl();
         lbltdtCtrl.html('Select Date');
     }
+    //debugger;
     if (isvalid) { targetCtrl.isValidCtrl(); } else { targetCtrl.isInvalidCtrl(); }
     EnableAddBtn(tblRow, 'AddBtn');
     EnableDateWiseTourBtn();
-    EnableSubmitBtn();    
+    EnableSubmitBtn();
+    if (targetid == 'TaDaDenied' && targetCtrl.val() == 1) {
+        MyAlertWithCallBack(6, 'Are You Sure To Deny The TADA Option?', function () {            
+            addBtnCtrl.removeAttr('disabled');
+        });
+    }   
+    
 };
 function EnableAddBtn(tblRow, addBtnBaseID) {
     var authempCtrl=$('#DDAuthorisedEmpForWork');
@@ -580,6 +619,7 @@ function EnableAddBtn(tblRow, addBtnBaseID) {
     var rowid = tblrow.attr('id')
     if (rowid != 0) { addBtnBaseID = addBtnBaseID + '_' + rowid; }
     var addBtnctrl = $('#' + addBtnBaseID);
+    //alert(rowid+' -  '+tblrow.find('.is-invalid').length);
     if (tblrow.find('.is-invalid').length > 0) {
         addBtnctrl.makeSLUDisable();
         authempCtrl.makeSLUDisable();
@@ -1033,4 +1073,54 @@ $(document).ready(function () {
     //        e.target.removeClass('mTimePickerAlert');
     //    }
     //});
+});
+$(document).ready(function () {
+    $('.timePickerPreDateCtrlV2ForMang').each(function () {
+        var myDtCtrl = $('#FromdateForMang');
+        //var myNextCtrl = $('#FromLocationType_' + $(this).attr('id').split('_')[1]);
+        $(this).datetimepicker({
+            format: "hh:mm A"
+        }).on("dp.show", function (e) {
+            time = "01:00 PM"
+        }).on("dp.change", function (e) {
+            var myDate = myDtCtrl.val();
+            $(this).isValid();
+            if (myDate != '') {
+                //alert(IsValidTimeSelected(myDate, $(this).val()));
+                if (!IsValidTimeSelected(myDate, $(this).val())) {
+                    $(this).isInvalid();
+                    //myNextCtrl.EntrynDisabledForEntry();
+                    MyAlert(4, "Selected Time Should Be Greater Than The Current Time.");
+                }
+                //IsIntervalChecking(myDate, $(this).val(), $(this).attr('id').split('_')[1]);
+            }
+
+        });
+    });
+    $('.timePickerPreDateCtrlV2ForOffice').each(function () {
+        var myDtCtrl = $('#FromDate');
+        if ($(this).attr('id').indexOf('_') >= 0) { myDtCtrl = $('#FromDate_' + $(this).attr('id').split('_')[1]); }
+        
+        //var myNextCtrl = $('#FromLocationType_' + $(this).attr('id').split('_')[1]);
+        $(this).datetimepicker({
+            format: "hh:mm A"
+        }).on("dp.show", function (e) {
+            time = "01:00 PM"
+        }).on("dp.change", function (e) {
+            var myDate = myDtCtrl.val();
+            $(this).isValid();
+            if (myDate != '') {
+                //alert(IsValidTimeSelected(myDate, $(this).val()));
+                if (!IsValidTimeSelected(myDate, $(this).val())) {
+                    $(this).addClass('is-invalid').removeClass('is-valid');
+                    //$(this).inValidCtrl();
+                    //myNextCtrl.EntrynDisabledForEntry();
+                    MyAlert(4, "Selected Time Should Be Greater Than The Current Time.");
+                }
+                //IsIntervalChecking(myDate, $(this).val(), $(this).attr('id').split('_')[1]);
+            }
+
+        });
+    });
+    //alert($('#FromdateForMang').val());
 });
