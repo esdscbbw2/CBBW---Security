@@ -69,7 +69,8 @@ function VehicleNoChanged(value) {
     $('#IsBtn').val(value);
     EnableSubmitBtn();
 };
-function VehicleBelongsToChanged(mVal) {    
+function VehicleBelongsToChanged(mVal) {
+    debugger;
     var vbtoCtrl = $('#VADetails_VehicleBelongsTo');
     var ForCVCtrl = $('#for_company_vehicle');
     var ForOVCtrl = $('#for_other_vehicle');
@@ -124,8 +125,8 @@ function EnableSubmitBtn() {
     var SubmitBtn = $('#btnSubmit');
     //alert($('#IsBtn').val());
     if (x <= 0 && $('#IsBtn').val()==1) {
-        SubmitBtn.makeEnabled();
-    } else { SubmitBtn.makeDisable(); }
+        SubmitBtn.makeSLUEnable();
+    } else { SubmitBtn.makeSLUDisable(); }
 };
 $(document).ready(function () {
     var vbtoCtrl = $('#VADetails_VehicleBelongsTo');    
@@ -135,25 +136,27 @@ $(document).ready(function () {
         EnableSubmitBtn();
     });
     $('#btnBack').click(function () {
+        debugger;
         var backbtnactive = $('#VABackBtnActive').val();
         var backurl = "/Security/EHG/Create";
         if (backbtnactive == 1) {
-            Swal.fire({
-                title: 'Confirmation',
-                text: "Are You Sure Want to Go Back?",
-                icon: 'question',
-                customClass: 'swal-wide',
-                confirmButtonText: "Yes",
-                cancelButtonText: "No",
-                cancelButtonClass: 'btn-cancel',
-                confirmButtonColor: '#2527a2',
-                showCancelButton: true,
-            }).then(callback);
-            function callback(result) {
-                if (result.value) {
-                    window.location.href = backurl;
-                }
-            }
+            MyAlertWithRedirection(2, "Are You Sure Want to Go Back?", backurl);
+            //Swal.fire({
+            //    title: 'Confirmation',
+            //    text: "Are You Sure Want to Go Back?",
+            //    icon: 'question',
+            //    customClass: 'swal-wide',
+            //    confirmButtonText: "Yes",
+            //    cancelButtonText: "No",
+            //    cancelButtonClass: 'btn-cancel',
+            //    confirmButtonColor: '#2527a2',
+            //    showCancelButton: true,
+            //}).then(callback);
+            //function callback(result) {
+            //    if (result.value) {
+            //        window.location.href = backurl;
+            //    }
+            //}
         }
         else {
             window.location.href = backurl;
@@ -166,4 +169,6 @@ $(document).ready(function () {
     if (driverCtrl.val() >= 0) { driverCtrl.isValid(); } else { driverCtrl.isInvalid(); }
     if (vbtoCtrl.val() > 0) { vbtoCtrl.isValid(); VehicleBelongsToChanged(1);} else { vbtoCtrl.isInvalid(); }
     $('#IsBtn').val(0);
+    var x = $('#VADetails_DriverNumber option:selected').text();
+    $('#VADetails_DriverName').val(x);
 });

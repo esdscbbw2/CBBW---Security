@@ -48,7 +48,7 @@
                 <h2 class="text-center"> Date Wise Tour Details Entry: </h2>
             </div>
         </div>
-        <div class="col-md-12 mb-4 SLUSection" id="HdrDiv">
+        <div class="col-md-12 mb-4" id="HdrDiv">
             <div class="col-md-12 pt-3">
                 <div class="card">
                     <div class="card-body">
@@ -71,7 +71,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="tbody1">
-                                    <tr id="0" class="add-row SLUContainer">
+                                    <tr id="0" class="add-row">
                                         <th scope="row">1</th>
                                         <td id="FromDateLbl" data-name="Fromdate"
                                             class="text-center alterID htmlVal rDate">
@@ -82,7 +82,7 @@
                                                        onchange="ValidateCloneRowCtrl()"
                                                        max="@Model.TodateStr"
                                                        min="@Model.FromdateStr"
-                                                       class="form-control pointer is-invalid alterID CustomDateFormatCloneRow todt valid SLUCtrl">
+                                                       class="form-control pointer is-invalid alterID CustomDateFormatCloneRow todt valid">
                                                 <label id="lblToDate" style="width:110px"
                                                        class="datelabel pointer alterID rDate">Select Date</label>
                                             </div>
@@ -92,7 +92,7 @@
                                                 <select id="TourCategory" data-name="TourCatCodes" data-name-text="TourCatText"
                                                         @*onchange="TourCategoryChanged()"*@
                                                         onchange="TourCategoryChanged('CenterCode', '/Security/EHG/GetTourLocations?CategoryIDs=')"
-                                                        class="form-select is-invalid alterID ApplyMultiSelect clonemultiselect SLUCtrl"
+                                                        class="form-select is-invalid alterID ApplyMultiSelect clonemultiselect"
                                                         aria-label="Default select example">
                                                     @if (Model.TourCategory != null)
                                                     {
@@ -108,7 +108,7 @@
                                             <div id="ConCenterCode" class="form-group">
                                                 <select id="CenterCode" data-name="CenterCodes" data-name-text="CenterNames"
                                                         onchange="ValidateCloneRowCtrl()"
-                                                        class="form-select alterID is-invalid clonemultiselect SLUCtrl"
+                                                        class="form-select alterID is-invalid clonemultiselect"
                                                         aria-label="Default select example">
                                                 </select>
                                             </div>
@@ -117,7 +117,7 @@
                                         <td>
                                             <span class="actionBtn">
                                                 <button id="AddBtn" type="button"
-                                                        class="btn primaryLink alterID cloneBtn addBtn SLUCtrl"
+                                                        class="btn primaryLink alterID cloneBtn addBtn"
                                                         data-toggle="tooltip"
                                                         onclick="addCloneBtnClick()"
                                                         data-placement="top" title="Add">

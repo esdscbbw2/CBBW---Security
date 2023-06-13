@@ -45,12 +45,12 @@
                 </div>
                 <div class="col-md-12 d-flex justify-content-between">
                     <div class="text-left pt-2 pb-2">
-                        <button id="btnScan" type="button" class="btn btn-light-green @(string.IsNullOrEmpty(Model.emnHeader.AttachFile)?"":"inVisible")"
+                        <button id="btnScan" type="button" class="btn btn-light-red @(string.IsNullOrEmpty(Model.emnHeader.AttachFile)?"":"inVisible")"
                                 onclick="fireSweetAlert()">
                             Scan & Attach
                             “Travelling Request Form”
                         </button>
-                        <button id="btnScanView" type="button" class="btn btn-light-blue @(string.IsNullOrEmpty(Model.emnHeader.AttachFile)?"inVisible":"")"
+                        <button id="btnScanView" type="button" class="btn btn-light-green @(string.IsNullOrEmpty(Model.emnHeader.AttachFile)?"inVisible":"")"
                                 onclick="btnScanViewClicked()">
                             View Attached “Travelling Request Form”
                         </button>

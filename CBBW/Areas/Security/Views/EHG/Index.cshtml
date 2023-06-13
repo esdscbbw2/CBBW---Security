@@ -18,7 +18,7 @@
         </div>
     </div>
     <div class="table-responsive mb-4 max-content">
-        <table class="table table-bordered btnalign" id="NoteListTbl">
+        <table class="table table-bordered btnalign table-last-col" id="NoteListTbl">
             <thead>
                 <tr>
                     <th scope="col" rowspan="2"> SL.No.</th>
@@ -28,7 +28,7 @@
                     <th scope="col">Purpose Of Allotment</th>
                     <th scope="col"> Employee No. </th>
                     <th scope="col">Vehicle No.</th>
-                    <th scope="col" rowspan="2" style="background-color:pink;color:#000">Action</th>
+                    <th scope="col" class="action" rowspan="2" style="background-color:pink;color:#000">Action</th>
                 </tr>
                 <tr>
                     <th scope="col">
@@ -76,7 +76,7 @@
                             <td>@item.PurposeOfAllotment </td>
                             <td>@item.Instructor</td>
                             <td>@item.VehicleNumber</td>                            
-                            <td>
+                            <td class="last-action">
                                 @*<span class="actionBtn">
                                     <button type="button" class="btn primaryLink" data-toggle="tooltip" data-placement="top" onclick="window.location.href='emp_travelling_detail_vehicle_allotment_by_HG_details_for_office.html';"
                                             title="Details">

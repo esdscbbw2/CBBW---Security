@@ -147,7 +147,7 @@
                                        "Select Purpose Of Allotment",
                                        htmlAttributes: new
                                        {
-                                           @class = "form-select SLUCtrl"
+                                           @class = "form-select SLUCtrl "
                                        })
                             </div>
                         </div>
@@ -176,7 +176,7 @@
                            new SelectListItem { Text = "No", Value = "0" }},
                        htmlAttributes: new
                        {
-                           @class = "form-select SLUCtrl is-invalid ",
+                           @class = "form-select SLUCtrl is-invalid",
                            @onchange = "ValidateControl();"
                        })
                         </div>
@@ -191,7 +191,7 @@
                                        "Select Employee Number",
                                        htmlAttributes: new
                                        {
-                                           @class = "form-select SLUCtrl is-invalid",
+                                           @class = "form-select SLUCtrl is-invalid ",
                                            @onchange = "ValidateControl()"
                                        })
                         </div>
@@ -357,7 +357,7 @@
                                                        @class = "form-control SLUCtrl",
                                                        @rows = "3",
                                                        @type = "text",
-                                                       @onblur = "ValidateControl()"
+                                                       @onkeyup = "ValidateControl()"
                                                    })
                                             @*<textarea name="" id="" cols="20" class="form-control" rows="3"></textarea>*@
                                         </td>
@@ -424,7 +424,7 @@
                 <div class="card SLUSection" id="sOfficeworkDiv">
                     <div class="card-body">
                         <div class="table-responsive max-content">
-                            <table class="table table-bordered w-100 btnalign" id="OficeWorkTbl">
+                            <table class="table table-bordered w-100 btnalign table-last-col" id="OficeWorkTbl">
                                 <thead>
                                     <tr>
                                         <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">
@@ -446,7 +446,7 @@
                                             Purpose Of Visit
                                         </th>
                                         <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;">T.A & D.A Denied </th>
-                                        <th scope="col" rowspan="2" style="text-align: center; vertical-align: middle;background-color: pink;color: #000;">
+                                        <th scope="col" class="action" rowspan="2" style="text-align: center; vertical-align: middle;background-color: pink;color: #000;">
                                             Actions
                                         </th>
                                     </tr>
@@ -472,15 +472,15 @@
                                             </select>
                                         </td>
                                         <td class="text-center">
-                                            <select class="form-select alterID inValidTag SLUCtrl pickPersonName xPerson"
+                                            <select class="form-select alterID inValidTag SLUCtrl SLUCtrlP pickPersonName xPerson "
                                                     data-name="EmployeeNo" data-name-text="EmployeeNonNamecmb"
                                                     aria-label="Default select example"
                                                     onchange="DDPickPersonChanged(0)"
                                                     id="cmbDDPersonType">
                                             </select>
                                             <input type="text" style="width:300px" data-name="EmployeeNonName"
-                                                   class="form-control w-200 inVisible SLUCtrl alterID pickPersonNametxt xPerson"
-                                                   onchange="DDPickPersonChanged(1)"
+                                                   class="form-control w-200 inVisible SLUCtrl SLUCtrlP alterID pickPersonNametxt xPerson "
+                                                   onkeyup="DDPickPersonChanged(1)"
                                                    id="txtDDPersonType">
                                         </td>
                                         <td id="DesgCodenName" data-name="DesignationCodenName"
@@ -490,7 +490,7 @@
                                                 <input id="FromDate" type="date"
                                                        data-name="FromDate"
                                                        onchange="ValidateCloneRowCtrl()"
-                                                       class="form-control pointer SLUCtrl is-invalid alterID inValidTag CustomDateFormatCloneRow valid">
+                                                       class="form-control pointer SLUCtrl SLUCtrlP is-invalid alterID inValidTag CustomDateFormatCloneRow valid">
                                                 <label id="lblFromDate" style="width:100px"
                                                        class="datelabel pointer alterID">Select Date</label>
                                             </div>
@@ -501,7 +501,7 @@
                                                 <input id="FromTime" type="text"
                                                        data-name="FromTime"
                                                        @*onblur="ValidateCloneRowCtrl()"*@
-                                                       class="form-control is-invalid SLUCtrl timePickerPreDateCtrlV2ForOffice CustomTimeFormatCloneRow alterID inValidTag mTimePickerAlert"
+                                                       class="form-control is-invalid SLUCtrl SLUCtrlP timePickerPreDateCtrlV2ForOffice CustomTimeFormatCloneRow alterID inValidTag mTimePickerAlert"
                                                        placeholder="Select Time">
                                             </div>
                                         </td>
@@ -510,7 +510,7 @@
                                                 <input id="ToDate" type="date"
                                                        data-name="ToDate" title="To Date Should Be Latter Than From Date"
                                                        onchange="CRToDateChanged();"
-                                                       class="form-control pointer is-invalid SLUCtrl alterID inValidTag CustomDateFormatCloneRow valid">
+                                                       class="form-control pointer is-invalid SLUCtrl SLUCtrlP alterID inValidTag CustomDateFormatCloneRow valid">
                                                 <label id="lblToDate" style="width:110px"
                                                        class="datelabel pointer alterID">Select Date</label>
                                             </div>
@@ -519,7 +519,7 @@
                                             <textarea name="" id="PurposeOfVisit" cols="20"
                                                       data-name="PurposeOfVisit"
                                                       onkeyup="ValidateCloneRowCtrl()"
-                                                      class="form-control is-invalid alterID SLUCtrl inValidTag" rows="3"></textarea>
+                                                      class="form-control is-invalid alterID SLUCtrl SLUCtrlP inValidTag" rows="3"></textarea>
                                         </td>
                                         <td class="text-center">
                                             <select id="TaDaDenied" class="form-select SLUCtrl is-invalid alterID inValidTag"
@@ -531,17 +531,17 @@
                                                 <option value="0"> No </option>
                                             </select>
                                         </td>
-                                        <td>
+                                        <td class="last-action">
                                             <span class="actionBtn">
                                                 <button id="AddBtn" type="button" disabled
-                                                        class="btn primaryLink alterID SLUCtrl cloneBtn addBtn"
+                                                        class="btn primaryLink alterID cloneBtn addBtn SLUAddBtn SLUBtn"
                                                         onclick="addOfficeWorkCloneBtnClick()"
                                                         data-toggle="tooltip"
                                                         data-placement="top" title="Add">
                                                     <i data-feather="plus"></i>
                                                 </button>
                                                 <button id="DeleteBtn" type="button"
-                                                        class="btn secondaryLink inVisible alterID cloneBtn removeBtn"
+                                                        class="btn secondaryLink inVisible alterID cloneBtn SLUBtn removeBtn SLURemoveBtn"
                                                         onclick="removeOfficeWorkCloneBtnClick()"
                                                         data-toggle="tooltip"
                                                         data-placement="top" title="Delete">
@@ -566,7 +566,7 @@
                             <div class="col-md-5">
                                 <select id="DDAuthorisedEmpForWork" disabled
                                         onchange="DDAuthorisedEmpForWorkChanged()"
-                                        class="form-select is-invalid SLUCtrl LUPS"
+                                        class="form-select is-invalid SLUCtrl LUPSP"
                                         aria-label="Default select example">
                                 </select>
                             </div>
@@ -595,7 +595,7 @@
                         <li style="font-size: 16px;">
                             The Entry Is Done As Per Policy & As Required:
                             <select id="AcceptCmb" style="width:110px" 
-                                    class="form-select SLUCtrl LUPS is-invalid"
+                                    class="form-select SLUCtrl LUPSP is-invalid "
                                     aria-label="Default select example ">
                                 <option selected="">-</option>
                                 <option value="1">Yes</option>

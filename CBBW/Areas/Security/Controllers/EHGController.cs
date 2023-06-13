@@ -170,7 +170,7 @@ namespace CBBW.Areas.Security.Controllers
                 if (model.OtherStaffList == null) { model.OtherStaffList = model.getOtherStaffList(user.CentreCode); }
             }
             TempData["EHG"] = model;
-            //model.ehgHeader.DocFileName = "1e627a46-27ee-4085-98c4-4fad3a2d638c.png"; // Dummy code
+            //model.ehgHeader.DocFileName = "9e42056b-1e9c-4cc6-a022-e0fc811ce63b.png"; // Dummy code
             return View(model);
         }
         [HttpPost]
@@ -255,10 +255,10 @@ namespace CBBW.Areas.Security.Controllers
                 VehicleAllotmentDetails obj = _iEHG.getVehicleAllotmentDetails(model.ehgHeader.NoteNumber, 0, ref pMsg);
                 model.VADetails = obj;
                 model.VehicleList = _master.getVehicleList("L.C.V", model.ehgHeader.VehicleType == 1 ? 4 : 2, ref pMsg,user.CentreCode);
-                model.DriverList = _iEHG.getDriverListForOfficeWork(model.ehgHeader.NoteNumber, ref pMsg); 
+                model.DriverList = _iEHG.getDriverListForOfficeWork(model.ehgHeader.NoteNumber, ref pMsg);
                 if (model.VADetails == null || string.IsNullOrEmpty(model.VADetails.VehicleNumber))
                 {
-                    int authPersonType = model.PersonDtls.Where(o => o.EmployeeNonName==model.ehgHeader.AuthorisedEmployeeName).FirstOrDefault().PersonType;
+                    int authPersonType = model.PersonDtls.Where(o => o.EmployeeNonName == model.ehgHeader.AuthorisedEmployeeName).FirstOrDefault().PersonType;
                     model.VADetails = new VehicleAllotmentDetails();
                     model.VADetails.NoteNumber = model.ehgHeader.NoteNumber;
                     model.VADetails.AuthorisedEmpName = model.ehgHeader.AuthorisedEmployeeName;
@@ -269,6 +269,8 @@ namespace CBBW.Areas.Security.Controllers
                     model.VADetails.DriverNumber = -1;
                     model.VADetails.VehicleType = model.ehgHeader.VehicleType == 1 ? "LV" : "2 Wheeler";
                 }
+                model.VADetails.DriverNumber = model.DriverList != null ? model.DriverList.Where(o=>o.ID!=-1).FirstOrDefault().ID : -1;
+                
                 //if(model.VADetails!=null)
                 //    model.OthVehNo = model.VADetails.OtherVehicleNumber;
                 model.IsBtn = 0;
@@ -414,11 +416,12 @@ namespace CBBW.Areas.Security.Controllers
         public JsonResult GetVehicleBasicInfo(string VehicleNumber)
         {
             VehicleBasicInfo result=_master.getVehicleBasicInfo(VehicleNumber,ref pMsg);
+            if (result != null) { result.ModelName = result.ModelName == null ? "NA" : result.ModelName; }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetDesgCodenName(int empID,int empType)
         {//empType : 2-driver, 1-Others
-            return Json(_master.GetDesgCodenName(empID, empType), JsonRequestBehavior.AllowGet);
+            return Json(_master.GetDesgCodenName(empID, 1), JsonRequestBehavior.AllowGet);
         }
         public JsonResult getNoteList(int iDisplayLength,int iDisplayStart,int iSortCol_0,
             string sSortDir_0,string sSearch) 
@@ -511,16 +514,23 @@ namespace CBBW.Areas.Security.Controllers
         }
         public ActionResult GetEmployeeValidationForTour(string Employees,DateTime FromDate,DateTime ToDate )
         {
-            CustomAjaxResponse result = new CustomAjaxResponse();            
-            if (_master.GetEmployeeValidationForTour(user.CentreCode, Employees, FromDate, ToDate, ref pMsg))
+            CustomAjaxResponse result = new CustomAjaxResponse();
+            if (Employees != null && Employees!="null")
             {
+                if (_master.GetEmployeeValidationForTour(user.CentreCode, Employees, FromDate, ToDate, ref pMsg))
+                {
+                    result.bResponseBool = true;
+                    result.sResponseString = "Validated Successfully.";
+                }
+                else
+                {
+                    result.bResponseBool = false;
+                    result.sResponseString = pMsg;
+                }
+            }
+            else {
                 result.bResponseBool = true;
                 result.sResponseString = "Validated Successfully.";
-            }
-            else
-            {
-                result.bResponseBool = false;
-                result.sResponseString = pMsg;
             }
             return Json(result, JsonRequestBehavior.AllowGet);
         }

@@ -1,12 +1,12 @@
 ﻿/* Sequential Lock Unlock Controlls Inside A Container - For CBBW New Requirement
  * Follow The Instruction
  * 1. Container Should Have "SLUContainer" Class
- * 2. Controlls Should Have "SLUCtrl" Class
+ * 2. Controlls Should Have "SLUCtrl/SLUCtrlP" Class
  * 3. Sections Should Have "SLUSection" Class
  * 4. "SLUBtn" Class For Buttons "SLUBtnOK" Class Is Used Dynamically Aftre Button Functionalities Done Successfully 
  * 5. "SLUStatement" Class For Div To Show Green Or Red Borders
  * 6. "approvalForm" Class For Div & "ApproveCtrl" For Approve Status To Show Approval Patern.
- * 7. "LUPS" Class Is Applicable To Controlls. (If Control Is Invald Then Unlock Previous Section )
+ * 7. "LUPS/LUPSP" Class Is Applicable To Controlls. (If Control Is Invald Then Unlock Previous Section )
  * 8. "SLUAddBtn" & "SLURemoveBtn" Class Is For Table Row Cloaning Buttons.
  * 9. "EC" Class Is Used In Table Row Controlls. By Changing The Value All Next Rows Will Be Deleted
  */
@@ -25,6 +25,7 @@ function SLUValid(myCtrl) {
         }
     } else { IsValidSection(mySection); }
     if (myCtrl.hasClass('LUPS')) { LockPreviousSections(myCtrl); }
+    if (myCtrl.hasClass('LUPSP')) { LockPreviousSections(myCtrl); }
 };
 function SLUInvalid(myCtrl) {
     LockNextCtrlsInContainer(myCtrl);
@@ -60,7 +61,7 @@ function LockPreviousSections(myCtrl) {
     var currentSecIndex = allSections.index(mySection);
     if (currentSecIndex <= allSections.length - 1) {
         for (var i = 0; i < currentSecIndex; i++) {
-            if (allSections.eq(i).is(":visible")) { LockSLUSection(allSections.eq(i)); }
+            if (allSections.eq(i).is(":visible")) { LockSLUSectionV2(allSections.eq(i)); }
         }
     }
 };
@@ -70,7 +71,7 @@ function UnLockPreviousSections(myCtrl) {
     var currentSecIndex = allSections.index(mySection);
     if (currentSecIndex <= allSections.length - 1) {
         for (var i = 0; i < currentSecIndex; i++) {
-            if (allSections.eq(i).is(":visible")) { UnLockSLUSectionAllCtrl(allSections.eq(i)); }
+            if (allSections.eq(i).is(":visible")) { UnLockSLUSectionAllCtrlV2(allSections.eq(i)); }
         }
     }
 };
@@ -117,9 +118,20 @@ function UnLockPreviousContainers(myCtrl) {
 ///////////////////////////////////////////////////////////////////////////////
 $(document).ready(function () {
     $('.SLUCtrl').focus(function () {
-        LockNextCtrlsInContainer($(this));
+        if ($(this).hasClass('SLUCtrlP')) {
+            LockNextCtrlsInContainerV2($(this));
+            $(this).val('').isInvalidCtrl();
+        }
+        else {
+            LockNextCtrlsInContainer($(this));
+        }        
         $(this).tooltip('show');
-    });    
+    });
+    //$('.SLUCtrlP').focus(function () {
+    //    LockNextCtrlsInContainerV2($(this));
+    //    //UnLockSLUCtrlV2($(this));
+    //    $(this).tooltip('show');
+    //});
     $('.ApproveCtrl').each(function () {
         var that = $(this);
         var mDiv = that.closest('.approvalForm');
@@ -186,8 +198,7 @@ $.fn.SLUEntrynEnableForEntry = function () {
     that.removeAttr('disabled')
         .addClass('is-invalid')
         .removeClass('bg-blue border-blue is-valid nodrop');
-    that.val('');
-    
+    that.val('');    
 };
 $.fn.isSLURed = function () {
     var that = this;
@@ -226,6 +237,8 @@ $.fn.isValidCtrl = function () {
 };
 $.fn.ButtonOk = function () {
     var that = this;
+    //debugger;
+    var x = that.attr('id');
     //alert(that.attr('id'));
     that.addClass('SLUBtnOK');
     var mySection = that.closest('.SLUSection');
@@ -234,6 +247,7 @@ $.fn.ButtonOk = function () {
         UnLockSLUSection(myNextSection);
     } else { LockSLUSection(myNextSection); }
     if (that.hasClass('LUPS')) { LockPreviousSections(that); }
+    if (that.hasClass('LUPSP')) { LockPreviousSections(that); }
 };
 $.fn.ButtonNotOk = function () {
     var that = this;
@@ -257,7 +271,8 @@ $.fn.RowRemoveButtonClicked = function () {
     var mySection = that.closest('.SLUSection');
     const allcontainers = mySection.find('.SLUContainer');
     const currentIndex = allcontainers.index(myContainer);
-    if (currentIndex > 0) { UnLockSLUContainerAllCtrl(allcontainers.eq(currentIndex-1)); }
+    if (currentIndex > 0) { UnLockSLUContainerAllCtrl(allcontainers.eq(currentIndex - 1)); }
+    UnLockSLUSection(GetNextSLUSection(mySection));
 };
 $.fn.RemoveAllNextRows = function () {
     var that = this;
@@ -290,6 +305,19 @@ function LockNextCtrlsInContainer(myCtrl) {
             LockSLUCtrl(inputControls.eq(currentIndex + 1));
         }
         LockNextCtrlsInContainer(inputControls.eq(currentIndex + 1));
+    }
+};
+function LockNextCtrlsInContainerV2(myCtrl) {
+    //debugger;    
+    var myDiv = myCtrl.closest('.SLUContainer');
+    const inputControls = myDiv.find('.SLUCtrl');
+    const currentIndex = inputControls.index(myCtrl);
+    if (currentIndex < inputControls.length - 1) {
+        if (inputControls.eq(currentIndex + 1).is(":visible") || inputControls.eq(currentIndex + 1).prop('multiple')) {
+            LockSLUCtrl(inputControls.eq(currentIndex + 1));
+            inputControls.eq(currentIndex + 1).val('').isInvalidCtrl();
+        }
+        LockNextCtrlsInContainerV2(inputControls.eq(currentIndex + 1));
     }
 };
 function SLUNextCtrl(myCtrl) {
@@ -348,6 +376,9 @@ function LockSLUContainer(myContainer) {
         myContainer.find('.SLUCtrl').each(function () {
             LockSLUCtrl($(this));
         });
+        myContainer.find('.SLUAddBtn').each(function () {
+            LockSLUCtrl($(this));
+        });
     }    
     //myContainer.addClass('sectionB');
 };
@@ -359,6 +390,9 @@ function UnLockSLUContainer(myContainer) {
             else { LockSLUCtrl($(this)); }
             i += 1;
         });
+        myContainer.find('.SLUAddBtn').each(function () {
+            UnLockSLUCtrl($(this));
+        });
         //myContainer.removeClass('sectionB');
     }
 };
@@ -366,6 +400,9 @@ function UnLockSLUContainerAllCtrl(myContainer) {
     if (myContainer != null) {
         //myContainer.removeClass('sectionB');
         myContainer.find('.SLUCtrl').each(function () {
+            UnLockSLUCtrl($(this));
+        });
+        myContainer.find('.SLUAddBtn').each(function () {
             UnLockSLUCtrl($(this));
         });
     }
@@ -381,12 +418,25 @@ function LockSLUSection(mySection) {
         mySection.addClass('sectionB');
     }    
 };
-function UnLockSLUSection(mySection) {
+function LockSLUSectionV2(mySection) {
+    if (mySection != null) {
+        mySection.find('.SLUCtrl').each(function () {
+            LockSLUCtrlV2($(this));
+        });
+        mySection.find('.SLUBtn').each(function () {
+            $(this).makeSLUDisable();
+        });
+        mySection.addClass('sectionB');
+    }
+};
+function UnLockSLUSection(mySection) {    
     if (mySection != null) {
         mySection.removeClass('sectionB');
         var i = 0;
         mySection.find('.SLUCtrl').each(function () {
-            if (i == 0) { UnLockSLUCtrl($(this)); }
+            if (i == 0) {
+                UnLockSLUCtrl($(this));
+            }
             else { LockSLUCtrl($(this)); }
             i += 1;
         });
@@ -396,11 +446,38 @@ function UnLockSLUSection(mySection) {
         });
     }    
 };
+function UnLockSLUSectionV2(mySection) {
+    if (mySection != null) {
+        mySection.removeClass('sectionB');
+        var i = 0;
+        mySection.find('.SLUCtrl').each(function () {
+            if (i == 0) { UnLockSLUCtrlV2($(this)); }
+            else { LockSLUCtrlV2($(this)); }
+            i += 1;
+        });
+        mySection.find('.SLUBtn').each(function () {
+            var x = $(this).attr('id');
+            $(this).makeSLUEnable();
+        });
+    }
+};
 function UnLockSLUSectionAllCtrl(mySection) {
     if (mySection != null) {
         mySection.removeClass('sectionB');
         mySection.find('.SLUCtrl').each(function () {
             UnLockSLUCtrl($(this));
+        });
+        mySection.find('.SLUBtn').each(function () {
+            var x = $(this).attr('id');
+            $(this).makeSLUEnable();
+        });
+    }
+};
+function UnLockSLUSectionAllCtrlV2(mySection) {
+    if (mySection != null) {
+        mySection.removeClass('sectionB');
+        mySection.find('.SLUCtrl').each(function () {
+            UnLockSLUCtrlV2($(this));
         });
         mySection.find('.SLUBtn').each(function () {
             var x = $(this).attr('id');
@@ -423,6 +500,21 @@ function LockSLUCtrl(myCtrl) {
         if (myCtrl.hasClass('EntrynDisabledForEntry')) { myCtrl.SLUEntrynDisabledForEntry(); }
     }
 };
+function LockSLUCtrlV2(myCtrl) {
+    if (myCtrl != null) {
+        myCtrl.attr('disabled', 'disabled');
+        myCtrl.addClass('nodrop');
+        //For Multiselect
+        if (myCtrl.prop('multiple')) {
+            var closestDiv = myCtrl.closest("div");
+            closestDiv.find('.btn-default').each(function () {
+                $(this).addClass('nodrop disabled bg-blue');
+            });
+        }
+        // For Custom CSS
+        //if (myCtrl.hasClass('EntrynDisabledForEntry')) { myCtrl.SLUEntrynDisabledForEntry(); }
+    }
+};
 function UnLockSLUCtrl(myCtrl) {
     if (myCtrl != null) {
         myCtrl.removeAttr('disabled');
@@ -437,6 +529,24 @@ function UnLockSLUCtrl(myCtrl) {
         }              
         // For Custom CSS
         if (myCtrl.hasClass('EntrynDisabledForEntry')) { myCtrl.SLUEntrynEnableForEntry(); }
+        myCtrl.closest('.SLUSection').removeClass('sectionB');
+    }
+};
+function UnLockSLUCtrlV2(myCtrl) {
+    if (myCtrl != null) {
+        myCtrl.removeAttr('disabled');
+        myCtrl.removeClass('nodrop');
+        //For Multiselect
+        if (myCtrl.prop('multiple')) {
+            var closestDiv = myCtrl.closest('div');
+            closestDiv.find('.btn-default').each(function () {
+                $(this).removeClass('nodrop disabled bg-blue');
+                $(this).removeAttr('disabled');
+            });
+        }
+        // For Custom CSS
+        //if (myCtrl.hasClass('EntrynDisabledForEntry')) { myCtrl.SLUEntrynEnableForEntry(); }
+        myCtrl.closest('.SLUSection').removeClass('sectionB');
     }
 };
 

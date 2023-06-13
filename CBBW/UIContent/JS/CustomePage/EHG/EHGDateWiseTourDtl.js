@@ -49,14 +49,14 @@ function EnableAddBtnInCloneRowIfOnlyLastV2(tblRow, addBtnBaseID) {
     var addBtnctrl = $('#' + addBtnBaseID);
     if (tblrow.is(":last-child")) {
         if (tblrow.find('.is-invalid').length > 0) {
-            addBtnctrl.makeDisable();
+            addBtnctrl.makeSLUDisable();
         } else {
             if (mTodate == tDateCtrl.val()) {
-                addBtnctrl.makeDisable();
-            } else { addBtnctrl.makeEnabled(); }
+                addBtnctrl.makeSLUDisable();
+            } else { addBtnctrl.makeSLUEnable(); }
         }
     }
-    else { addBtnctrl.makeDisable(); }
+    else { addBtnctrl.makeSLUDisable(); }
 
     //alert(tblrow.find('.is-invalid').length);
 };
@@ -89,7 +89,6 @@ function addCloneBtnClick() {
     //UnLockSLUContainer($('#' + clonerowid));
 };
 function ValidateCloneRowCtrl() {
-    debugger;
     var target = ValidateCloneRowCtrl.caller.arguments[0].target;
     var tblRow = target.closest('.add-row');
     var targetCtrl = $(target);
@@ -104,7 +103,7 @@ function ValidateCloneRowCtrl() {
         var preToDate = $(tblRow).find('.todt').val();
         var calculatedFromdate = new Date(ChangeDateFormat(CustomDateChange(preToDate, 1, '-')));
         if (todate <= calculatedFromdate) {
-            $(tblRow).find('.addBtn').makeDisable();
+            $(tblRow).find('.addBtn').makeSLUDisable();
         }
     }
     EnableAddBtnInCloneRowIfOnlyLastV2(tblRow, 'AddBtn');
@@ -219,13 +218,13 @@ function EnableSubmitBtn() {
     });    
     if (x <= 0) {       
         if (mEnable) {
-            SubmitBtn.makeEnabled();
+            SubmitBtn.makeSLUEnable();
         }
         else {
-            SubmitBtn.makeDisable();
+            SubmitBtn.makeSLUDisable();
         }
     }
-    else { SubmitBtn.makeDisable(); }
+    else { SubmitBtn.makeSLUDisable(); }
 };
 $(document).ready(function () {
     $('#btnBack').click(function () {

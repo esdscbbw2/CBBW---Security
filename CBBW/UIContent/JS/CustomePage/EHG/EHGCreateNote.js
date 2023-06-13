@@ -68,7 +68,7 @@ $.fn.HideObject = function () {
     that.addClass('inVisible');
 };
 ///////////////////////////////////// Inspected
-function VehicleTypeChanged() {
+function VehicleTypeChanged(mval) {
     var POACtrl = $('#for_LV');
     var POA2WhCtrl = $('#for_2_wheeler');
     var ForManagementDiv = $('#for_Management');
@@ -97,20 +97,48 @@ function VehicleTypeChanged() {
         VehicletypeCtrl.isValidCtrl();
     }
     else { VehicletypeCtrl.isInvalidCtrl(); }
+    // Null Value for rest of the controlls
+    if (mval == 1) {
+        $('#ehgHeader_MaterialStatus').val('').isInvalidCtrl();
+        $('#ehgHeader_Instructor').val('').isInvalidCtrl();
+    }
+    
+    //
     EnableDateWiseTourBtn();
 };
 function EnableDateWiseTourBtn() {
     var x = getDivInvalidCount('HdrDiv');
     var y = getDivInvalidCount('for_OfficeWork');
     var DWTBtn = $('#DateWiseTourBtn2');
+    var vadBtn = $('#VADBtn');
+    var acc = $('#AcceptCmb');
+    var dwtFilled = $('#DWSubmitBtnActive').val();
+    var vaFilled = $('#VASubmitBtnActive').val();
+    acc.makeSLUDisable();
+    DWTBtn.makeSLUDisable();
+    vadBtn.makeSLUDisable();
     if ((x + y) * 1 > 0) {
-        DWTBtn.makeSLUDisable();
+        //DWTBtn.makeSLUDisable();
+        //vadBtn.makeSLUDisable();
     }
     else {
         if ($('#ehgHeader_PurposeOfAllotment').val() == 1) {
-            DWTBtn.makeSLUDisable();
+            //DWTBtn.makeSLUDisable();
+            //vadBtn.makeSLUDisable();
         }
-        else { DWTBtn.makeSLUEnable(); }
+        else {
+            DWTBtn.makeSLUEnable();
+            if (dwtFilled == 1) {
+                vadBtn.makeSLUEnable();
+                //acc.makeSLUEnable();
+                $('#BtnDiv').removeClass('sectionB');
+            }
+        }
+    }
+    
+    if (dwtFilled == 1 && vaFilled == 1) {
+        //alert(dwtFilled + ' - ' + vaFilled);
+        UnLockSLUSectionAllCtrl($('#StatementDiv'));
     }
 };
 function addOfficeWorkCloneBtnClick() {
@@ -135,39 +163,18 @@ function addOfficeWorkCloneBtnClick() {
     $('#DDAuthorisedEmpForWork').attr('disabled', 'disabled');
     $('#sOfficeworkDiv').removeClass('sectionB');
     UnLockSLUContainer($('#' + rowid));
-    EnableDateWiseTourBtn();
-    //$('.timePickerPreDateCtrlV2ForOffice').each(function () {
-    //    var myDtCtrl = $('#FromDate');
-    //    if ($(this).attr('id').indexOf('_') >= 0) { myDtCtrl = $('#FromDate_' + $(this).attr('id').split('_')[1]); }
-
-    //    //var myNextCtrl = $('#FromLocationType_' + $(this).attr('id').split('_')[1]);
-    //    $(this).datetimepicker({
-    //        format: "hh:mm A"
-    //    }).on("dp.show", function (e) {
-    //        time = "01:00 PM"
-    //    }).on("dp.change", function (e) {
-    //        var myDate = myDtCtrl.val();
-    //        $(this).isValid();
-    //        if (myDate != '') {
-    //            //alert(IsValidTimeSelected(myDate, $(this).val()));
-    //            if (!IsValidTimeSelected(myDate, $(this).val())) {
-    //                $(this).isInvalid();
-    //                //myNextCtrl.EntrynDisabledForEntry();
-    //                MyAlert(4, "Selected Time Should Be Greater Than The Current Time.");
-    //            }
-    //            //IsIntervalChecking(myDate, $(this).val(), $(this).attr('id').split('_')[1]);
-    //        }
-
-    //    });
-    //});
+    EnableDateWiseTourBtn();    
 };
 function removeOfficeWorkCloneBtnClick() {
+    var myCtrl = $(removeOfficeWorkCloneBtnClick.caller.arguments[0].target);
     var tblRow = removeOfficeWorkCloneBtnClick.caller.arguments[0].target.closest('.add-row');
     removeBtnClickFromCloneRow(tblRow, 'tbody4');
     UpdateAuthorisedPersonForOfficeWork('Select Authorized Person');
     EnableDateWiseTourBtn();
     $('#DDAuthorisedEmpForWork').removeAttr('disabled');
     UnLockSLUContainerAllCtrl($('#OficeWorkTbl tr:last'));
+    UnLockSLUSection($('#OfficeWorkStmnt'));
+    //myCtrl.RowRemoveButtonClicked();
     //$('#OficeWorkTbl tr:last').find('button').each(function () {
     //    $(this).makeSLUEnable();
     //});
@@ -184,7 +191,7 @@ function CRToDateChanged() {
         targetid = targetid.split('_')[0];
         fdtCtrl = $('#FromDate_' + $(tblRow).attr('id'));
         //tdtCtrl = $('#ToDate_' + $(tblRow).attr('id'));
-        personCtrl = $('#cmbDDPersonType' + $(tblRow).attr('id'));
+        personCtrl = $('#cmbDDPersonType_' + $(tblRow).attr('id'));
     }
     if (targetCtrl.val() != '') {
         if (CompareDateV2(fdtCtrl.val(), 0, targetCtrl.val(), 0)) {
@@ -195,7 +202,7 @@ function CRToDateChanged() {
                     targetCtrl.isValidCtrl();
                 }
                 else {
-                    MyAlert(3, data.sResponseString);
+                    MyAlert(4, data.sResponseString);
                     targetCtrl.isInvalidCtrl();
                 }
             });
@@ -257,7 +264,8 @@ function validatectrl(targetid, value) {
     switch (targetid) {
         case "ehgHeader_MaterialStatus":
             $('#MaterialStatus').val(value);
-            if (value >=0) { isvalid = true; }
+            if (value >= 0) { isvalid = true; }
+            //$('#ehgHeader_Instructor').val('').isInvalidCtrl();
             break;
         case "ehgHeader_Instructor":
             if (value > 0) {
@@ -277,7 +285,7 @@ function validatectrl(targetid, value) {
             isvalid = validatectrl_ValidateLength(value);
             break;
         case "PurposeOfVisit":
-            if (value.length > 1 && value <= 200) {
+            if (value.length > 1 && value.length <= 200) {
             //if (value.length > 1 && WordCount(value) <= 200) {
                 if (IsAlphaNumericWithSpace(value)) {
                     isvalid = true;
@@ -285,7 +293,8 @@ function validatectrl(targetid, value) {
             }
             break;
         case "TaDaDenied":
-            isvalid = validatectrl_YesNoCombo(value);
+            if (value != '') { isvalid = true;}
+            //isvalid = validatectrl_YesNoCombo(value);
             break;
         case "AuthorisedEmpNoForManagement":            
             if (value > 0) {
@@ -399,16 +408,17 @@ function DateWiseTourDtlClicked() {
                     window.location.href = url;
                 }
                 else {
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'Failed To Update Traveling Person Details.',
-                        icon: 'question',
-                        customClass: 'swal-wide',
-                        buttons: {
-                            confirm: 'Ok'
-                        },
-                        confirmButtonColor: '#2527a2',
-                    });
+                    MyAlert(3, 'Failed To Update Traveling Person Details.');
+                    //Swal.fire({
+                    //    title: 'Error',
+                    //    text: 'Failed To Update Traveling Person Details.',
+                    //    icon: 'question',
+                    //    customClass: 'swal-wide',
+                    //    buttons: {
+                    //        confirm: 'Ok'
+                    //    },
+                    //    confirmButtonColor: '#2527a2',
+                    //});
                 }
             });
         },
@@ -477,16 +487,17 @@ function DDPersonTypeChanged() {
         EnableAddBtn(tblRow, 'AddBtn');
     } else {
         targetCtrl.val('').isInvalidCtrl();
-        Swal.fire({
-            title: 'Error',
-            text: 'No Documents Uploaded Yet.So Can Not Proceed Further.',
-            icon: 'question',
-            customClass: 'swal-wide',
-            buttons: {
-                confirm: 'Ok'
-            },
-            confirmButtonColor: '#2527a2',
-        });
+        MyAlert(4, 'No Documents Uploaded Yet.So Can Not Proceed Further.');
+        //Swal.fire({
+        //    title: 'Error',
+        //    text: 'No Documents Uploaded Yet.So Can Not Proceed Further.',
+        //    icon: 'question',
+        //    customClass: 'swal-wide',
+        //    buttons: {
+        //        confirm: 'Ok'
+        //    },
+        //    confirmButtonColor: '#2527a2',
+        //});
     }
 
     
@@ -497,6 +508,12 @@ function DDPickPersonChanged(x) {
     var mIndex = $(tblRow).attr('id');
     var targetCtrl = $(target);
     var mValue = targetCtrl.val();
+    var myctrlID = targetCtrl.attr('id');
+    var altCtrlID = 'txtDDPersonType';
+    if (myctrlID.substr(0, 3) == 'cmb') {
+        altCtrlID = 'txt' + myctrlID.substr(3, myctrlID.length);
+    } else { altCtrlID = 'cmb' + myctrlID.substr(3, myctrlID.length); }
+    var altCtrl = $('#' + altCtrlID);
     //Check for Duplicate Person
     var dstat = 0;
     $('.xPerson').each(function () {        
@@ -506,22 +523,27 @@ function DDPickPersonChanged(x) {
     //Check for Duplicate Person - end
     if (x == 1) {
         if (mValue.length <= 20 && mValue.length > 0)
-        { targetCtrl.isValidCtrl(); } else { targetCtrl.isInvalidCtrl(); }
+        {
+            targetCtrl.isValidCtrl();
+            altCtrl.removeClass('is-invalid');
+        } else { targetCtrl.isInvalidCtrl(); }
     }
-    else if (mValue > 0) { targetCtrl.isValidCtrl(); } else { targetCtrl.isInvalidCtrl(); }
+    else if (mValue > 0) { targetCtrl.isValidCtrl(); }
+    else { targetCtrl.isInvalidCtrl(); }
     if (dstat>1) {
         targetCtrl.val('');
         targetCtrl.isInvalidCtrl();
-        Swal.fire({
-            title: 'Data Duplicacy Error',
-            text: 'Person You Have Selected Is Already Taken.',
-            icon: 'error',
-            customClass: 'swal-wide',
-            buttons: {
-                confirm: 'Ok'
-            },
-            confirmButtonColor: '#2527a2',
-        });
+        MyAlert(4, 'Person You Have Selected Is Already Taken.');
+        //Swal.fire({
+        //    title: 'Data Duplicacy Error',
+        //    text: 'Person You Have Selected Is Already Taken.',
+        //    icon: 'error',
+        //    customClass: 'swal-wide',
+        //    buttons: {
+        //        confirm: 'Ok'
+        //    },
+        //    confirmButtonColor: '#2527a2',
+        //});
     }
     else {
         getDesgnCode(mIndex, mValue);
@@ -554,16 +576,17 @@ function DriverNoForManagementChanged() {
         $('#BackBtnActive').val(1);
     } else {
         targetCtrl.val('').isInvalidCtrl();
-        Swal.fire({
-            title: 'Error',
-            text: 'No Documents Uploaded Yet.So Can Not Proceed Further.',
-            icon: 'question',
-            customClass: 'swal-wide',
-            buttons: {
-                confirm: 'Ok'
-            },
-            confirmButtonColor: '#2527a2',
-        });
+        MyAlert(4, 'No Documents Uploaded Yet.So Can Not Proceed Further.');
+        //Swal.fire({
+        //    title: 'Error',
+        //    text: 'No Documents Uploaded Yet.So Can Not Proceed Further.',
+        //    icon: 'question',
+        //    customClass: 'swal-wide',
+        //    buttons: {
+        //        confirm: 'Ok'
+        //    },
+        //    confirmButtonColor: '#2527a2',
+        //});
     }
     EnableSubmitBtn();
 };
@@ -602,7 +625,6 @@ function ValidateCloneRowCtrl() {
         tdtCtrl.val('').isInvalidCtrl();
         lbltdtCtrl.html('Select Date');
     }
-    //debugger;
     if (isvalid) { targetCtrl.isValidCtrl(); } else { targetCtrl.isInvalidCtrl(); }
     EnableAddBtn(tblRow, 'AddBtn');
     EnableDateWiseTourBtn();
@@ -628,6 +650,7 @@ function EnableAddBtn(tblRow, addBtnBaseID) {
     else {
         addBtnctrl.makeSLUEnable();
         authempCtrl.makeSLUEnable();
+        UnLockSLUSection($('#OfficeWorkStmnt'));
     }
     //alert(rowid + ' - ' + addBtnBaseID+' - '+tblrow.find('.is-invalid').length);
     EnableDateWiseTourBtn();
@@ -645,7 +668,7 @@ function EnableSubmitBtn() {
     var poaCtrl = $('#ehgHeader_PurposeOfAllotment');
     var p = vehtypeCtrl.val();
     var q = poaCtrl.val();
-    ForManagementDivRemoveInValidStatus();
+    //ForManagementDivRemoveInValidStatus();
     if (p == 2) { poaCtrl.removeClass('is-invalid'); }    
     var x = getDivInvalidCount('HdrDiv');
     var y = getDivInvalidCount('for_OfficeWork');
@@ -735,6 +758,10 @@ function DDAuthorisedEmpForWorkChanged() {
         targetCtrl.isInvalidCtrl();
         //UnLockDiv('sOfficeworkDiv');
     }
+    //$('.cloneBtn').each(function () {
+    //    alert($(this).attr('id'))
+    //    $(this).attr('disabled');
+    //});
     EnableDateWiseTourBtn();
 };
 
@@ -804,7 +831,7 @@ function ForManagementDivRemoveInValidStatus() {
     //}
     
 };
-function POADropdownChanged() {
+function POADropdownChanged(mval) {
     //LockNextCtrls('ehgHeader_PurposeOfAllotment');
     var ForManagementDiv = $('#for_Management');
     var ForOfficeWorkDiv = $('#for_OfficeWork');
@@ -847,6 +874,12 @@ function POADropdownChanged() {
         POADropdown.isValidCtrl();
         //UnlockNextCtrl('ehgHeader_PurposeOfAllotment');
     } else { POADropdown.isInvalidCtrl() }
+    // Null Value for rest of the controlls
+    if (mval == 1) {
+        $('#ehgHeader_MaterialStatus').val('').isInvalidCtrl();
+        $('#ehgHeader_Instructor').val('').isInvalidCtrl();
+    }    
+    //
     EnableDateWiseTourBtn();
 };
 async function getInitialDataForTravelingPerson() {
@@ -889,19 +922,21 @@ async function getInitialDataForTravelingPerson() {
                     todatelblCtrl = $('#lblToDate_' + rowid);
                     addbtnCtrl = $('#AddBtn_' + rowid);
                     desgCtrl = $('#DesgCodenName_' + rowid);
+                    fromdateCtrl.removeClass('SLUCtrl').attr('disabled');
+                    fromtimeCtrl.removeClass('SLUCtrl').attr('disabled');
                 }
-                persontypeCtrl.val(item.PersonType).isValidCtrl();
-                txtpersonCtrl.val(item.EmployeeNonName).isValidCtrl();
+                persontypeCtrl.val(item.PersonType).isValid();
+                txtpersonCtrl.val(item.EmployeeNonName).isValid();
                 desgCtrl.html(item.DesignationCodenName);
-                fromdateCtrl.val(item.FromDateStr).isValidCtrl();
-                fromtimeCtrl.val(item.FromTime).isValidCtrl();
-                todateCtrl.val(item.ToDateStr).isValidCtrl();
-                povCtrl.val(item.PurposeOfVisit).isValidCtrl();
-                tadaDeniedCtrl.val(item.TADADenied ? 1 : 0).isValidCtrl();
+                fromdateCtrl.val(item.FromDateStr).isValid();
+                fromtimeCtrl.val(item.FromTime).isValid();
+                todateCtrl.val(item.ToDateStr).isValid();
+                povCtrl.val(item.PurposeOfVisit).isValid();
+                tadaDeniedCtrl.val(item.TADADenied ? 1 : 0).isValid();
                 fromdatelblCtrl.html(item.FromDateStrDisplay);
                 todatelblCtrl.html(item.ToDateStrDisplay);                
                 authempCtrl.append($('<option/>', { value: item.EmployeeNonName, text: item.EmployeeNonName }));
-                authempCtrl.val(authPerson).isValidCtrl();
+                authempCtrl.val(authPerson).isValid();
                 if (item.IsAuthorised) { authPerson = item.EmployeeNonName; }
                 switch (item.PersonType) {
                     case 1:
@@ -931,13 +966,17 @@ async function getInitialDataForTravelingPerson() {
                         cmbpersonCtrl.addClass('inVisible').removeClass('pickPersonName').clearValidateClass();
                         break;
                 }
-                cmbpersonCtrl.isValidCtrl();                
+                cmbpersonCtrl.isValid();                
                 EnableDateWiseTourBtn();
+                LockSLUContainer($('#' + index));
+                //$('#' + index).find('.SLUCtrl').each(function () {
+                //    $(this).removeClass('SLUCtrl');
+                //});
                 if (authPerson != '') {
                     //LockDiv('sOfficeworkDiv'); 
                 }
             });
-            addbtnCtrl.makeSLUEnable();
+            //addbtnCtrl.makeSLUEnable();
         }
     });
 };
@@ -965,12 +1004,12 @@ $(document).ready(function () {
     var POADropdown = $('#ehgHeader_PurposeOfAllotment');
     var acCtrl = $('#AcceptCmb');
     VehicletypeCtrl.change(function () {
-        VehicleTypeChanged();
+        VehicleTypeChanged(1);
         $('#BackBtnActive').val(1);
         EnableSubmitBtn();
     });
     POADropdown.change(function () {
-        POADropdownChanged();
+        POADropdownChanged(1);
         $('#BackBtnActive').val(1);
         EnableSubmitBtn();
     });
@@ -978,28 +1017,30 @@ $(document).ready(function () {
         var backbtnactive = $('#BackBtnActive').val();
         var backurl = "/Security/EHG/Index";
         if (backbtnactive == 1) {
-            Swal.fire({
-                title: 'Confirmation',
-                text: "Are You Sure Want to Go Back?",
-                icon: 'question',
-                customClass: 'swal-wide',                
-                confirmButtonText: "Yes",
-                cancelButtonText: "No",
-                cancelButtonClass: 'btn-cancel',
-                confirmButtonColor: '#2527a2',
-                showCancelButton: true,
-            }).then(callback);
-            function callback(result) {
-                if (result.value) {
-                    window.location.href = backurl;
-                }
-            }
+            MyAlertWithRedirection(2, "Are You Sure Want to Go Back?", "/Security/EHG/Index");
+            //Swal.fire({
+            //    title: 'Confirmation',
+            //    text: "Are You Sure Want to Go Back?",
+            //    icon: 'question',
+            //    customClass: 'swal-wide',                
+            //    confirmButtonText: "Yes",
+            //    cancelButtonText: "No",
+            //    cancelButtonClass: 'btn-cancel',
+            //    confirmButtonColor: '#2527a2',
+            //    showCancelButton: true,
+            //}).then(callback);
+            //function callback(result) {
+            //    if (result.value) {
+            //        window.location.href = backurl;
+            //    }
+            //}
         }
         else {
             window.location.href = backurl;
         }
     });
     acCtrl.change(function () {
+        //debugger;
         if (acCtrl.val() == 1) { acCtrl.isValidCtrl(); } else { acCtrl.isInvalidCtrl(); }
         EnableSubmitBtn();
     });
@@ -1012,16 +1053,25 @@ $(document).ready(function () {
     $('#ToDate').attr('min', mindt);
 });
 $(document).ready(function () {
-    VehicleTypeChanged();
+    VehicleTypeChanged(0);
     $('#ehgHeader_PurposeOfAllotment').val($('#POA').val());
-    POADropdownChanged();
+    POADropdownChanged(0);
     (async function () {
         const r1 = await getInitialDataForTravelingPerson();
     })();
-    var matstat = $('#ehgHeader_MaterialStatus');
-    if (matstat.val() >= 0) { matstat.isValidCtrl(); } else { matstat.isInvalidCtrl(); }
+    
+    var matstat = $('#ehgHeader_MaterialStatus');    
+    if (matstat.val() >= 0) {
+        matstat.isValidCtrl();
+    } else {
+        matstat.isInvalidCtrl();
+    }
     var instCtrl = $('#ehgHeader_Instructor');
-    if (instCtrl.val() > 0) { instCtrl.isValidCtrl(); } else { instCtrl.isInvalidCtrl(); }
+    if (instCtrl.val() > 0) {
+        instCtrl.isValidCtrl();
+    } else {
+        instCtrl.isInvalidCtrl();
+    }
     var dwtFilled = $('#DWSubmitBtnActive').val();
     var vaFilled = $('#VASubmitBtnActive').val();
     var dwtBtnCtrl = $('#DateWiseTourBtn2');
@@ -1039,8 +1089,8 @@ $(document).ready(function () {
     }
     if (dwtFilled == 1 || vaFilled == 1) {
         hdrDiv.addClass('sectionB');
-        managementDiv.addClass('sectionB');
-        officeworkDiv.addClass('sectionB');
+        //managementDiv.addClass('sectionB');
+        //officeworkDiv.addClass('sectionB');
         hdrDiv.find('.form-control').each(function () {
             $(this).attr('disabled','disabled');
         });
@@ -1059,21 +1109,16 @@ $(document).ready(function () {
         officeworkDiv.find('.form-select').each(function () {
             $(this).attr('disabled', 'disabled');
         });
+        //vadBtnCtrl.ButtonOk();
+        //debugger;
+        //$('#AcceptCmb').removeAttr('disabled');
+        //UnLockSLUCtrl($('#AcceptCmb'));
     }
     
     var POAValue = $('#VehicleType').val();
     if (POAValue == 2) { officeworkDiv.removeClass('inVisible'); }
     EnableSubmitBtn();
-    //alert($('#DDAuthorisedEmpForWork').val());
-    //if ($('#DDAuthorisedEmpForWork').val() != -1) { LockDiv('sOfficeworkDiv'); }
-});
-$(document).ready(function () {
-    //$('#FromTimeForMang2').on('blur', function (e) {
-    //    if (e.target.classList.contains('mTimePickerAlert')) {
-    //        alert('hour changed!')
-    //        e.target.removeClass('mTimePickerAlert');
-    //    }
-    //});
+    
 });
 $(document).ready(function () {
     $('.timePickerPreDateCtrlV2ForMang').each(function () {
@@ -1085,6 +1130,7 @@ $(document).ready(function () {
             time = "01:00 PM"
         }).on("dp.change", function (e) {
             var myDate = myDtCtrl.val();
+            $('#FromTimeForMang2').val($(this).val());
             $(this).isValid();
             if (myDate != '') {
                 //alert(IsValidTimeSelected(myDate, $(this).val()));

@@ -41,6 +41,8 @@ namespace CBBW.DAL.DBMapper
                     result.VehicleType = dr["VehicleType"].ToString();
                 if (!DBNull.Value.Equals(dr["ModelName"]))
                     result.ModelName = dr["ModelName"].ToString();
+                else
+                    result.ModelName = "NA";
                 if (!DBNull.Value.Equals(dr["VehicleStatus"]))
                     result.VehicleStatus = dr["VehicleStatus"].ToString();
                 if (!DBNull.Value.Equals(dr["ServiceDuration"]))
