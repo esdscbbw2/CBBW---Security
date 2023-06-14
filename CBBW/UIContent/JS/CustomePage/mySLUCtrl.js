@@ -126,12 +126,7 @@ $(document).ready(function () {
             LockNextCtrlsInContainer($(this));
         }        
         $(this).tooltip('show');
-    });
-    //$('.SLUCtrlP').focus(function () {
-    //    LockNextCtrlsInContainerV2($(this));
-    //    //UnLockSLUCtrlV2($(this));
-    //    $(this).tooltip('show');
-    //});
+    });    
     $('.ApproveCtrl').each(function () {
         var that = $(this);
         var mDiv = that.closest('.approvalForm');

@@ -19,6 +19,7 @@ namespace CBBW.BLL.IRepository
         DateTime GetToDate(DateTime FromDate, int FromLocationType, int FromLocation, string ToLocations, ref string pMsg);
         bool SetCTVOtherTrip(CTVOtherTrip data, ref string pMsg);
         CTVOtherTrip GetOthTripSchEntryData(string NoteNumber, ref string pMsg);
+        bool CreateCTVHdrV2(CTVHeaderToSet model, ref string pMsg);
         #endregion For CTV2
         string getNewTripScheduleNo(string SchPattern, ref string pMsg);
         TripScheduleHdr NewTripScheduleNo(string SchPattern, ref string pMsg);

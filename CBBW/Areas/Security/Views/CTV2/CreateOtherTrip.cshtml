@@ -106,7 +106,7 @@
                             <td>
                                 <div class="form-group ">
                                     <div class="input-group date pointer position-static">
-                                        <input id="time-FromDate_0" 
+                                        <input id="time-FromDate_0"
                                                type="text" data-name="FromTime"
                                                onchange="FromTimeChanged()"
                                                class="form-control rowlock EntrynDisabledForEntry pointer timePickerPreDateCtrlV2 alterID"
@@ -116,8 +116,8 @@
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <select id="FromLocationType_0" 
-                                            data-name="FromLocationTypeCode" data-name-text="FromLocationTypeText" 
+                                    <select id="FromLocationType_0"
+                                            data-name="FromLocationTypeCode" data-name-text="FromLocationTypeText"
                                             class="form-select rowlock alterID EntrynDisabledForEntry fromloctype"
                                             onchange="ChangeFromLocationType()">
                                         <option value="">Select Location Type</option>
@@ -134,7 +134,7 @@
                             <td>
                                 <div class="form-group">
                                     <select id="FromLocation_0"
-                                            data-name="FromLocationCode" data-name-text="FromLocationText" 
+                                            data-name="FromLocationCode" data-name-text="FromLocationText"
                                             class="form-select rowlock alterID EntrynDisabledForEntry fromloc"
                                             onchange="ChangeFromLocation()"
                                             aria-label="Default select example">
@@ -145,7 +145,7 @@
                             <td>
                                 <div id="ConToLocationType_0" class="form-group alterID">
                                     <select id="ToLocationType_0"
-                                            data-name="ToLocationTypeCodes" data-name-text="ToLocationTypeText" 
+                                            data-name="ToLocationTypeCodes" data-name-text="ToLocationTypeText"
                                             class="form-select ApplyMultiSelect alterID inValidTag"
                                             onchange="ChangeToLocationType()">
                                         @if (Model.LocationTypes != null)
@@ -176,19 +176,19 @@
                             </td>
                             <td>
                                 <div class="form-group">
-                                    <input id="ToDate_0" type="text" data-name="ToDate" 
+                                    <input id="ToDate_0" type="text" data-name="ToDate"
                                            class="form-control alterID EntrynDisabledForEntry is-invalid">
                                 </div>
                             </td>
                             <td class="last-action">
                                 <span class="actionBtn">
-                                    <button id="AddBtn_0" type="button" disabled 
+                                    <button id="AddBtn_0" type="button" disabled
                                             class="btn primaryLink rowlock alterID addBtn cloneBtn"
                                             data-toggle="tooltip" onclick="AddBtnClicked('tbody1','tbody2',true,true,false,'btnSubmit','HdrDiv')"
                                             data-placement="top" title="Add">
                                         <i data-feather="plus"></i>
                                     </button>
-                                    <button id="DeleteBtn_0" type="button" 
+                                    <button id="DeleteBtn_0" type="button"
                                             class="btn secondaryLink alterID rowlock inVisible removeBtn cloneBtn"
                                             data-toggle="tooltip" onclick="RemoveBtnClicked('tbody2','btnSubmit','HdrDiv','myTable')"
                                             data-placement="top" title="Delete">
@@ -204,7 +204,7 @@
             </div>
         </div>
     </div>
-    <br/>
+    <br />
     <div class="sectionB">
         <div class="col-md-12">
             <div class="heading_text_btn2 d-block mb-4">
@@ -321,7 +321,7 @@
             <ul style="list-style:none; margin: 0; padding: 0;">
                 <li style="font-size: 16px;">
                     It Is Ensured That This Trip Is Prepared As Center Code/Name “Other Place” & In Factual It Is Taking Place The Same Way As It Is Selected:
-                    <select id="StatementOthLoc" disabled 
+                    <select id="StatementOthLoc" disabled
                             class="form-select"
                             style="width:110px"
                             onchange="ValidateStatementOthLoc()"
@@ -368,11 +368,11 @@
             background-color: #ffffff;
             z-index: 9999;
         }
-
     </style>
 }
 @section scripts{
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/CTV/CreateOtherTrip.js"></script>
-    
+
 }

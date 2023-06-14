@@ -105,7 +105,7 @@
 
 
 
-                                    <input type="text" class="form-control" value="@Model.emnHeader.IsRatifieds" disabled="">
+                                    <input type="text" class="form-control ApproveCtrl" value="@Model.emnHeader.IsRatifieds" disabled="">
                                 </div>
                                 <div class="col-md-2 col-form-label">
                                     <label>Date & Time Of &nbsp; Ratification :</label>
@@ -189,7 +189,7 @@
                 </div>
                 <div class="col-md-12">
                     <div class="d-flex justify-content-center mt-4">
-                        <button type="submit"  id="btnTravDetails" value="DTD" name="submit" class="btn btn-primary me-2">
+                        <button type="submit" id="btnTravDetails" value="DTD" name="submit" class="btn btn-primary me-2">
                             Travelling Details
                         </button>
                     </div>
@@ -283,7 +283,9 @@
 
 }
 @section scripts{
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/EMN/EMNEntryDetailsJS.js"></script>
     <script>
         $(document).ready(function () {

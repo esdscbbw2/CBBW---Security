@@ -281,7 +281,7 @@
                                     </div>
                                 </div>
                                 <div class="text-center">
-                                    <button type="button" id="SaveTP" onclick="TravellingPersonBtnSave()" disabled class="btn btn-secondary btn-green  me-2" onclick="window.location.href='#';">
+                                    <button type="button" id="SaveTP" onclick="TravellingPersonBtnSave()" disabled class="btn btn-secondary btn-green  me-2">
                                         <i data-feather="check-circle"></i>
                                         Save
                                     </button>
@@ -295,8 +295,8 @@
 
 
                     <div class="col-md-12">
-                        <div class="d-flex justify-content-center mt-4 SLUSection">
-                            <button id="VADBtn" type="submit" class="btn btn-primary SLUBtn" disabled
+                        <div class="d-flex justify-content-center mt-4">
+                            <button id="VADBtn" type="submit" class="btn btn-primary" disabled
                                     name="Submit" value="VAD">
                                 Travelling Details
                             </button>
@@ -308,7 +308,7 @@
                                 <li style="font-size: 16px;">
                                     It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
                                     <select disabled id="otherplace" style="width: 110px;" class="form-select @(Model.TourCatStatus?"is-invalid SLUCtrl":"")" onchange="ValidateControl()" aria-label="Default select example">
-                                        <option selected value="">-</option>
+                                        <option selected value="-1">-</option>
                                         <option value="0">Yes</option>
                                         <option value="1">No</option>
                                     </select>
@@ -321,7 +321,7 @@
                                 <li style="font-size: 16px;">
                                     It Is Ensured That This Person Is Carrying Laptop As Provided To Him. The Same Has Been Confirmed (as per leave rules):
                                     <select  id="carryLaptop" style="width: 110px;" class="form-select is-invalid SLUCtrl EntrynDisabledForEntry" onchange="ValidateControl()" aria-label="Default select example">
-                                        <option selected value="">-</option>
+                                        <option selected value="-1">-</option>
                                         <option value="0">Yes</option>
                                         <option value="1">No</option>
                                     </select>
@@ -333,7 +333,7 @@
                                 <li style="font-size: 16px;">
                                     The Entry Is Done As Per Policy & As Required:
                                     <select  id="Policy" style="width: 110px;" class="form-select is-invalid SLUCtrl EntrynDisabledForEntry" onchange="ValidateControl()" aria-label="Default select example">
-                                        <option selected value="">-</option>
+                                        <option selected value="-1">-</option>
                                         <option value="0">Yes</option>
                                         <option value="1">No</option>
                                     </select>

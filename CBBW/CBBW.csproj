@@ -370,11 +370,12 @@
     <Content Include="UIContent\JS\CustomePage\CommonReusable.js" />
     <Content Include="UIContent\JS\CustomePage\CommonReusableV2.js" />
     <Content Include="UIContent\JS\CustomePage\CreateRuleTADA.js" />
-    <Content Include="UIContent\JS\CustomePage\CTVApproval.js" />
+    <Content Include="UIContent\JS\CustomePage\CTV\CTVApproval.js" />
     <Content Include="UIContent\JS\CustomePage\CTVHdrEntry.js" />
     <Content Include="UIContent\JS\CustomePage\CTV\CreateLocTrip.js" />
     <Content Include="UIContent\JS\CustomePage\CTV\CreateNote.js" />
     <Content Include="UIContent\JS\CustomePage\CTV\CreateOtherTrip.js" />
+    <Content Include="UIContent\JS\CustomePage\CTV\CTVApprovalV2.js" />
     <Content Include="UIContent\JS\CustomePage\EHG\EHGCreateNote.js" />
     <Content Include="UIContent\JS\CustomePage\EHG\EHGDateWiseTourDtl.js" />
     <Content Include="UIContent\JS\CustomePage\EHG\EHGNoteApproval.js" />
@@ -630,6 +631,7 @@
     <Content Include="Areas\Security\Views\CTV2\AllVehicleTripSchFromMat.cshtml" />
     <Content Include="Areas\Security\Views\CTV2\LocVehTripSch.cshtml" />
     <Content Include="Areas\Security\Views\GVMR\CenterCodeWiseCreate.cshtml" />
+    <Content Include="Areas\Security\Views\CTV2\Approval.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />

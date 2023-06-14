@@ -85,7 +85,7 @@
                             Date :
                         </label>
                         <div class="col-md-2">
-                            @Html.TextBox("EntryDate2",Model.EntryDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture),
+                            @Html.TextBox("EntryDate2", Model.EntryDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture),
                                htmlAttributes: new { @class = "form-control", disabled = "disabled" })
                             @*<input type="text" class="form-control" value="30/09/2022" disabled>*@
                         </div>
@@ -120,19 +120,19 @@
                             From Date :
                         </label>
                         <div class="col-md-2">
-                            <input id="FromDate" 
-                                   value="@Model.FromDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)" 
+                            <input id="FromDate"
+                                   value="@Model.FromDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)"
                                    class="form-control canclear" disabled />
                             @*@Html.TextBoxFor(m => m.FromDate, "{0:dd/MM/yyyy}",
-                           htmlAttributes: new { @class = "form-control", 
-                               disabled = "disabled" })*@
+                                htmlAttributes: new { @class = "form-control",
+                                    disabled = "disabled" })*@
                         </div>
                         <label class="col-form-label col-md-2">
                             To Date :
                         </label>
                         <div class="col-md-2">
                             @*@Html.TextBoxFor(m => m.ToDate, "{0:dd/MM/yyyy}",
-        htmlAttributes: new { @class = "form-control", disabled = "disabled" })*@
+                                htmlAttributes: new { @class = "form-control", disabled = "disabled" })*@
                             <input id="ToDate"
                                    value="@Model.ToDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)"
                                    class="form-control canclear" disabled />
@@ -153,7 +153,7 @@
                                          })
                                 </div>
                                 <!--<div class="col-md-6">
-                                    <div id="divError" class="alert alert-danger alert-dismissible fade show inVisible">-->
+                                <div id="divError" class="alert alert-danger alert-dismissible fade show inVisible">-->
                                 @*<button type="button" class="btn-close" data-bs-dismiss="alert"></button>*@
                                 <!--<label id="lblError">asd</label>
                                     </div>
@@ -190,22 +190,22 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <!--<div class="row">
                         <label class="col-form-label col-md-2">
                             Approved :
                         </label>
-                        <div class="col-md-2">
-                            @*@Html.TextBoxFor(m => m.IsApproved,
-                           htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })*@
-                            <input type="text" class="form-control" value="@(Model.IsApproved?"Yes":"No")" disabled>
-                        </div>
-                        <label class="col-form-label col-md-2">
-                            Date & Time Approved :
-                        </label>
-                        <div class="col-md-2">
-                            @*@Html.TextBoxFor(m => m.ApprovedDateTime,
-                           htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })*@
-                            <input id="ApprovedDateTime" value="@Model.ApprovedDateTime.ToString("dd/MM/yyyy hh:mm:ss tt",CultureInfo.InvariantCulture)" class="form-control canclear" disabled/>
+                        <div class="col-md-2">-->
+                    @*@Html.TextBoxFor(m => m.IsApproved,
+                        htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })*@
+                    <!--<input type="text" class="form-control" value="@(Model.IsApproved?"Yes":"No")" disabled>
+                    </div>
+                    <label class="col-form-label col-md-2">
+                        Date & Time Approved :
+                    </label>
+                    <div class="col-md-2">-->
+                    @*@Html.TextBoxFor(m => m.ApprovedDateTime,
+                        htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })*@
+                    <!--<input id="ApprovedDateTime" value="@Model.ApprovedDateTime.ToString("dd/MM/yyyy hh:mm:ss tt",CultureInfo.InvariantCulture)" class="form-control canclear" disabled />
                         </div>
                         <label class="col-form-label col-md-2">
                             Reason If Not Approved :
@@ -216,14 +216,40 @@
 
                         </div>
 
-                    </div>
-
-
-
+                    </div>-->
                     @*</form>*@
 
                 </div>
 
+            </div>
+            <div class="card mb-4 mt-4">
+                <div class="card-body  alert text-dark approvalForm">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-md-2 col-form-label">
+                            <label>Approved :</label>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control ApproveCtrl"
+                                   value="@(Model.ApprovedDateTime.Year==1?"-":Model.IsApproved?"Yes":"No")"
+                                   disabled>
+                        </div>
+                        <div class="col-md-2 col-form-label">
+                            <label>Date &amp; Time Of Approval :</label>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control"
+                                   value="@(Model.ApprovedDateTime.Year==1?"-":Model.ApprovedDateTime.ToString("dd/MM/yyyy hh:mm:ss tt",CultureInfo.InvariantCulture))"
+                                   disabled>
+                        </div>
+                        <div class="col-md-2 col-form-label">
+                            <label>Reason If Not Approved :</label>
+                        </div>
+                        <div class="col-md-2">
+                            <textarea name="" id="" cols="10" rows="2"
+                                      class="form-control pointer-default" readonly>@(!Model.IsApproved?Model.ReasonForDisApproval:"")</textarea>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col-md-12">
                 <div class="d-flex justify-content-center mt-2">
@@ -282,6 +308,8 @@
     </style>
 }
 @section scripts{
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     @*<script src="~/UIContent/JS/CustomePage/CTVHdrEntry.js"></script>*@
     @*<script>
             $(document).ready(function () {
@@ -326,35 +354,35 @@
             if ($('#IsDeleteBtn').val() == 1) { deletectrl.removeClass('inVisible'); } else { deletectrl.addClass('inVisible'); }
             deletectrl.click(function () {
                 var noteno = $('#NoteNo').val();
-                Swal.fire({
-                    title: 'Delete Confirmation',
-                    text: "Are you sure want to delete this note?",
-                    icon: 'question',
-                    customClass: 'swal-wide',
-                    //buttons: {
-                    //    cancel: "No",
-                    //    confirm: "Yes"
-                    //},
-                    confirmButtonText: "Yes",
-                    cancelButtonText: "No",
-                    cancelButtonClass: 'btn-cancel',
-                    confirmButtonColor: '#2527a2',
-                    showCancelButton: true,
-                }).then(callback);
-                function callback(result) {
-                    if (result.value) {
-                        var mid = $('#ID').val();
-                        var url = "/Security/CTV/DeleteTripSchedule?NoteNumber=" + noteno;
-                        window.location.href = url;
-                    } else {
-                        // second variant
-                    }
-                }
+                MyAlertWithRedirection(2, "Are you sure want to delete this note?", "/Security/CTV/DeleteTripSchedule?NoteNumber=" + noteno)
+                //Swal.fire({
+                //    title: 'Delete Confirmation',
+                //    text: "Are you sure want to delete this note?",
+                //    icon: 'question',
+                //    customClass: 'swal-wide',
+                //    //buttons: {
+                //    //    cancel: "No",
+                //    //    confirm: "Yes"
+                //    //},
+                //    confirmButtonText: "Yes",
+                //    cancelButtonText: "No",
+                //    cancelButtonClass: 'btn-cancel',
+                //    confirmButtonColor: '#2527a2',
+                //    showCancelButton: true,
+                //}).then(callback);
+                //function callback(result) {
+                //    if (result.value) {
+                //        var mid = $('#ID').val();
+                //        var url = "/Security/CTV/DeleteTripSchedule?NoteNumber=" + noteno;
+                //        window.location.href = url;
+                //    } else {
+                //        // second variant
+                //    }
+                //}
             });
             var isapp = $('#IsApproved');
             var appdatetime = $('#ApprovedDateTime');
-            if (isapp.val() == 'False')
-            { isapp.val('No') }
+            if (isapp.val() == 'False') { isapp.val('No') }
             else { $('#ReasonForDisApproval').val(''); }
             if (appdatetime.val() == '01-01-0001 00:00:00') { appdatetime.val('') }
         });
@@ -364,7 +392,9 @@
             $('#btnBack').click(function () {
                 $.ajax({
                     url: "/Security/CTV/BackButtonClicked",
-                    success: function (result) { window.location.href = result; }
+                    success: function (result) {
+                        window.location.href = result;
+                    }
                 });
 
             });

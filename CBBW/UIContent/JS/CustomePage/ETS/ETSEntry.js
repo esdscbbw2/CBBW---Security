@@ -144,6 +144,7 @@ $(document).ready(function () {
 
 });
 function ValidateControl() {
+    debugger;
     var target = ValidateControl.caller.arguments[0].target;
     var targetid = $(target).attr('id');
     var isvalid = validatectrl(targetid, $(target).val());
@@ -185,7 +186,7 @@ function validatectrl(targetid, value) {
         case "otherplace":
             isvalid = validatectrl_YesOrNo(value);
             if (isvalid) {
-              //  $('#ID3').removeClass('border-red').addClass('border-green');
+              // $('#ID3').removeClass('border-red').addClass('border-green');
                 //UnLockControl(carryLaptop.attr('id'));
                
             }
@@ -245,6 +246,7 @@ function EnableAddBtn(tblRow, addBtnBaseID) {
     EnableTravellingBtn();
 };
 function EnableSubmitBtn() {
+    debugger;
    // var x = getDivInvalidCount('HdrDiv');
   //  var y = getDivInvalidCount('TravellingPerson');
     var z = getDivInvalidCount('Questions');
@@ -252,9 +254,11 @@ function EnableSubmitBtn() {
     var SubmitBtn = $('#btnSubmited');
    // alert(z + ' - ' + btn);
    
-    if (z <= 0 && btn==1) {
+    if (z <= 0 && btn == 1) {
         SubmitBtn.makeEnabled();
         //alert(btn);
+    } else {
+        SubmitBtn.makeDisable();
     }
 };
 function getDivInvalidCount(mdivID) {

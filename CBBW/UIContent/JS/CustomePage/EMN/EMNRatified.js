@@ -7,19 +7,21 @@
     var btnDisplays = $("#btnDisplay").val();
     var Approval = $("#Approval");
     var TraveDetails = $("#TraveDetails");
+    alert(btnDisplays);
     if (btnDisplays == 1) {
         $('#NoteNumber').makeDisable();
-        UnLockSection(TraveDetails.attr('id'));
-        LockSection(Approval.attr('id'));
+        UnLockSection('TraveDetails');
+        LockSection('Approval');
     } else {
         $('#NoteNumber').makeEnabled();
-        LockSection(TraveDetails.attr('id'));
+        LockSection('TraveDetails');
         LockSection(Approval.attr('id'));
     }
 });
 function Notenumberchanged(notenumber) {
+
     var noteCtrl = $('#NoteNumber');
-    if (notenumber != '') { noteCtrl.isValid(); } else { noteCtrl.isInvalid(); }
+    if (notenumber != '') { noteCtrl.isValid(); 
     TPTableClear();
    
     $.ajax({
@@ -44,6 +46,8 @@ function Notenumberchanged(notenumber) {
                     $('#ApprovedDateTime').val(item.emnHeader.ApproveDatestr + " " + item.emnHeader.ApproveTime);
                     $('#ApprovedReason').val(item.emnHeader.ApprovedReason);
                 }
+              
+                $('#approval').removeClass('alert-danger').addClass('alert-success');
 
                 if (item.TourCatStatus) {
                     $('#OtherPlace').val('Yes')
@@ -55,7 +59,8 @@ function Notenumberchanged(notenumber) {
             });
         }
     });
-    GetEmployeeList(notenumber)
+        GetEmployeeList(notenumber)
+    } else { noteCtrl.isInvalid(); }
 };
 function GetEmployeeList(notenumber) {
     (async function () {
@@ -88,9 +93,9 @@ function ValidateControl() {
     var targetid = $(target).attr('id');
     var isvalid = validatectrl(targetid, $(target).val());
     if (isvalid) {
-        $(target).removeClass('is-invalid').addClass('is-valid');
+        $(target).isValidCtrl();
     } else {
-        $(target).removeClass('is-valid').addClass('is-invalid');
+        $(target).isInvalidCtrl();
     }
     if (targetid == 'IsRatified') {
         if ($(target).val() == 1) {
@@ -113,11 +118,11 @@ function validatectrl(targetid, value) {
             isvalid = validatectrl_YesNoCombo(value);
             if (isvalid) {
                 $('.OtherP').removeClass('border-red').addClass('border-green');
-                UnLockControl(Approval.attr('id'));
+                UnLockControl('Approval');
             }
             else {
                 $('.OtherP').removeClass('border-green').addClass('border-red');
-                LockControl(Approval.attr('id'));
+                LockSection('Approval');
             }
             break;
         case "IsRatified":

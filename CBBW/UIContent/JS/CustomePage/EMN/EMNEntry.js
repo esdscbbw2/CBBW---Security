@@ -190,9 +190,9 @@ function ValidateControl() {
     var targetid = $(target).attr('id');
     var isvalid = validatectrl(targetid, $(target).val());
     if (isvalid) {
-        $(target).isValid();
+        $(target).isValidCtrl();
     } else {
-        $(target).isInvalid();
+        $(target).isInvalidCtrl();
     }
     //$('#BackBtnActive').val(1);
     EnableSubmitBtn();
@@ -295,6 +295,8 @@ function EnableSubmitBtn() {
     if (z <= 0 && btn==1) {
         SubmitBtn.makeEnabled();
         //alert(btn);
+    } else {
+        SubmitBtn.makeDisable();
     }
 };
 function getDivInvalidCount(mdivID) {

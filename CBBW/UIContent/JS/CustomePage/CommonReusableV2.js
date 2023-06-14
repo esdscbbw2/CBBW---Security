@@ -882,6 +882,7 @@ function MyAlertWithRedirection(MessageType, MessageText, RedirectUrl) {
             break;
     }
 };
+
 function MySuccessAlert(MessageText, callback) {
     Swal.fire({
         title: 'Success',

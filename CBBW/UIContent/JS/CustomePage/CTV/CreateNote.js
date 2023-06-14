@@ -37,6 +37,7 @@ function ValidateAcceptCmb() {
 function VehicleNoChanged() {
     var myCtrl = $('#VehicleNumber');
     var vno = myCtrl.val();
+    $('#VehicleNumber2').val(vno);
     if (vno != '') {
         myCtrl.isValid();
         url='/CTV2/GetVehicleInfo?VehicleNumber=' + vno;

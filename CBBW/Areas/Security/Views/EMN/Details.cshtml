@@ -100,8 +100,6 @@
                     </div>
                 </div>
                 <div class="card mb-4 mt-4">
-                    @if (Model.emnHeader.IsApproved.HasValue)
-                    {
                         <div class="card-body  alert alert-success text-dark approvalForm">
                             <form class="form-sample form-inline row ms-auto">
                                 <div class="row d-flex align-items-center">
@@ -109,7 +107,7 @@
                                         <label>Approved :</label>
                                     </div>
                                     <div class="col-md-2">
-                                        <input type="text" class="form-control" value="@Model.emnHeader.IsApproveds" disabled="">
+                                        <input type="text" class="form-control ApproveCtrl" value="@Model.emnHeader.IsApproveds" disabled="">
                                     </div>
                                     <div class="col-md-2 col-form-label">
                                         <label>Date &amp; Time Of Approval :</label>
@@ -126,39 +124,11 @@
                                 </div>
                             </form>
                         </div>
-                    }
-                    else
-                    {
-                        <div class="card-body  alert alert-danger text-dark approvalForm">
-                            <form class="form-sample form-inline row ms-auto">
-                                <div class="row d-flex align-items-center">
-                                    <div class="col-md-2 col-form-label">
-                                        <label>Approved :</label>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <input type="text" class="form-control" value="@Model.emnHeader.IsApproveds" disabled="">
-                                    </div>
-                                    <div class="col-md-2 col-form-label">
-                                        <label>Date &amp; Time Of Approval :</label>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <input type="text" class="form-control" value="@Model.emnHeader.ApproveDatestr @Model.emnHeader.ApproveTime" disabled="">
-                                    </div>
-                                    <div class="col-md-2 col-form-label">
-                                        <label>Reason If Not Approved :</label>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <textarea name="" id="" cols="10" rows="2" class="form-control pointer-default" readonly>@Model.emnHeader.ApprovedReason</textarea>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    }
+                  
 
                 </div>
                 <div class="card mb-4 mt-4">
-                    @if (Model.emnHeader.IsRatified.HasValue)
-                    {
+                    
                         <div class="card-body  alert alert-success text-dark approvalForm">
                             <form class="form-sample form-inline row ms-auto">
                                 <div class="row d-flex align-items-center">
@@ -166,7 +136,7 @@
                                         <label>Ratified :</label>
                                     </div>
                                     <div class="col-md-2">
-                                        <input type="text" class="form-control" value="@Model.emnHeader.IsRatifieds" disabled="">
+                                        <input type="text" class="form-control ApproveCtrl" value="@Model.emnHeader.IsRatifieds" disabled="">
                                     </div>
                                     <div class="col-md-2 col-form-label">
                                         <label>Date & Time Of  Ratification :</label>
@@ -183,34 +153,7 @@
                                 </div>
                             </form>
                         </div>
-                    }
-                    else
-                    {
-                        <div class="card-body  alert alert-danger text-dark approvalForm">
-                            <form class="form-sample form-inline row ms-auto">
-                                <div class="row d-flex align-items-center">
-                                    <div class="col-md-2 col-form-label">
-                                        <label>Ratified :</label>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <input type="text" class="form-control" value="@Model.emnHeader.IsRatifieds" disabled="">
-                                    </div>
-                                    <div class="col-md-2 col-form-label">
-                                        <label>Date & Time Of  Ratification :</label>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <input type="text" class="form-control" value="@Model.emnHeader.RatifiedDatestr @Model.emnHeader.RatifiedTime" disabled="">
-                                    </div>
-                                    <div class="col-md-2 col-form-label">
-                                        <label>Reason If Not Ratified :</label>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <textarea name="" id="" cols="10" rows="2" class="form-control pointer-default" readonly>@Model.emnHeader.RatifiedReason</textarea>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    }
+                
 
                 </div>
                 <div class="col-md-12 mt-4 pt-3">
@@ -330,7 +273,9 @@
 
 }
 @section scripts{
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/EMN/EMNEntryDetailsJS.js"></script>
     <script>
         $(document).ready(function () {

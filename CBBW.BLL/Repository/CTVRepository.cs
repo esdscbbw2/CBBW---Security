@@ -242,5 +242,9 @@ namespace CBBW.BLL.Repository
         {
             return _CTVEntities.SetCTVEditHdr(Notenumber, EmployeeNumber, ApprovalFor, ref pMsg);
         }
+        public bool CreateCTVHdrV2(CTVHeaderToSet model, ref string pMsg)
+        {
+            return _CTVEntities.CreateCTVHdrV2(model, ref pMsg);
+        }
     }
 }

@@ -16,7 +16,7 @@ function EnableSubmitBtn() {
     if ($('.is-invalid').length == 0) {
         if ($('#DWTActive').val() == 1 && $('#VAActive').val() == 1) { isenable = true; }
     }
-    if (isenable) { btnsubmit.makeEnabled(); } else { btnsubmit.makeDisable(); }
+    if (isenable) { btnsubmit.makeSLUEnable(); } else { btnsubmit.makeSLUDisable(); }
 };
 function ValidateControl() {
     var target = ValidateControl.caller.arguments[0].target;
@@ -114,6 +114,7 @@ function DisplayTPDetails(data) {
 }
 function NoteNumberChanged(notenumber) {
     var noteCtrl = $('#NoteNumber');
+    $('#NoteNumber2').val(notenumber);
     if (notenumber != '') {
         //noteCtrl.addClass('is-valid').removeClass('is-invalid');
         noteCtrl.isValidCtrl();

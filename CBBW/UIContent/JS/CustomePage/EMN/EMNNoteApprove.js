@@ -90,9 +90,9 @@ function ValidateControl() {
     var targetid = $(target).attr('id');
     var isvalid = validatectrl(targetid, $(target).val());
     if (isvalid) {
-        $(target).removeClass('is-invalid').addClass('is-valid');
+        $(target).isValidCtrl();
     } else {
-        $(target).removeClass('is-valid').addClass('is-invalid');
+        $(target).isInvalidCtrl();
     }
 
     if (targetid == 'IsApprove') {

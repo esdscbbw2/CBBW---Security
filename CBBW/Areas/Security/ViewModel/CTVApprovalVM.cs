@@ -9,6 +9,7 @@ namespace CBBW.Areas.Security.ViewModel
     public class CTVApprovalVM
     {
         public string NoteNo { get; set; }
+        public string NoteNumber { get; set; }
         public bool IsApproved { get; set; }
         public string Vehicleno { get; set; }
         public DateTime DateTimeofApproval { get; set; }
@@ -19,5 +20,6 @@ namespace CBBW.Areas.Security.ViewModel
         public int IsApprovedComboValue { get; set; }
         public int IsBackMsg { get; set; }
         public int IsTabClicked { get; set; }
+        public int IsBackDenied { get; set; }
     }
 }

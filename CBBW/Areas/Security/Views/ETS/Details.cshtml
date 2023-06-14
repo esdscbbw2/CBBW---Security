@@ -99,14 +99,14 @@
                     </div>
                 </div>
                 <div class="card mb-4 mt-4">
-                    <div id="approve" class="card-body  alert  alert-danger text-dark approvalForm">
+                    <div id="approve" class="card-body alert text-dark approvalForm">
                         <form class="form-sample form-inline row ms-auto">
                             <div class="row d-flex align-items-center">
                                 <div class="col-md-2 col-form-label">
                                     <label>Approved :</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" value="@Model.etsHeader.IsApproveds" disabled="">
+                                    <input type="text" class="form-control ApproveCtrl" value="@Model.etsHeader.IsApproveds" disabled="">
                                 </div>
                                 <div class="col-md-2 col-form-label">
                                     <label>Date &amp; Time Of Approval :</label>
@@ -125,14 +125,14 @@
                     </div>
                 </div>
                 <div class="card mb-4 mt-4">
-                    <div id="Ratificate" class="card-body  alert alert-danger text-dark approvalForm">
+                    <div id="Ratificate" class="card-body  alert alert-danger text-dark approvalForm ">
                         <form class="form-sample form-inline row ms-auto">
                             <div class="row d-flex align-items-center">
                                 <div class="col-md-2 col-form-label">
                                     <label>Ratified :</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" value="@Model.etsHeader.IsRatifieds" disabled="">
+                                    <input type="text" class="form-control ApproveCtrl" value="@Model.etsHeader.IsRatifieds" disabled="">
                                 </div>
                                 <div class="col-md-2 col-form-label">
                                     <label>Date & Time Of  Ratification :</label>
@@ -283,15 +283,16 @@
 
 }
 @section scripts{
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
     <script>
         $(document).ready(function () {
-            if ($('#etsHeader_ApproveTime').val() != null || $('#etsHeader_ApproveTime').val() != "") {
-                $('#approve').removeClass('alert-danger').addClass('alert-success');
-            }
-            if ($('#etsHeader_RatifiedTime').val() != null || $('#etsHeader_RatifiedTime').val() != "") {
-                $('#Ratificate').removeClass('alert-danger').addClass('alert-success');
-            }
+            //if ($('#etsHeader_ApproveTime').val() != null || $('#etsHeader_ApproveTime').val() != "") {
+            //    $('#approve').removeClass('alert-danger').addClass('alert-success');
+            //}
+            //if ($('#etsHeader_RatifiedTime').val() != null || $('#etsHeader_RatifiedTime').val() != "") {
+            //    $('#Ratificate').removeClass('alert-danger').addClass('alert-success');
+            //}
 
             $('#btnViewDoc').click(function () {
                 var docfilename = $('#etsHeader_AttachFile').val();

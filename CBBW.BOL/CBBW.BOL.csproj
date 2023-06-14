@@ -50,6 +50,7 @@
     <Compile Include="BIL\TADAReport.cs" />
     <Compile Include="BIL\TADARuleData.cs" />
     <Compile Include="BIL\TravellingDetails.cs" />
+    <Compile Include="CTV2\CTVHeader.cs" />
     <Compile Include="CTV2\CTVNoteList4DT.cs" />
     <Compile Include="CTV2\CTVOtherTripDtls.cs" />
     <Compile Include="CTV2\CTVSlots.cs" />

@@ -192,12 +192,15 @@ namespace CBBW.Areas.Security.Controllers
             }
             if (CBUID == 3)
             {
-                model.CallBackUrl = "/Security/CTV/Approval?NoteNumber=" + NoteNumber;
+                model.CallBackUrl = "/Security/CTV2/Approval?NoteNumber=" + NoteNumber;
                 CTVApprovalVM tempobj=TempData["AppNoteDtl"] as CTVApprovalVM;
-                tempobj.IsOthViewed = 1;
-                tempobj.IsApprovedComboValue = 0;
-                tempobj.DisapprovalReason = "";
-                TempData["AppNoteDtl"] = tempobj;
+                if (tempobj != null) 
+                {
+                    tempobj.IsOthViewed = 1;
+                    tempobj.IsApprovedComboValue = 0;
+                    tempobj.DisapprovalReason = "";
+                    TempData["AppNoteDtl"] = tempobj;
+                }                
                 //TempData["LVTScallbackurl"] = "/Security/CTV/ViewNote?NoteNumber=" + NoteNumber;
                 //model.IsSaveVisible = 0;
             }
@@ -208,14 +211,12 @@ namespace CBBW.Areas.Security.Controllers
             ViewBag.HeaderSign = "VIEW";
             if (CBUID == 1)
             {
-                ViewBag.CallBackUrl = "/Security/CTV/ScheduleLists";
-                
-                //TempData["LVTScallbackurl"] = "/Security/CTV/ViewNote?NoteNumber=" + NoteNumber;
-                //model.IsSaveVisible = 0;
+                _iUser.RecordCallBack("/Security/CTV2/Index");
             }
             else if (CBUID == 2)
             {
-                ViewBag.CallBackUrl= "/Security/CTV/ApprovalLists";
+                _iUser.RecordCallBack("/Security/CTV2/ApprovalIndex");
+                //ViewBag.CallBackUrl= "/Security/CTV2/ApprovalIndex";
                 ViewBag.HeaderSign = "APPROVAL";
                 //TempData["LVTScallbackurl"] = "/Security/CTV/ViewNote?NoteNumber=" + NoteNumber;
                 //model.IsSaveVisible = 0;
@@ -274,7 +275,7 @@ namespace CBBW.Areas.Security.Controllers
                 }
             }            
             // return View();
-            return RedirectToAction("ScheduleLists");
+            return RedirectToAction("Index","CTV2");
 
         }
         public ActionResult LocalVehicleTripSchFromMat(int CBUID=1,string NoteNumber="") 
@@ -337,9 +338,9 @@ namespace CBBW.Areas.Security.Controllers
             {
                 //UserInfo user = getLogInUserInfo();
                 if (TempData["AppNoteDtl"] != null) 
-            {
-                model = TempData["AppNoteDtl"] as CTVApprovalVM;
-            }         
+                {
+                    model = TempData["AppNoteDtl"] as CTVApprovalVM;
+                }         
             
                 model.ListofNoteNumbers = _iCTV.GetNoteNumbersTobeApproved(user.EmployeeNumber, user.CentreCode, ref pMsg);
                 model.DateTimeofApproval = DateTime.Now;

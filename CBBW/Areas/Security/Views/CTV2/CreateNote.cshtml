@@ -18,6 +18,7 @@
         @Html.HiddenFor(m => m.DriverNo)
         @Html.HiddenFor(m => m.DriverName)
         @Html.HiddenFor(m => m.IsDriverEntered)
+        @Html.HiddenFor(m => m.VehicleNumber2)
         <div class="col-md-12">
             <div class="heading_text_btn mb-3 mt-4">
                 <div class="leftButton">
@@ -248,16 +249,29 @@
 @section headers
 {
     <style>
-        .w-60{
-            width:60%;
+        .w-60 {
+            width: 60%;
         }
-        .w-40{
-            width:40%;
+
+        .w-40 {
+            width: 40%;
         }
     </style>
 }
 @section scripts{
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/CTV/CreateNote.js"></script>
-    
+    <script>
+        $(document).ready(function () {
+            if ('@ViewBag.ErrMsg' != '') {
+                var mymsg = '@ViewBag.ErrMsg';
+                MyAlert(3, mymsg);
+            };
+            if ('@ViewBag.Msg' != '') {
+                var mymsg = '@ViewBag.Msg';
+                MyAlertWithRedirection(1, mymsg, '/Security/CTV2/Index');
+            };
+        });
+    </script>
 }

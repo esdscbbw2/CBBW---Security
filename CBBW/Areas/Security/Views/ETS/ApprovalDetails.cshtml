@@ -109,7 +109,7 @@
 
 
 
-                                    <input type="text" class="form-control" value="@Model.etsHeader.IsRatifieds" disabled="">
+                                    <input type="text" class="form-control ApproveCtrl" value="@Model.etsHeader.IsRatifieds" disabled="">
                                 </div>
                                 <div class="col-md-2 col-form-label">
                                     <label>Date & Time Of  Ratification :</label>
@@ -297,13 +297,11 @@
 
 }
 @section scripts{
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
     <script>
         $(document).ready(function () {
 
-            if ($('#etsHeader_RatifiedTime').val() != null || $('#etsHeader_RatifiedTime').val() != "") {
-                $('#Ratificate').removeClass('alert-danger').addClass('alert-success');
-            }
 
             $('#btnViewDoc').click(function () {
                 var docfilename = $('#etsHeader_AttachFile').val();

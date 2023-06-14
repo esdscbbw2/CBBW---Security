@@ -11,6 +11,7 @@
         @Html.HiddenFor(m => m.DWTActive)
         @Html.HiddenFor(m => m.VAActive)
         @Html.HiddenFor(m => m.DocFileName)
+        @Html.HiddenFor(m => m.NoteNumber2)
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
@@ -250,7 +251,7 @@
                     </li>
                     <li style="font-size: 16px;">
                         Checked Tour Details & Vehicle Allotment With The “Initiated This Doc. With The Instruction Of” Person. Hence Satisfied & Approved:
-                        <select id="AppOption2" style="width:110px" 
+                        <select id="AppOption2" style="width:110px"
                                 class="form-select is-invalid SLUCtrl LUPS"
                                 onchange="ValidateControl()"
                                 aria-label="Default select example" disabled>
@@ -284,7 +285,7 @@
                             <label>Date &amp; Time Of Approval :</label>
                         </div>
                         <div class="col-md-2">
-                            <input type="text" class="form-control" value="@DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss tt",CultureInfo.InvariantCulture)" disabled="">
+                            <input type="text" class="form-control" value="@DateTime.Now.ToString("dd/MM/yyyy hh:mm tt",CultureInfo.InvariantCulture)" disabled>
                         </div>
                         <div class="col-md-2 col-form-label">
                             <label>Reason If Not Approved :</label>

@@ -227,6 +227,45 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+        public DataTable SetCTVHeaderV2(CTVHeaderToSet model, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[13];
+                para[paracount] = new SqlParameter("@NoteNo", SqlDbType.NChar, 25);
+                para[paracount++].Value = model.NoteNumber;                
+                para[paracount] = new SqlParameter("@CenterCode", SqlDbType.Int);
+                para[paracount++].Value = model.CentreCode;
+                para[paracount] = new SqlParameter("@CenterName", SqlDbType.NVarChar, 50);
+                para[paracount++].Value = model.CentreName;
+                para[paracount] = new SqlParameter("@FortheMonth", SqlDbType.Int);
+                para[paracount++].Value = model.FortheMonth;
+                para[paracount] = new SqlParameter("@FortheYear", SqlDbType.Int);
+                para[paracount++].Value = model.FortheYear;
+                para[paracount] = new SqlParameter("@FromDate", SqlDbType.Date);
+                para[paracount++].Value = model.FromDate;
+                para[paracount] = new SqlParameter("@ToDate", SqlDbType.Date);
+                para[paracount++].Value = model.ToDate;
+                para[paracount] = new SqlParameter("@Vehicleno", SqlDbType.NVarChar, 20);
+                para[paracount++].Value = model.VehicleNo;
+                para[paracount] = new SqlParameter("@VehicleType", SqlDbType.NVarChar, 20);
+                para[paracount++].Value = model.VehicleType;
+                para[paracount] = new SqlParameter("@ModelName", SqlDbType.NVarChar, 20);
+                para[paracount++].Value = model.ModelName;
+                para[paracount] = new SqlParameter("@DriverNo", SqlDbType.Int);
+                para[paracount++].Value = model.DriverNo;
+                para[paracount] = new SqlParameter("@DriverName", SqlDbType.NVarChar, 50);
+                para[paracount++].Value = model.DriverName == null ? "NA" : model.DriverName;
+                para[paracount] = new SqlParameter("@Employeenumber", SqlDbType.Int);
+                para[paracount++].Value = model.EmployeeNumber;                
+                using (SQLHelper sql = new SQLHelper("[CTV].[SetCTVHdrV2]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
         public DataTable setCTVApproval(string Notenumber,int EmployeeNumber,bool Isapproved,
             DateTime ApprovalDatetime,string DisApprovalReason, ref string pMsg)
         {

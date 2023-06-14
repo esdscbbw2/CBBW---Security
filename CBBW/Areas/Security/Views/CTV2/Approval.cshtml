@@ -1,4 +1,5 @@
-﻿@model CBBW.Areas.Security.ViewModel.CTVApprovalVM
+﻿@using System.Globalization;
+@model CBBW.Areas.Security.ViewModel.CTVApprovalVM
 @{
 
 }
@@ -7,13 +8,16 @@
     {
         @Html.HiddenFor(m => m.IsOthViewed)
         @Html.HiddenFor(m => m.IsLVViewed)
-        @Html.HiddenFor(m=>m.IsBackMsg)
-        @Html.HiddenFor(m=>m.IsTabClicked)
+        @Html.HiddenFor(m => m.IsBackMsg)
+        @Html.HiddenFor(m => m.IsTabClicked)
+        @Html.HiddenFor(m => m.NoteNumber)
+        @Html.HiddenFor(m => m.IsBackDenied);
+        @Html.HiddenFor(m => m.DateTimeofApproval);
         <div class="col-md-12">
             <div class="heading_text_btn mb-3 mt-4">
                 <div class="leftButton">
                     <button id="btnBack" type="button" class="btn btn-primary me-2"
-                            onclick="BackButtonClicked()">
+                            onclick="NormalBackBtnClicked('/Security/CTV2/ApprovalIndex')">
                         <i data-feather="arrow-left-circle"></i>
                         Back
                     </button>
@@ -22,7 +26,7 @@
                         <i data-feather="upload"></i>
                         Submit
                     </button>
-                    <button id="btnClear" type="submit" name="Submit" value="clear"
+                    <button id="btnClear" type="button" onclick="ClearBtnClicked('/Security/CTV2/Approval?isClear=1')"
                             class="btn btn-white">
                         <i data-feather="x-circle"></i>
                         Clear
@@ -51,9 +55,9 @@
 
                 </div>
             </div>
-            <div class="card mb-4 mt-4">
+            <div id="Section2" class="card mb-4 mt-4">
                 <div class="card-body approvalForm">
-                    <form class="form-sample form-inline row ms-auto">
+                    @*<form class="form-sample form-inline row ms-auto">*@
                         <div class="row d-flex align-items-center mb-4">
                             <label class="col-form-label col-md-3">
                                 Ref. Company Transport Vehicle Trip Schedule – ENTRY Note No :
@@ -145,46 +149,58 @@
                             </div>
                         </div>
 
-                    </form>
+                    @*</form>*@
                 </div>
             </div>
 
 
-            <div class="col-md-12">
+            <div id="btnSection" class="col-md-12">
                 <div class="d-flex justify-content-center mt-2">
                     <button id="btnLVT" type="submit" name="Submit" value="LVT"
-                            class="btn btn-primary me-2" disabled
-                            onclick="window.location.href='local_vehicle_schedule_details_approval.html';">
+                            class="btn btn-primary me-2" disabled>
                         Local
                         Vehicle Schedule - Date Wise
                         Vehicle Trip Details Entry
                     </button>
 
                     <button id="btnOVT" type="submit" name="Submit" value="OVT"
-                            class="btn btn-primary" disabled
-                            onclick="window.location.href='other_trip_schedule_details_approval.html';">
+                            class="btn btn-primary" disabled>
                         Other
                         Trip Schedule - Date Wise Vehicle
                         Trip Details Entry
                     </button>
                 </div>
             </div>
-            <div class="bgColor bg-transparent border-0">
+            @*<div class="bgColor bg-transparent alert alert-danger border-0 SLUStatement SLUSection">
                 <ul style="list-style:none; display: flex; align-items: center; justify-content: center; margin: 0;">
                     <li style="font-size: 18px;">
                         The Entry Is Done As Per Policy &amp; As Required:
                         <div class="form-group">
-                            <select class="form-select" aria-label="Default select example" disabled>
+                            <select class="form-select SLUCtrl" 
+                                    aria-label="Default select example" disabled>
                                 <option>-</option>
-                                <option selected="" value="1">Yes</option>
-                                <option value="1">No</option>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
                             </select>
                         </div>
                     </li>
                 </ul>
+            </div>*@
+            <div id="Section3" class="bgColor mt-4 mb-4 bg-transparent border-red text-center">
+                <ul style="list-style:none;">
+                    <li style="font-size: 16px;">
+                        The Entry Is Done As Per Policy & As Required:
+                        <select id="AcceptCmb" class="form-select SLUCtrl"
+                                aria-label="Default select example" disabled>
+                            <option selected value="">-</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </li>
+                </ul>
             </div>
             <div class="card">
-                <div class="card-body approvalForm">
+                <div id="AppSection" class="card-body text-dark approvalForm SLUSection">
                     @*<form class="form-sample form-inline row ms-auto">*@
                     <div class="row mt-3">
                         <label class="col-form-label col-md-3">
@@ -193,15 +209,15 @@
                         <div class="col-md-2">
                             @Html.DropDownListFor(m => m.IsApprovedComboValue,
                                        new[] {
-                                           new SelectListItem { Text = "-", Value = "0" },
+                                           new SelectListItem { Text = "-", Value = "-1" },
                                             new SelectListItem { Text = "Yes", Value = "1" },
-                                            new SelectListItem { Text = "No", Value = "2" },
+                                            new SelectListItem { Text = "No", Value = "0" },
                                        },
                                        htmlAttributes: new
                                        {
-                                           @class = "form-select pointer canclear is-invalid",
+                                           @class = "form-select pointer canclear is-invalid ApproveCtrl",
                                            @onchange = "ApproveStatusChanged()",
-                                           @disabled= "disabled"
+                                           @disabled = "disabled"
                                        })
 
                         </div>
@@ -209,8 +225,9 @@
                             Date &amp; Time Approved :
                         </label>
                         <div class="col-md-2">
-                            @Html.TextBoxFor(m => m.DateTimeofApproval, "{0:dd-MMM-yyyy hh:mm:ss tt}",
-                               htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })
+                            <input type="text" class="form-control" value="@Model.DateTimeofApproval.ToString("dd/MM/yyyy hh:mm tt",CultureInfo.InvariantCulture)" disabled>
+                            @*@Html.TextBoxFor(m => m.DateTimeofApproval, "{0:dd-MMM-yyyy hh:mm:ss tt}",
+                               htmlAttributes: new { @class = "form-control canclear", disabled = "disabled" })*@
                         </div>
                         <label class="col-form-label col-md-2">
                             Reason If Not Approved :
@@ -218,10 +235,12 @@
                         <div class="col-md-2">
                             @Html.TextBoxFor(m => m.DisapprovalReason,
                                htmlAttributes: new
-                                    {
-                                        @class = "form-control canclear",@disabled="disabled",
-                               @onkeyup = "ValidateReason()"
-                                    })
+                               {
+                                   @class = "form-control canclear",
+                                   @disabled = "disabled",
+                                   @onkeyup = "ValidateReason()",
+                                   rows = "3"
+                               })
                         </div>
 
                     </div>
@@ -238,7 +257,6 @@
         .inVisible {
             display: none;
         }
-
         .pointer {
             cursor: pointer;
         }
@@ -246,21 +264,23 @@
 
 }
 @section scripts{
-    @*<script src="~/UIContent/JS/CustomLayout.js"></script>*@
-    <script src="~/UIContent/JS/CustomePage/CTV/CTVApproval.js"></script>
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CTV/CTVApprovalV2.js"></script>
     <script>
         $(document).ready(function () {
             if ($('#IsTabClicked').val() == 1) {
                 $('#IsApprovedComboValue').removeAttr('disabled');
             }
-            else { $('#IsApprovedComboValue').attr('disabled','disabled');}
+            else { $('#IsApprovedComboValue').attr('disabled', 'disabled'); }
         });
     </script>
     <script>
         $(document).ready(function () {
             //var mymsg = '@ViewBag.ErrMsg';
             if ('@ViewBag.ErrMsg' != '') {
-                Swal.fire({
+                MyAlert(3,"@ViewBag.ErrMsg");
+                @*Swal.fire({
                     title: 'Failed to submit',
                     text: "@ViewBag.ErrMsg",
                     icon: 'warning',
@@ -271,10 +291,11 @@
                     },
                     //cancelButtonClass: 'btn-cancel',
                     confirmButtonColor: '#2527a2',
-                });
+                });*@
             };
             if ('@ViewBag.Msg' != '') {
-                Swal.fire({
+                MyAlertWithRedirection(1, "@ViewBag.Msg", "/Security/CTV2/ApprovalIndex");
+                @*Swal.fire({
                     title: 'Confirmation',
                     text: "@ViewBag.Msg",
                     icon: 'success',
@@ -289,7 +310,7 @@
                         var url = "/Security/CTV/ApprovalLists";
                         window.location.href = url;
                     }
-                }
+                }*@
             };
         });
     </script>

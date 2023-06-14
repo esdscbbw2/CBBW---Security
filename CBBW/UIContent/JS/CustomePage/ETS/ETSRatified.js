@@ -44,6 +44,7 @@ function Notenumberchanged(notenumber) {
                     $('#ApprovedDateTime').val(item.etsHeader.ApproveDatestr + " " + item.etsHeader.ApproveTime);
                     $('#ApprovedReason').val(item.etsHeader.ApprovedReason);
                 }
+                $('.approval').removeClass('alert-danger').addClass('alert-success');
                 if (item.TourCatstatus) {
                     $('#OtherPlace').val('Yes')
                 } else {
@@ -107,9 +108,9 @@ function ValidateControl() {
     var targetid = $(target).attr('id');
     var isvalid = validatectrl(targetid, $(target).val());
     if (isvalid) {
-        $(target).removeClass('is-invalid').addClass('is-valid');
+        $(target).isValidCtrl();
     } else {
-        $(target).removeClass('is-valid').addClass('is-invalid');
+        $(target).isInvalidCtrl();
     }
     if (targetid == 'IsRatified') {
         if ($(target).val() == 1) {

@@ -9,6 +9,7 @@ namespace CBBW.Areas.Security.ViewModel.EHG
     public class EHGNotApprovalVM
     {
         public string NoteNumber { get; set; }
+        public string NoteNumber2 { get; set; }
         public List<EHGNote> NoteList { get; set; }
         public int AppStatus { get; set; }
         public string ReasonForDisApproval { get; set; }

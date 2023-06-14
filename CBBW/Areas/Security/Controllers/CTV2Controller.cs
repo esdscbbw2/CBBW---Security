@@ -42,6 +42,11 @@ namespace CBBW.Areas.Security.Controllers
             TempData["CTVCreate"] = null;
             return RedirectToAction("CreateNote");
         }
+        public ActionResult ApproveNote()
+        {
+            TempData["CTVApprove"] = null;
+            return RedirectToAction("Approval");
+        }
         public ActionResult CreateNote(int isClear=0) 
         {
             CreateNoteVM model = CastCTVCreateTempData();            
@@ -52,7 +57,9 @@ namespace CBBW.Areas.Security.Controllers
         public ActionResult CreateNote(CreateNoteVM modelobj, string Submit) 
         {
             CreateNoteVM model = CastCTVCreateTempData();
-            model.VehicleNumber = modelobj.VehicleNumber;
+            model.NoteNumber = modelobj.NoteNumber;
+            model.VehicleNumber = modelobj.VehicleNumber2;
+            model.VehicleNumber2 = modelobj.VehicleNumber2;
             model.VehicleType = modelobj.VehicleType;
             model.ModelName = modelobj.ModelName;
             model.DriverName = modelobj.DriverName;
@@ -89,7 +96,35 @@ namespace CBBW.Areas.Security.Controllers
                 _iUser.RecordCallBack("/Security/CTV2/CreateNote");
                 return RedirectToAction("AllVehicleTripSchFromMat");
             }
-            
+            else if (Submit == "create")
+            {
+                if (model.ListofVehicles == null)
+                    model.ListofVehicles = _iCTV.getLCVMCVVehicleList(ref pMsg,user.CentreCode);
+                CTVHeaderToSet setobj = new CTVHeaderToSet();
+                setobj.NoteNumber = model.NoteNumber;
+                setobj.CentreCode = user.CentreCode;
+                setobj.CentreName = user.CentreName;
+                setobj.FortheMonth = DateTime.Today.Month;
+                setobj.FortheYear = DateTime.Today.Year;
+                setobj.FromDate = model.FromDate;
+                setobj.ToDate = model.ToDate;
+                setobj.VehicleNo = model.VehicleNumber;
+                setobj.VehicleType = model.VehicleType;
+                setobj.ModelName = model.ModelName;
+                setobj.DriverNo = model.DriverNo;
+                setobj.DriverName = model.DriverName;
+                setobj.EmployeeNumber = user.EmployeeNumber;
+                
+                if (_iCTV.CreateCTVHdrV2(setobj, ref pMsg))
+                {
+                    ViewBag.Msg = "Note number " + model.NoteNumber + " submited successfully.";
+                    TempData["CTVCreate"] = null;
+                }
+                else
+                {
+                    ViewBag.ErrMsg = "Updation failed for Note number " + model.NoteNumber;
+                }
+            }
             return View(model);
         }
         public ActionResult CreateOtherTrip() 
@@ -121,6 +156,76 @@ namespace CBBW.Areas.Security.Controllers
             //model.VehicleNo = "AP25X7140";
             model.DriverCodenName = parentmodel.DriverNo + " / " + parentmodel.DriverName;
             model.LVSchDtl = _iCTV.getLocalVehicleSChedules(model.VehicleNo, model.SCHFromDate, model.SCHToDate, ref pMsg).OrderBy(o => o.FromDate).ToList();
+            return View(model);
+        }
+        public ActionResult Approval(int isClear = 0,int isOthViewed=0,int isLVViewed=0) 
+        {
+            CTVApprovalVM model = CastCTVApprovalTempData();
+            model.IsLVViewed = model.IsLVViewed == 1 ? 1 : isLVViewed;
+            model.IsOthViewed = model.IsOthViewed == 1 ? 1 : isOthViewed;
+            if (isClear == 1) { model.NoteNumber = "";model.NoteNo = ""; }
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult Approval(CTVApprovalVM modelobj, string Submit)
+        {
+            CTVApprovalVM model = CastCTVApprovalTempData();
+            model.NoteNumber = modelobj.NoteNumber;
+            model.NoteNo = modelobj.NoteNumber;
+            model.IsApproved = modelobj.IsApproved;
+            model.IsApprovedComboValue = modelobj.IsApprovedComboValue;
+            model.DisapprovalReason = modelobj.DisapprovalReason;
+            TempData["CTVApprove"] = model;
+            if (Submit == "TourRule")
+            {
+                _iUser.RecordCallBack("/Security/CTV2/Approval");
+                return RedirectToAction("ViewRedirection", "TourRule",
+                    new { Area = "Security", CBUID = 3, NoteNumber = modelobj.NoteNo });
+            }
+            else if (Submit == "TADARules")
+            {
+                _iUser.RecordCallBack("/Security/CTV2/Approval");
+                return RedirectToAction("ViewRedirection", "TADARules",
+                    new { Area = "Security", CBUID = 3, NoteNumber = modelobj.NoteNo });
+            }
+            else if (Submit == "LVTSChMat")
+            {
+                _iUser.RecordCallBack("/Security/CTV2/Approval");
+                return RedirectToAction("LocalVehicleTripSchFromMat","CTV",
+                    new { CBUID = 3, NoteNumber = modelobj.NoteNo });
+            }
+            else if (Submit == "OVT")
+            {
+                model.IsTabClicked = 1;
+                TempData["CTVApprove"] = model;
+                _iUser.RecordCallBack("/Security/CTV2/Approval?isOthViewed=1");
+                return RedirectToAction("OtherTripSchDisplay","CTV",
+                    new { Area = "Security", CBUID = 3, NoteNumber = model.NoteNo });
+            }            
+            else if (Submit == "LVT")
+            {
+                model.IsTabClicked = 1;
+                TempData["CTVApprove"] = model;
+                _iUser.RecordCallBack("/Security/CTV2/Approval?isLVViewed=1");
+                return RedirectToAction("LocVehTripSch","CTV", new { CBUID = 3, NoteNumber = model.NoteNo });
+            }
+            else if (Submit == "create")
+            {
+                if (model.ListofNoteNumbers == null)
+                    model.ListofNoteNumbers = _iCTV.GetNoteNumbersTobeApproved(user.EmployeeNumber, user.CentreCode, ref pMsg);
+
+                //TempData["CTVHDR"] = model;
+                if (_iCTV.setCTVApproval(model.NoteNo, user.EmployeeNumber, model.IsApproved,
+                    DateTime.Now, model.DisapprovalReason, ref pMsg))
+                {
+                    ViewBag.Msg = "Approval status for Note number " + model.NoteNo + " has been updated successfully.";
+                    TempData["CTVApprove"] = null;
+                }
+                else
+                {
+                    ViewBag.ErrMsg = "Updation failed for Note number " + model.NoteNo;
+                }
+            }
             return View(model);
         }
         #region Ajax Calling
@@ -254,6 +359,24 @@ namespace CBBW.Areas.Security.Controllers
                 model.CentreCodeName = user.CentreCode + " / " + user.CentreName;
             }
             TempData["CTVCreate"] = model;
+            return model;
+        }
+        private CTVApprovalVM CastCTVApprovalTempData()
+        {
+            CTVApprovalVM model;
+            if (TempData["CTVApprove"] != null)
+            {
+                model = TempData["CTVApprove"] as CTVApprovalVM;
+            }
+            else
+            {
+                model = new CTVApprovalVM();
+                model.ListofNoteNumbers = _iCTV.GetNoteNumbersTobeApproved(user.EmployeeNumber, user.CentreCode, ref pMsg);
+                model.DateTimeofApproval = DateTime.Now;
+                model.IsApprovedComboValue = -1;
+                if (model.ListofNoteNumbers == null) { model.ListofNoteNumbers = new List<NoteNumber>(); }
+            }
+            TempData["CTVApprove"] = model;
             return model;
         }
         //private string CastNoteNumberFromTemp()

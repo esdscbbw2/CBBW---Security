@@ -21,6 +21,7 @@ namespace CBBW.Areas.Security.ViewModel.CTV
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
         public string VehicleNumber { get; set; }
+        public string VehicleNumber2 { get; set; }
         public string VehicleType { get; set; }
         public string ModelName { get; set; }
         public string DriverName { get; set; }
@@ -32,5 +33,6 @@ namespace CBBW.Areas.Security.ViewModel.CTV
         public int IsLocalAvbl { get; set; }
         public int IsOtherAvbl { get; set; }
         public int IsDriverEntered { get; set; }
+        public int EmployeeNumber { get; set; }
     }
 }

@@ -40,27 +40,27 @@ namespace CBBW.Areas.Security.Controllers
             string baseUrl = "/Security/EHG/ApproveNote";
             if (Submit == "create")
             {
-                if (_iEHG.SetEHGHdrAppStatus(modelobj.NoteNumber,modelobj.AppStatus==1?true:false,
+                if (_iEHG.SetEHGHdrAppStatus(modelobj.NoteNumber2,modelobj.AppStatus==1?true:false,
                     modelobj.ReasonForDisApproval,user.EmployeeNumber,ref pMsg))
                 {
-                    ViewBag.Msg = "Approval Status Of Note Number " + modelobj.NoteNumber + " Updated Successfully.";
+                    ViewBag.Msg = "Approval Status Of Note Number " + modelobj.NoteNumber2 + " Updated Successfully.";
                     TempData["EHGApp"] = null;
                 }
-                else { ViewBag.ErrMsg = "Approval Status Updation Failed For Note Number " + modelobj.NoteNumber; }
+                else { ViewBag.ErrMsg = "Approval Status Updation Failed For Note Number " + modelobj.NoteNumber2; }
             }        
             else if (Submit == "VAD")
             {
                 modelobj.VAActive = 1;
                 TempData["EHGApp"] = modelobj;
                 _iUser.RecordCallBack(baseUrl);
-                return RedirectToAction("ViewVADetails", "EHG", new { NoteNumber = modelobj.NoteNumber, CBUID = 1 });
+                return RedirectToAction("ViewVADetails", "EHG", new { NoteNumber = modelobj.NoteNumber2, CBUID = 1 });
             }
             else if (Submit == "DWT")
             {
                 modelobj.DWTActive = 1;
                 TempData["EHGApp"] = modelobj;
                 _iUser.RecordCallBack(baseUrl);
-                return RedirectToAction("ViewDWTDetails", "EHG", new { NoteNumber = modelobj.NoteNumber, CBUID = 1 });
+                return RedirectToAction("ViewDWTDetails", "EHG", new { NoteNumber = modelobj.NoteNumber2, CBUID = 1 });
             }
             appmodel = CastEHGAppTempData();
             return View(appmodel);

@@ -56,7 +56,7 @@
 
             <div class="col-md-12 mb-4">
                 <div class="card mb-4 mt-4">
-                    <div class="card-body approvalForm">
+                    <div class="card-body">
                         <form class="form-sample form-inline row ms-auto">
                             <div class="row d-flex align-items-center mb-4">
                                 <label class="col-form-label col-md-2">
@@ -96,13 +96,13 @@
                     </div>
                 </div>
                 <div class="card mt-4 mb-4">
-                    <div class="card-body alert alert-danger approvalForm text-dark ">
+                    <div class="card-body alert alert-danger approval text-dark ">
                         <div class="row d-flex align-items-center">
                             <div class="col-md-2 col-form-label">
                                 <label>Approved :</label>
                             </div>
                             <div class="col-md-2">
-                                <input type="text" class="form-control  pointer-none" id="IsApproved" value="" disabled="">
+                                <input type="text" class="form-control  pointer-none ApproveCtrl" id="IsApproved" value="" disabled="">
                             </div>
                             <div class="col-md-2 col-form-label">
                                 <label>Date &amp; Time Of Approval :</label>
@@ -222,7 +222,7 @@
                     </ul>
                 </div>
                 <div class="card mb-4 mt-4" id="DivRati">
-                    <div class="card-body alert alert-danger approvalForm text-dark ">
+                    <div class="card-body alert alert-danger approvalForm text-dark  SLUSection">
                         <form class="form-sample form-inline row ms-auto">
                             <div class="row d-flex align-items-center">
                                 <div class="col-md-2 col-form-label">
@@ -231,7 +231,7 @@
                                 <div class="col-md-2">
                                     <select name="IsRatified" id="IsRatified" data-name="IsRatified" data-name-text="IsRatifiedtxt"
                                             onchange="ValidateControl()"
-                                            class="form-select is-invalid clear"
+                                            class="form-select is-invalid clear ApproveCtrl SLUCtrl"
                                             aria-label="Default select example" style="width: 110px;">
                                         <option selected value="-1"> -</option>
                                         <option value="1">Yes</option>

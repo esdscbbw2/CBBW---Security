@@ -178,6 +178,12 @@ namespace CBBW.DAL.Entities
             _DBResponseMapper.Map_DBResponse(_datasync.setCTVHeader(model, ref pMsg), ref pMsg, ref result);
             return result;
         }
+        public bool CreateCTVHdrV2(CTVHeaderToSet model, ref string pMsg)
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_datasync.SetCTVHeaderV2(model, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
         public bool setCTVApproval(string Notenumber, int EmployeeNumber, bool Isapproved,
             DateTime ApprovalDatetime, string DisApprovalReason, ref string pMsg)
         {
