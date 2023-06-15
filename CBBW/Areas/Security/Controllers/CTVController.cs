@@ -11,7 +11,6 @@ using CBBW.BOL.CTV2;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.Master;
 using CBBW.DAL.DataSync;
-
 namespace CBBW.Areas.Security.Controllers
 {
     public class CTVController : Controller
@@ -714,6 +713,9 @@ namespace CBBW.Areas.Security.Controllers
                 obj.ApprovalFor = obj.ApprovalFor == 1 ? 3 : 2;
                 result.bResponseBool = true;
                 result.sResponseString = "Data successfully updated.";
+                TripScheduleHdr x = CastCTVEditTempData(model.NoteNumber);
+                x.IsOTSSaved = 1;
+                TempData["CTVEdit"] = x;
             }
             else
             {
@@ -740,6 +742,9 @@ namespace CBBW.Areas.Security.Controllers
                 obj.ApprovalFor = obj.ApprovalFor == 2 ? 3 : 1;
                 result.bResponseBool = true;
                 result.sResponseString = "Data successfully updated.";
+                TripScheduleHdr x = CastCTVEditTempData(model.NoteNo);
+                x.IsLTSSaved = 1;
+                TempData["CTVEdit"] = x;
             }
             else
             {
@@ -858,5 +863,19 @@ namespace CBBW.Areas.Security.Controllers
         }
 
         #endregion
+        private TripScheduleHdr CastCTVEditTempData(string NoteNumber)
+        {
+            TripScheduleHdr model;
+            if (TempData["CTVEdit"] != null)
+            {
+                model = TempData["CTVEdit"] as TripScheduleHdr;
+            }
+            else
+            {
+                model = _iCTV.getSchDetailsFromNote(NoteNumber, ref pMsg).SchHdrData;
+            }
+            TempData["CTVEdit"] = model;
+            return model;
+        }
     }
 }

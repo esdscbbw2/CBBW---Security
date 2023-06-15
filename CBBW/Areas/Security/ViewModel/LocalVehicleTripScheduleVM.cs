@@ -24,6 +24,7 @@ namespace CBBW.Areas.Security.ViewModel
         public int IsSaveVisible { get; set; }
         public IEnumerable<CustomComboOptions> ListofDrivers { get; set; }
         public string NoteNo { get; set; }
+        public int IsBackDenied { get; set; }
     }
     public class LocalVehicleTripScheduleEditVM 
     {

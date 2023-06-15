@@ -35,6 +35,7 @@ namespace CBBW.BOL.CTV
         public int IsOTSActivated { get; set; }
         public int IsSubmitted { get; set; }
         public int IsOTSSaved { get; set; }
+        public int IsLTSSaved { get; set; }
         public int EmployeeNumber { get; set; }
         public int SL { get; set; }
         public int TotalCount { get; set; }
@@ -43,6 +44,7 @@ namespace CBBW.BOL.CTV
         public string EntryDatestr { get; set; }
         public int ApprovalFor { get; set; }
         public int IsDeleteBtn { get; set; }
-        public int CBUID { get; set; }        
+        public int CBUID { get; set; }
+        public int IsBackDenied { get; set; }
     }    
 }

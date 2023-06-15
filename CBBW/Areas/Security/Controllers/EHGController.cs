@@ -421,7 +421,7 @@ namespace CBBW.Areas.Security.Controllers
         }
         public JsonResult GetDesgCodenName(int empID,int empType)
         {//empType : 2-driver, 1-Others
-            return Json(_master.GetDesgCodenName(empID, 1), JsonRequestBehavior.AllowGet);
+            return Json(_master.GetDesgCodenName(empID, empType), JsonRequestBehavior.AllowGet);
         }
         public JsonResult getNoteList(int iDisplayLength,int iDisplayStart,int iSortCol_0,
             string sSortDir_0,string sSearch) 

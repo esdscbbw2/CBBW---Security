@@ -234,10 +234,8 @@ function ValidateControl() {
         targetid == 'PurposeOfVisitFoeMang' || 
         targetid == 'TADADeniedForManagement' ) {
         $('#' + targetid + '2').val($(target).val());
-    }
-    if (targetid == 'TADADeniedForManagement' && $(target).val()==1) {
-        MyAlertWithCallBack(6,'Are You Sure To Deny The TADA Option?','CancelTadaDenied')
-    }
+    }    
+    
     //if (targetid.indexOf('_') >= 0) {
     //    if (targetid.split('_')[0] == 'TaDaDenied' && $(target).val() == 1) {
     //        MyAlertWithCallBack(6, 'Are You Sure To Deny The TADA Option?', 'CancelRTadaDenied(' + targetid.split('_')[1] + ')')
@@ -249,6 +247,12 @@ function ValidateControl() {
     $('#BackBtnActive').val(1);
     EnableSubmitBtn();
     EnableDateWiseTourBtn();
+    if (targetid == 'AuthorisedEmpNoForManagement' && isvalid) {
+        UnLockSection('StatementDiv');
+    } else { LockSection('StatementDiv'); }
+    if (targetid == 'TADADeniedForManagement' && $(target).val() == 1) {
+        MyAlertWithCallBack(2, 'Are You Sure To Deny The T.A & D.A Option?', 'CancelTadaDenied')
+    }
 };
 function CancelTadaDenied() {
     $('#TADADeniedForManagement').val(0);
@@ -522,7 +526,7 @@ function DDPickPersonChanged(x) {
     });
     //Check for Duplicate Person - end
     if (x == 1) {
-        if (mValue.length <= 20 && mValue.length > 0)
+        if (isAlphabateWithMaxLimit(mValue,20))
         {
             targetCtrl.isValidCtrl();
             altCtrl.removeClass('is-invalid');
@@ -630,7 +634,7 @@ function ValidateCloneRowCtrl() {
     EnableDateWiseTourBtn();
     EnableSubmitBtn();
     if (targetid == 'TaDaDenied' && targetCtrl.val() == 1) {
-        MyAlertWithCallBack(6, 'Are You Sure To Deny The TADA Option?', function () {            
+        MyAlertWithCallBack(2, 'Are You Sure To Deny The T.A & D.A Option?', function () {            
             addBtnCtrl.removeAttr('disabled');
         });
     }   

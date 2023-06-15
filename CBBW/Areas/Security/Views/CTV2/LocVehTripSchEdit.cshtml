@@ -1,0 +1,278 @@
+﻿@using System.Globalization;
+@model CBBW.Areas.Security.ViewModel.LocalVehicleTripScheduleVM
+@{
+
+}
+<div class="row newTable">
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(m => m.IsSaveVisible)
+        @Html.HiddenFor(m => m.CallBackUrl)
+        @Html.HiddenFor(m => m.NoteNo)
+        @Html.HiddenFor(m => m.VehicleNo)
+        @Html.HiddenFor(m => m.IsBackDenied)
+        <div class="fixedElement">
+            <div class="col-md-12" style="position: relative;">
+                <div class="heading_text_btn mb-4 mt-4">
+                    <div class="leftButton">
+                        <button type="button" class="btn btn-primary me-2"
+                                onclick="NormalBackBtnClicked('/Security/CTV2/EditNote?NoteNumber=@Model.NoteNo')">
+                            <i data-feather="arrow-left-circle"></i>
+                            Back
+                        </button>
+
+                        <button id="btnSubmit" type="button" name="Submit" value="create"
+                                class="btn btn-secondary me-2" disabled
+                                onclick="SaveData()"
+                                @*onclick="window.location.href='vehicle_trip_schedule.html';"*@>
+                            <i data-feather="upload"></i>
+                            Submit
+                        </button>
+                        <button type="button" onclick="ClearBtnClicked('/Security/CTV2/LocVehTripSchEdit?NoteNumber=@Model.NoteNo')"
+                                class="btn btn-white">
+                            <i data-feather="x-circle"></i>
+                            Clear
+                        </button>
+
+                    </div>
+                    <h2>"Company Transport” Vehicle Trip Schedule – EDIT</h2>
+                </div>
+            </div>
+        </div>
+    }
+
+
+    <div class="col-md-12">
+        <div class="heading_text_btn2 d-block mb-4">
+            <h2 class="text-center">A. Local Vehicle Schedule - Date Wise Vehicle Trip Details Entry:</h2>
+        </div>
+    </div>
+
+    <div class="col-md-12 mb-4 sectionB">
+        <div class="card mb-4">
+            <div class="card-body">
+                <form class="form-sample form-inline row ms-auto">
+                    <div class="row d-flex align-items-center">
+                        <label class="col-form-label col-md-3">
+                            Local Vehicle Schedule From Date :
+                        </label>
+                        <div class="col-md-3">
+                            <input id="SCHFromDate" type="text" class="form-control" value="@Model.SCHFromDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)" disabled>
+                            @*@Html.TextBoxFor(m => m.SCHFromDate, "{0:dd-MM-yyyy}",
+                                htmlAttributes: new { @class = "form-control", disabled = "disabled" })*@
+                        </div>
+                        <label class="col-form-label col-md-3">
+                            To Date :
+                        </label>
+                        <div class="col-md-3">
+                            <input id="SCHToDate" type="text" class="form-control" value="@Model.SCHToDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)" disabled>
+                            @*@Html.TextBoxFor(m => m.SCHToDate, "{0:dd-MM-yyyy}",
+                                htmlAttributes: new { @class = "form-control", disabled = "disabled" })*@
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12 ">
+        <div class="sectionB">
+            <div class="table-responsive max-content">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">SL.No.</th>
+                            <th scope="col">Scheduled Trip From Date</th>
+                            <th scope="col">From Location Type Code & Name</th>
+                            <th scope="col">From Location Code & Name</th>
+                            <th scope="col">To Location Type Code & Name</th>
+                            <th scope="col">To Location Code & Name</th>
+                            <th scope="col">Scheduled Trip To Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.LVSchDtl != null && Model.LVSchDtl.Count >= 1)
+                        {
+                            int mrow = 1;
+                            foreach (var item in Model.LVSchDtl)
+                            {
+                                <tr>
+                                    <th scope="row">@mrow</th>
+                                    <td>@item.FromDateStr</td>
+                                    <td>@item.FromCenterTypeCode / @item.FromCenterTypeName</td>
+                                    <td>@item.FromCentreCode / @item.FromCenterName</td>
+                                    <td>@item.ToCenterTypeName</td>
+                                    <td>@item.ToCenterName</td>
+                                    <td>
+                                        <div data-toggle="tooltip" data-placement="right" title="Distance covered - @item.Distance kms, Days taken - @item.CalcDays">
+                                            @item.ToDateStr
+                                        </div>
+                                    </td>
+                                </tr>
+                                mrow += 1;
+                            }
+                        }
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+</div>
+<div>
+    <div class="col-md-12">
+        <div class="heading_text_btn2 d-block mb-4 mt-4 pt-4">
+            <h2 class="text-center">B. Updated Local Vehicle Schedule - Date Wise Vehicle Trip Details Entry:</h2>
+        </div>
+    </div>
+    <div class="col-md-12 newTable">
+        <div class="table-responsive max-content">
+
+            <table class="table table-bordered btnalign">
+                <thead>
+                    <tr>
+                        <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                            SL.No.
+                        </th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                            Edit Driver No. & Name
+                        </th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                            Add Saved Driver No. & Name
+                        </th>
+                        <th style="text-align: center; vertical-align: middle;" scope="col">
+                            Scheduled Trip From Date
+                        </th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">From Location Type Code & Name</th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                            From Location Code & Name
+                        </th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">To Location Type Code & Name</th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                            To Location Code & Name
+                        </th>
+                        <th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                            Scheduled Trip To Date
+                        </th>
+                        @*<th scope="col" style="text-align: center; vertical-align: middle;" rowspan="2">
+                                Actions
+                            </th>*@
+
+                    </tr>
+
+                </thead>
+                <tbody>
+                    @if (Model.LVSchDtl != null && Model.LVSchDtl.Count >= 1)
+                    {
+                        int rowcount = 1;
+                        foreach (var item in Model.LVSchDtl)
+                        {
+                            <tr id="@rowcount" class="add-row">
+                                <th scope="row">@rowcount</th>
+                                <th scope="row" class="text-center">
+                                    <div class="form-group cmbDriver">
+                                        <div id="@rowcount.ToString()_Driver" class="inVisible cmbEditDriver">@item.EditDriverNo</div>
+                                        <div id="@rowcount.ToString()_DriverName" class="inVisible">@item.EditDriverName</div>
+                                        @if (item.IsActivetoEdit == 1)
+                                        {
+                                            <select id="@rowcount.ToString()_DriverCmb"
+                                                    class="form-select PickDriver"
+                                                    onchange="DriverChanged()"
+                                                    aria-label="Default select example">
+                                                <option selected value="-1">Select a driver</option>
+                                                <option value="0">Other</option>
+                                                @if (Model.ListofDrivers != null)
+                                                {
+                                                    foreach (var dr in Model.ListofDrivers)
+                                                    {
+                                                        <option value="@dr.ID">@dr.DisplayText</option>
+                                                    }
+                                                }
+                                            </select>
+
+                                            <input type="text" placeholder="Enter driver name"
+                                                   id="@rowcount.ToString()_DriverCmbtxt"
+                                                   class="form-control pointer canClear inVisible" />
+                                        }
+                                        else
+                                        {
+
+                                            <input type="text" disabled
+                                                   id="@rowcount.ToString()_DriverCmbtxt"
+                                                   value="@item.EditDriverName"
+                                                   class="form-control" />
+                                        }
+                                    </div>
+                                </th>
+                                <td class="text-center">
+                                    <div id="@rowcount.ToString()_DriverDiv">
+                                        @Model.DriverCodenName
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <div id="@rowcount.ToString()_FromDateDiv">
+                                        @item.FromDateStr
+                                    </div>
+                                </td>
+
+                                <td class="text-center">
+                                    @item.FromCenterTypeCode / @item.FromCenterTypeName
+                                </td>
+                                <td class="text-center">
+                                    @item.FromCentreCode / @item.FromCenterName
+                                </td>
+                                <td class="text-center">
+                                    @item.ToCenterTypeName
+                                </td>
+                                <td class="text-center">
+                                    @item.ToCenterName
+                                </td>
+                                <td class="text-center">@item.ToDateStr</td>
+
+                            </tr>
+                            rowcount += 1;
+                        }
+
+                    }
+
+
+                </tbody>
+            </table>
+
+
+
+        </div>
+    </div>
+</div>
+@section headers
+    {
+    <style>
+        .inVisible {
+            display: none;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
+}
+@section scripts{
+    <script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CTV/LocVehTripSchEdit.js"></script>
+    <script>
+        $(document).ready(function () {
+
+        });
+    </script>
+    <script>
+
+    </script>
+}

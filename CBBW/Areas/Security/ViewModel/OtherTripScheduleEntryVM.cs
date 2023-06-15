@@ -18,6 +18,7 @@ namespace CBBW.Areas.Security.ViewModel
         public string CurDate { get; set; }
         public List<OthTripTemp> OTSchList { get; set; }
         public int BackBtnMsg { get; set; }
+        public int IsBackDenied { get; set; }
     }
     
 }

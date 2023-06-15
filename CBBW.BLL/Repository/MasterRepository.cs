@@ -31,7 +31,7 @@ namespace CBBW.BLL.Repository
             string msg = "";
             string result = "";
             if (empType == 1 || empType == 2)
-                result = _entities.GetDesignation(empID, empType, ref msg);
+                result = _entities.GetDesignation(empID, 1, ref msg);
             else if (empType == 3)
                 result = "0 / Others";
             else if (empType == 4)

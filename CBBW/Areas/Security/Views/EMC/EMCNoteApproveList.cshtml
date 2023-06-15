@@ -36,17 +36,17 @@
                     <tr>
                         <th scope="col" rowspan="1" colspan="1">
                             <div class="form-group">
-                                <input id="filterNoteno" type="text" class="form-control" placeholder="Search...">
+                                <input id="filterNoteno" type="text" class="form-control tblSearch" placeholder="Search...">
                             </div>
                         </th>
                         <th scope="col" rowspan="1" colspan="1">
                             <div class="form-group">
-                                <input id="filterDate" type="text" class="form-control" placeholder="Search...">
+                                <input id="filterDate" type="text" class="form-control tblSearch" placeholder="Search...">
                             </div>
                         </th>
                         <th scope="col" rowspan="1" colspan="1">
                             <div class="form-group">
-                                <input id="filterCenterCN" type="text" class="form-control" placeholder="Search...">
+                                <input id="filterCenterCN" type="text" class="form-control tblSearch" placeholder="Search...">
                             </div>
                         </th>
 
@@ -103,7 +103,7 @@
 @section scripts{
     <script>
         $(document).ready(function () {
-            $('#tblmgp').dataTable({
+            var dtinstance = $('#tblmgp').DataTable({
                 columns: [
                     { 'data': 'RowNumber' },
                     { 'data': 'NoteNumber' },
@@ -127,6 +127,13 @@
                 sAjaxSource: '/Security/EMC/GetEMCNZBApprovalforListPage',
                 "pagingType": "input"
             });
+        });
+
+        $('.tblSearch').on('keyup change', function () {
+            dtinstance.search(this.value).draw();
+        });
+        $('.tblSearch').on('click', function (e) {
+            e.stopPropagation();
         });
 
         function FnViewNote(ctrl) {
