@@ -424,6 +424,7 @@
     <Content Include="UIContent\JS\CustomePage\RBACUser\AddUser.js" />
     <Content Include="UIContent\JS\CustomePage\RBACUser\Index.js" />
     <Content Include="UIContent\JS\CustomePage\SecurityRuleValidation.js" />
+    <Content Include="UIContent\JS\CustomePage\SLUCtrlsV2.js" />
     <Content Include="UIContent\JS\CustomePage\TADARule\TADARuleEntry.js" />
     <Content Include="UIContent\JS\CustomePage\TADARule\TADARuleParam.js" />
     <Content Include="UIContent\JS\CustomePage\TADARule\TADATransModeUpdation.js" />

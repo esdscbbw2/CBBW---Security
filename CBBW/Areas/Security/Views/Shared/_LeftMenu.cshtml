@@ -12,6 +12,10 @@
 
                         <li>
                             <a class="nav-link" href="#"> <i class="fa fa-circle" aria-hidden="true"></i> Masters</a>
+                            <ul class="submenu collapse">
+                                <li>@Html.ActionLink("User Management", "Index", "UserManagement", new { area = "Security" }, new { @class = "nav-link" })</li>
+                                @*<li>@Html.ActionLink("TA DA – Rules", "Index", "TADARules", new { area = "Security" }, new { @class = "nav-link" })</li>*@
+                            </ul>
                         </li>
 
                         <li>

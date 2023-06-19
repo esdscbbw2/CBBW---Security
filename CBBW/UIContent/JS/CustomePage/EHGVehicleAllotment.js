@@ -21,6 +21,7 @@ function validatectrl(targetid, value) {
             if (value>=0) {
                 var x = $('#VADetails_DriverNumber option:selected').text();
                 $('#VADetails_DriverName').val(x);
+                $('#DriverNumber').val(value);
                 isvalid = true;                
             }
             //alert(value+' - '+isvalid);
@@ -171,4 +172,8 @@ $(document).ready(function () {
     $('#IsBtn').val(0);
     var x = $('#VADetails_DriverNumber option:selected').text();
     $('#VADetails_DriverName').val(x);
+    $('#DriverNumber').val(driverCtrl.val());
+    if ($('#IsDriverCtrlEnable').val() == 0) {
+        driverCtrl.attr('disabled', 'disabled');
+    } else { driverCtrl.removeAttr('disabled'); }
 });

@@ -122,5 +122,7 @@ namespace CBBW.Areas.Security.ViewModel.EHG
         public string MaxToDate { get; set; }
         public int MaxDaysOfTourForEmp { get; set; }
         public int OkToOpen { get; set; }
+        public int DriverNumber { get; set; }
+        public int IsDriverCtrlEnable { get; set; }
     }
 }

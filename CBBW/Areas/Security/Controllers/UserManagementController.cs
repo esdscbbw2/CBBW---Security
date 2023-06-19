@@ -38,7 +38,11 @@ namespace CBBW.Areas.Security.Controllers
 
 
         #region Ajax Calling
-
+        public JsonResult ValidateUserName(string UserName)
+        {
+            bool result=_iRBACUser.ValidateUserName(UserName,ref pMsg);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
         #endregion
     }
 }

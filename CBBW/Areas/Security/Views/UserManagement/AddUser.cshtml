@@ -3,22 +3,22 @@
 @{
 
 }
+@Html.HiddenFor(m => m.IsBackDenied)
 <div class="row newTable">
     <div class="fixedElement">
-        <div class="col-md-12">
-            <div class="heading_text_btn mb-3 mt-4">
+        <div class="col-md-12" style="position: relative;">
+            <div class="heading_text_btn mb-4 ">
                 <div class="leftButton">
-                    <button type="button" class="btn btn-primary me-2" 
-                            onclick="window.location.href='/Security/UserManagement/Index';">
+                    <button type="button" class="btn btn-primary me-2"
+                            onclick="NormalBackBtnClicked('/Security/UserManagement/Index')">
                         <i data-feather="arrow-left-circle"></i>
                         Back
                     </button>
-                    <button id="btnSubmit" type="submit" class="btn btn-secondary me-2" 
-                            onclick="window.location.href='user_mngmt_listing.html';">
+                    <button type="submit" class="btn btn-secondary me-2" onclick="window.location.href='user_mngmt_listing.html';">
                         <i data-feather="upload"></i>
                         Submit
                     </button>
-                    <button type="button" onclick="ClearBtnClicked('/Security/UserManagement/AddUser')" 
+                    <button type="button" onclick="ClearBtnClicked('/Security/UserManagement/AddUser?isClear=1')"
                             class="btn btn-white">
                         <i data-feather="x-circle"></i>
                         Clear
@@ -28,23 +28,24 @@
             </div>
         </div>
     </div>
-    <div id="HdrDiv" class="col-md-12 mb-4">
+    <div class="col-md-12 mb-4">
         <div class="card mt-4">
-            <div class="card-body approvalForm">
+            <div class="card-body">
                 @*<form class="form-sample form-inline row ms-auto">*@
+                <div class="SLUSection SLUContainer">
                     <div class="row d-flex align-items-center mb-4">
                         <label class="col-form-label col-md-2">
                             Employee No. & Name :
                         </label>
                         <div class="col-md-4">
-                            <select id="EmployeeNumber" class="form-select is-invalid"
-                                    aria-label="Default select example">
-                                <option value="" selected> Select Employee</option>
+                            <select class="form-select SLUCtrl is-invalid" aria-label="Default select example"
+                                    id="EmployeeNumber">
+                                <option value=""> Select Employee</option>
                                 @if (Model.EmployeeList != null && Model.EmployeeList.Count > 0)
                                 {
                                     foreach (var item in Model.EmployeeList)
                                     {
-                                        <option data-desc="@item.Designation" value="@item.EmployeeNumber">@item.EmployeeNumber / @item.EmployeeName</option>
+                                        <option data-desg="@item.Designation" value="@item.EmployeeNumber"> @item.EmployeeName</option>
                                     }
                                 }
                             </select>
@@ -53,9 +54,8 @@
                             Designation :
                         </label>
                         <div class="col-md-4">
-                            <div>
-                                <input id="EmpDesg" type="text" 
-                                       class="form-control" disabled>
+                            <div style="display:block;">
+                                <input id="EmpDesg" type="text" class="form-control" value="" disabled>
                             </div>
                         </div>
                     </div>
@@ -64,9 +64,9 @@
                             User Name :
                         </label>
                         <div class="col-md-4">
-                            <input id="UserName" type="text" 
-                                   class="form-control is-invalid"
-                                   title="User Name Should Be Alpha Numeric Without Space.">
+                            <input type="text" class="form-control SLUCtrl is-invalid"
+                                   title="User Name Should Be Alpha Numeric Without Space."
+                                   id="UserName">
                         </div>
                     </div>
                     <div class="row d-flex align-items-center mb-4">
@@ -74,106 +74,117 @@
                             Password :
                         </label>
                         <div class="col-md-4 position-relative">
-                            <input type="password" id="NewPassword" 
-                                   class="input-field form-control is-invalid valid"
-                                   name=" password" value=""
-                                   title="Password Should Atleast 6 Characters Containing Atleast One Uppercase, One Lowercase, One Digit & One Special Character ">
+                            <input type="password" class="input-field form-control SLUCtrl is-invalid"
+                                   title="Password Should Atleast 6 Characters Containing Atleast One Uppercase, One Lowercase, One Digit & One Special Character "
+                                   name=" password" value="" id="NewPassword">
                             <span class="fa fa-fw fa-eye field-icon toggle-password"></span>
                         </div>
                         <label class="col-form-label col-md-2">
                             Confirm  Password :
                         </label>
                         <div class="col-md-4 position-relative">
-                            <input type="password" id="CnfPassword" 
-                                   class="input-field form-control is-invalid valid"
-                                   name="Confirm password" value=""
-                                   title="Confirm Password Should Exactly The Same Password Given In Password Input Box">
+                            <input type="password"
+                                   class="input-field form-control SLUCtrl is-invalid"
+                                   title="Password Should Atleast 6 Characters Containing Atleast One Uppercase, One Lowercase, One Digit & One Special Character "
+                                   name="Confirm password" value="" id="CnfPassword">
                             <span class="fa fa-fw fa-eye field-icon toggle-password"></span>
                         </div>
                     </div>
                     <div class="row d-flex align-items-center mb-4">
-                        <label class="col-form-label col-md-2">
-                            Effective Date :
-                        </label>
-                        <div class="col-md-4">
-                            <div class="position-relative pointer">
-                                <input id="EffectiveDate" type="date" 
-                                       min="@DateTime.Today.ToString("yyyy-MM-dd")"
-                                       class="form-control pointer is-invalid"
-                                       onchange="changeDateFormat(this)"
-                                       title="Accept Today Or Future Dates">
-                                <label id="lblEffectiveDate" style="width:100px"
-                                       class="datelabel pointer">Select Date </label>
-                            </div>
-                        </div>
-                        <div class="col-md-6 text-end">
+                        <div class="col-md-6">
                             <div class="form-check">
-                                <input class="form-check-input float-none" type="checkbox" id="check1" name="option1" value="something">
+                                <input class="form-check-input float-none SLUCtrl" type="checkbox" id="check1" name="option1" value="something">
                                 <label for="" class="ps-2">Is-Active</label>
                             </div>
                         </div>
 
                     </div>
-
+                </div>
+                <div class="SLUSection">
                     <div class="row d-flex align-items-center mt-4">
                         <div class="table-responsive btnalign">
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th width="40%">Role</th>
-                                        <th width="40%">Center Codes</th>
-                                        <th width="20%" style="background: pink;color: #000;">Action</th>
+                                        <th>Role</th>
+                                        <th>Location Type & Name</th>
+                                        <th>Location Code & Name</th>
+                                        <th>Effective From Date</th>
+                                        <th>Effective To Date</th>
+                                        <th style="background: pink;color: #000;">Action</th>
                                     </tr>
                                 </thead>
-                                <tbody id="tbody1">
-                                    <tr id="0" class="add-row">
+                                <tbody id="table_body">
+                                    <tr class="">
                                         <td onclick="toastDiv()">
-                                            <select id="ctrlRoles" onchange="RolesChanged()" 
-                                                    class="form-select ApplyMultiSelectWithSelectAll alterID inValidTag is-invalid">
-                                                @if(Model.RoleList!=null && Model.RoleList.Count > 0)
-                                                {
-                                                    foreach (var item in Model.RoleList) 
+                                            <div id="selectDiv1">
+                                                <select id="Role_0" multiple="multiple" 
+                                                        class="form-select ApplyMultiSelectWithSelectAll SLUCtrl" 
+                                                        aria-label="Default select example">                                                    
+                                                    @if(Model.RoleList!=null && Model.RoleList.Count > 0) 
                                                     {
-                                                        <option value="@item.RoleId">@item.RoleName</option>
+                                                        foreach(var item in Model.RoleList) 
+                                                        {
+                                                            <option value="@item.RoleId">@item.RoleName</option>
+                                                        }
                                                     }
-                                                }
-                                            </select>
-
+                                                </select>
+                                            </div>
                                         </td>
                                         <td width="15%">
-                                            <select id="ctrlCentres" onchange="CentreChanged()" 
-                                                    class="form-select ApplyMultiSelectWithSelectAll alterID inValidTag is-invalid">
-                                                @if (Model.CentreList != null && Model.CentreList.Count > 0)
-                                                {
-                                                    foreach (var item in Model.CentreList)
-                                                    {
-                                                        <option value="@item.ID">@item.DisplayText</option>
-                                                    }
-                                                }
-                                            </select>
+                                            <div id="selectDiv2">
+                                                <select multiple="multiple" id="LocationCode_0" 
+                                                        class="form-select example-getting-started1 SLUCtrl" 
+                                                        aria-label="Default select example">
+                                                    <option value="1"> 01 / Center</option>
+                                                    <option value="2"> 03 / Admin Office</option>
+                                                    <option value="3"> 04 / Mfg. Office</option>
+                                                    <option value="4"> 02 / Godown</option>
+                                                    <option value="5"> 05 / Branch</option>
+                                                </select>
+                                            </div>
+
+                                        </td>
+                                        <td>
+                                            <div id="selectDiv3">
+                                                <select multiple="multiple" class="form-select example-getting-started1 SLUCtrl" aria-label="Default select example" id="multiselect3">
+                                                    <option value="1"> 01 / Puranipet</option>
+                                                    <option value="2"> 01 / Nizamabad</option>
+                                                    <option value="3"> 01 / Koratla</option>
+                                                    <option value="4"> 01 / Raipur</option>
+                                                    <option value="5"> 01 / Jaipur  </option>
+                                                    <option value="6"> 01 / Puranipet </option>
+                                                    <option value="7"> 01 / Koratla </option>
+                                                    <option value="8"> 01 / Raipur </option>
+                                                    <option value="9"> 01 / Puranipet </option>
+                                                    <option value="10"> 01 / Nizamabad </option>
+                                                </select>
+                                            </div>
+
+                                        </td>
+                                        <td>
+                                            <div class="position-relative pointer">
+                                                <input type="date" class="form-control pointer is-invalid valid SLUCtrl" onchange="changeDateFormat(this)" id="date1">
+                                                <label class="datelabel pointer">Select Date </label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="position-relative pointer">
+                                                <input type="date" class="form-control pointer is-invalid valid SLUCtrl" onchange="changeDateFormat(this)" id="date2">
+                                                <label class="datelabel pointer">Select Date </label>
+                                            </div>
                                         </td>
                                         <td>
                                             <span class="actionBtn">
-                                                <button id="trRemoveBtn" type="button" 
-                                                        class="btn secondaryLink inVisible removeBtn cloneBtn " 
-                                                        data-toggle="tooltip" data-placement="top" 
-                                                        onclick="RowRemoveBtnWithEffectSubmitClicked('tbody2','btnSubmit','HdrDiv')"
-                                                        title="Delete">
-                                                    <i data-feather="x"></i>
+                                                <button type="button" class="btn secondaryLink" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                    <i data-feather="x" onclick="remove_tr(this)"></i>
                                                 </button>
-                                                <button id="trAddBtn" type="button" 
-                                                        class="btn primaryLink addBtn cloneBtn" 
-                                                        data-toggle="tooltip" data-placement="top"
-                                                        onclick="RowAddBtnWithEffectSubmitClicked('tbody1','tbody2',true,true,true,'btnSubmit','HdrDiv')"
-                                                        title="Add">
-                                                    <i data-feather="plus"></i>
+                                                <button type="button" class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Add">
+                                                    <i data-feather="plus" onclick="create_tr('table_body')"></i>
                                                 </button>
                                             </span>
                                         </td>
                                     </tr>
-                                </tbody>
-                                <tbody id="tbody2">
-
                                 </tbody>
                             </table>
                             <div class="toast show" id="toast">
@@ -182,14 +193,16 @@
                                     <button type="button" onclick="closetoast()" class="btn-close close-btn" data-bs-dismiss="toast"></button>
                                 </div>
                                 <div class="toast-body">
-                                    Tour Rule, TADA Rule, CTV Entry, CTV approval etc...
+                                    Tour Rule, TADA Rule, CTV Entry, CTV Approval etc...
                                 </div>
                             </div>
                         </div>
                     </div>
-                @*</form>*@
+                </div>
+                    
+                    @*</form>*@
+                </div>
             </div>
-        </div>
     </div>
 </div>
 @section headers
@@ -229,6 +242,7 @@
     </style>
 }
 @section scripts{
+    <script src="~/UIContent/JS/CustomePage/SLUCtrlsV2.js"></script>    
     <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/RBACUser/AddUser.js"></script>
     <script>

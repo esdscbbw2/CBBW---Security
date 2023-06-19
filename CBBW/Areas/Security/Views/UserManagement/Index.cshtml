@@ -1,11 +1,26 @@
 ﻿
 @{
     
-}
-<div class="row newTable">
+}<div class="row newTable">
+    @*<div class="breadcrumb-outer p-15 pt-3">
+        <ul>
+            <li class="activeLink">
+                <a href="#">Administration <i data-feather="chevrons-right"></i> </a>
+            </li>
+            <li class="activeLink">
+                <a href="#">Maintenance <i data-feather="chevrons-right"></i> </a>
+            </li>
+            <li class="activeLink">
+                <a href="#">Masters <i data-feather="chevrons-right"></i> </a>
+            </li>
+            <li>
+                <a href="#">User Management <i data-feather="chevrons-right"></i> </a>
+            </li>
+        </ul>
+    </div>*@
     <div class="fixedElement">
         <div class="col-md-12" style="position: relative;">
-            <div class="heading_text_btn mb-4 mt-4">
+            <div class="heading_text_btn mb-4 ">
                 <div class="leftButton">
                     <button type="submit" class="btn btn-primary me-2" 
                             onclick="window.location.href='/Security/UserManagement/AddUser';">
@@ -25,8 +40,7 @@
                     <th scope="col" rowspan="2"> SL.No.</th>
                     <th scope="col">Employee No. & Name</th>
                     <th scope="col">User</th>
-                    <th scope="col"> Role </th>
-                    <th scope="col"> Center Code </th>
+                    <th scope="col" rowspan="2">Status</th>
                     <th scope="col" rowspan="2" style="background: pink;color: #000;">Action</th>
                 </tr>
                 <tr>
@@ -40,20 +54,66 @@
                             <input type="text" class="form-control" placeholder="Search...">
                         </div>
                     </th>
-                    <th scope="col">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search...">
-                        </div>
-                    </th>
-                    <th scope="col">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search...">
-                        </div>
-                    </th>
                 </tr>
             </thead>
-            <tbody></tbody>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>9001 / praveen</td>
+                    <td>praveen</td>
+                    <td>
+                        <button class="btn alert-success btn-status">
+                            Active
+                        </button>
+                    </td>
+                    <td>
+                        <span class="actionBtn">
+                            <button type="button" class="btn primaryLink" data-toggle="tooltip" data-placement="top" onclick="window.location.href='user_mngmt_view.html';"
+                                    title="Details">
+                                <i data-feather="eye"></i>
+                            </button>
+                            <button type="button" class="btn primaryLink" data-toggle="tooltip" data-placement="top" onclick="window.location.href='user_mngmt_edit.html';"
+                                    title="Edit">
+                                <i data-feather="edit"></i>
+                            </button>
+                            <button type="button" class="btn secondaryLink" data-toggle="tooltip" data-placement="top" onclick="window.location.href='user_mngmt_delete.html';"
+                                    title="Delete">
+                                <i data-feather="trash-2"></i>
+                            </button>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>003 / praveen</td>
+                    <td>praveen</td>
+                    <td>
+                        <button class="btn alert-success btn-status">
+                            Active
+                        </button>
+                    </td>
+                    <td>
+                        <span class="actionBtn">
+                            <button type="button" class="btn primaryLink" data-toggle="tooltip" data-placement="top" onclick="window.location.href='user_mngmt_view.html';"
+                                    title="Details">
+                                <i data-feather="eye"></i>
+                            </button>
+                            <button type="button" class="btn primaryLink" data-toggle="tooltip" data-placement="top" onclick="window.location.href='user_mngmt_edit.html';"
+                                    title="Edit">
+                                <i data-feather="edit"></i>
+                            </button>
+                            <button type="button" class="btn secondaryLink" data-toggle="tooltip" data-placement="top" onclick="window.location.href='user_mngmt_delete.html';"
+                                    title="Delete">
+                                <i data-feather="trash-2"></i>
+                            </button>
+                        </span>
+                    </td>
+                </tr>
+
+            </tbody>
         </table>
+
+
     </div>
 </div>
 @section headers

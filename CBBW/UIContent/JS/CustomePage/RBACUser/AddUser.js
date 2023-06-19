@@ -1,39 +1,49 @@
 ﻿$("#EmployeeNumber").on("change", function () {
-    var desg = $("#EmployeeNumber option:selected").attr('data-desc');
+    var desg = $("#EmployeeNumber option:selected").attr('data-desg');
     var myCtrl = $(this);
     if (myCtrl.val() > 0) {
         $('#EmpDesg').val(desg);
-        myCtrl.isValid();
+        myCtrl.isValidCtrl();
     } else {
         $('#EmpDesg').val('');
-        myCtrl.isInvalid();
+        $("#UserName").val('').addClass('is-invalid');
+        myCtrl.isInvalidCtrl();
     }
     SubmitBtnStatus('btnSubmit', 'HdrDiv');
 });
 $("#UserName").on("keyup", function () {
     var myCtrl = $(this);
     if (isAlphanumeric(myCtrl.val())) {
-        myCtrl.isValid();
+        var url = '/UserManagement/ValidateUserName?UserName=' + $(this).val();
+        GetDataFromAjax(url).done(function (data) {
+            if (data) { myCtrl.isValidCtrl(); }
+            else {
+                myCtrl.isInvalidCtrl();
+                $('#NewPassword').val('');
+                MyAlert(4, 'User Name Already Exist');
+            }
+        });        
     } else {
-        myCtrl.isInvalid();
+        myCtrl.isInvalidCtrl();
+        $('#NewPassword').val('');
     }
     SubmitBtnStatus('btnSubmit', 'HdrDiv');
 });
 $("#NewPassword").on("keyup", function () {
     var myCtrl = $(this);
     if (validatePassword(myCtrl.val())) {
-        myCtrl.isValid();
+        myCtrl.isValidCtrl();
     } else {
-        myCtrl.isInvalid();
+        myCtrl.isInvalidCtrl();
     }
     SubmitBtnStatus('btnSubmit', 'HdrDiv');
 });
 $("#CnfPassword").on("keyup", function () {
     var myCtrl = $(this);
     if (validatePassword(myCtrl.val())) {
-        myCtrl.isValid();
+        myCtrl.isValidCtrl();
     } else {
-        myCtrl.isInvalid();
+        myCtrl.isInvalidCtrl();
     }
     SubmitBtnStatus('btnSubmit', 'HdrDiv');
 });
@@ -41,11 +51,11 @@ $("#CnfPassword").on("blur", function () {
     var myCtrl = $(this);
     var newpassword = $('#NewPassword').val();
     if (newpassword == myCtrl.val()) {
-        myCtrl.isValid();
+        myCtrl.isValidCtrl();
     }
     else {
         MyAlert(4, 'Password Confirmation Failed.')
-        myCtrl.isInvalid();
+        myCtrl.isInvalidCtrl();
     }
     SubmitBtnStatus('btnSubmit', 'HdrDiv');
 });

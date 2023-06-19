@@ -34,32 +34,32 @@
                 <tr>
                     <th scope="col">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search...">
+                            <input type="text" data-index="1" class="form-control tblSearch" placeholder="Search...">
                         </div>
                     </th>
                     <th scope="col">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search...">
+                            <input type="text" data-index="2" class="form-control tblSearch" placeholder="Search...">
                         </div>
                     </th>
                     <th scope="col">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search...">
+                            <input type="text" data-index="3" class="form-control tblSearch" placeholder="Search...">
                         </div>
                     </th>
                     <th scope="col">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search...">
+                            <input type="text" data-index="4" class="form-control tblSearch" placeholder="Search...">
                         </div>
                     </th>
                     <th scope="col">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search...">
+                            <input type="text" data-index="5" class="form-control tblSearch" placeholder="Search...">
                         </div>
                     </th>
                     <th scope="col">
                         <div class="form-group">
-                            <input id="filterMonthnYear" type="text" class="form-control" placeholder="Search...">
+                            <input id="filterMonthnYear" data-index="6" type="text" class="form-control tblSearch" placeholder="Search...">
                         </div>
                     </th>
                 </tr>
@@ -103,7 +103,7 @@
 @section scripts{
     <script>
         $(document).ready(function () {
-            $('#NoteListTbl').DataTable({
+            var dtinstance =$('#NoteListTbl').DataTable({
                 columns: [
                     { 'data': 'RowNumber' },
                     { 'data': 'NoteNumber' },
@@ -128,6 +128,14 @@
                 bServerSide: true,
                 sAjaxSource: '/Security/EHG/getApprovedNoteList',
                 "pagingType": "input"
+            });
+            $('.tblSearch').on('keyup change', function () {
+                var searchtext = $(this).attr('data-index') + ':' + this.value;
+                if (this.value == '') { searchtext = ''; }
+                dtinstance.search(searchtext).draw();
+            });
+            $('.tblSearch').on('click', function (e) {
+                e.stopPropagation();
             });
         });
         function FnViewNote(ctrl) {

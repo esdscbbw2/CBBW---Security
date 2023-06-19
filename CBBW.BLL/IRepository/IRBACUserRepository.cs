@@ -11,6 +11,7 @@ namespace CBBW.BLL.IRepository
     public interface IRBACUserRepository
     {
         List<Employee> GetListOfActiveEmployees(ref string pMsg);
+        bool ValidateUserName(string UserName, ref string pMsg);
         List<CustomComboOptions> GetCentreList(ref string pMsg);
         List<MyRole> GetListOfRoles(ref string pMsg);
 

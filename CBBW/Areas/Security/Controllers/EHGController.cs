@@ -290,7 +290,14 @@ namespace CBBW.Areas.Security.Controllers
                     model.VADetails.VehicleType = model.ehgHeader.VehicleType == 1 ? "LV" : "2 Wheeler";
                 }
                 model.VADetails.DriverNumber = model.DriverList != null ? model.DriverList.Where(o=>o.ID!=-1).FirstOrDefault().ID : -1;
-                
+                model.DriverNumber = model.VADetails.DriverNumber;
+                if (model.DriverList != null && model.DriverList.Where(o => o.ID != -1).Count() > 1)
+                {
+                    model.IsDriverCtrlEnable = 1;
+                    model.VADetails.DriverNumber = -1;
+                    model.DriverNumber = -1;
+                }
+                else { model.IsDriverCtrlEnable = 0; }
                 //if(model.VADetails!=null)
                 //    model.OthVehNo = model.VADetails.OtherVehicleNumber;
                 model.IsBtn = 0;
@@ -302,6 +309,7 @@ namespace CBBW.Areas.Security.Controllers
         public ActionResult VehicleAllotment(EHGHeaderEntryVM modelobj, string Submit) 
         {
             model = CastEHGTempData();
+            if (modelobj.VADetails != null) { modelobj.VADetails.DriverNumber = modelobj.DriverNumber; }
             model.VADetails = modelobj.VADetails;            
             if (Submit == "Save") 
             {

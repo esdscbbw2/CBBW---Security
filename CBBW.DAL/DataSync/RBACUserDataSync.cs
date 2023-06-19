@@ -20,6 +20,18 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) { pMsg = ex.Message; return null; }
         }
+        public bool ValidateUserName(string UserName, ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("SELECT [RBAC].[ValidateUserName]('" + UserName + "')", CommandType.Text))
+                {
+                    return bool.Parse(sql.ExecuteScaler(ref pMsg).ToString());
+                }
+
+            }
+            catch (Exception ex) { pMsg = ex.Message; return false; }
+        }
         public DataTable GetCentreList(ref string pMsg)
         {
             try

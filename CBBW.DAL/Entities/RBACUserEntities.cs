@@ -41,6 +41,10 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
+        public bool ValidateUserName(string UserName, ref string pMsg) 
+        {
+            return _RBACUserDataSync.ValidateUserName(UserName,ref pMsg);
+        }
         public List<CustomComboOptions> GetCentreList(ref string pMsg) 
         {
             List<CustomComboOptions> result = new List<CustomComboOptions>();

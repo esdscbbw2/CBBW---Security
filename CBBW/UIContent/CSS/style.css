@@ -96,11 +96,12 @@ strong.listingIcon {
 
 .heading_text_btn h2 {
     font-size: 16px;
-    margin: 0;
     padding: 0;
     display: block;
-    margin-left: 6rem;
+    margin: 0 15rem;
+    word-break: break-all;
     text-align: center;
+    line-height: 23px;
 }
 
 .heading_text_btn .btn {

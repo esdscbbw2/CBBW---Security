@@ -29,8 +29,9 @@ namespace CBBW.BLL.Repository
         {
             return _RBACUserEntities.GetListOfRoles(ref pMsg);
         }
-
-
-
+        public bool ValidateUserName(string UserName, ref string pMsg)
+        {
+            return _RBACUserEntities.ValidateUserName(UserName,ref pMsg);
+        }
     }
 }
