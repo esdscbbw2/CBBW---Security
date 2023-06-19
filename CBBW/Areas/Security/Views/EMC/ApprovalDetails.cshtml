@@ -95,16 +95,8 @@
                                     Is E.P Tour  :
                                 </label>
                                 <div class="col-md-6">
-                                    @if (Model.emnHeader.IsEPTour == true)
-                                    {
-
-
-                                        <input type="text" class="form-control" value="Yes" disabled>
-                                    }
-                                    else
-                                    {
-                                        <input type="text" class="form-control" value="No" disabled>
-                                    }
+                                        <input type="text" class="form-control" value="@(Model.emnHeader.IsEPTour == true?"Yes":"No")" disabled>
+                                   
 
                                 </div>
                             </div>
@@ -205,14 +197,7 @@
                                 <label>Approved :</label>
                             </div>
                             <div class="col-md-2">
-                                @if (Model.emnHeader.IsApproved == true)
-                                {
-                                    <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
-                                }
-                                else
-                                {
-                                    <input type="text" class="form-control width-85 pointer-none" value="No" disabled="">
-                                }
+                                    <input type="text" class="form-control width-85 pointer-none" value="@(Model.emnHeader.IsApproved == true?"Yes":"No")" disabled="">
 
                             </div>
                             <div class="col-md-2 col-form-label">

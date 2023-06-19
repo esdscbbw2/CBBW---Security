@@ -121,5 +121,6 @@ namespace CBBW.Areas.Security.ViewModel.EHG
         public int IsBtn { get; set; }
         public string MaxToDate { get; set; }
         public int MaxDaysOfTourForEmp { get; set; }
+        public int OkToOpen { get; set; }
     }
 }

@@ -113,7 +113,7 @@ namespace CBBW.BLL.Repository
         }
         public bool GetEmployeeValidationForTour(int CentreCode, string EmployeeNumbers, DateTime FromDate, DateTime ToDate, ref string pMsg)
         {
-            return _entities.GetEmployeeValidationForTour(CentreCode, EmployeeNumbers,FromDate,DateTime.Today,ref pMsg);
+            return _entities.GetEmployeeValidationForTour(CentreCode, EmployeeNumbers,FromDate,ToDate, ref pMsg);
         }
         public IEnumerable<CustomComboOptions> GetEmployeeListV2(int centreCode, ref string pMsg)
         {

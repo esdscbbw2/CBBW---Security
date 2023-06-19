@@ -114,9 +114,11 @@ function DDPickPersonChanged(x) {
     if (x == 1) {
         mValue = mValue.length;
     }
-    if (mValue > 0) { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
-
-   
+    if (mValue > 0) {
+            targetCtrl.isValid();
+    } else {
+        targetCtrl.isInvalid();
+    }
     if (x == 1) { GetVehicleEligibility(mIndex, 0); } else { GetVehicleEligibility(mIndex, mValue);}
 
     if (dstat > 1) {
@@ -140,9 +142,10 @@ function DDPickPersonChanged(x) {
 };
 $(document).ready(function () {
     EnableTravellingBtn();
-    getDropDownDataWithSelectedValue('DDPersonType', 'select Person Type', '/Security/ETS/GetPersonTypes', 0);
+    getDropDownDataWithSelectedValue('DDPersonType', 'Select Person Type', '/Security/ETS/GetPersonTypes', 0);
 
 });
+
 function ValidateControl() {
     debugger;
     var target = ValidateControl.caller.arguments[0].target;
@@ -159,12 +162,45 @@ function ValidateControl() {
 };
 function ValidateCloneRowCtrl() {
     var target = ValidateCloneRowCtrl.caller.arguments[0].target;
+  
     var tblRow = target.closest('.add-row');
     var targetCtrl = $(target);
+   
     var targetid = targetCtrl.attr('id');
     if (targetid.indexOf('_') >= 0) { targetid = targetid.split('_')[0] }
     var isvalid = validatectrl(targetid, targetCtrl.val());
     if (isvalid) { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
+
+    var mIndex = $(tblRow).attr('id');
+    if (targetid == 'TaDaDenied' && $(target).val() == 1) {
+        Swal.fire({
+            title: 'Confirmation',
+            text: 'Are You Sure To Deny The T.A & D.A Option?',
+            icon: 'question',
+            customClass: 'swal-wide',
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            cancelButtonClass: 'btn-cancel',
+            confirmButtonColor: '#2527a2',
+            showCancelButton: true,
+        }).then(function (result) {
+            debugger
+            if (result.isConfirmed) {
+
+            }
+            else {
+                if (mIndex > 0) {
+                    $('#TaDaDenied_' + mIndex).val(0);
+                } else {
+                    $('#TaDaDenied').val(0);
+                }
+                    
+            }
+        });
+
+    }
+
+
     EnableAddBtn(tblRow, 'AddBtn');
     EnableTravellingBtn();
    // EnableSubmitBtn();
@@ -174,13 +210,8 @@ function validatectrl(targetid, value) {
     var isvalid = false;
     var carryLaptop = $('#carryLaptop');
     var Policy = $('#Policy');
-
-
     switch (targetid) {
         case "TaDaDenied":
-            if (value == 1) {
-                MyAlert(6, 'You Will Continue With TADA Denied Yes..!!');
-            }
             isvalid = validatectrl_YesNoCombo(value);
             break;
         case "otherplace":
@@ -246,13 +277,12 @@ function EnableAddBtn(tblRow, addBtnBaseID) {
     EnableTravellingBtn();
 };
 function EnableSubmitBtn() {
-    debugger;
    // var x = getDivInvalidCount('HdrDiv');
   //  var y = getDivInvalidCount('TravellingPerson');
     var z = getDivInvalidCount('Questions');
     var btn = $('#Btnsubmit').val();
     var SubmitBtn = $('#btnSubmited');
-   // alert(z + ' - ' + btn);
+   //alert(z + ' - ' + btn);
    
     if (z <= 0 && btn == 1) {
         SubmitBtn.makeEnabled();
@@ -269,7 +299,6 @@ function getDivInvalidCount(mdivID) {
     return x;
 };
 function getDesgnCode(rowid, empCode) {
-    debugger;
     var actualempcode = 0
     if ($.isNumeric(empCode)) { actualempcode = empCode; }
     var desgCtrl = $('#DesgCodenName');
@@ -376,39 +405,48 @@ function SaveFinalSubmit() {
         data: x,
         success: function (data) {
             $(data).each(function (index, item) {
+
+                var url = "/Security/ETS/Index";
                 if (item.bResponseBool == true) {
-                    var url = "/Security/ETS/Index";
-                   
-                    Swal.fire({
-                        title: 'Confirmation',
-                        text: 'Data saved successfully.',
-                        setTimeout: 5000,
-                        icon: 'success',
-                        customClass: 'swal-wide',
-                        buttons: {
-                            confirm: 'Ok'
-                        },
-                        confirmButtonColor: '#2527a2',
-                    }).then(callback);
-                    function callback(result) {
-                        if (result.value) {
-                            var url = "/Security/ETS/Index"
-                            window.location.href = url;
-                        }
-                    }
+                    MyAlertWithRedirection(1, 'Data saved successfully.', url)
                 }
                 else {
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'Failed To Update Traveling Person Details.',
-                        icon: 'question',
-                        customClass: 'swal-wide',
-                        buttons: {
-                            confirm: 'Ok'
-                        },
-                        confirmButtonColor: '#2527a2',
-                    });
+                    MyAlert(4, 'Failed To Update Details.')
                 }
+
+                //if (item.bResponseBool == true) {
+                //    var url = "/Security/ETS/Index";
+                   
+                //    Swal.fire({
+                //        title: 'Confirmation',
+                //        text: 'Data saved successfully.',
+                //        setTimeout: 5000,
+                //        icon: 'success',
+                //        customClass: 'swal-wide',
+                //        buttons: {
+                //            confirm: 'Ok'
+                //        },
+                //        confirmButtonColor: '#2527a2',
+                //    }).then(callback);
+                //    function callback(result) {
+                //        if (result.value) {
+                //            var url = "/Security/ETS/Index"
+                //            window.location.href = url;
+                //        }
+                //    }
+                //}
+                //else {
+                //    Swal.fire({
+                //        title: 'Error',
+                //        text: 'Failed To Update Traveling Person Details.',
+                //        icon: 'question',
+                //        customClass: 'swal-wide',
+                //        buttons: {
+                //            confirm: 'Ok'
+                //        },
+                //        confirmButtonColor: '#2527a2',
+                //    });
+                //}
             });
         },
     });

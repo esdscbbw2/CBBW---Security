@@ -161,39 +161,46 @@ function SaveDataTravClicked() {
         data: x,
         success: function (data) {
             $(data).each(function (index, item) {
-
+                var url = "/Security/EMN/EMNApproveNote?NoteNumber=" + NoteNumber;
                 if (item.bResponseBool == true) {
-
-                    Swal.fire({
-                        title: 'Confirmation',
-                        text: 'Travelling Approval Details Update Successfully.',
-                        setTimeout: 5000,
-                        icon: 'success',
-                        customClass: 'swal-wide',
-                        buttons: {
-                            confirm: 'Ok'
-                        },
-                        confirmButtonColor: '#2527a2',
-                    }).then(callback);
-                    function callback(result) {
-                        if (result.value) {
-                            var url = "/Security/EMN/EMNApproveNote?NoteNumber=" + NoteNumber;
-                            window.location.href = url;
-                        }
-                    }
+                    MyAlertWithRedirection(1, 'Travelling Approval Details Update Successfully.', url)
                 }
                 else {
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'Failed To Update Traveling Details.',
-                        icon: 'question',
-                        customClass: 'swal-wide',
-                        buttons: {
-                            confirm: 'Ok'
-                        },
-                        confirmButtonColor: '#2527a2',
-                    });
+                    MyAlert(4, 'Failed To Update Details.')
                 }
+
+                //if (item.bResponseBool == true) {
+
+                //    Swal.fire({
+                //        title: 'Confirmation',
+                //        text: 'Travelling Approval Details Update Successfully.',
+                //        setTimeout: 5000,
+                //        icon: 'success',
+                //        customClass: 'swal-wide',
+                //        buttons: {
+                //            confirm: 'Ok'
+                //        },
+                //        confirmButtonColor: '#2527a2',
+                //    }).then(callback);
+                //    function callback(result) {
+                //        if (result.value) {
+                //            var url = "/Security/EMN/EMNApproveNote?NoteNumber=" + NoteNumber;
+                //            window.location.href = url;
+                //        }
+                //    }
+                //}
+                //else {
+                //    Swal.fire({
+                //        title: 'Error',
+                //        text: 'Failed To Update Traveling Details.',
+                //        icon: 'question',
+                //        customClass: 'swal-wide',
+                //        buttons: {
+                //            confirm: 'Ok'
+                //        },
+                //        confirmButtonColor: '#2527a2',
+                //    });
+                //}
             });
         },
     });

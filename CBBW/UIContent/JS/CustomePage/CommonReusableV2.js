@@ -743,6 +743,14 @@ function isAlphabateWithMaxLimit(input, maxLimit) {
         //return regex.test(input);
     }    
 };
+function isAlphabateWithSpace(input, maxLimit) {
+    if (input.length > maxLimit) { return false; }
+    else {
+        return input.match(/^[a-zA-Z\s]+$/);
+        //var regex = /^[a-zA-Z]+$/;
+        //return regex.test(input);
+    }
+};
 function ValidateEmployeeForTour(Employees,FromDate,Todate) {
     var url = '/EHG/GetEmployeeValidationForTour?Employees=' + Employees + '&FromDate=' + FromDate + '&ToDate=' + Todate;
     GetDataFromAjax(url).done(function (data) {
@@ -1201,3 +1209,19 @@ var setMin = function (currentDateTime) {
     });
 };
 
+//Bhushan 
+$(".txtOnly").keypress(function (e) {
+    var key = e.keyCode;
+    if (key >= 48 && key <= 57) {
+        e.preventDefault();
+    }
+});
+$('.OnlyAlphNumber').keypress(function (e) {
+    var keyCode = e.which;
+    if (!(keyCode >= 48 && keyCode <= 57) && // numbers 0-9
+        !(keyCode >= 65 && keyCode <= 90) && // uppercase letters A-Z
+        !(keyCode >= 97 && keyCode <= 122) &&
+        !(keyCode === 32)) { // lowercase letters a-z
+        e.preventDefault();
+    }
+});

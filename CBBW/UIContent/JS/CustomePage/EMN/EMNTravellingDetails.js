@@ -494,36 +494,12 @@ function SaveDataClicked() {
         data: x,
         success: function (data) {
             $(data).each(function (index, item) {
+                var url = "/Security/EMN/Create";
                 if (item.bResponseBool == true) {
-                    Swal.fire({
-                        title: 'Confirmation',
-                        text: 'Travelling & Date Wise Tour Details Saved Successfully.',
-                        setTimeout: 5000,
-                        icon: 'success',
-                        customClass: 'swal-wide',
-                        buttons: {
-                            confirm: 'Ok'
-                        },
-                        confirmButtonColor: '#2527a2',
-                    }).then(callback);
-                    function callback(result) {
-                        if (result.value) {
-                            var url = "/Security/EMN/Create";
-                            window.location.href = url;
-                        }
-                    }
+                    MyAlertWithRedirection(1, 'Travelling & Date Wise Tour Details Saved Successfully.', url)
                 }
                 else {
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'Failed To Update Traveling Person Details.',
-                        icon: 'question',
-                        customClass: 'swal-wide',
-                        buttons: {
-                            confirm: 'Ok'
-                        },
-                        confirmButtonColor: '#2527a2',
-                    });
+                    MyAlert(4, 'Failed To Update Traveling Person Details.')
                 }
             });
         },

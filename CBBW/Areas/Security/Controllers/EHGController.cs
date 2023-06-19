@@ -49,18 +49,31 @@ namespace CBBW.Areas.Security.Controllers
                 else { ViewBag.ErrMsg = "Approval Status Updation Failed For Note Number " + modelobj.NoteNumber2; }
             }        
             else if (Submit == "VAD")
-            {
-                modelobj.VAActive = 1;
-                TempData["EHGApp"] = modelobj;
-                _iUser.RecordCallBack(baseUrl);
-                return RedirectToAction("ViewVADetails", "EHG", new { NoteNumber = modelobj.NoteNumber2, CBUID = 1 });
+            {                
+                if (modelobj.IsDocOpened == 1)
+                {
+                    modelobj.VAActive = 1;
+                    TempData["EHGApp"] = modelobj;
+                    _iUser.RecordCallBack(baseUrl);
+                    return RedirectToAction("ViewVADetails", "EHG", new { NoteNumber = modelobj.NoteNumber2, CBUID = 1 });
+                }
+                else 
+                {
+                    ViewBag.ErrMsg = "Attached Travelling Request Form Must Be Opened Before Proceeding.";
+                }
             }
             else if (Submit == "DWT")
             {
-                modelobj.DWTActive = 1;
-                TempData["EHGApp"] = modelobj;
-                _iUser.RecordCallBack(baseUrl);
-                return RedirectToAction("ViewDWTDetails", "EHG", new { NoteNumber = modelobj.NoteNumber2, CBUID = 1 });
+                if (modelobj.IsDocOpened == 1) {
+                    modelobj.DWTActive = 1;
+                    TempData["EHGApp"] = modelobj;
+                    _iUser.RecordCallBack(baseUrl);
+                    return RedirectToAction("ViewDWTDetails", "EHG", new { NoteNumber = modelobj.NoteNumber2, CBUID = 1 });
+                }
+                else
+                {
+                    ViewBag.ErrMsg = "Attached Travelling Request Form Must Be Opened Before Proceeding.";
+                }
             }
             appmodel = CastEHGAppTempData();
             return View(appmodel);
@@ -169,7 +182,9 @@ namespace CBBW.Areas.Security.Controllers
                 if (model.StaffList == null) { model.StaffList = model.getStaffList(user.CentreCode); }
                 if (model.OtherStaffList == null) { model.OtherStaffList = model.getOtherStaffList(user.CentreCode); }
             }
+            model.OkToOpen = _master.GetHGOpenOrNot(user.CentreCode, ref pMsg) ? 1 : 0;
             TempData["EHG"] = model;
+     
             //model.ehgHeader.DocFileName = "9e42056b-1e9c-4cc6-a022-e0fc811ce63b.png"; // Dummy code
             return View(model);
         }
@@ -181,7 +196,12 @@ namespace CBBW.Areas.Security.Controllers
                 if (model.VehicleType == 1 && model.POA == 1)
                 {
                     model.ehgHeader.AuthorisedEmployeeName = model.AuthorisedEmpNameForManagement;
-                    model.ehgHeader.AuthorisedEmpNo = model.AuthorisedEmpNoForManagement;
+                    model.ehgHeader.AuthorisedEmpNo = model.AuthorisedEmpNoForManagement2;
+                    model.ehgHeader.VehicleType = model.VehicleType;
+                    model.ehgHeader.MaterialStatus = model.MaterialStatus;
+                    model.ehgHeader.Instructor = model.Instructor;
+                    model.ehgHeader.PurposeOfAllotment = model.POA;
+                    //model.ehgHeader.VehicleType = model.VehicleType;
                     EHGTravelingPersondtlsForManagement dtl = new EHGTravelingPersondtlsForManagement();
                     dtl.NoteNumber = model.ehgHeader.NoteNumber;
                     dtl.EmployeeNo = model.DriverNoForManagement2;
@@ -289,9 +309,10 @@ namespace CBBW.Areas.Security.Controllers
                 {
                     model.VASubmitBtnActive = 1;
                     TempData["EHG"] = model;
-                    return RedirectToAction("Create");
+                    //return RedirectToAction("Create");
+                    ViewBag.Msg = "Vehicle Allotment Details Updated Successfully.";
                 }
-                else { }
+                else { ViewBag.ErrMsg = "Updation Failed."; }
             }
             TempData["EHG"] = model;
             return View(model);

@@ -33,32 +33,32 @@
                 <tr>
                     <th scope="col">
                         <div class="form-group">
-                            <input type="text" class="form-control tblSearch" placeholder="Search...">
+                            <input type="text" class="form-control tblSearch" data-index="1" placeholder="Search...">
                         </div>
                     </th>
                     <th scope="col">
                         <div class="form-group">
-                            <input type="text" class="form-control tblSearch" placeholder="Search...">
+                            <input type="text" class="form-control tblSearch" data-index="2" placeholder="Search...">
                         </div>
                     </th>
                     <th scope="col">
                         <div class="form-group">
-                            <input type="text" class="form-control tblSearch" placeholder="Search...">
+                            <input type="text" class="form-control tblSearch" data-index="3" placeholder="Search...">
                         </div>
                     </th>
                     <th scope="col">
                         <div class="form-group">
-                            <input type="text" class="form-control tblSearch" placeholder="Search...">
+                            <input type="text" class="form-control tblSearch" data-index="4" placeholder="Search...">
                         </div>
                     </th>
                     <th scope="col">
                         <div class="form-group">
-                            <input type="text" class="form-control tblSearch" placeholder="Search...">
+                            <input type="text" class="form-control tblSearch" data-index="5" placeholder="Search...">
                         </div>
                     </th>
                     <th scope="col">
                         <div class="form-group">
-                            <input id="filterMonthnYear" type="text" class="form-control tblSearch" placeholder="Search...">
+                            <input id="filterMonthnYear" type="text" class="form-control tblSearch" data-index="6" placeholder="Search...">
                         </div>
                     </th>                    
                 </tr>
@@ -130,7 +130,9 @@
                 fixedColumns: {left:2},
             });
             $('.tblSearch').on('keyup change', function () {
-                dtinstance.search(this.value).draw();
+                var searchtext = $(this).attr('data-index') + ':' + this.value;
+                if (this.value == '') { searchtext = ''; }
+                dtinstance.search(searchtext).draw();
             });
             $('.tblSearch').on('click', function (e) {
                 e.stopPropagation();

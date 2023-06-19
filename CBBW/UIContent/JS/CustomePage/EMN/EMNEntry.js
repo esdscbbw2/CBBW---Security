@@ -169,7 +169,7 @@ $(document).ready(function () {
     }
    
     (async function () {
-        const r1 = await getDropDownDataWithSelectedValue('DDPersonType', 'select Person Type', '/Security/EMN/GetPersonTypes', 0);;
+        const r1 = await getDropDownDataWithSelectedValue('DDPersonType', 'Select Person Type', '/Security/EMN/GetPersonTypes', 0);;
     })();
     EnableTravellingBtn();
   
@@ -206,6 +206,36 @@ function ValidateCloneRowCtrl() {
     if (targetid.indexOf('_') >= 0) { targetid = targetid.split('_')[0] }
     var isvalid = validatectrl(targetid, targetCtrl.val());
     if (isvalid) { targetCtrl.isValid(); } else { targetCtrl.isInvalid(); }
+
+    var mIndex = $(tblRow).attr('id');
+    if (targetid == 'TaDaDenied' && $(target).val() == 1) {
+        Swal.fire({
+            title: 'Confirmation',
+            text: 'Are You Sure To Deny The T.A & D.A Option?',
+            icon: 'question',
+            customClass: 'swal-wide',
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            cancelButtonClass: 'btn-cancel',
+            confirmButtonColor: '#2527a2',
+            showCancelButton: true,
+        }).then(function (result) {
+            debugger
+            if (result.isConfirmed) {
+
+            }
+            else {
+                if (mIndex > 0) {
+                    $('#TaDaDenied_' + mIndex).val(0);
+                } else {
+                    $('#TaDaDenied').val(0);
+                }
+
+            }
+        });
+
+    }
+
     EnableAddBtn(tblRow, 'AddBtn');
    
   // EnableTavPersonBtn();
@@ -424,39 +454,48 @@ function SaveFinalSubmit() {
         data: x,
         success: function (data) {
             $(data).each(function (index, item) {
+
+                var url = "/Security/EMN/Index";
                 if (item.bResponseBool == true) {
-                    var url = "/Security/EMN/Index";
-                   
-                    Swal.fire({
-                        title: 'Confirmation',
-                        text: 'Data saved successfully.',
-                        setTimeout: 5000,
-                        icon: 'success',
-                        customClass: 'swal-wide',
-                        buttons: {
-                            confirm: 'Ok'
-                        },
-                        confirmButtonColor: '#2527a2',
-                    }).then(callback);
-                    function callback(result) {
-                        if (result.value) {
-                            var url = "/Security/EMN/Index"
-                            window.location.href = url;
-                        }
-                    }
+                    MyAlertWithRedirection(1, 'Data saved successfully.', url)
                 }
                 else {
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'Failed To Update Traveling Person Details.',
-                        icon: 'question',
-                        customClass: 'swal-wide',
-                        buttons: {
-                            confirm: 'Ok'
-                        },
-                        confirmButtonColor: '#2527a2',
-                    });
+                    MyAlert(4, 'Failed To Update Details.')
                 }
+
+                //if (item.bResponseBool == true) {
+                //    var url = "/Security/EMN/Index";
+                   
+                //    Swal.fire({
+                //        title: 'Confirmation',
+                //        text: 'Data saved successfully.',
+                //        setTimeout: 5000,
+                //        icon: 'success',
+                //        customClass: 'swal-wide',
+                //        buttons: {
+                //            confirm: 'Ok'
+                //        },
+                //        confirmButtonColor: '#2527a2',
+                //    }).then(callback);
+                //    function callback(result) {
+                //        if (result.value) {
+                //            var url = "/Security/EMN/Index"
+                //            window.location.href = url;
+                //        }
+                //    }
+                //}
+                //else {
+                //    Swal.fire({
+                //        title: 'Error',
+                //        text: 'Failed To Update Traveling Person Details.',
+                //        icon: 'question',
+                //        customClass: 'swal-wide',
+                //        buttons: {
+                //            confirm: 'Ok'
+                //        },
+                //        confirmButtonColor: '#2527a2',
+                //    });
+                //}
             });
         },
     });

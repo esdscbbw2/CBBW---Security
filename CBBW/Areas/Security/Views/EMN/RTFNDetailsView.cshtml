@@ -197,24 +197,18 @@
                         </button>
                     </div>
                 </div>
-                <div class="bgColor mt-4 bg-transparent text-left">
+                <div class="bgColor mt-4 bg-transparent text-left @(Model.TourCatStatus==true?"border-green":"") ">
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
                             It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As It Is selected:
-                            @if (Model.TourCatStatus)
-                            {
-                                <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
-                            }
-                            else
-                            {
-                                <input type="text" class="form-control width-85 pointer-none" value="-" disabled="">
-
-                            }
+                           
+                                <input type="text" class="form-control width-85 pointer-none" value="@(Model.TourCatStatus==true?"Yes":"-")"  disabled="">
+                            
 
                         </li>
                     </ul>
                 </div>
-                <div class="bgColor mt-4 bg-transparent text-left">
+                <div class="bgColor mt-4 bg-transparent text-left border-green">
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
                             It Is Ensured That This Person Is Carrying Laptop As Provided To Him. The Same Has Been Confirmed (as per leave rules):
@@ -222,7 +216,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="bgColor mt-4 bg-transparent text-left">
+                <div class="bgColor mt-4 bg-transparent text-left  border-green">
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
                             The Entry Is Done As Per Policy & As Required:
@@ -230,7 +224,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="bgColor mt-4 bg-transparent text-left">
+                <div class="bgColor mt-4 bg-transparent text-left border-green">
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
                             Tour Is Approved / Rejected After Written Information & Consent Of COO. When Ever Required, VB Document Shall Be Produced:
@@ -238,7 +232,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="bgColor mt-4 bg-transparent text-left">
+                <div class="bgColor mt-4 bg-transparent text-left border-green">
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
                             This Tour Schedule Has Been Selected As “Other Place” with A Proper Reason:
@@ -253,14 +247,8 @@
                                 <label>Ratified :</label>
                             </div>
                             <div class="col-md-2">
-                                @if (Model.emnHeader.IsRatified == true)
-                                {
-                                    <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
-                                }
-                                else
-                                {
-                                    <input type="text" class="form-control width-85 pointer-none" value="No" disabled="">
-                                }
+                                    <input type="text" class="form-control width-85 pointer-none" value="@(Model.emnHeader.IsRatified == true?"Yes":"No")" disabled="">
+                               
 
                             </div>
                             <div class="col-md-2 col-form-label">

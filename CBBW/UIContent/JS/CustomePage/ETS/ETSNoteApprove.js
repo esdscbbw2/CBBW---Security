@@ -34,17 +34,15 @@ function Notenumberchanged(notenumber) {
                 $('#AttachFile').val(item.etsHeader.AttachFile);
                 $('#EntryDate').val(item.etsHeader.EntryDateDisplay);
                 $('#EntryTime').val(item.etsHeader.EntryTime);
-
-
                 if (item.TourCatstatus) {
                     $('#OtherPlace').val('Yes')
                 } else {
                     $('#OtherPlace').val('-')
                 }
-               
                 DisplayTPDetails(item.PersonDtls);
                
-                if ($('#CenterCodeName').val() != "") { $('#btnTravDetails').makeEnabled();}
+                if ($('#CenterCodeName').val() != "") { //$('#btnTravDetails').makeEnabled();
+                }
                 
             });
         }
@@ -78,7 +76,7 @@ $(document).ready(function () {
     $('#btnViewDoc').click(function () {
         var docfilename = $('#AttachFile').val();
         var filepath = "/Upload/Forms/" + docfilename;
-        if (docfilename.length > 2) { OpenWindow(filepath); }
+        if (docfilename.length > 2) { OpenWindow(filepath); $('#btnTravDetails').makeEnabled();}
         else {
             Swal.fire({
                 title: 'Information',
@@ -196,39 +194,47 @@ function SaveDataClicked() {
         data: x,
         success: function (data) {
             $(data).each(function (index, item) {
-               
-                if (item.bResponseBool == true) {
 
-                    Swal.fire({
-                        title: 'Confirmation',
-                        text: 'Approval Process Saved Successfully.',
-                        setTimeout: 5000,
-                        icon: 'success',
-                        customClass: 'swal-wide',
-                        buttons: {
-                            confirm: 'Ok'
-                        },
-                        confirmButtonColor: '#2527a2',
-                    }).then(callback);
-                    function callback(result) {
-                        if (result.value) {
-                            var url = "/Security/ETS/ETSNoteApproveList";
-                            window.location.href = url;
-                        }
-                    }
+                var url = "/Security/ETS/ETSNoteApproveList";
+                if (item.bResponseBool == true) {
+                    MyAlertWithRedirection(1, 'Approval Process Saved Successfully.', url)
                 }
                 else {
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'Failed To Update Approval Process.',
-                        icon: 'question',
-                        customClass: 'swal-wide',
-                        buttons: {
-                            confirm: 'Ok'
-                        },
-                        confirmButtonColor: '#2527a2',
-                    });
+                    MyAlert(4, 'Failed To Update Details.')
                 }
+
+                //if (item.bResponseBool == true) {
+
+                //    Swal.fire({
+                //        title: 'Confirmation',
+                //        text: 'Approval Process Saved Successfully.',
+                //        setTimeout: 5000,
+                //        icon: 'success',
+                //        customClass: 'swal-wide',
+                //        buttons: {
+                //            confirm: 'Ok'
+                //        },
+                //        confirmButtonColor: '#2527a2',
+                //    }).then(callback);
+                //    function callback(result) {
+                //        if (result.value) {
+                //            var url = "/Security/ETS/ETSNoteApproveList";
+                //            window.location.href = url;
+                //        }
+                //    }
+                //}
+                //else {
+                //    Swal.fire({
+                //        title: 'Error',
+                //        text: 'Failed To Update Approval Process.',
+                //        icon: 'question',
+                //        customClass: 'swal-wide',
+                //        buttons: {
+                //            confirm: 'Ok'
+                //        },
+                //        confirmButtonColor: '#2527a2',
+                //    });
+                //}
             });
         },
     });

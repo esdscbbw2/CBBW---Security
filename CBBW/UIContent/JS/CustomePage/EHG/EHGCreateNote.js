@@ -102,8 +102,10 @@ function VehicleTypeChanged(mval) {
         $('#ehgHeader_MaterialStatus').val('').isInvalidCtrl();
         $('#ehgHeader_Instructor').val('').isInvalidCtrl();
     }
-    
-    //
+    if (selectedvt == 2 && $('#OkToOpen').val() == 0) {
+        VehicletypeCtrl.isInvalidCtrl();
+        MyAlert(4, 'Screen Is Alloted For 2 Wheeler Only On Holidays, Weekly Offs And Off-General Shift Timing On Working Days.')
+    }
     EnableDateWiseTourBtn();
 };
 function EnableDateWiseTourBtn() {
@@ -163,7 +165,9 @@ function addOfficeWorkCloneBtnClick() {
     $('#DDAuthorisedEmpForWork').attr('disabled', 'disabled');
     $('#sOfficeworkDiv').removeClass('sectionB');
     UnLockSLUContainer($('#' + rowid));
-    EnableDateWiseTourBtn();    
+    EnableDateWiseTourBtn();
+    $('#AddBtn_' + rowid).makeSLUDisable();
+    $('#DeleteBtn_' + rowid).makeSLUEnable();
 };
 function removeOfficeWorkCloneBtnClick() {
     var myCtrl = $(removeOfficeWorkCloneBtnClick.caller.arguments[0].target);
@@ -250,8 +254,27 @@ function ValidateControl() {
     if (targetid == 'AuthorisedEmpNoForManagement' && isvalid) {
         UnLockSection('StatementDiv');
     } else { LockSection('StatementDiv'); }
+
     if (targetid == 'TADADeniedForManagement' && $(target).val() == 1) {
-        MyAlertWithCallBack(2, 'Are You Sure To Deny The T.A & D.A Option?', 'CancelTadaDenied')
+        Swal.fire({
+            title: 'Confirmation',
+            text: 'Are You Sure To Deny The T.A & D.A Option?',
+            icon: 'question',
+            customClass: 'swal-wide',
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            cancelButtonClass: 'btn-cancel',
+            confirmButtonColor: '#2527a2',
+            showCancelButton: true,
+        }).then(function (result) {
+            if (result.isConfirmed) {
+                //addBtnCtrl.removeAttr('disabled');
+            }
+            else {
+                $('#TADADeniedForManagement').val(0);
+            }
+        });
+        /*MyAlertWithCallBack(2, 'Are You Sure To Deny The T.A & D.A Option?', 'CancelTadaDenied')*/
     }
 };
 function CancelTadaDenied() {
@@ -351,7 +374,7 @@ function validatectrl(targetid, value) {
             if (value != -1) { isvalid = true; }
             break;
         case "PurposeOfVisitFoeMang":
-            if (value.length > 1 && WordCount(value) <= 200) {
+            if (value.length > 1 && value.length <= 200) {
                 if (IsAlphaNumericWithSpace(value)) {
                     isvalid = true;
                 }
@@ -526,7 +549,7 @@ function DDPickPersonChanged(x) {
     });
     //Check for Duplicate Person - end
     if (x == 1) {
-        if (isAlphabateWithMaxLimit(mValue,20))
+        if (isAlphabateWithSpace(mValue,20))
         {
             targetCtrl.isValidCtrl();
             altCtrl.removeClass('is-invalid');
@@ -618,7 +641,7 @@ function ValidateCloneRowCtrl() {
     
     if (targetid == 'ToDate') {
         isvalid = CompareDateV2(fdtCtrl.val(), 0, targetCtrl.val(), 0);
-        var url = '/EHG/GetEmployeeValidationForTour?Employees=' + personCtrl.val() + '&FromDate=' + fdtCtrl.val() + '&ToDate=' + tdtCtrl.val();
+        var url = '/EHG/GetEmployeeValidationForTour?Employees=' + personCtrl.val() + '&FromDate=' + fdtCtrl.val() + '&ToDate=' + targetCtrl.val();
         isvalid = ValidateEmployeeForTour(personCtrl.val(), fdtCtrl.val(), tdtCtrl.val());
     }
     
@@ -634,9 +657,27 @@ function ValidateCloneRowCtrl() {
     EnableDateWiseTourBtn();
     EnableSubmitBtn();
     if (targetid == 'TaDaDenied' && targetCtrl.val() == 1) {
-        MyAlertWithCallBack(2, 'Are You Sure To Deny The T.A & D.A Option?', function () {            
-            addBtnCtrl.removeAttr('disabled');
+        Swal.fire({
+            title: 'Confirmation',
+            text: 'Are You Sure To Deny The T.A & D.A Option?',
+            icon: 'question',
+            customClass: 'swal-wide',
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            cancelButtonClass: 'btn-cancel',
+            confirmButtonColor: '#2527a2',
+            showCancelButton: true,
+        }).then(function (result) {
+            if (result.isConfirmed) {
+                addBtnCtrl.removeAttr('disabled');
+            }
+            else {
+                targetCtrl.val(0);
+            }
         });
+        //MyAlertWithCallBack(2, 'Are You Sure To Deny The T.A & D.A Option?', function () {            
+            
+        //});
     }   
     
 };
@@ -767,6 +808,7 @@ function DDAuthorisedEmpForWorkChanged() {
     //    $(this).attr('disabled');
     //});
     EnableDateWiseTourBtn();
+
 };
 
 
@@ -877,14 +919,19 @@ function POADropdownChanged(mval) {
     if (selectedvt > 0) {
         POADropdown.isValidCtrl();
         //UnlockNextCtrl('ehgHeader_PurposeOfAllotment');
-    } else { POADropdown.isInvalidCtrl() }
+    } else { POADropdown.isInvalidCtrl(); }
     // Null Value for rest of the controlls
     if (mval == 1) {
         $('#ehgHeader_MaterialStatus').val('').isInvalidCtrl();
         $('#ehgHeader_Instructor').val('').isInvalidCtrl();
     }    
     //
+    if (selectedvt != 1 && $('#OkToOpen').val() == 0) {
+        POADropdown.isInvalidCtrl();
+        MyAlert(4,'Screen Is Alloted For Office Work Only On Holidays, Weekly Offs And Off-General Shift Timing On Working Days.')
+    }
     EnableDateWiseTourBtn();
+    
 };
 async function getInitialDataForTravelingPerson() {
     var notenumber = $('#ehgHeader_NoteNumber').val();
@@ -1045,8 +1092,15 @@ $(document).ready(function () {
     });
     acCtrl.change(function () {
         //debugger;
-        if (acCtrl.val() == 1) { acCtrl.isValidCtrl(); } else { acCtrl.isInvalidCtrl(); }
+        if (acCtrl.val() == 1) {
+            acCtrl.isValidCtrl();
+            LockSection('BtnDiv');
+        } else {
+            acCtrl.isInvalidCtrl();
+            if ($('#ehgHeader_PurposeOfAllotment').val() != 1) { UnLockSection('BtnDiv'); }
+        }
         EnableSubmitBtn();
+
     });
 });
 $(document).ready(function () {

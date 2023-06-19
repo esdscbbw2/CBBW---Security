@@ -29,6 +29,10 @@ function ValidateControl() {
         //$(target).removeClass('is-valid').addClass('is-invalid');
         $(target).isInvalidCtrl();
     }
+    if (targetid == 'AppOption2' && $('#IsDocOpened').val() != 1) {
+        $(target).val('').isInvalidCtrl();
+        MyAlert(3,'Attached Travelling Request Form Must Be Opened Before Proceeding.');
+    } 
     $('#BackBtnActive').val(1);
     EnableSubmitBtn();
 };
@@ -113,6 +117,7 @@ function DisplayTPDetails(data) {
     }
 }
 function NoteNumberChanged(notenumber) {
+    
     var noteCtrl = $('#NoteNumber');
     $('#NoteNumber2').val(notenumber);
     if (notenumber != '') {
@@ -140,30 +145,47 @@ function NoteNumberChanged(notenumber) {
                 $('#InitiatorInput').val(item.Header.InitiatorCodenName);
                 $('#AuthorizeEmpInput').val(item.Header.AuthorisedEmployeeName);
                 $('#DocFileName').val(item.Header.DocFileName);
-                if (item.Header.PurposeOfAllotment == 1) {
-                    $('#TPDHeader').html('Travelling Person Details: For Management');
-                    $('.OffSpecial').each(function () {
-                        $(this).addClass('inVisible');
-                    });
-                    $('.mngSpecial').each(function () {
-                        $(this).removeClass('inVisible');
-                    });
-                    $('#btnsDiv').addClass('inVisible');
-                    $('#AppOption2').makeEnabled();
-                    $('#AppStatus').makeEnabled();
-                    $('#DWTActive').val(1);
-                    $('#VAActive').val(1);
-                }
-                else {
-                    $('#TPDHeader').html('Travelling Person Details: For Office Work');
-                    $('.OffSpecial').each(function () {
-                        $(this).removeClass('inVisible');
-                    });
-                    $('.mngSpecial').each(function () {
-                        $(this).addClass('inVisible');
-                    });
-                    $('#btnsDiv').removeClass('inVisible');
-                }                
+                //if ($('#IsDocOpened').val() == 1) {
+                    if (item.Header.PurposeOfAllotment == 1) {
+                        $('#TPDHeader').html('Travelling Person Details: For The Selected Driver Tour “Purpose of Allotment”= For Management');
+                        $('.OffSpecial').each(function () {
+                            $(this).addClass('inVisible');
+                        });
+                        $('.mngSpecial').each(function () {
+                            $(this).removeClass('inVisible');
+                        });
+                        $('#btnsDiv').addClass('inVisible');
+                        $('#ApprovalOptionLi').removeClass('sectionB');
+                        $('#AppOption2').makeSLUEnable();
+                        $('#AppStatus').makeSLUDisable();
+                        $('#DWTActive').val(1);
+                        $('#VAActive').val(1);
+                    }
+                    else {
+                        $('#TPDHeader').html('Travelling Person Details: For Person Travelling On 2 Wheeler Or LV With “Purpose of Allotment”= Office Work');
+                        $('.OffSpecial').each(function () {
+                            $(this).removeClass('inVisible');
+                        });
+                        $('.mngSpecial').each(function () {
+                            $(this).addClass('inVisible');
+                        });
+                        $('#btnsDiv').removeClass('inVisible');
+                        if ($('#DWTActive').val() == 1 && $('#VAActive').val() == 1) {
+                            $('#AppOption2').makeSLUEnable();
+                            $('#ApprovalOptionLi').removeClass('sectionB');
+                        } else {
+                            $('#AppOption2').makeSLUDisable();
+                            $('#ApprovalOptionLi').addClass('sectionB');
+                        }
+                        $('#AppStatus').makeSLUDisable();
+                    }
+                //}
+                //else {
+                    
+                //    $('#AppOption2').makeSLUDisable();
+                //    $('#ApprovalOptionLi').addClass('sectionB');
+                //    $('#AppStatus').makeSLUDisable();
+                //}                               
                 DisplayTPDetails(item.TPDetails);
             });
         }
@@ -209,6 +231,7 @@ $(document).ready(function(){
         var filename = $('#DocFileName').val();
         var filepath = "/Upload/Forms/" + filename;
         if (filename != '') {
+            $('#IsDocOpened').val(1);
             OpenFileInNewTab(filepath);
         } else { MyAlert(3, 'Unable To Find Uploaded File.'); }
     });

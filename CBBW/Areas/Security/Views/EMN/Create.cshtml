@@ -235,7 +235,7 @@
                                                                 id="cmbDDPersonType">
                                                         </select>
                                                         <input type="text" maxlength="20" style="width: 100%;" data-name="EmployeeNonName"
-                                                               class="form-control w-200 inVisible alterID pickPersonNametxt xPerson"
+                                                               class="form-control w-200 inVisible alterID pickPersonNametxt xPerson txtOnly"
                                                                onblur="DDPickPersonChanged(1)"
                                                                id="txtDDPersonType">
                                                     </td>
@@ -359,6 +359,7 @@
     <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/EMN/EMNEntry.js"></script>
     <script>
+        
         function btnScanViewClicked() {
             var filename = $('#emnHeader_AttachFile').val();
             var filepath = "/Upload/Forms/" + filename;

@@ -14,7 +14,7 @@
         @Html.HiddenFor(m => m.etsHeader.CenterName)
         @Html.HiddenFor(m => m.etsHeader.CenterCodeName)
         @Html.HiddenFor(m => m.Btnsubmit)
-        @Html.HiddenFor(m => m.TourCatstatus)
+        @*@Html.HiddenFor(m => m.TourCatstatus)*@
         <div class="">
             <div class="row newTable">
                 <div class="fixedElement">
@@ -263,7 +263,7 @@
                                                                 id="cmbDDPersonType">
                                                         </select>
                                                         <input type="text" maxlength="20" data-name="EmployeeNonName"
-                                                               class="form-control w-200 inVisible alterID pickPersonNametxt xPerson"
+                                                               class="form-control w-200 inVisible alterID pickPersonNametxt xPerson txtOnly"
                                                                onblur="DDPickPersonChanged(1)"
                                                                id="txtDDPersonType">
                                                     </td>
@@ -321,12 +321,11 @@
                         </div>
                     </div>
                     <div id="Questions">
-                        <div  id="ID3" class="bgColor mt-4 bg-transparent content text-left @(Model.TourCatstatus?"SLUStatement SLUSection":"") ">
+                        <div  id="ID3" class="bgColor mt-4 bg-transparent content text-left @(Model.TourCatstatus==true?"SLUStatement SLUSection":"") ">
                             <ul style="list-style:none;">
                                     <li style="font-size: 16px;">
                                         It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
-                                        
-                                        <select disabled id="otherplace"  style="width: 110px;" class="form-select @(Model.TourCatstatus?"is-invalid SLUCtrl":"") " onchange="ValidateControl()" aria-label="Default select example">
+                                        <select disabled id="otherplace"  style="width: 110px;" class="form-select @(Model.TourCatstatus==true?"is-invalid SLUCtrl":" disabled") " onchange="ValidateControl()" aria-label="Default select example">
                                             <option selected="">-</option>
                                             <option value="0">Yes</option>
                                             <option value="1">No</option>
@@ -381,6 +380,7 @@
     <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/ETS/ETSEntry.js"></script>
     <script>
+       
         function btnScanViewClicked() {
             var filename = $('#etsHeader_AttachFile').val();
             var filepath = "/Upload/Forms/" + filename;

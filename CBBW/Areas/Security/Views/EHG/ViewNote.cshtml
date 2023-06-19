@@ -149,7 +149,7 @@
             <div class="col-md-12 mt-4 pt-3" id="for_management">
                 <div class="heading_text_btn2 d-block mb-4">
                     <h2>
-                        Travelling Person Details: For Management
+                        Travelling Person Details: For The Selected Driver Tour “Purpose of Allotment”= For Management
                     </h2>
                 </div>
                 <div class="card">
@@ -268,7 +268,9 @@
             <div id="for_office">
                 <div class="col-md-12 mt-4 pt-3">
                     <div class="heading_text_btn2 d-block mb-4">
-                        <h2> Travelling Person Details: For Office Work </h2>
+                        <h2>
+                            Travelling Person Details: For Person Travelling On 2 Wheeler Or LV With “Purpose of Allotment”= For Office Work
+                        </h2>
                     </div>
                     <div class="card">
                         <div class="card-body">
@@ -368,7 +370,7 @@
                     </div>
                 </div>
             </div>
-            <div id="ApprovalOptionLi" class="bgColor mt-4 bg-transparent text-left">
+            <div id="ApprovalOptionLi" class="bgColor mt-4 bg-transparent border-green text-left">
                 <ul style="list-style:none;">
                     <li style="font-size: 16px;">
                         The Entry Is Done As Per Policy & As Required:
@@ -380,7 +382,7 @@
                     </li>
                 </ul>
             </div>
-            <div id="ViewOptionLi" class="bgColor mt-4 bg-transparent text-center">
+            <div id="ViewOptionLi" class="bgColor mt-4 bg-transparent border-green text-center">
                 <ul style="list-style:none;">
                     <li style="font-size: 16px;">
                         The Entry Is Done As Per Policy & As Required:
@@ -421,6 +423,7 @@
 
 }
 @section scripts{
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script>
         $(document).ready(function () {
             var isFromApproval = $('#CBUID').val();
@@ -464,23 +467,28 @@
                 });
             });
             $('#btnViewDoc').click(function () {
-                var docfilename = $('#HeaderData_DocFileName').val();
-                var filepath = "/Upload/Forms/" + docfilename;
-                if (docfilename.length > 2) { window.open(filepath); }
-                else {
-                    Swal.fire({
-                    title: 'Information',
-                    text: "No Document Found For This Note",
-                    icon: 'warning',
-                    customClass: 'swal-wide',
-                    buttons: {
-                        //cancel: 'Cancel',
-                        confirm: 'Ok'
-                    },
-                    //cancelButtonClass: 'btn-cancel',
-                    confirmButtonColor: '#2527a2',
-                });
-                }
+                var filename = $('#HeaderData_DocFileName').val();
+                var filepath = "/Upload/Forms/" + filename;
+                if (filename != '') {
+                    OpenFileInNewTab(filepath);
+                } else { MyAlert(3, 'Unable To Find Uploaded File.'); }
+                //var docfilename = $('#HeaderData_DocFileName').val();
+                //var filepath = "/Upload/Forms/" + docfilename;
+                //if (docfilename.length > 2) { window.open(filepath); }
+                //else {
+                //    Swal.fire({
+                //    title: 'Information',
+                //    text: "No Document Found For This Note",
+                //    icon: 'warning',
+                //    customClass: 'swal-wide',
+                //    buttons: {
+                //        //cancel: 'Cancel',
+                //        confirm: 'Ok'
+                //    },
+                //    //cancelButtonClass: 'btn-cancel',
+                //    confirmButtonColor: '#2527a2',
+                //});
+                //}
             });
         });
     </script>

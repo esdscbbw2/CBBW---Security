@@ -12,6 +12,7 @@
  */
 ////////// These Functions may call from out side /////
 function SLUValid(myCtrl) {
+    //debugger;
     SLUNextCtrl(myCtrl); //Unlock the next visible control.
     var mySection = myCtrl.closest('.SLUSection'); //Geting the section of the control.
     var nextSection = GetNextSLUSection(mySection); //Getting next section id of myCtrl
@@ -398,6 +399,9 @@ function UnLockSLUContainerAllCtrl(myContainer) {
             UnLockSLUCtrl($(this));
         });
         myContainer.find('.SLUAddBtn').each(function () {
+            UnLockSLUCtrl($(this));
+        });
+        myContainer.find('.SLURemoveBtn').each(function () {
             UnLockSLUCtrl($(this));
         });
     }

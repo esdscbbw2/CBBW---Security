@@ -250,5 +250,16 @@
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/EHGVehicleAllotment.js"></script>
-
+    <script>
+        $(document).ready(function () {
+            if ('@ViewBag.ErrMsg' != '') {
+                var mymsg = '@ViewBag.ErrMsg';
+                MyAlert(3, mymsg);
+            };
+            if ('@ViewBag.Msg' != '') {
+                var mymsg = '@ViewBag.Msg';
+                MyAlertWithRedirection(1, mymsg, '/Security/EHG/Create');
+            };
+        });
+    </script>
 }

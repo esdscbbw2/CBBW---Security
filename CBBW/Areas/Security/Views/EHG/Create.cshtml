@@ -40,6 +40,7 @@
         @Html.HiddenFor(m => m.ToDateForMang2)
         @Html.HiddenFor(m => m.PurposeOfVisitFoeMang2)
         @Html.HiddenFor(m => m.TADADeniedForManagement2)
+        @Html.HiddenFor(m => m.OkToOpen)
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
@@ -66,7 +67,7 @@
         </div>
         <div class="col-md-12 SLUSection">
             <div class="text-center pt-2 pb-2">
-                <button id="btnScan" type="button" 
+                <button id="btnScan" type="button"
                         class="btn SLUBtn btn-light-red @(string.IsNullOrEmpty(Model.ehgHeader.DocFileName)?"":"inVisible SLUBtnOK")"
                         onclick="fireSweetAlert()">
                     Scan & Attach
@@ -160,7 +161,7 @@
                             <div class="col-md-6">
                                 <input id="POA2Wheeler" type="text"
                                        class="form-control"
-                                       value="NA" disabled>
+                                       value="For Office Work" disabled>
                             </div>
                         </div>
                     </div>
@@ -239,7 +240,7 @@
             <div class="col-md-12 mt-4 pt-3 inVisible" id="for_Management">
                 <div class="heading_text_btn2 d-block mb-4">
                     <h2>
-                        Travelling Person Details: For Management
+                        Travelling Person Details: For The Selected Driver Tour “Purpose of Allotment”= For Management
                     </h2>
                 </div>
                 <div class="card SLUSection" id="sManagementDiv">
@@ -419,7 +420,9 @@
             </div>
             <div class="col-md-12 mt-4 pt-3 inVisible" id="for_OfficeWork">
                 <div class="heading_text_btn2 d-block mb-4">
-                    <h2> Travelling Person Details: For Office Work </h2>
+                    <h2>
+                        Travelling Person Details: For Person Travelling On 2 Wheeler Or LV With “Purpose of Allotment”= Office Work
+                    </h2>
                 </div>
                 <div class="card SLUSection" id="sOfficeworkDiv">
                     <div class="card-body">
@@ -495,7 +498,6 @@
                                                        class="datelabel pointer alterID">Select Date</label>
                                             </div>
                                         </td>
-
                                         <td class="text-center">
                                             <div class="input-group date pointer position-static">
                                                 <input id="FromTime" type="text"
@@ -508,7 +510,7 @@
                                         <td class="text-center">
                                             <div class="position-relative pointer" style="width:200px">
                                                 <input id="ToDate" type="date"
-                                                       data-name="ToDate" title="To Date Should Be Latter Than From Date"
+                                                       data-name="ToDate" title="To Date Should Be Equal Or Later Than From Date"
                                                        onchange="CRToDateChanged();"
                                                        class="form-control pointer is-invalid SLUCtrl SLUCtrlP alterID inValidTag CustomDateFormatCloneRow valid">
                                                 <label id="lblToDate" style="width:110px"
@@ -576,35 +578,35 @@
             </div>
             <div id="BtnDiv" class="col-md-12">
                 <div class="d-flex justify-content-center  mt-2">
-                    <button type="button" 
+                    <button type="button"
                             class="btn btn-primary me-2 SLUBtn" disabled
                             onclick="DateWiseTourDtlClicked()"
                             id="DateWiseTourBtn2">
                         Date Wise Tour Details - Entry
                     </button>
-                    <button id="VADBtn" type="submit" 
+                    <button id="VADBtn" type="submit"
                             class="btn btn-primary SLUBtn" disabled
                             name="Submit" value="VAD">
                         Vehicle Allotment Details
                     </button>
                 </div>
             </div>
-            <div id="StatementDiv" 
+            <div id="StatementDiv"
                  class="bgColor mt-4 bg-transparent text-center SLUSection SLUStatement">
-                    <ul style="list-style:none;">
-                        <li style="font-size: 16px;">
-                            The Entry Is Done As Per Policy & As Required:
-                            <select id="AcceptCmb" style="width:110px" 
-                                    class="form-select SLUCtrl LUPSP is-invalid "
-                                    aria-label="Default select example ">
-                                <option selected="">-</option>
-                                <option value="1">Yes</option>
-                                <option value="0">No</option>
-                            </select>
-                        </li>
-                    </ul>
-                </div>
-                       
+                <ul style="list-style:none;">
+                    <li style="font-size: 16px;">
+                        The Entry Is Done As Per Policy & As Required:
+                        <select id="AcceptCmb" style="width:110px"
+                                class="form-select SLUCtrl LUPSP is-invalid "
+                                aria-label="Default select example ">
+                            <option selected="">-</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
+
         </div>
     }
 </div>

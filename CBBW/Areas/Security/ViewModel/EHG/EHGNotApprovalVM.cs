@@ -19,5 +19,6 @@ namespace CBBW.Areas.Security.ViewModel.EHG
         public int DWTActive { get; set; }
         public int VAActive { get; set; }
         public string DocFileName { get; set; }
+        public int IsDocOpened { get; set; }
     }
 }

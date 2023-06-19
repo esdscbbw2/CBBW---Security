@@ -223,7 +223,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="bgColor mt-4 bg-transparent text-left">
+                <div class="bgColor mt-4 bg-transparent text-left border-green">
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
                             It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
@@ -255,15 +255,8 @@
                                 <label>Approved :</label>
                             </div>
                             <div class="col-md-2">
-                                @if (Model.etsHeader.IsApproved == true)
-                                {
-                                    <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
-                                }
-                                else
-                                {
-                                    <input type="text" class="form-control width-85 pointer-none" value="No" disabled="">
-                                }
-
+                                    <input type="text" class="form-control width-85 pointer-none" value="@(Model.etsHeader.IsApproved == true?"Yes":"No")" disabled="">
+                     
                             </div>
                             <div class="col-md-2 col-form-label">
                                 <label>Date &amp; Time Of Approval :</label>
