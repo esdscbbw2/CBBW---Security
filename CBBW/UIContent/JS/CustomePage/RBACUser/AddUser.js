@@ -70,11 +70,56 @@ $("#EffectiveDate").on("change", function () {
 });
 function RolesChanged() {
     var myCtrl = $(RolesChanged.caller.arguments[0].target);
-    if (myCtrl.val() != '') { myCtrl.isValid(); } else { myCtrl.isInvalid(); }
-    SubmitBtnStatus('btnSubmit', 'HdrDiv');
+    if (myCtrl.val() != '') {
+        myCtrl.isValidCtrl();        
+    } else { myCtrl.isInvalidCtrl(); }
+    EnableAddBtn(myCtrl.attr('id').split('_')[1],'AddBtn');
 };
-function CentreChanged() {
-    var myCtrl = $(CentreChanged.caller.arguments[0].target);
-    if (myCtrl.val() != '') { myCtrl.isValid(); } else { myCtrl.isInvalid(); }
-    SubmitBtnStatus('btnSubmit', 'HdrDiv');
+function LocationTypeChanged() {
+    var myCtrl = $(LocationTypeChanged.caller.arguments[0].target);
+    var rowid = myCtrl.attr('id').split('_')[1];
+    var myCashcadingID = 'LocationCode_' + rowid;
+    if (myCtrl.val() != '') {
+        var url = '/Security/CTV2/GetToLocationsFromTypes?TypeIDs=' + myCtrl.val();
+        GetDataFromAjax(url).done(function (data) {
+            refreshMultiselect(data, myCashcadingID, false);
+        });
+        myCtrl.isValidCtrl();
+    } else { myCtrl.isInvalidCtrl(); }
+    EnableAddBtn(myCtrl.attr('id').split('_')[1], 'AddBtn');
+};
+function LocationCodeChanged() {
+    var myCtrl = $(LocationCodeChanged.caller.arguments[0].target);
+    if (myCtrl.val() != '') { myCtrl.isValidCtrl(); } else { myCtrl.isInvalidCtrl(); }
+    EnableAddBtn(myCtrl.attr('id').split('_')[1], 'AddBtn');
+};
+function FromDateChanged() {
+    var myCtrl = $(FromDateChanged.caller.arguments[0].target);
+    if (myCtrl.val() != '') { myCtrl.isValidCtrl(); } else { myCtrl.isInvalidCtrl(); }
+    EnableAddBtn(myCtrl.attr('id').split('_')[1], 'AddBtn');
+};
+function ToDateChanged() {
+    var myCtrl = $(ToDateChanged.caller.arguments[0].target);
+    if (myCtrl.val() != '') { myCtrl.isValidCtrl(); } else { myCtrl.isInvalidCtrl(); }
+    EnableAddBtn(myCtrl.attr('id').split('_')[1], 'AddBtn');
+};
+function CloneRowAddBtnClick() {
+    var insrow = CloneRowAddBtnClick.caller.arguments[0].target.closest('.add-row');
+    var myCtrl = $(CloneRowAddBtnClick.caller.arguments[0].target);
+    var sRowid = $(insrow).attr('id');
+    var cRowid = TableRowCloaning('tbody1', 'tbody2', sRowid, true, true, false);
+    $('#tblSection').removeClass('sectionB');
+    myCtrl.tooltip('hide');
+};
+function EnableAddBtn(rowid, addBtnBaseID) {
+    var tblrow = $('#' + rowid);
+    if (rowid != 0) { addBtnBaseID = addBtnBaseID + '_' + rowid; }
+    var addBtnctrl = $('#' + addBtnBaseID);
+    if (tblrow.find('.is-invalid').length > 0) {
+        addBtnctrl.makeSLUDisable();
+    }
+    else {
+        addBtnctrl.makeSLUEnable();
+    }
+    SubmitBtnStatus('btnSubmit', 'HdrDiv1');
 };

@@ -382,7 +382,7 @@
     <Content Include="UIContent\JS\CustomePage\EHG\EHGCreateNote.js" />
     <Content Include="UIContent\JS\CustomePage\EHG\EHGDateWiseTourDtl.js" />
     <Content Include="UIContent\JS\CustomePage\EHG\EHGNoteApproval.js" />
-    <Content Include="UIContent\JS\CustomePage\EHGVehicleAllotment.js" />
+    <Content Include="UIContent\JS\CustomePage\EHG\EHGVehicleAllotment.js" />
     <Content Include="UIContent\JS\CustomePage\EMC\EMCEntry.js" />
     <Content Include="UIContent\JS\CustomePage\EMC\EMCEntryDetailsJS.js" />
     <Content Include="UIContent\JS\CustomePage\EMC\EMCNoteApprove.js" />

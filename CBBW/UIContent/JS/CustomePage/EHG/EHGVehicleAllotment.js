@@ -50,28 +50,40 @@ function VehicleNoChanged(value) {
     var targetCtrl = $('#VADetails_VehicleNumber');
     var Modelnamectrl = $('#ModelName');
     var Modelnamectrl2 = $('#VADetails_ModelName');
+    var fromdate = $('#FromdateForMang').val();
+    var todate = $('#ToDateForMang').val();
+    var kmlimit = 500;
+    if ($('#VADetails_VehicleType').val() == 'LV') { kmlimit = 1000; }    
     var vno = targetCtrl.val();
+    //alert(vno + ' - ' + fromdate + ' - ' + todate + ' - ' + kmlimit);
     if (vno.length > 4) {
-        var dataSourceURL = '/EHG/GetVehicleBasicInfo?VehicleNumber=' + vno;
+        var dataSourceURL = '/EHG/GetVehicleValidationForTour?VehicleNumber=' + vno + '&KMLimit=' + kmlimit + '&FromDate=' + fromdate + '&ToDate=' + todate;
+        //alert(dataSourceURL);
         $.ajax({
             url: dataSourceURL,
             method: 'GET',
             dataType: 'json',
             success: function (data) {
                 $(data).each(function (index, item) {
-                    /*multiselectCtrl.append($('<option/>', { value: item.ID, text: item.DisplayText }));*/
-                    Modelnamectrl.val(item.ModelName);
-                    Modelnamectrl2.val(item.ModelName);
+                    if (item.IsSuccess) {
+                        Modelnamectrl.val(item.ModelName);
+                        Modelnamectrl2.val(item.ModelName);
+                        targetCtrl.isValid();
+                        EnableSubmitBtn();
+                    }
+                    else {
+                        MyAlert(4, item.Msg);
+                        targetCtrl.isInvalid();
+                        EnableSubmitBtn();
+                    }
                 });
             }
-        });
-        targetCtrl.isValid();
+        });        
     } else { targetCtrl.isInvalid(); }
     $('#IsBtn').val(value);
     EnableSubmitBtn();
 };
 function VehicleBelongsToChanged(mVal) {
-    debugger;
     var vbtoCtrl = $('#VADetails_VehicleBelongsTo');
     var ForCVCtrl = $('#for_company_vehicle');
     var ForOVCtrl = $('#for_other_vehicle');

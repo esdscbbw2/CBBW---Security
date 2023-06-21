@@ -327,6 +327,11 @@ namespace CBBW.DAL.Entities
             _dbresmapper.Map_DBResponse(_datasync.GetEmployeeValidationForTour(CentreCode, EmployeeNumbers, FromDate, ToDate, ref pMsg), ref pMsg, ref result);
             return result;
         }
-
+        public bool VehicleAvailableValidationForHG(string VehicleNumber, int CentreCode, DateTime FromDate, DateTime ToDate, int KMLimit, ref string pMsg)
+        {
+            bool result=false;
+            _dbresmapper.Map_DBResponse(_datasync.VehicleAvailableValidationForHG(VehicleNumber, CentreCode, FromDate, ToDate, KMLimit, ref pMsg), ref pMsg,ref result);
+            return result;
+        }
     }
 }

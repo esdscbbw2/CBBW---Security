@@ -31,7 +31,7 @@ namespace CBBW.Areas.Security.Controllers
         {
             AddUserVM model = new AddUserVM();
             model.EmployeeList = _iRBACUser.GetListOfActiveEmployees(ref pMsg);
-            model.CentreList = _iRBACUser.GetCentreList(ref pMsg);
+            model.LocationTypeList = _iRBACUser.GetLocationTypes(ref pMsg).OrderBy(o=>o.ID).ToList();
             model.RoleList = _iRBACUser.GetListOfRoles(ref pMsg);
             return View(model);
         }

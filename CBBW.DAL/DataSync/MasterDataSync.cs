@@ -10,6 +10,17 @@ namespace CBBW.DAL.DataSync
 {
     public class MasterDataSync
     {
+        public DataTable VehicleAvailableValidationForHG(string VehicleNumber,int CentreCode, DateTime FromDate, DateTime ToDate,int KMLimit, ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("select * from [MTR].[VehicleAvailableValidationForHG]('" + VehicleNumber + "'," + CentreCode + ",'" + FromDate.ToString("yyyy-MM-dd") + "','" + ToDate.ToString("yyyy-MM-dd") + "',"+KMLimit+")", CommandType.Text))
+                {
+                    return sql.GetDataTable();
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return null; }
+        }
         public DataTable GetEmployeeValidationForTour(int CentreCode,string EmployeeNumbers,DateTime FromDate,DateTime ToDate, ref string pMsg)
         {
             try

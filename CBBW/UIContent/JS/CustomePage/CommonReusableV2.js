@@ -440,6 +440,7 @@ function TableRowCloaning(sourceTBody, destinationTBody, rowid, IsRemoveBtn, IsA
         $(this).html(sl);
         sl += 1;
     });
+    //sourcebody.find('.addBtn')
     return r;
 };
 //Section - Date Time Functions
@@ -539,6 +540,10 @@ function LockRow(id) {
         $(this).attr('disabled', 'disabled')
             .addClass('nodrop').tooltip('hide');
     });
+    myCtrl.find('.SLUCtrl').each(function () {
+        $(this).attr('disabled', 'disabled')
+            .addClass('nodrop').tooltip('hide');
+    });
     myCtrl.find('.btn-default').each(function () {
         $(this).addClass('nodrop disabled');
     });
@@ -549,8 +554,12 @@ function UnLockRow(id) {
         var that = $(this);
         that.removeAttr('disabled').removeClass('nodrop');
     });
+    myCtrl.find('.SLUCtrl').each(function () {
+        var that = $(this);
+        that.removeAttr('disabled').removeClass('nodrop');
+    });
     myCtrl.find('.btn-default').each(function () {
-        $(this).removeClass('nodrop disabled');
+        $(this).removeClass('nodrop disabled bg-blue');
     });
     myCtrl.find('.addBtn').each(function () {
         var x = myCtrl.find('.is-invalid').length;

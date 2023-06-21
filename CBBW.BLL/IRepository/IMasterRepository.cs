@@ -28,5 +28,6 @@ namespace CBBW.BLL.IRepository
         string GetNewNoteNumber(string NotePattern, ref string pMsg);
         bool GetEmployeeValidationForTour(int CentreCode, string EmployeeNumbers, DateTime FromDate, DateTime ToDate, ref string pMsg);
         IEnumerable<CustomComboOptions> GetEmployeeListV2(int centreCode, ref string pMsg);
+        bool VehicleAvailableValidation(string VehicleNumber, int CentreCode, DateTime FromDate, DateTime ToDate, int KMLimit, ref string pMsg);
     }
 }

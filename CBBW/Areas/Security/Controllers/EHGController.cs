@@ -301,6 +301,11 @@ namespace CBBW.Areas.Security.Controllers
                 //if(model.VADetails!=null)
                 //    model.OthVehNo = model.VADetails.OtherVehicleNumber;
                 model.IsBtn = 0;
+                if (model.PersonDtls != null) 
+                {
+                    model.FromdateForMang = model.PersonDtls.Select(o => o.FromDate).Min();
+                    model.ToDateForMang = model.PersonDtls.Select(o => o.ToDate).Max();
+                }                
             }
             catch { }
             return View(model);
@@ -560,6 +565,31 @@ namespace CBBW.Areas.Security.Controllers
             else {
                 result.bResponseBool = true;
                 result.sResponseString = "Validated Successfully.";
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult GetVehicleValidationForTour(string VehicleNumber,int KMLimit, string FromDate, string ToDate)
+        {
+            VehicleBasicInfo result=new VehicleBasicInfo();
+            
+            if (VehicleNumber != null && VehicleNumber != "null")
+            {
+                if (_iEHG.VehicleAvailableValidationForHG(VehicleNumber,user.CentreCode,DateTime.Parse(FromDate), DateTime.Parse(ToDate), KMLimit, ref pMsg))
+                {
+                    result = _master.getVehicleBasicInfo(VehicleNumber, ref pMsg);
+                    if (result != null) { result.ModelName = result.ModelName == null ? "NA" : result.ModelName; }
+                    result.IsSuccess = true;
+                }
+                else
+                {
+                    result.IsSuccess = false;
+                    result.Msg = pMsg;
+                }
+            }
+            else
+            {
+                result.IsSuccess = true;
+                result.Msg = "Validated Successfully.";
             }
             return Json(result, JsonRequestBehavior.AllowGet);
         }

@@ -13,9 +13,11 @@ namespace CBBW.BLL.Repository
     public class RBACUserRepository : IRBACUserRepository
     {
         RBACUserEntities _RBACUserEntities;
+        MasterEntities _MasterEntities;
         public RBACUserRepository()
         {
             _RBACUserEntities = new RBACUserEntities();
+            _MasterEntities=new MasterEntities ();
         }
         public List<CustomComboOptions> GetCentreList(ref string pMsg)
         {
@@ -29,6 +31,11 @@ namespace CBBW.BLL.Repository
         {
             return _RBACUserEntities.GetListOfRoles(ref pMsg);
         }
+        public IEnumerable<CustomComboOptions> GetLocationTypes(ref string pMsg)
+        {
+            return _MasterEntities.getLocationTypes(ref pMsg);
+        }
+
         public bool ValidateUserName(string UserName, ref string pMsg)
         {
             return _RBACUserEntities.ValidateUserName(UserName,ref pMsg);

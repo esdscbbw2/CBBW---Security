@@ -320,7 +320,7 @@
                                                 @Html.TextBoxFor(m => m.FromTimeForMang,
                                                    htmlAttributes: new
                                                    {
-                                                       @class = "form-control pointer SLUCtrl timePickerPreDateCtrlV2ForMang",
+                                                       @class = "form-control pointer SLUCtrl EntrynDisabledForEntry timePickerPreDateCtrlV2ForMang",
                                                        type = "text",
                                                        //onblur = "ValidateControl()",
                                                        placeholder = "Select Time"
@@ -339,7 +339,7 @@
                                                 @Html.TextBoxFor(m => m.ToDateForMang, "{0:yyyy-MM-dd}",
                                                    htmlAttributes: new
                                                    {
-                                                       @class = "form-control pointer CustomDateFormatCloneRow valid SLUCtrl",
+                                                       @class = "form-control pointer EntrynDisabledForEntry  CustomDateFormatCloneRow valid SLUCtrl",
                                                        @type = "date",
                                                        @onchange = "ValidateControl()",
                                                        @min = Model.MinFromDate
@@ -552,7 +552,6 @@
                                             </span>
                                         </td>
                                     </tr>
-
                                 </tbody>
                                 <tbody id="tbody4"></tbody>
                             </table>

@@ -119,5 +119,9 @@ namespace CBBW.BLL.Repository
         {
             return _entities.getEmployeeListV2(centreCode, ref pMsg);
         }
+        public bool VehicleAvailableValidation(string VehicleNumber, int CentreCode, DateTime FromDate, DateTime ToDate, int KMLimit, ref string pMsg) 
+        {
+            return _entities.VehicleAvailableValidationForHG(VehicleNumber,CentreCode,FromDate,ToDate,KMLimit,ref pMsg);
+        }
     }
 }

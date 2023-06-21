@@ -14,7 +14,7 @@ namespace CBBW.BLL.IRepository
         bool ValidateUserName(string UserName, ref string pMsg);
         List<CustomComboOptions> GetCentreList(ref string pMsg);
         List<MyRole> GetListOfRoles(ref string pMsg);
-
+        IEnumerable<CustomComboOptions> GetLocationTypes(ref string pMsg);
 
 
 

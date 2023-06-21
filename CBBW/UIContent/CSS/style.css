@@ -99,7 +99,7 @@ strong.listingIcon {
     padding: 0;
     display: block;
     margin: 0 15rem;
-    word-break: break-all;
+    word-break: break-word;
     text-align: center;
     line-height: 23px;
 }

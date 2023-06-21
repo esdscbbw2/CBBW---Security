@@ -14,7 +14,8 @@
                         <i data-feather="arrow-left-circle"></i>
                         Back
                     </button>
-                    <button type="submit" class="btn btn-secondary me-2" onclick="window.location.href='user_mngmt_listing.html';">
+                    <button id="btnSubmit" type="submit" class="btn btn-secondary me-2" 
+                            onclick="window.location.href='user_mngmt_listing.html';">
                         <i data-feather="upload"></i>
                         Submit
                     </button>
@@ -30,7 +31,7 @@
     </div>
     <div class="col-md-12 mb-4">
         <div class="card mt-4">
-            <div class="card-body">
+            <div class="card-body" id="HdrDiv1">
                 @*<form class="form-sample form-inline row ms-auto">*@
                 <div class="SLUSection SLUContainer">
                     <div class="row d-flex align-items-center mb-4">
@@ -100,10 +101,10 @@
 
                     </div>
                 </div>
-                <div class="SLUSection">
+                <div class="SLUSection" id="tblSection">
                     <div class="row d-flex align-items-center mt-4">
                         <div class="table-responsive btnalign">
-                            <table class="table table-bordered">
+                            <table class="table table-bordered" id="myTable">
                                 <thead>
                                     <tr>
                                         <th>Role</th>
@@ -114,12 +115,13 @@
                                         <th style="background: pink;color: #000;">Action</th>
                                     </tr>
                                 </thead>
-                                <tbody id="table_body">
-                                    <tr class="">
-                                        <td onclick="toastDiv()">
+                                <tbody id="tbody1">
+                                    <tr id="0" class="add-row SLUContainer">
+                                        <td>
                                             <div id="selectDiv1">
-                                                <select id="Role_0" multiple="multiple" 
-                                                        class="form-select ApplyMultiSelectWithSelectAll SLUCtrl" 
+                                                <select id="Role_0" multiple="multiple"
+                                                        onchange="RolesChanged()"
+                                                        class="form-select ApplyMultiSelectWithSelectAll SLUCtrl alterID inValidTag" 
                                                         aria-label="Default select example">                                                    
                                                     @if(Model.RoleList!=null && Model.RoleList.Count > 0) 
                                                     {
@@ -133,59 +135,65 @@
                                         </td>
                                         <td width="15%">
                                             <div id="selectDiv2">
-                                                <select multiple="multiple" id="LocationCode_0" 
-                                                        class="form-select example-getting-started1 SLUCtrl" 
-                                                        aria-label="Default select example">
-                                                    <option value="1"> 01 / Center</option>
-                                                    <option value="2"> 03 / Admin Office</option>
-                                                    <option value="3"> 04 / Mfg. Office</option>
-                                                    <option value="4"> 02 / Godown</option>
-                                                    <option value="5"> 05 / Branch</option>
+                                                <select multiple="multiple" id="LocationtypeCode_0" 
+                                                        onchange="LocationTypeChanged()"
+                                                        class="form-select ApplyMultiSelectWithSelectAll SLUCtrl alterID inValidTag" 
+                                                        aria-label="Default select example">                                                    
+                                                    @if (Model.LocationTypeList != null) 
+                                                    {
+                                                        foreach(var item in Model.LocationTypeList) 
+                                                        {
+                                                            <option value="@item.ID"> @item.DisplayText</option>
+                                                        }
+                                                    }
                                                 </select>
                                             </div>
-
                                         </td>
                                         <td>
                                             <div id="selectDiv3">
-                                                <select multiple="multiple" class="form-select example-getting-started1 SLUCtrl" aria-label="Default select example" id="multiselect3">
-                                                    <option value="1"> 01 / Puranipet</option>
-                                                    <option value="2"> 01 / Nizamabad</option>
-                                                    <option value="3"> 01 / Koratla</option>
-                                                    <option value="4"> 01 / Raipur</option>
-                                                    <option value="5"> 01 / Jaipur  </option>
-                                                    <option value="6"> 01 / Puranipet </option>
-                                                    <option value="7"> 01 / Koratla </option>
-                                                    <option value="8"> 01 / Raipur </option>
-                                                    <option value="9"> 01 / Puranipet </option>
-                                                    <option value="10"> 01 / Nizamabad </option>
+                                                <select multiple="multiple" id="LocationCode_0"
+                                                        onchange="LocationCodeChanged()"
+                                                        class="form-select ApplyMultiSelect SLUCtrl alterID inValidTag" 
+                                                        aria-label="Default select example">                                                    
                                                 </select>
                                             </div>
 
                                         </td>
                                         <td>
                                             <div class="position-relative pointer">
-                                                <input type="date" class="form-control pointer is-invalid valid SLUCtrl" onchange="changeDateFormat(this)" id="date1">
-                                                <label class="datelabel pointer">Select Date </label>
+                                                <input id="EffectiveFromDt_0" type="date"
+                                                       class="form-control pointer is-invalid CustomDateFormatCloneRow valid SLUCtrl alterID inValidTag" 
+                                                       onchange="FromDateChanged()" >
+                                                <label id="lblEffectiveFromDt_0" style="width:100px"
+                                                       class="datelabel pointer alterID">Select Date</label>
                                             </div>
                                         </td>
                                         <td>
                                             <div class="position-relative pointer">
-                                                <input type="date" class="form-control pointer is-invalid valid SLUCtrl" onchange="changeDateFormat(this)" id="date2">
-                                                <label class="datelabel pointer">Select Date </label>
+                                                <input type="date" id="EffectiveToDate_0"
+                                                       class="form-control pointer is-invalid CustomDateFormatCloneRow valid SLUCtrl alterID inValidTag" 
+                                                       onchange="ToDateChanged()" >
+                                                <label id="lblEffectiveToDate_0" style="width:100px"
+                                                       class="datelabel pointer alterID">Select Date</label>
                                             </div>
                                         </td>
                                         <td>
                                             <span class="actionBtn">
-                                                <button type="button" class="btn secondaryLink" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                    <i data-feather="x" onclick="remove_tr(this)"></i>
+                                                <button id="DeleteBtn_0" type="button" 
+                                                        class="btn secondaryLink alterID inVisible cloneBtn removeBtn" 
+                                                        data-toggle="tooltip" data-placement="top" title="Delete">
+                                                    <i data-feather="x" onclick="RowRemoveBtnWithEnablePreRow('tbody2','btnSubmit','HdrDiv1','myTable')"></i>
                                                 </button>
-                                                <button type="button" class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Add">
-                                                    <i data-feather="plus" onclick="create_tr('table_body')"></i>
+                                                <button id="AddBtn_0" type="button" 
+                                                        class="btn primaryLink alterID cloneBtn addBtn SLUAddBtn SLUBtn" 
+                                                        data-toggle="tooltip" data-placement="top" title="Add">
+                                                    <i data-feather="plus" onclick="CloneRowAddBtnClick()"></i>
                                                 </button>
                                             </span>
                                         </td>
                                     </tr>
                                 </tbody>
+                                <tbody id="tbody2"></tbody>>
                             </table>
                             <div class="toast show" id="toast">
                                 <div class="toast-header">

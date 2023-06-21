@@ -28,5 +28,6 @@ namespace CBBW.BLL.IRepository
             int ApproverID, ref string pMsg);
         List<CustomComboOptions> getDriverListForOfficeWork(string Notenumber, ref string pMsg);
         int GetMaxDaysOfTour(int ServiceTypeCode, ref string pMsg);
+        bool VehicleAvailableValidationForHG(string VehicleNumber, int CentreCode, DateTime FromDate, DateTime ToDate, int KMLimit, ref string pMsg);
     }
 }

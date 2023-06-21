@@ -152,8 +152,9 @@ namespace CBBW.BLL.Repository
         {
            return _TourEntities.GetMaxDaysOfTour(ServiceTypeCode,ref pMsg);
         }
-        
-
-
+        public bool VehicleAvailableValidationForHG(string VehicleNumber, int CentreCode, DateTime FromDate, DateTime ToDate, int KMLimit, ref string pMsg)
+        {
+            return _MasterEntities.VehicleAvailableValidationForHG(VehicleNumber, CentreCode, FromDate, ToDate, KMLimit, ref pMsg);
+        }
     }
 }

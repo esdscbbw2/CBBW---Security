@@ -20,6 +20,8 @@
         @Html.HiddenFor(m => m.OthVehNo)
         @Html.HiddenFor(m => m.DriverNumber)
         @Html.HiddenFor(m => m.IsDriverCtrlEnable)
+        @Html.HiddenFor(m => m.FromdateForMang)
+        @Html.HiddenFor(m => m.ToDateForMang)
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
@@ -251,7 +253,7 @@
     <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
-    <script src="~/UIContent/JS/CustomePage/EHGVehicleAllotment.js"></script>
+    <script src="~/UIContent/JS/CustomePage/EHG/EHGVehicleAllotment.js"></script>
     <script>
         $(document).ready(function () {
             if ('@ViewBag.ErrMsg' != '') {
