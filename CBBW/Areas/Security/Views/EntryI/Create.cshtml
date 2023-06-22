@@ -11,6 +11,8 @@
         @Html.HiddenFor(m => m.DesgCodenNameOfAE)
         @Html.HiddenFor(m => m.VASubmitBtnActive)
         @Html.HiddenFor(m => m.IsVABtnEnabled)
+        @Html.HiddenFor(m => m.SchFromDate)
+        @Html.HiddenFor(m => m.SchToDate)
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
@@ -38,11 +40,13 @@
         <div class="col-md-12">
             <div class="text-center pt-2 pb-2">
                 <div class="upper-tab-buttons text-center">
-                    <button type="button" class="btn btn-primary me-2" onclick="window.location.href='#';">
-                        To Check  “Tour Rules”   Click Here
+                    <button type="submit" name="Submit" value="TourRule"
+                            class="btn btn-primary me-2">
+                        To Check  “Tour Rules” Click Here
                     </button>
-                    <button type="button" class="btn btn-primary " onclick="window.location.href='#';">
-                        To Check “TA & DA Rules”   Click Here
+                    <button type="submit" name="Submit" value="TADARule"
+                            class="btn btn-primary ">
+                        To Check “TA & DA Rules” Click Here
                     </button>
                 </div>
             </div>
@@ -52,55 +56,55 @@
                 <div class="card-body approvalForm">
                     @*<form class="form-sample form-inline row ms-auto">*@
                     <div class="row d-flex align-items-center mb-4">
-                            <div class="col-md-4">
-                                <label id="lblNoteDesc" class="col-form-label"></label>
-                            </div>
-                            <div class="col-md-8">
-                                <div>
-                                    <div class="row">
-                                        <div class="col-md-5">
-                                            @Html.DropDownListFor(m => m.NoteNumber,
-                                            new SelectList(Model.DropDownNoteList, "NoteNumber", "NoteNumber"), "Select Ref. Note No.",
-                                            htmlAttributes: new
-                                            {
-                                                @class = "form-select pointer is-invalid",
-                                                onchange = "NotenumberChanged(1)"
-                                            })
-                                        </div>
-                                        <label class="col-form-label col-md-1">
-                                            Date :
-                                        </label>
-                                        <div class="col-md-2">
-                                            <input id="NoteEntryDate" type="text"
-                                                   class="form-control"
-                                                   disabled>
-                                        </div>
-                                        <label class="col-form-label col-md-1">
-                                            Time  :
-                                        </label>
-                                        <div class="col-md-2">
-                                            <input id="NoteEntryTime" type="text"
-                                                   class="form-control"
-                                                   disabled>
-                                        </div>
+                        <div class="col-md-4">
+                            <label id="lblNoteDesc" class="col-form-label"></label>
+                        </div>
+                        <div class="col-md-8">
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        @Html.DropDownListFor(m => m.NoteNumber,
+                                        new SelectList(Model.DropDownNoteList, "NoteNumber", "NoteNumber"), "Select Ref. Note No.",
+                                        htmlAttributes: new
+                                        {
+                                            @class = "form-select pointer is-invalid",
+                                            onchange = "NotenumberChanged(1)"
+                                        })
+                                    </div>
+                                    <label class="col-form-label col-md-1">
+                                        Date :
+                                    </label>
+                                    <div class="col-md-2">
+                                        <input id="NoteEntryDate" type="text"
+                                               class="form-control"
+                                               disabled>
+                                    </div>
+                                    <label class="col-form-label col-md-1">
+                                        Time  :
+                                    </label>
+                                    <div class="col-md-2">
+                                        <input id="NoteEntryTime" type="text"
+                                               class="form-control"
+                                               disabled>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row d-flex align-items-center mb-4">
-                            <label class="col-form-label col-md-2">Center Code & Name : </label>
-                            <div class="col-md-6">
-                                <input id="CentreCodenName" type="text" class="form-control" disabled>
-                            </div>
-                        </div>
-                        <div class="row d-flex align-items-center mb-4">
-                            <label class="col-form-label col-md-2">Is E.P Tour : </label>
-                            <div class="col-md-6">
-                                <input type="text" class="form-control" value="No" disabled>
-                            </div>
-                        </div>
-                        @*</form>*@
                     </div>
+                    <div class="row d-flex align-items-center mb-4">
+                        <label class="col-form-label col-md-2">Center Code & Name : </label>
+                        <div class="col-md-6">
+                            <input id="CentreCodenName" type="text" class="form-control" disabled>
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center mb-4">
+                        <label class="col-form-label col-md-2">Is E.P Tour : </label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" value="No" disabled>
+                        </div>
+                    </div>
+                    @*</form>*@
+                </div>
             </div>
             <div class="card mt-4 mb-4">
                 <div id="AppDivE1" class="card-body alert text-dark approvalForm ">

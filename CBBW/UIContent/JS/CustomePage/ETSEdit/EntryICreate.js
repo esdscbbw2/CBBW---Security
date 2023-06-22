@@ -45,6 +45,8 @@ function NotenumberChanged(mVal) {
         dataType: 'json',
         success: function (data) {
             $(data).each(function (index, item) {
+                $('#SchFromDate').val(item.SchFromDate);
+                $('#SchToDate').val(item.SchToDate);
                 $('#NoteEntryDate').val(item.EntryDateDisplay);
                 $('#NoteEntryTime').val(item.EntryTime);
                 $('#CentreCodenName').val(item.CenterName);                
@@ -64,7 +66,8 @@ function NotenumberChanged(mVal) {
                     $('#RatDivE1').addClass('alert-danger').removeClass('alert-success');
                 } else { $('#RatDivE1').removeClass('alert-danger').addClass('alert-success'); }
                 var TPDetailsDiv = $('#TPDiv');
-                var dataSourceURL = '/EntryI/TPView?NoteNumber=' + notenumber;
+                var dataSourceURL = '/EntryI/TPView?NoteNumber=' + notenumber;                
+                //alert(item.SchFromDate + ' - ' + $('#SchFromDate').val());
                 $.ajax({
                     url: dataSourceURL,
                     contentType: 'application/html; charset=utf-8',

@@ -34,6 +34,10 @@ namespace CBBW.DAL.DBMapper
             {
                 if (dr != null)
                 {
+                    if (!DBNull.Value.Equals(dr["SchFromDate"]))
+                        result.SchFromDate =DateTime.Parse(dr["SchFromDate"].ToString()).ToString("yyyy-MM-dd");
+                    if (!DBNull.Value.Equals(dr["SchToDate"]))
+                        result.SchToDate =DateTime.Parse(dr["SchToDate"].ToString()).ToString("yyyy-MM-dd");
                     if (!DBNull.Value.Equals(dr["NoteNumber"]))
                         result.NoteNumber = dr["NoteNumber"].ToString();
                     if (!DBNull.Value.Equals(dr["EntryDate"]))

@@ -65,6 +65,16 @@ namespace CBBW.Areas.Security.Controllers
                 _iUser.RecordCallBack(baseUrl);
                 return RedirectToAction("VehicleAllotmentView", "EntryI", new { NoteNumber = modelobj.NoteNumber });
             }
+            else if (Submit == "TourRule")
+            {
+                _iUser.RecordCallBack(baseUrl);
+                return RedirectToAction("ViewRedirection", "TourRule", new { Area = "Security", CBUID = 1 });
+            }
+            else if (Submit == "TADARule")
+            {
+                _iUser.RecordCallBack(baseUrl);
+                return RedirectToAction("ViewRedirection", "TADARules", new { Area = "Security", CBUID = 1 });
+            }
             else if (Submit == "Delete")
             {
                 if (_IETSEdit.RemoveEntryINote(modelobj.NoteNumber, true, ref pMsg)) 
@@ -111,9 +121,10 @@ namespace CBBW.Areas.Security.Controllers
             model.IsBtn = 0;
             model.VABackBtnActive = 0;
             model.IsVABtnEnabled = 1;
-            model.VehicleList= _master.getVehicleList("L.C.V", model.VehicleType == 1 ? 4 : 2, ref pMsg);
+            model.VehicleList= _master.getVehicleList("L.C.V", model.VehicleType == 1 ? 4 : 2, ref pMsg,user.CentreCode);
             model.DriverList = _IETSEdit.GETDriverList(NoteNumber, ref pMsg);
             model.VADetails = _IETSEdit.GetVehicleAllotmentDetails(NoteNumber, 0, ref pMsg);
+            
             if (model.VADetails == null)
             {
                 model.VADetails = new VehicleAllotmentDetails();
@@ -123,12 +134,21 @@ namespace CBBW.Areas.Security.Controllers
                 model.VADetails.AuthorisedEmpNumber = MyCodeHelper.GetEmpNoFromString(model.AuthorisedEmpNonName);
                 model.VADetails.DesignationText = model.DesgCodenNameOfAE;
                 model.VADetails.VehicleType = model.VehicleType == 2 ? "2 Wheeler" : model.VehicleType == 1 ? "LV" : "NA";
+                if (model.DriverList != null && model.DriverList.Where(o => o.PersonID != -1).Count() > 1)
+                {
+                    model.IsDriverCtrlEnable = 1;
+                    model.VADetails.DriverNumber = model.DriverList.FirstOrDefault().PersonID;
+                    //model.DriverNumber = -1;
+                }
+                else { model.IsDriverCtrlEnable = 0; }
             }
             else 
             { 
                 model.VADetails.OtherVehicleNumber = model.VADetails.VehicleBelongsTo == 2 ? model.VADetails.VehicleNumber : "";
                 model.VADetails.OtherVehicleModelName = "NA";
             }
+            model.AuthorisedEmpNonName2 = model.AuthorisedEmpNonName;
+            model.DesgCodenNameOfAE2 = model.DesgCodenNameOfAE;
             TempData["EntryI"] = model;
             return View(model);
         }
@@ -136,15 +156,34 @@ namespace CBBW.Areas.Security.Controllers
         public ActionResult VehicleAllotment(EntrICreateVM modelobj, string Submit) 
         {
             model = CastEntryITempData();
+            if (model.VehicleList == null) { model.VehicleList = _master.getVehicleList("L.C.V", model.VehicleType == 1 ? 4 : 2, ref pMsg, user.CentreCode);}
+            if (model.DriverList == null) { model.DriverList = _IETSEdit.GETDriverList(modelobj.NoteNumber, ref pMsg); }
             if (Submit == "Save")
             {
+                if (modelobj.VADetails != null) 
+                {
+                    modelobj.VADetails.MaterialStatus = modelobj.MaterialStatus;
+                    modelobj.VADetails.VehicleBelongsTo = modelobj.VehicleBelongsTo2;
+                    modelobj.VADetails.VehicleNumber = modelobj.VehicleNumber;
+                    modelobj.VADetails.OtherVehicleNumber = modelobj.OtherVehicleNumber;
+                    modelobj.VADetails.DriverName = modelobj.DriverName;
+                    modelobj.VADetails.DriverNumber =MyCodeHelper.GetEmpNoFromString(modelobj.DriverName);
+                }
                 if (_IETSEdit.SetETSVehicleAllotmentDetails(modelobj.VADetails,user.CentreCode,user.CentreName, ref pMsg))
                 {
-                    model.VASubmitBtnActive = 1;                    
-                    return RedirectToAction("Create");
+                    model.VASubmitBtnActive = 1;
+                    ViewBag.Msg = "Data Saved Successfully";
+                    model.VADetails = modelobj.VADetails;
+                    TempData["EntryI"] = model;
+                    //return RedirectToAction("Create");
                 }
-                else { }
+                else 
+                {
+                    ViewBag.ErrMsg = pMsg;
+                }
             }
+            modelobj.VehicleList = model.VehicleList;
+            modelobj.DriverList = model.DriverList;
             return View(modelobj);
         }
         public ActionResult Create() 
@@ -169,6 +208,16 @@ namespace CBBW.Areas.Security.Controllers
             else if (Submit == "VABtn")
             {
                 return RedirectToAction("VehicleAllotment", "EntryI", new { NoteNumber = modelobj.NoteNumber });
+            }
+            else if (Submit == "TourRule")
+            {
+                _iUser.RecordCallBack("/Security/EntryI/Create");
+                return RedirectToAction("ViewRedirection", "TourRule", new { Area = "Security", CBUID = 1 });
+            }
+            else if (Submit == "TADARule")
+            {
+                _iUser.RecordCallBack("/Security/EntryI/Create");
+                return RedirectToAction("ViewRedirection", "TADARules", new { Area = "Security", CBUID = 1 });
             }
             else if (Submit == "Save")
             {
@@ -195,7 +244,7 @@ namespace CBBW.Areas.Security.Controllers
             EditNoteDetails result= _IETSEdit.GetNoteHdrForEntryI(NoteNumber, 0, ref pMsg); ;
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult getNoteList(int iDisplayLength, int iDisplayStart, int iSortCol_0,
+        public JsonResult GetNoteList(int iDisplayLength, int iDisplayStart, int iSortCol_0,
             string sSortDir_0, string sSearch)
         {
             List<EntryINoteList> noteList = _IETSEdit.GetEntryINoteList(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, user.CentreCode, ref pMsg);

@@ -32,23 +32,23 @@
                 <tr>
                     <th scope="col">
                         <div class="form-group">
-                            <input type="text" class="form-control tblSearch" placeholder="Search...">
+                            <input type="text" class="form-control tblSearch" data-index="1" placeholder="Search...">
                         </div>
                     </th>
                     <th scope="col">
                         <div class="form-group">
-                            <input type="text" class="form-control tblSearch" placeholder="Search...">
+                            <input type="text" class="form-control tblSearch" data-index="2" placeholder="Search...">
                         </div>
                     </th>
                     <th scope="col">
                         <div class="form-group">
-                            <input type="text" class="form-control tblSearch" placeholder="Search...">
+                            <input type="text" class="form-control tblSearch" data-index="3" placeholder="Search...">
                         </div>
                     </th>
 
                     <th scope="col">
                         <div class="form-group">
-                            <input id="filterMonthnYear" type="text" class="form-control tblSearch" placeholder="Search...">
+                            <input id="filterMonthnYear" type="text" class="form-control tblSearch" data-index="4" placeholder="Search...">
                         </div>
                     </th>
                 </tr>
@@ -93,12 +93,14 @@
                     },
                 ],
                 bServerSide: true,
-                sAjaxSource: '/Security/EntryI/getNoteList',
+                sAjaxSource: '/Security/EntryI/GetNoteList',
                 "pagingType": "input",
                 fixedColumns: {left:1},
             });
             $('.tblSearch').on('keyup change', function () {
-                dtinstance.search(this.value).draw();
+                var searchtext = $(this).attr('data-index') + ':' + this.value;
+                if (this.value == '') { searchtext = ''; }
+                dtinstance.search(searchtext).draw();
             });
             $('.tblSearch').on('click', function (e) {
                 e.stopPropagation();
@@ -109,13 +111,7 @@
             var btnType = $(ctrl).attr('data-btn');
             var destinationurl = '/Security/EntryI/ViewNote?NoteNumber=' + notenumber+'&CBUID=0' ;
             if (btnType == 'D') { destinationurl = destinationurl + '&CanDelete=1'; }
-            window.location.href = destinationurl;
-            //$.ajax({
-            //    url: mUrl,
-            //    success: function (result) {
-            //        window.location.href =destinationurl;;
-            //    }
-            //});
+            window.location.href = destinationurl;            
         };
     </script>
 

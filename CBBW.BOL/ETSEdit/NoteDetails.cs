@@ -47,6 +47,8 @@ namespace CBBW.BOL.ETSEdit
         public int VehicleType { get; set; }
         public int IsMLEntered { get; set; }
         public int IsDataToSave { get; set; }
+        public string SchFromDate { get; set; }
+        public string SchToDate { get; set; }
     }
 
 }

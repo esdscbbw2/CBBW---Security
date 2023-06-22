@@ -32,5 +32,15 @@ namespace CBBW.Areas.Security.ViewModel.ETSEdit
         public int CanDelete { get; set; }
         public string EntryDateDisplay { get; set; }
         public string EntryTime { get; set; }
+        public int MaterialStatus { get; set; }
+        public int VehicleBelongsTo2 { get; set; }
+        public string VehicleNumber { get; set; }
+        public string OtherVehicleNumber { get; set; }
+        public string DriverName { get; set; }
+        public int IsDriverCtrlEnable { get; set; }
+        public string AuthorisedEmpNonName2 { get; set; }
+        public string DesgCodenNameOfAE2 { get; set; }
+        public string SchFromDate { get; set; }
+        public string SchToDate { get; set; }
     }
 }

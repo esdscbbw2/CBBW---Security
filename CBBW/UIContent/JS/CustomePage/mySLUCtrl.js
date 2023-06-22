@@ -428,7 +428,7 @@ function LockSLUSectionV2(mySection) {
         mySection.addClass('sectionB');
     }
 };
-function UnLockSLUSection(mySection) {    
+function UnLockSLUSection(mySection) {
     if (mySection != null) {
         mySection.removeClass('sectionB');
         var i = 0;
