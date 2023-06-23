@@ -672,6 +672,7 @@
     <Content Include="UIContent\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="UIContent\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="UIContent\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Views\Home\Index2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

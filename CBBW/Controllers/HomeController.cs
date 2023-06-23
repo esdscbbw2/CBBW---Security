@@ -66,5 +66,9 @@ namespace CBBW.Controllers
             _iUser.LogOut();
             return RedirectToAction("LogIn");
         }
+        public ActionResult Index2()
+        {
+            return View();
+        }
     }
 }

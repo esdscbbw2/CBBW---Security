@@ -130,9 +130,9 @@
                 "pagingType": "input"
             });
             $('.tblSearch').on('keyup change', function () {
-                var searchtext = $(this).attr('data-index') + ':' + this.value;
-                if (this.value == '') { searchtext = ''; }
-                dtinstance.search(searchtext).draw();
+                //var searchtext = $(this).attr('data-index') + ':' + this.value;
+                //if (this.value == '') { searchtext = ''; }
+                dtinstance.search(GetTblColumnSearchText()).draw();
             });
             $('.tblSearch').on('click', function (e) {
                 e.stopPropagation();
@@ -143,6 +143,17 @@
             var destinationurl = '/Security/EHG/ViewNote?NoteNumber=' + notenumber+'&CBUID=1' ;
             //if (btnType == 'D') { destinationurl = destinationurl + '&CanDelete=1'; }
             window.location.href = destinationurl;            
+        };
+        function GetTblColumnSearchText() {
+            var result = '';
+            $('.tblSearch').each(function () {
+                var that = $(this);
+                if (that.val() != '') {
+                    result = result + that.attr('data-index') + ':' + this.value + ',';
+                }
+            });
+            result = result != '' ? result.substring(0, result.length - 1) : '';
+            return result;
         };
     </script>
 

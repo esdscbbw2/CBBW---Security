@@ -1,0 +1,84 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+</head>
+<body>
+    <table id="myTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>John Doe</td>
+                <td>Manager</td>
+                <td>New York</td>
+            </tr>
+            <tr>
+                <td>Jane Smith</td>
+                <td>Developer</td>
+                <td>London</td>
+            </tr>
+            <tr>
+                <td>Mike Johnson</td>
+                <td>Designer</td>
+                <td>Tokyo</td>
+            </tr>
+            <tr>
+                <td>John Doe</td>
+                <td>Manager</td>
+                <td>Tokyo</td>
+            </tr>
+            <tr>
+                <td>Jane Smith</td>
+                <td>Developer</td>
+                <td>London</td>
+            </tr>
+            <tr>
+                <td>Mike Johnson</td>
+                <td>Designer</td>
+                <td>Tokyo</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable();
+        });
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            var table = $('#myTable').DataTable();
+
+            table.columns().every(function () {
+                var column = this;
+                var select = $('<select><option value=""></option></select>')
+                    .appendTo($(column.header()).empty())
+                    .on('change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex($(this).val());
+
+                        column.search(val ? '^' + val + '$' : '', true, false).draw();
+                    });
+
+                column.data().unique().sort().each(function (d, j) {
+                    select.append('<option value="' + d + '">' + d + '</option>');
+                });
+            });
+        });
+
+    </script>
+</body>
+</html>

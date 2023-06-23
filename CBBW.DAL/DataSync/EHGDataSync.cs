@@ -322,7 +322,7 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = CentreCode;
                 para[paracount] = new SqlParameter("@IsApprovedList", SqlDbType.Bit);
                 para[paracount++].Value = IsApprovedList;
-                using (SQLHelper sql = new SQLHelper("[EHG].[GetEHGNoteList]", CommandType.StoredProcedure))
+                using (SQLHelper sql = new SQLHelper("[EHG].[GetEHGNoteListV2]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataTable(para, ref pMsg);
                 }

@@ -61,7 +61,7 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = SearchText;
                 para[paracount] = new SqlParameter("@CentreCode", SqlDbType.Int);
                 para[paracount++].Value = CentreCode;
-                using (SQLHelper sql = new SQLHelper("[ETS].[GetEntryINoteList]", CommandType.StoredProcedure))
+                using (SQLHelper sql = new SQLHelper("[ETS].[GetEntryINoteListV2]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataTable(para, ref pMsg);
                 }
