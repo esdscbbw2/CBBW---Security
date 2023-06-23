@@ -72,7 +72,6 @@ function VehicleNoChanged(value) {
     var todate = $('#SchToDate').val();
     var kmlimit =500;
     if ($('#VADetails_VehicleType').val() == 'LV') { kmlimit = 1000; }
-
     $('#VehicleNumber').val(vno);
     if (vno.length > 4) {
         var dataSourceURL = '/EHG/GetVehicleValidationForTour?VehicleNumber=' + vno + '&KMLimit=' + kmlimit + '&FromDate=' + fromdate + '&ToDate=' + todate;
@@ -85,6 +84,9 @@ function VehicleNoChanged(value) {
                     if (item.IsSuccess) {
                         Modelnamectrl.val(item.ModelName);
                         Modelnamectrl2.val(item.ModelName);
+                        //$('#VADetails_KMOut').val(item.KMOut);
+                        //$('#VADetails_KMIn').val(item.KMIn);
+                        //alert(item.KMIn + ' - ' + item.KMOut);
                         targetCtrl.isValidCtrl();
                         EnableSubmitBtn();
                     } else {
@@ -248,10 +250,16 @@ async function GetStatement(EligibleVT, VtypeProvided) {
         url: mUrl,
         success: function (result) {
             if ($.trim(result.CStatement) == "1") {
-                VA.addClass('inVisible');
+                //VA.addClass('inVisible');
+                VA.addClass('sectionB');
+                $('#VAStatement').val('');
             } else if (result.CStatement == null) {
-                EV.addClass('inVisible');
-                VA.addClass('inVisible');
+                //EV.addClass('inVisible');
+                EV.addClass('sectionB');
+                $('#EVStatement').val('');
+                //VA.addClass('inVisible');
+                VA.addClass('sectionB');
+                $('#VAStatement').val('');
             }
         }
     });

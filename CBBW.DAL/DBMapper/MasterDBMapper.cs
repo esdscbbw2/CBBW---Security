@@ -49,6 +49,10 @@ namespace CBBW.DAL.DBMapper
                     result.ServiceDuaration =int.Parse(dr["ServiceDuration"].ToString());
                 if (!DBNull.Value.Equals(dr["IsActive"]))
                     result.IsActive =bool.Parse(dr["IsActive"].ToString());
+                if (!DBNull.Value.Equals(dr["KMIn"]))
+                    result.KMIn = int.Parse(dr["KMIn"].ToString());
+                if (!DBNull.Value.Equals(dr["KMOut"]))
+                    result.KMOut = int.Parse(dr["KMOut"].ToString());
             }
             return result;
         }

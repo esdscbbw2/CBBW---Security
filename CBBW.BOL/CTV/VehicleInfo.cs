@@ -16,6 +16,8 @@ namespace CBBW.BOL.CTV
         public bool IsActive { get; set; }
         public bool IsSuccess { get; set; }
         public string Msg { get; set; }
+        public int KMIn { get; set; }
+        public int KMOut { get; set; }
     }
     public class VehicleInfo : VehicleBasicInfo
     {        
