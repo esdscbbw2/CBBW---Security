@@ -409,6 +409,7 @@ namespace CBBW.Areas.Security.Controllers
                     if (DateTime.Today >= tFromDate && DateTime.Today <= tToDate){ model.IsExtensionAllowed = 1; }
                 }
             }
+            model.IsTourStarted = _IETSEdit.IsTourStarted(model.NoteNumber, ref pMsg) ? 1 : 0;
             return View(model);
         }
         public ActionResult IndividualEdit()

@@ -71,22 +71,22 @@
                                             {
                                                 @class = "form-select pointer is-invalid",
                                                 onchange = "NotenumberChanged()"
-                                            })  
+                                            })
                                     </div>
-                                        <label class="col-form-label col-md-1">
-                                            Date  :
-                                        </label>
-                                        <div class="col-md-2">
-                                            <input id="NoteEntryDate" type="text" class="form-control" disabled>
-                                        </div>
-                                        <label class="col-form-label col-md-1">
-                                            Time  :
-                                        </label>
-                                        <div class="col-md-2">
-                                            <input id="NoteEntryTime" type="text" class="form-control" disabled>
-                                        </div>
+                                    <label class="col-form-label col-md-1">
+                                        Date  :
+                                    </label>
+                                    <div class="col-md-2">
+                                        <input id="NoteEntryDate" type="text" class="form-control" disabled>
+                                    </div>
+                                    <label class="col-form-label col-md-1">
+                                        Time  :
+                                    </label>
+                                    <div class="col-md-2">
+                                        <input id="NoteEntryTime" type="text" class="form-control" disabled>
                                     </div>
                                 </div>
+                            </div>
                         </div>
                     </div>
                     <div>
@@ -174,11 +174,11 @@
                     </button>
                 </div>
             </div>
-            <div class="bgColor mt-4 bg-transparent content border-red text-center">
+            <div id="PolicyDiv" class="bgColor mt-4 bg-transparent content border-red text-center">
                 <ul style="list-style:none;">
                     <li style="font-size: 16px;">
                         The EDIT Is Done As Per Policy & As Required :
-                        <select class="form-select content border-red is-invalid"
+                        <select id="PolicyCtrl" class="form-select content border-red is-invalid"
                                 onchange="AsPerPolicyOptionChanged()"
                                 aria-label="Default select example">
                             <option selected="">-</option>
@@ -196,7 +196,9 @@
 
 }
 @section scripts{
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/ETSEdit/ETSEditCreateJS.js"></script>
     <script>
         if ('@ViewBag.ErrMsg' != '') {

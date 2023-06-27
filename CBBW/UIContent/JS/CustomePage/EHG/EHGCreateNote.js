@@ -215,7 +215,6 @@ function CRToDateChanged() {
     } else { targetCtrl.isInvalidCtrl();}
 };
 /////////////////////////////////////////////////////////////
-
 $.fn.clearValidateClass = function () {
     var that = this;
     that.removeClass('is-valid').removeClass('is-invalid');

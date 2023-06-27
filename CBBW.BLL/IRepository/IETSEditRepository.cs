@@ -35,5 +35,6 @@ namespace CBBW.BLL.IRepository
         bool RemoveEntryINote(string NoteNumber, bool ActiveTag, ref string pMsg);
         IEnumerable<NoteDriver> GETDriverList(string NoteNumber, ref string pMsg);
         bool UpdateETSVehicleAllotmentDetails(string NoteNumber, ref string pMsg);
+        bool IsTourStarted(string NoteNumber, ref string pMsg);
     }
 }

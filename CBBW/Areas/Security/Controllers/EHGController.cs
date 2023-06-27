@@ -386,8 +386,10 @@ namespace CBBW.Areas.Security.Controllers
         }
         public JsonResult GetTourLocations(string CategoryIDs)
         {
+            IEnumerable<LocationMaster> result;
             CategoryIDs = CategoryIDs.Replace('_', ',');
-            IEnumerable<LocationMaster> result =_master.GetCentresFromTourCategory(CategoryIDs, ref pMsg);
+            IEnumerable<LocationMaster> result2 =_master.GetCentresFromTourCategory(CategoryIDs, ref pMsg);
+            result = result2.OrderBy(o => o.TypeID).ThenBy(o => o.ID).ToList();
             return Json(result.Where(o=>o.CentreCode!=user.CentreCode).ToList(), JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetTourCategories()

@@ -119,5 +119,9 @@ namespace CBBW.BLL.Repository
         {
             return _ETSEditEntities.UpdateETSVehicleAllotmentDetails(NoteNumber, ref pMsg);
         }
+        public bool IsTourStarted(string NoteNumber, ref string pMsg)
+        {
+            return _ETSEditEntities.IsTourStarted(NoteNumber, ref pMsg);
+        }
     }
 }

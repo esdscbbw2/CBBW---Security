@@ -901,17 +901,21 @@ namespace CBBW.Areas.Security.Controllers
         }
         public JsonResult GetLocationsFromTypes(string TypeIDs)
         {
+            IEnumerable<LocationMaster> result;
             TypeIDs = TypeIDs.Replace('_', ',');
             //IEnumerable<CustomComboOptions> result = _iCTV.getLocationsFromType(TypeIDs, ref pMsg);
-            IEnumerable<LocationMaster> result = _master.GetCentresFromTourCategory(TypeIDs, ref pMsg);
+            IEnumerable<LocationMaster> result2 = _master.GetCentresFromTourCategory(TypeIDs, ref pMsg);
+            result = result2.Where(o => o.CentreCode != user.CentreCode).ToList();
             return Json(result, JsonRequestBehavior.AllowGet);
 
 
         }
         public JsonResult GetLocationsFromType(int TypeID)
         {
+            IEnumerable<LocationMaster> result;
             //IEnumerable<CustomComboOptions> result = _iCTV.getLocationsFromType(TypeID, ref pMsg);
-            IEnumerable<LocationMaster> result = _master.GetCentresFromTourCategory(TypeID.ToString(), ref pMsg);
+            IEnumerable<LocationMaster> result2 = _master.GetCentresFromTourCategory(TypeID.ToString(), ref pMsg);
+            result = result2.Where(o => o.CentreCode != user.CentreCode).ToList();
             return Json(result, JsonRequestBehavior.AllowGet);
 
 

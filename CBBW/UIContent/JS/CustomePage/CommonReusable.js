@@ -624,10 +624,10 @@ function CloneRowReturningID(sourceTBody, destinationTBody, rowid, IsRemoveBtn, 
     cloneready.find('.cloneBtn').each(function () {
         that = $(this);
         that.on('mouseenter', function () {
-            $(this).tooltip('show');
+            //$(this).tooltip('show');
         });
         that.on('mouseleave click', function () {
-            $(this).tooltip('hide');
+            //$(this).tooltip('hide');
         });
     });
     cloneready.find('.datelabel').each(function () {
@@ -642,7 +642,7 @@ function CloneRowReturningID(sourceTBody, destinationTBody, rowid, IsRemoveBtn, 
     sourcebody.find('.btn').each(function () {
         that = $(this);
         that.on('mouseleave click', function () {
-            $(this).tooltip('hide');
+            //$(this).tooltip('hide');
         });
     });
     if (IsAddBtnEnable) {
@@ -1044,7 +1044,9 @@ function EnableAddBtnInCloneRow(tblRow, addBtnBaseID) {
     var rowid = tblrow.attr('id')
     if (rowid != 0) { addBtnBaseID = addBtnBaseID + '_' + rowid; }
     var addBtnctrl = $('#' + addBtnBaseID);
-    if (tblrow.find('.is-invalid').length > 0) { addBtnctrl.makeDisable(); } else { addBtnctrl.makeEnabled(); }
+    if (tblrow.find('.is-invalid').length > 0) {
+        addBtnctrl.makeDisable(); addBtnctrl.addClass('nodrop');
+    } else { addBtnctrl.makeEnabled(); addBtnctrl.removeClass('nodrop'); }
     //alert(tblrow.find('.is-invalid').length);
 };
 function EnableAddBtnInCloneRowIfOnlyLast(tblRow, addBtnBaseID) {
@@ -1055,10 +1057,10 @@ function EnableAddBtnInCloneRowIfOnlyLast(tblRow, addBtnBaseID) {
     var addBtnctrl = $('#' + addBtnBaseID);
     if (tblrow.is(":last-child")) {
         if (tblrow.find('.is-invalid').length > 0) {
-            addBtnctrl.makeDisable();
-        } else { addBtnctrl.makeEnabled(); }
+            addBtnctrl.makeDisable(); addBtnctrl.addClass('nodrop');
+        } else { addBtnctrl.makeEnabled(); addBtnctrl.removeClass('nodrop'); }
     }
-    else { addBtnctrl.makeDisable(); }
+    else { addBtnctrl.makeDisable(); addBtnctrl.addClass('nodrop'); }
     
     //alert(tblrow.find('.is-invalid').length);
 };

@@ -309,6 +309,9 @@ namespace CBBW.DAL.Entities
             _DBResponseMapper.Map_DBResponse(_ETSEditDataSync.UpdateETSVehicleAllotmentDetails(NoteNumber, ref pMsg), ref pMsg, ref result);
             return result;
         }
-
+        public bool IsTourStarted(string NoteNumber, ref string pMsg) 
+        {
+            return _ETSEditDataSync.IsTourStarted(NoteNumber, ref pMsg);
+        }
     }
 }

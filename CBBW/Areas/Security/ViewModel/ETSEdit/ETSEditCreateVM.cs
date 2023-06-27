@@ -44,5 +44,6 @@ namespace CBBW.Areas.Security.ViewModel.ETSEdit
         public int IsCancelled { get; set; }
         public int POA { get; set; }
         public int EPTour { get; set; }
+        public int IsTourStarted { get; set; }
     }
 }

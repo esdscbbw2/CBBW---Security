@@ -12,6 +12,18 @@ namespace CBBW.DAL.DataSync
 {
     public class ETSEditDataSync
     {
+        public bool IsTourStarted(string NoteNumber, ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("SELECT [ETS].[IsTourStarted]('" + NoteNumber + "')", CommandType.Text))
+                {
+                    return bool.Parse(sql.ExecuteScaler(ref pMsg).ToString());
+                }
+
+            }
+            catch (Exception ex) { pMsg = ex.Message; return false; }
+        }
         public DataTable GetETSEditNoteList(int DisplayLength, int DisplayStart, int SortColumn,
             string SortDirection, string SearchText, int CentreCode, int IsApprovedList, ref string pMsg)
         {
@@ -34,7 +46,7 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = CentreCode;
                 para[paracount] = new SqlParameter("@IsApprovedList", SqlDbType.Int);
                 para[paracount++].Value = IsApprovedList;
-                using (SQLHelper sql = new SQLHelper("[ETS].[GetETSEditNoteList]", CommandType.StoredProcedure))
+                using (SQLHelper sql = new SQLHelper("[ETS].[GetETSEditNoteListV2]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataTable(para, ref pMsg);
                 }

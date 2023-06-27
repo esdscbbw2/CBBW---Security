@@ -359,6 +359,7 @@
     <Content Include="UIContent\CSS\themes\base\tabs.css" />
     <Content Include="UIContent\CSS\themes\base\theme.css" />
     <Content Include="UIContent\CSS\themes\base\tooltip.css" />
+    <Content Include="UIContent\fonts\fontawesome-webfont.svg" />
     <Content Include="UIContent\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="UIContent\JS\bootstrap-datetimepicker.min.js" />
     <Content Include="UIContent\JS\bootstrap-multiselect.js" />
@@ -673,6 +674,11 @@
     <Content Include="UIContent\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="UIContent\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Views\Home\Index2.cshtml" />
+    <Content Include="UIContent\fonts\fontawesome-webfont.eot" />
+    <Content Include="UIContent\fonts\fontawesome-webfont.ttf" />
+    <Content Include="UIContent\fonts\fontawesome-webfont.woff" />
+    <Content Include="UIContent\fonts\fontawesome-webfont.woff2" />
+    <Content Include="UIContent\fonts\FontAwesome.otf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

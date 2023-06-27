@@ -56,32 +56,34 @@ function EditTagChanged() {
         if (editTag == 1) {
             if ($('#IsCancelled').val() == 1) {
                 editTagCtrl.val('0').isInvalid();
-                Swal.fire({
-                    title: 'Error',
-                    text: 'Tour Can Be Cancelled Only Once.',
-                    icon: 'error',
-                    customClass: 'swal-wide',
-                    buttons: {
-                        confirm: 'Ok'
-                    },
-                    confirmButtonColor: '#2527a2',
-                });
+                MyAlert(4, 'Tour Can Be Cancelled Only Once.');
+                //Swal.fire({
+                //    title: 'Error',
+                //    text: 'Tour Can Be Cancelled Only Once.',
+                //    icon: 'error',
+                //    customClass: 'swal-wide',
+                //    buttons: {
+                //        confirm: 'Ok'
+                //    },
+                //    confirmButtonColor: '#2527a2',
+                //});
                 togleDiv('AllDisable');
             } else { togleDiv('tour_cancel');}            
         }
         else if (editTag == 2) {
             if (mPOA == 1) {
                 editTagCtrl.val('0').isInvalid();
-                Swal.fire({
-                    title: 'Error',
-                    text: 'Other Edit Can Not Be Allowed When Purpose Of Allotment Is For Management.',
-                    icon: 'error',
-                    customClass: 'swal-wide',
-                    buttons: {
-                        confirm: 'Ok'
-                    },
-                    confirmButtonColor: '#2527a2',
-                });
+                MyAlert(4, 'Other Edit Can Not Be Allowed When Purpose Of Allotment Is For Management.');
+                //Swal.fire({
+                //    title: 'Error',
+                //    text: 'Other Edit Can Not Be Allowed When Purpose Of Allotment Is For Management.',
+                //    icon: 'error',
+                //    customClass: 'swal-wide',
+                //    buttons: {
+                //        confirm: 'Ok'
+                //    },
+                //    confirmButtonColor: '#2527a2',
+                //});
                 togleDiv('AllDisable');
             } else { togleDiv('other_edit');}            
         }
@@ -89,32 +91,44 @@ function EditTagChanged() {
             if ($('#IsExtensionAllowed').val() == 1) {
                 if ($('#IsCancelled').val() == 1) {
                     editTagCtrl.val('0').isInvalid();
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'Tour Extension Can Not Be Done After Cancellation.',
-                        icon: 'error',
-                        customClass: 'swal-wide',
-                        buttons: {
-                            confirm: 'Ok'
-                        },
-                        confirmButtonColor: '#2527a2',
-                    });
+                    MyAlert(4, 'Tour Extension Can Not Be Done After Cancellation.');
+                    //Swal.fire({
+                    //    title: 'Error',
+                    //    text: 'Tour Extension Can Not Be Done After Cancellation.',
+                    //    icon: 'error',
+                    //    customClass: 'swal-wide',
+                    //    buttons: {
+                    //        confirm: 'Ok'
+                    //    },
+                    //    confirmButtonColor: '#2527a2',
+                    //});
                     togleDiv('AllDisable');
                 }
-                else { togleDiv('tour_extension'); }                
+                else {
+                    togleDiv('tour_extension');
+                    //if ($('#IsTourStarted').val() == 1) {
+                    //    togleDiv('tour_extension');
+                    //}
+                    //else {
+                    //    editTagCtrl.val('0').isInvalid();
+                    //    MyAlert(4, 'Extension Of Tour Can Be Allowed After Commencement & Before Completion.');
+                    //    togleDiv('AllDisable');
+                    //}
+                }
             }
             else {
                 editTagCtrl.val('0').isInvalid();
-                Swal.fire({
-                    title: 'Error',
-                    text: 'Extension Of Tour Can Be Allowed After Commencement & Before Completion.',
-                    icon: 'error',
-                    customClass: 'swal-wide',
-                    buttons: {
-                        confirm: 'Ok'
-                    },
-                    confirmButtonColor: '#2527a2',
-                });
+                MyAlert(4, 'Extension Of Tour Can Be Allowed After Commencement & Before Completion.');
+                //Swal.fire({
+                //    title: 'Error',
+                //    text: 'Extension Of Tour Can Be Allowed After Commencement & Before Completion.',
+                //    icon: 'error',
+                //    customClass: 'swal-wide',
+                //    buttons: {
+                //        confirm: 'Ok'
+                //    },
+                //    confirmButtonColor: '#2527a2',
+                //});
                 togleDiv('AllDisable');
             }            
         }
@@ -138,6 +152,8 @@ function CRTourCategoryChangedReUsable(targetCtrl, tblRowid,mTag) {
         CtrlMulti = mTag+'CenterCodeMulti_' + tblRowid;
         CtrlDD = mTag+'CenterCodeDD_' + tblRowid;
     }
+    myMultiCtrl = $('#' + CtrlMulti);
+    myDDCtrl = $('#' + CtrlDD);
     var CatCodes = targetCtrl.val();
     var mValid = true;
     var mText = 'NA';
@@ -149,7 +165,10 @@ function CRTourCategoryChangedReUsable(targetCtrl, tblRowid,mTag) {
         else {
             toggleCentreDiv(mTag + 'COMultiDiv', tblRowid, '', mTag);
             toggleBranchDiv(mTag + 'BranchCodeText', tblRowid, 'NA', mTag);
+            UnLockSLUCtrl(myMultiCtrl);
+            //alert(myMultiCtrl.attr('id'));
             getMultiselectData(CtrlMulti, '/Security/ETS/GetLocationsFromTypes?TypeIDs=' + CatCodes);
+            
         }
     } else {
         if (CatCodes.length > 1) {
@@ -159,7 +178,9 @@ function CRTourCategoryChangedReUsable(targetCtrl, tblRowid,mTag) {
             if (CatCodes == 4) {
                 toggleCentreDiv(mTag + 'CODDDiv', tblRowid, '', mTag);
                 toggleBranchDiv(mTag + 'BRMultiDiv', tblRowid, '', mTag);
+                UnLockSLUCtrl(myDDCtrl);
                 getDropDownData(CtrlDD, 'Select Center Code', '/Security/ETS/GetLocationsFromType?TypeID=' + CatCodes);
+                
             } else {
                 toggleCentreDiv(mTag + 'CenterCodeText', tblRowid, mText, mTag);
                 toggleBranchDiv(mTag + 'BranchCodeText', tblRowid, 'NA', mTag);
@@ -170,19 +191,24 @@ function CRTourCategoryChangedReUsable(targetCtrl, tblRowid,mTag) {
         targetCtrl.multiselect('clearSelection');
         toggleCentreDiv(mTag + 'CenterCodeText', tblRowid, 'NA', mTag);
         toggleBranchDiv(mTag + 'BranchCodeText', tblRowid, 'NA', mTag);
-        Swal.fire({
-            title: 'Error',
-            text: 'Invalid Combination Of Tour Category. Only Centre Visit,Branch & Centre Visit,Others Can Be Combined Together.',
-            icon: 'error',
-            customClass: 'swal-wide',
-            buttons: {
-                confirm: 'Ok'
-            },
-            confirmButtonColor: '#2527a2',
-        });
-        targetCtrl.isInvalid();
+        MyAlert(4, 'Invalid Combination Of Tour Category. Only Centre Visit,Branch & Centre Visit,Others Can Be Combined Together.');
+        //Swal.fire({
+        //    title: 'Error',
+        //    text: 'Invalid Combination Of Tour Category. Only Centre Visit,Branch & Centre Visit,Others Can Be Combined Together.',
+        //    icon: 'error',
+        //    customClass: 'swal-wide',
+        //    buttons: {
+        //        confirm: 'Ok'
+        //    },
+        //    confirmButtonColor: '#2527a2',
+        //});
+        targetCtrl.isInvalidCtrl();
     }
-    else { targetCtrl.isValid(); $('#backbtnactive').val(1);}
+    else {
+        //LockSLUCtrl(myMultiCtrl);
+        //LockSLUCtrl(myDDCtrl);
+        targetCtrl.isValidCtrl(); $('#backbtnactive').val(1);
+    }
 };
 function CRTourCategoryChanged() {
     var target = CRTourCategoryChanged.caller.arguments[0].target;
@@ -193,58 +219,62 @@ function CRTourCategoryChanged() {
     var mEPTour = $('#EPTour').val();
     if (mPOA == 1 && targetCtrl.val() != 7) {
         targetCtrl.multiselect('clearSelection');
-        Swal.fire({
-            title: 'Error',
-            text: 'Only NA Can Be Selected As Tour Category For This Note.',
-            icon: 'error',
-            customClass: 'swal-wide',
-            buttons: {
-                confirm: 'Ok'
-            },
-            confirmButtonColor: '#2527a2',
-        });
+        MyAlert(4, 'Only NA Can Be Selected As Tour Category For This Note.');
+        //Swal.fire({
+        //    title: 'Error',
+        //    text: 'Only NA Can Be Selected As Tour Category For This Note.',
+        //    icon: 'error',
+        //    customClass: 'swal-wide',
+        //    buttons: {
+        //        confirm: 'Ok'
+        //    },
+        //    confirmButtonColor: '#2527a2',
+        //});
         targetCtrl.isInvalid();
     }
     else if (mPOA == 0 && targetCtrl.val() == 7) {
         targetCtrl.multiselect('clearSelection');
-        Swal.fire({
-            title: 'Error',
-            text: 'NA Can Not Be Selected As Tour Category For This Note.',
-            icon: 'error',
-            customClass: 'swal-wide',
-            buttons: {
-                confirm: 'Ok'
-            },
-            confirmButtonColor: '#2527a2',
-        });
+        MyAlert(4, 'NA Can Not Be Selected As Tour Category For This Note.');
+        //Swal.fire({
+        //    title: 'Error',
+        //    text: 'NA Can Not Be Selected As Tour Category For This Note.',
+        //    icon: 'error',
+        //    customClass: 'swal-wide',
+        //    buttons: {
+        //        confirm: 'Ok'
+        //    },
+        //    confirmButtonColor: '#2527a2',
+        //});
         targetCtrl.isInvalid();
     }
     else if (mEPTour == 1 && targetCtrl.val() != 6){
         targetCtrl.multiselect('clearSelection');
-        Swal.fire({
-            title: 'Error',
-            text: 'Only EP Tour Can Be Selected As Tour Category For This Note.',
-            icon: 'error',
-            customClass: 'swal-wide',
-            buttons: {
-                confirm: 'Ok'
-            },
-            confirmButtonColor: '#2527a2',
-        });
+        MyAlert(4, 'Only EP Tour Can Be Selected As Tour Category For This Note.');
+        //Swal.fire({
+        //    title: 'Error',
+        //    text: 'Only EP Tour Can Be Selected As Tour Category For This Note.',
+        //    icon: 'error',
+        //    customClass: 'swal-wide',
+        //    buttons: {
+        //        confirm: 'Ok'
+        //    },
+        //    confirmButtonColor: '#2527a2',
+        //});
         targetCtrl.isInvalid();
     }
     else if (mEPTour == 0 && targetCtrl.val() == 6) {
         targetCtrl.multiselect('clearSelection');
-        Swal.fire({
-            title: 'Error',
-            text: 'EP Tour Can Not Be Selected As Tour Category For This Note.',
-            icon: 'error',
-            customClass: 'swal-wide',
-            buttons: {
-                confirm: 'Ok'
-            },
-            confirmButtonColor: '#2527a2',
-        });
+        MyAlert(4, 'EP Tour Can Not Be Selected As Tour Category For This Note.');
+        //Swal.fire({
+        //    title: 'Error',
+        //    text: 'EP Tour Can Not Be Selected As Tour Category For This Note.',
+        //    icon: 'error',
+        //    customClass: 'swal-wide',
+        //    buttons: {
+        //        confirm: 'Ok'
+        //    },
+        //    confirmButtonColor: '#2527a2',
+        //});
         targetCtrl.isInvalid();
     }
     else {
@@ -272,15 +302,16 @@ function CRCenterCodeDDChangedReUsable(targetCtrl, tblRowid,mTag) {
         Ctrl1 = mTag+'BranchCodeMulti_' + tblRowid;
         Ctrl2 = $('#' + mTag+'CenterCodeMulti' + tblRowid);
     }
+    UnLockSLUCtrl($('#' + Ctrl1));
     (async function () {
         const r1 = await getMultiselectData(Ctrl1, '/Security/ETS/getBranchType?CenterId=' + mVal);
     })();
     
     if (mVal > 0) {
-        targetCtrl.isValid();
-        Ctrl2.isValid();
+        targetCtrl.isValidCtrl();
+        Ctrl2.isValidCtrl();
         $('#backbtnactive').val(1);
-    } else { targetCtrl.isInvalid(); }
+    } else { targetCtrl.isInvalidCtrl(); }
 };
 function CRCenterCodeDDChanged() {
     var target = CRCenterCodeDDChanged.caller.arguments[0].target;
@@ -327,9 +358,15 @@ function ToDateChanged() {
     var tblRow = $(target.closest('.add-row'));
     var tblRowid = tblRow.attr('id');
     var targetCtrl = $(target);
+    var tcatCtrl = $('#CRTourCategory');
+    if (tblRowid > 0) {
+        tcatCtrl = $('#CRTourCategory_' + tblRowid);
+    }
     if (targetCtrl.val() != '') {
-        targetCtrl.isValid();
+        targetCtrl.isValidCtrl();
         $('#backbtnactive').val(1);
+        //alert(tcatCtrl.attr('id'));
+        UnLockSLUCtrl(tcatCtrl);
         //var lbltodtCtrl = $('#lblToDate');
         //var crtodtCtrl = $('#CRTodate');
         //if (tblRowid > 0) {
@@ -337,9 +374,14 @@ function ToDateChanged() {
         //    crtodtCtrl = $('#CRTodate_' + tblRowid);
         //}
         //crtodtCtrl.html(lbltodtCtrl.val());
-    } else { targetCtrl.isInvalid(); }
-    EnableAddBtnInCloneRow(tblRow, 'AddBtn');
-    EnableSubmitBtn();
+    } else {
+        targetCtrl.isInvalidCtrl();
+        LockSLUCtrl(tcatCtrl);
+    }
+    //EnableAddBtnInCloneRow(tblRow, 'AddBtn');
+    //EnableSubmitBtn();
+    
+    
 };
 function CRBranchCodeMultiChanged() {
     var target = CRBranchCodeMultiChanged.caller.arguments[0].target;
@@ -446,18 +488,20 @@ function addCloneBtnClick() {
     $('#FromDateLbl_' + clonerowid).html(curFromDate);
     var toDTCtrl = $('#ToDate_' + clonerowid);
     toDTCtrl.val('');
-    toDTCtrl.isInvalid();
+    toDTCtrl.isInvalidCtrl();
     toDTCtrl.attr('min', ChangeDateFormatV2(curFromDate));
     $('#lblToDate_' + clonerowid).html('Select Date');    
-    $('#CRTourCategory_' + clonerowid).isInvalid();
-    $('#CRCenterCodeMulti_' + clonerowid).isInvalid();
-    $('#CRCenterCodeDD_' + clonerowid).isInvalid();
-    $('#CRBranchCodeMulti_' + clonerowid).isInvalid();
-    addbtn.makeDisable();
+    $('#CRTourCategory_' + clonerowid).isInvalidCtrl();
+    $('#CRCenterCodeMulti_' + clonerowid).isInvalidCtrl();
+    $('#CRCenterCodeDD_' + clonerowid).isInvalidCtrl();
+    $('#CRBranchCodeMulti_' + clonerowid).isInvalidCtrl();
+    addbtn.makeDisable(); addbtn.addClass('nodrop');
     var maxSourceid = ($('#MaxSourceID').val() * 1) + clonerowid;
     $('#SourceIDDiv_' + clonerowid).html(maxSourceid);
     $('#CREditTagDiv_' + clonerowid).html(1);
-
+    LockRow(insrowid);
+    LockRow(clonerowid);
+    UnLockSLUCtrl(toDTCtrl);
     //$('#CRTodate_' + clonerowid).html('-');
     EnableSubmitBtn();
 };
@@ -527,22 +571,23 @@ $(document).ready(function () {
         var backbtnactive = $('#backbtnactive').val();
         var backurl = "/Security/ETSEdit/Create";
         if (backbtnactive == 1) {
-            Swal.fire({
-                title: 'Confirmation',
-                text: "Are You Sure Want to Go Back?",
-                icon: 'question',
-                customClass: 'swal-wide',
-                confirmButtonText: "Yes",
-                cancelButtonText: "No",
-                cancelButtonClass: 'btn-cancel',
-                confirmButtonColor: '#2527a2',
-                showCancelButton: true,
-            }).then(callback);
-            function callback(result) {
-                if (result.value) {
-                    window.location.href = backurl;
-                }
-            }
+            MyAlertWithRedirection(2, "Are You Sure Want To Go Back?", backurl);
+            //Swal.fire({
+            //    title: 'Confirmation',
+            //    text: "Are You Sure Want to Go Back?",
+            //    icon: 'question',
+            //    customClass: 'swal-wide',
+            //    confirmButtonText: "Yes",
+            //    cancelButtonText: "No",
+            //    cancelButtonClass: 'btn-cancel',
+            //    confirmButtonColor: '#2527a2',
+            //    showCancelButton: true,
+            //}).then(callback);
+            //function callback(result) {
+            //    if (result.value) {
+            //        window.location.href = backurl;
+            //    }
+            //}
         }
         else {
             window.location.href = backurl;

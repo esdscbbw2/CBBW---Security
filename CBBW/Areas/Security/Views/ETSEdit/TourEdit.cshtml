@@ -2,7 +2,7 @@
 @using CBBW.Areas.Security.ViewModel.ETSEdit;
 @model ETSEditCreateVM
 @{
-    string maxcanceldate=@Model.DWTDetailsCurrent.Select(o => o.SchToDate).Max().AddDays(-1).ToString("yyyy-MM-dd");
+    string maxcanceldate = @Model.DWTDetailsCurrent.Select(o => o.SchToDate).Max().AddDays(-1).ToString("yyyy-MM-dd");
 }
 <div class="row newTable">
     @using (Html.BeginForm())
@@ -15,6 +15,7 @@
         @Html.HiddenFor(m => m.IsCancelled)
         @Html.HiddenFor(m => m.POA)
         @Html.HiddenFor(m => m.EPTour)
+        @Html.HiddenFor(m => m.IsTourStarted)
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
@@ -142,7 +143,7 @@
                                    htmlAttributes: new
                                    {
                                        @class = "form-control is-invalid",
-                                       onblur = "ValidatePurposeOfEdit()",
+                                       onkeyup = "ValidatePurposeOfEdit()",
                                        title = "Maximum 20 Words Allowed"
                                    })
                             </div>
@@ -326,7 +327,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div id="tour_extension" class="inVisible">
+                        <div id="tour_extension" class="inVisible ">
                             <div class="table-responsive max-content">
                                 <table class="table table-bordered w-100 btnalign" id="tblTourExtension">
                                     <thead>
@@ -346,17 +347,18 @@
                                                 color: rgb(0, 0, 0);">Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="tbody1">
-                                        <tr id="0" class="add-row">
+                                    <tbody id="tbody1" class="">
+                                        <tr id="0" class="add-row  ">
                                             <th>
                                                 1
                                             </th>
                                             <td id="FromDateLbl" data-name="FromDate"
                                                 class="text-center alterID htmlVal">
-                                                @Model.ExtensionFromDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)
+                                                @Model.DWTDetailsCurrent.Select(o=>o.SchFromDate).Min().ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)
+                                                @*@Model.ExtensionFromDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)*@
                                             </td>
                                             <td id="CRTodate" class="text-center alterID htmlVal">
-                                                -
+                                                @Model.DWTDetailsCurrent.Select(o => o.SchToDate).Max().ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)
                                             </td>
                                             <td class="text-center">
                                                 <div class="position-relative pointer" style="width:160px">
@@ -364,7 +366,7 @@
                                                            onchange="ToDateChanged()"
                                                            max="@Model.ExtensionFromDate.AddDays(10).ToString("yyyy-MM-dd")"
                                                            min="@Model.ExtensionFromDate.ToString("yyyy-MM-dd")"
-                                                           class="form-control pointer is-invalid alterID CustomDateFormatCloneRow todt valid">
+                                                           class="form-control pointer is-invalid alterID CustomDateFormatCloneRow todt valid rowlock">
                                                     <label id="lblToDate" style="width:110px" data-name="ToDate"
                                                            class="datelabel pointer alterID htmlVal">Select Date</label>
                                                 </div>
@@ -374,12 +376,14 @@
                                                      class="inVisible alterID htmlVal">@Model.MaxSourceID</div>
                                                 </td>
                                                 <td class="text-center">
-                                                    <select id="CRTourCategory"
-                                                            data-name="TourCategoryIDs" data-name-text="TourCategoryNames"
-                                                            class="form-select is-invalid alterID clonemultiselect tourcat"
-                                                            onchange="CRTourCategoryChanged()"
-                                                            aria-label="Default select example">
-                                                    </select>
+                                                    <div>
+                                                        <select id="CRTourCategory" disabled
+                                                                data-name="TourCategoryIDs" data-name-text="TourCategoryNames"
+                                                                class="form-select is-invalid alterID clonemultiselect tourcat rowlock"
+                                                                onchange="CRTourCategoryChanged()"
+                                                                aria-label="Default select example">
+                                                        </select>
+                                                    </div>                                                    
                                                 </td>
                                                 <td class="text-center">
                                                     <div id="CRCenterCodeText" data-name="CentreNames"
@@ -387,17 +391,17 @@
                                                         -
                                                     </div>
                                                     <div id="CRCOMultiDiv" class="alterID inVisible">
-                                                        <select id="CRCenterCodeMulti"
+                                                        <select id="CRCenterCodeMulti" disabled
                                                                 data-name="CentreCodesMulti" data-name-text="CentreNamesMulti"
-                                                                class="form-select alterID is-invalid clonemultiselect"
+                                                                class="form-select alterID is-invalid clonemultiselect rowlock"
                                                                 onchange="CRCenterCodeMultiChanged()"
                                                                 aria-label="Default select example">
                                                         </select>
                                                     </div>
                                                     <div id="CRCODDDiv" class="alterID inVisible">
-                                                        <select id="CRCenterCodeDD"
+                                                        <select id="CRCenterCodeDD" disabled
                                                                 data-name="CentreCodesDD" data-name-text="CentreNamesDD"
-                                                                class="form-select alterID is-invalid"
+                                                                class="form-select alterID is-invalid rowlock"
                                                                 onchange="CRCenterCodeDDChanged()"
                                                                 aria-label="Default select example">
                                                         </select>
@@ -409,9 +413,9 @@
                                                         -
                                                     </div>
                                                     <div id="CRBRMultiDiv" class="alterID inVisible">
-                                                        <select id="CRBranchCodeMulti"
+                                                        <select id="CRBranchCodeMulti" disabled
                                                                 data-name="BranchCodesDD" data-name-text="BranchNamesDD"
-                                                                class="form-select alterID clonemultiselect"
+                                                                class="form-select alterID clonemultiselect rowlock"
                                                                 onchange="CRBranchCodeMultiChanged()"
                                                                 aria-label="Default select example">
                                                         </select>
@@ -423,21 +427,21 @@
                                                                 class="btn primaryLink alterID cloneBtn addBtn"
                                                                 data-toggle="tooltip"
                                                                 onclick="addCloneBtnClick()"
-                                                                data-placement="top" title="Add">
+                                                                data-placement="top">
                                                             <i data-feather="plus"></i>
                                                         </button>
                                                         <button id="DeleteBtn" type="button"
                                                                 class="btn secondaryLink inVisible alterID cloneBtn removeBtn"
                                                                 onclick="RemoveBtnClicked()"
                                                                 data-toggle="tooltip"
-                                                                data-placement="top" title="Delete">
+                                                                data-placement="top" >
                                                             <i data-feather="x"></i>
                                                         </button>
                                                     </span>
                                                 </td>
                                             </tr>
                                         </tbody>
-                                        <tbody id="tbody2"></tbody>
+                                        <tbody id="tbody2" class=""></tbody>
                                     </table>
                                 </div>
                             </div>
@@ -572,7 +576,9 @@
 
 }
 @section scripts{
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/ETSEdit/ETSEditCreateTourEdit.js"></script>
     <script>
         (async function () {

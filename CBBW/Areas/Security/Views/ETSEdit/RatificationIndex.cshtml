@@ -32,23 +32,23 @@
                 <tr>
                     <th scope="col">
                         <div class="form-group">
-                            <input type="text" class="form-control tblSearch" placeholder="Search...">
+                            <input type="text" class="form-control tblSearch" data-index="1" placeholder="Search...">
                         </div>
                     </th>
                     <th scope="col">
                         <div class="form-group">
-                            <input type="text" class="form-control tblSearch" placeholder="Search...">
+                            <input type="text" class="form-control tblSearch" data-index="2" placeholder="Search...">
                         </div>
                     </th>
                     <th scope="col">
                         <div class="form-group">
-                            <input type="text" class="form-control tblSearch" placeholder="Search...">
+                            <input type="text" class="form-control tblSearch" data-index="3" placeholder="Search...">
                         </div>
                     </th>
 
                     <th scope="col">
                         <div class="form-group">
-                            <input id="filterMonthnYear" type="text" class="form-control tblSearch" placeholder="Search...">
+                            <input id="filterMonthnYear" type="text" class="form-control tblSearch" data-index="4" placeholder="Search...">
                         </div>
                     </th>
                 </tr>
@@ -98,7 +98,7 @@
                 fixedColumns: {left:2},
             });
             $('.tblSearch').on('keyup change', function () {
-                dtinstance.search(this.value).draw();
+                dtinstance.search(GetTblColumnSearchText()).draw();
             });
             $('.tblSearch').on('click', function (e) {
                 e.stopPropagation();
@@ -117,6 +117,17 @@
             //    }
             //});
         };
+        function GetTblColumnSearchText() {
+            var result = '';
+            $('.tblSearch').each(function () {
+                var that = $(this);
+                if (that.val() != '') {
+                    result = result + that.attr('data-index') + ':' + this.value + ',';
+                }
+            });
+            result = result != '' ? result.substring(0, result.length - 1) : '';
+            return result;
+        }
     </script>
 
 }
