@@ -683,6 +683,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Security\Data\" />
+    <Folder Include="Logs\" />
     <Folder Include="Upload\pdf\" />
   </ItemGroup>
   <ItemGroup>

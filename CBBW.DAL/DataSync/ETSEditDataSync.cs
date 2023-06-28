@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using CBBW.BOL;
 using CBBW.BOL.EHG;
 using CBBW.BOL.ETSEdit;
 
@@ -13,7 +15,7 @@ namespace CBBW.DAL.DataSync
     public class ETSEditDataSync
     {
         public bool IsTourStarted(string NoteNumber, ref string pMsg)
-        {
+        {            
             try
             {
                 using (SQLHelper sql = new SQLHelper("SELECT [ETS].[IsTourStarted]('" + NoteNumber + "')", CommandType.Text))
@@ -26,9 +28,10 @@ namespace CBBW.DAL.DataSync
         }
         public DataTable GetETSEditNoteList(int DisplayLength, int DisplayStart, int SortColumn,
             string SortDirection, string SearchText, int CentreCode, int IsApprovedList, ref string pMsg)
-        {
+        {            
             try
             {
+                SortDirection = "";
                 SortDirection = SortDirection.Substring(0, 1).ToUpper();
                 int paracount = 0;
                 SqlParameter[] para = new SqlParameter[7];
@@ -51,7 +54,13 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) 
+            {
+                MethodInformation methodInfo = MyCodeHelper.GetMethodInfo();
+                MyCodeHelper.WriteErrorLog(pMsg, methodInfo.MethodSignature,ex);
+                pMsg = ex.Message; 
+                return null; 
+            }
         }
         public DataTable GetEntryINoteList(int DisplayLength, int DisplayStart, int SortColumn,
             string SortDirection, string SearchText, int CentreCode,ref string pMsg)

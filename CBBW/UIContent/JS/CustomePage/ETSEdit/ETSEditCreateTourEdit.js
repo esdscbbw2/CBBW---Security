@@ -379,9 +379,7 @@ function ToDateChanged() {
         LockSLUCtrl(tcatCtrl);
     }
     //EnableAddBtnInCloneRow(tblRow, 'AddBtn');
-    //EnableSubmitBtn();
-    
-    
+    //EnableSubmitBtn(); 
 };
 function CRBranchCodeMultiChanged() {
     var target = CRBranchCodeMultiChanged.caller.arguments[0].target;
@@ -534,33 +532,36 @@ function btnSubmitClicked() {
         success: function (data) {
             $(data).each(function (index, item) {
                 if (item.bResponseBool == true) {
-                    Swal.fire({
-                        title: 'Confirmation',
-                        text: 'Data Saved Successfully.',
-                        icon: 'success',
-                        customClass: 'swal-wide',
-                        buttons: {
-                            confirm: 'Ok'
-                        },
-                        confirmButtonColor: '#2527a2',
-                    }).then(callback);
-                    function callback(result) {
-                        if (result.value) {
-                            var url = "/Security/ETSEdit/Create";
-                            window.location.href = url;
-                        }
-                    }                    
-                } else {
-                    Swal.fire({
-                        title: 'Confirmation',
-                        text: 'Failed To Save Date Wise Tour Details.',
-                        icon: 'question',
-                        customClass: 'swal-wide',
-                        buttons: {
-                            confirm: 'Ok'
-                        },
-                        confirmButtonColor: '#2527a2',
-                    });
+                    MyAlertWithRedirection(1, 'Data Saved Successfully.', '/Security/ETSEdit/Create');
+                    //Swal.fire({
+                    //    title: 'Confirmation',
+                    //    text: 'Data Saved Successfully.',
+                    //    icon: 'success',
+                    //    customClass: 'swal-wide',
+                    //    buttons: {
+                    //        confirm: 'Ok'
+                    //    },
+                    //    confirmButtonColor: '#2527a2',
+                    //}).then(callback);
+                    //function callback(result) {
+                    //    if (result.value) {
+                    //        var url = "/Security/ETSEdit/Create";
+                    //        window.location.href = url;
+                    //    }
+                    //}                    
+                }
+                else {
+                    MyAlert(3, 'Failed To Save Date Wise Tour Details.');
+                    //Swal.fire({
+                    //    title: 'Confirmation',
+                    //    text: 'Failed To Save Date Wise Tour Details.',
+                    //    icon: 'question',
+                    //    customClass: 'swal-wide',
+                    //    buttons: {
+                    //        confirm: 'Ok'
+                    //    },
+                    //    confirmButtonColor: '#2527a2',
+                    //});
                 }
             });
         },
