@@ -32,13 +32,30 @@ function validatectrl(targetid, value) {
         case "VADetails_OtherVehicleNumber":
             if (IsAlphaNumeric(value)) {
                 if (value.length == 10) {
-                    isvalid = true;
-                    var modelnameCtrl = $('#VADetails_OtherVehicleModelName');
-                    modelnameCtrl.val('NA');
-                    modelnameCtrl.clearValidateClass()
-                    //modelnameCtrl.makeDisable();
-                    $('#VADetails_OtherVehicleNumber').isValid();
-                    $('#VADetails_VehicleNumber').clearValidateClass();
+                    var url = '/EHG/IsVehicleExist?VehicleNumber=' + value;
+                    GetDataFromAjax(url).done(function (data) {
+                        if (data.bResponseBool == true) {
+                            isvalid = true;
+                            var modelnameCtrl = $('#VADetails_OtherVehicleModelName');
+                            modelnameCtrl.val('NA');
+                            modelnameCtrl.clearValidateClass()
+                            //modelnameCtrl.makeDisable();
+                            $('#VADetails_OtherVehicleNumber').isValid();
+                            $('#VADetails_VehicleNumber').clearValidateClass();
+                        }
+                        else {
+                            $('#VADetails_OtherVehicleNumber').isInvalid();
+                            MyAlert(4, "The Vehicle Number Entered Is Found As Company Vehicle.")
+                        }
+                        EnableSubmitBtn();
+                    });
+                    //isvalid = true;
+                    //var modelnameCtrl = $('#VADetails_OtherVehicleModelName');
+                    //modelnameCtrl.val('NA');
+                    //modelnameCtrl.clearValidateClass()
+                    ////modelnameCtrl.makeDisable();
+                    //$('#VADetails_OtherVehicleNumber').isValid();
+                    //$('#VADetails_VehicleNumber').clearValidateClass();
                     //alert(value);
                 }
             }            
@@ -186,6 +203,6 @@ $(document).ready(function () {
     $('#VADetails_DriverName').val(x);
     $('#DriverNumber').val(driverCtrl.val());
     if ($('#IsDriverCtrlEnable').val() == 0) {
-        driverCtrl.attr('disabled', 'disabled');
-    } else { driverCtrl.removeAttr('disabled'); }
+        driverCtrl.attr('disabled', 'disabled'); driverCtrl.addClass('nodrop');
+    } else { driverCtrl.removeAttr('disabled'); driverCtrl.removeClass('nodrop'); }
 });

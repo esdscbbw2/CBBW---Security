@@ -144,6 +144,12 @@ function EnableDateWiseTourBtn() {
     }
 };
 function addOfficeWorkCloneBtnClick() {
+    var vehicletype = $('#ehgHeader_VehicleType').val();
+    var noofPersons = $('.mpersons').length;
+    if (vehicletype == 2 && noofPersons >= 2) {
+        MyAlert(4,"Can Not Add More Than Two Persons When Vehicle Type Provided Is 2Wheeler. ")
+    }
+    else {
     var insrow = addOfficeWorkCloneBtnClick.caller.arguments[0].target.closest('.add-row');
     var sRowid = $(insrow).attr('id');
     var frmdtlblSource = $('#lblFromDate');
@@ -168,6 +174,7 @@ function addOfficeWorkCloneBtnClick() {
     EnableDateWiseTourBtn();
     $('#AddBtn_' + rowid).makeSLUDisable();
     $('#DeleteBtn_' + rowid).makeSLUEnable();
+    }
 };
 function removeOfficeWorkCloneBtnClick() {
     var myCtrl = $(removeOfficeWorkCloneBtnClick.caller.arguments[0].target);
@@ -366,7 +373,8 @@ function validatectrl(targetid, value) {
                 if (!isvalid) {
                     $('#ToDateForMang').prop('title', 'To Date Should Be Same Or Latter Than From Date');
                 }
-                $('#ReTInDtForMang').html(ChangeDateFormat(value));               
+                //$('#ReTInDtForMang').html(ChangeDateFormat(value));
+                $('#ReTInDtForMang').html(ChangeDateFormat('Nil'));
             }
             break;
         case "TADADeniedForManagement":

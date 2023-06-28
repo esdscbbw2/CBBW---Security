@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CBBW.BOL.EHG;
 using System.Globalization;
+using CBBW.BOL;
 
 namespace CBBW.DAL.DBMapper
 {
@@ -73,7 +74,7 @@ namespace CBBW.DAL.DBMapper
                     result.TourStatusText = result.TourStatus == 0 ? "Continue" : "Completed";
                 }
             }
-            catch { }
+            catch(Exception ex) { MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex); }
             return result;
         }
         public VehicleAllotmentDetails Map_VehicleAllotmentDetails(DataRow dr)
@@ -134,7 +135,7 @@ namespace CBBW.DAL.DBMapper
                         result.UserRemarks = dr["UserRemarks"].ToString();
                 }
             }
-            catch { }
+            catch(Exception ex) { MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex); }
             return result;
         }
         public EHGHeader Map_EHGHeader(DataRow dr)
@@ -187,7 +188,7 @@ namespace CBBW.DAL.DBMapper
                         result.DocFileName = dr["ImageFile"].ToString();
                 }
             }
-            catch { }
+            catch(Exception ex) { MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex); }
             return result;
         }
         public DateWiseTourDetails Map_DateWiseTourDetails(DataRow dr)
@@ -220,7 +221,7 @@ namespace CBBW.DAL.DBMapper
                     result.ToDateStr = result.ToDate.ToString("yyyy-MM-dd");
                 }
             }
-            catch { }
+            catch(Exception ex) { MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex); }
             return result;
         }
         public EHGNoteList Map_EHGNoteList(DataRow dr)
@@ -257,7 +258,7 @@ namespace CBBW.DAL.DBMapper
                     //result.CanDelete = true;
                 }
             }
-            catch { }
+            catch(Exception ex) { MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex); }
             return result;
         }
     }

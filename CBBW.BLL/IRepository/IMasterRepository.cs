@@ -11,6 +11,7 @@ namespace CBBW.BLL.IRepository
 {
     public interface IMasterRepository
     {
+        bool IsVehicleExist(string VehicleNumber, ref string pMsg);
         IEnumerable<ServiceType> getAllServiceTypes(ref string pMsg);
         ServiceType getServiceType(int ID,ref string pMsg);
         IEnumerable<CustomComboOptions> getEmployeeList(int centreCode, int functionalDesg, int isOtherStaff, ref string pMsg);

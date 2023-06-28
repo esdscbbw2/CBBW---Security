@@ -26,7 +26,8 @@ function TourCategoryChanged(destinationCtrlID, datasourceURL) {
     });
     datasourceURL = datasourceURL + x;
     GetDataFromAjax(datasourceURL).done(function(data) {
-        refreshMultiselect(data, destinationCtrlID,false);        
+        refreshMultiselect(data, destinationCtrlID, false);
+        EnableSubmitBtn();
     });
     //alert(datasourceURL);
     //(async function () {

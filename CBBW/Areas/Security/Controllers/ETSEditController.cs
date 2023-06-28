@@ -28,7 +28,7 @@ namespace CBBW.Areas.Security.Controllers
             user = iUser.getLoggedInUser();
             ViewBag.LogInUser = user.UserName;
             _IETSEdit = IETSEdit;
-            pMsg = "ETS Edit";
+            pMsg = "";
             //MyCodeHelper.WriteErrorLog("Error Message","Error Path");
         }
         public JsonResult BackButtonClicked()

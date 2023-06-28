@@ -227,16 +227,16 @@
                                                     @(item.TADADenied?"Yes":"No")
                                                 </td>
                                                 <td class="text-center">
-                                                    @(item.RequiredTourInDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)=="01/01/0001"?"": item.RequiredTourInDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture))
+                                                    @(item.RequiredTourInTime!=" "?item.RequiredTourInDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)=="01/01/0001"?"": item.RequiredTourInDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture):"Nil")
                                                 </td>
                                                 <td class="text-center">
-                                                    @item.RequiredTourInTime
+                                                    @(item.RequiredTourInTime != " " ? item.RequiredTourInTime:"Nil")
                                                 </td>
                                                 <td class="text-center">
-                                                    @(item.ActualTourInDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)=="01/01/0001"?"": item.ActualTourInDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture))
+                                                    @(item.ActualTourInTime!=" "?item.ActualTourInDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)=="01/01/0001"?"": item.ActualTourInDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture):"Nil")
                                                 </td>
                                                 <td class="text-center">
-                                                    @item.ActualTourInTime
+                                                    @(item.ActualTourInTime!=" "?item.ActualTourInTime:"Nil")
                                                 </td>
                                                 <td class="text-center">
                                                     Continue
@@ -269,7 +269,7 @@
                 <div class="col-md-12 mt-4 pt-3">
                     <div class="heading_text_btn2 d-block mb-4">
                         <h2>
-                            Travelling Person Details: For Person Travelling On 2 Wheeler Or LV With “Purpose of Allotment”= For Office Work
+                            Travelling Person Details: For Person Travelling On 2 Wheeler Or LV With “Purpose of Allotment”=For “NA” / Office Work
                         </h2>
                     </div>
                     <div class="card">

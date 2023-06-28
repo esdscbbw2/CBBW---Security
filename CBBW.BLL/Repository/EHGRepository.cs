@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CBBW.BLL.IRepository;
+using CBBW.BOL;
 using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.EHG;
@@ -44,7 +45,10 @@ namespace CBBW.BLL.Repository
                 if (result.VehicleType > 0)
                 { result.VehicleTypeText = m.VehicleTypes.Where(o => o.ID == result.VehicleType).FirstOrDefault().DisplayText; }
             }
-            catch { }
+            catch(Exception ex) { 
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+            }
             return result;
         }
         public List<EHGNoteList> GetEHGNoteList(int DisplayLength, int DisplayStart, int SortColumn, 
@@ -55,17 +59,25 @@ namespace CBBW.BLL.Repository
         public EHGHeader getNewEHGHeader(ref string pMsg)
         {
             EHGHeader obj= new EHGHeader();
-            obj.NoteNumber= _MasterEntities.getNewNoteNumber(NotePattern, ref pMsg);
-            obj.EntryDate = DateTime.Today;
-            //obj.EntryDateStr = DateTime.Today.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
-            obj.EntryTime = DateTime.Now.ToString("hh:mm tt");
-            obj.CenterCode = user.CentreCode;
-            obj.CenterName = user.CentreName;
-            obj.CenterCodenName = obj.CenterCode + " / " + obj.CenterName;
-            obj.Initiator = user.EmployeeNumber;
-            obj.InitiatorName = user.EmployeeName;
-            obj.InitiatorCodenName = user.EmployeeNumber + " / " + user.EmployeeName;
-            obj.MaterialStatus = -1;
+            try
+            {
+                obj.NoteNumber = _MasterEntities.getNewNoteNumber(NotePattern, ref pMsg);
+                obj.EntryDate = DateTime.Today;
+                //obj.EntryDateStr = DateTime.Today.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+                obj.EntryTime = DateTime.Now.ToString("hh:mm tt");
+                obj.CenterCode = user.CentreCode;
+                obj.CenterName = user.CentreName;
+                obj.CenterCodenName = obj.CenterCode + " / " + obj.CenterName;
+                obj.Initiator = user.EmployeeNumber;
+                obj.InitiatorName = user.EmployeeName;
+                obj.InitiatorCodenName = user.EmployeeNumber + " / " + user.EmployeeName;
+                obj.MaterialStatus = -1;
+            }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+            }
             return obj;
         }
         public List<EHGNote> getNoteListToBeApproved(int CentreCode,ref string pMsg)
@@ -74,16 +86,25 @@ namespace CBBW.BLL.Repository
         }
         public List<EHGTravelingPersondtlsForManagement> getTravelingPersonDetails(string Notenumber,  int IsActive, ref string pMsg)
         {
-            EHGMaster m = EHGMaster.GetInstance;
-            List <EHGTravelingPersondtlsForManagement> result= _EHGEntities.getTravelingPersonDetails(Notenumber, IsActive, ref pMsg);
-            if (result != null && result.Count > 0) 
+            try
             {
-                foreach (var item in result) 
+                EHGMaster m = EHGMaster.GetInstance;
+                List<EHGTravelingPersondtlsForManagement> result = _EHGEntities.getTravelingPersonDetails(Notenumber, IsActive, ref pMsg);
+                if (result != null && result.Count > 0)
                 {
-                    item.PersonTypeText = m.PersonType.Where(o => o.ID == item.PersonType).FirstOrDefault().DisplayText;
+                    foreach (var item in result)
+                    {
+                        item.PersonTypeText = m.PersonType.Where(o => o.ID == item.PersonType).FirstOrDefault().DisplayText;
+                    }
                 }
+                return result;
             }
-            return result;
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         public VehicleAllotmentDetails getVehicleAllotmentDetails(string Notenumber, int IsActive, ref string pMsg)
         {
@@ -98,7 +119,11 @@ namespace CBBW.BLL.Repository
                     result.OtherVehicleModelName = "NA";
                 }
             }
-            catch { }
+            catch(Exception ex) 
+            {                
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+            }
             return result;
         }
         public bool RemoveEHGNote(string NoteNumber, int RemoveTag, int ActiveTag, ref string pMsg)
@@ -116,13 +141,22 @@ namespace CBBW.BLL.Repository
         }
         public bool SetEHGHdrForManagement(EHGHeader header, EHGTravelingPersondtlsForManagement dtl, ref string pMsg)
         {
-            header.CenterCode = user.CentreCode;
-            header.CenterName = user.CentreName;
-            header.Initiator = user.EmployeeNumber;
-            header.InitiatorName = user.EmployeeName;
-            header.EntryDate = DateTime.Today;
-            header.EntryTime = DateTime.Now.ToString("hh:mm tt");
-            return _EHGEntities.SetEHGHdrForManagement(header, dtl, ref pMsg);
+            try
+            {
+                header.CenterCode = user.CentreCode;
+                header.CenterName = user.CentreName;
+                header.Initiator = user.EmployeeNumber;
+                header.InitiatorName = user.EmployeeName;
+                header.EntryDate = DateTime.Today;
+                header.EntryTime = DateTime.Now.ToString("hh:mm tt");
+                return _EHGEntities.SetEHGHdrForManagement(header, dtl, ref pMsg);
+            }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return false;
+            }
         }
         public bool SetEHGTravellingPersonDetails(string NoteNumber, string AuthEmp, List<EHGTravelingPersondtls> dtldata, ref string pMsg)
         {
@@ -130,19 +164,37 @@ namespace CBBW.BLL.Repository
         }
         public bool SetEHGVehicleAllotmentDetails(VehicleAllotmentDetails mData, ref string pMsg)
         {
-            if (mData.VehicleBelongsTo == 2) 
-            { 
-                mData.VehicleNumber = mData.OtherVehicleNumber;
-                //mData.ModelName = mData.OtherVehicleModelName;
-                mData.ModelName = "NA";
+            try
+            {
+                if (mData.VehicleBelongsTo == 2)
+                {
+                    mData.VehicleNumber = mData.OtherVehicleNumber;
+                    //mData.ModelName = mData.OtherVehicleModelName;
+                    mData.ModelName = "NA";
+                }
+                return _EHGEntities.SetEHGVehicleAllotmentDetails(mData, ref pMsg);
             }
-            return _EHGEntities.SetEHGVehicleAllotmentDetails(mData, ref pMsg);
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return false;
+            }
         }
         public bool UpdateEHGHdr(EHGHeader header, ref string pMsg)
         {
-            header.EntryDate = DateTime.Today;
-            header.EntryTime = DateTime.Now.ToString("hh:mm tt");
-            return _EHGEntities.UpdateEHGHdr(header, ref pMsg);
+            try
+            {
+                header.EntryDate = DateTime.Today;
+                header.EntryTime = DateTime.Now.ToString("hh:mm tt");
+                return _EHGEntities.UpdateEHGHdr(header, ref pMsg);
+            }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return false;
+            }
         }
         public List<CustomComboOptions> getDriverListForOfficeWork(string Notenumber, ref string pMsg) 
         {

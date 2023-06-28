@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CBBW.BOL;
 using CBBW.BOL.EHG;
 
 namespace CBBW.DAL.DataSync
@@ -87,7 +88,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataTable SetEHGTravellingPersonDetails(string NoteNumber,string AuthEmp, List<EHGTravelingPersondtls> dtldata, ref string pMsg)
         {
@@ -105,7 +108,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataTable SetDateWiseTourDetails(string NoteNumber, List<DateWiseTourDetails> dtldata, ref string pMsg)
         {
@@ -123,7 +128,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataTable SetEHGVehicleAllotmentDetails(VehicleAllotmentDetails mData, ref string pMsg)
         {
@@ -164,7 +171,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataTable UpdateEHGHdr(EHGHeader header, ref string pMsg)
         {
@@ -207,7 +216,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataTable RemoveEHGNote(string NoteNumber,int RemoveTag,int ActiveTag, ref string pMsg)
         {
@@ -226,7 +237,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataTable getDateWiseTourDetails(string Notenumber,int IsActive,ref string pMsg)
         {
@@ -237,7 +250,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable();
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataTable getEHGNoteHdr(string Notenumber, ref string pMsg)
         {
@@ -248,7 +263,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable();
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataTable getDriverListForOfficeWork(string Notenumber, ref string pMsg)
         {
@@ -259,7 +276,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable();
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataTable LockEHGHdr(string Notenumber,int UserID, ref string pMsg)
         {
@@ -276,7 +295,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para,ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataTable getTravelingPersonDetails(string Notenumber, int IsActive, ref string pMsg)
         {
@@ -287,7 +308,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable();
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataTable getVehicleAllotmentDetails(string Notenumber, int IsActive, ref string pMsg)
         {
@@ -298,7 +321,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable();
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataTable GetEHGNoteList(int DisplayLength,int DisplayStart,int SortColumn,
             string SortDirection,string SearchText,int CentreCode,bool IsApprovedList, ref string pMsg) 
@@ -327,7 +352,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataTable getNoteListToBeApproved(int CentreCode,ref string pMsg)
         {
@@ -338,7 +365,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable();
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataTable SetEHGHdrAppStatus(string NoteNumber,bool IsApproved,string ReasonForDisApproval,
             int ApproverID, ref string pMsg)
@@ -362,7 +391,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
     }
 }

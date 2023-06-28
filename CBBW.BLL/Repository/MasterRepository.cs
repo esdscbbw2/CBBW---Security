@@ -123,5 +123,9 @@ namespace CBBW.BLL.Repository
         {
             return _entities.VehicleAvailableValidationForHG(VehicleNumber,CentreCode,FromDate,ToDate,KMLimit,ref pMsg);
         }
+        public bool IsVehicleExist(string VehicleNumber, ref string pMsg)
+        {
+            return _entities.IsVehicleExist(VehicleNumber, ref pMsg);
+        }
     }
 }

@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Reflection;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
+using System.Web.Mvc;
 
 namespace CBBW.BOL
 {
@@ -79,29 +81,56 @@ namespace CBBW.BOL
             Result = Result.Substring(0, Result.Length - 1);
             return Result;
         }
-        public static bool WriteErrorLog(string ModuleName,string ErrorPath,Exception ex)
+        public static bool WriteErrorLog(string ErrorPath,Exception ex)
         {
+            //string url = HttpContext.Current.Request.Path;
+            //url = url + HttpContext.Current.Request.QueryString.ToString();
             bool result = false;
-            string virtualPath = "~/Logs/ErrLog_"+DateTime.Today.ToString("yyyyMMdd")+".txt";
+            string virtualPath = "~/Logs/ERRLOG_"+DateTime.Today.ToString("yyyyMMdd")+".txt";
             var physicalPath = HttpContext.Current.Server.MapPath(virtualPath);
             using (StreamWriter writer = new StreamWriter(physicalPath,true))
             {
                 writer.WriteLine(" ");
-                writer.WriteLine("Error Header: " + ModuleName );
+                writer.WriteLine("Called From: " + HttpContext.Current.Request.Path);
                 writer.WriteLine("Time: " + DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss tt"));
-                writer.WriteLine("------------------------------------------------------------------");
+                writer.WriteLine("..................................................................");
                 writer.WriteLine("Method: "+ ErrorPath);
                 writer.WriteLine("Line No: " + GetErrorLine(ex));
-                writer.WriteLine("Error Message: "+ ex.Message);                
+                writer.WriteLine("Error Message: "+ ex.Message);
+                //writer.WriteLine("Stack Trace: " + ex.StackTrace);
+                writer.WriteLine("------------------------------------------------------------------");
             }
             return result;
         }
-        public static int GetErrorLine(Exception ex)
+        static int GetErrorLine(Exception ex)
         {
             StackTrace stackTrace = new StackTrace(ex, true);
             StackFrame frame = stackTrace.GetFrame(0);
             int errorLine = frame.GetFileLineNumber();
+            if (errorLine == 0) 
+            {
+                int l = ex.StackTrace.Length;
+                int x = ex.StackTrace.IndexOf(":line");
+                x = x > 0 ? x + 5 : 0;
+                if (l>0 && x > 0) 
+                {
+                    string s = ex.StackTrace.Substring(x, l-x);
+                    return GetFirstNumber(s);
+                }                
+            }
             return errorLine;
+        }
+        public static int GetFirstNumber(string input)
+        {
+            Match match = Regex.Match(input, @"\d+");
+            if (match.Success)
+            {
+                if (int.TryParse(match.Value, out int number))
+                {
+                    return number;
+                }
+            }
+            return -1;
         }
         public static MethodInformation GetMethodInfo()
         {
@@ -127,9 +156,8 @@ namespace CBBW.BOL
                 MethodSignature= methodPath+ allparams
             };
             return methodInformation;
-        }
-    
-    public static string GetIPAddress() 
+        }        
+        public static string GetIPAddress() 
         {
             string ipAddress = HttpContext.Current.Request.UserHostAddress;
             return ipAddress;

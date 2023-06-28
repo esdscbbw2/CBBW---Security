@@ -10,6 +10,17 @@ namespace CBBW.DAL.DataSync
 {
     public class MasterDataSync
     {
+        public bool IsVehicleExist(string VehicleNumber, ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("SELECT [MTR].[IsVehicleExist]('" + VehicleNumber + "')", CommandType.Text))
+                {
+                    return bool.Parse(sql.ExecuteScaler(ref pMsg).ToString());
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return false; }
+        }
         public DataTable VehicleAvailableValidationForHG(string VehicleNumber,int CentreCode, DateTime FromDate, DateTime ToDate,int KMLimit, ref string pMsg)
         {
             try

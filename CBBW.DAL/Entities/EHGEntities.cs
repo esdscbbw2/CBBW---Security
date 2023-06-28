@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CBBW.BOL;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.EHG;
 using CBBW.DAL.DataSync;
@@ -68,7 +69,9 @@ namespace CBBW.DAL.Entities
                     }
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; }
             return result;
         }
         public List<EHGTravelingPersondtlsForManagement> getTravelingPersonDetails(string Notenumber, int IsActive, ref string pMsg)
@@ -85,7 +88,9 @@ namespace CBBW.DAL.Entities
                     }
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; }
             return result;
         }
         public VehicleAllotmentDetails getVehicleAllotmentDetails(string Notenumber, int IsActive, ref string pMsg)
@@ -102,7 +107,9 @@ namespace CBBW.DAL.Entities
                     }
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; }
             return result;
         }
         public EHGHeader getEHGNoteHdr(string Notenumber,int UserID, ref string pMsg,int isLocked=0)
@@ -120,7 +127,9 @@ namespace CBBW.DAL.Entities
                 }
                 if (isLocked == 1) { _datasync.LockEHGHdr(Notenumber, UserID, ref pMsg); }
             }
-            catch (Exception ex) { pMsg = ex.Message; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; }
             return result;
         }
         public bool RemoveEHGNote(string NoteNumber, int RemoveTag, int ActiveTag, ref string pMsg)
@@ -145,7 +154,9 @@ namespace CBBW.DAL.Entities
                     }
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; }
             return result;
         }
         public List<EHGNote> getNoteListToBeApproved(int CentreCode,ref string pMsg)
@@ -167,7 +178,9 @@ namespace CBBW.DAL.Entities
                     }
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; }
             return result;
         }
         public bool SetEHGHdrAppStatus(string NoteNumber, bool IsApproved, string ReasonForDisApproval,
@@ -192,7 +205,9 @@ namespace CBBW.DAL.Entities
                     }
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; }
             return result;
         }
         

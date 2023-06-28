@@ -24,14 +24,17 @@ namespace CBBW.DAL.DataSync
                 }
 
             }
-            catch (Exception ex) { pMsg = ex.Message; return false; }
+            catch (Exception ex) 
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return false; 
+            }
         }
         public DataTable GetETSEditNoteList(int DisplayLength, int DisplayStart, int SortColumn,
             string SortDirection, string SearchText, int CentreCode, int IsApprovedList, ref string pMsg)
         {            
             try
             {
-                SortDirection = "";
                 SortDirection = SortDirection.Substring(0, 1).ToUpper();
                 int paracount = 0;
                 SqlParameter[] para = new SqlParameter[7];
@@ -45,7 +48,7 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = SortDirection;
                 para[paracount] = new SqlParameter("@Search", SqlDbType.NVarChar, 250);
                 para[paracount++].Value = SearchText;
-                para[paracount] = new SqlParameter("@CentreCode", SqlDbType.Int);
+                para[paracount] = new SqlParameter("@CentreCode2", SqlDbType.Int);
                 para[paracount++].Value = CentreCode;
                 para[paracount] = new SqlParameter("@IsApprovedList", SqlDbType.Int);
                 para[paracount++].Value = IsApprovedList;
@@ -56,8 +59,7 @@ namespace CBBW.DAL.DataSync
             }
             catch (Exception ex) 
             {
-                MethodInformation methodInfo = MyCodeHelper.GetMethodInfo();
-                MyCodeHelper.WriteErrorLog(pMsg, methodInfo.MethodSignature,ex);
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature,ex);
                 pMsg = ex.Message; 
                 return null; 
             }
@@ -87,7 +89,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataTable getEditSL(string NoteNumber, ref string pMsg)
         {
@@ -102,7 +106,10 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; 
+            }
         }
         public DataTable getETSEditHdr(string NoteNumber,int LockStatus, ref string pMsg)
         {
@@ -119,7 +126,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataTable GetNoteHdrForEntryI(string NoteNumber, int LockStatus, ref string pMsg)
         {
@@ -138,7 +147,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataTable getETSNoteListToBeEdited(int CentreCode,ref string pMsg)
         {
@@ -149,7 +160,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable();
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataTable GetNoteListForEntryI(int CentreCode, ref string pMsg)
         {
@@ -160,7 +173,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable();
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataTable getETSEditNoteListForDropDown(int CentreCode,int mStatus, ref string pMsg)
         {
@@ -171,7 +186,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable();
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataTable getEditNoteHdr(string NoteNumber, ref string pMsg)
         {
@@ -182,7 +199,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable();
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataTable getEditTPDetails(string NoteNumber, ref string pMsg)
         {
@@ -193,7 +212,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable();
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataSet getCurrentDateWiseTour(string NoteNumber,int FieldTag, 
             int PersonType,int PersonID,string PersonName, ref string pMsg,bool IsActive)
@@ -229,7 +250,9 @@ namespace CBBW.DAL.DataSync
                     }
                 }                
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataTable SetETSTourEdit(DWTTourDetailsForDB obj,int CentreCode,string CentreName, ref string pMsg)
         {
@@ -267,7 +290,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataTable UpdateETSTourEdit(string NoteNumber,ref string pMsg) 
         {
@@ -282,7 +307,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataTable RemoveETSEditNote(string NoteNumber,int ActiveTag, ref string pMsg)
         {
@@ -299,7 +326,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataTable SetETSEditRatificationStatus(string NoteNumber, bool IsApproved,string ReasonForDisApproval,int ApproverID, ref string pMsg)
         {
@@ -320,7 +349,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataTable SetETSEditAppStatus(string NoteNumber, bool IsApproved, string ReasonForDisApproval, int ApproverID, ref string pMsg)
         {
@@ -341,7 +372,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataTable SetETSVehicleAllotmentDetails(VehicleAllotmentDetails mData,int CentreCode,string CentreName, ref string pMsg)
         {
@@ -386,7 +419,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataTable GetVehicleAllotmentDetails(string Notenumber, int IsActive, ref string pMsg)
         {
@@ -397,7 +432,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable();
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataSet GetEntryITourData(string Notenumber, int IsActive, ref string pMsg)
         {
@@ -414,7 +451,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataSet(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataTable RemoveEntryINote(string NoteNumber, bool ActiveTag, ref string pMsg)
         {
@@ -431,7 +470,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public DataTable UpdateETSVehicleAllotmentDetails(string NoteNumber, ref string pMsg)
         {
@@ -446,7 +487,9 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
     }
 }

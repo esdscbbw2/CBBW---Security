@@ -102,6 +102,7 @@ function refreshDropdown(data, myCtrlID, IsIDString, DefaultText) {
             myCtrl.append($('<option/>', { value: item.ID, text: item.DisplayText }));
         }
     });
+    myCtrl.isInvalidCtrl();
 }
 function assignValueToDropdown(myCtrlID,value) {
     // Assign the specified value to the dropdown    
@@ -126,6 +127,7 @@ function refreshMultiselect(data, myCtrlID, IsIDString) {
     });
     myCtrl.multiselect('clearSelection');
     myCtrl.multiselect('refresh');
+    myCtrl.isInvalidCtrl();
 }
 function assignValueToMultiSelect(myCtrlID, value) {
     if (value != '') {

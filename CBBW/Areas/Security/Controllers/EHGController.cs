@@ -10,6 +10,7 @@ using CBBW.BOL.CustomModels;
 using CBBW.BOL.EHG;
 using System.Globalization;
 using CBBW.BOL.Master;
+using CBBW.BOL;
 
 namespace CBBW.Areas.Security.Controllers
 {
@@ -37,43 +38,51 @@ namespace CBBW.Areas.Security.Controllers
         [HttpPost]
         public ActionResult ApproveNote(EHGNotApprovalVM modelobj, string Submit)
         {
-            string baseUrl = "/Security/EHG/ApproveNote";
-            if (Submit == "create")
+            try
             {
-                if (_iEHG.SetEHGHdrAppStatus(modelobj.NoteNumber2,modelobj.AppStatus==1?true:false,
-                    modelobj.ReasonForDisApproval,user.EmployeeNumber,ref pMsg))
+                string baseUrl = "/Security/EHG/ApproveNote";
+                if (Submit == "create")
                 {
-                    ViewBag.Msg = "Approval Status Of Note Number " + modelobj.NoteNumber2 + " Updated Successfully.";
-                    TempData["EHGApp"] = null;
+                    if (_iEHG.SetEHGHdrAppStatus(modelobj.NoteNumber2, modelobj.AppStatus == 1 ? true : false,
+                        modelobj.ReasonForDisApproval, user.EmployeeNumber, ref pMsg))
+                    {
+                        ViewBag.Msg = "Approval Status Of Note Number " + modelobj.NoteNumber2 + " Updated Successfully.";
+                        TempData["EHGApp"] = null;
+                    }
+                    else { ViewBag.ErrMsg = "Approval Status Updation Failed For Note Number " + modelobj.NoteNumber2; }
                 }
-                else { ViewBag.ErrMsg = "Approval Status Updation Failed For Note Number " + modelobj.NoteNumber2; }
-            }        
-            else if (Submit == "VAD")
-            {                
-                if (modelobj.IsDocOpened == 1)
+                else if (Submit == "VAD")
                 {
-                    modelobj.VAActive = 1;
-                    TempData["EHGApp"] = modelobj;
-                    _iUser.RecordCallBack(baseUrl);
-                    return RedirectToAction("ViewVADetails", "EHG", new { NoteNumber = modelobj.NoteNumber2, CBUID = 1 });
+                    if (modelobj.IsDocOpened == 1)
+                    {
+                        modelobj.VAActive = 1;
+                        TempData["EHGApp"] = modelobj;
+                        _iUser.RecordCallBack(baseUrl);
+                        return RedirectToAction("ViewVADetails", "EHG", new { NoteNumber = modelobj.NoteNumber2, CBUID = 1 });
+                    }
+                    else
+                    {
+                        ViewBag.ErrMsg = "Attached Travelling Request Form Must Be Opened Before Proceeding.";
+                    }
                 }
-                else 
+                else if (Submit == "DWT")
                 {
-                    ViewBag.ErrMsg = "Attached Travelling Request Form Must Be Opened Before Proceeding.";
+                    if (modelobj.IsDocOpened == 1)
+                    {
+                        modelobj.DWTActive = 1;
+                        TempData["EHGApp"] = modelobj;
+                        _iUser.RecordCallBack(baseUrl);
+                        return RedirectToAction("ViewDWTDetails", "EHG", new { NoteNumber = modelobj.NoteNumber2, CBUID = 1 });
+                    }
+                    else
+                    {
+                        ViewBag.ErrMsg = "Attached Travelling Request Form Must Be Opened Before Proceeding.";
+                    }
                 }
             }
-            else if (Submit == "DWT")
+            catch (Exception ex)
             {
-                if (modelobj.IsDocOpened == 1) {
-                    modelobj.DWTActive = 1;
-                    TempData["EHGApp"] = modelobj;
-                    _iUser.RecordCallBack(baseUrl);
-                    return RedirectToAction("ViewDWTDetails", "EHG", new { NoteNumber = modelobj.NoteNumber2, CBUID = 1 });
-                }
-                else
-                {
-                    ViewBag.ErrMsg = "Attached Travelling Request Form Must Be Opened Before Proceeding.";
-                }
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
             }
             appmodel = CastEHGAppTempData();
             return View(appmodel);
@@ -98,44 +107,59 @@ namespace CBBW.Areas.Security.Controllers
         }
         public ActionResult ViewNote(string NoteNumber,int CanDelete=0,int CBUID=0) 
         {
-            if (CBUID == 0) { _iUser.RecordCallBack("/Security/EHG/Index"); }
-            if (CBUID == 1) { _iUser.RecordCallBack("/Security/EHG/NoteApproveList"); }
             EHGHeaderDisplayVM modelobj = new EHGHeaderDisplayVM();
-            modelobj.NoteNumber = NoteNumber;
-            modelobj.HeaderData = _iEHG.getEHGNoteHdr(NoteNumber, ref pMsg);
-            modelobj.TPDetails = _iEHG.getTravelingPersonDetails(NoteNumber, 1, ref pMsg);
-            modelobj.CanDelete = CanDelete == 1 ? true : false;
-            modelobj.CBUID = CBUID;
-            modelobj.DeleteBtn = CanDelete;
-            modelobj.HeaderText = CBUID == 1 ? "APPROVAL" : "ENTRY";
+            try
+            {
+                if (CBUID == 0) { _iUser.RecordCallBack("/Security/EHG/Index"); }
+                if (CBUID == 1) { _iUser.RecordCallBack("/Security/EHG/NoteApproveList"); }
+                modelobj.NoteNumber = NoteNumber;
+                modelobj.HeaderData = _iEHG.getEHGNoteHdr(NoteNumber, ref pMsg);
+                modelobj.TPDetails = _iEHG.getTravelingPersonDetails(NoteNumber, 1, ref pMsg);
+                modelobj.CanDelete = CanDelete == 1 ? true : false;
+                modelobj.CBUID = CBUID;
+                modelobj.DeleteBtn = CanDelete;
+                modelobj.HeaderText = CBUID == 1 ? "APPROVAL" : "ENTRY";
+            }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+            }
             return View(modelobj);
         }
         [HttpPost]
         public ActionResult ViewNote(EHGHeaderDisplayVM modelobj, string Submit) 
         {
-            string baseUrl="/Security/EHG/ViewNote?NoteNumber=" + modelobj.NoteNumber + "&CanDelete=" + modelobj.DeleteBtn+"&CBUID="+modelobj.CBUID;
-            if (Submit == "Delete")
+            try
             {
-                if (_iEHG.RemoveEHGNote(modelobj.NoteNumber, 0, 1, ref pMsg))
+                string baseUrl = "/Security/EHG/ViewNote?NoteNumber=" + modelobj.NoteNumber + "&CanDelete=" + modelobj.DeleteBtn + "&CBUID=" + modelobj.CBUID;
+                if (Submit == "Delete")
                 {
-                    ViewBag.Msg = "Note Number " + modelobj.NoteNumber + " Deleted Successfully.";
-                    TempData["EHG"] = null;
+                    if (_iEHG.RemoveEHGNote(modelobj.NoteNumber, 0, 1, ref pMsg))
+                    {
+                        ViewBag.Msg = "Note Number " + modelobj.NoteNumber + " Deleted Successfully.";
+                        TempData["EHG"] = null;
+                    }
+                    else { ViewBag.ErrMsg = "Failed To Delete Note Number " + modelobj.NoteNumber + ". Because It Is Under Process Of Approval."; }
+
                 }
-                else { ViewBag.ErrMsg = "Failed To Delete Note Number " + modelobj.NoteNumber+". Because It Is Under Process Of Approval."; }
+                else if (Submit == "DWT")
+                {
+                    _iUser.RecordCallBack(baseUrl);
+                    return RedirectToAction("ViewDWTDetails", "EHG", new { NoteNumber = modelobj.NoteNumber, CBUID = modelobj.CBUID });
+                }
+                else if (Submit == "VAD")
+                {
+                    _iUser.RecordCallBack(baseUrl);
+                    return RedirectToAction("ViewVADetails", "EHG", new { NoteNumber = modelobj.NoteNumber, CBUID = modelobj.CBUID });
+                }
+                modelobj.HeaderData = _iEHG.getEHGNoteHdr(modelobj.NoteNumber, ref pMsg);
+                modelobj.TPDetails = _iEHG.getTravelingPersonDetails(modelobj.NoteNumber, 1, ref pMsg);
 
             }
-            else if (Submit == "DWT") 
+            catch (Exception ex)
             {
-                _iUser.RecordCallBack(baseUrl);
-                return RedirectToAction("ViewDWTDetails","EHG",new { NoteNumber=modelobj.NoteNumber, CBUID=modelobj.CBUID });
-            } 
-            else if (Submit == "VAD") 
-            {
-                _iUser.RecordCallBack(baseUrl);
-                return RedirectToAction("ViewVADetails","EHG", new { NoteNumber = modelobj.NoteNumber, CBUID = modelobj.CBUID });
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
             }
-            modelobj.HeaderData = _iEHG.getEHGNoteHdr(modelobj.NoteNumber, ref pMsg);
-            modelobj.TPDetails = _iEHG.getTravelingPersonDetails(modelobj.NoteNumber, 1, ref pMsg);
             return View(modelobj);
         }
         public ActionResult Index()
@@ -159,112 +183,134 @@ namespace CBBW.Areas.Security.Controllers
             return View();
         }
         public ActionResult Create() 
-        {            
-            if (TempData["EHG"] == null)
+        {
+            try
             {
-                model = new EHGHeaderEntryVM(user.CentreCode);
-                model.ehgHeader = _iEHG.getNewEHGHeader(ref pMsg);
-                model.FromdateForMang = DateTime.Today.AddDays(-1);
-                model.ToDateForMang = DateTime.Today.AddDays(-1);
-                model.MaxFromDate = DateTime.Today.AddDays(1).ToString("yyyy-MM-dd");
-                model.MinFromDate = DateTime.Today.ToString("yyyy-MM-dd");
-                model.TADADeniedForManagement = -1;
-                if (TempData["BackBtn"] != null) 
+                if (TempData["EHG"] == null)
                 {
-                    model.BackBtnActive = int.Parse(TempData["BackBtn"].ToString());
+                    model = new EHGHeaderEntryVM(user.CentreCode);
+                    model.ehgHeader = _iEHG.getNewEHGHeader(ref pMsg);
+                    model.FromdateForMang = DateTime.Today.AddDays(-1);
+                    model.ToDateForMang = DateTime.Today.AddDays(-1);
+                    model.MaxFromDate = DateTime.Today.AddDays(1).ToString("yyyy-MM-dd");
+                    model.MinFromDate = DateTime.Today.ToString("yyyy-MM-dd");
+                    model.TADADeniedForManagement = -1;
+                    if (TempData["BackBtn"] != null)
+                    {
+                        model.BackBtnActive = int.Parse(TempData["BackBtn"].ToString());
+                    }
                 }
+                else
+                {
+                    model = TempData["EHG"] as EHGHeaderEntryVM;
+                    if (model.MDDICList == null) { model.MDDICList = model.getMDDICList(user.CentreCode); }
+                    if (model.DriverList == null) { model.DriverList = model.getDriverList(user.CentreCode); }
+                    if (model.StaffList == null) { model.StaffList = model.getStaffList(user.CentreCode); }
+                    if (model.OtherStaffList == null) { model.OtherStaffList = model.getOtherStaffList(user.CentreCode); }
+                }
+                model.OkToOpen = _master.GetHGOpenOrNot(user.CentreCode, ref pMsg) ? 1 : 0;
+                TempData["EHG"] = model;
+
             }
-            else 
-            { 
-                model = TempData["EHG"] as EHGHeaderEntryVM;
-                if (model.MDDICList == null) { model.MDDICList = model.getMDDICList(user.CentreCode); }
-                if (model.DriverList == null) { model.DriverList = model.getDriverList(user.CentreCode); }
-                if (model.StaffList == null) { model.StaffList = model.getStaffList(user.CentreCode); }
-                if (model.OtherStaffList == null) { model.OtherStaffList = model.getOtherStaffList(user.CentreCode); }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
             }
-            model.OkToOpen = _master.GetHGOpenOrNot(user.CentreCode, ref pMsg) ? 1 : 0;
-            TempData["EHG"] = model;
-     
             //model.ehgHeader.DocFileName = "9e42056b-1e9c-4cc6-a022-e0fc811ce63b.png"; // Dummy code
             return View(model);
         }
         [HttpPost]
         public ActionResult Create(EHGHeaderEntryVM model, string Submit) 
-        {            
-            if (Submit == "create")
+        {
+            try
             {
-                if (model.VehicleType == 1 && model.POA == 1)
+                if (Submit == "create")
                 {
-                    model.ehgHeader.AuthorisedEmployeeName = model.AuthorisedEmpNameForManagement;
-                    model.ehgHeader.AuthorisedEmpNo = model.AuthorisedEmpNoForManagement2;
-                    model.ehgHeader.VehicleType = model.VehicleType;
-                    model.ehgHeader.MaterialStatus = model.MaterialStatus;
-                    model.ehgHeader.Instructor = model.Instructor;
-                    model.ehgHeader.PurposeOfAllotment = model.POA;
-                    //model.ehgHeader.VehicleType = model.VehicleType;
-                    EHGTravelingPersondtlsForManagement dtl = new EHGTravelingPersondtlsForManagement();
-                    dtl.NoteNumber = model.ehgHeader.NoteNumber;
-                    dtl.EmployeeNo = model.DriverNoForManagement2;
-                    dtl.EmployeeNonName = model.DriverNameForManagement;
-                    dtl.DesignationCode = _myHelper.getFirstIntegerFromString(model.DesgCodeNNameForManagement, '/');
-                    dtl.DesignationCodenName = model.DesgCodeNNameForManagement;
-                    dtl.FromDate = model.FromdateForMang2;
-                    dtl.FromTime = model.FromTimeForMang2;
-                    dtl.ToDate = model.ToDateForMang2;
-                    dtl.PurposeOfVisit = model.PurposeOfVisitFoeMang2;
-                    //To be changed after rfid implementation
-                    dtl.ActualTourOutDate= model.FromdateForMang2;
-                    dtl.ActualTourOutTime= model.FromTimeForMang2;
-                    dtl.RequiredTourInDate= model.ToDateForMang2;
-                    dtl.RequiredTourInTime = " ";
-                    dtl.ActualTourInDate= model.ToDateForMang2;
-                    dtl.ActualTourInTime = " ";
-                    dtl.TourStatus = 0;
+                    if (model.VehicleType == 1 && model.POA == 1)
+                    {
+                        model.ehgHeader.AuthorisedEmployeeName = model.AuthorisedEmpNameForManagement;
+                        model.ehgHeader.AuthorisedEmpNo = model.AuthorisedEmpNoForManagement2;
+                        model.ehgHeader.VehicleType = model.VehicleType;
+                        model.ehgHeader.MaterialStatus = model.MaterialStatus;
+                        model.ehgHeader.Instructor = model.Instructor;
+                        model.ehgHeader.PurposeOfAllotment = model.POA;
+                        //model.ehgHeader.VehicleType = model.VehicleType;
+                        EHGTravelingPersondtlsForManagement dtl = new EHGTravelingPersondtlsForManagement();
+                        dtl.NoteNumber = model.ehgHeader.NoteNumber;
+                        dtl.EmployeeNo = model.DriverNoForManagement2;
+                        dtl.EmployeeNonName = model.DriverNameForManagement;
+                        dtl.DesignationCode = _myHelper.getFirstIntegerFromString(model.DesgCodeNNameForManagement, '/');
+                        dtl.DesignationCodenName = model.DesgCodeNNameForManagement;
+                        dtl.FromDate = model.FromdateForMang2;
+                        dtl.FromTime = model.FromTimeForMang2;
+                        dtl.ToDate = model.ToDateForMang2;
+                        dtl.PurposeOfVisit = model.PurposeOfVisitFoeMang2;
+                        //To be changed after rfid implementation
+                        dtl.ActualTourOutDate = model.FromdateForMang2;
+                        dtl.ActualTourOutTime = model.FromTimeForMang2;
+                        dtl.RequiredTourInDate = model.ToDateForMang2;
+                        dtl.RequiredTourInTime = " ";
+                        dtl.ActualTourInDate = model.ToDateForMang2;
+                        dtl.ActualTourInTime = " ";
+                        dtl.TourStatus = 0;
 
-                    if (model.TADADeniedForManagement2 == 1)
-                        dtl.TADADenied = true;
+                        if (model.TADADeniedForManagement2 == 1)
+                            dtl.TADADenied = true;
+                        else
+                            dtl.TADADenied = false;
+                        if (_iEHG.SetEHGHdrForManagement(model.ehgHeader, dtl, ref pMsg))
+                        {
+                            ViewBag.Msg = "Note Number " + model.ehgHeader.NoteNumber + " Submited Successfully.";
+                            TempData["EHG"] = null;
+                        }
+                        else { ViewBag.ErrMsg = "Updation Failed For Note Number " + model.ehgHeader.NoteNumber; }
+                    }
                     else
-                        dtl.TADADenied = false;
-                    if (_iEHG.SetEHGHdrForManagement(model.ehgHeader, dtl, ref pMsg))
-                    { 
-                        ViewBag.Msg = "Note Number " + model.ehgHeader.NoteNumber + " Submited Successfully.";
-                        TempData["EHG"] = null;
+                    {
+                        model.ehgHeader.VehicleType = model.VehicleType;
+                        model.ehgHeader.MaterialStatus = model.MaterialStatus;
+                        model.ehgHeader.Instructor = model.Instructor;
+                        //model.ehgHeader.AuthorisedEmpNo = model.AuthorisedEmpNo;
+                        model.ehgHeader.PurposeOfAllotment = model.POA;
+                        if (_iEHG.UpdateEHGHdr(model.ehgHeader, ref pMsg))
+                        {
+                            ViewBag.Msg = "Note Number " + model.ehgHeader.NoteNumber + " Submited Successfully.";
+                            TempData["EHG"] = null;
+                        }
+                        else { ViewBag.ErrMsg = "Updation Failed For Note Number " + model.ehgHeader.NoteNumber; }
                     }
-                    else { ViewBag.ErrMsg = "Updation Failed For Note Number " + model.ehgHeader.NoteNumber; }
                 }
-                else 
+                else if (Submit == "VAD")
                 {
-                    model.ehgHeader.VehicleType = model.VehicleType;
-                    model.ehgHeader.MaterialStatus = model.MaterialStatus;
-                    model.ehgHeader.Instructor = model.Instructor;
-                    //model.ehgHeader.AuthorisedEmpNo = model.AuthorisedEmpNo;
-                    model.ehgHeader.PurposeOfAllotment = model.POA;
-                    if (_iEHG.UpdateEHGHdr(model.ehgHeader,ref pMsg))
-                    { 
-                        ViewBag.Msg = "Note Number " + model.ehgHeader.NoteNumber + " Submited Successfully.";
-                        TempData["EHG"] = null;
-                    }
-                    else { ViewBag.ErrMsg = "Updation Failed For Note Number " + model.ehgHeader.NoteNumber; }
+                    model = CastEHGTempData();
+                    return RedirectToAction("VehicleAllotment");
                 }
+                if (model.MDDICList == null) { model.MDDICList = model.getMDDICList(user.CentreCode); }
+                if (model.DriverList == null) { model.DriverList = model.getDriverList(user.CentreCode); }
+                if (model.OtherStaffList == null) { model.OtherStaffList = model.getOtherStaffList(user.CentreCode); }
+
             }
-            else if (Submit == "VAD")
+            catch (Exception ex)
             {
-                model = CastEHGTempData();
-                return RedirectToAction("VehicleAllotment");
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
             }
-            if (model.MDDICList == null) { model.MDDICList = model.getMDDICList(user.CentreCode); }
-            if (model.DriverList == null) { model.DriverList=model.getDriverList(user.CentreCode);}
-            if (model.OtherStaffList == null) { model.OtherStaffList = model.getOtherStaffList(user.CentreCode); }
             return View(model);
         }
         public ActionResult DateWiseTourDetails() 
         {
             model = CastEHGTempData();
-            model.FromdateForMang= model.PersonDtls.Select(o => o.FromDate).Min();
-            model.ToDateForMang = model.PersonDtls.Select(o => o.ToDate).Max();
-            model.FromdateStrForDisplay = model.FromdateForMang.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
-            model.FromdateStr = model.FromdateForMang.ToString("yyyy-MM-dd");
-            model.TodateStr = model.ToDateForMang.ToString("yyyy-MM-dd");
+            try
+            {
+                model.FromdateForMang = model.PersonDtls.Select(o => o.FromDate).Min();
+                model.ToDateForMang = model.PersonDtls.Select(o => o.ToDate).Max();
+                model.FromdateStrForDisplay = model.FromdateForMang.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+                model.FromdateStr = model.FromdateForMang.ToString("yyyy-MM-dd");
+                model.TodateStr = model.ToDateForMang.ToString("yyyy-MM-dd");
+            }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+            }
             return View(model);
         }
         public ActionResult VehicleAllotment() 
@@ -307,27 +353,34 @@ namespace CBBW.Areas.Security.Controllers
                     model.ToDateForMang = model.PersonDtls.Select(o => o.ToDate).Max();
                 }                
             }
-            catch { }
+            catch(Exception ex) { MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex); }
             return View(model);
         }
         [HttpPost]
         public ActionResult VehicleAllotment(EHGHeaderEntryVM modelobj, string Submit) 
         {
             model = CastEHGTempData();
-            if (modelobj.VADetails != null) { modelobj.VADetails.DriverNumber = modelobj.DriverNumber; }
-            model.VADetails = modelobj.VADetails;            
-            if (Submit == "Save") 
+            try
             {
-                if (_iEHG.SetEHGVehicleAllotmentDetails(model.VADetails, ref pMsg))
+                if (modelobj.VADetails != null) { modelobj.VADetails.DriverNumber = modelobj.DriverNumber; }
+                model.VADetails = modelobj.VADetails;
+                if (Submit == "Save")
                 {
-                    model.VASubmitBtnActive = 1;
-                    TempData["EHG"] = model;
-                    //return RedirectToAction("Create");
-                    ViewBag.Msg = "Vehicle Allotment Details Updated Successfully.";
+                    if (_iEHG.SetEHGVehicleAllotmentDetails(model.VADetails, ref pMsg))
+                    {
+                        model.VASubmitBtnActive = 1;
+                        TempData["EHG"] = model;
+                        //return RedirectToAction("Create");
+                        ViewBag.Msg = "Vehicle Allotment Details Updated Successfully.";
+                    }
+                    else { ViewBag.ErrMsg = "Updation Failed."; }
                 }
-                else { ViewBag.ErrMsg = "Updation Failed."; }
+                TempData["EHG"] = model;
             }
-            TempData["EHG"] = model;
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+            }
             return View(model);
         }
         public ActionResult AddNote(int ID) 
@@ -341,9 +394,17 @@ namespace CBBW.Areas.Security.Controllers
         public JsonResult GetNoteHdrTPD(string NoteNumber)
         {
             EHGNotApprovalVM result = new EHGNotApprovalVM();
-            result.NoteNumber = NoteNumber;
-            result.Header = _iEHG.getEHGNoteHdr(NoteNumber, ref pMsg,1,user.EmployeeNumber);
-            result.TPDetails = _iEHG.getTravelingPersonDetails(NoteNumber, 1, ref pMsg);
+            try
+            {
+                result.NoteNumber = NoteNumber;
+                result.Header = _iEHG.getEHGNoteHdr(NoteNumber, ref pMsg, 1, user.EmployeeNumber);
+                result.TPDetails = _iEHG.getTravelingPersonDetails(NoteNumber, 1, ref pMsg);
+
+            }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+            }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public ActionResult ClearBtnClicked(int PageID=0) 
@@ -386,57 +447,101 @@ namespace CBBW.Areas.Security.Controllers
         }
         public JsonResult GetTourLocations(string CategoryIDs)
         {
-            IEnumerable<LocationMaster> result;
-            CategoryIDs = CategoryIDs.Replace('_', ',');
-            IEnumerable<LocationMaster> result2 =_master.GetCentresFromTourCategory(CategoryIDs, ref pMsg);
-            result = result2.OrderBy(o => o.TypeID).ThenBy(o => o.ID).ToList();
-            return Json(result.Where(o=>o.CentreCode!=user.CentreCode).ToList(), JsonRequestBehavior.AllowGet);
+            IEnumerable<LocationMaster> result=new List<LocationMaster>();
+            try
+            {
+                CategoryIDs = CategoryIDs.Replace('_', ',');
+                IEnumerable<LocationMaster> result2 = _master.GetCentresFromTourCategory(CategoryIDs, ref pMsg);
+                result = result2.Where(o => o.CentreCode != user.CentreCode).OrderBy(o => o.TypeID).ThenBy(o => o.ID).ToList();
+                //result=result.Where(o => o.CentreCode != user.CentreCode).ToList();
+            }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetTourCategories()
         {
             List<CustomComboOptions> result = new List<CustomComboOptions>();
-            
-            EHGMaster master = EHGMaster.GetInstance;
-            result = master.TourCategory;
+            try
+            {
+                EHGMaster master = EHGMaster.GetInstance;
+                result = master.TourCategory;
+            }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+            }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetPersonTypes()
         {
             List<CustomComboOptions> result = new List<CustomComboOptions>();
-            //model = CastEHGTempData();
-            //if (model.PersonType == null)
-            //{
-            //    EHGMaster master = EHGMaster.GetInstance;
-            //    result = master.PersonType;
-            //}
-            //else { result = model.PersonType;}
-            EHGMaster master = EHGMaster.GetInstance;
-            result = master.PersonType;
+            try
+            {
+                EHGMaster master = EHGMaster.GetInstance;
+                result = master.PersonType;
+            }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+            }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetDriverList()
         {
-            IEnumerable<CustomComboOptions> result;
-            //model = CastEHGTempData();
-            //if (model.DriverList == null)
-            //    result = model.getDriverList(user.CentreCode);
-            //else  
-            //    result = model.DriverList; 
-            EHGHeaderEntryVM tempobj = new EHGHeaderEntryVM(true);
-            result = tempobj.getDriverList(user.CentreCode);
+            IEnumerable<CustomComboOptions> result=new List<CustomComboOptions>();
+            try
+            {
+                EHGHeaderEntryVM tempobj = new EHGHeaderEntryVM(true);
+                result = tempobj.getDriverList(user.CentreCode);
+            }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+            }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetStaffList()
         {
-            IEnumerable<CustomComboOptions> result;
-            //model = CastEHGTempData();
-            //if (model.StaffList == null)
-            //    result = model.getStaffList(user.CentreCode);
-            //else
-            //    result = model.StaffList;
-            EHGHeaderEntryVM tempobj = new EHGHeaderEntryVM(true);
-            //result = tempobj.getStaffList(user.CentreCode);
-            result = _master.GetEmployeeListV2(user.CentreCode,ref pMsg);
+            IEnumerable<CustomComboOptions> result=new List<CustomComboOptions>();
+            try
+            {                
+                EHGHeaderEntryVM tempobj = new EHGHeaderEntryVM(true);
+                result = _master.GetEmployeeListV2(user.CentreCode, ref pMsg);
+            }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult IsVehicleExist(string VehicleNumber)
+        {
+            CustomAjaxResponse result = new CustomAjaxResponse();
+            try
+            {
+                if (!string.IsNullOrEmpty(VehicleNumber))
+                {
+                    if (!_master.IsVehicleExist(VehicleNumber, ref pMsg))
+                    {
+                        result.bResponseBool = true;
+                    }
+                    else
+                    {
+                        result.bResponseBool = false;
+                    }
+                }
+                else 
+                {
+                    result.bResponseBool = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+            }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetTPDetails(string NoteNumber)
@@ -462,6 +567,7 @@ namespace CBBW.Areas.Security.Controllers
         public JsonResult getNoteList(int iDisplayLength,int iDisplayStart,int iSortCol_0,
             string sSortDir_0,string sSearch) 
         {
+            if (iSortCol_0 == 0) { iSortCol_0 = 1; sSortDir_0 = "des"; }
             List<EHGNoteList> noteList = _iEHG.GetEHGNoteList(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch,user.CentreCode,false,ref pMsg);
             var result = new
             {
@@ -476,6 +582,7 @@ namespace CBBW.Areas.Security.Controllers
         public JsonResult getApprovedNoteList(int iDisplayLength, int iDisplayStart, int iSortCol_0,
             string sSortDir_0, string sSearch)
         {
+            if (iSortCol_0 == 0) { iSortCol_0 = 1; sSortDir_0 = "des"; }
             List<EHGNoteList> noteList = _iEHG.GetEHGNoteList(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, user.CentreCode, true, ref pMsg);
             var result = new
             {
@@ -491,107 +598,132 @@ namespace CBBW.Areas.Security.Controllers
         [HttpPost]
         public ActionResult GetTravelingPersonDetails(EHGTravellingPersonsVM modelobj) 
         {
-            model = CastEHGTempData();
-            model.ehgHeader.VehicleType = modelobj.VehicleType;
-            model.ehgHeader.PurposeOfAllotment = modelobj.PurposeOfAllotment;
-            model.ehgHeader.MaterialStatus = modelobj.MaterialStatus;
-            model.ehgHeader.Instructor = modelobj.Instructor;
-            model.ehgHeader.AuthorisedEmployeeName = modelobj.AuthorisedEmployeeName;
-            model.ehgHeader.InstructorName = modelobj.InstructorName;
-            model.ehgHeader.DocFileName = modelobj.DocFileName;
-            model.PersonDtls = modelobj.PersonDtls;
-            model.VehicleType= modelobj.VehicleType;
-            model.MaterialStatus = modelobj.MaterialStatus;
-            model.Instructor= modelobj.Instructor;
-            model.POA= modelobj.PurposeOfAllotment;
-            TempData["EHG"] = model;
             CustomAjaxResponse result = new CustomAjaxResponse();
-            if (modelobj != null) 
+            try
             {
-                if (_iEHG.SetEHGTravellingPersonDetails(modelobj.NoteNumber, modelobj.AuthorisedEmployeeName,
-                    modelobj.PersonDtls, ref pMsg)) 
+                model = CastEHGTempData();
+                model.ehgHeader.VehicleType = modelobj.VehicleType;
+                model.ehgHeader.PurposeOfAllotment = modelobj.PurposeOfAllotment;
+                model.ehgHeader.MaterialStatus = modelobj.MaterialStatus;
+                model.ehgHeader.Instructor = modelobj.Instructor;
+                model.ehgHeader.AuthorisedEmployeeName = modelobj.AuthorisedEmployeeName;
+                model.ehgHeader.InstructorName = modelobj.InstructorName;
+                model.ehgHeader.DocFileName = modelobj.DocFileName;
+                model.PersonDtls = modelobj.PersonDtls;
+                model.VehicleType = modelobj.VehicleType;
+                model.MaterialStatus = modelobj.MaterialStatus;
+                model.Instructor = modelobj.Instructor;
+                model.POA = modelobj.PurposeOfAllotment;
+                TempData["EHG"] = model;
+                if (modelobj != null)
                 {
-                    result.bResponseBool = true;
-                    result.sResponseString = "Data successfully updated.";
-                   // _iUser.RecordCallBack("/Security/EHG/Create");
+                    if (_iEHG.SetEHGTravellingPersonDetails(modelobj.NoteNumber, modelobj.AuthorisedEmployeeName,
+                        modelobj.PersonDtls, ref pMsg))
+                    {
+                        result.bResponseBool = true;
+                        result.sResponseString = "Data successfully updated.";
+                        // _iUser.RecordCallBack("/Security/EHG/Create");
+                    }
+                    else
+                    {
+                        result.bResponseBool = false;
+                        result.sResponseString = pMsg;
+                    }
                 }
-                else
-                {
-                    result.bResponseBool = false;
-                    result.sResponseString = pMsg;
-                }                
             }
-            //TempData["EHG"] = model;
-            //return RedirectToActionPermanent("DateWiseTourDetails");
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+            }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public ActionResult SetDateWiseTourDtls(DateWiseTourDtlVM modelobj)
         {
             CustomAjaxResponse result = new CustomAjaxResponse();
-            if (modelobj != null)
+            try
             {
-                if (_iEHG.SetDateWiseTourDetails(modelobj.NoteNumber, modelobj.DateWiseList, ref pMsg))
+                if (modelobj != null)
                 {
-                    result.bResponseBool = true;
-                    result.sResponseString = "Data successfully updated.";
-                    model = CastEHGTempData();
-                    model.DWSubmitBtnActive = 1;
-                    TempData["EHG"] = model;
-                }
-                else
-                {
-                    result.bResponseBool = false;
-                    result.sResponseString = pMsg;
+                    if (_iEHG.SetDateWiseTourDetails(modelobj.NoteNumber, modelobj.DateWiseList, ref pMsg))
+                    {
+                        result.bResponseBool = true;
+                        result.sResponseString = "Data successfully updated.";
+                        model = CastEHGTempData();
+                        model.DWSubmitBtnActive = 1;
+                        TempData["EHG"] = model;
+                    }
+                    else
+                    {
+                        result.bResponseBool = false;
+                        result.sResponseString = pMsg;
+                    }
                 }
             }
-            //return RedirectToAction("index");
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+            }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public ActionResult GetEmployeeValidationForTour(string Employees,DateTime FromDate,DateTime ToDate )
         {
             CustomAjaxResponse result = new CustomAjaxResponse();
-            if (Employees != null && Employees!="null")
+            try
             {
-                if (_master.GetEmployeeValidationForTour(user.CentreCode, Employees, FromDate, ToDate, ref pMsg))
+                if (Employees != null && Employees != "null")
+                {
+                    if (_master.GetEmployeeValidationForTour(user.CentreCode, Employees, FromDate, ToDate, ref pMsg))
+                    {
+                        result.bResponseBool = true;
+                        result.sResponseString = "Validated Successfully.";
+                    }
+                    else
+                    {
+                        result.bResponseBool = false;
+                        result.sResponseString = pMsg;
+                    }
+                }
+                else
                 {
                     result.bResponseBool = true;
                     result.sResponseString = "Validated Successfully.";
                 }
-                else
-                {
-                    result.bResponseBool = false;
-                    result.sResponseString = pMsg;
-                }
             }
-            else {
-                result.bResponseBool = true;
-                result.sResponseString = "Validated Successfully.";
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
             }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public ActionResult GetVehicleValidationForTour(string VehicleNumber,int KMLimit, string FromDate, string ToDate)
         {
             VehicleBasicInfo result=new VehicleBasicInfo();
-            
-            if (VehicleNumber != null && VehicleNumber != "null")
+            try
             {
-                if (_iEHG.VehicleAvailableValidationForHG(VehicleNumber,user.CentreCode,DateTime.Parse(FromDate), DateTime.Parse(ToDate), KMLimit, ref pMsg))
+                if (VehicleNumber != null && VehicleNumber != "null")
                 {
-                    result = _master.getVehicleBasicInfo(VehicleNumber, ref pMsg);
-                    if (result != null) { result.ModelName = result.ModelName == null ? "NA" : result.ModelName; }
-                    result.IsSuccess = true;
+                    if (_iEHG.VehicleAvailableValidationForHG(VehicleNumber, user.CentreCode, DateTime.Parse(FromDate), DateTime.Parse(ToDate), KMLimit, ref pMsg))
+                    {
+                        result = _master.getVehicleBasicInfo(VehicleNumber, ref pMsg);
+                        if (result != null) { result.ModelName = result.ModelName == null ? "NA" : result.ModelName; }
+                        result.IsSuccess = true;
+                    }
+                    else
+                    {
+                        result.IsSuccess = false;
+                        result.Msg = pMsg;
+                    }
                 }
                 else
                 {
-                    result.IsSuccess = false;
-                    result.Msg = pMsg;
+                    result.IsSuccess = true;
+                    result.Msg = "Validated Successfully.";
                 }
             }
-            else
+            catch (Exception ex)
             {
-                result.IsSuccess = true;
-                result.Msg = "Validated Successfully.";
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
             }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -600,33 +732,47 @@ namespace CBBW.Areas.Security.Controllers
         //Private Functions
         private EHGHeaderEntryVM CastEHGTempData() 
         {
-            if (TempData["EHG"] != null)
+            try
             {
-                model = TempData["EHG"] as EHGHeaderEntryVM;
+                if (TempData["EHG"] != null)
+                {
+                    model = TempData["EHG"] as EHGHeaderEntryVM;
+                }
+                else
+                {
+                    model = new EHGHeaderEntryVM();
+                }
+                TempData["EHG"] = model;
             }
-            else 
+            catch (Exception ex)
             {
-                model = new EHGHeaderEntryVM();
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
             }
-            TempData["EHG"] = model;
             return model;
         }
         private EHGNotApprovalVM CastEHGAppTempData()
         {
-            if (TempData["EHGApp"] != null)
+            try
             {
-                appmodel = TempData["EHGApp"] as EHGNotApprovalVM;
+                if (TempData["EHGApp"] != null)
+                {
+                    appmodel = TempData["EHGApp"] as EHGNotApprovalVM;
+                }
+                else
+                {
+                    appmodel = new EHGNotApprovalVM();
+                    appmodel.AppStatus = -1;
+                }
+                if (appmodel.NoteList == null)
+                {
+                    appmodel.NoteList = _iEHG.getNoteListToBeApproved(user.CentreCode, ref pMsg);
+                }
+                TempData["EHGApp"] = appmodel;
             }
-            else
+            catch (Exception ex)
             {
-                appmodel = new EHGNotApprovalVM();
-                appmodel.AppStatus = -1;
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
             }
-            if (appmodel.NoteList == null)
-            {
-                appmodel.NoteList = _iEHG.getNoteListToBeApproved(user.CentreCode, ref pMsg);
-            }
-            TempData["EHGApp"] = appmodel;
             return appmodel;
         }
         #endregion

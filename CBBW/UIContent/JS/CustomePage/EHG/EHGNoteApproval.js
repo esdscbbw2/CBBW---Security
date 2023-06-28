@@ -108,10 +108,14 @@ function DisplayTPDetails(data) {
         schToDateTD.html(rowdata.ToDateStrDisplay);
         povCtrl.html(rowdata.PurposeOfVisit);
         if (rowdata.TADADenied) { TADADeniedTD.html('Yes'); } else { TADADeniedTD.html('No'); }
-        RTInDateTD.html(rowdata.RequiredTourInDateDisplay);
-        RTITimeTD.html(rowdata.RequiredTourInTime);
-        ATInDateTD.html(rowdata.ActualTourInDateDisplay);
-        ATITimeTD.html(rowdata.ActualTourInTime);
+        //RTInDateTD.html(rowdata.RequiredTourInDateDisplay);
+        //RTITimeTD.html(rowdata.RequiredTourInTime);
+        //ATInDateTD.html(rowdata.ActualTourInDateDisplay);
+        //ATITimeTD.html(rowdata.ActualTourInTime);
+        RTInDateTD.html('Nil');
+        RTITimeTD.html('Nil');
+        ATInDateTD.html('Nil');
+        ATITimeTD.html('Nil');
         StatusTD.html(rowdata.TourStatusText);
         //povCtrl.attr('data-bs-original-title', rowdata.PurposeOfVisit);
     }
@@ -162,7 +166,7 @@ function NoteNumberChanged(notenumber) {
                         $('#VAActive').val(1);
                     }
                     else {
-                        $('#TPDHeader').html('Travelling Person Details: For Person Travelling On 2 Wheeler Or LV With “Purpose of Allotment”= Office Work');
+                        $('#TPDHeader').html('Travelling Person Details: For Person Travelling On 2 Wheeler Or LV With “Purpose of Allotment”=For “NA” / Office Work');
                         $('.OffSpecial').each(function () {
                             $(this).removeClass('inVisible');
                         });

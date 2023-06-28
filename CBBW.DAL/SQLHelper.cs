@@ -99,8 +99,7 @@ namespace CBBW.DAL
             }
             catch (Exception ex)
             {
-                MethodInformation methodInfo = MyCodeHelper.GetMethodInfo();
-                MyCodeHelper.WriteErrorLog(pMsg, methodInfo.MethodSignature, ex);
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex); 
                 pMsg = ex.Message;
             }
             return oRet;
@@ -129,8 +128,7 @@ namespace CBBW.DAL
             }
             catch (Exception ex)
             {
-                MethodInformation methodInfo = MyCodeHelper.GetMethodInfo();
-                MyCodeHelper.WriteErrorLog(pMsg, methodInfo.MethodSignature, ex);
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex); 
                 pMsg = ex.Message;
             }
             return oRet;
@@ -152,8 +150,7 @@ namespace CBBW.DAL
             }
             catch (Exception ex)
             {
-                MethodInformation methodInfo = MyCodeHelper.GetMethodInfo();
-                MyCodeHelper.WriteErrorLog(pMsg, methodInfo.MethodSignature, ex);
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex); 
                 pMsg = ex.Message;
                 return false;
             }
@@ -185,8 +182,7 @@ namespace CBBW.DAL
             }
             catch (Exception ex)
             {
-                MethodInformation methodInfo = MyCodeHelper.GetMethodInfo();
-                MyCodeHelper.WriteErrorLog(pMsg, methodInfo.MethodSignature, ex);
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex); 
                 pMsg = ex.Message;
                 return false;
             }
@@ -208,8 +204,7 @@ namespace CBBW.DAL
             }
             catch(Exception ex)
             {
-                MethodInformation methodInfo = MyCodeHelper.GetMethodInfo();
-                MyCodeHelper.WriteErrorLog("SQL Operation", methodInfo.MethodSignature, ex);
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex); 
                 return null;
             }
             finally
@@ -241,8 +236,7 @@ namespace CBBW.DAL
             }
             catch (Exception ex)
             {
-                MethodInformation methodInfo = MyCodeHelper.GetMethodInfo();
-                MyCodeHelper.WriteErrorLog(pMsg, methodInfo.MethodSignature, ex);
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex); 
                 pMsg = ex.Message;
                 return null;
             }
@@ -285,8 +279,7 @@ namespace CBBW.DAL
             }
             catch(Exception ex)
             {
-                MethodInformation methodInfo = MyCodeHelper.GetMethodInfo();
-                MyCodeHelper.WriteErrorLog("SQL Operation", methodInfo.MethodSignature, ex);
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex); 
                 return null;
             }
             finally
@@ -328,8 +321,7 @@ namespace CBBW.DAL
             }
             catch (Exception ex)
             {
-                MethodInformation methodInfo = MyCodeHelper.GetMethodInfo();
-                MyCodeHelper.WriteErrorLog(pMsg, methodInfo.MethodSignature, ex);
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex); 
                 pMsg = ex.Message;
                 return null;
             }
@@ -363,8 +355,7 @@ namespace CBBW.DAL
             }
             catch(Exception ex)
             {
-                MethodInformation methodInfo = MyCodeHelper.GetMethodInfo();
-                MyCodeHelper.WriteErrorLog("SQL Operation", methodInfo.MethodSignature, ex);
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex); 
                 return null;
             }
             finally
@@ -393,8 +384,7 @@ namespace CBBW.DAL
             }
             catch (Exception ex)
             {
-                MethodInformation methodInfo = MyCodeHelper.GetMethodInfo();
-                MyCodeHelper.WriteErrorLog(pMsg, methodInfo.MethodSignature, ex);
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex); 
                 pMsg = ex.Message;
                 return null;
             }
@@ -434,8 +424,7 @@ namespace CBBW.DAL
             }
             catch(Exception ex)
             {
-                MethodInformation methodInfo = MyCodeHelper.GetMethodInfo();
-                MyCodeHelper.WriteErrorLog("SQL Operation", methodInfo.MethodSignature, ex);
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex); 
                 return null;
             }
             finally
@@ -474,8 +463,7 @@ namespace CBBW.DAL
             }
             catch (Exception ex)
             {
-                MethodInformation methodInfo = MyCodeHelper.GetMethodInfo();
-                MyCodeHelper.WriteErrorLog(pMsg, methodInfo.MethodSignature, ex);
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex); 
                 pMsg = ex.Message;
                 return null;
             }

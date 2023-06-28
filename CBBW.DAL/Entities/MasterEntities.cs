@@ -333,5 +333,9 @@ namespace CBBW.DAL.Entities
             _dbresmapper.Map_DBResponse(_datasync.VehicleAvailableValidationForHG(VehicleNumber, CentreCode, FromDate, ToDate, KMLimit, ref pMsg), ref pMsg,ref result);
             return result;
         }
+        public bool IsVehicleExist(string VehicleNumber, ref string pMsg) 
+        {
+            return _datasync.IsVehicleExist(VehicleNumber,ref pMsg);
+        }
     }
 }

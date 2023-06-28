@@ -6,7 +6,7 @@
  * 4. "SLUBtn" Class For Buttons "SLUBtnOK" Class Is Used Dynamically Aftre Button Functionalities Done Successfully 
  * 5. "SLUStatement" Class For Div To Show Green Or Red Borders
  * 6. "approvalForm" Class For Div & "ApproveCtrl" For Approve Status To Show Approval Patern.
- * 7. "LUPS/LUPSP" Class Is Applicable To Controlls. (If Control Is Invald Then Unlock Previous Section )
+ * 7. "LUPS/LUPSP/LUPSP1" Class Is Applicable To Controlls. (If Control Is Invald Then Unlock Previous Section )
  * 8. "SLUAddBtn" & "SLURemoveBtn" Class Is For Table Row Cloaning Buttons.
  * 9. "EC" Class Is Used In Table Row Controlls. By Changing The Value All Next Rows Will Be Deleted
  */
@@ -27,6 +27,7 @@ function SLUValid(myCtrl) {
     } else { IsValidSection(mySection); }
     if (myCtrl.hasClass('LUPS')) { LockPreviousSections(myCtrl); }
     if (myCtrl.hasClass('LUPSP')) { LockPreviousSections(myCtrl); }
+    if (myCtrl.hasClass('LUPSP1')) { LockPreviousSections1(myCtrl); }
 };
 function SLUInvalid(myCtrl) {
     LockNextCtrlsInContainer(myCtrl);
@@ -63,6 +64,18 @@ function LockPreviousSections(myCtrl) {
     if (currentSecIndex <= allSections.length - 1) {
         for (var i = 0; i < currentSecIndex; i++) {
             if (allSections.eq(i).is(":visible")) { LockSLUSectionV2(allSections.eq(i)); }
+        }
+    }
+};
+function LockPreviousSections1(myCtrl) {
+    mySection = myCtrl.closest('.SLUSection');
+    var allSections = $('.SLUSection');
+    var currentSecIndex = allSections.index(mySection);
+    if (currentSecIndex <= allSections.length - 1) {
+        for (var i = 0; i < currentSecIndex; i++) {
+            if (i > 0) {
+                if (allSections.eq(i).is(":visible")) { LockSLUSectionV2(allSections.eq(i)); }
+            }            
         }
     }
 };
@@ -244,6 +257,7 @@ $.fn.ButtonOk = function () {
     } else { LockSLUSection(myNextSection); }
     if (that.hasClass('LUPS')) { LockPreviousSections(that); }
     if (that.hasClass('LUPSP')) { LockPreviousSections(that); }
+    if (that.hasClass('LUPSP1')) { LockPreviousSections1(that); }
 };
 $.fn.ButtonNotOk = function () {
     var that = this;
