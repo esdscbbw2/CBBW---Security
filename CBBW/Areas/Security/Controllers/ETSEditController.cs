@@ -11,7 +11,6 @@ using CBBW.BOL.ETSEdit;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.EHG;
 using CBBW.BOL;
-
 namespace CBBW.Areas.Security.Controllers
 {
     public class ETSEditController : Controller
@@ -395,24 +394,32 @@ namespace CBBW.Areas.Security.Controllers
         }
         public ActionResult TourEdit() 
         {
-            model = CastEHGEditTempData();
-            model.TravelingPersonDetails = _IETSEdit.getEditTPDetails(model.NoteNumber, ref pMsg);
-            model.DWTDetailsHistory = _IETSEdit.getDateWiseTourHistory(model.NoteNumber, 0,0,0," ", ref pMsg,false);
-            if (model.DWTDetailsHistory != null && model.DWTDetailsHistory.Count>0) 
-            { 
-                model.EditSequence = model.DWTDetailsHistory.Select(o => o.EditSL).Distinct().ToList();
-                int maxrowid = model.DWTDetailsHistory.Max(o => o.EditSL);
-                model.DWTDetailsCurrent = model.DWTDetailsHistory.Where(o => o.EditSL == maxrowid).ToList();
-                if (model.DWTDetailsCurrent != null && model.DWTDetailsCurrent.Count > 0) 
+            try
+            {
+                model = CastEHGEditTempData();
+                model.TravelingPersonDetails = _IETSEdit.getEditTPDetails(model.NoteNumber, ref pMsg);
+                model.DWTDetailsHistory = _IETSEdit.getDateWiseTourHistory(model.NoteNumber, 0, 0, 0, " ", ref pMsg, false);
+                if (model.DWTDetailsHistory != null && model.DWTDetailsHistory.Count > 0)
                 {
-                    DateTime tFromDate = model.DWTDetailsCurrent.Min(o => o.SchFromDate);
-                    DateTime tToDate = model.DWTDetailsCurrent.Max(o => o.SchToDate);
-                    model.ExtensionFromDate = tToDate.AddDays(1);
-                    model.MaxSourceID = model.DWTDetailsCurrent.Max(o => o.SourceID)+1;
-                    if (DateTime.Today >= tFromDate && DateTime.Today <= tToDate){ model.IsExtensionAllowed = 1; }
+                    model.EditSequence = model.DWTDetailsHistory.Select(o => o.EditSL).Distinct().ToList();
+                    int maxrowid = model.DWTDetailsHistory.Max(o => o.EditSL);
+                    model.DWTDetailsCurrent = model.DWTDetailsHistory.Where(o => o.EditSL == maxrowid).ToList();
+                    if (model.DWTDetailsCurrent != null && model.DWTDetailsCurrent.Count > 0)
+                    {
+                        DateTime tFromDate = model.DWTDetailsCurrent.Min(o => o.SchFromDate);
+                        DateTime tToDate = model.DWTDetailsCurrent.Max(o => o.SchToDate);
+                        model.ExtensionFromDate = tToDate.AddDays(1);
+                        model.MaxSourceID = model.DWTDetailsCurrent.Max(o => o.SourceID) + 1;
+                        if (DateTime.Today >= tFromDate && DateTime.Today <= tToDate) { model.IsExtensionAllowed = 1; }
+                    }
                 }
+                model.IsTourStarted = _IETSEdit.IsTourStarted(model.NoteNumber, ref pMsg) ? 1 : 0;
+                model.MaxExtensionDate = model.ExtensionFromDate.AddDays(10).ToString("dd/MM/yyyy",CultureInfo.InvariantCulture);
             }
-            model.IsTourStarted = _IETSEdit.IsTourStarted(model.NoteNumber, ref pMsg) ? 1 : 0;
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+            }
             return View(model);
         }
         public ActionResult IndividualEdit()
@@ -444,39 +451,53 @@ namespace CBBW.Areas.Security.Controllers
         [HttpPost]
         public ActionResult Create(ETSEditCreateVM modelobj, string Submit)
         {
-            model=CastEHGEditTempData();
-            modelobj.ToBeEditNoteList = model.ToBeEditNoteList;
-            modelobj.backbtnactive = 0;
-            TempData["EHGEdit"] = modelobj;
-            if (Submit == "TED")
+            try
             {
-                return RedirectToAction("TourEdit");
-            }
-            else if (Submit == "IED")
-            {
-                return RedirectToAction("IndividualEdit");
-            }
-            else if (Submit == "create")
-            {
-                if (_IETSEdit.UpdateETSTourEdit(modelobj.NoteNumber, ref pMsg))
+                model = CastEHGEditTempData();
+                modelobj.ToBeEditNoteList = model.ToBeEditNoteList;
+                modelobj.backbtnactive = 0;
+                TempData["EHGEdit"] = modelobj;
+                if (Submit == "TED")
                 {
-                    ViewBag.Msg = "Note Number " + modelobj.NoteNumber + " Submited Successfully.";
-                    TempData["EHGEdit"] = null;
+                    return RedirectToAction("TourEdit");
                 }
-                else
+                else if (Submit == "IED")
                 {
-                    ViewBag.ErrMsg = "Updation Failed For Note Number " + modelobj.NoteNumber + " Due To : " + pMsg;
+                    if (_IETSEdit.IsOkToProceedWithIndividualEdit(model.NoteNumber, ref pMsg))
+                    {
+                        return RedirectToAction("IndividualEdit");
+                    }
+                    else 
+                    {
+                        ViewBag.ErrMsg = "Only One Person Is Travelling With This Note And Assigned As Driver. So Can Not Proceed With Individual Edit.";
+                    }
+                }
+                else if (Submit == "create")
+                {
+                    if (_IETSEdit.UpdateETSTourEdit(modelobj.NoteNumber2, ref pMsg))
+                    {
+                        ViewBag.Msg = "Note Number " + modelobj.NoteNumber2 + " Submited Successfully.";
+                        TempData["EHGEdit"] = null;
+                    }
+                    else
+                    {
+                        ViewBag.ErrMsg = "Updation Failed For Note Number " + modelobj.NoteNumber2 + " Due To : " + pMsg;
+                    }
+                }
+                else if (Submit == "TourRule")
+                {
+                    _iUser.RecordCallBack("/Security/ETSEdit/Create");
+                    return RedirectToAction("ViewRedirection", "TourRule", new { Area = "Security", CBUID = 1 });
+                }
+                else if (Submit == "TADARule")
+                {
+                    _iUser.RecordCallBack("/Security/ETSEdit/Create");
+                    return RedirectToAction("ViewRedirection", "TADARules", new { Area = "Security", CBUID = 1 });
                 }
             }
-            else if (Submit == "TourRule") 
+            catch (Exception ex)
             {
-                _iUser.RecordCallBack("/Security/ETSEdit/Create");
-                return RedirectToAction("ViewRedirection", "TourRule", new { Area = "Security", CBUID = 1 });
-            }
-            else if (Submit == "TADARule")
-            {
-                _iUser.RecordCallBack("/Security/ETSEdit/Create");
-                return RedirectToAction("ViewRedirection", "TADARules", new { Area = "Security", CBUID = 1 });
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
             }
             return View(modelobj);
         }
@@ -488,7 +509,7 @@ namespace CBBW.Areas.Security.Controllers
         }
         public JsonResult GetNoteInfonLock(string NoteNumber)
         {
-            EditNoteDetails result = _IETSEdit.getETSEditHdr(NoteNumber,1, ref pMsg);
+            EditNoteDetails result = _IETSEdit.getETSEditHdr(NoteNumber,1, ref pMsg,1);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetTourCategories()
@@ -553,6 +574,7 @@ namespace CBBW.Areas.Security.Controllers
         public JsonResult getNoteList(int iDisplayLength, int iDisplayStart, int iSortCol_0,
             string sSortDir_0, string sSearch)
         {
+            if (iSortCol_0 == 0) { iSortCol_0 = 2; sSortDir_0 = "des"; }
             List<EditNoteList> noteList = _IETSEdit.GetETSEditNoteList(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, user.CentreCode, 0, ref pMsg);
             var result = new
             {
@@ -567,6 +589,7 @@ namespace CBBW.Areas.Security.Controllers
         public JsonResult getAppNoteList(int iDisplayLength, int iDisplayStart, int iSortCol_0,
             string sSortDir_0, string sSearch)
         {
+            if (iSortCol_0 == 0) { iSortCol_0 = 2; sSortDir_0 = "des"; }
             List<EditNoteList> noteList = _IETSEdit.GetETSEditNoteList(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, user.CentreCode,1, ref pMsg);
             var result = new
             {

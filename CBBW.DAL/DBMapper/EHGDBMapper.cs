@@ -138,6 +138,67 @@ namespace CBBW.DAL.DBMapper
             catch(Exception ex) { MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex); }
             return result;
         }
+        public VehicleAllotmentDetails Map_VehicleAllotmentDetailsV2(DataRow dr)
+        {
+            VehicleAllotmentDetails result = new VehicleAllotmentDetails();
+            try
+            {
+                if (dr != null)
+                {
+                    if (!DBNull.Value.Equals(dr["NoteNumber"]))
+                        result.NoteNumber = dr["NoteNumber"].ToString();
+                    if (!DBNull.Value.Equals(dr["AuthorisedEmpNumber"]))
+                        result.AuthorisedEmpNumber = int.Parse(dr["AuthorisedEmpNumber"].ToString());
+                    if (!DBNull.Value.Equals(dr["AuthorisedEmpName"]))
+                        result.AuthorisedEmpName = dr["AuthorisedEmpName"].ToString();
+                    if (!DBNull.Value.Equals(dr["DesignationCode"]))
+                        result.DesignationCode = int.Parse(dr["DesignationCode"].ToString());
+                    if (!DBNull.Value.Equals(dr["DesignationText"]))
+                        result.DesignationText = dr["DesignationText"].ToString();
+                    if (!DBNull.Value.Equals(dr["MaterialStatus"]))
+                        result.MaterialStatus = bool.Parse(dr["MaterialStatus"].ToString()) ? 1 : 0;
+                    if (!DBNull.Value.Equals(dr["VehicleBelongsTo"]))
+                        result.VehicleBelongsTo = int.Parse(dr["VehicleBelongsTo"].ToString());
+                    if (!DBNull.Value.Equals(dr["VehicleType"]))
+                        result.VehicleType = dr["VehicleType"].ToString();
+                    if (!DBNull.Value.Equals(dr["VehicleNumber"]))
+                        result.VehicleNumber = dr["VehicleNumber"].ToString();
+                    if (!DBNull.Value.Equals(dr["ModelName"]))
+                        result.ModelName = dr["ModelName"].ToString();
+                    if (!DBNull.Value.Equals(dr["DriverNumber"]))
+                        result.DriverNumber = int.Parse(dr["DriverNumber"].ToString());
+                    if (!DBNull.Value.Equals(dr["DriverName"]))
+                        result.DriverName = dr["DriverName"].ToString();
+                    if (!DBNull.Value.Equals(dr["KMOut"]))
+                        result.KMOut = int.Parse(dr["KMOut"].ToString());
+                    if (!DBNull.Value.Equals(dr["KMIn"]))
+                        result.KMIn = int.Parse(dr["KMIn"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsActive"]))
+                        result.IsActive = bool.Parse(dr["IsActive"].ToString());
+                    //if (!DBNull.Value.Equals(dr["EntryDateTime"]))
+                    //    result.EntryDate = DateTime.Parse(dr["EntryDateTime"].ToString());
+                    //if (!DBNull.Value.Equals(dr["EntryTime"]))
+                    //    result.EntryTime = dr["EntryTime"].ToString();
+                    //else
+                    //    result.EntryTime = result.EntryDate.ToString("hh:mm ss");
+
+                    //if (!DBNull.Value.Equals(dr["RFIDCardIn"]))
+                    //    result.RFIDCardIn = dr["RFIDCardIn"].ToString();
+                    //if (!DBNull.Value.Equals(dr["RFIDCardOut"]))
+                    //    result.RFIDCardOut = dr["RFIDCardOut"].ToString();
+                    //if (!DBNull.Value.Equals(dr["ActualTourInTime"]))
+                    //    result.ActualTourInTime = dr["ActualTourInTime"].ToString();
+                    //if (!DBNull.Value.Equals(dr["ActualTourOutTime"]))
+                    //    result.ActualTourOutTime = dr["ActualTourOutTime"].ToString();
+                    //if (!DBNull.Value.Equals(dr["ActualKmIn"]))
+                    //    result.ActualKmIn = int.Parse(dr["ActualKmIn"].ToString());
+                    //if (!DBNull.Value.Equals(dr["UserRemarks"]))
+                    //    result.UserRemarks = dr["UserRemarks"].ToString();
+                }
+            }
+            catch (Exception ex) { MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex); }
+            return result;
+        }
         public EHGHeader Map_EHGHeader(DataRow dr)
         {
             EHGHeader result = new EHGHeader();

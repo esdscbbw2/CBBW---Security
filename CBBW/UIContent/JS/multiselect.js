@@ -1511,7 +1511,8 @@ var usercindex = 0;
                 mtext = mtext+labels[i].html+', ';
             }
             mtext = mtext == '' ? "Not Selected" : mtext.substring(0, mtext.length - 2);
-           
+            mtext = mtext.replace("&amp;", "&");
+            
             if (this.options.enableHTML) {
                 $('.multiselect .multiselect-selected-text', this.$container).html(mtext);
             } else {

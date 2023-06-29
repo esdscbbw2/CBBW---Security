@@ -468,40 +468,51 @@ function EnableSubmitBtn() {
         if (getDivInvalidCount('mHdrDiv') > 0) { isenable = false; }
         if (getDivInvalidCount('mOptionDiv') > 0) { isenable = false; }
     }
-    if (isenable) { btnSubmit.makeEnabled(); } else { btnSubmit.makeDisable();}
+    if (isenable) { btnSubmit.makeSLUEnable(); } else { btnSubmit.makeSLUDisable();}
 };
 function RemoveBtnClicked() {
     var tblRow = RemoveBtnClicked.caller.arguments[0].target.closest('.add-row');
     removeBtnClickFromCloneRow(tblRow, 'tbody2');
+    var lastRow = $('#tblTourExtension tr:last');
+    UnLockRow(lastRow.attr('id'));
     EnableSubmitBtn();
 };
 function addCloneBtnClick() {
     var insrow = addCloneBtnClick.caller.arguments[0].target.closest('.add-row');
-    var insrowid = $(insrow).attr('id');
+    var lasttodate = $(insrow).find('.datelabel').html();
+    var maxDate = $('#MaxExtensionDate').val();
     var addbtn = $('#AddBtn');
+    var insrowid = $(insrow).attr('id');
     if (insrowid > 0) { addbtn = $('#AddBtn_' + insrowid); }
-    var clonerowid = CloneRowReturningID('tbody1', 'tbody2', $(insrow).attr('id') * 1, true, false);
-    var preToDate = $(insrow).find('.todt').val();
-    var curFromDate = CustomDateChange(preToDate, 1, '/');
-    $('#FromDateLbl_' + clonerowid).html(curFromDate);
-    var toDTCtrl = $('#ToDate_' + clonerowid);
-    toDTCtrl.val('');
-    toDTCtrl.isInvalidCtrl();
-    toDTCtrl.attr('min', ChangeDateFormatV2(curFromDate));
-    $('#lblToDate_' + clonerowid).html('Select Date');    
-    $('#CRTourCategory_' + clonerowid).isInvalidCtrl();
-    $('#CRCenterCodeMulti_' + clonerowid).isInvalidCtrl();
-    $('#CRCenterCodeDD_' + clonerowid).isInvalidCtrl();
-    $('#CRBranchCodeMulti_' + clonerowid).isInvalidCtrl();
-    addbtn.makeDisable(); addbtn.addClass('nodrop');
-    var maxSourceid = ($('#MaxSourceID').val() * 1) + clonerowid;
-    $('#SourceIDDiv_' + clonerowid).html(maxSourceid);
-    $('#CREditTagDiv_' + clonerowid).html(1);
-    LockRow(insrowid);
-    LockRow(clonerowid);
-    UnLockSLUCtrl(toDTCtrl);
-    //$('#CRTodate_' + clonerowid).html('-');
-    EnableSubmitBtn();
+    //alert(maxDate + ' - ' + lasttodate);
+    if (maxDate != lasttodate) {
+        var clonerowid = CloneRowReturningID('tbody1', 'tbody2', $(insrow).attr('id') * 1, true, false);
+        var preToDate = $(insrow).find('.todt').val();
+        var curFromDate = CustomDateChange(preToDate, 1, '/');
+        $('#FromDateLbl_' + clonerowid).html(curFromDate);
+        var toDTCtrl = $('#ToDate_' + clonerowid);
+        toDTCtrl.val('');
+        toDTCtrl.isInvalidCtrl();
+        toDTCtrl.attr('min', ChangeDateFormatV2(curFromDate));
+        $('#lblToDate_' + clonerowid).html('Select Date');
+        $('#CRTourCategory_' + clonerowid).isInvalidCtrl();
+        $('#CRCenterCodeMulti_' + clonerowid).isInvalidCtrl();
+        $('#CRCenterCodeDD_' + clonerowid).isInvalidCtrl();
+        $('#CRBranchCodeMulti_' + clonerowid).isInvalidCtrl();
+        addbtn.makeDisable(); addbtn.addClass('nodrop');
+        var maxSourceid = ($('#MaxSourceID').val() * 1) + clonerowid;
+        $('#SourceIDDiv_' + clonerowid).html(maxSourceid);
+        $('#CREditTagDiv_' + clonerowid).html(1);
+        LockRow(insrowid);
+        LockRow(clonerowid);
+        UnLockSLUCtrl(toDTCtrl);
+        //$('#CRTodate_' + clonerowid).html('-');
+        EnableSubmitBtn();
+    }
+    else {
+        addbtn.makeDisable(); addbtn.addClass('nodrop');
+        MyAlert(4, 'Tour Extension Can Not Allowed For More Than 10 Days');
+    }    
 };
 function btnSubmitClicked() {
     var editTag = $('#EditTag').val();

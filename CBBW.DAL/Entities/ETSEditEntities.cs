@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CBBW.BOL;
 using CBBW.BOL.EHG;
 using CBBW.BOL.ETSEdit;
 using CBBW.DAL.DataSync;
@@ -105,21 +106,25 @@ namespace CBBW.DAL.Entities
                 return null;
             }
             catch (Exception ex)
-            { pMsg =ex.Message; return null; }
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg =ex.Message; return null; }
         }
-        public EditNoteDetails getETSEditHdr(string NoteNumber, int LockStatus, ref string pMsg)
+        public EditNoteDetails getETSEditHdr(string NoteNumber, int LockStatus, ref string pMsg,int EntryTag=2)
         {
             try
             {
-                dt = _ETSEditDataSync.getETSEditHdr(NoteNumber, LockStatus, ref pMsg);
+                dt = _ETSEditDataSync.getETSEditHdr(NoteNumber, LockStatus, ref pMsg, EntryTag);
                 if (dt != null && dt.Rows.Count > 0)
                 {
-                    return _ETSEditDBMapper.Map_EditNoteDetails(dt.Rows[0]);
+                    return _ETSEditDBMapper.Map_EditNoteDetailsV2(dt.Rows[0]);
                 }
                 return null;
             }
             catch (Exception ex)
-            { pMsg = ex.Message; return null; }
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null; }
         }
         public EditNoteDetails GetNoteHdrForEntryI(string NoteNumber, int LockStatus, ref string pMsg) 
         {
@@ -149,7 +154,9 @@ namespace CBBW.DAL.Entities
                     }
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; }
             return result;
         }
         public List<EditDWTDetails> getCurrentDateWiseTour(string NoteNumber, int FieldTag,
@@ -171,7 +178,9 @@ namespace CBBW.DAL.Entities
                     }
                 }                
             }
-            catch (Exception ex) { pMsg = ex.Message; }
+            catch (Exception ex) {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; }
             return result;
         }
         public bool SetETSTourEdit(DWTTourDetailsForDB obj, int CentreCode, string CentreName, ref string pMsg) 

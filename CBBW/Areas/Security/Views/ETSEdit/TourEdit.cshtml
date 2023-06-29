@@ -2,7 +2,7 @@
 @using CBBW.Areas.Security.ViewModel.ETSEdit;
 @model ETSEditCreateVM
 @{
-    string maxcanceldate = @Model.DWTDetailsCurrent.Select(o => o.SchToDate).Max().AddDays(-1).ToString("yyyy-MM-dd");
+    string maxcanceldate = Model.DWTDetailsCurrent.Select(o => o.SchToDate).Max().AddDays(-1).ToString("yyyy-MM-dd");
 }
 <div class="row newTable">
     @using (Html.BeginForm())
@@ -16,6 +16,7 @@
         @Html.HiddenFor(m => m.POA)
         @Html.HiddenFor(m => m.EPTour)
         @Html.HiddenFor(m => m.IsTourStarted)
+        @Html.HiddenFor(m => m.MaxExtensionDate)
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
@@ -329,7 +330,7 @@
                         </div>
                         <div id="tour_extension" class="inVisible ">
                             <div class="table-responsive max-content">
-                                <table class="table table-bordered w-100 btnalign" id="tblTourExtension">
+                                <table class="table table-bordered w-100 btnalign table-last-col" id="tblTourExtension">
                                     <thead>
                                         <tr>
                                             <th scope="col" style="text-align: left; vertical-align: middle;">SL. No.</th>
@@ -343,7 +344,7 @@
                                                 Center Code & Name
                                             </th>
                                             <th scope="col" style="text-align: center; vertical-align: middle;">Branch Code & Name </th>
-                                            <th scope="col" style="text-align: center; vertical-align: middle; background: pink;
+                                            <th scope="col" class="action" style="text-align: center; vertical-align: middle; background: pink;
                                                 color: rgb(0, 0, 0);">Action</th>
                                         </tr>
                                     </thead>
@@ -354,7 +355,7 @@
                                             </th>
                                             <td id="FromDateLbl" data-name="FromDate"
                                                 class="text-center alterID htmlVal">
-                                                @Model.DWTDetailsCurrent.Select(o=>o.SchFromDate).Min().ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)
+                                                @Model.DWTDetailsCurrent.Select(o => o.SchFromDate).Min().ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)
                                                 @*@Model.ExtensionFromDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)*@
                                             </td>
                                             <td id="CRTodate" class="text-center alterID htmlVal">
@@ -383,7 +384,7 @@
                                                                 onchange="CRTourCategoryChanged()"
                                                                 aria-label="Default select example">
                                                         </select>
-                                                    </div>                                                    
+                                                    </div>
                                                 </td>
                                                 <td class="text-center">
                                                     <div id="CRCenterCodeText" data-name="CentreNames"
@@ -421,7 +422,7 @@
                                                         </select>
                                                     </div>
                                                 </td>
-                                                <td class="text-center">
+                                                <td class="text-center last-action">
                                                     <span class="actionBtn d-block">
                                                         <button id="AddBtn" type="button" disabled
                                                                 class="btn primaryLink alterID cloneBtn addBtn"
@@ -434,7 +435,7 @@
                                                                 class="btn secondaryLink inVisible alterID cloneBtn removeBtn"
                                                                 onclick="RemoveBtnClicked()"
                                                                 data-toggle="tooltip"
-                                                                data-placement="top" >
+                                                                data-placement="top">
                                                             <i data-feather="x"></i>
                                                         </button>
                                                     </span>
@@ -488,7 +489,7 @@
                                                             </td>
                                                             <td class="text-center">
                                                                 <select id="OETourCategory_@sl" multiple="multiple"
-                                                                        class="form-select example-getting-started form-multi tourcat"
+                                                                        class="form-select ApplyMultiSelect form-multi tourcat"
                                                                         onchange="OETourCategoryChanged()"
                                                                         data-name="TourCategoryIDs" data-name-text="TourCategoryNames"
                                                                         aria-label="Default select example">

@@ -38,6 +38,23 @@ namespace CBBW.BLL.Repository
         {
             return _ETSEditEntities.getEditTPDetails(NoteNumber, ref pMsg);
         }
+        public bool IsOkToProceedWithIndividualEdit(string NoteNumber, ref string pMsg)
+        {
+            bool result = true;
+            try
+            {
+                List<EditTPDetails> tps = _ETSEditEntities.getEditTPDetails(NoteNumber, ref pMsg);
+                if (tps != null && tps.Count == 1)
+                {
+                    result = tps.FirstOrDefault().Isdriver == 1 ? false : true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+            }
+            return result;
+        }
         //public List<EditDWTDetails> getCurrentDateWiseTour(string NoteNumber, int FieldTag, ref string pMsg)
         //{
         //    int maxrowid = 0;
@@ -48,8 +65,7 @@ namespace CBBW.BLL.Repository
         //}
         public List<EditDWTDetails> getDateWiseTourHistory(string NoteNumber, int FieldTag, int PersonType, int PersonID, string PersonName, ref string pMsg, bool IsActive)
         {
-            List<EditDWTDetails> objlist = _ETSEditEntities.getCurrentDateWiseTour(NoteNumber, FieldTag,PersonType,PersonID,PersonName,ref pMsg,IsActive);
-            return objlist;
+            return _ETSEditEntities.getCurrentDateWiseTour(NoteNumber, FieldTag,PersonType,PersonID,PersonName,ref pMsg,IsActive);
         }
         public bool SetETSTourEdit(DWTTourDetailsForDB obj, int CentreCode, string CentreName, ref string pMsg) 
         {
@@ -75,9 +91,9 @@ namespace CBBW.BLL.Repository
         {
             return _ETSEditEntities.SetETSEditAppStatus(NoteNumber, IsApproved, ReasonForDisApproval, ApproverID,ref pMsg);
         }
-        public EditNoteDetails getETSEditHdr(string NoteNumber, int LockStatus, ref string pMsg)
+        public EditNoteDetails getETSEditHdr(string NoteNumber, int LockStatus, ref string pMsg,int EntryTag=2)
         {
-            return _ETSEditEntities.getETSEditHdr(NoteNumber, LockStatus, ref pMsg);
+            return _ETSEditEntities.getETSEditHdr(NoteNumber, LockStatus, ref pMsg, EntryTag);
         }
         public bool SetETSVehicleAllotmentDetails(VehicleAllotmentDetails mData, int CentreCode, string CentreName, ref string pMsg)
         {

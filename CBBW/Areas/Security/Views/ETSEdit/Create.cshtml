@@ -15,6 +15,7 @@
         @Html.HiddenFor(m => m.IsCancelled)
         @Html.HiddenFor(m => m.POA)
         @Html.HiddenFor(m => m.EPTour)
+        @Html.HiddenFor(m => m.NoteNumber2)
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
@@ -202,7 +203,8 @@
     <script src="~/UIContent/JS/CustomePage/ETSEdit/ETSEditCreateJS.js"></script>
     <script>
         if ('@ViewBag.ErrMsg' != '') {
-                Swal.fire({
+            MyAlert(3, "@ViewBag.ErrMsg");
+                @*Swal.fire({
                     title: 'Failed to submit',
                     text: "@ViewBag.ErrMsg",
                     icon: 'warning',
@@ -213,10 +215,12 @@
                     },
                     //cancelButtonClass: 'btn-cancel',
                     confirmButtonColor: '#2527a2',
-                });
+                });*@
             };
         if ('@ViewBag.Msg' != '') {
-                Swal.fire({
+            var url = "/Security/ETSEdit/Index";
+            MyAlertWithRedirection(1, "@ViewBag.Msg", url);
+                @*Swal.fire({
                     title: 'Confirmation',
                     text: "@ViewBag.Msg",
                     icon: 'success',
@@ -231,7 +235,7 @@
                         var url = "/Security/ETSEdit/Index";
                         window.location.href = url;
                     }
-                }
+                }*@
             };
     </script>
 }

@@ -70,21 +70,21 @@
                                     @class = "form-select pointer is-invalid",
                                     onchange = "NotenumberChanged()"
                                 })
-                                        </div>
-                                        <label class="col-form-label col-md-1">
-                                            Date  :
-                                        </label>
-                                        <div class="col-md-2">
-                                            <input id="NoteEntryDate" type="text" class="form-control" disabled>
-                                        </div>
-                                        <label class="col-form-label col-md-1">
-                                            Time  :
-                                        </label>
-                                        <div class="col-md-2">
-                                            <input id="NoteEntryTime" type="text" class="form-control" disabled>
-                                        </div>
+                                    </div>
+                                    <label class="col-form-label col-md-1">
+                                        Date  :
+                                    </label>
+                                    <div class="col-md-2">
+                                        <input id="NoteEntryDate" type="text" class="form-control" disabled>
+                                    </div>
+                                    <label class="col-form-label col-md-1">
+                                        Time  :
+                                    </label>
+                                    <div class="col-md-2">
+                                        <input id="NoteEntryTime" type="text" class="form-control" disabled>
                                     </div>
                                 </div>
+                            </div>
                         </div>
                     </div>
                     <div>
@@ -148,13 +148,13 @@
                 </div>
             </div>
             @*<div class="bgColor mt-4 bg-transparent text-left">
-                <ul style="list-style:none;">
-                    <li style="font-size: 16px;">
-                        It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
-                        <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
-                    </li>
-                </ul>
-            </div>*@
+                    <ul style="list-style:none;">
+                        <li style="font-size: 16px;">
+                            It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
+                            <input type="text" class="form-control width-85 pointer-none" value="Yes" disabled="">
+                        </li>
+                    </ul>
+                </div>*@
             <div class="bgColor mt-4 bg-transparent text-left">
                 <ul style="list-style:none;">
                     <li style="font-size: 16px;">
@@ -236,10 +236,12 @@
 }
 @section scripts{
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/ETSEdit/ETSEditRatJS.js"></script>
     <script>
         if ('@ViewBag.ErrMsg' != '') {
-                Swal.fire({
+            MyAlert(3, "@ViewBag.ErrMsg");
+                @*Swal.fire({
                     title: 'Failed to submit',
                     text: "@ViewBag.ErrMsg",
                     icon: 'warning',
@@ -250,10 +252,12 @@
                     },
                     //cancelButtonClass: 'btn-cancel',
                     confirmButtonColor: '#2527a2',
-                });
+                });*@
             };
         if ('@ViewBag.Msg' != '') {
-                Swal.fire({
+            var url = "/Security/ETSEdit/RatificationIndex";
+            MyAlertWithRedirection(1, "@ViewBag.Msg", url);
+                @*Swal.fire({
                     title: 'Confirmation',
                     text: "@ViewBag.Msg",
                     icon: 'success',
@@ -268,7 +272,7 @@
                         var url = "/Security/ETSEdit/RatificationIndex";
                         window.location.href = url;
                     }
-                }
+                }*@
             };
     </script>
 }

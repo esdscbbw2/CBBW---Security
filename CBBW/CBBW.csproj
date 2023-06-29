@@ -290,6 +290,7 @@
     <Content Include="img\iconNew1.svg" />
     <Content Include="img\iconNew2.svg" />
     <Content Include="img\launch.gif" />
+    <Content Include="Logs\ERRLOG_20230629.txt" />
     <Content Include="UIContent\CSS\bootstrap-datetimepicker.min.css" />
     <Content Include="UIContent\CSS\Custom_ErrorToolTip.css" />
     <Content Include="UIContent\CSS\fixedColumns.dataTables.min.css" />
@@ -683,7 +684,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Security\Data\" />
-    <Folder Include="Logs\" />
     <Folder Include="Upload\pdf\" />
   </ItemGroup>
   <ItemGroup>

@@ -8,6 +8,7 @@ using CBBW.BOL.EHG;
 using CBBW.BOL.ETSEdit;
 using System.Globalization;
 using CBBW.BOL.CustomModels;
+using CBBW.BOL;
 
 namespace CBBW.DAL.DBMapper
 {
@@ -24,7 +25,7 @@ namespace CBBW.DAL.DBMapper
                         result.NoteNumber = dr["NoteNumber"].ToString();
                 }
             }
-            catch { }
+            catch(Exception ex) { MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex); }
             return result;
         }
         public EditNoteDetails Map_EditNoteDetails(DataRow dr,int mtag=0)
@@ -98,7 +99,81 @@ namespace CBBW.DAL.DBMapper
                     result.IsRatifiedDisplay = result.IsRatified ? "Yes":result.RetDateTime.Year==1?"-":"No";
                 }
             }
-            catch { }
+            catch(Exception ex) { MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex); }
+            return result;
+        }
+        public EditNoteDetails Map_EditNoteDetailsV2(DataRow dr, int mtag = 0)
+        {
+            EditNoteDetails result = new EditNoteDetails();
+            try
+            {
+                if (dr != null)
+                {
+                    //if (!DBNull.Value.Equals(dr["SchFromDate"]))
+                    //    result.SchFromDate = DateTime.Parse(dr["SchFromDate"].ToString()).ToString("yyyy-MM-dd");
+                    //if (!DBNull.Value.Equals(dr["SchToDate"]))
+                    //    result.SchToDate = DateTime.Parse(dr["SchToDate"].ToString()).ToString("yyyy-MM-dd");
+                    if (!DBNull.Value.Equals(dr["NoteNumber"]))
+                        result.NoteNumber = dr["NoteNumber"].ToString();
+                    if (!DBNull.Value.Equals(dr["EntryDate"]))
+                        result.EntryDate = DateTime.Parse(dr["EntryDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["EntryTime"]))
+                        result.EntryTime = dr["EntryTime"].ToString();
+                    if (!DBNull.Value.Equals(dr["CenterCode"]))
+                        result.CenterCode = int.Parse(dr["CenterCode"].ToString());
+                    if (!DBNull.Value.Equals(dr["CenterName"]))
+                        result.CenterName = dr["CenterName"].ToString();
+                    if (!DBNull.Value.Equals(dr["PurposeOfAllotment"]))
+                        result.POA = int.Parse(dr["PurposeOfAllotment"].ToString());
+                    if (!DBNull.Value.Equals(dr["EPTour"]))
+                        result.EPTour = int.Parse(dr["EPTour"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsApproved"]))
+                        result.IsApproved = bool.Parse(dr["IsApproved"].ToString());
+                    if (!DBNull.Value.Equals(dr["AppDateTime"]))
+                        result.AppDateTime = DateTime.Parse(dr["AppDateTime"].ToString());
+                    if (!DBNull.Value.Equals(dr["ReasonForDisApproval"]))
+                        result.NotAppReason = dr["ReasonForDisApproval"].ToString();
+                    if (!DBNull.Value.Equals(dr["IsRatified"]))
+                        result.IsRatified = bool.Parse(dr["IsRatified"].ToString());
+                    if (!DBNull.Value.Equals(dr["RetDateTime"]))
+                        result.RetDateTime = DateTime.Parse(dr["RetDateTime"].ToString());
+                    if (!DBNull.Value.Equals(dr["RetReason"]))
+                        result.RetReason = dr["RetReason"].ToString();
+                    if (!DBNull.Value.Equals(dr["IsIndividualEdit"]))
+                        result.IsIndividualEdit = int.Parse(dr["IsIndividualEdit"].ToString());
+                    if (!DBNull.Value.Equals(dr["IsCancelled"]))
+                        result.IsCancelled = int.Parse(dr["IsCancelled"].ToString());
+                    if (!DBNull.Value.Equals(dr["AuthorisedEmpNonName"]))
+                        result.AuthorisedEmpNonName = dr["AuthorisedEmpNonName"].ToString();
+                    if (!DBNull.Value.Equals(dr["DesgCodenNameOfAE"]))
+                        result.DesgCodenNameOfAE = dr["DesgCodenNameOfAE"].ToString();
+                    if (!DBNull.Value.Equals(dr["VehicleType"]))
+                        result.VehicleType = int.Parse(dr["VehicleType"].ToString());
+                    if (result.POA == 0)
+                        result.POAText = "NA";
+                    else if (result.POA == 1)
+                        result.POAText = "For Management";
+                    else if (result.POA == 2)
+                        result.POAText = "For Office Work";
+
+                    result.EPTourText = result.EPTour == 1 ? "Yes" : result.NoteNumber.Substring(7, 3) == "EMC" ? "No" : "NA";
+                    //Else part is pending for the required module.
+                    result.EntryDateDisplay = result.EntryDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    if (mtag == 1)
+                    {
+                        result.EntryTime = result.EntryDate.ToString("hh:mm:ss tt");
+                    }
+                    result.AppDateTimeDisplay = result.AppDateTime.Year == 1 ? "-" : result.AppDateTime.ToString("dd/MM/yyyy hh:mm ss tt", CultureInfo.InvariantCulture);
+                    result.RetDateTimeDisplay = result.RetDateTime.Year == 1 ? "-" : result.RetDateTime.ToString("dd/MM/yyyy hh:mm:ss tt", CultureInfo.InvariantCulture);
+                    //result.AppDateTimeDisplay = result.AppDateTimeDisplay.Trim() == "01/01/0001 12:00:00 AM" ? "-" : result.AppDateTimeDisplay;
+                    //result.RetDateTimeDisplay = result.RetDateTimeDisplay.Trim() == "01/01/0001 12:00:00 AM" ? "-" : result.RetDateTimeDisplay;
+                    result.NotAppReason = string.IsNullOrEmpty(result.NotAppReason) || result.NotAppReason.Trim() == "NA" ? "-" : result.NotAppReason;
+                    result.RetReason = string.IsNullOrEmpty(result.RetReason) || result.RetReason.Trim() == "NA" ? "-" : result.RetReason;
+                    result.IsApprovedDisplay = result.IsApproved ? "Yes" : "No";
+                    result.IsRatifiedDisplay = result.IsRatified ? "Yes" : result.RetDateTime.Year == 1 ? "-" : "No";
+                }
+            }
+            catch (Exception ex) { MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex); }
             return result;
         }
         public EditTPDetails Map_EditTPDetails(DataRow dr)
@@ -147,106 +222,114 @@ namespace CBBW.DAL.DBMapper
                         result.Isdriver = int.Parse(dr["Isdriver"].ToString());
                 }
             }
-            catch { }
+            catch(Exception ex) {MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex); }
             return result;
         }
         public EditDWTDetails Map_EditDWTDetails(DataRow dr) 
         {
-            EHGMaster master = EHGMaster.GetInstance;
             EditDWTDetails result = new EditDWTDetails();
-            if (dr != null)
+            try
             {
-                if (!DBNull.Value.Equals(dr["NoteNumber"]))
-                    result.NoteNumber = dr["NoteNumber"].ToString();
-                if (!DBNull.Value.Equals(dr["SchFromDate"]))
-                    result.SchFromDate = DateTime.Parse(dr["SchFromDate"].ToString());
-                if (!DBNull.Value.Equals(dr["SchToDate"]))
-                    result.SchToDate = DateTime.Parse(dr["SchToDate"].ToString());
-                if (!DBNull.Value.Equals(dr["EditedTourToDate"]))
-                    result.EditedTourToDate = DateTime.Parse(dr["EditedTourToDate"].ToString());
-                if (!DBNull.Value.Equals(dr["TourCategoryIds"]))
-                    result.TourCategoryIds = dr["TourCategoryIds"].ToString();
-                if (!DBNull.Value.Equals(dr["TourCategoryNames"]))
-                    result.TourCategoryNames = dr["TourCategoryNames"].ToString();
-                if (!DBNull.Value.Equals(dr["TourCenterCodeIds"]))
-                    result.TourCenterCodeIds = dr["TourCenterCodeIds"].ToString();
-                if (!DBNull.Value.Equals(dr["TourCenterNames"]))
-                    result.TourCenterNames = dr["TourCenterNames"].ToString();
-                else
-                    result.TourCenterNames = "NA";
-                if (!DBNull.Value.Equals(dr["BranchCodes"]))
-                    result.BranchCodes = dr["BranchCodes"].ToString();
-                if (!DBNull.Value.Equals(dr["BranchNames"]))
-                    result.BranchNames = dr["BranchNames"].ToString();
-                else
-                    result.BranchNames = "NA";
-                if (!DBNull.Value.Equals(dr["EditSL"]))
-                    result.EditSL = int.Parse(dr["EditSL"].ToString());
-                if (!DBNull.Value.Equals(dr["SourceID"]))
-                    result.SourceID = int.Parse(dr["SourceID"].ToString());
-                if (!DBNull.Value.Equals(dr["EditTag"])) 
+                EHGMaster master = EHGMaster.GetInstance;
+                if (dr != null)
                 {
-                    result.EditTag = int.Parse(dr["EditTag"].ToString());
-                    result.EditTagText = master.EditTag.Where(o => o.ID == result.EditTag).FirstOrDefault().DisplayText;
-                }                    
-                if (!DBNull.Value.Equals(dr["ReasonForEdit"]))
-                    result.EditReason = dr["ReasonForEdit"].ToString();
-
-                result.SchFromDateDisplay = result.SchFromDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
-                result.SchToDateDisplay = result.SchToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
-                result.EditedTourToDateDisplay = result.EditedTourToDate.Year==1?"-":result.EditedTourToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
-                result.EditedTourToDateStr = result.EditedTourToDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
-                List<CustomComboOptions> mTC = new List<CustomComboOptions>();
-                if (result.TourCategoryIds.IndexOf("1") >= 0) 
-                {
-                    mTC.Add(new CustomComboOptions { ID = 2, DisplayText = "Branch & Center Visit" });
-                }
-                if (result.TourCategoryIds.IndexOf("2") >= 0)
-                {
-                    mTC.Add(new CustomComboOptions { ID = 1, DisplayText = "Center Visit" });
-                }
-                if (result.TourCategoryIds.IndexOf("3") >= 0 || result.TourCategoryIds.IndexOf("4") >= 0)
-                {
-                    mTC.Add(new CustomComboOptions { ID = 1, DisplayText = "Center Visit" });
-                    mTC.Add(new CustomComboOptions { ID = 2, DisplayText = "Branch & Center Visit" });
-                }
-                if (result.TourCategoryIds.IndexOf("5") >= 0)
-                {
-                    mTC.Add(new CustomComboOptions { ID = 5, DisplayText = "Unknown Destination" });
-                }
-                if (result.TourCategoryIds.IndexOf("6") >= 0)
-                {
-                    mTC.Add(new CustomComboOptions { ID = 6, DisplayText = "E.P. Tour" });
-                }
-                if (result.TourCategoryIds.IndexOf("7") >= 0)
-                {
-                    mTC.Add(new CustomComboOptions { ID = 7, DisplayText = "NA" });
-                }
-                result.TourCategories = mTC.GroupBy(o=>o.ID).Select(o=>o.FirstOrDefault()).ToList();
-                TimeSpan timeLimit = TimeSpan.Parse("16:00");
-                TimeSpan now = DateTime.Now.TimeOfDay;
-
-                if (result.SchFromDate > DateTime.Today)
-                {
-                    result.IsEditable = 1;
-                    result.TourCancelMinDate = result.SchFromDate;
-                }
-                else if (result.SchFromDate == DateTime.Today && now <= timeLimit)
-                {
-                    result.IsEditable = 1;
-                    result.TourCancelMinDate = result.SchFromDate;
-                }
-                else 
-                {
-                    if(now <= timeLimit)
-                        result.TourCancelMinDate = DateTime.Today;
+                    if (!DBNull.Value.Equals(dr["NoteNumber"]))
+                        result.NoteNumber = dr["NoteNumber"].ToString();
+                    if (!DBNull.Value.Equals(dr["SchFromDate"]))
+                        result.SchFromDate = DateTime.Parse(dr["SchFromDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["SchToDate"]))
+                        result.SchToDate = DateTime.Parse(dr["SchToDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["EditedTourToDate"]))
+                        result.EditedTourToDate = DateTime.Parse(dr["EditedTourToDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["TourCategoryIds"]))
+                        result.TourCategoryIds = dr["TourCategoryIds"].ToString();
+                    if (!DBNull.Value.Equals(dr["TourCategoryNames"]))
+                        result.TourCategoryNames = dr["TourCategoryNames"].ToString();
+                    if (!DBNull.Value.Equals(dr["TourCenterCodeIds"]))
+                        result.TourCenterCodeIds = dr["TourCenterCodeIds"].ToString();
+                    if (!DBNull.Value.Equals(dr["TourCenterNames"]))
+                        result.TourCenterNames = dr["TourCenterNames"].ToString();
                     else
-                        result.TourCancelMinDate = DateTime.Today.AddDays(1);
+                        result.TourCenterNames = "NA";
+                    if (!DBNull.Value.Equals(dr["BranchCodes"]))
+                        result.BranchCodes = dr["BranchCodes"].ToString();
+                    if (!DBNull.Value.Equals(dr["BranchNames"]))
+                        result.BranchNames = dr["BranchNames"].ToString();
+                    else
+                        result.BranchNames = "NA";
+                    if (!DBNull.Value.Equals(dr["EditSL"]))
+                        result.EditSL = int.Parse(dr["EditSL"].ToString());
+                    if (!DBNull.Value.Equals(dr["SourceID"]))
+                        result.SourceID = int.Parse(dr["SourceID"].ToString());
+                    if (!DBNull.Value.Equals(dr["EditTag"]))
+                    {
+                        result.EditTag = int.Parse(dr["EditTag"].ToString());
+                        result.EditTagText = master.EditTag.Where(o => o.ID == result.EditTag).FirstOrDefault().DisplayText;
+                    }
+                    if (!DBNull.Value.Equals(dr["ReasonForEdit"]))
+                        result.EditReason = dr["ReasonForEdit"].ToString();
+
+                    result.SchFromDateDisplay = result.SchFromDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    result.SchToDateDisplay = result.SchToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    result.EditedTourToDateDisplay = result.EditedTourToDate.Year == 1 ? "-" : result.EditedTourToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    result.EditedTourToDateStr = result.EditedTourToDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+                    List<CustomComboOptions> mTC = new List<CustomComboOptions>();
+                    if (result.TourCategoryIds.IndexOf("1") >= 0)
+                    {
+                        mTC.Add(new CustomComboOptions { ID = 2, DisplayText = "Branch & Center Visit" });
+                    }
+                    if (result.TourCategoryIds.IndexOf("2") >= 0)
+                    {
+                        mTC.Add(new CustomComboOptions { ID = 1, DisplayText = "Center Visit" });
+                    }
+                    if (result.TourCategoryIds.IndexOf("3") >= 0 || result.TourCategoryIds.IndexOf("4") >= 0)
+                    {
+                        mTC.Add(new CustomComboOptions { ID = 1, DisplayText = "Center Visit" });
+                        mTC.Add(new CustomComboOptions { ID = 2, DisplayText = "Branch & Center Visit" });
+                    }
+                    if (result.TourCategoryIds.IndexOf("5") >= 0)
+                    {
+                        mTC.Add(new CustomComboOptions { ID = 5, DisplayText = "Unknown Destination" });
+                    }
+                    if (result.TourCategoryIds.IndexOf("6") >= 0)
+                    {
+                        mTC.Add(new CustomComboOptions { ID = 6, DisplayText = "E.P. Tour" });
+                    }
+                    if (result.TourCategoryIds.IndexOf("7") >= 0)
+                    {
+                        mTC.Add(new CustomComboOptions { ID = 7, DisplayText = "NA" });
+                    }
+                    result.TourCategories = mTC.GroupBy(o => o.ID).Select(o => o.FirstOrDefault()).ToList();
+                    TimeSpan timeLimit = TimeSpan.Parse("16:00");
+                    TimeSpan now = DateTime.Now.TimeOfDay;
+
+                    if (result.SchFromDate > DateTime.Today)
+                    {
+                        result.IsEditable = 1;
+                        result.TourCancelMinDate = result.SchFromDate;
+                    }
+                    else if (result.SchFromDate == DateTime.Today && now <= timeLimit)
+                    {
+                        result.IsEditable = 1;
+                        result.TourCancelMinDate = result.SchFromDate;
+                    }
+                    else
+                    {
+                        if (now <= timeLimit)
+                            result.TourCancelMinDate = DateTime.Today;
+                        else
+                            result.TourCancelMinDate = DateTime.Today.AddDays(1);
+                    }
+                    result.TourCancelMaxDate = result.SchToDate.AddDays(-1);
+                    result.TourCancelMinDateStr = result.TourCancelMinDate.ToString("yyyy-MM-dd");
+                    result.TourCancelMaxDateStr = result.TourCancelMaxDate.ToString("yyyy-MM-dd");
                 }
-                result.TourCancelMaxDate = result.SchToDate.AddDays(-1);
-                result.TourCancelMinDateStr = result.TourCancelMinDate.ToString("yyyy-MM-dd");
-                result.TourCancelMaxDateStr = result.TourCancelMaxDate.ToString("yyyy-MM-dd");
-            }                        
+            }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+            }
+            
             return result;
         }
         public EditNoteList Map_EditNoteList(DataRow dr) 
@@ -281,7 +364,7 @@ namespace CBBW.DAL.DBMapper
                     result.CanDelete = result.EntryDate.ToString("dd-MM-yyyy") == DateTime.Today.ToString("dd-MM-yyyy") ? result.IsApproved?0:result.IsLocked?0:1 : 0;
                 }
             }
-            catch { }
+            catch(Exception ex) { MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex); }
             return result;
         }
         public EntryINoteList Map_EntryINoteList(DataRow dr)
@@ -313,7 +396,7 @@ namespace CBBW.DAL.DBMapper
                     result.CanDelete= result.EntryDateDisplay == DateTime.Today.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)?true:false;
                 }
             }
-            catch { }
+            catch(Exception ex) { MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex); }
             return result;
         }
         public EntryITDetails Map_EntryITDetails(DataRow dr) 
@@ -351,7 +434,7 @@ namespace CBBW.DAL.DBMapper
                     result.VehicleTypeProvidedText= result.VehicleTypeProvided>0? _master.VehicleTypes.Where(o => o.ID == result.VehicleTypeProvided).FirstOrDefault().DisplayText:"NA";
                 }
             }
-            catch (Exception ex) { ex.ToString(); }
+            catch (Exception ex) { MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex); }
             return result;
         }
         public EntryIDWDetails Map_EntryIDWDetails(DataRow dr) 
@@ -385,7 +468,7 @@ namespace CBBW.DAL.DBMapper
                     result.SchToDateDisplay = result.SchToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);                    
                 }
             }
-            catch (Exception ex) { ex.ToString(); }
+            catch (Exception ex) { MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex); }
             return result;
         }
         public IEnumerable<NoteDriver> Map_DriverDetails(DataTable dt)
@@ -417,7 +500,7 @@ namespace CBBW.DAL.DBMapper
                     results = results.Where(o => o.PersonType == 2).ToList();
                 }
             }
-            catch { }            
+            catch(Exception ex) { MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex); }            
             return results;
         }
 

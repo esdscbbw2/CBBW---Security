@@ -60,6 +60,7 @@ function NotenumberChanged() {
     }
     DisablePolicySection();
     if (notenumber != '') {
+        $('#NoteNumber2').val(notenumber);
         notenumberCtrl.isValid();
         $.ajax({
             url: '/ETSEdit/GetNoteInfo',

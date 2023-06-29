@@ -20,6 +20,7 @@ namespace CBBW.Areas.Security.ViewModel.ETSEdit
             IsApproved = -1;
         }  
         public string NoteNumber { get; set; }
+        public string NoteNumber2 { get; set; }
         public int EditTag { get; set; }
         public string PurposeOfEdit { get; set; }
         public IEnumerable<EditNoteNumber> ToBeEditNoteList { get; set; }
@@ -45,5 +46,6 @@ namespace CBBW.Areas.Security.ViewModel.ETSEdit
         public int POA { get; set; }
         public int EPTour { get; set; }
         public int IsTourStarted { get; set; }
+        public string MaxExtensionDate { get; set; }
     }
 }

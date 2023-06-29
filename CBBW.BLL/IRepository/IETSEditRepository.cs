@@ -10,6 +10,7 @@ namespace CBBW.BLL.IRepository
 {
     public interface IETSEditRepository
     {
+        bool IsOkToProceedWithIndividualEdit(string NoteNumber, ref string pMsg);
         int getEditSL(string NoteNumber, ref string pMsg);
         List<EditNoteNumber> getETSNoteListToBeEdited(int CentreCode, ref string pMsg);
         List<EditNoteNumber> getETSEditNoteListForDropDown(int CentreCode, int mStatus, ref string pMsg);
@@ -24,7 +25,7 @@ namespace CBBW.BLL.IRepository
         bool RemoveETSEditNote(string NoteNumber, int ActiveTag, ref string pMsg);
         bool SetETSEditRatificationStatus(string NoteNumber, bool IsRatified, string RatReason, int ApproverID, ref string pMsg);
         bool SetETSEditAppStatus(string NoteNumber, bool IsApproved, string ReasonForDisApproval, int ApproverID, ref string pMsg);
-        EditNoteDetails getETSEditHdr(string NoteNumber, int LockStatus, ref string pMsg);
+        EditNoteDetails getETSEditHdr(string NoteNumber, int LockStatus, ref string pMsg, int EntryTag = 2);
         bool SetETSVehicleAllotmentDetails(VehicleAllotmentDetails mData, int CentreCode, string CentreName, ref string pMsg);
         VehicleAllotmentDetails GetVehicleAllotmentDetails(string Notenumber, int IsActive, ref string pMsg);
         EntryITourDetails GetEntryITourData(string Notenumber, int IsActive, ref string pMsg);

@@ -20,7 +20,8 @@ namespace CBBW.DAL.DataSync
             {
                 using (SQLHelper sql = new SQLHelper("SELECT [ETS].[IsTourStarted]('" + NoteNumber + "')", CommandType.Text))
                 {
-                    return bool.Parse(sql.ExecuteScaler(ref pMsg).ToString());
+                    string x = sql.ExecuteScaler(ref pMsg).ToString();
+                    return bool.Parse(x);
                 }
 
             }
@@ -48,7 +49,7 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = SortDirection;
                 para[paracount] = new SqlParameter("@Search", SqlDbType.NVarChar, 250);
                 para[paracount++].Value = SearchText;
-                para[paracount] = new SqlParameter("@CentreCode2", SqlDbType.Int);
+                para[paracount] = new SqlParameter("@CentreCode", SqlDbType.Int);
                 para[paracount++].Value = CentreCode;
                 para[paracount] = new SqlParameter("@IsApprovedList", SqlDbType.Int);
                 para[paracount++].Value = IsApprovedList;
@@ -111,16 +112,18 @@ namespace CBBW.DAL.DataSync
                 pMsg = ex.Message; return null; 
             }
         }
-        public DataTable getETSEditHdr(string NoteNumber,int LockStatus, ref string pMsg)
+        public DataTable getETSEditHdr(string NoteNumber,int LockStatus, ref string pMsg,int EntryTag=2)
         {
             try
             {
                 int paracount = 0;
-                SqlParameter[] para = new SqlParameter[2];
+                SqlParameter[] para = new SqlParameter[3];
                 para[paracount] = new SqlParameter("@NoteNumber", SqlDbType.NChar, 25);
                 para[paracount++].Value = NoteNumber;
                 para[paracount] = new SqlParameter("@LockStatus", SqlDbType.Int);
                 para[paracount++].Value = LockStatus;
+                para[paracount] = new SqlParameter("@EntryDateTag", SqlDbType.Int);
+                para[paracount++].Value = EntryTag;
                 using (SQLHelper sql = new SQLHelper("[ETS].[getETSEditHdr]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataTable(para, ref pMsg);

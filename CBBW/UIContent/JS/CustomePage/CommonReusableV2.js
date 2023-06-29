@@ -896,6 +896,9 @@ function MyAlertWithRedirection(MessageType, MessageText, RedirectUrl) {
         case 5:
             MyWarningAlertWithRedirection(MessageText, RedirectUrl);
             break;
+        case 7:
+            MyConfirmationAlertWithRedirectionOnCancel(MessageText, RedirectUrl);
+            break;
         default:
             MyInformationAlertWithRedirection(MessageText, RedirectUrl);
             break;
@@ -1133,6 +1136,27 @@ function MyConfirmationAlertWithRedirection(MessageText, RedirectUrl) {
         if (result.value) {
             window.location.href = RedirectUrl;
         }
+    }
+};
+function MyConfirmationAlertWithRedirectionOnCancel(MessageText, RedirectUrl) {
+    Swal.fire({
+        title: 'Confirmation',
+        text: MessageText,
+        icon: 'question',
+        customClass: 'swal-wide',
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        cancelButtonClass: 'btn-cancel',
+        confirmButtonColor: '#2527a2',
+        showCancelButton: true,
+    }).then(callback);
+    function callback(result) {
+        if (result.value) {
+
+        }
+        else {
+            window.location.href = RedirectUrl;
+        }        
     }
 };
 function MyWarningAlertWithRedirection(MessageText, RedirectUrl) {

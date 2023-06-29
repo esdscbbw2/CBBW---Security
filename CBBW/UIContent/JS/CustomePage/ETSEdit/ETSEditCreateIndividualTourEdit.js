@@ -48,16 +48,17 @@ function ShowHistoryBtnClicked() {
         })
     }
     else {
-        Swal.fire({
-            title: 'Error',
-            text: 'Select A Person To View Tour History.',
-            icon: 'error',
-            customClass: 'swal-wide',
-            buttons: {
-                confirm: 'Ok'
-            },
-            confirmButtonColor: '#2527a2',
-        });
+        MyAlert(4, 'Select A Person To View Tour History.');
+        //Swal.fire({
+        //    title: 'Error',
+        //    text: 'Select A Person To View Tour History.',
+        //    icon: 'error',
+        //    customClass: 'swal-wide',
+        //    buttons: {
+        //        confirm: 'Ok'
+        //    },
+        //    confirmButtonColor: '#2527a2',
+        //});
     }    
 };
 function PersonSelectionChanged() {
@@ -109,16 +110,17 @@ function EditTagChanged() {
             if (editTag == 1) {
                 if ($('#IsCancelled').val() == 1) {
                     editTagCtrl.val('0').isInvalid();
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'Tour Can Be Cancelled Only Once.',
-                        icon: 'error',
-                        customClass: 'swal-wide',
-                        buttons: {
-                            confirm: 'Ok'
-                        },
-                        confirmButtonColor: '#2527a2',
-                    });
+                    MyAlert(4, 'Tour Can Be Cancelled Only Once.');
+                    //Swal.fire({
+                    //    title: 'Error',
+                    //    text: 'Tour Can Be Cancelled Only Once.',
+                    //    icon: 'error',
+                    //    customClass: 'swal-wide',
+                    //    buttons: {
+                    //        confirm: 'Ok'
+                    //    },
+                    //    confirmButtonColor: '#2527a2',
+                    //});
                     togleDiv('AllDisable');
                 }
                 else {
@@ -158,16 +160,17 @@ function EditTagChanged() {
     }
     else {
         togleDiv('AllDisable');
-        Swal.fire({
-            title: 'Error',
-            text: 'Select A Person To Proceed Further.',
-            icon: 'error',
-            customClass: 'swal-wide',
-            buttons: {
-                confirm: 'Ok'
-            },
-            confirmButtonColor: '#2527a2',
-        });
+        MyAlert(4, 'Select A Person To Proceed Further.');
+        //Swal.fire({
+        //    title: 'Error',
+        //    text: 'Select A Person To Proceed Further.',
+        //    icon: 'error',
+        //    customClass: 'swal-wide',
+        //    buttons: {
+        //        confirm: 'Ok'
+        //    },
+        //    confirmButtonColor: '#2527a2',
+        //});
     }    
     EnableSubmitBtn();
 };
@@ -219,16 +222,17 @@ function CRTourCategoryChangedReUsable(targetCtrl, tblRowid, mTag) {
         targetCtrl.multiselect('clearSelection');
         toggleCentreDiv(mTag + 'CenterCodeText', tblRowid, 'NA', mTag);
         toggleBranchDiv(mTag + 'BranchCodeText', tblRowid, 'NA', mTag);
-        Swal.fire({
-            title: 'Error',
-            text: 'Invalid Combination Of Tour Category. Only Centre Visit,Branch & Centre Visit,Others Can Be Combined Together.',
-            icon: 'error',
-            customClass: 'swal-wide',
-            buttons: {
-                confirm: 'Ok'
-            },
-            confirmButtonColor: '#2527a2',
-        });
+        MyAlert(4, 'Invalid Combination Of Tour Category. Only Centre Visit,Branch & Centre Visit,Others Can Be Combined Together.');
+        //Swal.fire({
+        //    title: 'Error',
+        //    text: 'Invalid Combination Of Tour Category. Only Centre Visit,Branch & Centre Visit,Others Can Be Combined Together.',
+        //    icon: 'error',
+        //    customClass: 'swal-wide',
+        //    buttons: {
+        //        confirm: 'Ok'
+        //    },
+        //    confirmButtonColor: '#2527a2',
+        //});
         targetCtrl.isInvalid();
     }
     else { targetCtrl.isValid(); $('#backbtnactive').val(1); }
@@ -241,16 +245,17 @@ function CRTourCategoryChanged() {
     var mEPTour = $('#EPTour').val();
     if (mEPTour == 1 && targetCtrl.val() != 6) {
         targetCtrl.multiselect('clearSelection');
-        Swal.fire({
-            title: 'Error',
-            text: 'Only EP Tour Can Be Selected As Tour Category For This Note.',
-            icon: 'error',
-            customClass: 'swal-wide',
-            buttons: {
-                confirm: 'Ok'
-            },
-            confirmButtonColor: '#2527a2',
-        });
+        MyAlert(4, 'Only EP Tour Can Be Selected As Tour Category For This Note.');
+        //Swal.fire({
+        //    title: 'Error',
+        //    text: 'Only EP Tour Can Be Selected As Tour Category For This Note.',
+        //    icon: 'error',
+        //    customClass: 'swal-wide',
+        //    buttons: {
+        //        confirm: 'Ok'
+        //    },
+        //    confirmButtonColor: '#2527a2',
+        //});
         targetCtrl.isInvalid();
     }
     else {
@@ -492,37 +497,41 @@ function btnSubmitClicked() {
         success: function (data) {
             $(data).each(function (index, item) {
                 if (item.bResponseBool == true) {
-                    Swal.fire({
-                        title: 'Confirmation',
-                        text: 'Data Saved Successfully. Do You Want To Edit Another Person?',
-                        icon: 'question',
-                        customClass: 'swal-wide',
-                        confirmButtonText: "Yes",
-                        cancelButtonText: "No",
-                        cancelButtonClass: 'btn-cancel',
-                        confirmButtonColor: '#2527a2',
-                        showCancelButton: true,
-                    }).then(callback);
-                    function callback(result) {
-                        if (result.value) {
+                    var url = "/Security/ETSEdit/Create";
+                    MyAlertWithRedirection(7, 'Data Saved Successfully. Do You Want To Edit Another Person?', url);
+                    //Swal.fire({
+                    //    title: 'Confirmation',
+                    //    text: 'Data Saved Successfully. Do You Want To Edit Another Person?',
+                    //    icon: 'question',
+                    //    customClass: 'swal-wide',
+                    //    confirmButtonText: "Yes",
+                    //    cancelButtonText: "No",
+                    //    cancelButtonClass: 'btn-cancel',
+                    //    confirmButtonColor: '#2527a2',
+                    //    showCancelButton: true,
+                    //}).then(callback);
+                    //function callback(result) {
+                    //    if (result.value) {
                             
-                        }
-                        else {
-                            var url = "/Security/ETSEdit/Create";
-                            window.location.href = url;
-                        }
-                    }
-                } else {
-                    Swal.fire({
-                        title: 'Confirmation',
-                        text: 'Failed To Save Date Wise Tour Details.',
-                        icon: 'question',
-                        customClass: 'swal-wide',
-                        buttons: {
-                            confirm: 'Ok'
-                        },
-                        confirmButtonColor: '#2527a2',
-                    });
+                    //    }
+                    //    else {
+                    //        var url = "/Security/ETSEdit/Create";
+                    //        window.location.href = url;
+                    //    }
+                    //}
+                }
+                else {
+                    MyAlert(3, 'Failed To Save Date Wise Tour Details.');
+                    //Swal.fire({
+                    //    title: 'Confirmation',
+                    //    text: 'Failed To Save Date Wise Tour Details.',
+                    //    icon: 'question',
+                    //    customClass: 'swal-wide',
+                    //    buttons: {
+                    //        confirm: 'Ok'
+                    //    },
+                    //    confirmButtonColor: '#2527a2',
+                    //});
                 }
             });
         },
@@ -533,22 +542,23 @@ $(document).ready(function () {
         var backbtnactive = $('#BackBtnActive').val();
         var backurl = "/Security/ETSEdit/Create";
         if (backbtnactive == 1) {
-            Swal.fire({
-                title: 'Confirmation',
-                text: "Are You Sure Want to Go Back?",
-                icon: 'question',
-                customClass: 'swal-wide',
-                confirmButtonText: "Yes",
-                cancelButtonText: "No",
-                cancelButtonClass: 'btn-cancel',
-                confirmButtonColor: '#2527a2',
-                showCancelButton: true,
-            }).then(callback);
-            function callback(result) {
-                if (result.value) {
-                    window.location.href = backurl;
-                }
-            }
+            MyAlertWithRedirection(2, "Are You Sure Want to Go Back?", backurl);
+            //Swal.fire({
+            //    title: 'Confirmation',
+            //    text: "Are You Sure Want to Go Back?",
+            //    icon: 'question',
+            //    customClass: 'swal-wide',
+            //    confirmButtonText: "Yes",
+            //    cancelButtonText: "No",
+            //    cancelButtonClass: 'btn-cancel',
+            //    confirmButtonColor: '#2527a2',
+            //    showCancelButton: true,
+            //}).then(callback);
+            //function callback(result) {
+            //    if (result.value) {
+            //        window.location.href = backurl;
+            //    }
+            //}
         }
         else {
             window.location.href = backurl;

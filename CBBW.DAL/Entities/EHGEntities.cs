@@ -103,7 +103,7 @@ namespace CBBW.DAL.Entities
                 {
                     if (dt != null && dt.Rows.Count > 0)
                     {
-                        result = _DBMapper.Map_VehicleAllotmentDetails(dt.Rows[0]);
+                        result = _DBMapper.Map_VehicleAllotmentDetailsV2(dt.Rows[0]);
                     }
                 }
             }
