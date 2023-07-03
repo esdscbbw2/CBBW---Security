@@ -44,6 +44,7 @@ namespace CBBW.BOL.Tour
         public int IsbtnDeleteActive { get; set; }
         public string EffectiveDateOfLastPartiallyFilledRule { get; set; }
         public string EffectiveDateOfLastPartiallyFilledRuleDisplay { get; set; }
+        public int IsBackButton { get; set; }
     }
     public class TourRuleServiceTypes
     {        

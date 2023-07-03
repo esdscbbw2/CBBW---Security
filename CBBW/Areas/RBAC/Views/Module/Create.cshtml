@@ -1,0 +1,133 @@
+﻿<div class="container">
+    <div class="row newTable">
+        <div class="breadcrumb-outer p-15 pt-3">
+            <ul>
+                <li class="activeLink">
+                    <a href="#">Administration <i data-feather="chevrons-right"></i> </a>
+                </li>
+                <li class="activeLink">
+                    <a href="#">Maintenance <i data-feather="chevrons-right"></i> </a>
+                </li>
+                <li class="activeLink">
+                    <a href="#">Masters <i data-feather="chevrons-right"></i> </a>
+                </li>
+                <li>
+                    <a href="#">Module Master <i data-feather="chevrons-right"></i> </a>
+                </li>
+            </ul>
+        </div>
+        <div class="fixedElement">
+            <div class="col-md-12" style="position: relative;">
+                <div class="heading_text_btn mb-4 ">
+                    <div class="leftButton">
+                        <button type="button"  class="btn btn-primary me-2" id="btnBack" >
+                            <i data-feather="arrow-left-circle"></i>
+                            Back
+                        </button>
+                        <button type="button" id="SubmitBtn"  disabled class="btn btn-secondary me-2" onclick="SaveData();">
+                            <i data-feather="upload"></i>
+                            Submit
+                        </button>
+                        <button type="button" onclick="ClearBtnClicked('/RBAC/Module/Create')" class="btn btn-white">
+                            <i data-feather="x-circle"></i>
+                            Clear
+                        </button>
+
+                    </div>
+                    <h2>Module Master Entry </h2>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-12 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <form class="form-sample form-inline row ms-auto">
+                        <div class="row d-flex align-items-center ">
+                            <div class="table-responsive btnalign" id="ModuleDive">
+                                <table class="table table-bordered w-100 btnalign" id="ModuleTable">
+                                    <tbody id="tbody1">
+                                        <tr id="0" class="add-row">
+                                            <td class="border-0 p-0" width="15%">
+                                                <label> Module  Name:</label>
+                                            </td>
+                                            <td class="border-0">
+                                                <input  onchange="ValidateCloneRowCtrl()" id="ModuleName" type="text" data-name="ModuleName" class="form-control pointer is-invalid alterID inValidTag nullvalue CustomDateFormatCloneRow" >
+                                            </td>
+                                            <td class="border-0">
+                                                <div class="form-check">
+                                                    <input class="form-check-input alterID  CustomDateFormatCloneRow nullvalue invisible" type="checkbox" id="IsActiveInt" name="IsActiveInt" data-name="IsActiveInt" value="0" onclick="IsActiveClick()">
+
+                                                 
+                                                    <label for="" class="ps-2 invisible">Is-Active</label>
+                                                </div>
+                                            </td>
+                                            <td class="border-0">
+                                                <span class="actionBtn">
+                                                    <button id="AddBtn" type="button" disabled
+                                                            class="btn primaryLink alterID cloneBtn addBtn"
+                                                            onclick="AddClonebtn()"
+                                                            data-toggle="tooltip"
+                                                            data-placement="top" title="Add">
+                                                        <i data-feather="plus"></i>
+                                                    </button>
+                                                    <button id="DeleteBtn" type="button"
+                                                            class="btn secondaryLink inVisible alterID cloneBtn removeBtn"
+                                                            onclick="removeClonebtn()"
+                                                            data-toggle="tooltip"
+                                                            data-placement="top" title="Delete">
+                                                        <i data-feather="x"></i>
+                                                    </button>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody id="tbody2"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+@section headers
+    {
+    <style>
+        .inVisible {
+            display: none;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+
+        input[type="date"]::before {
+            right: 30px;
+        }
+    </style>
+
+}
+@section scripts{
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
+    <script src="~/UIContent/JS/CustomePage/Module/AddModule.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#btnBack').click(function () {
+                var url = "/RBAC/Module/Index";
+                if ($('#ModuleName').val() != "") {
+                    MyAlertWithRedirection(2, "Are You Sure Want to Go Back?", url);
+                } else {
+                    window.location.href = url;
+                }
+
+
+            });
+        });
+    </script>
+    }

@@ -1,0 +1,137 @@
+﻿@using System.Globalization;
+@using CBBW.BOL.Role;
+@model Header
+
+
+
+<div class="fixedElement">
+    @Html.HiddenFor(x => x.RoleId)
+    @Html.HiddenFor(x => x.CanDelete)
+    <div class="col-md-12" style="position: relative;">
+        <div class="heading_text_btn mb-4 ">
+            <div class="leftButton">
+                <button type="button" class="btn btn-primary me-2" id="btnBack">
+                    <i data-feather="arrow-left-circle"></i>
+                    Back
+                </button>
+            </div>
+            <h2>Role Management - @Model.HeaderText  </h2>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12 mb-2">
+    <div class="card mt-4">
+        <div class="card-body approvalForm SLUContainer">
+            <form class="form-sample form-inline row ms-auto">
+                <div class="row d-flex align-items-center">
+                    <label class="col-form-label col-md-2">
+                        <span>R</span>ole <span>I</span>d:
+                    </label>
+                    <div class="col-md-4" id="RoleDiv">
+
+                    </div>
+                    <label class="col-form-label col-md-2">
+                        <span>R</span>ole <span>N</span>ame:
+                    </label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" id="RoleName" data-name="RoleName" name="RoleName"readonly/>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="col-md-12 mt-4">
+    <div class="table-responsive btnalign">
+        <table class="table table-bordered" id="TblTask">
+            <thead>
+                <tr>
+                    <th scope="col" style="vertical-align: middle;">Module </th>
+                    <th scope="col" style="vertical-align: middle;">Sub Module  </th>
+                    <th scope="col" style="vertical-align: middle;">Navigation </th>
+                    <th scope="col" style="vertical-align: middle;">Task Master  </th>
+                    <th scope="col" style="vertical-align: middle;">Permission   </th>
+                    <th scope="col" style="vertical-align: middle; background-color: pink;color:#000;">Action   </th>
+                </tr>
+            </thead>
+            <tbody id="tbody1">
+                <tr id="0" class="add-row">
+                    <td><div id="ModuleName"></div> </td>
+                    <td> <div id="SubModuleName"></div> </td>
+                    <td>
+                        <div id="NavigationName"></div>
+                        <input id="NavigationId" type="hidden"
+                               data-name="NavigationId"
+                               class="form-control pointer  alterID  CustomDateFormatCloneRow">
+                        <input id="Roles" type="hidden"
+                               data-name="RoleId"
+                               class="form-control pointer  alterID  CustomDateFormatCloneRow">
+                    </td>
+                    <td>
+                        <div id="TaskName"></div>
+                        <input id="TaskId" type="hidden"
+                               data-name="TaskId"
+                               class="form-control pointer  alterID  CustomDateFormatCloneRow">
+                    </td>
+
+                    <td>
+                        <div id="Actions"></div>
+                    </td>
+                    <td>
+                        <span class="actionBtn d-block">
+                            <button id="DeleteBtn" type="button"
+                                    class="btn secondaryLink alterID cloneBtn removeBtn @(Model.CanDelete==true?"":"inVisible")"
+                                    onclick="removeClonebtn()"
+                                    data-toggle="tooltip"
+                                    data-placement="top" title="Delete">
+                                <i data-feather="x"></i>
+                            </button>
+                            </span>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody id="tbody2"></tbody>
+        </table>
+
+
+    </div>
+
+</div>
+
+@section headers
+{
+    <style>
+        .inVisible {
+            display: none;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+
+        .Active {
+            background-color: #ddf1dc;
+        }
+    </style>
+}
+@section scripts{
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
+    <script src="~/UIContent/JS/CustomePage/Role/RoleView.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#btnBack').click(function () {
+                var url = "/RBAC/Role/Index";
+                if ($('#RoleName').val() != "") {
+                    MyAlertWithRedirection(2, "Are You Sure Want to Go Back?", url);
+                } else {
+                    window.location.href = url;
+                }
+
+
+            });
+        });
+    </script>
+}

@@ -1,0 +1,193 @@
+﻿@using System.Globalization;
+@using CBBW.BOL.Role;
+@model Header
+
+
+
+<div class="fixedElement">
+    @Html.HiddenFor(x=>x.RoleId)
+    <div class="col-md-12" style="position: relative;">
+        <div class="heading_text_btn mb-4 ">
+            <div class="leftButton">
+                <button type="button" class="btn btn-primary me-2" id="btnBack">
+                    <i data-feather="arrow-left-circle"></i>
+                    Back
+                </button>
+                <button type="button" disabled id="BtnSubmit" class="btn btn-secondary me-2" onclick="SaveData()">
+                    <i data-feather="upload"></i>
+                    Submit
+                </button>
+
+            </div>
+            <h2>Role Management -  Edit  </h2>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12 mb-2">
+    <div class="card mt-4">
+        <div class="card-body approvalForm SLUContainer">
+            <form class="form-sample form-inline row ms-auto">
+                <div class="row d-flex align-items-center">
+                    <label class="col-form-label col-md-2">
+                        <span>R</span>ole <span>I</span>d:
+                    </label>
+                    <div class="col-md-4" id="RoleDiv" >
+                       
+                    </div>
+                    <label class="col-form-label col-md-2" >
+                        <span>R</span>ole <span>N</span>ame:
+                    </label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control"  id="RoleName" data-name="RoleName" name="RoleName">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="col-md-12 mt-4">
+    <div class="table-responsive btnalign">
+        <table class="table table-bordered" id="TblTask">
+            <thead>
+                <tr>
+                    <th scope="col" style="vertical-align: middle;">Module </th>
+                    <th scope="col" style="vertical-align: middle;">Sub Module  </th>
+                    <th scope="col" style="vertical-align: middle;">Navigation </th>
+                    <th scope="col" style="vertical-align: middle;">Task Master  </th>
+                    <th scope="col" style="vertical-align: middle;">Permission   </th>
+                    <th scope="col" style="vertical-align: middle; background-color: pink;color:#000;">Action   </th>
+                </tr>
+            </thead>
+            <tbody id="tbody1">
+                <tr id="0" class="add-row">
+                    <td><div id="ModuleName"></div> </td>
+                    <td> <div id="SubModuleName"></div> </td>
+                    <td>
+                        <div id="NavigationName"></div>
+                        <input id="NavigationIds" type="hidden"
+                               data-name="NavigationId"
+                               class="form-control pointer  alterID  CustomDateFormatCloneRow">
+                    </td>
+                    <td>
+                        <div id="TaskName"></div>
+                        <input id="TaskNames" type="hidden"
+                               data-name="TaskName"
+                               class="form-control pointer  alterID  CustomDateFormatCloneRow">
+                        <input id="TskID" type="hidden"
+                               data-name="TaskId"
+                               class="form-control pointer  alterID  CustomDateFormatCloneRow">
+                    </td>
+
+                    <td>
+
+                        <select id="ActionId" data-name="ActionIDs" data-name-text="ActionIdtxt" class="form-select is-invalid ApplyMultiSelectWithSelectAll" aria-label="Default select example" onchange="ValidateCloneRowCtrl();"></select>
+                    </td>
+
+                </tr>
+            </tbody>
+            <tbody id="tbody2"></tbody>
+
+            <tbody id="tbody3">
+                <tr id="0" class="add-row">
+                    <td>
+                        <select id="ModuleId" data-name="ModuleId" data-name-text="ModuleName"
+                                onchange="ChangeCashCadingSourceInCloaningWithIntgerValue('SubModuleId', '/RBAC/Role/GetSubModule?Id='); ValidateCloneRowCtrl();"
+                                class="form-select is-invalid alterID inValidTag "
+                                aria-label="Default select example">
+                        </select>
+                    </td>
+                    <td>
+                        <select id="SubModuleId" data-name="SubModuleId" data-name-text="SubModuleName"
+                                onchange="ChangeCashCadingSourceInCloaningWithIntgerValue('NavigationId', '/RBAC/Role/GetNavigation?Id='); ValidateCloneRowCtrl(); "
+                                class="form-select is-invalid alterID inValidTag"
+                                aria-label="Default select example">
+                        </select>
+                    </td>
+                    <td>
+                        <select id="NavigationId" data-name="NavigationId" data-name-text="NavigationName"
+                                onchange="ChangeCashCadingSourceInCloaningWithIntgerValue('TaskId', '/RBAC/Role/GetTaskName?Id='); ValidateCloneRowCtrl();"
+                                class="form-select is-invalid alterID inValidTag"
+                                aria-label="Default select example">
+                        </select>
+                    </td>
+                    <td>
+                        <select id="TaskId" data-name="TaskId" data-name-text="TaskName"
+                                onchange="ChangeCashCadingSourceInCloaningWithIntgerValueWithMultiSelect('ActionIDs', '/RBAC/Role/GetActionsList?Id='); ValidateCloneRowCtrl(); CheckValueDuplicate();"
+                                class="form-select is-invalid inValidTag alterID xPerson"
+                                aria-label="Default select example">
+                        </select>
+                    </td>
+                    <td>
+
+                        <select id="ActionIDs" data-name="ActionIDs" data-name-text="ActionIDstxt" class="form-select is-invalid inValidTag alterID clonemultiselect" aria-label="Default select example" onchange="ValidateCloneRowCtrl()"></select>
+
+
+                    </td>
+                    <td class="text-center">
+                        <span class="actionBtn d-block">
+                            <button id="AddBtn" disabled type="button"
+                                    class="btn primaryLink alterID cloneBtn addBtn"
+                                    onclick="AddClonebtn()"
+                                    data-toggle="tooltip"
+                                    data-placement="top" title="Add">
+                                <i data-feather="plus"></i>
+                            </button>
+                            <button id="DeleteBtn" type="button"
+                                    class="btn secondaryLink inVisible alterID cloneBtn removeBtn"
+                                    onclick="removeClonebtn()"
+                                    data-toggle="tooltip"
+                                    data-placement="top" title="Delete">
+                                <i data-feather="x"></i>
+                            </button>
+                        </span>
+                    </td>
+
+                </tr>
+            </tbody>
+            <tbody id="tbody4"></tbody>
+
+
+        </table>
+        
+
+    </div>
+
+</div>
+
+@section headers
+{
+    <style>
+        .inVisible {
+            display: none;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+
+        .Active {
+            background-color: #ddf1dc;
+        }
+    </style>
+}
+@section scripts{
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
+    <script src="~/UIContent/JS/CustomePage/Role/RoleEdit.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#btnBack').click(function () {
+                var url = "/RBAC/Role/Index";
+                if ($('#RoleName').val() != "") {
+                    MyAlertWithRedirection(2, "Are You Sure Want to Go Back?", url);
+                } else {
+                    window.location.href = url;
+                }
+
+
+            });
+        });
+    </script>
+}

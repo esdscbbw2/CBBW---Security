@@ -37,10 +37,10 @@ namespace CBBW.Areas.Security.Controllers
             TempData["TourDetails"] = null;
             return RedirectToAction("CreateRule");
         }
-        public ActionResult ViewRedirection(int CBUID,string NoteNumber="")
+        public ActionResult ViewRedirection(int CBUID,string NoteNumber="",int IsBackButton=1)
         {
             string mEffectiveDate = _toursRule.GetAffectedRuleID(ref pMsg).ToString("dd-MM-yyyy");
-            return RedirectToAction("ViewRuleV2", new { EffectiveDate = mEffectiveDate, isDelete = false, isFromIndex=false });            
+            return RedirectToAction("ViewRuleV2", new { EffectiveDate = mEffectiveDate, isDelete = false, isFromIndex=false,IsBackButton= IsBackButton });            
         }
         // GET: Security/TourRule
         public ActionResult Index()
@@ -102,10 +102,11 @@ namespace CBBW.Areas.Security.Controllers
             return View(model);
            
         }
-        public ActionResult ViewRuleV2(string EffectiveDate,bool isDelete=false,bool isFromIndex=false)
+        public ActionResult ViewRuleV2(string EffectiveDate,bool isDelete=false,bool isFromIndex=false,int IsBackButton=1)
         {
             if (isFromIndex) { _iUser.RecordCallBack("/Security/TourRule/Index"); }
             TourRuleDetails model = new TourRuleDetails();
+            model.IsBackButton = IsBackButton;
             model.IsbtnDeleteActive = isDelete ? 1 : 0;
             model.EffectiveDate = DateTime.Parse(EffectiveDate);
             model.EffectiveDateDisplay = model.EffectiveDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);

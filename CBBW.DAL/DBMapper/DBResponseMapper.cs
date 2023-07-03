@@ -155,7 +155,25 @@ namespace CBBW.DAL.DBMapper
             }
             return result;
         }
-
+        public CustomComboOptions Map_CustomComboOptionsWithoutID(DataRow dr)
+        {
+            CustomComboOptions result = new CustomComboOptions();
+            try
+            {
+                if (dr != null)
+                {
+                    if (!DBNull.Value.Equals(dr["ID"]))
+                        result.ID = int.Parse(dr["ID"].ToString());
+                    if (!DBNull.Value.Equals(dr["DisplayText"]))
+                        result.DisplayText = dr["DisplayText"].ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+            }            
+            return result;
+        }
 
 
     }

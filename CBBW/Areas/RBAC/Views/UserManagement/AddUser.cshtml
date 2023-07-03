@@ -1,0 +1,298 @@
+﻿@using CBBW.Areas.RBAC.ViewModel.User;
+@model AddUserVM
+@{
+
+}
+@Html.HiddenFor(m => m.IsBackDenied)
+<div class="row newTable">
+    <div class="fixedElement">
+        <div class="col-md-12" style="position: relative;">
+            <div class="heading_text_btn mb-4 ">
+                <div class="leftButton">
+                    <button type="button" class="btn btn-primary me-2"
+                            onclick="NormalBackBtnClicked('/Security/UserManagement/Index')">
+                        <i data-feather="arrow-left-circle"></i>
+                        Back
+                    </button>
+                    <button id="btnSubmit" type="submit" class="btn btn-secondary me-2"
+                            onclick="window.location.href='user_mngmt_listing.html';">
+                        <i data-feather="upload"></i>
+                        Submit
+                    </button>
+                    <button type="button" onclick="ClearBtnClicked('/Security/UserManagement/AddUser?isClear=1')"
+                            class="btn btn-white">
+                        <i data-feather="x-circle"></i>
+                        Clear
+                    </button>
+                </div>
+                <h2>User Management – Add  </h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 mb-4">
+        <div class="card mt-4">
+            <div class="card-body" id="HdrDiv1">
+                @*<form class="form-sample form-inline row ms-auto">*@
+                <div class="SLUSection SLUContainer">
+                    <div class="row d-flex align-items-center mb-4">
+                        <label class="col-form-label col-md-2">
+                            Employee No. & Name :
+                        </label>
+                        <div class="col-md-4">
+                            <select class="form-select SLUCtrl is-invalid" aria-label="Default select example"
+                                    id="EmployeeNumber">
+                                <option value=""> Select Employee</option>
+                                @if (Model.EmployeeList != null && Model.EmployeeList.Count > 0)
+                                {
+                                    foreach (var item in Model.EmployeeList)
+                                    {
+                                        <option data-desg="@item.Designation" value="@item.EmployeeNumber"> @item.EmployeeName</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <label class="col-form-label col-md-2">
+                            Designation :
+                        </label>
+                        <div class="col-md-4">
+                            <div style="display:block;">
+                                <input id="EmpDesg" type="text" class="form-control" value="" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center mb-4">
+                        <label class="col-form-label col-md-2">
+                            User Name :
+                        </label>
+                        <div class="col-md-4">
+                            <input id="UserName" type="text" 
+                                   title="User Name Should Be Alpha Numeric Without Space."
+                                   class="form-control SLUCtrl is-invalid" />
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center mb-4">
+                        <label class="col-form-label col-md-2">
+                            Password :
+                        </label>
+                        <div class="col-md-4 position-relative">
+                            <input type="password" class="input-field form-control SLUCtrl is-invalid"
+                                   title="Password Should Atleast 6 Characters Containing Atleast One Uppercase, One Lowercase, One Digit & One Special Character "
+                                   name=" password" value="" id="NewPassword">
+                            <span class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                        </div>
+                        <label class="col-form-label col-md-2">
+                            Confirm  Password :
+                        </label>
+                        <div class="col-md-4 position-relative">
+                            <input type="password"
+                                   class="input-field form-control SLUCtrl is-invalid"
+                                   title="Enter Password Again. "
+                                   name="Confirm password" value="" id="CnfPassword">
+                            <span class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center mb-4">
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input float-none SLUCtrl" 
+                                       type="checkbox" id="check1" checked 
+                                       name="option1" value="something"/>
+                                <label for="" class="ps-2">Is-Active</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="SLUSection" id="tblSection">
+                    <div class="row d-flex align-items-center mt-4">
+                        <div class="table-responsive btnalign">
+                            <table id="myTable" class="table table-bordered table-last-col">
+                                <thead>
+                                    <tr>
+                                        <th>Role</th>
+                                        <th>Location Type & Name</th>
+                                        <th>Location Code & Name</th>
+                                        <th>Effective From Date</th>
+                                        <th>Effective To Date</th>
+                                        <th class="action" style="background: pink;color: #000;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody1">
+                                    <tr id="0" class="add-row SLUContainer">
+                                        <td>
+                                            <div id="selectDiv1">
+                                                <select id="Role_0" multiple="multiple"
+                                                        onchange="RolesChanged()"
+                                                        class="form-select ApplyMultiSelectWithSelectAll SLUCtrl alterID inValidTag duprole"
+                                                        aria-label="Default select example">
+                                                    @if (Model.RoleList != null && Model.RoleList.Count > 0)
+                                                    {
+                                                        foreach (var item in Model.RoleList)
+                                                        {
+                                                            <option value="@item.RoleId">@item.RoleName</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td width="15%">
+                                            <div id="selectDiv2">
+                                                <select multiple="multiple" id="LocationtypeCode_0"
+                                                        onchange="LocationTypeChanged()"
+                                                        class="form-select ApplyMultiSelectWithSelectAll SLUCtrl alterID inValidTag"
+                                                        aria-label="Default select example">
+                                                    @if (Model.LocationTypeList != null)
+                                                    {
+                                                        foreach (var item in Model.LocationTypeList)
+                                                        {
+                                                            <option value="@item.ID"> @item.DisplayText</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div id="selectDiv3">
+                                                <select multiple="multiple" id="LocationCode_0"
+                                                        onchange="LocationCodeChanged()"
+                                                        class="form-select ApplyMultiSelect SLUCtrl alterID inValidTag"
+                                                        aria-label="Default select example">
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="position-relative pointer">
+                                                <input id="EffectiveFromDt_0" type="date"
+                                                       class="form-control pointer is-invalid CustomDateFormatCloneRow valid SLUCtrl alterID inValidTag"
+                                                       onchange="FromDateChanged()">
+                                                <label id="lblEffectiveFromDt_0" style="width:100px"
+                                                       class="datelabel pointer alterID">Select Date</label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="position-relative pointer">
+                                                <input type="date" id="EffectiveToDate_0"
+                                                       class="form-control pointer is-invalid CustomDateFormatCloneRow valid SLUCtrl alterID inValidTag"
+                                                       onchange="ToDateChanged()">
+                                                <label id="lblEffectiveToDate_0" style="width:100px"
+                                                       class="datelabel pointer alterID">Select Date</label>
+                                            </div>
+                                        </td>
+                                        <td class="last-action">
+                                            <span class="actionBtn">
+                                                <button id="DeleteBtn_0" type="button"
+                                                        class="btn secondaryLink alterID inVisible cloneBtn removeBtn"
+                                                        data-toggle="tooltip" data-placement="top" title="Delete">
+                                                    <i data-feather="x" onclick="RowRemoveBtnWithEnablePreRow('tbody2','btnSubmit','HdrDiv1','myTable')"></i>
+                                                </button>
+                                                <button id="AddBtn_0" type="button"
+                                                        class="btn primaryLink alterID cloneBtn addBtn SLUAddBtn SLUBtn"
+                                                        data-toggle="tooltip" data-placement="top" title="Add">
+                                                    <i data-feather="plus" onclick="CloneRowAddBtnClick()"></i>
+                                                </button>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tbody id="tbody2"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                @*</form>*@
+            </div>
+        </div>
+    </div>
+</div>
+@section headers
+{
+    <style>
+        .hide {
+            display: none;
+        }
+
+        .none {
+            display: none;
+        }
+
+        .modal-lg,
+        .modal-xl {
+            max-width: 700px;
+        }
+
+        .datelabel {
+            font-size: 14px !important;
+        }
+
+        .close-btn {
+            position: absolute;
+            right: 3%;
+            top: 6px;
+            color: black;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        #toast {
+            position: relative;
+            display: none;
+        }
+    </style>
+}
+@section scripts{
+    <script src="~/UIContent/JS/CustomePage/SLUCtrlsV2.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
+    <script src="~/UIContent/JS/CustomePage/RBACUser/AddUser.js"></script>
+    <script>
+        function changeSpan(e) {
+            let valid = document.querySelectorAll(".valid");
+            valid.forEach((e) => {
+                if (e.classList.contains("valid") && e.type == "password") {
+                    e.nextElementSibling.style.right = "10%"
+                }
+            })
+        }
+        changeSpan()
+    </script>
+    <script>
+        $(window).scroll(function (e) {
+            var $el = $('.fixedElement');
+            var isPositionFixed = ($el.css('position') == 'fixed');
+            if ($(this).scrollTop() > 200 && !isPositionFixed) {
+                $el.css({
+                    'position': 'sticky',
+                    'top': '0px'
+                });
+            }
+            if ($(this).scrollTop() < 200 && isPositionFixed) {
+                $el.css({
+                    'position': 'static',
+                    'top': '0px'
+                });
+            }
+        });
+    </script>
+    <script>
+        let toggle_password = document.querySelectorAll(".toggle-password");
+        toggle_password.forEach(element => {
+            element.addEventListener("click", (e) => {
+                if (e.currentTarget.previousElementSibling.type == "password") {
+                    e.currentTarget.previousElementSibling.setAttribute("type", "text");
+                    if (!(e.currentTarget.previousElementSibling.value == "")) {
+                        e.currentTarget.classList.remove("fa-fw")
+                        e.currentTarget.classList.add("fa-eye-slash")
+                    }
+                }
+                else {
+                    e.currentTarget.previousElementSibling.setAttribute("type", "password");
+                    if (!(e.currentTarget.previousElementSibling.value == "")) {
+                        e.currentTarget.classList.add("fa-fw")
+                        e.currentTarget.classList.remove("fa-eye-slash")
+                    }
+                }
+            })
+        });
+
+    </script>
+}

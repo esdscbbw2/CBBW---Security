@@ -14,7 +14,7 @@
 $("#UserName").on("keyup", function () {
     var myCtrl = $(this);
     if (isAlphanumeric(myCtrl.val())) {
-        var url = '/UserManagement/ValidateUserName?UserName=' + $(this).val();
+        var url = '/RBAC/UserManagement/ValidateUserName?UserName=' + $(this).val();
         GetDataFromAjax(url).done(function (data) {
             if (data) { myCtrl.isValidCtrl(); }
             else {
@@ -71,9 +71,26 @@ $("#EffectiveDate").on("change", function () {
 function RolesChanged() {
     var myCtrl = $(RolesChanged.caller.arguments[0].target);
     if (myCtrl.val() != '') {
-        myCtrl.isValidCtrl();        
+        if (IsUniqueRole(myCtrl)) {
+            myCtrl.isValidCtrl();
+        }
+        else {
+            myCtrl.isInvalidCtrl();
+            MyAlert(4,"Selected Role Is Already Assigned.")
+        }
     } else { myCtrl.isInvalidCtrl(); }
     EnableAddBtn(myCtrl.attr('id').split('_')[1],'AddBtn');
+};
+function IsUniqueRole(myCtrl) {
+    var isvalid = true;
+    $('.duprole').each(function () {
+        that = $(this);
+        if (that.attr('id') != myCtrl.attr('id')) {
+            alert(myCtrl.val() + ' - ' + that.val());
+            if (CompareStringsForCommonValue(myCtrl.val(), that.val())) { isvalid = false;}
+        }        
+    });
+    return isvalid;
 };
 function LocationTypeChanged() {
     var myCtrl = $(LocationTypeChanged.caller.arguments[0].target);

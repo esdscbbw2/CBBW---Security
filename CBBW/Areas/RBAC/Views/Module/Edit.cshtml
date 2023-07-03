@@ -1,0 +1,154 @@
+﻿@using System.Globalization;
+@using CBBW.BOL.Modules;
+@model Module
+
+<div class="container">
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(x => x.ID)
+        @Html.HiddenFor(x => x.IsActiveInt)
+        @Html.HiddenFor(x => x.CanDelete)
+        <div class="row newTable">
+            <div class="fixedElement">
+                <div class="col-md-12" style="position: relative;">
+                    <div class="heading_text_btn mb-4 ">
+                        <div class="leftButton">
+                            <button type="button" id="btnBack" class="btn btn-primary me-2" onclick="">
+                                <i data-feather="arrow-left-circle"></i>
+                                Back
+                            </button>
+
+                            @if (Model.CanDelete == true)
+                            {
+                                <button id="btnDelete" type="submit" name="Submit" value="Delete"
+                                        class="btn btn-primary me-2">
+                                    <i data-feather="trash-2"></i>
+                                    Delete
+                                </button>
+                            }
+                            else
+                            {
+                                <button type="submit" disabled id="SubmitBtn" name="Submit" value="Save" class="btn btn-secondary me-2">
+                                    <i data-feather="upload"></i>
+                                    Save
+                                </button>
+                            }
+
+                        </div>
+                        <h2>Module Master-@Model.HeaderText </h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mb-4">
+                <div class="card mt-4">
+                    <div class="card-body approvalForm" id="ModuleDive">
+                        <div class="row d-flex align-items-center ">
+                            <div class="table-responsive btnalign">
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <td class="border-0 p-0" width="15%">
+                                                <label> Module  Name:</label>
+                                            </td>
+
+                                            <td class="border-0">
+
+                                                @Html.TextBoxFor(m => m.ModuleName, htmlAttributes: new { @class = "form-control is-valid", @onchange = "ValidateCloneRowCtrl()" })
+
+                                            </td>
+
+                                            <td class="border-0">
+                                                <div class="form-check">
+                                                    @Html.CheckBoxFor(m => m.IsActive,
+                                                   htmlAttributes: new { @class = "form-check-input", onclick = "IsActiveClick()" })
+
+                                                    <label for="" class="ps-2">Is-Active</label>
+                                                </div>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@section headers
+    {
+
+}
+
+@section scripts{
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
+    <script src="~/UIContent/JS/CustomePage/Module/AddModule.js"></script>
+    <script>
+        function IsActiveClick() {
+            var myCtrl = $(IsActiveClick.caller.arguments[0].target);
+            if (myCtrl.prop('checked')) {
+                $('#IsActiveInt').val(1);
+            } else {
+                $('#IsActiveInt').val(0);
+            }
+        };
+    </script>
+    <script>
+        $(document).ready(function () {
+            if ($('#CanDelete').val()==1) {
+                              LockSection('ModuleDive')
+            }
+
+
+            $('#btnBack').click(function () {
+                var url = "/RBAC/Module/Index";
+                if ($('#ModuleName').val() != "") {
+                    MyAlertWithRedirection(2, "Are You Sure Want to Go Back?", url);
+                } else {
+                        window.location.href = url;
+                }
+
+
+        });
+        });
+
+          $(document).ready(function () {
+            if ('@ViewBag.ErrMsg' != '') {
+                Swal.fire({
+                    title: 'Failed to submit',
+                    text: "@ViewBag.ErrMsg",
+                    icon: 'warning',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        //cancel: 'Cancel',
+                        confirm: 'Ok'
+                    },
+                    //cancelButtonClass: 'btn-cancel',
+                    confirmButtonColor: '#2527a2',
+                });
+            };
+            if ('@ViewBag.Msg' != '') {
+                Swal.fire({
+                    title: 'Confirmation',
+                    text: "@ViewBag.Msg",
+                    icon: 'success',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        confirm: 'Ok'
+                    },
+                    confirmButtonColor: '#2527a2',
+                }).then(callback);
+                function callback(result) {
+                    if (result.value) {
+                        var url = "/RBAC/Module/Index";
+                        window.location.href = url;
+                    }
+                }
+            };
+        });
+    </script>
+}

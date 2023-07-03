@@ -37,13 +37,13 @@ namespace CBBW.Areas.Security.Controllers
             TempData["TADARuleV2View"] = null;
             return Json(url, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult ViewRedirection(int CBUID, string NoteNumber = "") 
+        public ActionResult ViewRedirection(int CBUID, string NoteNumber = "", int IsBackButton = 1) 
         {
             DateTime mEffeDate = _iTADARules.GetAffectedRuleID(ref pMsg);
             List<CustomComboOptionsWithString> obj1 = _iTADARules.GetCatCodesForTADARuleView(mEffeDate, ref pMsg);
             if (obj1 != null && obj1.Count > 0) 
             {
-                return RedirectToAction("ViewRuleV2", new { EffectiveDate = mEffeDate.ToString("dd-MM-yyyy"), isDelete = false });
+                return RedirectToAction("ViewRuleV2", new { EffectiveDate = mEffeDate.ToString("dd-MM-yyyy"), isDelete = false, IsBackButton= IsBackButton });
             } 
             else 
             {
@@ -220,7 +220,7 @@ namespace CBBW.Areas.Security.Controllers
             };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult ViewRuleV2(string EffectiveDate, bool isDelete = false, bool isFromIndex = false) 
+        public ActionResult ViewRuleV2(string EffectiveDate, bool isDelete = false, bool isFromIndex = false,int IsBackButton=1) 
         {
             ruleviewvm=CastTADAViewTempData(DateTime.Parse(EffectiveDate));
             ruleviewvm.IsDelete = isDelete;
@@ -237,6 +237,7 @@ namespace CBBW.Areas.Security.Controllers
                 TempData["TADARuleV2View"] = ruleviewvm;
             }
             catch { }
+            ruleviewvm.IsBackButton = IsBackButton;
             return View(ruleviewvm);
         }
         [HttpPost]

@@ -36,7 +36,7 @@ namespace CBBW.DAL.DBMapper
                 if (dr != null)
                 {
                     if (!DBNull.Value.Equals(dr["RoleId"]))
-                        result.RoleId = int.Parse(dr["RoleId"].ToString());
+                        result.RoleId = dr["RoleId"].ToString();
                     if (!DBNull.Value.Equals(dr["RoleName"]))
                         result.RoleName = dr["RoleName"].ToString();                    
                 }

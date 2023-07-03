@@ -239,7 +239,7 @@
                                                     @(item.ActualTourInTime!=" "?item.ActualTourInTime:"Nil")
                                                 </td>
                                                 <td class="text-center">
-                                                    Continue
+                                                    @(item.TourStatus==1?"Completed":"Continue")
                                                 </td>
                                             </tr>
                                         }
@@ -496,7 +496,8 @@
         $(document).ready(function () {
             //var mymsg = '@ViewBag.ErrMsg';
             if ('@ViewBag.ErrMsg' != '') {
-                Swal.fire({
+                MyAlert(3, "@ViewBag.ErrMsg");
+                @*Swal.fire({
                     title: 'Failed To Submit',
                     text: "@ViewBag.ErrMsg",
                     icon: 'warning',
@@ -507,10 +508,12 @@
                     },
                     //cancelButtonClass: 'btn-cancel',
                     confirmButtonColor: '#2527a2',
-                });
+                });*@
             };
             if ('@ViewBag.Msg' != '') {
-                Swal.fire({
+                var url = "/Security/EHG/Index";
+                MyAlertWithRedirection(1, "@ViewBag.Msg", url);
+                @*Swal.fire({
                     title: 'Confirmation',
                     text: "@ViewBag.Msg",
                     icon: 'success',
@@ -525,7 +528,7 @@
                         var url = "/Security/EHG/Index";
                         window.location.href = url;
                     }
-                }
+                }*@
             };
             @*if ('@ViewBag.BtnActive' != '') {
                 $('#BackBtnActive').val(1);

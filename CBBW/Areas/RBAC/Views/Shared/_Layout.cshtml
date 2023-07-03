@@ -1,0 +1,657 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Charbhai Bidi Works - A Bidi Manufacturing Company</title>
+    @*<title>@ViewBag.Title</title>*@
+    <!-- Bootstrap CSS -->
+    <link href="~/UIContent/CSS/bootstrap.min.css" rel="stylesheet" />
+    @*<link href="~/UIContent/CSS/jquery.dataTables.min.css" rel="stylesheet" />*@
+    <link href="~/UIContent/CSS/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    <link href="~/UIContent/CSS/fixedColumns.dataTables.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap"
+          rel="stylesheet">
+    <link href="~/UIContent/CSS/bootstrap-multiselect.css" rel="stylesheet" />
+    <link href="~/UIContent/CSS/themes/base/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/UIContent/CSS/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/UIContent/CSS/style.css" rel="stylesheet" />
+    <!-- Time Picker CSS -->
+    <link rel='stylesheet' href='~/UIContent/CSS/font-awesome.min.css'>
+    <link rel='stylesheet' href='~/UIContent/CSS/bootstrap-datetimepicker.min.css'>
+    <style>
+        .inVisible {
+            display: none !important;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+
+        .border-red {
+            border-color: #dc3545;
+            border-style: solid;
+        }
+
+        .border-green {
+            border-color: #198754;
+            border-style: solid;
+        }
+    </style>
+    <style>
+        /* Toggle Styles */
+
+        .sidebar {
+            height: 100%;
+            width: 0px;
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #e7ecf9;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 10px;
+        }
+
+        .sidebar a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 0px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover {
+            color: #f1f1f1;
+        }
+
+        .sidebar .closebtn {
+            position: absolute;
+            top: 0;
+            right: 0px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        .openbtn {
+            font-size: 20px;
+            cursor: pointer;
+            background-color: #111;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+        }
+
+        .openbtn:hover {
+            background-color: #444;
+        }
+
+        #mains {
+            transition: margin-left .5s;
+            padding: 16px 0px 16px 40px;
+        }
+        /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+
+        @*@media screen and (max-height: 450px) {
+            .sidebar {
+                padding-top: 15px;
+            }
+            .sidebar a {
+                font-size: 18px;
+            }
+        }*@
+
+        .heading-bar {
+            background-image: linear-gradient(0deg, #522db8 0%, #1c7ce0 100%);
+        }
+
+        .menu-list {
+            padding-left: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+        }
+
+        .menu-list li {
+            margin-left: 15px;
+            margin-bottom: 15px;
+        }
+
+        .menu-list li:first-child {
+            margin-left: 0;
+        }
+
+        .menu-list li a {
+            background-color: #e7ecf9;
+            color: #000;
+            padding: 10px;
+            width: 180px;
+            text-transform: uppercase;
+            border: 1px solid #e7ecf9;
+        }
+
+        .menu-list li a:hover {
+            color: #100901;
+            background: transparent;
+            transition: 0.3s;
+        }
+        /* sidebar menu css */
+
+        .sidebar li .submenu {
+            list-style: none;
+            margin: 0;
+            background: #dae1f3;
+            padding: 0;
+            padding-left: 1rem;
+            /* padding-right: 1rem; */
+        }
+
+        .sidebar .nav-link {
+            font-weight: 500;
+            color: var(--bs-dark);
+            position: relative;
+            padding: 10px 15px 10px 10px;
+        }
+
+        .sidebar .nav-link:hover {
+            color: var(--bs-primary);
+        }
+
+        .sidebar .nav-link.active {
+            color: var(--bs-primary);
+        }
+
+        #mySidebar .card {
+            background-color: #e7ecf9;
+            border: none;
+        }
+
+        .sidebar .nav-link .fa-angle-down {
+            position: absolute;
+            right: 6%;
+            top: 34%;
+        }
+
+        .sidebar .nav-link i {
+            font-size: 15px;
+        }
+
+        .sidebar a {
+            font-size: 14px;
+        }
+
+        .sidebar .closebtn {
+            font-size: 36px;
+        }
+
+        .sidebar .nav-link .fa-angle-down {
+            font-size: 15px;
+        }
+
+
+
+        .sidebar.showSidebar {
+            width: 250px;
+        }
+        /* .sidebar {
+            width: 29.563rem;
+        } */
+
+        .menu-title {
+            margin-left: 5px;
+        }
+
+        .fa-angle-right {
+            margin-right: 7px;
+        }
+
+        .nav>li>a:focus,
+        .nav>li>a:hover {
+            text-decoration: none;
+            background-color: #edf0f9;
+        }
+
+        .sidebar .nav-link .fa-circle {
+            font-size: 8px;
+            margin-right: 5px;
+        }
+
+        /* div#mySidebar :after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 280px;
+            height: 100%;
+            background: #e7ecf9;
+            z-index: -1;
+        } */
+
+        .bgMenu {
+            position: relative;
+            z-index: 9;
+        }
+
+        .bgTop {
+            position: relative;
+            z-index: 9;
+        }
+
+        .menu-list .active a {
+            background-color: #4158c7;
+            color: #fff;
+        }
+
+        .menu-list li a:hover {
+            background-color: #4158c7;
+            color: #fff;
+        }
+
+        .prompt-alert .modal-header {
+            min-height: 16.43px;
+            padding: 15px;
+            background-image: linear-gradient(0deg, #522db8 0%, #1c7ce0 100%);
+            color: #fff;
+            border-bottom: none;
+        }
+
+        .prompt-alert .modal-header span {
+            color: #ffeb3b;
+            font-weight: 600;
+        }
+
+        .modal-lg,
+        .modal-xl {
+            max-width: 1000px;
+        }
+
+        .promptTable {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .promptDetails {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .promptTable::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .promptDetails::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .promptDetails ul {
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .promptDetails ul li {
+            padding-bottom: 7px;
+        }
+
+         ::-webkit-scrollbar-thumb {
+            background: #ccc;
+        }
+
+         ::-webkit-scrollbar-thumb:hover {
+            background: #ccc;
+        }
+
+        .prompt-alert .alert strong {
+            font-size: 15px;
+        }
+
+        .prompt-alert .modal-header .btn-close {
+            background-image: url(img/close.png);
+            opacity: 1;
+        }
+
+        #mains {
+            background: #fff;
+        }
+
+        .dashboard-box .card {
+            border-radius: 10px;
+            background: #fff;
+            padding: 2.3rem !important;
+            box-shadow: 0 5px 20px rgba(173, 181, 217, .03);
+            border: none;
+            margin-bottom: 25px;
+        }
+
+        .f-w-600 {
+            font-weight: 600;
+        }
+
+        .dashboard-box .card p {
+            font-size: 15px;
+            color: #5c61f2;
+            width: -webkit-fit-content;
+            width: -moz-fit-content;
+            width: fit-content;
+            position: relative;
+            margin-bottom: 18px;
+        }
+
+        .dashboard-box .card p i {
+            font-size: 3px;
+            margin-top: -2px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        .dashboard-box .card .square-after:after {
+            position: absolute;
+            content: "";
+            width: 76px;
+            height: 25px;
+            background-color: rgba(92, 97, 242, 0.1);
+            top: -2px;
+            right: -12px;
+            border-radius: 4px;
+            -webkit-transition: all 0.5s ease-in;
+            transition: all 0.5s ease-in;
+        }
+
+        .dashboard-box .card:hover .square-after:after {
+            width: 115%;
+            -webkit-transition: all 0.5s ease-in;
+            transition: all 0.5s ease-in;
+        }
+        .dashboard-box .card canvas{
+            width: 340px;
+        }
+        .dash-title {
+            font-size: 2.3rem;
+        }
+
+        .search-bar {
+            width: 400px;
+            position: relative;
+        }
+
+        .search-bar i {
+            position: absolute;
+            top: 15px;
+            left: 17px;
+            color: #ccc;
+        }
+
+        .search-bar input {
+            padding: 10px 20px 10px 38px;
+        }
+
+        .search-bar input::placeholder {
+            padding: 0 10px;
+        }
+/*  */
+.sidebar2 {
+    background: #1A237E;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 20.563rem;
+    left: 0;
+    transition: 0.5s;
+    padding: 0px 0 0;
+}
+.px-md-4 {
+    padding-left: 3.5rem!important;
+    padding-right: 3.5rem!important;
+}
+.main-content {
+    /* margin-left: 29.563rem; */
+    background: #fff;
+    height: 100%;
+}
+.navmenu, .navclosemenu {
+
+    box-shadow: none;
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border: 0;
+    outline: 0;
+
+    line-height: 40px;
+    border-radius: 50%;
+    background: #e23047;
+    color: #fff;
+    margin-right: 15px;
+    display: inline-flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+.p-15{
+    padding-right: 15px;
+    padding-left: 15px;
+}
+    </style>
+    @RenderSection("headers", required: false)
+</head>
+<body>
+    <div class="container-fluid p-0">
+        <div class="bgTop">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="~/UIContent/CSS/img/charbhai-logo.png" alt="logo" class="img-fluid">
+                    </div>
+                    <div class="col-md-8 topLoginText">
+                        <ul>
+                            <li>Page loaded : @DateTime.Now.ToString("dd.MM.yyyy hh:mm:ss tt")</li>
+                            <li>Welcome : <strong>@ViewBag.LogInUser</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @{Html.RenderPartial("_PartialNavBar");}
+    <div class="container-fluid p-0">
+        <div class="col-md-12 p-0 position-relative">
+            @*SideBar Div here*@
+            @{Html.RenderPartial("_LeftMenu");}            
+            <main role="main" class="main-content px-md-4 " id="mains">
+                <div class="col-md-12"></div>
+                @*Top Menu Here*@
+                @*@{Html.RenderPartial("_TopMenu");}*@
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+    <!-- footer start -->
+    <div class="footer-sec">
+        <div class="container">
+            <div class="col-md-12">
+                <p class="text-center">
+                    © 2023. <a href="#">Charbhai Bidi Works.</a>  All Rights Reserved.
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- footer end -->
+    <script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
+    <script src="~/UIContent/JS/jquery-ui-1.13.2.min.js"></script>
+    <script src="~/UIContent/JS/bootstrap.bundle.min.js"></script>
+    <script src="~/UIContent/JS/feather.min.js"></script>
+    <script src="~/UIContent/JS/multiselect.js"></script>
+    <script src="~/UIContent/JS/popper.min.js"></script>
+
+    <script src="~/UIContent/JS/jquery.dataTables.min.js"></script>
+    <script src="~/UIContent/JS/dataTables.bootstrap5.min.js"></script>
+    <script src="~/UIContent/JS/dataTables.js"></script>
+    <script src="~/UIContent/JS/dataTables.fixedColumns.min.js"></script>
+
+    <script src="~/UIContent/JS/jquery.validate.min.js"></script>
+    <script src="~/UIContent/JS/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/UIContent/JS/CustomLayout.js"></script>
+    <script src="~/UIContent/JS/sweetalert2.all.min.js"></script>
+    <!-- Time Picker -->
+    <script src="~/UIContent/JS/moment.min.js"></script>
+    <script src="~/UIContent/JS/bootstrap-datetimepicker.min.js"></script>
+    @RenderSection("scripts", required: false)
+    <script>
+        $.fn.CustomDateFormat = function () {
+            var that = this;
+            var parentid = that.attr('id');
+            var lblid = parentid + 'lbl';
+            var dt = this.val();
+            var e = dt;
+            if (dt.indexOf('/') != -1) {
+                var e = dt.split('/').reverse().join('/');
+            }
+            else {
+                var e = dt.split('-').reverse().join('/');
+            }
+            $('#' + lblid).html(e);
+            //that.addClass('is-valid').removeClass('is-invalid')
+        };
+        $.fn.CustomDateFormatCloneRow = function () {
+            var that = this;
+            var parentid = that.attr('id');
+            var lblid = 'lbl' + parentid;
+            var dt = this.val();
+            var e = dt;
+            if (dt.indexOf('/') != -1) {
+                var e = dt.split('/').reverse().join('/');
+            }
+            else {
+                var e = dt.split('-').reverse().join('/');
+            }
+            $('#' + lblid).html(e);
+            //that.addClass('is-valid').removeClass('is-invalid')
+        };
+        $(document).ready(function () {
+            $('.CustomDateFormat').each(function () {
+                $(this).change(function () {
+                    $(this).CustomDateFormat();
+                });
+            });
+            $('.CustomDateFormatCloneRow').each(function () {
+                $(this).change(function () {
+                    $(this).CustomDateFormatCloneRow();
+                });
+            });
+        });
+    </script>
+    <script>
+        feather.replace()
+    </script>
+    <script>
+        var today = new Date();
+
+        var minDate = today.setDate(today.getDate() + 1);
+
+
+
+        $('.datePicker').datetimepicker({
+
+            useCurrent: false,
+
+            format: "DD/MM/YYYY",
+
+            minDate: minDate
+
+        });
+
+
+    </script>
+    <script>
+        function openNav(e) {
+            document.getElementById("mySidebar").style.width = "20.563rem";
+            document.getElementById("mains").style.marginLeft = "20.563rem";
+            if (e.firstElementChild.id == "menu-btn5") {
+                e.firstElementChild.style.backgroundColor = "#4158c7"
+                e.firstElementChild.style.color = "#fff"
+            }
+
+            // $("#mySidebar").toggleClass('showSidebar');
+            //$(".navmenu").hide();
+            //$(".navclosemenu").show();
+            $('#navOpen').addClass('inVisible');
+            $('#navClose').removeClass('inVisible');
+        }
+
+        function closeNav() {
+            $('#navOpen').removeClass('inVisible');
+            $('#navClose').addClass('inVisible');
+            document.getElementById("mySidebar").style.width = "0px";
+            document.getElementById("mains").style.marginLeft = "0px";
+            document.getElementById("menu-btn5").style.backgroundColor = "#e7ecf9"
+            document.getElementById("menu-btn5").style.color = "#000"
+            // $("#mySidebar").removeClass('showSidebar');
+            //$(".navclosemenu").hide();
+            //$(".navmenu").show();
+            
+        }
+    </script>
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function () {
+
+            document.querySelectorAll('.sidebar .nav-link').forEach(function (element) {
+
+                element.addEventListener('click', function (e) {
+
+                    let nextEl = element.nextElementSibling;
+                    let parentEl = element.parentElement;
+
+                    if (nextEl) {
+                        e.preventDefault();
+                        let mycollapse = new bootstrap.Collapse(nextEl);
+
+                        if (nextEl.classList.contains('show')) {
+                            mycollapse.hide();
+                        } else {
+                            mycollapse.show();
+                            // find other submenus with class=show
+                            var opened_submenu = parentEl.parentElement.querySelector('.submenu.show');
+                            // if it exists, then close all of them
+                            if (opened_submenu) {
+                                new bootstrap.Collapse(opened_submenu);
+                            }
+
+                        }
+                    }
+
+                });
+            })
+
+        });
+            // DOMContentLoaded  end
+    </script>
+    <script>
+        //$(document).ready(function () {
+        //    $(".only-numeric").bind("keypress", function (e) {
+        //        var keyCode = e.which ? e.which : e.keyCode
+
+        //        if (!(keyCode >= 48 && keyCode <= 57)) {
+        //            $(".error").css("display", "inline");
+        //            return false;
+        //        } else {
+        //            $(".error").css("display", "none");
+        //        }
+        //    });
+        //    $(".only-decimal").bind("keypress", function (e) {
+        //        var keyCode = e.which ? e.which : e.keyCode
+        //        //alert(keyCode);
+        //        if (!(keyCode >= 48 && keyCode <= 57)) {
+        //            if (keyCode != 46) { return false; }
+        //            //$(".error").css("display", "inline");
+        //        } else {
+        //            //$(".error").css("display", "none");
+        //        }
+        //    });
+
+        //});
+    </script>
+</body>
+</html>

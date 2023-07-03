@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
@@ -28,6 +29,29 @@ namespace CBBW.Areas.Security.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+        public ActionResult Index2()
+        {
+            List<PageInformation> model =new List<PageInformation>();
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            IEnumerable<Type> controllerTypes = assembly.GetTypes();
+            controllerTypes= controllerTypes.Where(t => t.BaseType.Name=="Controller");
+            foreach (Type controllerType in controllerTypes)
+            {
+                string controllerName = controllerType.Name.Replace("Controller", "");
+                MethodInfo[] methods = controllerType.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+                foreach (MethodInfo method in methods)
+                {
+                    if(method.IsPublic && !method.IsConstructor && method.ReturnType.Name=="ActionResult")
+                    model.Add(new PageInformation
+                    {
+                        ControllerName = controllerName,
+                        ActionName = method.Name
+                    });
+                }
+            }
+            List<PageInformation> model2 = model.Distinct(new PageInformationEqualityComparer()).ToList();
+            return View(model2);
         }
         public JsonResult BackButtonClicked()
         {

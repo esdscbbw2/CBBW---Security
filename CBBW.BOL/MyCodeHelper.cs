@@ -156,7 +156,41 @@ namespace CBBW.BOL
                 MethodSignature= methodPath+ allparams
             };
             return methodInformation;
-        }        
+        }
+        public static List<string> GetLogFileList() 
+        {
+            List<string> result=new List<string>();
+            var LogDirPath = HttpContext.Current.Server.MapPath("~/Logs");
+            if (Directory.Exists(LogDirPath)) 
+            {
+                string[] fileNames = Directory.GetFiles(LogDirPath);
+                foreach (string filename in fileNames) { result.Add(filename); }
+            }
+            return result;
+        }
+        public static List<PageInformation> GetPageInfo() 
+        {
+            List<PageInformation> model = new List<PageInformation>();
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            IEnumerable<Type> controllerTypes = assembly.GetTypes();
+            controllerTypes = controllerTypes.Where(t => t.BaseType.Name == "Controller");
+            foreach (Type controllerType in controllerTypes)
+            {
+                string controllerName = controllerType.Name.Replace("Controller", "");
+                MethodInfo[] methods = controllerType.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+                foreach (MethodInfo method in methods)
+                {
+                    if (method.IsPublic && !method.IsConstructor && method.ReturnType.Name == "ActionResult")
+                        model.Add(new PageInformation
+                        {
+                            ControllerName = controllerName,
+                            ActionName = method.Name
+                        });
+                }
+            }
+            List<PageInformation> model2 = model.Distinct(new PageInformationEqualityComparer()).ToList();
+            return model2;
+        }
         public static string GetIPAddress() 
         {
             string ipAddress = HttpContext.Current.Request.UserHostAddress;

@@ -1,0 +1,76 @@
+﻿@using System.Globalization;
+@using CBBW.BOL.Role;
+@model TaskControl
+@{
+    Layout = null;
+    var i = 0;
+}
+<div class="col-md-12 mb-4">
+    @if (Model.actions.Count > 0)
+    {
+        <div class="col-md-12 mt-4">
+            <div>
+                <div class="table-responsive btnalign">
+                    <table class="table table-bordered w-100" id="Tasktbl">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="vertical-align: middle;">Action </th>
+                                <th scope="col" style="vertical-align: middle;">Task Name </th>
+                                <th scope="col" style="vertical-align: middle;">Access type  </th>
+               
+                            </tr>
+                        </thead>                                                               
+                        <tbody>
+                            @foreach (var item in Model.actions.Select(x=> new {x.TaskName,x.TaskId}).Distinct().ToList())
+                            {
+                                <tr id="0" class="add-row">
+                                    <td class="text-center">
+                                        <div class="form-check">
+                                            <input class="form-check-input alterID float-none CustomDateFormatCloneRow" type="checkbox" id="IsActiveInt_@i" name="IsActiveInt" data-name="IsActiveInt" value="0" onclick="IsActiveClick();">
+
+                                        </div>
+                                    </td>
+                                    <td class="text-left">
+                                        @item.TaskName
+                                        <input id="TaskId_@i" type="text" data-name="TaskId" class="form-control alterID CustomDateFormatCloneRow inVisible" value="@item.TaskId">
+                                        <input id="TaskName_@i" type="text" data-name="TaskName" class="form-control alterID CustomDateFormatCloneRow inVisible" value="@item.TaskName">
+
+                                    </td>
+
+                                    <td class="text-center">
+                                        <select id="ActionIDs_@i" data-name="ActionIDs" data-name-text="ActionIDstxt"class="form-select is-invalid ApplyMultiSelectWithSelectAll" aria-label="Default select example" onchange="ValidateCloneRowCtrl();">
+
+                                            @foreach (var items in Model.actions.Where(x => x.TaskId == item.TaskId))
+                                            {
+                                                <option value="@items.ActionID">@items.ActionName</option>
+
+                                            }
+                                        </select>
+
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+
+
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-12 mt-1 text-center">
+            <button type="button" disabled id="BtnSave"  class="btn btn-green me-2" name="Save" onclick="SaveData()">
+                <i data-feather="check-circle"></i>
+                Save
+            </button>
+        </div>
+    }
+    else
+    {
+        <span>No Task Available</span>
+    }
+
+</div>

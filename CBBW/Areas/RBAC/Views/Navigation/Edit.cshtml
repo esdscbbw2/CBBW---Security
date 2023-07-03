@@ -1,0 +1,156 @@
+﻿@using System.Globalization;
+@using CBBW.BOL.Navigation;
+@model Header
+
+<div class="container">
+    @Html.HiddenFor(x => x.ModuleId)
+    @Html.HiddenFor(x => x.SubModuleId)
+    @Html.HiddenFor(x => x.CanDelete)
+    <div class="row newTable">
+        <div class="fixedElement">
+            <div class="col-md-12" style="position: relative;">
+                <div class="heading_text_btn mb-4 ">
+                    <div class="leftButton">
+                        <button type="button" id="btnBack" class="btn btn-primary me-2">
+                            <i data-feather="arrow-left-circle"></i>
+                            Back
+                        </button>
+                        @if (Model.CanDelete)
+                        {
+
+                            <button onclick="SaveData();" id="btnDelete" type="button" name="Delete" value="Delete"
+                                    class="btn btn-primary me-2">
+                                <i data-feather="trash-2"></i>
+                                Delete
+                            </button>
+                        }
+                        else
+                        {
+                    <button disabled type="button" name="Save" class="btn btn-green me-2" id="Savebtn" onclick="SaveData();">
+                        <i data-feather="upload"></i>
+                        Submit
+                    </button>
+                            <button type="button" onclick="ClearBtnClicked('/RBAC/SubModule/Edit?ID=@Model.ModuleId&CanDelete=0&CBUID=0')" class="btn btn-white">
+                                <i data-feather="x-circle"></i>
+                                Clear
+                            </button>
+                        }
+
+                     
+                    </div>
+                    <h2>Navigation Master @Model.HeaderText</h2>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-12 mb-5">
+            <div class="card mt-4">
+                <div class="card-body approvalForm">
+                    <div class="form-sample form-inline row ms-auto" id="MainDiv">
+                        <div class="row d-flex align-items-center mb-2">
+                            <div class="col-md-2 col-form-label">
+                                <label>Module Name :</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input id="ModuleName" type="text" disabled data-name="ModuleName" class="form-control pointer">
+                            </div>
+                        </div>
+                        <div class="row d-flex align-items-center mb-2">
+                            <div class="col-md-2 col-form-label">
+                                <label>Sub Module Name :</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input id="SubModuleName" type="text" disabled data-name="SubModuleName" class="form-control pointer">
+                            </div>
+                        </div>
+
+                        <div class="row d-flex align-items-center">
+                            <div class="table-responsive btnalign" id="ModuleDive">
+                                <table class="table table-bordered w-100 btnalign" id="ModuleTable">
+                                    <tbody id="tbody1">
+                                        <tr id="0" class="add-row">
+                                            <td class="border-0 p-0" width="15%">
+                                                <label>Navigation Name:</label>
+                                            </td>
+                                            <td class="border-0">
+                                                <input onchange="ValidateCloneRowCtrl()" id="NavigationName" type="text" data-name="NavigationName" class="form-control pointer is-invalid alterID inValidTag nullvalue CustomDateFormatCloneRow">
+                                                <input id="ID" type="hidden" data-name="ID" class="form-control pointer alterID CustomDateFormatCloneRow" value="0">
+                                            </td>
+                                            <td class="border-0">
+                                                <div class="form-check">
+                                                    <input class="form-check-input alterID  CustomDateFormatCloneRow nullvalue invisible " type="checkbox" id="IsActiveInt" name="IsActiveInt" data-name="IsActiveInt" value="0" onclick="IsActiveClick()">
+
+
+                                                    <label for="" class="ps-2 invisible">Is-Active</label>
+                                                </div>
+                                            </td>
+                                            <td class="border-0">
+                                                <span class="actionBtn">
+                                                    <button id="AddBtn" type="button" disabled
+                                                            class="btn primaryLink alterID cloneBtn addBtn"
+                                                            onclick="AddClonebtn()"
+                                                            data-toggle="tooltip"
+                                                            data-placement="top" title="Add">
+                                                        <i data-feather="plus"></i>
+                                                    </button>
+                                                    <button id="DeleteBtn" type="button"
+                                                            class="btn secondaryLink inVisible alterID cloneBtn removeBtn"
+                                                            onclick="removeClonebtn()"
+                                                            data-toggle="tooltip"
+                                                            data-placement="top" title="Delete">
+                                                        <i data-feather="x"></i>
+                                                    </button>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody id="tbody2"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+@section headers
+    {
+    <style>
+        .inVisible {
+            display: none;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+
+        input[type="date"]::before {
+            right: 30px;
+        }
+    </style>
+
+}
+@section scripts{
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
+    <script src="~/UIContent/JS/CustomePage/Navigation/EditNavigationModule.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#btnBack').click(function () {
+                var url = "/RBAC/Navigation/Index";
+                if ($('#NavigationName').val() != "") {
+                    MyAlertWithRedirection(2, "Are You Sure Want to Go Back?", url);
+                } else {
+                    window.location.href = url;
+                }
+
+
+            });
+        });
+    </script>
+}

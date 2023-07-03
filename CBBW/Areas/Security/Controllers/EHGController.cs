@@ -11,6 +11,7 @@ using CBBW.BOL.EHG;
 using System.Globalization;
 using CBBW.BOL.Master;
 using CBBW.BOL;
+using CBBW.BOL.EntryII;
 
 namespace CBBW.Areas.Security.Controllers
 {
@@ -19,18 +20,20 @@ namespace CBBW.Areas.Security.Controllers
         IUserRepository _iUser;
         IMyHelperRepository _myHelper;
         IMasterRepository _master;
+        IEntryIIRepository _entryII;
         string pMsg;
         UserInfo user;
         IEHGRepository _iEHG;
         EHGHeaderEntryVM model;
         EHGNotApprovalVM appmodel;
         public EHGController(IUserRepository iUser, IEHGRepository iEHG, 
-            IMyHelperRepository myHelper, IMasterRepository master)
+            IMyHelperRepository myHelper, IMasterRepository master, IEntryIIRepository entryII)
         {
             _iUser = iUser;
             _iEHG = iEHG;
             _myHelper = myHelper;
             _master = master;
+            _entryII = entryII;
             pMsg = "";
             user = iUser.getLoggedInUser();
             ViewBag.LogInUser = user.UserName;            
@@ -115,6 +118,38 @@ namespace CBBW.Areas.Security.Controllers
                 modelobj.NoteNumber = NoteNumber;
                 modelobj.HeaderData = _iEHG.getEHGNoteHdr(NoteNumber, ref pMsg);
                 modelobj.TPDetails = _iEHG.getTravelingPersonDetails(NoteNumber, 1, ref pMsg);
+                if (modelobj.TPDetails!=null && modelobj.HeaderData.PurposeOfAllotment == 1) 
+                {
+                    EHGTravelingPersondtlsForManagement xdtl = modelobj.TPDetails.FirstOrDefault();
+                    EmpDate empdate = new EmpDate();
+                    empdate.PunchDate = xdtl.ToDate;
+                    empdate.EmpNumber =MyCodeHelper.GetEmpNoFromString(xdtl.EmployeeNonName);
+                    List<EmpDate> xemp = new List<EmpDate>();
+                    xemp.Add(empdate);
+                    List<PunchInDetails> punch=_entryII.GetPunchingsV4(user.CentreCode,true, xdtl.FromDate, xdtl.FromTime, xemp, ref pMsg);
+                    if (punch != null) 
+                    { 
+                        PunchInDetails xpunch = punch.FirstOrDefault();
+                        xdtl.ActualTourInDate = xpunch.PunchDate;
+                        xdtl.ActualTourInTime = xpunch.PunchInStr;
+                        xdtl.RequiredTourInDate = xdtl.ToDate;
+                        xdtl.TourStatus = 1;
+                        //xdtl.RequiredTourInTime= xpunch.PunchInStr;
+                    }
+                    empdate.PunchDate = xdtl.FromDate;
+                    empdate.EmpNumber = MyCodeHelper.GetEmpNoFromString(xdtl.EmployeeNonName);
+                    xemp.Add(empdate);
+                    punch = _entryII.GetPunchingsV4(user.CentreCode, true, xdtl.FromDate, xdtl.FromTime, xemp, ref pMsg);
+                    if (punch != null) 
+                    {
+                        PunchInDetails xpunch = punch.FirstOrDefault();
+                        xdtl.ActualTourOutDate = xpunch.PunchDate;
+                        xdtl.ActualTourOutTime = xpunch.PunchOutStr;
+                    }
+                    List<EHGTravelingPersondtlsForManagement> xdtls = new List<EHGTravelingPersondtlsForManagement>();
+                    xdtls.Add(xdtl);
+                    modelobj.TPDetails= xdtls;
+                }
                 modelobj.CanDelete = CanDelete == 1 ? true : false;
                 modelobj.CBUID = CBUID;
                 modelobj.DeleteBtn = CanDelete;

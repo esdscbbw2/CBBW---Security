@@ -1,0 +1,41 @@
+﻿<div></div>
+
+@section headers
+    {
+
+}
+@section scripts{
+
+    <script>
+        $(document).ready(function () {
+            //var mymsg = '@ViewBag.ErrMsg';
+            if ('@ViewBag.ErrMsg' != '') {
+                Swal.fire({
+                    title: 'Failed to submit',
+                    text: "@ViewBag.ErrMsg",
+                    icon: 'warning',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        //cancel: 'Cancel',
+                        confirm: 'Ok'
+                    },
+                    //cancelButtonClass: 'btn-cancel',
+                    confirmButtonColor: '#2527a2',
+                });
+            };
+            if ('@ViewBag.Msg' != '') {
+                Swal.fire({
+                    title: 'Confirmation',
+                    text: "@ViewBag.Msg",
+                    icon: 'success',
+                    customClass: 'swal-wide',
+                    buttons: {
+                        confirm: 'Ok'
+                    },
+                    confirmButtonColor: '#2527a2',
+                })
+            };
+           
+        });
+    </script>
+}

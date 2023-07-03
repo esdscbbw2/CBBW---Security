@@ -1,0 +1,145 @@
+﻿@using System.Globalization;
+@using CBBW.BOL.Role;
+@model RBACRoles
+@{
+    // Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Create", "Role", FormMethod.Post))
+{
+    @Html.HiddenFor(x => x.RoleIds)
+    <div class="row newTable">
+        <div class="fixedElement">
+            <div class="col-md-12">
+                <div class="heading_text_btn mb-3 mt-4">
+                    <div class="leftButton">
+                        <button type="button" id="btnBack" class="btn btn-primary me-2">
+                            <i data-feather="arrow-left-circle"></i>
+                            Back
+                        </button>
+                        <button disabled id="BtnSubmit" type="button" name="Final" onclick="SaveData()" class="btn btn-secondary me-2">
+                            <i data-feather="upload"></i>
+                            Submit
+                        </button>
+                        <button type="button" onclick="ClearBtnClicked('/RBAC/Role/Create')"  class="btn btn-white">
+                            <i data-feather="x-circle"></i>
+                            Clear
+                        </button>
+                    </div>
+                    <h2>Role Base Access Control Entry  </h2>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-12 mb-2" id="MainDiv">
+            <div class="card mt-4">
+                <div class="card-body approvalForm">
+
+                    <div class="row d-flex align-items-center mb-3">
+                        <label class="col-form-label col-md-2">
+                            <span>R</span>ole <span>I</span>d:
+                        </label>
+                        <div class="col-md-4">
+                            @Html.TextBoxFor(m => m.RoleId,
+    htmlAttributes: new
+    {
+        @class = "form-control",
+        disabled = "disabled",
+        id = "Noteno2"
+    })
+                        </div>
+
+                        <label class="col-form-label col-md-2">
+                            <span>R</span>ole <span>N</span>ame:
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control is-invalid" id="RoleName" data-name="RoleName" onchange="ValidateControl()">
+                        </div>
+                    </div>
+
+                    <div class="row d-flex align-items-center mb-3">
+                        <label class="col-form-label col-md-2">
+                            <span>M</span>odule  <span>N</span>ame:
+                        </label>
+                        <div class="col-md-4">
+                            <select id="ModuleId" data-name="Module" data-name-text="ModuleName"
+                                    onchange="ChangeCashCadingSourceInCloaningWithIntgerValue('SubModuleId', '/RBAC/Role/GetSubModule?Id=');ValidateControl()"
+                                    class="form-select is-invalid alterID"
+                                    aria-label="Default select example">
+                            </select>
+                        </div>
+                        <label class="col-form-label col-md-2">
+                            <span> S</span>ub <span>M</span>odule:
+                        </label>
+                        <div class="col-md-4">
+                            <select id="SubModuleId" data-name="SubModule" data-name-text="SubModuleName"
+                                    onchange="ChangeCashCadingSourceInCloaningWithIntgerValue('NavigationId', '/RBAC/Role/GetNavigation?Id=');ValidateControl() "
+                                    class="form-select is-invalid alterID"
+                                    aria-label="Default select example">
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center ">
+                        <label class="col-form-label col-md-2">
+                            <span> N</span>avigation:
+                        </label>
+                        <div class="col-md-4">
+                            <select id="NavigationId" data-name="Navigation" data-name-text="NavigationName"
+                                    onchange="ValidateControl()"
+                                    class="form-select is-invalid alterID clonemultiselect"
+                                    aria-label="Default select example">
+                            </select>
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div id="TaskDiv" class="inVisible">
+            </div>
+        </div>
+
+
+
+
+    </div>
+}
+@section headers
+{
+    <style>
+        .inVisible {
+            display: none;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+
+        .Active {
+            background-color: #ddf1dc;
+        }
+    </style>
+}
+@section scripts{
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
+    <script src="~/UIContent/JS/CustomePage/Role/RoleCreate.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#btnBack').click(function () {
+                var url = "/RBAC/Role/Index";
+                if ($('#RoleName').val() != "") {
+                    MyAlertWithRedirection(2, "Are You Sure Want to Go Back?", url);
+                } else {
+                    window.location.href = url;
+                }
+
+
+            });
+        });
+    </script>
+}

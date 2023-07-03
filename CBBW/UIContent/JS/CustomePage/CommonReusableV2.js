@@ -85,6 +85,7 @@ function HandleResponseOfPostRequest(data,AfterSucessRedirectUrl) {
     });
 };
 function GetDataFromAjax(url) {
+    //alert(url);
     return $.ajax({
         url: url,
         method: "GET",
@@ -376,6 +377,11 @@ function TableRowCloaning(sourceTBody, destinationTBody, rowid, IsRemoveBtn, IsA
             }
 
             $(this).data('DateTimePicker').date(time);
+        });
+    });
+    cloneready.find('.CustomDateFormatCloneRow').each(function () {
+        $(this).change(function () {
+            $(this).CustomDateFormatCloneRow();
         });
     });
     cloneready.find('.cloneBtn').each(function () {
@@ -711,6 +717,21 @@ $.fn.BtnDisableAfterEntry = function () {
     var that = this;
     that.attr('disabled', 'disabled').addClass('border-green');
 };
+$.fn.CustomDateFormatCloneRow = function () {
+    var that = this;
+    var parentid = that.attr('id');
+    var lblid = 'lbl' + parentid;
+    var dt = this.val();
+    var e = dt;
+    if (dt.indexOf('/') != -1) {
+        var e = dt.split('/').reverse().join('/');
+    }
+    else {
+        var e = dt.split('-').reverse().join('/');
+    }
+    $('#' + lblid).html(e);
+    //that.addClass('is-valid').removeClass('is-invalid')
+};
 //Section Start - Validations
 function validatePassword(password) {
     //(?=.* [a - z]) Contains at least one lowercase letter
@@ -774,6 +795,21 @@ function ValidateEmployeeForTour(Employees,FromDate,Todate) {
             return false;
         }
     });
+};
+function CompareStringsForCommonValue(CommaSeparatedString1, CommaSeparatedString2) {
+    debugger;
+    //var xSet = new Set(CommaSeparatedString1.split(','));
+    //var ySet = new Set(CommaSeparatedString2.split(','));
+    var commonElements = [];
+
+    $.each(CommaSeparatedString1, function (index, value) {
+        if ($.inArray(value, CommaSeparatedString2) !== -1) {
+            commonElements.push(value);
+        }
+    });
+    if (commonElements.length > 0) {
+        return true;
+    } else { return false;}
 };
 //Section Start - Runtime Classess
 $.fn.isInvalid = function () {

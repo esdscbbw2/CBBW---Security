@@ -13,4 +13,10 @@ namespace CBBW.BOL
         public string MethodParams { get; set; }
         public string MethodSignature { get; set; }
     }
+    public class PageInformation 
+    {
+        public string ControllerName { get; set; }
+        public string ActionName { get; set; }
+    }
+    
 }

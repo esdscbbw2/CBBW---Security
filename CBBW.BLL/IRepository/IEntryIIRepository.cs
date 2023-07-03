@@ -38,5 +38,6 @@ namespace CBBW.BLL.IRepository
         EntryIIInnerView GetEntryIIData(string NoteNumber, int CentreCode, bool IsMainlocation, ref string pMsg);
         int IsMainLocationEntered(string NoteNumber, ref string pMsg);
         NoteStatus GetEntryIINoteStatus(string NoteNumber, int CentreCode, ref string pMsg);
+        List<PunchInDetails> GetPunchingsV4(int CentreCode, bool IsMainLocation, DateTime SchFromDate, string SchFromTime, List<EmpDate> dtldata, ref string pMsg);
     }
 }

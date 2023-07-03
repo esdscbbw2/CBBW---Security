@@ -1,0 +1,36 @@
+﻿@using CBBW.BOL;
+@model List<PageInformation>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index2</title>
+</head>
+<body>
+    <div> 
+        <table>
+            <tr>
+                <td>Controller</td>
+                <td></td>
+                <td>Action</td>
+            </tr>
+            @if (Model != null && Model.Count > 0)
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.ControllerName</td>
+                        <td> - </td>
+                        <td>@item.ActionName</td>
+                    </tr>
+                }
+            }
+        </table>        
+    </div>
+</body>
+</html>

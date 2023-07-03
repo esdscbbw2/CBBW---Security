@@ -8,7 +8,9 @@
     @using (Html.BeginForm())
     {
         @Html.HiddenFor(m => m.EffectiveDate)
-        @Html.HiddenFor(m => m.IsDelete)<div class="fixedElement">
+        @Html.HiddenFor(m => m.IsDelete)
+        @Html.HiddenFor(m=>m.IsBackButton)
+    <div class="fixedElement">
             <div class="col-md-12" style="position: relative;">
                 <div class="heading_text_btn mb-4 mt-4">
                     <div class="leftButton">
@@ -308,6 +310,9 @@
                 });
 
             });
+            if ($('#IsBackButton').val() == 0) {
+                $('#btnBack').addClass('inVisible');
+            }
         });
     </script>
 }

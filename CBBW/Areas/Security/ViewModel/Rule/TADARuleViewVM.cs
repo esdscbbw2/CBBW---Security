@@ -14,5 +14,6 @@ namespace CBBW.Areas.Security.ViewModel.Rule
         public List<CustomComboOptionsWithString> CategoryList { get; set; }
         public string SelectedCategory { get; set; }
         public bool IsDelete { get; set; }
+        public int IsBackButton { get; set; }
     }
 }

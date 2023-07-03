@@ -97,6 +97,7 @@ namespace CBBW.BLL.Repository
                         item.PersonTypeText = m.PersonType.Where(o => o.ID == item.PersonType).FirstOrDefault().DisplayText;
                     }
                 }
+
                 return result;
             }
             catch (Exception ex)

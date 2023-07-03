@@ -1,0 +1,157 @@
+﻿@using CBBW.BOL.Modules
+@model List<ModuleList>
+@{
+    ViewBag.Title = "Role Management - Listing ";
+}
+
+<div class="">
+    <div class="row newTable">
+        <div class="fixedElement">
+            <div class="col-md-12" style="position: relative;">
+                <div class="heading_text_btn mb-4 mt-4">
+                    <div class="leftButton">
+                        <button type="submit" class="btn btn-primary me-2" onclick="window.location.href='/RBAC/Role/Create';">
+                            <i data-feather="plus-circle"></i>
+                            Add
+                        </button>
+                    </div>
+                    <h2>@ViewBag.Title </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+
+            <table id="tblmgp" class="table w-100 table-bordered btnalign mt-4">
+                <thead>
+                    <tr>
+                        <th scope="col" rowspan="2" width="7%"> SL. No.</th>
+                        <th scope="col">Role ID</th>
+                        <th scope="col">Role Name</th>
+                        <th scope="col"> Entry Date  </th>
+                        <th scope="col" rowspan="2" style="background-color: pink; color:#000;">Action</th>
+                    </tr>
+                    <tr>
+                        <th scope="col" rowspan="1" colspan="1">
+                            <div class="form-group">
+                                <input id="filterNoteno" type="text" class="form-control tblSearch" placeholder="Search...">
+                            </div>
+                        </th>
+                        <th scope="col" rowspan="1" colspan="1">
+                            <div class="form-group">
+                                <input id="filterDate" type="text" class="form-control tblSearch" placeholder="Search...">
+                            </div>
+                        </th>
+                        <th scope="col" rowspan="1" colspan="1">
+                            <div class="form-group">
+                                <input id="filterStatus" type="text" class="form-control tblSearch" placeholder="Search...">
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+                    <tr></tr>
+                    @*@if (Model != null && Model.Count > 0)
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.RowNumber</td>
+                                    <td>@item.NoteNumber</td>
+                                    <td>@item.EntryDateDisplay</td>
+                                    <td>@item.CenterCodeName</td>
+
+                                    <td>
+                                        <span class="actionBtn">
+                                            <button type="button" class="btn primaryLink" value="btn" data-toggle="tooltip" data-placement="top"
+                                                    title="Details">
+                                                <i data-feather="eye"></i>
+                                            </button>
+
+                                        </span>
+                                    </td>
+                                </tr>
+
+                            }
+                        }*@
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+@section headers
+    {
+
+}
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var dtinstance = $('#tblmgp').DataTable({
+                columns: [
+                    { 'data': 'RowNumber' },
+                    { 'data': 'RoleId' },
+                    { 'data': 'RoleName' },
+                    { 'data': 'EntryDateStr' },
+                    //    {'data': 'IsActive',
+                    //    render: function (data, type, full, row) {
+                    //        return (data == true ? "<button style='font-size:14px;' class='btn alert-success btn-status'>Active </button >" :"<button style='font-size:14px;' class='btn alert-danger btn-status'>Inactive </button >")
+                    //    }
+                    //},
+                    {
+                        'data': 'RoleId', render: function (data, type, row, meta) {
+                            //var viewBtn = '<button type="button" class="btn primaryLink" data-toggle="tooltip" data-placement="top"> <i data-feather="eye"></i></button>';
+
+                            var editBtn = '<button type="button" id="' + row.RoleId + '" data-btn="E" onclick="FnViewNote(this)" class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Details"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button>';
+
+                            var viewBtn = '<button type="button" id="' + row.RoleId + '" data-btn="V" onclick="FnViewNote(this)" class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Details"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></button>';
+
+                            var deleteBtn = '<button type="button" id="' + row.RoleId + '" data-btn="D" onclick="FnViewNote(this)" class="btn secondaryLink" data-toggle="tooltip" data-placement="top" title="Remove" data-placement="top" title="" data-bs-original-title="Pending"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>';
+                            var mbtns = '<span class="actionBtn d-block">';
+                            mbtns = mbtns + viewBtn;
+                            mbtns = mbtns + editBtn;
+                            if (row.CanDelete) { mbtns = mbtns + deleteBtn; }
+                            mbtns = mbtns + '</span>';
+                            return type === 'display' ? mbtns : data;
+                        }
+                    },
+                ],
+
+                bServerSide: true,
+                sAjaxSource: '/RBAC/Role/GetIndexListPage',
+                "pagingType": "input"
+            });
+            $('.tblSearch').on('keyup change', function () {
+                dtinstance.search(this.value).draw();
+            });
+            $('.tblSearch').on('click', function (e) {
+                e.stopPropagation();
+            });
+        });
+
+        function FnViewNote(ctrl) {
+            var ID = $(ctrl).attr('id');
+            var btnType = $(ctrl).attr('data-btn');
+            var destinationurlD = '/RBAC/Role/Details?ID=' + ID + '&CanDelete=1&CBUID=0';
+            var destinationurlV = '/RBAC/Role/Details?ID=' + ID + '&CanDelete=0&CBUID=0';
+            var destinationurlE = '/RBAC/Role/Edit?ID=' + ID + '&CanDelete=0&CBUID=0';
+            if (btnType == 'D') { window.location.href = destinationurlD; }
+            if (btnType == 'V') { window.location.href = destinationurlV; }
+            if (btnType == 'E') { window.location.href = destinationurlE; }
+
+
+        };
+
+
+            //function GetDetailsPage(ctrl) {
+            //    var targetid = $(ctrl).attr("id");
+            //    var targetval = $(ctrl).attr('data-value');
+            //    var url = '/Security/ETS/Details?NoteNumber=' + targetid;
+            //    window.location.href = url;
+            //};
+    </script>
+}

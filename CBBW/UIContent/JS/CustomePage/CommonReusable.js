@@ -1196,6 +1196,48 @@ function GetPreviousTRId(trID) {
     return previousRow.attr('id');
 };
 
+//Adding by bhushan for RBAC
+function ChangeCashCadingSourceInCloaningWithIntgerValue(destinationCtrlID, datasourceURL) {
+    var target = ChangeCashCadingSourceInCloaningWithIntgerValue.caller.arguments[0].target;
+    var targetCtrl = $(target);
+    var targetid = targetCtrl.attr('id');
+    //alert(targetid);
+    var rowid = $(target.closest('.add-row')).attr("id");
+    var i = targetid.indexOf('_');
+    if (i >= 0) { destinationCtrlID = destinationCtrlID + '_' + rowid; }
+    var x;
+    $('#' + targetid + ' option:selected').each(function () {
+        x = $(this).val();
+    });
+    datasourceURL = datasourceURL + x;
+    //alert(datasourceURL);
+    (async function () {
+        const r1 = await getDropDownData(destinationCtrlID, 'Select', datasourceURL);
+    })();
+    if (targetCtrl.val().length > 0 || targetCtrl.val() != '-1') { targetCtrl.addClass('is-valid').removeClass('is-invalid'); } else { targetCtrl.addClass('is-invalid').removeClass('is-valid'); }
+};
+
+function ChangeCashCadingSourceInCloaningWithIntgerValueWithMultiSelect(destinationCtrlID, datasourceURL) {
+    var target = ChangeCashCadingSourceInCloaningWithIntgerValueWithMultiSelect.caller.arguments[0].target;
+    var targetCtrl = $(target);
+    var targetid = targetCtrl.attr('id');
+    //alert(targetid);
+    var rowid = $(target.closest('.add-row')).attr("id");
+    var i = targetid.indexOf('_');
+    if (i >= 0) { destinationCtrlID = destinationCtrlID + '_' + rowid; }
+    //var x;
+    //$('#' + targetid + ' option:selected').each(function () {
+    //    x = targetCtrl;
+    //});
+    datasourceURL = datasourceURL + targetCtrl.val();
+
+    (async function () {
+        const r1 = await getMultiselectData(destinationCtrlID, datasourceURL);
+    })();
+    if (targetCtrl.val().length > 0 || targetCtrl.val() != '-1') { targetCtrl.addClass('is-valid').removeClass('is-invalid'); } else { targetCtrl.addClass('is-invalid').removeClass('is-valid'); }
+};
+
+
 
 
 

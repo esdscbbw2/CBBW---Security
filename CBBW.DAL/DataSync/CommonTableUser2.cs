@@ -1,22 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CBBW.BOL;
 using CBBW.BOL.BIL;
-using CBBW.BOL.CTV;
-using CBBW.BOL.CustomModels;
-using CBBW.BOL.EHG;
 using CBBW.BOL.EMC;
 using CBBW.BOL.EMN;
 using CBBW.BOL.ETS;
 using CBBW.BOL.GVMR;
-using CBBW.BOL.Master;
-using CBBW.BOL.MGP;
-using CBBW.BOL.TADA;
+using CBBW.BOL.Modules;
+using CBBW.BOL.Navigation;
+using CBBW.BOL.Role;
+using CBBW.BOL.SubModules;
+using CBBW.BOL.Task;
 using CBBW.BOL.TFD;
-using CBBW.DAL.DBLogic;
 
 namespace CBBW.DAL.DataSync
 {
@@ -119,7 +115,6 @@ namespace CBBW.DAL.DataSync
                 }
             }
         }
-
         public CommonTable(List<EMNTravellingPerson> customoptions)
         {
             UDTable = new DataTable();
@@ -216,7 +211,6 @@ namespace CBBW.DAL.DataSync
                 }
             }
         }
-
         public CommonTable(List<EMCTravellingPerson> customoptions)
         {
             UDTable = new DataTable();
@@ -410,7 +404,6 @@ namespace CBBW.DAL.DataSync
                 }
             }
         }
-
         public CommonTable(List<ApprovalNoteNo> customoptions)
         {
             UDTable = new DataTable();
@@ -425,7 +418,6 @@ namespace CBBW.DAL.DataSync
                 }
             }
         }
-
         public CommonTable(List<GVMRDataSave> customoptions)
         {
             UDTable = new DataTable();
@@ -462,12 +454,137 @@ namespace CBBW.DAL.DataSync
                 }
             }
         }
+        public CommonTable(List<Module> customoptions)
+        {
+            UDTable = new DataTable();
+            UDTable.Columns.Add("iID", typeof(int));
+            UDTable.Columns.Add("sModuleName", typeof(string));
+            UDTable.Columns.Add("bIsActive", typeof(bool));
+            UDTable.Columns.Add("iUserId", typeof(int));
+            if (customoptions != null && customoptions.Count > 0)
+            {
+                foreach (Module obj in customoptions)
+                {
+                    DataRow dr = UDTable.NewRow();
+                    dr["iID"] = obj.ID;
+                    dr["sModuleName"] = obj.ModuleName;
+                    dr["bIsActive"] = obj.IsActiveInt==1?true:false;
+                    dr["iUserId"] = obj.UserId;
+                    UDTable.Rows.Add(dr);
+                }
+            }
+        }
+        public CommonTable(List<SubModule> customoptions)
+        {
+            UDTable = new DataTable();
+            UDTable.Columns.Add("iID", typeof(int));
+            UDTable.Columns.Add("iModuleId", typeof(int));
+            UDTable.Columns.Add("sSubModuleName", typeof(string));
+            UDTable.Columns.Add("bIsActive", typeof(bool));
+            UDTable.Columns.Add("iUserId", typeof(int));
+            if (customoptions != null && customoptions.Count > 0)
+            {
+                foreach (SubModule obj in customoptions)
+                {
+                    DataRow dr = UDTable.NewRow();
+                    dr["iID"] = obj.ID;
+                    dr["iModuleId"] = obj.ModuleId;
+                    dr["sSubModuleName"] = obj.SubModuleName;
+                    dr["bIsActive"] = obj.IsActiveInt == 1 ? true : false;
+                    dr["iUserId"] = obj.UserId;
+                    UDTable.Rows.Add(dr);
+                }
+            }
+        }
+        public CommonTable(List<Navigations> customoptions)
+        {
+            UDTable = new DataTable();
+            UDTable.Columns.Add("iID", typeof(int));
+            UDTable.Columns.Add("iModuleId", typeof(int));
+            UDTable.Columns.Add("iSubModuleId", typeof(int));
+            UDTable.Columns.Add("sNavigationName", typeof(string));
+            UDTable.Columns.Add("bIsActive", typeof(bool));
+            UDTable.Columns.Add("iUserId", typeof(int));
+            if (customoptions != null && customoptions.Count > 0)
+            {
+                foreach (Navigations obj in customoptions)
+                {
+                    DataRow dr = UDTable.NewRow();
+                    dr["iID"] = obj.ID;
+                    dr["iModuleId"] = obj.ModuleId;
+                    dr["iSubModuleId"] = obj.SubModuleId;
+                    dr["sNavigationName"] = obj.NavigationName;
+                    dr["bIsActive"] = obj.IsActiveInt == 1 ? true : false;
+                    dr["iUserId"] = obj.UserId;
+                    UDTable.Rows.Add(dr);
+                }
+            }
+        }
+        public CommonTable(List<TaskMaster> customoptions)
+        {
+            UDTable = new DataTable();
+            UDTable.Columns.Add("iID", typeof(int));
+            UDTable.Columns.Add("iNavigationId", typeof(int));
+            UDTable.Columns.Add("iTaskId", typeof(int));
+            UDTable.Columns.Add("bIsActive", typeof(bool));
+            UDTable.Columns.Add("iUserId", typeof(int));
+            if (customoptions != null && customoptions.Count > 0)
+            {
+                foreach (TaskMaster obj in customoptions)
+                {
+                    DataRow dr = UDTable.NewRow();
+                    dr["iID"] = obj.ID!=null?obj.ID:0;
+                    dr["iNavigationId"] = obj.NavigationId;
+                    dr["iTaskId"] = obj.TaskId;
+                    dr["bIsActive"] = obj.IsActiveInt == 1 ? true : false;
+                    dr["iUserId"] = obj.UserId;
+                    UDTable.Rows.Add(dr);
+                }
+            }
+        }
+        public CommonTable(List<Actions> customoptions)
+        {
+            UDTable = new DataTable();
+            UDTable.Columns.Add("iID", typeof(int));
+            UDTable.Columns.Add("sTaskName", typeof(string));
+            UDTable.Columns.Add("iTaskId", typeof(int));
+            UDTable.Columns.Add("sActionID", typeof(string));
+            UDTable.Columns.Add("iNavigationId", typeof(int));
+            if (customoptions != null && customoptions.Count > 0)
+            {
+                foreach (Actions obj in customoptions)
+                {
+                    obj.ActionIDs.Split(',');
+                    foreach(var item in obj.ActionIDs.Split(','))
+                    {
+                        DataRow dr = UDTable.NewRow();
+                        dr["iID"] = obj.ID != null ? obj.ID : 0;
+                        dr["sTaskName"] = obj.TaskName;
+                        dr["iTaskId"] = obj.TaskId;
+                        dr["sActionID"] = item;
+                        dr["iNavigationId"] = obj.NavigationId;
+                        UDTable.Rows.Add(dr);
+                    }
+                }
+            }
+        }
 
-
-
-
-
-      
+        public CommonTable(List<PageInformation> customoptions)
+        {
+            UDTable = new DataTable();
+            UDTable.Columns.Add("sControllerName", typeof(string));
+            UDTable.Columns.Add("sActionName", typeof(string));
+            if (customoptions != null && customoptions.Count > 0)
+            {
+                foreach (PageInformation obj in customoptions)
+                {
+                    DataRow dr = UDTable.NewRow();
+                    dr["sControllerName"] = obj.ControllerName;
+                    dr["sActionName"] = obj.ActionName;
+                    UDTable.Rows.Add(dr);
+                }
+            }
+        }
 
     }
 }

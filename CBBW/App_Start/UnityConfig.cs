@@ -33,7 +33,11 @@ namespace CBBW
             container.RegisterType<ITFDRepository, TFDRepository>();
             container.RegisterType<IBILRepository, BILRepository>();
             container.RegisterType<IRBACUserRepository, RBACUserRepository>();
-
+            container.RegisterType<IRoleRepository, RoleRepository>();
+            container.RegisterType<IModuleRepository, ModuleRepository>();
+            container.RegisterType<ISubModuleRepository, SubModuleRepository>();
+            container.RegisterType<INavigationRepository, NavigationRepository>();
+            container.RegisterType<ITaskRepository, TaskRepository>();
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }
     }

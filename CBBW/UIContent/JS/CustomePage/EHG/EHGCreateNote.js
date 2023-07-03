@@ -368,10 +368,27 @@ function validatectrl(targetid, value) {
         case "ToDateForMang":
             if (value != '') {
                 var fromdate = $('#FromdateForMang').val();
+                var personCtrl = $('#DriverNoForManagement');
+                var url = '/EHG/GetEmployeeValidationForTour?Employees=' + personCtrl.val() + '&FromDate=' + fromdate + '&ToDate=' + value;
+                
                 isvalid = CompareDateV2(fromdate, 0, value, 0);
                 //alert($('#' + targetid).attr('max') +' - '+value+ ' - ' + $('#' + targetid).attr('min'))
                 if (!isvalid) {
                     $('#ToDateForMang').prop('title', 'To Date Should Be Same Or Latter Than From Date');
+                }
+                else {
+                    GetDataFromAjax(url).done(function (data) {
+                        if (data.bResponseBool == true) {
+                            //MyAlert(1, 'Validation Successful');
+                            //targetCtrl.isValidCtrl();
+                            $('#ToDateForMang').isValid();
+                        }
+                        else {
+                            MyAlert(4, data.sResponseString);
+                            /*targetCtrl.isInvalidCtrl();*/
+                            $('#ToDateForMang').isInvalid();
+                        }
+                    })
                 }
                 //$('#ReTInDtForMang').html(ChangeDateFormat(value));
                 $('#ReTInDtForMang').html(ChangeDateFormat('Nil'));
@@ -1186,7 +1203,7 @@ $(document).ready(function () {
     
 });
 $(document).ready(function () {
-    $('.timePickerPreDateCtrlV2ForMang').each(function () {
+    $('.timePickerPreDateCtrlV2ForMang').each(function () {        
         var myDtCtrl = $('#FromdateForMang');
         //var myNextCtrl = $('#FromLocationType_' + $(this).attr('id').split('_')[1]);
         $(this).datetimepicker({
