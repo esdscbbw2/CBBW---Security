@@ -10,16 +10,17 @@
             <div class="heading_text_btn mb-4 ">
                 <div class="leftButton">
                     <button type="button" class="btn btn-primary me-2"
-                            onclick="NormalBackBtnClicked('/Security/UserManagement/Index')">
+                            onclick="NormalBackBtnClicked('/RBAC/UserManagement/Index')">
                         <i data-feather="arrow-left-circle"></i>
                         Back
                     </button>
-                    <button id="btnSubmit" type="submit" class="btn btn-secondary me-2"
-                            onclick="window.location.href='user_mngmt_listing.html';">
+                    <button id="btnSubmit" type="button"
+                            class="btn btn-secondary me-2"
+                            onclick="SaveData()">
                         <i data-feather="upload"></i>
                         Submit
                     </button>
-                    <button type="button" onclick="ClearBtnClicked('/Security/UserManagement/AddUser?isClear=1')"
+                    <button type="button" onclick="ClearBtnClicked('/RBAC/UserManagement/AddUser')"
                             class="btn btn-white">
                         <i data-feather="x-circle"></i>
                         Clear
@@ -65,7 +66,7 @@
                             User Name :
                         </label>
                         <div class="col-md-4">
-                            <input id="UserName" type="text" 
+                            <input id="UserName" type="text"
                                    title="User Name Should Be Alpha Numeric Without Space."
                                    class="form-control SLUCtrl is-invalid" />
                         </div>
@@ -94,9 +95,9 @@
                     <div class="row d-flex align-items-center mb-4">
                         <div class="col-md-6">
                             <div class="form-check">
-                                <input class="form-check-input float-none SLUCtrl" 
-                                       type="checkbox" id="check1" checked 
-                                       name="option1" value="something"/>
+                                <input class="form-check-input float-none SLUCtrl"
+                                       type="checkbox" id="check1" checked
+                                       name="option1" value="something" />
                                 <label for="" class="ps-2">Is-Active</label>
                             </div>
                         </div>
@@ -121,7 +122,7 @@
                                         <td>
                                             <div id="selectDiv1">
                                                 <select id="Role_0" multiple="multiple"
-                                                        onchange="RolesChanged()"
+                                                        onchange="RolesChanged()" data-name="RoleID"
                                                         class="form-select ApplyMultiSelectWithSelectAll SLUCtrl alterID inValidTag duprole"
                                                         aria-label="Default select example">
                                                     @if (Model.RoleList != null && Model.RoleList.Count > 0)
@@ -153,7 +154,7 @@
                                         <td>
                                             <div id="selectDiv3">
                                                 <select multiple="multiple" id="LocationCode_0"
-                                                        onchange="LocationCodeChanged()"
+                                                        onchange="LocationCodeChanged()" data-name="LocationCodes"
                                                         class="form-select ApplyMultiSelect SLUCtrl alterID inValidTag"
                                                         aria-label="Default select example">
                                                 </select>
@@ -161,7 +162,7 @@
                                         </td>
                                         <td>
                                             <div class="position-relative pointer">
-                                                <input id="EffectiveFromDt_0" type="date"
+                                                <input id="EffectiveFromDt_0" type="date" data-name="EffectiveFromDate"
                                                        class="form-control pointer is-invalid CustomDateFormatCloneRow valid SLUCtrl alterID inValidTag"
                                                        onchange="FromDateChanged()">
                                                 <label id="lblEffectiveFromDt_0" style="width:100px"
@@ -170,8 +171,8 @@
                                         </td>
                                         <td>
                                             <div class="position-relative pointer">
-                                                <input type="date" id="EffectiveToDate_0"
-                                                       class="form-control pointer is-invalid CustomDateFormatCloneRow valid SLUCtrl alterID inValidTag"
+                                                <input type="date" id="EffectiveToDate_0" data-name="EffectiveToDate"
+                                                       class="form-control pointer CustomDateFormatCloneRow valid SLUCtrl alterID"
                                                        onchange="ToDateChanged()">
                                                 <label id="lblEffectiveToDate_0" style="width:100px"
                                                        class="datelabel pointer alterID">Select Date</label>

@@ -695,6 +695,9 @@
     <Content Include="Areas\RBAC\Views\web.config" />
     <Content Include="Areas\RBAC\Views\_ViewStart.cshtml" />
     <Content Include="Areas\RBAC\Views\UserManagement\AddUser.cshtml" />
+    <Content Include="Areas\RBAC\Views\UserManagement\Index.cshtml" />
+    <Content Include="Areas\RBAC\Views\UserManagement\ViewUser.cshtml" />
+    <Content Include="Areas\RBAC\Views\UserManagement\EditUser.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />

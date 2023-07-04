@@ -38,11 +38,14 @@ $("#NewPassword").on("keyup", function () {
     }
     SubmitBtnStatus('btnSubmit', 'HdrDiv');
 });
-$("#CnfPassword").on("keyup", function () {
+$("#CnfPassword").on("keyup", function () {    
     var myCtrl = $(this);
-    if (validatePassword(myCtrl.val())) {
+    var newpassword = $('#NewPassword').val();
+    if (newpassword == myCtrl.val()) {
         myCtrl.isValidCtrl();
-    } else {
+    }
+    else {
+        //MyAlert(4, 'Password Confirmation Failed.')
         myCtrl.isInvalidCtrl();
     }
     SubmitBtnStatus('btnSubmit', 'HdrDiv');
@@ -86,7 +89,7 @@ function IsUniqueRole(myCtrl) {
     $('.duprole').each(function () {
         that = $(this);
         if (that.attr('id') != myCtrl.attr('id')) {
-            alert(myCtrl.val() + ' - ' + that.val());
+            //alert(myCtrl.val() + ' - ' + that.val());
             if (CompareStringsForCommonValue(myCtrl.val(), that.val())) { isvalid = false;}
         }        
     });
@@ -99,7 +102,7 @@ function LocationTypeChanged() {
     if (myCtrl.val() != '') {
         var url = '/Security/CTV2/GetToLocationsFromTypes?TypeIDs=' + myCtrl.val();
         GetDataFromAjax(url).done(function (data) {
-            refreshMultiselect(data, myCashcadingID, false);
+            refreshMultiselect(data, myCashcadingID, true);
         });
         myCtrl.isValidCtrl();
     } else { myCtrl.isInvalidCtrl(); }
@@ -112,7 +115,12 @@ function LocationCodeChanged() {
 };
 function FromDateChanged() {
     var myCtrl = $(FromDateChanged.caller.arguments[0].target);
-    if (myCtrl.val() != '') { myCtrl.isValidCtrl(); } else { myCtrl.isInvalidCtrl(); }
+    var todateCtrl = $('#EffectiveToDate_' + myCtrl.attr('id').split('_')[1]);
+    var todatemin = CustomDateChangeV2(myCtrl.val(), 1);    
+    if (myCtrl.val() != '') {
+        myCtrl.isValidCtrl();
+        todateCtrl.attr('min', todatemin);
+    } else { myCtrl.isInvalidCtrl(); }
     EnableAddBtn(myCtrl.attr('id').split('_')[1], 'AddBtn');
 };
 function ToDateChanged() {
@@ -126,6 +134,10 @@ function CloneRowAddBtnClick() {
     var sRowid = $(insrow).attr('id');
     var cRowid = TableRowCloaning('tbody1', 'tbody2', sRowid, true, true, false);
     $('#tblSection').removeClass('sectionB');
+    debugger;
+    $('#' + cRowid).find('.duprole').each(function () {
+        UnLockSLUCtrl($(this));
+    });
     myCtrl.tooltip('hide');
 };
 function EnableAddBtn(rowid, addBtnBaseID) {
@@ -139,4 +151,38 @@ function EnableAddBtn(rowid, addBtnBaseID) {
         addBtnctrl.makeSLUEnable();
     }
     SubmitBtnStatus('btnSubmit', 'HdrDiv1');
+};
+function CustomDateChangeV2(firstDate, addDays) {
+    var myDate = new Date(firstDate);
+    myDate.setDate(myDate.getDate() + addDays * 1);
+    var output1 = myDate.toISOString().split('.');
+    var output = output1[0].split('T');
+    return output[0];    
+}
+function SaveData() {
+    var empno = $('#EmployeeNumber').val();
+    var empname = $('#EmployeeNumber option:selected').text();
+    var username = $('#UserName').val();
+    var password = $('#NewPassword').val();
+    var IsActive = false;
+    if ($('#check1').attr('checked')) { IsActive = true; }
+    var schrecords = GetDataFromTable('myTable');
+    var x = '{"EmployeeNumber":"' + empno
+        + '","EmployeeName":"' + empname
+        + '","UserName":"' + username
+        + '","Password":"' + password
+        + '","IsActive":"' + IsActive
+        + '","UserRoleList":' + schrecords + '}';
+    url = '/RBAC/UserManagement/SetUserData';
+    PostDataInAjax(url,x).done(function (data) {
+        $(data).each(function (index, item) {
+            if (item.bResponseBool == true) {
+                var url = "/RBAC/UserManagement/Index";
+                MyAlertWithRedirection(1, "Data Saved Successfully.", url);
+            }
+            else {
+                MyAlert(3, "System Failed To Save Data.");
+            }
+        });
+    });
 };

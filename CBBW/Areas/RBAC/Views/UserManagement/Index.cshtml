@@ -1,0 +1,174 @@
+﻿<div class="row newTable">
+    <div class="fixedElement">
+        <div class="col-md-12" style="position: relative;">
+            <div class="heading_text_btn mb-4 ">
+                <div class="leftButton">
+                    <button type="submit"
+                            class="btn btn-primary me-2"
+                            onclick="window.location.href='/RBAC/UserManagement/AddUser';">
+                        <i data-feather="plus-circle"></i>
+                        Add
+                    </button>
+                </div>
+                <h2>User Management – Listing  </h2>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive mb-4">
+        <table class="table table-bordered btnalign" id="myTable">
+            <thead>
+                <tr>
+                    <th scope="col" rowspan="2"> SL.No.</th>
+                    <th scope="col">Employee No. & Name</th>
+                    <th scope="col">User</th>
+                    <th scope="col" rowspan="2">Status</th>
+                    <th scope="col" rowspan="2" style="background: pink;color: #000;">Action</th>
+                </tr>
+                <tr>
+                    <th scope="col">
+                        <div class="form-group">
+                            <input type="text" class="form-control tblSearch" data-index="1" placeholder="Search...">
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div class="form-group">
+                            <input type="text" class="form-control tblSearch" data-index="2" placeholder="Search...">
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>9001 / praveen</td>
+                    <td>praveen</td>
+                    <td>
+                        <button class="btn alert-success btn-status">
+                            Active
+                        </button>
+                    </td>
+                    <td>
+                        <span class="actionBtn">
+                            <button type="button" class="btn primaryLink" data-toggle="tooltip" data-placement="top" onclick="window.location.href='user_mngmt_view.html';"
+                                    title="Details">
+                                <i data-feather="eye"></i>
+                            </button>
+                            <button type="button" class="btn primaryLink" data-toggle="tooltip" data-placement="top" onclick="window.location.href='user_mngmt_edit.html';"
+                                    title="Edit">
+                                <i data-feather="edit"></i>
+                            </button>
+                            <button type="button" class="btn secondaryLink" data-toggle="tooltip" data-placement="top" onclick="window.location.href='user_mngmt_delete.html';"
+                                    title="Delete">
+                                <i data-feather="trash-2"></i>
+                            </button>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>002 / praveen</td>
+                    <td>praveen</td>
+                    <td>
+                        <button class="btn alert-danger btn-status">
+                            Inactive
+                        </button>
+                    </td>
+                    <td>
+                        <span class="actionBtn">
+                            <button type="button" class="btn primaryLink" data-toggle="tooltip" data-placement="top" onclick="window.location.href='user_mngmt_view.html';"
+                                    title="Details">
+                                <i data-feather="eye"></i>
+                            </button>
+                            <button type="button" class="btn primaryLink" data-toggle="tooltip" data-placement="top" onclick="window.location.href='user_mngmt_edit.html';"
+                                    title="Edit">
+                                <i data-feather="edit"></i>
+                            </button>
+                            <button type="button" class="btn secondaryLink" data-toggle="tooltip" data-placement="top" onclick="window.location.href='user_mngmt_delete.html';"
+                                    title="Delete">
+                                <i data-feather="trash-2"></i>
+                            </button>
+                        </span>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+@section headers
+    {
+
+}
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var dtinstance = $('#myTable').DataTable({
+                columns: [
+                    { 'data': 'RowNumber' },
+                    { 'data': 'EmployeeName' },
+                    { 'data': 'UserName' },
+                    {
+                        'data': 'IsActivestr', render: function (data, type, row, meta) {                            
+                            var activeBtn = '<button style="font-size: 14px; " class="btn alert-success btn-status">Active </button >';
+                            var inactiveBtn = '<button style="font-size: 14px; " class="btn alert-danger btn-status">Inactive </button >';
+                            //var deleteBtn = '<button type="button" id="' + row.NoteNumber + '" data-btn="D" onclick="FnViewNote(this)" class="btn secondaryLink" data-toggle="tooltip" data-placement="top" title="Remove" data-placement="top" title="" data-bs-original-title="Pending"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>';
+                            var mbtns = '<span class="actionBtn d-block">';
+                            if (row.IsActive) { mbtns = mbtns + activeBtn; } else { mbtns = mbtns + inactiveBtn; }
+                            //mbtns = mbtns + viewBtn + editBtn + deleteBtn;
+                            mbtns = mbtns + '</span>';
+                            return type === 'display' ? mbtns : data;
+                        }
+                    },
+                    {
+                        'data': 'EmployeeNumber', render: function (data, type, row, meta) {
+                            //var viewBtn = '<button type="button" class="btn primaryLink" data-toggle="tooltip" data-placement="top"> <i data-feather="eye"></i></button>';
+                            var viewBtn = '<button type="button" data-index="' + row.EmployeeNumber + '" onclick="FnViewData(this)" class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Details"> <svg xmlns=http://www.w3.org/2000/svg width=24 height=24 viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx=12 cy=12 r=3></circle></svg></button>';
+                            var editBtn = '<button type="button" data-index="' + row.EmployeeNumber + '" onclick="FnEditData(this)" class="btn primaryLink" data-toggle="tooltip" data-placement="top" title="Edit"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button>';
+                            var deleteBtn = '<button type="button" data-index="' + row.EmployeeNumber + '" onclick="FnDeleteData(this)" class="btn secondaryLink" data-toggle="tooltip" data-placement="top" title="Remove" data-placement="top" title="" data-bs-original-title="Pending"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>';
+                            var mbtns = '<span class="actionBtn d-block">';
+                            mbtns = mbtns + viewBtn + editBtn + deleteBtn;
+                            mbtns = mbtns + '</span>';
+                            return type === 'display' ? mbtns : data;
+                        }
+                    },
+                ],
+                bServerSide: true,
+                sAjaxSource: '/RBAC/UserManagement/GetUserList',
+                "pagingType": "input"
+            });
+            $('.tblSearch').on('keyup change', function () {
+                dtinstance.search(GetTblColumnSearchText()).draw();
+            });
+            $('.tblSearch').on('click', function (e) {
+                e.stopPropagation();
+            });
+        });
+        function FnViewData(ctrl) {
+            var empnumber = $(ctrl).attr('data-index');
+            var destinationurl = '/RBAC/UserManagement/ViewUser?EmployeeNumber=' + empnumber ;            
+            window.location.href = destinationurl;            
+        };
+        function FnDeleteData(ctrl) {
+            var empnumber = $(ctrl).attr('data-index');
+            var destinationurl = '/RBAC/UserManagement/ViewUser?EmployeeNumber=' + empnumber+'&IsDelete=1';
+            window.location.href = destinationurl;
+        };
+        function FnEditData(ctrl) {
+            var empnumber = $(ctrl).attr('data-index');
+            var destinationurl = '/RBAC/UserManagement/EditUser?EmployeeNumber=' + empnumber;
+            window.location.href = destinationurl;
+        };
+        function GetTblColumnSearchText() {
+            var result = '';
+            $('.tblSearch').each(function () {
+                var that = $(this);
+                if (that.val() != '') {
+                    result = result + that.attr('data-index') + ':' + this.value + ',';
+                }
+            });
+            result = result != '' ? result.substring(0, result.length - 1) : '';
+            return result;
+        }
+    </script>
+
+}

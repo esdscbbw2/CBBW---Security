@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CBBW.BOL;
 using CBBW.BOL.CustomModels;
 using CBBW.BOL.RBACUsers;
 using CBBW.DAL.DataSync;
@@ -38,7 +39,11 @@ namespace CBBW.DAL.Entities
                     }
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; }
+            catch (Exception ex) 
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; 
+            }
             return result;
         }
         public bool ValidateUserName(string UserName, ref string pMsg) 
@@ -59,7 +64,11 @@ namespace CBBW.DAL.Entities
                     }
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; }
+            catch (Exception ex) 
+            { 
+                pMsg = ex.Message;
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+            }
             return result;
         }
         public List<MyRole> GetListOfRoles(ref string pMsg)
@@ -76,11 +85,41 @@ namespace CBBW.DAL.Entities
                     }
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; }
+            catch (Exception ex) 
+            {
+                pMsg = ex.Message;
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+            }
             return result;
         }
-
-
+        public bool SetUserData(UpdateUser data, ref string pMsg) 
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_RBACUserDataSync.SetUserData(data, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
+        public List<UserList> GetUserList(int DisplayLength, int DisplayStart,
+            int SortColumn, string SortDirection, string SearchText, ref string pMsg)
+        {
+            List<UserList> result = new List<UserList>();
+            try
+            {
+                dt = _RBACUserDataSync.GetUserList(DisplayLength, DisplayStart, SortColumn, SortDirection, SearchText,ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        result.Add(_RBACUserDBMapper.Map_UserList(dt.Rows[i]));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+            }
+            return result;
+        }
 
 
 

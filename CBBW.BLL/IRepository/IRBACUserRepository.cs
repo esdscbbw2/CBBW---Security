@@ -15,8 +15,10 @@ namespace CBBW.BLL.IRepository
         List<CustomComboOptions> GetCentreList(ref string pMsg);
         List<MyRole> GetListOfRoles(ref string pMsg);
         IEnumerable<CustomComboOptions> GetLocationTypes(ref string pMsg);
-
-
+        bool SetUserData(UpdateUser data, ref string pMsg);
+        List<UserList> GetUserList(int DisplayLength, int DisplayStart,
+            int SortColumn, string SortDirection, string SearchText, ref string pMsg);
+        
 
 
     }

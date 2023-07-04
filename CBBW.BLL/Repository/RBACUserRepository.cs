@@ -35,7 +35,46 @@ namespace CBBW.BLL.Repository
         {
             return _MasterEntities.getLocationTypes(ref pMsg);
         }
+        public List<UserList> GetUserList(int DisplayLength, int DisplayStart, int SortColumn, string SortDirection, string SearchText, ref string pMsg)
+        {
+            return _RBACUserEntities.GetUserList(DisplayLength, DisplayStart, SortColumn, SortDirection, SearchText,ref pMsg);
+        }
+        public bool SetUserData(UpdateUser data, ref string pMsg)
+        {
+            if (data != null) 
+            {
+                if (data.UserRoleList != null && data.UserRoleList.Count > 0)
+                {
+                    List<UserRole> userroles = new List<UserRole>();
+                    foreach (var item in data.UserRoleList)
+                    {
+                        string[] roles = item.RoleID.Split(',');
+                        foreach (string role in roles)
+                        {
+                            string[] locations = item.LocationCodes.Split(',');
+                            foreach (string location in locations)
+                            {
+                                int loctypecode = int.Parse(location.Split('-')[0]);
+                                int loccode = int.Parse(location.Split('-')[1]);
+                                UserRole userrole = new UserRole()
+                                {
+                                    RoleID = role,
+                                    RoleName = "",
+                                    LocationTypeCode = int.Parse(location.Split('-')[0]),
+                                    LocationCode = int.Parse(location.Split('-')[1]),
+                                    EffectiveFromDate = item.EffectiveFromDate,
+                                    EffectiveToDate = item.EffectiveToDate
+                                };
+                                userroles.Add(userrole);
+                            }
+                        }
+                    }
+                    data.UserRoles = userroles;
+                }
+            }
 
+            return _RBACUserEntities.SetUserData(data, ref pMsg);
+        }
         public bool ValidateUserName(string UserName, ref string pMsg)
         {
             return _RBACUserEntities.ValidateUserName(UserName,ref pMsg);

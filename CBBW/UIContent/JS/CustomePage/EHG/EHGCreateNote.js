@@ -345,7 +345,8 @@ function validatectrl(targetid, value) {
                     var formattedDate = yesterday.toISOString().split('T')[0];
                     if (value == formattedDate) { isvalid = false; }
                     else {
-                        isvalid = true; }
+                        isvalid = true;
+                    }
                 }
                 else {
                     isvalid = true;
@@ -1252,4 +1253,7 @@ $(document).ready(function () {
         });
     });
     //alert($('#FromdateForMang').val());
+    $('.CustomDateFormatCloneRow').each(function () {
+        $(this).CustomDateFormatCloneRow();
+    });
 });

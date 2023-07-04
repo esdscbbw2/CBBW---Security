@@ -312,7 +312,12 @@ function LockNextCtrlsInContainer(myCtrl) {
     const currentIndex = inputControls.index(myCtrl);
     if (currentIndex < inputControls.length - 1) {
         if (inputControls.eq(currentIndex + 1).is(":visible") || inputControls.eq(currentIndex + 1).prop('multiple')) {
-            LockSLUCtrl(inputControls.eq(currentIndex + 1));
+            if (inputControls.eq(currentIndex + 1).hasClass('is-valid')) {
+                LockNextCtrlsInContainer(inputControls.eq(currentIndex + 1));
+            }
+            else {
+                LockSLUCtrl(inputControls.eq(currentIndex + 1));
+            }
         }
         LockNextCtrlsInContainer(inputControls.eq(currentIndex + 1));
     }

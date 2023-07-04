@@ -62,7 +62,7 @@ function GetDataFromTable(tableName) {
     return schrecords;
 };
 //Section - Input Controll Functionalities
-function PostDataInAjax(url,BodyParamInJson) {
+function PostDataInAjax(url, BodyParamInJson) {    
     return $.ajax({
         method: 'POST',
         url: url,
@@ -723,13 +723,16 @@ $.fn.CustomDateFormatCloneRow = function () {
     var lblid = 'lbl' + parentid;
     var dt = this.val();
     var e = dt;
-    if (dt.indexOf('/') != -1) {
-        var e = dt.split('/').reverse().join('/');
-    }
-    else {
-        var e = dt.split('-').reverse().join('/');
-    }
-    $('#' + lblid).html(e);
+    if (that.val() != '') {
+        if (dt.indexOf('/') != -1) {
+            var e = dt.split('/').reverse().join('/');
+        }
+        else {
+            var e = dt.split('-').reverse().join('/');
+        }
+        $('#' + lblid).html(e);
+    } else { $('#' + lblid).html('Select Date'); }
+    
     //that.addClass('is-valid').removeClass('is-invalid')
 };
 //Section Start - Validations
