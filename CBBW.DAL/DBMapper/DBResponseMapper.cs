@@ -29,6 +29,25 @@ namespace CBBW.DAL.DBMapper
                 MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
             }
         }
+        public void Map_DBResponse(DataTable dt, ref string pMsg, ref bool IsSuccess,ref int MStat)
+        {
+            try
+            {
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    if (!DBNull.Value.Equals(dt.Rows[0]["IsSuccess"]))
+                        IsSuccess = bool.Parse(dt.Rows[0]["IsSuccess"].ToString());
+                    if (!DBNull.Value.Equals(dt.Rows[0]["Msg"]))
+                        pMsg = dt.Rows[0]["Msg"].ToString();
+                    if (!DBNull.Value.Equals(dt.Rows[0]["MStat"]))
+                        MStat = int.Parse(dt.Rows[0]["MStat"].ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+            }
+        }
         public CustomComboOptions Map_CustomComboOptions(DataRow dr)
         {
             CustomComboOptions result = new CustomComboOptions();

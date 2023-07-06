@@ -26,6 +26,9 @@ function SLUValid(myCtrl) {
     } else { IsValidSection(mySection); }
     if (myCtrl.hasClass('LUPS')) { LockPreviousSections(myCtrl); }
     if (myCtrl.hasClass('LUPSP')) { LockPreviousSections(myCtrl); }
+    // For Container - Specially for Rows
+    
+
 };
 function SLUInvalid(myCtrl) {
     LockNextCtrlsInContainer(myCtrl);
@@ -379,6 +382,9 @@ function LockSLUContainer(myContainer) {
         myContainer.find('.SLUAddBtn').each(function () {
             LockSLUCtrl($(this));
         });
+        myContainer.find('.datelabel').each(function () {
+            $(this).addClass('nodrop');
+        });
     }
     //myContainer.addClass('sectionB');
 };
@@ -392,6 +398,9 @@ function UnLockSLUContainer(myContainer) {
         });
         myContainer.find('.SLUAddBtn').each(function () {
             UnLockSLUCtrl($(this));
+        });
+        myContainer.find('.datelabel').each(function () {
+            $(this).removeClass('nodrop');
         });
         //myContainer.removeClass('sectionB');
     }
@@ -408,6 +417,9 @@ function UnLockSLUContainerAllCtrl(myContainer) {
         myContainer.find('.SLURemoveBtn').each(function () {
             UnLockSLUCtrl($(this));
         });
+        myContainer.find('.datelabel').each(function () {
+            $(this).removeClass('nodrop');
+        });
     }
 };
 function LockSLUSection(mySection) {
@@ -417,6 +429,9 @@ function LockSLUSection(mySection) {
         });
         mySection.find('.SLUBtn').each(function () {
             $(this).makeSLUDisable();
+        });
+        mySection.find('.datelabel').each(function () {
+            $(this).addClass('nodrop');
         });
         mySection.addClass('sectionB');
     }
@@ -429,10 +444,13 @@ function LockSLUSectionV2(mySection) {
         mySection.find('.SLUBtn').each(function () {
             $(this).makeSLUDisable();
         });
+        mySection.find('.datelabel').each(function () {
+            $(this).addClass('nodrop');
+        });
         mySection.addClass('sectionB');
     }
 };
-function UnLockSLUSection(mySection) {
+function UnLockSLUSection(mySection) {    
     if (mySection != null) {
         mySection.removeClass('sectionB');
         var i = 0;
@@ -440,12 +458,21 @@ function UnLockSLUSection(mySection) {
             if (i == 0) {
                 UnLockSLUCtrl($(this));
             }
-            else { LockSLUCtrl($(this)); }
+            else {
+                if ($(this).hasClass('is-valid')) {
+                    UnLockSLUCtrl($(this));
+                } else {
+                    LockSLUCtrl($(this));
+                }                
+            }
             i += 1;
         });
         mySection.find('.SLUBtn').each(function () {
             var x = $(this).attr('id');
             $(this).makeSLUEnable();
+        });
+        mySection.find('.datelabel').each(function () {
+            $(this).removeClass('nodrop');
         });
     }
 };
@@ -462,6 +489,9 @@ function UnLockSLUSectionV2(mySection) {
             var x = $(this).attr('id');
             $(this).makeSLUEnable();
         });
+        mySection.find('.datelabel').each(function () {
+            $(this).removeClass('nodrop');
+        });
     }
 };
 function UnLockSLUSectionAllCtrl(mySection) {
@@ -474,6 +504,9 @@ function UnLockSLUSectionAllCtrl(mySection) {
             var x = $(this).attr('id');
             $(this).makeSLUEnable();
         });
+        mySection.find('.datelabel').each(function () {
+            $(this).removeClass('nodrop');
+        });
     }
 };
 function UnLockSLUSectionAllCtrlV2(mySection) {
@@ -485,6 +518,9 @@ function UnLockSLUSectionAllCtrlV2(mySection) {
         mySection.find('.SLUBtn').each(function () {
             var x = $(this).attr('id');
             $(this).makeSLUEnable();
+        });
+        mySection.find('.datelabel').each(function () {
+            $(this).removeClass('nodrop');
         });
     }
 };

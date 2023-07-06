@@ -304,10 +304,11 @@
                                             <div class="position-relative pointer" style="width:200px">
                                                 @Html.TextBoxFor(m => m.FromdateForMang, "{0:yyyy-MM-dd}",
                                                    htmlAttributes: new
-                                                        {
+                                                   {
                                                        @class = "form-control pointer CustomDateFormatCloneRow valid SLUCtrl",
                                                        type = "date",
                                                        onchange = "ValidateControl()",
+                                                       onkeyup= "ValidateControl()",
                                                        max = Model.MaxFromDate,
                                                        min = Model.MinFromDate
                                                    })
@@ -609,7 +610,6 @@
                     </li>
                 </ul>
             </div>
-
         </div>
     }
 </div>

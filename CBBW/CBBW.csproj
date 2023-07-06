@@ -136,7 +136,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
-    <Compile Include="Areas\RBAC\Controllers\CommonController.cs" />
     <Compile Include="Areas\RBAC\Controllers\HomeController.cs" />
     <Compile Include="Areas\RBAC\Controllers\ModuleController.cs" />
     <Compile Include="Areas\RBAC\Controllers\NavigationController.cs" />
@@ -147,6 +146,8 @@
     <Compile Include="Areas\RBAC\RBACAreaRegistration.cs" />
     <Compile Include="Areas\RBAC\ViewModel\SubModuleVM.cs" />
     <Compile Include="Areas\RBAC\ViewModel\User\AddUserVM.cs" />
+    <Compile Include="Areas\RBAC\ViewModel\User\EditUserVM.cs" />
+    <Compile Include="Areas\RBAC\ViewModel\User\ViewUserVM.cs" />
     <Compile Include="Areas\Security\Controllers\BILController.cs" />
     <Compile Include="Areas\Security\Controllers\CommonController.cs" />
     <Compile Include="Areas\Security\Controllers\CTV2Controller.cs" />
@@ -438,7 +439,9 @@
     <Content Include="UIContent\JS\CustomePage\OtherTripSchEdit.js" />
     <Content Include="UIContent\JS\CustomePage\OtherTripSchedule.js" />
     <Content Include="UIContent\JS\CustomePage\RBACUser\AddUser.js" />
+    <Content Include="UIContent\JS\CustomePage\RBACUser\EditUser.js" />
     <Content Include="UIContent\JS\CustomePage\RBACUser\Index.js" />
+    <Content Include="UIContent\JS\CustomePage\RBACUser\ViewUser.js" />
     <Content Include="UIContent\JS\CustomePage\Role\RoleCreate.js" />
     <Content Include="UIContent\JS\CustomePage\Role\RoleEdit.js" />
     <Content Include="UIContent\JS\CustomePage\Role\RoleView.js" />
@@ -663,7 +666,6 @@
     <Content Include="Areas\Security\Views\CTV2\OtherTripSchEdit.cshtml" />
     <Content Include="Areas\Security\Views\CTV2\LocVehTripSchEdit.cshtml" />
     <Content Include="Areas\Security\Views\Common\Index2.cshtml" />
-    <Content Include="Areas\RBAC\Views\Common\Index.cshtml" />
     <Content Include="Areas\RBAC\Views\Home\Index.cshtml" />
     <Content Include="Areas\RBAC\Views\Module\Create.cshtml" />
     <Content Include="Areas\RBAC\Views\Module\Details.cshtml" />

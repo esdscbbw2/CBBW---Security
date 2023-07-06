@@ -734,5 +734,40 @@ namespace CBBW.DAL.DataSync
                 MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
             }
         }
+        public CommonTable(List<UserRoleFromGrid> customoptions)
+        {
+            try
+            {
+                UDTable = new DataTable();
+                UDTable.Columns.Add("sRoles", typeof(string));
+                UDTable.Columns.Add("sRoleName", typeof(string));
+                UDTable.Columns.Add("sLocationTypeCodes", typeof(string));
+                UDTable.Columns.Add("sLocationTypeCodeDesc", typeof(string));
+                UDTable.Columns.Add("sLocationCodes", typeof(string));
+                UDTable.Columns.Add("sLocationCodeDesc", typeof(string));
+                UDTable.Columns.Add("dEffectiveFromDate", typeof(DateTime));
+                UDTable.Columns.Add("dEffectiveToDate", typeof(DateTime));
+                if (customoptions != null && customoptions.Count > 0)
+                {
+                    foreach (UserRoleFromGrid obj in customoptions)
+                    {
+                        DataRow dr = UDTable.NewRow();
+                        dr["sRoles"] = obj.RoleID;
+                        dr["sRoleName"] = obj.RoleName;
+                        dr["sLocationTypeCodes"] = obj.LocationTypeCodes;
+                        dr["sLocationTypeCodeDesc"] = obj.LocationTypeCodeDesc;
+                        dr["sLocationCodes"] = obj.LocationCodes;
+                        dr["sLocationCodeDesc"] = obj.LocationCodeDesc;
+                        dr["dEffectiveFromDate"] = obj.EffectiveFromDate;
+                        dr["dEffectiveToDate"] = obj.EffectiveToDate;
+                        UDTable.Rows.Add(dr);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+            }
+        }
     }
 }

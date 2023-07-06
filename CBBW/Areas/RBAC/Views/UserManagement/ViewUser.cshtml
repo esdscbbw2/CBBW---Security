@@ -1,17 +1,112 @@
-﻿
+﻿@using System.Globalization;
+@using CBBW.Areas.RBAC.ViewModel.User;
+@model ViewUserVM
 @{
-    Layout = null;
+
 }
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>ViewUser</title>
-</head>
-<body>
-    <div> 
+@Html.HiddenFor(m => m.IsBackDenied)
+@Html.HiddenFor(m => m.EmployeeNumber)
+@Html.HiddenFor(m => m.DataHdr.EmployeeName)
+@Html.HiddenFor(m => m.IsDelete)
+<div class="row newTable">
+    <div class="fixedElement">
+        <div class="col-md-12" style="position: relative;">
+            <div class="heading_text_btn mb-4 ">
+                <div class="leftButton">
+                    <button type="submit"
+                            class="btn btn-primary me-2"
+                            onclick="NormalBackBtnClicked('/RBAC/UserManagement/Index')">
+                        <i data-feather="arrow-left-circle"></i>
+                        Back
+                    </button>
+                    <button id="deleteBtn" type="button" onclick="DeleteAllRoles()"
+                            class="btn btn-primary me-2">
+                        <i data-feather="trash"></i>
+                        Delete All
+                    </button>
+                </div>
+                <h2>User Management – View  </h2>
+            </div>
+        </div>
     </div>
-</body>
-</html>
+    <div class="col-md-12 mb-4">
+        <div class="card mt-4">
+            <div class="card-body approvalForm">
+                <form class="form-sample form-inline row ms-auto">
+                    <div class="row d-flex align-items-center mb-4">
+                        <label class="col-form-label col-md-2">
+                            Employee No. & Name :
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" value="@Model.DataHdr.EmployeeName" disabled>
+                        </div>
+                        <label class="col-form-label col-md-2">
+                            Designation :
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" value="@Model.DataHdr.Designation" disabled>
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center mb-2">
+                        <label class="col-form-label col-md-2">
+                            Username :
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" value="@Model.DataHdr.UserName" disabled>
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center mt-4">
+                        <div class="table-responsive btnalign">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Role</th>
+                                        <th>Location Type & Name</th>
+                                        <th>Location Code & Name</th>
+                                        <th>Effective From Date</th>
+                                        <th>Effective To Date</th>
+                                        <th id="actionHdr" width="6%" style="background: pink;color: #000;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table_body">
+                                    @if (Model.DataDetails != null && Model.DataDetails.Count > 0)
+                                    {
+                                        foreach (var item in Model.DataDetails)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <div class="rnameDiv">@item.RoleName</div>
+                                                    <div class="inVisible ridDiv">@item.RoleIDs</div>
+                                                </td>
+                                                <td>@item.LocationTypeCodeDesc</td>
+                                                <td>@item.LocationCodeDesc</td>
+                                                <td>@(item.EffectiveFromDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture))</td>
+                                                <td>@(item.EffectiveToDate.Year==1?"-": item.EffectiveToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture))</td>
+                                                <td class="deleteBtntd">
+                                                    <span class="actionBtn">
+                                                        <button type="button"  
+                                                                onclick="RemoveRole()"
+                                                                class="btn secondaryLink">
+                                                            <i data-feather="x"></i>
+                                                        </button>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section headers
+{}
+@section scripts{
+    <script src="~/UIContent/JS/CustomePage/SLUCtrlsV2.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
+    <script src="~/UIContent/JS/CustomePage/RBACUser/ViewUser.js"></script>
+}

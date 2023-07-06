@@ -122,7 +122,7 @@
                                         <td>
                                             <div id="selectDiv1">
                                                 <select id="Role_0" multiple="multiple"
-                                                        onchange="RolesChanged()" data-name="RoleID"
+                                                        onchange="RolesChanged()" data-name="RoleID" data-name-text="RoleName"
                                                         class="form-select ApplyMultiSelectWithSelectAll SLUCtrl alterID inValidTag duprole"
                                                         aria-label="Default select example">
                                                     @if (Model.RoleList != null && Model.RoleList.Count > 0)
@@ -138,6 +138,7 @@
                                         <td width="15%">
                                             <div id="selectDiv2">
                                                 <select multiple="multiple" id="LocationtypeCode_0"
+                                                        data-name="LocationTypeCodes" data-name-text="LocationTypeCodeDesc"
                                                         onchange="LocationTypeChanged()"
                                                         class="form-select ApplyMultiSelectWithSelectAll SLUCtrl alterID inValidTag"
                                                         aria-label="Default select example">
@@ -154,7 +155,8 @@
                                         <td>
                                             <div id="selectDiv3">
                                                 <select multiple="multiple" id="LocationCode_0"
-                                                        onchange="LocationCodeChanged()" data-name="LocationCodes"
+                                                        onchange="LocationCodeChanged()" 
+                                                        data-name="LocationCodes" data-name-text="LocationCodeDesc"
                                                         class="form-select ApplyMultiSelect SLUCtrl alterID inValidTag"
                                                         aria-label="Default select example">
                                                 </select>

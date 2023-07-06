@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using CBBW.BOL;
 using CBBW.BOL.RBACUsers;
 
+
 namespace CBBW.DAL.DBMapper
 {
     public class RBACUserDBMapper
@@ -80,7 +81,49 @@ namespace CBBW.DAL.DBMapper
             }
             return result;
         }
-
+        public ViewUserData Map_ViewUserData(DataRow dr) 
+        {
+            ViewUserData result = new ViewUserData();
+            try
+            {
+                if (dr != null)
+                {
+                    if (!DBNull.Value.Equals(dr["EmployeeNumber"]))
+                        result.EmployeeNumber = int.Parse(dr["EmployeeNumber"].ToString());
+                    if (!DBNull.Value.Equals(dr["EmployeeName"]))
+                        result.EmployeeName = dr["EmployeeName"].ToString();
+                    if (!DBNull.Value.Equals(dr["UserName"]))
+                        result.UserName = dr["UserName"].ToString();
+                    if (!DBNull.Value.Equals(dr["Designation"]))
+                        result.Designation = dr["Designation"].ToString();
+                    if (!DBNull.Value.Equals(dr["RoleIds"]))
+                        result.RoleIDs = dr["RoleIds"].ToString();
+                    if (!DBNull.Value.Equals(dr["Roles"]))
+                        result.RoleName = dr["Roles"].ToString();
+                    if (!DBNull.Value.Equals(dr["LocationTypes"]))
+                        result.LocationTypeCodeDesc = dr["LocationTypes"].ToString();
+                    if (!DBNull.Value.Equals(dr["Locations"]))
+                        result.LocationCodeDesc =dr["Locations"].ToString();
+                    if (!DBNull.Value.Equals(dr["EffectiveFromDate"]))
+                        result.EffectiveFromDate = DateTime.Parse(dr["EffectiveFromDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["EffectiveToDate"]))
+                        result.EffectiveToDate = DateTime.Parse(dr["EffectiveToDate"].ToString());
+                    if (!DBNull.Value.Equals(dr["LocationTypeCodes"]))
+                        result.LocationTypeCodes = dr["LocationTypeCodes"].ToString();
+                    if (!DBNull.Value.Equals(dr["LocationCodes"]))
+                        result.LocationCodes = dr["LocationCodes"].ToString();
+                    if (!DBNull.Value.Equals(dr["IsActive"]))
+                        result.IsActive = bool.Parse(dr["IsActive"].ToString());
+                    result.EffectiveFromDateStr = result.EffectiveFromDate.ToString("yyyy-MM-dd");
+                    //result.EffectiveToDateStr = result.EffectiveToDate.ToString("yyyy-MM-dd");
+                }
+            }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+            }
+            return result;
+        }
 
 
 

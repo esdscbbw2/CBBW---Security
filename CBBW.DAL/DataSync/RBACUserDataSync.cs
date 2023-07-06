@@ -73,13 +73,14 @@ namespace CBBW.DAL.DataSync
                 pMsg = ex.Message; return null; 
             }
         }
-        public DataTable SetUserData(UpdateUser data, ref string pMsg)
+        public DataTable SetUserData(UpdateUser data, ref string pMsg,bool IsEdit=false)
         {
             try
             {
+                CommonTable srcdtl = new CommonTable(data.UserRoleList);
                 CommonTable dtl = new CommonTable(data.UserRoles);
                 int paracount = 0;
-                SqlParameter[] para = new SqlParameter[7];                
+                SqlParameter[] para = new SqlParameter[9];                
                 para[paracount] = new SqlParameter("@EmployeeNumber", SqlDbType.Int);
                 para[paracount++].Value = data.EmployeeNumber;
                 para[paracount] = new SqlParameter("@EmployeeName", SqlDbType.NVarChar,150);
@@ -92,8 +93,12 @@ namespace CBBW.DAL.DataSync
                 para[paracount++].Value = data.IsActive;
                 para[paracount] = new SqlParameter("@AdminID", SqlDbType.Int);
                 para[paracount++].Value = data.AdminID;
+                para[paracount] = new SqlParameter("@IsEdit", SqlDbType.Bit);
+                para[paracount++].Value = IsEdit;
                 para[paracount] = new SqlParameter("@UserRoles", SqlDbType.Structured);
                 para[paracount++].Value = dtl.UDTable;
+                para[paracount] = new SqlParameter("@SrcUserRoles", SqlDbType.Structured);
+                para[paracount++].Value = srcdtl.UDTable;
                 using (SQLHelper sql = new SQLHelper("[RBAC].[SetUserData]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataTable(para, ref pMsg);
@@ -134,9 +139,65 @@ namespace CBBW.DAL.DataSync
                 pMsg = ex.Message; return null;
             }
         }
-
-
-
+        public DataTable GetUserRoles(int EmployeeNumber,ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("select * from [RBAC].[GetUserRoleDetails]("+ EmployeeNumber + ")", CommandType.Text))
+                {
+                    return sql.GetDataTable();
+                }
+            }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null;
+            }
+        }
+        public DataTable DeleteUserRole(int EmployeeNumber,string RoleIDs, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[2];
+                para[paracount] = new SqlParameter("@EmployeeNumber", SqlDbType.Int);
+                para[paracount++].Value = EmployeeNumber;
+                para[paracount] = new SqlParameter("@RoleIds", SqlDbType.NVarChar);
+                para[paracount++].Value = RoleIDs;
+                using (SQLHelper sql = new SQLHelper("[RBAC].[DeleteUserRole]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null;
+            }
+        }
+        public DataTable UpdatePassword(UpdatePassword data, ref string pMsg)
+        {
+            try
+            {                
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[3];
+                para[paracount] = new SqlParameter("@EmployeeNumber", SqlDbType.Int);
+                para[paracount++].Value = data.EmployeeNumber;                
+                para[paracount] = new SqlParameter("@UserName", SqlDbType.NVarChar, 50);
+                para[paracount++].Value = data.UserName;
+                para[paracount] = new SqlParameter("@Password", SqlDbType.NVarChar);
+                para[paracount++].Value = data.Password;
+                using (SQLHelper sql = new SQLHelper("[RBAC].[UpdatePassword]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
+                }
+            }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null;
+            }
+        }
 
     }
 }

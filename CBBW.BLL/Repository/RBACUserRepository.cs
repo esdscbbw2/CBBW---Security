@@ -39,7 +39,7 @@ namespace CBBW.BLL.Repository
         {
             return _RBACUserEntities.GetUserList(DisplayLength, DisplayStart, SortColumn, SortDirection, SearchText,ref pMsg);
         }
-        public bool SetUserData(UpdateUser data, ref string pMsg)
+        public bool SetUserData(UpdateUser data, ref string pMsg, bool IsEdit = false)
         {
             if (data != null) 
             {
@@ -73,11 +73,23 @@ namespace CBBW.BLL.Repository
                 }
             }
 
-            return _RBACUserEntities.SetUserData(data, ref pMsg);
+            return _RBACUserEntities.SetUserData(data, ref pMsg,IsEdit);
         }
         public bool ValidateUserName(string UserName, ref string pMsg)
         {
             return _RBACUserEntities.ValidateUserName(UserName,ref pMsg);
+        }
+        public List<ViewUserData> GetUserRoles(int EmployeeNumber, ref string pMsg) 
+        {
+            return _RBACUserEntities.GetUserRoles(EmployeeNumber, ref pMsg);
+        }
+        public bool DeleteUserRole(int EmployeeNumber, string RoleIDs, ref string pMsg, ref int MStat)
+        {
+            return _RBACUserEntities.DeleteUserRole(EmployeeNumber, RoleIDs, ref pMsg, ref MStat);
+        }
+        public bool UpdatePassword(UpdatePassword data, ref string pMsg) 
+        {
+            return _RBACUserEntities.UpdatePassword(data, ref pMsg);
         }
     }
 }

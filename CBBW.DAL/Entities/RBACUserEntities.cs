@@ -92,10 +92,10 @@ namespace CBBW.DAL.Entities
             }
             return result;
         }
-        public bool SetUserData(UpdateUser data, ref string pMsg) 
+        public bool SetUserData(UpdateUser data, ref string pMsg, bool IsEdit = false) 
         {
             bool result = false;
-            _DBResponseMapper.Map_DBResponse(_RBACUserDataSync.SetUserData(data, ref pMsg), ref pMsg, ref result);
+            _DBResponseMapper.Map_DBResponse(_RBACUserDataSync.SetUserData(data, ref pMsg,IsEdit), ref pMsg, ref result);
             return result;
         }
         public List<UserList> GetUserList(int DisplayLength, int DisplayStart,
@@ -120,9 +120,39 @@ namespace CBBW.DAL.Entities
             }
             return result;
         }
-
-
-
+        public List<ViewUserData> GetUserRoles(int EmployeeNumber, ref string pMsg) 
+        {
+            List<ViewUserData> result = new List<ViewUserData>();
+            try
+            {
+                dt = _RBACUserDataSync.GetUserRoles(EmployeeNumber,ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        result.Add(_RBACUserDBMapper.Map_ViewUserData(dt.Rows[i]));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg = ex.Message;
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+            }
+            return result;
+        }
+        public bool DeleteUserRole(int EmployeeNumber, string RoleIDs, ref string pMsg,ref int MStat)
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_RBACUserDataSync.DeleteUserRole(EmployeeNumber, RoleIDs,ref pMsg),ref pMsg, ref result, ref MStat);
+            return result;
+        }
+        public bool UpdatePassword(UpdatePassword data, ref string pMsg) 
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_RBACUserDataSync.UpdatePassword(data, ref pMsg), ref pMsg, ref result);
+            return result;
+        }
 
 
     }

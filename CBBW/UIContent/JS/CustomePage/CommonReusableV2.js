@@ -1,17 +1,5 @@
 ﻿// File Uploading
 var cW;
-function OpenWindow(filepath) {
-    if (filepath == null || filepath == '') {
-        MyAlert(3, 'Unable To Find Uploaded File.');
-    } else {
-        if (cW === undefined || (cW != undefined && cW.closed)) {
-            cW = window.open(filepath);
-        }
-        else {
-            MyAlertWithCallBack(5, 'File Is Already Opened.', FocusTab)
-        }
-    }
-};
 function OpenFileInNewTab(filepath) {
     if (filepath == null || filepath == '') {
         MyAlert(3, 'Unable To Find Uploaded File.');
@@ -27,6 +15,52 @@ function OpenFileInNewTab(filepath) {
 function FocusTab() {
     cW.focus();
 };
+//Bhushan Add for file and Rules links
+function OpenWindow(filepath) {
+    if (filepath == null || filepath == '') {
+        MyAlert(3, 'Unable To Find Uploaded File.');
+    } else {
+        if (cW === undefined || (cW != undefined && cW.closed)) {
+            cW = window.open(filepath);
+        }
+        else {
+            MyAlertWithCallBack(5, 'File Is Already Opened.', FocusTab)
+        }
+    }
+};
+var cWRule;
+function OpenWindowRule(filepath) {
+    if (filepath == null || filepath == '') {
+        MyAlert(3, 'Unable To Find Tour Rule.');
+    } else {
+        if (cWRule === undefined || (cWRule != undefined && cWRule.closed)) {
+            cWRule = window.open(filepath);
+        }
+        else {
+            MyAlertWithCallBack(5, 'Tour Rule Is Already Opened.', FocusTabRule)
+        }
+    }
+};
+function FocusTabRule() {
+    cWRule.focus();
+};
+var cWTRule;
+function OpenWindowTRule(filepath) {
+    if (filepath == null || filepath == '') {
+        MyAlert(3, 'Unable To Find TA & DA Rules.');
+    } else {
+        if (cWTRule === undefined || (cWRule != undefined && cWTRule.closed)) {
+            cWTRule = window.open(filepath);
+        }
+        else {
+            MyAlertWithCallBack(5, 'TA & DA Rules Is Already Opened.', FocusTabTRule)
+        }
+    }
+};
+function FocusTabTRule() {
+    cWTRule.focus();
+};
+
 // Section - Data Picking
 function GetDataFromTable(tableName) {
     //The fields should have an attribute "data-name", Which is the property name of the MVC object
@@ -329,6 +363,11 @@ function TableRowCloaning(sourceTBody, destinationTBody, rowid, IsRemoveBtn, IsA
         that.val('');
         that.isInvalid();
     });
+    cloneready.find('.inValidCtrlTag').each(function () {
+        that = $(this);
+        that.val('');
+        that.isInvalidCtrl();
+    });
     cloneready.find('.inVisibleTag').each(function () {
         that = $(this);
         //that.val('');
@@ -452,6 +491,23 @@ function TableRowCloaning(sourceTBody, destinationTBody, rowid, IsRemoveBtn, IsA
     return r;
 };
 //Section - Date Time Functions
+function GetCurrentDate(formatindex) {
+    // 0. 'dd/MM/yyyy'
+    // 1. 'dd-MM-yyyy'
+    // 2. 'yyyy-MM-dd'    
+    var currentDate = new Date();
+    var year = currentDate.getFullYear();
+    var month = ('0' + (currentDate.getMonth() + 1)).slice(-2); // Months are zero-based
+    var day = ('0' + currentDate.getDate()).slice(-2);
+    if (formatindex == 1) {
+        return  day + '-' + month + '-' + year;
+    } else if (formatindex == 2) {
+        return year + '-' + month + '-' + day;
+    }else {
+        return day + '/' + month + '/' + year;
+    }
+    
+};
 function GetCurrentTime() {
     var currentDate = new Date();
     var currentHour = currentDate.getHours();
@@ -575,6 +631,7 @@ function UnLockRow(id) {
         if (x == 0) { that.removeAttr('disabled').removeClass('nodrop'); }
         else { that.attr('disabled', 'disabled'); }
     });
+    myCtrl.removeClass('nodrop sectionB');
 };
 function LockAllRowExceptLast(tableID) {
     var lastRow = $('#' + tableID + ' tr:last').attr('id');
@@ -824,6 +881,14 @@ $.fn.isValid = function () {
     var that = this;
     that.addClass('is-valid valid').removeClass('is-invalid');
     that.isValidCtrl();
+};
+$.fn.isSInvalid = function () {
+    var that = this;
+    that.addClass('is-invalid valid').removeClass('is-valid');
+};
+$.fn.isSValid = function () {
+    var that = this;
+    that.addClass('is-valid valid').removeClass('is-invalid');
 };
 $.fn.makeEnable = function () {
     var that = this;
@@ -1215,6 +1280,29 @@ function MyWarningAlertWithRedirection(MessageText, RedirectUrl) {
             window.location.href = RedirectUrl;
         }
     }
+};
+function MyConfirmationAlert(MessageText, OkCallback, CancelCallback) {
+    Swal.fire({
+        title: 'Confirmation',
+        text: MessageText,
+        icon: 'question',
+        customClass: 'swal-wide',
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        cancelButtonClass: 'btn-cancel',
+        confirmButtonColor: '#2527a2',
+        showCancelButton: true,
+    }).then(function (result) {
+        if (result.isConfirmed) {
+            if (OkCallback != '' && OkCallback != 'NA' && typeof OkCallback === 'function') {
+                OkCallback();
+            }
+        } else {
+            if (CancelCallback != '' && CancelCallback != 'NA' && typeof CancelCallback === 'function') {
+                CancelCallback();
+            }
+        }
+    });
 };
 //Section End- SweetAlert Templates
 $(document).ready(function () {

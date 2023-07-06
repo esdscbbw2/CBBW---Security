@@ -134,7 +134,6 @@ function CloneRowAddBtnClick() {
     var sRowid = $(insrow).attr('id');
     var cRowid = TableRowCloaning('tbody1', 'tbody2', sRowid, true, true, false);
     $('#tblSection').removeClass('sectionB');
-    debugger;
     $('#' + cRowid).find('.duprole').each(function () {
         UnLockSLUCtrl($(this));
     });
@@ -165,7 +164,7 @@ function SaveData() {
     var username = $('#UserName').val();
     var password = $('#NewPassword').val();
     var IsActive = false;
-    if ($('#check1').attr('checked')) { IsActive = true; }
+    if ($('#check1').prop('checked')) { IsActive = true; }
     var schrecords = GetDataFromTable('myTable');
     var x = '{"EmployeeNumber":"' + empno
         + '","EmployeeName":"' + empname

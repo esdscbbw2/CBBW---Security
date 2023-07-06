@@ -1,17 +1,346 @@
-﻿
+﻿@using System.Globalization;
+@using CBBW.Areas.RBAC.ViewModel.User;
+@model EditUserVM
 @{
-    Layout = null;
+
 }
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>EditUser</title>
-</head>
-<body>
-    <div> 
+@Html.HiddenFor(m => m.IsBackDenied)
+@Html.HiddenFor(m => m.EmployeeNumber)
+@Html.HiddenFor(m => m.DataHdr.UserName)
+@Html.HiddenFor(m => m.DataHdr.IsActive)
+<div class="modal prompt-alert" id="reset_pwd">
+    <div class="modal-dialog modal-lg  modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Reset Password of <span>@Model.DataHdr.UserName</span></h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <!-- Modal body -->
+            <div id="HdrModalDiv" class="modal-body p-4">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form action="">
+                            <div class="mb-2">
+                                <label class="swal-label">
+                                    Username
+                                </label>
+                                <div class="input-container">
+                                    <input id="userNameModal" type="text"
+                                           class="input-field form-control" 
+                                           title="User Name Should Be Alpha Numeric Without Space."
+                                           name="Username" value="@Model.DataHdr.UserName" >
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <label class="swal-label">
+                                    New Password
+                                </label>
+                                <div class="input-container">
+                                    <input id="NewPassword" type="password"
+                                           class="input-field form-control is-invalid" name="New password" 
+                                           title="Password Should Atleast 6 Characters Containing Atleast One Uppercase, One Lowercase, One Digit & One Special Character "
+                                           value="">
+                                    <span class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <label class="swal-label">
+                                    Confirm Password
+                                </label>
+                                <div class="input-container">
+                                    <input id="CnfPassword" type="password" disabled
+                                           class="input-field form-control is-invalid"
+                                           title="Enter Password Again. "
+                                           name="Confirm password" value="">
+                                    <span class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                                </div>
+                            </div>
+                            <div class="mt-3">                                
+                                <button id="btnSave" type="button" disabled
+                                        class="btn btn btn-green me-2"
+                                        onclick="SavePassword()">
+                                    <i data-feather="check-circle"></i>
+                                    Save
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</body>
-</html>
+</div>
+<div class="row newTable">
+    <div class="fixedElement">
+        <div class="col-md-12" style="position: relative;">
+            <div class="heading_text_btn mb-4 ">
+                <div class="leftButton">
+                    <button type="button"
+                            onclick="NormalBackBtnClicked('/RBAC/UserManagement/Index')"
+                            class="btn btn-primary me-2">
+                        <i data-feather="arrow-left-circle"></i>
+                        Back
+                    </button>
+                    <button id="btnSubmit" type="button"
+                            class="btn btn-secondary me-2"
+                            onclick="SaveData()">
+                        <i data-feather="upload"></i>
+                        Submit
+                    </button>
+                    <button type="button"
+                            onclick="ClearBtnClicked('/RBAC/UserManagement/EditUser?EmployeeNumber='+@Model.EmployeeNumber)"
+                            class="btn btn-white">
+                        <i data-feather="x-circle"></i>
+                        Clear
+                    </button>
+                </div>
+                <h2>User Management – Edit  </h2>
+            </div>
+        </div>
+    </div>
+    <div id="HdrDiv1" class="col-md-12 mb-4">
+        <div class="card mt-4">
+            <div class="card-body approvalForm ">
+                <form class="form-sample form-inline row ms-auto">
+                    <div class="row d-flex align-items-center mb-4">
+                        <label class="col-form-label col-md-2">
+                            Employee No. & Name :
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" value="@Model.DataHdr.EmployeeName" disabled>
+                        </div>
+                        <label class="col-form-label col-md-2">
+                            Designation :
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" value="@Model.DataHdr.Designation" disabled>
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center mb-4">
+                        <div class="col-md-2">
+                            <div class="form-check">
+                                <input id="check1" onclick="IsActiveClicked()" class="form-check-input float-none"
+                                       @(Model.DataHdr.IsActive?" Checked":"")
+                                       type="checkbox" name="option1" value="something">
+                                <label for="" class="ps-2">Is-Active</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <button id="PasswordResetBtn" type="button" 
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#reset_pwd" class="btn btn-green">
+                                <i data-feather="lock"></i>
+                                Reset Username &  Password
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center mt-4">
+                        <div class="table-responsive btnalign">
+                            <table class="table table-bordered table-last-col" id="myTable">
+                                <thead>
+                                    <tr>
+                                        <th width="40%">Role</th>
+                                        <th width="40%">Location Type & Name</th>
+                                        <th>Location Code & Name</th>
+                                        <th width="40%">Effective From Date</th>
+                                        <th width="40%">Effective To Date</th>
+                                        <th width="20%" class="action" style="background: pink;color: #000;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody1">
+                                    @if (Model.DataDetails != null && Model.DataDetails.Count > 0)
+                                    {
+                                        var rowitem = Model.DataHdr;
+                                        int sl = 0;
+                                    <tr id="@sl" class="add-row SLUSection SLUContainer alterID">
+                                        <td>
+                                            <div>
+                                                <select id="Role_@sl"  value="@rowitem.RoleIDs"
+                                                        data-name="RoleID" data-name-text="RoleName"
+                                                        onchange="RolesChanged()"
+                                                        class="form-select duprole alterID inValidTag ApplyMultiSelectWithSelectAll SLUCtrl"
+                                                        aria-label="Default select example">
+                                                    @if (Model.RoleList != null && Model.RoleList.Count > 0)
+                                                    {
+                                                        foreach (var item in Model.RoleList)
+                                                        {
+                                                            <option value="@item.RoleId" selected>@item.RoleName</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <select id="LocationType_@sl" 
+                                                        onchange="LocationTypeChanged()"
+                                                        data-name="LocationTypeCodes" data-name-text="LocationTypeCodeDesc"
+                                                        class="form-select alterID inValidTag ApplyMultiSelectWithSelectAll SLUCtrl"
+                                                        aria-label="Default select example">
+                                                    @if (Model.LocationTypeList != null && Model.RoleList.Count > 0)
+                                                    {
+                                                        foreach (var item in Model.LocationTypeList)
+                                                        {
+                                                            <option value="@item.ID"> @item.DisplayText</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <select id="Location_@sl" 
+                                                        onchange="LocationCodeChanged()"
+                                                        data-name="LocationCodes" data-name-text="LocationCodeDesc"
+                                                        class="form-select alterID inValidTag ApplyMultiSelectWithSelectAll SLUCtrl"
+                                                        aria-label="Default select example">
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="position-relative pointer">
+                                                <input id="FromDate_@sl" type="date" data-name="EffectiveFromDate" 
+                                                       value="@(rowitem.EffectiveFromDate.ToString("yyyy-MM-dd"))"
+                                                       class="form-control pointer CustomDateFormatCloneRow alterID is-valid inValidCtrlTag SLUCtrl"
+                                                       onchange="FromDateChanged()">
+                                                <label id="lblFromDate_@sl" class="datelabel alterID pointer">@(rowitem.EffectiveFromDate.Year==1? "Select A Date" : rowitem.EffectiveFromDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)) </label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="position-relative pointer">
+                                                <input id="ToDate_@sl" type="date" data-name="EffectiveToDate"
+                                                       value="@(rowitem.EffectiveToDate.ToString("yyyy-MM-dd"))"
+                                                       class="form-control tdt rowlock CustomDateFormatCloneRow alterID pointer @(rowitem.EffectiveToDate.Year==1?"":"is-valid")"
+                                                       onchange="ToDateChanged()">
+                                                <label id="lblToDate_@sl" class="datelabel alterID rowlock pointer">@(rowitem.EffectiveToDate.Year==1?"Select A Date":rowitem.EffectiveToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture))</label>
+                                            </div>
+                                        </td>
+                                        <td class="last-action">
+                                            <span class="actionBtn">
+                                                <button id="DeleteBtn_@sl" type="button"
+                                                        class="btn secondaryLink alterID inVisible cloneBtn removeBtn">
+                                                    <i data-feather="x" onclick="RowRemoveBtnWithEnablePreRow('tbody2','btnSubmit','HdrDiv1','myTable')"></i>
+                                                </button>
+                                                <button id="AddBtn_@sl" type="button"
+                                                        class="btn primaryLink alterID inVisible cloneBtn addBtn"
+                                                        data-toggle="tooltip" data-placement="top"
+                                                        onclick="CloneRowAddBtnClick()"
+                                                        title="Add">
+                                                    <i data-feather="plus" onclick=""></i>
+                                                </button>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    }
+                                </tbody>
+                                <tbody id="tbody2">
+                                    @if (Model.DataDetails != null && Model.DataDetails.Count > 0)
+                                    {
+                                        int sl = 1;
+                                        foreach (var rowitem in Model.DataDetails)
+                                        {
+                                            if (rowitem.RoleIDs != Model.DataHdr.RoleIDs) 
+                                            {                                            
+                                            <tr id="@sl" class="add-row SLUSection SLUContainer alterID">
+                                                <td>
+                                                    <div>
+                                                        <select id="Role_@sl" value="@rowitem.RoleIDs"
+                                                                onchange="RolesChanged()"
+                                                                data-name="RoleID" data-name-text="RoleName"
+                                                                class="form-select duprole alterID inValidTag ApplyMultiSelectWithSelectAll SLUCtrl"
+                                                                aria-label="Default select example">
+                                                            @if (Model.RoleList != null && Model.RoleList.Count > 0)
+                                                            {
+                                                                foreach (var item in Model.RoleList)
+                                                                {
+                                                                    <option value="@item.RoleId" selected>@item.RoleName</option>
+                                                                }
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        <select id="LocationType_@sl" 
+                                                                onchange="LocationTypeChanged()"
+                                                                data-name="LocationTypeCodes" data-name-text="LocationTypeCodeDesc"
+                                                                class="form-select alterID inValidTag ApplyMultiSelectWithSelectAll SLUCtrl"
+                                                                aria-label="Default select example">
+                                                            @if (Model.LocationTypeList != null && Model.RoleList.Count > 0)
+                                                            {
+                                                                foreach (var item in Model.LocationTypeList)
+                                                                {
+                                                                    <option value="@item.ID"> @item.DisplayText</option>
+                                                                }
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        <select id="Location_@sl" 
+                                                                onchange="LocationCodeChanged()"
+                                                                data-name="LocationCodes" data-name-text="LocationCodeDesc"
+                                                                class="form-select alterID inValidTag ApplyMultiSelectWithSelectAll SLUCtrl"
+                                                                aria-label="Default select example">
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="position-relative pointer">
+                                                        <input id="FromDate_@sl" type="date" data-name="EffectiveFromDate"
+                                                               value="@(rowitem.EffectiveFromDate.ToString("yyyy-MM-dd"))"
+                                                               class="form-control pointer alterID is-valid inValidCtrlTag SLUCtrl"
+                                                               onchange="FromDateChanged()">
+                                                        <label id="lblFromDate_@sl" class="datelabel alterID pointer">@(rowitem.EffectiveFromDate.Year==1? "Select A Date" : rowitem.EffectiveFromDate.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture)) </label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="position-relative pointer">
+                                                        <input id="ToDate_@sl" type="date" data-name="EffectiveToDate"
+                                                               value="@(rowitem.EffectiveToDate.ToString("yyyy-MM-dd"))"
+                                                               class="form-control tdt rowlock alterID pointer @(rowitem.EffectiveToDate.Year==1?"":"is-valid")"
+                                                               onchange="ToDateChanged()">
+                                                        <label id="lblToDate_@sl" class="datelabel alterID rowlock pointer">@(rowitem.EffectiveToDate.Year==1?"Select A Date":rowitem.EffectiveToDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture))</label>
+                                                    </div>
+                                                </td>
+                                                <td class="last-action">
+                                                    <span class="actionBtn">
+                                                        <button id="DeleteBtn_@sl" type="button" 
+                                                                class="btn secondaryLink alterID inVisible cloneBtn removeBtn" 
+                                                                data-toggle="tooltip" data-placement="top" 
+                                                                title="Delete">
+                                                            <i data-feather="x" onclick="RowRemoveBtnWithEnablePreRow('tbody2','btnSubmit','HdrDiv1','myTable')"></i>
+                                                        </button>
+                                                        <button id="AddBtn_@sl" type="button"
+                                                                class="btn primaryLink alterID inVisible cloneBtn addBtn"
+                                                                data-toggle="tooltip" data-placement="top"
+                                                                onclick="CloneRowAddBtnClick()"
+                                                                title="Add">
+                                                            <i data-feather="plus" onclick=""></i>
+                                                        </button>
+
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                                sl += 1;
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section headers
+{}
+@section scripts{
+    <script src="~/UIContent/JS/CustomePage/SLUCtrlsV2.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
+    <script src="~/UIContent/JS/CustomePage/RBACUser/EditUser.js"></script>
+}
