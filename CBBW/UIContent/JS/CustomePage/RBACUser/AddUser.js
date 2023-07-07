@@ -9,7 +9,7 @@
         $("#UserName").val('').addClass('is-invalid');
         myCtrl.isInvalidCtrl();
     }
-    SubmitBtnStatus('btnSubmit', 'HdrDiv');
+    SubmitBtnStatus('btnSubmit', 'HdrDiv1');
 });
 $("#UserName").on("keyup", function () {
     var myCtrl = $(this);
@@ -27,7 +27,7 @@ $("#UserName").on("keyup", function () {
         myCtrl.isInvalidCtrl();
         $('#NewPassword').val('');
     }
-    SubmitBtnStatus('btnSubmit', 'HdrDiv');
+    SubmitBtnStatus('btnSubmit', 'HdrDiv1');
 });
 $("#NewPassword").on("keyup", function () {
     var myCtrl = $(this);
@@ -36,7 +36,7 @@ $("#NewPassword").on("keyup", function () {
     } else {
         myCtrl.isInvalidCtrl();
     }
-    SubmitBtnStatus('btnSubmit', 'HdrDiv');
+    SubmitBtnStatus('btnSubmit', 'HdrDiv1');
 });
 $("#CnfPassword").on("keyup", function () {    
     var myCtrl = $(this);
@@ -48,7 +48,7 @@ $("#CnfPassword").on("keyup", function () {
         //MyAlert(4, 'Password Confirmation Failed.')
         myCtrl.isInvalidCtrl();
     }
-    SubmitBtnStatus('btnSubmit', 'HdrDiv');
+    SubmitBtnStatus('btnSubmit', 'HdrDiv1');
 });
 $("#CnfPassword").on("blur", function () {
     var myCtrl = $(this);
@@ -60,7 +60,7 @@ $("#CnfPassword").on("blur", function () {
         MyAlert(4, 'Password Confirmation Failed.')
         myCtrl.isInvalidCtrl();
     }
-    SubmitBtnStatus('btnSubmit', 'HdrDiv');
+    SubmitBtnStatus('btnSubmit', 'HdrDiv1');
 });
 $("#EffectiveDate").on("change", function () {
     var myCtrl = $(this);
@@ -69,7 +69,7 @@ $("#EffectiveDate").on("change", function () {
     } else {
         myCtrl.isInvalid();
     }
-    SubmitBtnStatus('btnSubmit', 'HdrDiv');
+    SubmitBtnStatus('btnSubmit', 'HdrDiv1');
 });
 function RolesChanged() {
     var myCtrl = $(RolesChanged.caller.arguments[0].target);
@@ -138,6 +138,7 @@ function CloneRowAddBtnClick() {
         UnLockSLUCtrl($(this));
     });
     myCtrl.tooltip('hide');
+    SubmitBtnStatus('btnSubmit', 'HdrDiv1');
 };
 function EnableAddBtn(rowid, addBtnBaseID) {
     var tblrow = $('#' + rowid);

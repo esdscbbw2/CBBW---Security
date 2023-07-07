@@ -130,7 +130,8 @@ function LocationCodeChanged() {
     EnableAddBtn(myCtrl.attr('id').split('_')[1], 'AddBtn');
 };
 function FromDateChanged() {
-    var myCtrl = $(FromDateChanged.caller.arguments[0].target);    
+    var myCtrl = $(FromDateChanged.caller.arguments[0].target);
+    myCtrl.ApplyCustomDateFormat();
     var todateCtrl = $('#ToDate_' + myCtrl.attr('id').split('_')[1]);    
     if (myCtrl.val() != '') {
         myCtrl.isValidCtrl();
@@ -248,7 +249,8 @@ $(document).ready(function () {
             });
             //Seting min value to Todate
             $('#ToDate_' + index).attr('min', CustomDateChangeV2(item.EffectiveFromDateStr, 1));
-            if (index == $(data).length - 1) { $('#AddBtn_' + index).removeClass('inVisible');}
+            //$('#FromDate_' + index).ApplyCustomDateFormat();
+            if (index == $(data).length - 1) { $('#AddBtn_' + index).removeClass('inVisible'); }
         });
     });
     if (!$('#check1').prop('checked')) {

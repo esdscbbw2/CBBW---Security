@@ -14,7 +14,7 @@
                         <i data-feather="arrow-left-circle"></i>
                         Back
                     </button>
-                    <button id="btnSubmit" type="button"
+                    <button id="btnSubmit" type="button" disabled
                             class="btn btn-secondary me-2"
                             onclick="SaveData()">
                         <i data-feather="upload"></i>
@@ -123,7 +123,7 @@
                                             <div id="selectDiv1">
                                                 <select id="Role_0" multiple="multiple"
                                                         onchange="RolesChanged()" data-name="RoleID" data-name-text="RoleName"
-                                                        class="form-select ApplyMultiSelectWithSelectAll SLUCtrl alterID inValidTag duprole"
+                                                        class="form-select is-invalid ApplyMultiSelectWithSelectAll SLUCtrl alterID inValidTag duprole"
                                                         aria-label="Default select example">
                                                     @if (Model.RoleList != null && Model.RoleList.Count > 0)
                                                     {
@@ -140,7 +140,7 @@
                                                 <select multiple="multiple" id="LocationtypeCode_0"
                                                         data-name="LocationTypeCodes" data-name-text="LocationTypeCodeDesc"
                                                         onchange="LocationTypeChanged()"
-                                                        class="form-select ApplyMultiSelectWithSelectAll SLUCtrl alterID inValidTag"
+                                                        class="form-select is-invalid ApplyMultiSelectWithSelectAll SLUCtrl alterID inValidTag"
                                                         aria-label="Default select example">
                                                     @if (Model.LocationTypeList != null)
                                                     {
@@ -157,7 +157,7 @@
                                                 <select multiple="multiple" id="LocationCode_0"
                                                         onchange="LocationCodeChanged()" 
                                                         data-name="LocationCodes" data-name-text="LocationCodeDesc"
-                                                        class="form-select ApplyMultiSelect SLUCtrl alterID inValidTag"
+                                                        class="form-select is-invalid ApplyMultiSelect SLUCtrl alterID inValidTag"
                                                         aria-label="Default select example">
                                                 </select>
                                             </div>
@@ -165,7 +165,7 @@
                                         <td>
                                             <div class="position-relative pointer">
                                                 <input id="EffectiveFromDt_0" type="date" data-name="EffectiveFromDate"
-                                                       class="form-control pointer is-invalid CustomDateFormatCloneRow valid SLUCtrl alterID inValidTag"
+                                                       class="form-control is-invalid pointer is-invalid CustomDateFormatCloneRow valid SLUCtrl alterID inValidTag"
                                                        onchange="FromDateChanged()">
                                                 <label id="lblEffectiveFromDt_0" style="width:100px"
                                                        class="datelabel pointer alterID">Select Date</label>
