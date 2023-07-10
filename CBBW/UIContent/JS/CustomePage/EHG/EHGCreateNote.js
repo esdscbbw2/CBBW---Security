@@ -104,7 +104,7 @@ function VehicleTypeChanged(mval) {
     }
     if (selectedvt == 2 && $('#OkToOpen').val() == 0) {
         VehicletypeCtrl.isInvalidCtrl();
-        MyAlert(4, 'Screen Is Alloted For 2 Wheeler Only On Holidays, Weekly Offs And Off-General Shift Timing On Working Days.')
+        MyAlert(5, 'Screen Is Alloted For 2 Wheeler Only On Holidays, Weekly Offs And Off-General Shift Timing On Working Days.')
     }
     EnableDateWiseTourBtn();
 };
@@ -169,7 +169,11 @@ function addOfficeWorkCloneBtnClick() {
     $('#FromDate_' + rowid).addClass('is-valid').removeClass('is-invalid SLUCtrl');
     $('#FromDate_' + rowid).attr('disabled', 'disabled');
     $('#DDAuthorisedEmpForWork').attr('disabled', 'disabled');
-    $('#sOfficeworkDiv').removeClass('sectionB');
+        $('#sOfficeworkDiv').removeClass('sectionB');
+        $('#FromDate_' + rowid).ApplyCustomDateFormat();
+        $('#ToDate_' + rowid).on("change", function () {
+                $(this).ApplyCustomDateFormat();
+        });
     UnLockSLUContainer($('#' + rowid));
     EnableDateWiseTourBtn();
     $('#AddBtn_' + rowid).makeSLUDisable();
@@ -245,7 +249,10 @@ function ValidateControl() {
         targetid == 'TADADeniedForManagement' ) {
         $('#' + targetid + '2').val($(target).val());
     }    
-    
+    if (targetid == 'FromdateForMang' || 'ToDateForMang')
+    {
+        $(target).ApplyCustomDateFormat();
+    }
     //if (targetid.indexOf('_') >= 0) {
     //    if (targetid.split('_')[0] == 'TaDaDenied' && $(target).val() == 1) {
     //        MyAlertWithCallBack(6, 'Are You Sure To Deny The TADA Option?', 'CancelRTadaDenied(' + targetid.split('_')[1] + ')')
@@ -836,8 +843,6 @@ function DDAuthorisedEmpForWorkChanged() {
 
 };
 
-
-
 function ForManagementDivRemoveInValidStatus() {
     //if ($('#for_Management').hasClass('inVisible')) {
     //} else {
@@ -953,7 +958,7 @@ function POADropdownChanged(mval) {
     //
     if (selectedvt != 1 && $('#OkToOpen').val() == 0) {
         POADropdown.isInvalidCtrl();
-        MyAlert(4,'Screen Is Alloted For Office Work Only On Holidays, Weekly Offs And Off-General Shift Timing On Working Days.')
+        MyAlert(5,'Screen Is Alloted For Office Work Only On Holidays, Weekly Offs And Off-General Shift Timing On Working Days.')
     }
     EnableDateWiseTourBtn();
     

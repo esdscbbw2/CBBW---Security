@@ -305,7 +305,7 @@
                                                 @Html.TextBoxFor(m => m.FromdateForMang, "{0:yyyy-MM-dd}",
                                                    htmlAttributes: new
                                                    {
-                                                       @class = "form-control pointer CustomDateFormatCloneRow valid SLUCtrl",
+                                                       @class = "form-control pointer valid SLUCtrl",
                                                        type = "date",
                                                        onchange = "ValidateControl()",
                                                        onkeyup= "ValidateControl()",
@@ -340,7 +340,7 @@
                                                 @Html.TextBoxFor(m => m.ToDateForMang, "{0:yyyy-MM-dd}",
                                                    htmlAttributes: new
                                                    {
-                                                       @class = "form-control pointer EntrynDisabledForEntry  CustomDateFormatCloneRow valid SLUCtrl",
+                                                       @class = "form-control pointer EntrynDisabledForEntry valid SLUCtrl",
                                                        @type = "date",
                                                        @onchange = "ValidateControl()",
                                                        @min = Model.MinFromDate
@@ -498,7 +498,7 @@
                                                 <input id="FromDate" type="date"
                                                        data-name="FromDate"
                                                        onchange="ValidateCloneRowCtrl()"
-                                                       class="form-control pointer SLUCtrl SLUCtrlP is-invalid alterID inValidTag CustomDateFormatCloneRow valid">
+                                                       class="form-control pointer SLUCtrl SLUCtrlP is-invalid alterID inValidTag valid">
                                                 <label id="lblFromDate" style="width:100px"
                                                        class="datelabel pointer alterID">Select Date</label>
                                             </div>
@@ -517,7 +517,7 @@
                                                 <input id="ToDate" type="date"
                                                        data-name="ToDate" title="To Date Should Be Equal Or Later Than From Date"
                                                        onchange="CRToDateChanged();"
-                                                       class="form-control pointer is-invalid SLUCtrl SLUCtrlP alterID inValidTag CustomDateFormatCloneRow valid">
+                                                       class="form-control pointer is-invalid SLUCtrl SLUCtrlP alterID inValidTag valid">
                                                 <label id="lblToDate" style="width:110px"
                                                        class="datelabel pointer alterID">Select Date</label>
                                             </div>

@@ -308,6 +308,7 @@
     <Content Include="UIContent\CSS\fixedColumns.dataTables.min.css" />
     <Content Include="UIContent\CSS\font-awesome.min.css" />
     <Content Include="UIContent\CSS\img\clock.png" />
+    <Content Include="UIContent\CSS\img\close.png" />
     <Content Include="UIContent\CSS\img\main-banner.png" />
     <Content Include="UIContent\CSS\img\print-logo.png" />
     <Content Include="UIContent\CSS\jquery.dataTables.min.css" />

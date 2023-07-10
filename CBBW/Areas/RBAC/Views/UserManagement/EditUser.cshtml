@@ -338,7 +338,13 @@
     </div>
 </div>
 @section headers
-{}
+{
+    <style>
+        #reset_pwd input[type="password"].valid + span {
+            padding-right: 23px;
+        }
+    </style>
+    }
 @section scripts{
     <script src="~/UIContent/JS/CustomePage/SLUCtrlsV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
