@@ -14,6 +14,7 @@
         @Html.HiddenFor(x => x.CenterCodenName);
         @Html.HiddenFor(x => x.btnSubmit);
         @Html.HiddenFor(x => x.IsEPTour);
+        @Html.HiddenFor(x=>x.EmplyoyeeNoList)
         <div class="row newTable">
             <div class="fixedElement">
                 <div class="col-md-12">
@@ -42,7 +43,7 @@
             </div>
             <div class="col-md-12">
                 <div class="heading_text_btn2 d-block mt-4">
-                    <h2 class="text-left"> Travelling Details</h2>
+                    <h2 class="text-left"> Travelling Details:</h2>
                 </div>
                 <div class="heading_text_btn2 d-block mb-2">
                     <h2 class="text-center"> Travelling Details (I) </h2>
@@ -53,7 +54,7 @@
                 <div class="col-md-12 pt-3">
                     <div class="card">
                         <div class="card-body" id="TravDetails">
-                            <div class="table-responsive max-content">
+                            <div class="table-responsive">
                                 <table class="table table-bordered w-100 btnalign" id="TravdtlTbl">
                                     <thead>
                                         <tr>
@@ -116,7 +117,7 @@
                                                     NA
                                                 </div>
                                                 <div class="forNo">
-                                                    <textarea id="ReasonVehicleReq" onchange="ValidateControl()" data-name="ReasonVehicleReq" class="form-control clear is-invalid OnlyAlphNumber" maxlength="200" cols="10" rows="2"></textarea>
+                                                    <textarea id="ReasonVehicleReq" onchange="ValidateControl()" onkeypress="keypressCountWord(this);" data-name="ReasonVehicleReq" oncopy="return false" onpaste="return false" class="form-control clear is-invalid OnlyAlphNumber" cols="10" rows="2"></textarea>
                                                 </div>
                                             </td>
                                             <td class="text-center">
@@ -158,7 +159,7 @@
                                                 </div>
                                             </td>
                                             <td class="text-center">
-                                                <textarea maxlength="200" onchange="ValidateControl()" data-name="PurposeOfVisit" id="PurposeOfVisit" class="form-control clearNoVal is-invalid OnlyAlphNumber" cols="10" rows="2"></textarea>
+                                                <textarea onkeypress="keypressCountWord(this);" onchange="ValidateControl()" data-name="PurposeOfVisit" oncopy="return false" onpaste="return false" id="PurposeOfVisit" class="form-control clearNoVal is-invalid" cols="10" rows="2"></textarea>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -316,19 +317,18 @@
         var firstOpen = true;
         var time;
         $('.timePicker').datetimepicker({
-            //minDate: moment(),
             useCurrent: false,
-            format: "hh:mm A"
+            format: "hh:mm A",
         }).on('dp.show', function () {
             if (firstOpen) {
-                //minDate: moment(),
-                time = moment().startOf('day');
+                time = GetCurrentTimeWithAMPM(new Date);//formatAMPM(new Date);
                 firstOpen = false;
             } else {
-                time = "01:00 PM"
+                time = "12:00 AM";
             }
             $(this).data('DateTimePicker').date(time);
         });
+
     </script>
     <script>
 
@@ -341,7 +341,6 @@
             };
 
     </script>
-
     <script>
         $(document).ready(function () {
             $('#btnClear').click(function () {
@@ -353,42 +352,17 @@
             });
         });
     </script>
-    @*<script>
-            $(document).ready(function () {
-                $('#btnBack').click(function () {
-                    var url = "/Security/ETS/Create";
-                    if ($('#PublicTransport').val() != "") {
-                        Swal.fire({
-                            title: 'Confirmation Message',
-                            text: "Are You Sure Want to Go Back?",
-                            icon: 'question',
-                            customClass: 'swal-wide',
-                            //buttons: {
-                            //    cancel: 'No',
-                            //    confirm: 'Yes'
-                            //},
-                            confirmButtonText: "Yes",
-                            cancelButtonText: "No",
-                            cancelButtonClass: 'btn-cancel',
-                            confirmButtonColor: '#2527a2',
-                            showCancelButton: true,
-                        }).then(callback);
-                        function callback(result) {
-                            if (result.value) {
-                                window.location.href = url;
-                            } else {
-                                // second variant
-                            }
-                        }
-                    } else {
-                        window.location.href = url;
-                    };
-                });
-            });
-        </script>*@
-
-
-
-
+  
+<script>
+    $('#PurposeOfVisit').keyup(function (e) {
+        var keyCode = e.which;
+        if (!(keyCode >= 48 && keyCode <= 57) && // numbers 0-9
+            !(keyCode >= 65 && keyCode <= 90) && // uppercase letters A-Z
+            !(keyCode >= 97 && keyCode <= 122) &&
+            !(keyCode === 32)) { // lowercase letters a-z
+            e.preventDefault();
+        }
+    });
+    </script>
 }
 

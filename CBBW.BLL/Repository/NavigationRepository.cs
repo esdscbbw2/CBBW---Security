@@ -30,14 +30,10 @@ namespace CBBW.BLL.Repository
         {
             return _ModuleEntities.GetIndexListPage(DisplayLength, DisplayStart, SortColumn, SortDirection, SearchText, CenterCode, status, ref pMsg);
         }
-
-       
-
         public bool SetAddNavigationModule(int status, int UserId, int ModuleId,int SubModuleId, List<Navigations> dtldata, ref string pMsg)
         {
             return _ModuleEntities.SetAddNavigationModule(status, UserId, ModuleId, SubModuleId, dtldata, ref pMsg);
         }
-
         public Header GetNavigationDetails(int ID, ref string pMsg)
         {
             List<Navigations> subobj = new List<Navigations>();
@@ -56,5 +52,10 @@ namespace CBBW.BLL.Repository
             }
             return obj;
         }
+        public bool SetNavigationDelete(int ID, ref string pMsg)
+        {
+            return _ModuleEntities.SetNavigationDelete(ID, ref pMsg);
+        }
     }
+
 }

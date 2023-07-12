@@ -170,6 +170,8 @@ namespace CBBW.Areas.RBAC.Controllers
             
         }
 
+
+
         #region Json Function
        public JsonResult GetSubmoduleData(int Id)
         {
@@ -187,6 +189,37 @@ namespace CBBW.Areas.RBAC.Controllers
 
             }
             catch (Exception ex) { ex.ToString(); }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult Delete( int ID)
+        {
+            CustomAjaxResponse result = new CustomAjaxResponse();
+            try
+            {
+                if (ID != 0)
+                {
+                    if (_iModule.SetSubmoduleDelete(ID, ref pMsg))
+                    {
+                        result.bResponseBool = true;
+                        result.sResponseString = "Sub Module Data Deleted successfully.";
+                    }
+                    else
+                    {
+                        result.bResponseBool = false;
+                        result.sResponseString = pMsg;
+                    }
+                }
+                else
+                {
+                    result.bResponseBool = false;
+                    result.sResponseString = "Data Not Available";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.bResponseBool = false;
+                result.sResponseString = ex.Message;
+            }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         #endregion

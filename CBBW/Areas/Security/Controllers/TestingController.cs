@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using CBBW.Areas.Security.ViewModel.Testing;
 using CBBW.BLL.IRepository;
+using CBBW.BOL;
 using CBBW.BOL.CustomModels;
 
 namespace CBBW.Areas.Security.Controllers
@@ -13,12 +15,13 @@ namespace CBBW.Areas.Security.Controllers
     {
         IEMNRepository _iEMN;
         IMasterRepository _iMaster;
+        IRoleRepository _iRole;
         string pMsg = "";
-        public TestingController(IEMNRepository iEMN, IMasterRepository iMaster)
+        public TestingController(IRoleRepository iRole,IEMNRepository iEMN, IMasterRepository iMaster)
         {
             _iEMN = iEMN;
             _iMaster = iMaster;
-
+            _iRole = iRole;
         }
         // GET: Security/Testing
         public ActionResult Index()
@@ -56,6 +59,38 @@ namespace CBBW.Areas.Security.Controllers
             }
             model.CentreList = _iMaster.GetCentresFromTourCategory("1", ref pMsg);
             return View(model);
+        }
+        public ActionResult GetRBAC() 
+        {
+            List<PageInformation> model = new List<PageInformation>();
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            IEnumerable<Type> controllerTypes = assembly.GetTypes();
+            controllerTypes = controllerTypes.Where(t => t.BaseType.Name == "Controller");
+            foreach (Type controllerType in controllerTypes)
+            {
+                string controllerName = controllerType.Name.Replace("Controller", "");
+                MethodInfo[] methods = controllerType.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+                foreach (MethodInfo method in methods)
+                {
+                    if (method.IsPublic && !method.IsConstructor && method.ReturnType.Name == "ActionResult")
+                        model.Add(new PageInformation
+                        {
+                            ControllerName = controllerName,
+                            ActionName = method.Name
+                        });
+                }
+            }
+            List<PageInformation> model2 = model.Distinct(new PageInformationEqualityComparer()).ToList();
+
+            if (_iRole.SetRBACMVC(model2.OrderBy(o=>o.ControllerName).ToList(), ref pMsg))
+            {
+                @ViewBag.Msg = "Done";
+            }
+            else
+            {
+                @ViewBag.ErrMsg = pMsg;
+            }
+            return View(model2.OrderBy(o => o.ControllerName).ToList());
         }
     }
 }

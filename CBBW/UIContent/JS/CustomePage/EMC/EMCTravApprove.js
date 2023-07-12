@@ -92,9 +92,15 @@ function validatectrl(targetid, value) {
     switch (targetid) {
         case "VehicleAlloc":
             isvalid = validatectrl_YesNoCombo(value);
+            if (isvalid) { $('#VA').removeClass('border-red').addClass('border-green'); } else {
+                $('#VA').removeClass('border-green').addClass('border-red');
+            }
             break;
         case "EligibleVeh":
+             
             isvalid = validatectrl_YesNoCombo(value);
+            if (isvalid) { $('#EV').removeClass('border-red').addClass('border-green'); } else {
+                $('#EV').removeClass('border-green').addClass('border-red');}
             break;
         case "ReasonVehicleProvideds":
             isvalid = validatectrl_ValidateLength(value);
@@ -310,3 +316,12 @@ async function GetStatement(EligibleVT, VtypeProvided) {
     });
    
 };
+function keypressCountWord(e) {
+    var target = keypressCountWord.caller.arguments[0].target;
+    var targetCtrl = $(target).val();
+    if (WordCount(targetCtrl) > 50) {
+        $(target).preventTypying();
+    } else {
+        $(target).off('keypress');
+    }
+}

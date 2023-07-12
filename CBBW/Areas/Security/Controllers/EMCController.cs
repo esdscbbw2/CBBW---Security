@@ -57,6 +57,7 @@ namespace CBBW.Areas.Security.Controllers
         public JsonResult GetEMCNZBDetailsforListPage(int iDisplayLength, int iDisplayStart, int iSortCol_0,
     string sSortDir_0, string sSearch)
         {
+            if (iSortCol_0 == 0) { iSortCol_0 = 1; sSortDir_0 = "des"; }
             List<EMCNoteList> noteList = _iEMC.GetEMCNZBDetailsforListPage(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, user.CentreCode, 1, ref pMsg);
 
             var result = new
@@ -419,6 +420,7 @@ namespace CBBW.Areas.Security.Controllers
         public JsonResult GetEMCNZBApprovalforListPage(int iDisplayLength, int iDisplayStart, int iSortCol_0,
    string sSortDir_0, string sSearch)
         {
+            if (iSortCol_0 == 0) { iSortCol_0 = 1; sSortDir_0 = "des"; }
             List<EMCNoteList> noteList = _iEMC.GetEMCNZBDetailsforListPage(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, user.CentreCode, 2, ref pMsg);
 
             var result = new
@@ -474,7 +476,7 @@ namespace CBBW.Areas.Security.Controllers
                 CustomAjaxResponse result = new CustomAjaxResponse();
                 modelobj.travdetails.NoteNumber = modelobj.NoteNumber;
                 modelobj.travdetails.IsApproved = modelobj.IsApprove == 1 ? true : false;
-                modelobj.travdetails.ApprovedReason = modelobj.ApproveReason != null ? modelobj.ApproveReason : "NA";
+                modelobj.travdetails.ApprovedReason = modelobj.ApproveReason != null ? modelobj.ApproveReason : "-";
                 modelobj.travdetails.ReasonVehicleProvided = "NA";
                 modelobj.travdetails.VehicleTypeProvided = 0;
                 modelobj.travdetails.EmployeeNonName = "NA";

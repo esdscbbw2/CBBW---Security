@@ -80,7 +80,10 @@ function validatectrl_ValidatestringLength(value) {
     } else { return false; }
 };
 function EnableSubmitBtn() {
-    // var z = getDivInvalidCount('ModuleDive');
+    //var r = $(EnableSubmitBtn.caller.arguments[0].target.closest('.add-row'));
+    //var Checked = r.find('checkbox').Checked();
+    //alert(Checked);
+
     var z = getDivInvalidCount('MainDiv');
     var SubmitBtn = $('#BtnSave');
 
@@ -140,16 +143,31 @@ function SaveData() {
         }
     });
 };
+
 function IsActiveClick() {
     var myCtrl = $(IsActiveClick.caller.arguments[0].target);
+    var rowid = $(myCtrl.closest('.add-row')).attr("id");
+    var ActionIDs = $('#ActionIDs_0');
+    if (rowid > 0) {
+        ActionIDs = $('#ActionIDs_' + rowid);
+    }
+    debugger;
     if (myCtrl.prop('checked')) {
         myCtrl.val(1);
-        EnableSubmitBtn();
+        ActionIDs.addClass('is-invalid');
+        ActionIDs.removeAttr('disabled');
+    
+        $(myCtrl.closest('.add-row')).find('.multiselect').removeClass('disabled');
+        $(myCtrl.closest('.add-row')).find('.multiselect').removeAttr('disabled');
+
     } else {
         myCtrl.val(0);
+        ActionIDs.removeClass('is-invalid');
+        $(myCtrl.closest('.add-row')).find('.multiselect').addClass('disabled');
+        $(myCtrl.closest('.add-row')).find('.multiselect').attrty('disabled');
 
+        
     }
-
-
-
+   
+   
 };

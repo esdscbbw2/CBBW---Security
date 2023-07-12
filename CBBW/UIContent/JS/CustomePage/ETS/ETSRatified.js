@@ -19,7 +19,7 @@
 });
 function Notenumberchanged(notenumber) {
     var noteCtrl = $('#NoteNumber');
-    if (notenumber != '') { noteCtrl.isValid(); } else { noteCtrl.isInvalid(); }
+    if (notenumber != '') { noteCtrl.isValid(); $('.QueDiv').removeClass('inVisible'); } else { noteCtrl.isInvalid(); $('.QueDiv').addClass('inVisible'); }
     $('#tbody2').empty();
    
     $.ajax({
@@ -52,8 +52,10 @@ function Notenumberchanged(notenumber) {
                 }
                 DisplayTPDetails(item.PersonDtls);
 
-                if ($('#CenterCodeName').val() != "") { $('#btnTravDetails').makeEnabled(); }
-
+              /*  if ($('#CenterCodeName').val() != "") { $('#btnTravDetails').makeEnabled(); }*/
+                if ($("#btnDisplay").val() == 0) {
+                    MyAlert(0, 'For Futher Process ,Please check Attachment File First..!!');
+                }
             });
         }
     });
@@ -86,20 +88,13 @@ $(document).ready(function () {
     $('#btnViewDoc').click(function () {
         var docfilename = $('#AttachFile').val();
         var filepath = "/Upload/Forms/" + docfilename;
-        if (docfilename.length > 2) { OpenWindow(filepath); }
+        if (docfilename.length > 2) {
+            OpenWindow(filepath);
+            $('#btnTravDetails').makeEnabled();
+        }
         else {
-            Swal.fire({
-                title: 'Information',
-                text: "No Document Found For This Note",
-                icon: 'warning',
-                customClass: 'swal-wide',
-                buttons: {
-                    //cancel: 'Cancel',
-                    confirm: 'Ok'
-                },
-                //cancelButtonClass: 'btn-cancel',
-                confirmButtonColor: '#2527a2',
-            });
+            MyAlert(0, 'No Document Found For This Note');
+            $('#btnTravDetails').makeDisable();
         }
     });
 })
@@ -127,18 +122,19 @@ function ValidateControl() {
 };
 function validatectrl(targetid, value) {
     var isvalid = false;
-    var DivRati = $('#DivRati');
     switch (targetid) {
         case "OtherP":
             isvalid = validatectrl_YesNoCombo(value);
             if (isvalid) {
                 $('.content').removeClass('border-red').addClass('border-green');
-                UnLockSection(DivRati.attr('id'));
+                UnLockSection('DivRati');
+                $('#IsAppDiv').addClass('SLUSection');
 
             }
             else {
                 $('.content').removeClass('border-green').addClass('border-red');
-                LockSection(DivRati.attr('id'));
+                $('#IsAppDiv').removeClass('SLUSection');
+                LockSection('DivRati');
                 $('#IsRatified').val('').isInvalid();
             }
             break;
@@ -179,17 +175,17 @@ function EnableSubmitBtn() {
     // alert(x); alert(y);
     if ((x + y) * 1 > 0 || btnDisplay == 0) {
         DWTBtn.makeDisable();
+       
     }
     else {
         DWTBtn.makeEnabled();
+        DWTBtn.removeClass('nodrop');
     }
 };
-
 function Buttonclear() {
     $('.clear').val('');
     $('.clear').isInvalid();
 }
-
 function SaveDataClicked() {
     var NoteNumber = $('#NoteNumber').val();
     var IsRatified = $('#IsRatified').val();

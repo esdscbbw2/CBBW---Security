@@ -53,7 +53,7 @@
 
                                             <td class="border-0">
 
-                                                @Html.TextBoxFor(m => m.ModuleName, htmlAttributes: new { @class = "form-control is-valid", @onchange = "ValidateCloneRowCtrl()" })
+                                                @Html.TextBoxFor(m => m.ModuleName, htmlAttributes: new { @class = "form-control is-valid", @onkeyup = "ValidateCloneRowCtrl()" })
 
                                             </td>
 

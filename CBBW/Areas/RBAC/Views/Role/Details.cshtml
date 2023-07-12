@@ -80,14 +80,31 @@
                     </td>
                     <td>
                         <span class="actionBtn d-block">
-                            <button id="DeleteBtn" type="button"
-                                    class="btn secondaryLink alterID cloneBtn removeBtn @(Model.CanDelete==true?"":"inVisible")"
-                                    onclick="removeClonebtn()"
-                                    data-toggle="tooltip"
-                                    data-placement="top" title="Delete">
-                                <i data-feather="x"></i>
-                            </button>
-                            </span>
+                            @if (Model.CanDelete == true)
+                            {
+
+
+                                <button id="DeleteBtn" type="button"
+                                        class="btn secondaryLink alterID cloneBtn removeBtn"
+                                        onclick="removeClonebtn()"
+                                        data-toggle="tooltip"
+                                        data-placement="top" title="Delete">
+                                    <i data-feather="x"></i>
+                                </button>
+
+                            }
+                            else
+                            {
+                                <button id="DeleteBtn" type="button"
+                                        class="btn secondaryLink alterID cloneBtn removeBtn inVisible"
+                                        onclick="removeClonebtn()"
+                                        data-toggle="tooltip"
+                                        data-placement="top" title="Delete">
+                                    <i data-feather="x"></i>
+                                </button>
+                            }
+
+                        </span>
                     </td>
                 </tr>
             </tbody>

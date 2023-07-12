@@ -79,6 +79,9 @@ function addCloneBtnClick() {
     $('#btnSubmit').makeDisable();
     //$('#CenterCode_' + clonerowid).isInvalidCtrl();
     $('#ToDate_' + clonerowid).isInvalidCtrl();
+    $('#ToDate_' + clonerowid).on('change', function () {
+        $(this).ApplyCustomDateFormat();
+    });
     var mCentreCode = $('#CenterCode_' + clonerowid);
     mCentreCode.empty();
     mCentreCode.multiselect('destroy');

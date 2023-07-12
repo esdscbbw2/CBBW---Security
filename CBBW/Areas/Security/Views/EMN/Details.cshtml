@@ -54,10 +54,12 @@
                 </div>
                 <div class="text-right pt-2 pb-2">
                     <div class="upper-tab-buttons">
-                        <button type="button" id="btnTourRule" class="btn btn-primary me-2">
+                        <button type="button" id="btnTourRule"
+                                onclick="OpenWindowRule('/Security/TourRule/ViewRedirection?CBUID=1&IsBackButton=0');"
+                                class="btn btn-primary me-2">
                             To Check  “Tour Rules”   Click Here
                         </button>
-                        <button type="button" class="btn btn-primary" onclick="window.open('/Security/TADARules/ViewRedirection?CBUID=1');">
+                        <button type="button" class="btn btn-primary " onclick="OpenWindowTRule('/Security/TADARules/ViewRedirection?CBUID=1&IsBackButton=0');">
                             To Check “TA & DA Rules”   Click Here
                         </button>
                     </div>
@@ -136,19 +138,23 @@
                                         <label>Ratified :</label>
                                     </div>
                                     <div class="col-md-2">
-                                        <input type="text" class="form-control ApproveCtrl" value="@Model.emnHeader.IsRatifieds" disabled="">
+                                        <input type="text" class="form-control ApproveCtrl" 
+ value="@(Model.TourCatStatus==true?Model.emnHeader.IsRatifieds:"NA")"
+                                       disabled="">
                                     </div>
                                     <div class="col-md-2 col-form-label">
                                         <label>Date & Time Of  Ratification :</label>
                                     </div>
                                     <div class="col-md-2">
-                                        <input type="text" class="form-control" value="@Model.emnHeader.RatifiedDatestr @Model.emnHeader.RatifiedTime" disabled="">
+                                        <input type="text" class="form-control" 
+ value="@(Model.TourCatStatus==true?Model.emnHeader.RatifiedDatestr:"NA") @(Model.TourCatStatus==true?Model.emnHeader.RatifiedTime:"NA")" disabled="">
                                     </div>
                                     <div class="col-md-2 col-form-label">
                                         <label>Reason If Not Ratified :</label>
                                     </div>
                                     <div class="col-md-2">
-                                        <textarea name="" id="" cols="10" rows="2" class="form-control pointer-default" readonly>@Model.emnHeader.RatifiedReason</textarea>
+                                        <textarea name="" id="" cols="10" rows="2" class="form-control pointer-default" readonly>
+@(Model.TourCatStatus==true? Model.emnHeader.RatifiedReason : "NA")</textarea>
                                     </div>
                                 </div>
                             </form>
@@ -159,7 +165,7 @@
                 <div class="col-md-12 mt-4 pt-3">
                     <div class="heading_text_btn2 d-block mb-4">
                         <h2>
-                            Travelling Person - Details
+                            Travelling Person - Details:
                         </h2>
                     </div>
                     <div class="card" id="TravellingPerson">
@@ -350,11 +356,11 @@
                 window.location.href = url;
             });
         });
-        $(document).ready(function () {
-            $('#btnTourRule').click(function () {
-                var url = "/Security/TourRule/ViewRedirection?CBUID=1";
-                window.open(url);
-            });
-        });
+        //$(document).ready(function () {
+        //    $('#btnTourRule').click(function () {
+        //        var url = "/Security/TourRule/ViewRedirection?CBUID=1";
+        //        window.open(url);
+        //    });
+        //});
     </script>
 }

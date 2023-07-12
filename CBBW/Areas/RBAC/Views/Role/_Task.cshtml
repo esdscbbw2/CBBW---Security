@@ -23,10 +23,10 @@
                         <tbody>
                             @foreach (var item in Model.actions.Select(x=> new {x.TaskName,x.TaskId}).Distinct().ToList())
                             {
-                                <tr id="0" class="add-row">
+                                <tr id="@i" class="add-row">
                                     <td class="text-center">
                                         <div class="form-check">
-                                            <input class="form-check-input alterID float-none CustomDateFormatCloneRow" type="checkbox" id="IsActiveInt_@i" name="IsActiveInt" data-name="IsActiveInt" value="0" onclick="IsActiveClick();">
+                                            <input class="form-check-input alterID float-none CustomDateFormatCloneRow check" type="checkbox" id="IsActiveInt_@i" name="IsActiveInt" data-name="IsActiveInt" value="0" onclick="IsActiveClick();">
 
                                         </div>
                                     </td>
@@ -38,7 +38,7 @@
                                     </td>
 
                                     <td class="text-center">
-                                        <select id="ActionIDs_@i" data-name="ActionIDs" data-name-text="ActionIDstxt"class="form-select is-invalid ApplyMultiSelectWithSelectAll" aria-label="Default select example" onchange="ValidateCloneRowCtrl();">
+                                        <select id="ActionIDs_@i" disabled data-name="ActionIDs" data-name-text="ActionIDstxt"class="form-select ApplyMultiSelectWithSelectAll" aria-label="Default select example" onchange="ValidateCloneRowCtrl();">
 
                                             @foreach (var items in Model.actions.Where(x => x.TaskId == item.TaskId))
                                             {
@@ -46,6 +46,8 @@
 
                                             }
                                         </select>
+
+                                        
 
                                     </td>
                                 </tr>

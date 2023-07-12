@@ -33,14 +33,14 @@
                                 Clear
                             </button>
                         </div>
-                        <h2>Employees Travelling Schedule Details – APPROVAL (FOR MFG. CENTERS RECORDED AT NZB) </h2>
+                        <h2>Employees Travelling Schedule Details – APPROVAL (FOR MFG. CENTERS)</h2>
                     </div>
                 </div>
 
             </div>
             <div class="col-md-12">
                 <div class="heading_text_btn2 d-block mt-4">
-                    <h2 class="text-left"> Travelling Details</h2>
+                    <h2 class="text-left"> Travelling Details:</h2>
                 </div>
                 <div class="heading_text_btn2 d-block mb-2">
                     <h2 class="text-center"> Travelling Details (I) </h2>
@@ -51,7 +51,7 @@
                 <div class="col-md-12 pt-3">
                     <div class="card">
                         <div class="card-body" id="TravDetails">
-                            <div class="table-responsive max-content">
+                            <div class="table-responsive">
                                 <table class="table table-bordered w-100 btnalign" id="table">
                                     <thead>
                                         <tr>
@@ -143,7 +143,7 @@
 
                                                     </td>
                                                     <td class="text-center">
-                                                        <textarea maxlength="200" id="ReasonVehicleProvideds" onchange="ValidateControlCtrl()" data-name="ReasonVehicleProvided" class="form-control is-invalid clear" cols="10" rows="2"></textarea>
+                                                        <textarea onkeypress="keypressCountWord(this);" id="ReasonVehicleProvideds" onchange="ValidateControlCtrl()" data-name="ReasonVehicleProvided" class="form-control is-invalid clear" cols="10" rows="2"></textarea>
 
                                                     </td>
 
@@ -290,6 +290,7 @@
     <script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>
     <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/EMC/EMCTravApprove.js"></script>
     <script>
         $('#paragraphSpaceOPtion').change(function () {

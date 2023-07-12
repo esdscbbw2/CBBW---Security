@@ -36,17 +36,17 @@
                     <tr>
                         <th scope="col" rowspan="1" colspan="1">
                             <div class="form-group">
-                                <input id="filterNoteno" type="text" class="form-control tblSearch" placeholder="Search...">
+                                <input id="filterNoteno" type="text" data-index="1" class="form-control tblSearch" placeholder="Search...">
                             </div>
                         </th>
                         <th scope="col" rowspan="1" colspan="1">
                             <div class="form-group">
-                                <input id="filterDate" type="text" class="form-control tblSearch" placeholder="Search...">
+                                <input id="filterDate" type="text" data-index="2" class="form-control tblSearch" placeholder="Search...">
                             </div>
                         </th>
                         <th scope="col" rowspan="1" colspan="1">
                             <div class="form-group">
-                                <input id="filterCenterCN" type="text" class="form-control tblSearch" placeholder="Search...">
+                                <input id="filterCenterCN" type="text" data-index="3" class="form-control tblSearch" placeholder="Search...">
                             </div>
                         </th>
 
@@ -124,10 +124,11 @@
 
                 bServerSide: true,
                 sAjaxSource: '/Security/EMN/GetEMNNZBApprovalforListPage',
-                "pagingType": "input"
+                "pagingType": "input",
+                fixedColumns: { left: 2 },
             });
             $('.tblSearch').on('keyup change', function () {
-                dtinstance.search(this.value).draw();
+                dtinstance.search(GetTblColumnSearchText()).draw();
             });
             $('.tblSearch').on('click', function (e) {
                 e.stopPropagation();
@@ -145,7 +146,17 @@
 
         };
 
-
+        function GetTblColumnSearchText() {
+            var result = '';
+            $('.tblSearch').each(function () {
+                var that = $(this);
+                if (that.val() != '') {
+                    result = result + that.attr('data-index') + ':' + this.value + ',';
+                }
+            });
+            result = result != '' ? result.substring(0, result.length - 1) : '';
+            return result;
+        }
         //function GetDetailsPage(ctrl) {
         //    var targetid = $(ctrl).attr("id");
         //    var targetval = $(ctrl).attr('data-value');

@@ -103,18 +103,23 @@ async function getInitialData() {
     var ModuleName = $('#ModuleName');
     var NavigationIds = $('#NavigationId');
     var Roles = $('#Roles');
+    var Actions = true;
     $.ajax({
         url: '/Role/GetRoleDetailsForView?RoleId=' + RID,
         method: 'GET',
         dataType: 'json',
         success: function (data) {
+            if (CanDelete == false) {
+                Actions = false;
+            }
             $(data).each(function (index, item) {
                 $('#RoleDiv').html(item.RoleId);
                 $('#RoleName').val(item.RoleName);
+
                 $(item.rolelist).each(function (indexs, items) {
                     if (indexs > 0) {
                        // rowid = CloneRowReturningID('tbody1', 'tbody2', indexs - 1, true, CanDelete == 1 ? true : false);
-                        rowid = CloneRowReturningID('tbody1', 'tbody2', indexs - 1, false, false);
+                        rowid = CloneRowReturningID('tbody1', 'tbody2', indexs - 1, Actions, false);
                         ModuleName = $('#ModuleName_' + rowid);
                         SubModuleName = $('#SubModuleName_' + rowid);
                         NavigationName = $('#NavigationName_' + rowid);

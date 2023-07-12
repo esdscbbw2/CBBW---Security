@@ -27,7 +27,7 @@ function GetEmployeeList(notenumber) {
 }
 function Notenumberchanged(notenumber) {
     var noteCtrl = $('#NoteNumber');
-    if (notenumber != '') { noteCtrl.isValid(); } else { noteCtrl.isInvalid(); }
+    if (notenumber != '') { noteCtrl.isValid(); $('.Qdiv').removeClass('inVisible'); } else { noteCtrl.isInvalid(); $('.Qdiv').addClass('inVisible'); }
     TPTableClear();
     $.ajax({
         url: '/EMN/GetEMNHdrDetails',
@@ -41,11 +41,24 @@ function Notenumberchanged(notenumber) {
                 $('#EntryDate').val(item.emnHeader.EntryDateDisplay);
                 $('#EntryTime').val(item.emnHeader.EntryTime);
                 if (item.TourCatStatus) {
-                    $('#OtherPlace').val('Yes')
-                } else { $('#OtherPlace').val('-') }
+                    $('#OtherPlace').val('Yes');
+                    $('#Ratified').val('-');
+                    $('#RatifiedDT').val('-');
+                    $('#RatifiedReason').val('-');
+                } else {
+                    $('#OtherPlace').val('-');
+                    $('#Ratified').val('NA');
+                    $('#RatifiedDT').val('NA');
+                    $('#RatifiedReason').val('NA');
+                }
+
                // if ($('#CenterCodeName').val() != "") { $('#btnTravDetails').makeEnabled();}
                 getTravellingPersonData('-1');
             });
+            if ($("#btnDisplay").val() == 0) {
+                MyAlert(0, 'For Futher Process ,Please check Attachment File First..!!');
+            }
+           
         }
     });
     GetEmployeeList(notenumber);
@@ -70,18 +83,20 @@ $(document).ready(function () {
         var filepath = "/Upload/Forms/" + docfilename;
         if (docfilename.length > 2) { OpenWindow(filepath); $('#btnTravDetails').makeEnabled(); }
         else {
-            Swal.fire({
-                title: 'Information',
-                text: "No Document Found For This Note",
-                icon: 'warning',
-                customClass: 'swal-wide',
-                buttons: {
-                    //cancel: 'Cancel',
-                    confirm: 'Ok'
-                },
-                //cancelButtonClass: 'btn-cancel',
-                confirmButtonColor: '#2527a2',
-            });
+            MyAlert(0, 'No Document Found For This Note');
+
+            //Swal.fire({
+            //    title: 'Information',
+            //    text: "No Document Found For This Note",
+            //    icon: 'warning',
+            //    customClass: 'swal-wide',
+            //    buttons: {
+            //        //cancel: 'Cancel',
+            //        confirm: 'Ok'
+            //    },
+            //    //cancelButtonClass: 'btn-cancel',
+            //    confirmButtonColor: '#2527a2',
+            //});
         }
     });
 })
@@ -116,11 +131,13 @@ function validatectrl(targetid, value) {
             isvalid = validatectrl_YesNoCombo(value);
             if (isvalid) {
                 $('.APPRej').removeClass('border-red').addClass('border-green');
-                UnLockSection(dateDetails.attr('id'));
+                UnLockSection('dateDetails');
+                $('#IsAppDiv').addClass('SLUSection');
             }
             else {
                 $('.APPRej').removeClass('border-green').addClass('border-red');
-                LockSection(dateDetails.attr('id'));
+                LockSection('dateDetails');
+                $('#IsAppDiv').removeClass('SLUSection');
             }
             break;
         case "IsApprove":

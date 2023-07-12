@@ -5,23 +5,21 @@
 
     Notenumberchanged($('#NoteNumber').val());
     var btnDisplays = $("#btnDisplay").val();
-    var dateDetails = $('#dateDetails');
-    var TravDetails = $('#TravDetails');
 
     if (btnDisplays == 1) {
         $('#NoteNumber').makeDisable();
-        UnLockSection(TravDetails.attr('id'));
-        LockSection(dateDetails.attr('id'));
+        UnLockSection('TravDetails');
+        LockSection('dateDetails');
     } else {
 
         $('#NoteNumber').makeEnabled();
-        LockSection(dateDetails.attr('id'));
-        LockSection(TravDetails.attr('id'));
+        LockSection('dateDetails');
+        LockSection('TravDetails');
     }
 });
 function Notenumberchanged(notenumber) {
     var noteCtrl = $('#NoteNumber');
-    if (notenumber != '') { noteCtrl.isValid(); } else { noteCtrl.isInvalid(); }
+    if (notenumber != '') { noteCtrl.isValidCtrl(); $('.QueDiv').removeClass('inVisible'); } else { noteCtrl.isInvalidCtrl(); $('.QueDiv').addClass('inVisible'); }
     $('#tbody2').empty();
     $.ajax({
         url: '/ETS/GetETSHdrDetails',
@@ -35,16 +33,29 @@ function Notenumberchanged(notenumber) {
                 $('#EntryDate').val(item.etsHeader.EntryDateDisplay);
                 $('#EntryTime').val(item.etsHeader.EntryTime);
                 if (item.TourCatstatus) {
-                    $('#OtherPlace').val('Yes')
+                    $('#OtherPlace').val('Yes');
+                    $('#Ratified').val('-');
+                    $('#RatifiedDT').val('-');
+                    $('#RatifiedReason').val('-');
+
                 } else {
-                    $('#OtherPlace').val('-')
+                    $('#OtherPlace').val('-');
+                    $('#Ratified').val('NA');
+                    $('#RatifiedDT').val('NA');
+                    $('#RatifiedReason').val('NA');
+
                 }
+
+              
                 DisplayTPDetails(item.PersonDtls);
                
                 if ($('#CenterCodeName').val() != "") { //$('#btnTravDetails').makeEnabled();
                 }
                 
             });
+            if ($("#btnDisplay").val() == 0) {
+                MyAlert(0, 'For Futher Process ,Please check Attachment File First..!!');
+            }
         }
     });
 };
@@ -78,18 +89,8 @@ $(document).ready(function () {
         var filepath = "/Upload/Forms/" + docfilename;
         if (docfilename.length > 2) { OpenWindow(filepath); $('#btnTravDetails').makeEnabled();}
         else {
-            Swal.fire({
-                title: 'Information',
-                text: "No Document Found For This Note",
-                icon: 'warning',
-                customClass: 'swal-wide',
-                buttons: {
-                    //cancel: 'Cancel',
-                    confirm: 'Ok'
-                },
-                //cancelButtonClass: 'btn-cancel',
-                confirmButtonColor: '#2527a2',
-            });
+            MyAlert(0, 'No Document Found For This Note');
+            $('#btnTravDetails').makeDisable();
         }
     });
 })
@@ -110,7 +111,7 @@ function ValidateControl() {
             $('#ApproveReason').removeClass('is-invalid').removeClass('is-valid');
         } else {
             $('#ApproveReason').makeEnabled()
-            $('#ApproveReason').isInvalid();
+            $('#ApproveReason').isInvalidCtrl();
         }
     }
     EnableSubmitBtn();
@@ -119,20 +120,21 @@ function ValidateControl() {
 function validatectrl(targetid, value) {
     var isvalid = false;
     var dateDetails = $('#dateDetails');
-
     switch (targetid) {
         case "APPRej":
             isvalid = validatectrl_YesNoCombo(value);
            
             if (isvalid) {
                 $('.content').removeClass('border-red').addClass('border-green');
-                UnLockSection(dateDetails.attr('id'));
+                UnLockSection('dateDetails');
+                $('#IsAppDiv').addClass('SLUSection');
 
             }
             else {
                 $('.content').removeClass('border-green').addClass('border-red');
-                LockSection(dateDetails.attr('id'));
-                dateDetails.val('').isInvalid();
+                $('#IsAppDiv').removeClass('SLUSection');
+                LockSection('dateDetails');
+                dateDetails.val('').isInvalidCtrl();
             }
             break;
         case "IsApprove":
@@ -168,18 +170,17 @@ function EnableSubmitBtn() {
     var y = getDivInvalidCount('dateDetails');
     var DWTBtn = $('#btnSubmit');
     var btnDisplay= $('#btnDisplay').val();
-    
-    
     if ((x + y) * 1 > 0 || btnDisplay==0) {
         DWTBtn.makeDisable();
     }
     else {
         DWTBtn.makeEnabled();
+        DWTBtn.removeClass('nodrop');
     }
 };
 function Buttonclear() {
     $('.clear').val('');
-    $('.clear').isInvalid();
+    $('.clear').isInvalidCtrl();
 }
 function SaveDataClicked() {
     var NoteNumber = $('#NoteNumber').val();

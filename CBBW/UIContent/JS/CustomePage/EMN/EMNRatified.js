@@ -7,22 +7,24 @@
     var btnDisplays = $("#btnDisplay").val();
     var Approval = $("#Approval");
     var TraveDetails = $("#TraveDetails");
-    alert(btnDisplays);
     if (btnDisplays == 1) {
         $('#NoteNumber').makeDisable();
         UnLockSection('TraveDetails');
-        LockSection('Approval');
+        $('#btnTravDetails').makeEnabled();
+        //LockSection('Approval');
     } else {
         $('#NoteNumber').makeEnabled();
         LockSection('TraveDetails');
-        LockSection(Approval.attr('id'));
+        LockSection('Approval');
     }
 });
 function Notenumberchanged(notenumber) {
 
     var noteCtrl = $('#NoteNumber');
-    if (notenumber != '') { noteCtrl.isValid(); 
-    TPTableClear();
+    if (notenumber != '') {
+        noteCtrl.isValid();
+        $('.Qdiv').removeClass('inVisible');
+        TPTableClear();
    
     $.ajax({
         url: '/EMN/GetEMNHdrDetails',
@@ -30,7 +32,6 @@ function Notenumberchanged(notenumber) {
         data: { Notenumber: notenumber },
         dataType: 'json',
         success: function (data) {
-
             $(data).each(function (index, item) {
                 $('#CenterCodeName').val(item.emnHeader.CenterCodeName);
                 $('#AttachFile').val(item.emnHeader.AttachFile);
@@ -57,10 +58,14 @@ function Notenumberchanged(notenumber) {
                // if ($('#CenterCodeName').val() != "") { $('#btnTravDetails').makeEnabled(); }
 
             });
+
+            if ($("#btnDisplay").val() == 0) {
+                MyAlert(0, 'For Futher Process ,Please check Attachment File First..!!');
+            }
         }
     });
         GetEmployeeList(notenumber)
-    } else { noteCtrl.isInvalid(); }
+    } else { noteCtrl.isInvalid(); $('.Qdiv').addClass('inVisible'); }
 };
 function GetEmployeeList(notenumber) {
     (async function () {
@@ -71,20 +76,10 @@ $(document).ready(function () {
     $('#btnViewDoc').click(function () {
         var docfilename = $('#AttachFile').val();
         var filepath = "/Upload/Forms/" + docfilename;
-        if (docfilename.length > 2) { OpenWindow(filepath); }
+        if (docfilename.length > 2) { OpenWindow(filepath); $('#btnTravDetails').makeEnabled();}
         else {
-            Swal.fire({
-                title: 'Information',
-                text: "No Document Found For This Note",
-                icon: 'warning',
-                customClass: 'swal-wide',
-                buttons: {
-                    //cancel: 'Cancel',
-                    confirm: 'Ok'
-                },
-                //cancelButtonClass: 'btn-cancel',
-                confirmButtonColor: '#2527a2',
-            });
+            MyAlert(0, 'No Document Found For This Note');
+            $('#btnTravDetails').makeDisable();
         }
     });
 })
@@ -118,11 +113,13 @@ function validatectrl(targetid, value) {
             isvalid = validatectrl_YesNoCombo(value);
             if (isvalid) {
                 $('.OtherP').removeClass('border-red').addClass('border-green');
-                UnLockControl('Approval');
+               // UnLockControl('Approval');
+                $('#RDiv').addClass('SLUSection');
             }
             else {
                 $('.OtherP').removeClass('border-green').addClass('border-red');
-                LockSection('Approval');
+               // LockSection('Approval');
+                $('#RDiv').removeClass('SLUSection');
             }
             break;
         case "IsRatified":
@@ -252,7 +249,7 @@ function TPTableClear() {
 };
 async function getTravellingPersonData(CenterCode) {
     TPTableClear();
-    $('#btnTravDetails').makeDisable();
+    //$('#btnTravDetails').makeDisable();
     var rowid = 0;
     var TaDa;
     var NoteNumber = $('#NoteNumber').val();
@@ -287,7 +284,7 @@ async function getTravellingPersonData(CenterCode) {
                     if (items.TADADenieds == true) { TaDa = 'Yes' } else { TaDa = 'No' }
                     TaDaDenied.html(TaDa);
                 });
-                $('#btnTravDetails').makeEnabled();
+               
             }
 
         }

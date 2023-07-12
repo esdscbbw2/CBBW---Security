@@ -133,7 +133,8 @@ function IsActiveClick() {
 
     }
 };
-async function GetActionsName(ActionId,value,SelectedValue) {
+async function GetActionsName(ActionId, value, SelectedValue) {
+   
     (async function () {
         const r1 = await getMultiselectDataWithSelectedValues(ActionId.attr('id'), '/RBAC/Role/GetActionsList?Id=' + value, SelectedValue);
     })();
@@ -153,7 +154,7 @@ async function getInitialData() {
     var ModuleName = $('#ModuleName');
     var NavigationIds = $('#NavigationIds');
     $.ajax({
-        url: '/Role/GetRoleDetails/?RoleId=' + RID,
+        url: '/Role/GetRoleDetails?RoleId=' + RID,
         method: 'GET',
         dataType: 'json',
         success: function (data) {
@@ -161,8 +162,9 @@ async function getInitialData() {
                 $('#RoleDiv').html(item.RoleId);
                 $('#RoleName').val(item.RoleName);
                 $(item.rolelist).each(function (indexs, items) {
+                    debugger;
                     if (indexs > 0) {
-                        rowid = CloneRowReturningID('tbody1', 'tbody2', indexs - 1, true, false);
+                        rowid = CloneRowReturningIDV2('tbody1', 'tbody2', indexs - 1, false, false);
                         ModuleName = $('#ModuleName_' + rowid);
                         SubModuleName = $('#SubModuleName_' + rowid);
                         NavigationName = $('#NavigationName_' + rowid);
@@ -171,7 +173,6 @@ async function getInitialData() {
                         TaskId = $('#TskID_' + rowid);
                         ActionId = $('#ActionId_' + rowid);
                         NavigationIds = $('#NavigationIds_' + rowid);
-                        
                     }
                     ModuleName.html(items.ModuleName);
                     SubModuleName.html(items.SubModuleName);

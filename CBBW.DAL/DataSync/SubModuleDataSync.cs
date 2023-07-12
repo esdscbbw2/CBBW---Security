@@ -74,7 +74,6 @@ namespace CBBW.DAL.DataSync
                 return null;
             }
         }
-
         public DataSet GetSubModuleDetails(int ID, ref string pMsg)
         {
             try
@@ -86,6 +85,26 @@ namespace CBBW.DAL.DataSync
                 using (SQLHelper sql = new SQLHelper("[RBAC].[GetSubModuleDetails]", CommandType.StoredProcedure))
                 {
                     return sql.GetDataSet(para, ref pMsg);
+                }
+            }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
+        }
+        public DataTable SetSubmoduleDelete(int ID, ref string pMsg)
+        {
+            try
+            {
+                int paracount = 0;
+                SqlParameter[] para = new SqlParameter[1];
+                para[paracount] = new SqlParameter("@ID", SqlDbType.Int);
+                para[paracount++].Value = ID;
+                using (SQLHelper sql = new SQLHelper("[RBAC].[SetDeleteSubModule]", CommandType.StoredProcedure))
+                {
+                    return sql.GetDataTable(para, ref pMsg);
                 }
             }
             catch (Exception ex)

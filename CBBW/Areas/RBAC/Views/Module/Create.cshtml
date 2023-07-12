@@ -1,21 +1,6 @@
 ﻿<div class="container">
     <div class="row newTable">
-        <div class="breadcrumb-outer p-15 pt-3">
-            <ul>
-                <li class="activeLink">
-                    <a href="#">Administration <i data-feather="chevrons-right"></i> </a>
-                </li>
-                <li class="activeLink">
-                    <a href="#">Maintenance <i data-feather="chevrons-right"></i> </a>
-                </li>
-                <li class="activeLink">
-                    <a href="#">Masters <i data-feather="chevrons-right"></i> </a>
-                </li>
-                <li>
-                    <a href="#">Module Master <i data-feather="chevrons-right"></i> </a>
-                </li>
-            </ul>
-        </div>
+       
         <div class="fixedElement">
             <div class="col-md-12" style="position: relative;">
                 <div class="heading_text_btn mb-4 ">
@@ -53,7 +38,7 @@
                                                 <label> Module  Name:</label>
                                             </td>
                                             <td class="border-0">
-                                                <input  onchange="ValidateCloneRowCtrl()" id="ModuleName" type="text" data-name="ModuleName" class="form-control pointer is-invalid alterID inValidTag nullvalue CustomDateFormatCloneRow" >
+                                                <input  onkeyup="ValidateCloneRowCtrl()" id="ModuleName" type="text" data-name="ModuleName" class="form-control pointer is-invalid alterID inValidTag nullvalue CustomDateFormatCloneRow" >
                                             </td>
                                             <td class="border-0">
                                                 <div class="form-check">

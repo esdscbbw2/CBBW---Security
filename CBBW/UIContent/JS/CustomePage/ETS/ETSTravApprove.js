@@ -136,9 +136,11 @@ function EnableSubmitBtnActive() {
     //alert(x); alert(y);
     if ((x + y) * 1 > 0) {
         DWTBtn.makeDisable();
+       
     }
     else {
         DWTBtn.makeEnabled();
+        DWTBtn.removeClass('nodrop');
     }
 };
 function Buttonclear() {
@@ -311,3 +313,13 @@ async function GetStatement(EligibleVT, VtypeProvided) {
     });
 
 };
+
+function keypressCountWord(e) {
+    var target = keypressCountWord.caller.arguments[0].target;
+    var targetCtrl = $(target).val();
+    if (WordCount(targetCtrl) > 50) {
+        $(target).preventTypying();
+    } else {
+        $(target).off('keypress');
+    }
+}

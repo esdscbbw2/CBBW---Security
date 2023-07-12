@@ -57,12 +57,12 @@
                     </div>
                     <div class="text-right pt-2 pb-2">
                         <div class="upper-tab-buttons">
-                            <button type="button" id="btnTourRule" 
-                                    onclick="window.open('/Security/TourRule/ViewRedirection?CBUID=1&IsBackButton=0');"
+                            <button type="button" id="btnTourRule"
+                                    onclick="OpenWindowRule('/Security/TourRule/ViewRedirection?CBUID=1&IsBackButton=0');"
                                     class="btn btn-primary me-2">
                                 To Check  “Tour Rules”   Click Here
                             </button>
-                            <button type="button" class="btn btn-primary " onclick="window.open('/Security/TADARules/ViewRedirection?CBUID=1&IsBackButton=0');">
+                            <button type="button" class="btn btn-primary " onclick="OpenWindowTRule('/Security/TADARules/ViewRedirection?CBUID=1&IsBackButton=0');">
                                 To Check “TA & DA Rules”   Click Here
                             </button>
                         </div>
@@ -174,7 +174,7 @@
                     <div class="col-md-12 mt-4 pt-3">
                         <div class="heading_text_btn2 d-block mb-4">
                             <h2>
-                                Travelling Person - Details
+                                Travelling Person - Details:
                             </h2>
                         </div>
 
@@ -265,8 +265,8 @@
                                                                 id="cmbDDPersonType">
                                                         </select>
                                                         <input type="text" maxlength="20" data-name="EmployeeNonName"
-                                                               class="form-control w-200 inVisible alterID pickPersonNametxt xPerson txtOnly"
-                                                               onblur="DDPickPersonChanged(1)"
+                                                               class="form-control w-100 inVisible alterID pickPersonNametxt xPerson txtOnly"
+                                                               onblur="DDPickPersonChanged(1)" onkeypress="return  /^[A-Za-z\s]*$/.test(event.key)"
                                                                id="txtDDPersonType">
                                                     </td>
                                                     <td id="DesgCodenName" data-name="DesignationCodenName" class="text-center alterID htmlVal"> </td>
@@ -290,16 +290,12 @@
                                                         <span class="actionBtn d-block">
                                                             <button id="AddBtn" type="button" disabled
                                                                     class="btn primaryLink alterID cloneBtn addBtn"
-                                                                    onclick="AddClonebtn()"
-                                                                    data-toggle="tooltip"
-                                                                    data-placement="top" title="Add">
+                                                                    onclick="AddClonebtn()">
                                                                 <i data-feather="plus"></i>
                                                             </button>
                                                             <button id="DeleteBtn" type="button"
                                                                     class="btn secondaryLink inVisible alterID cloneBtn removeBtn"
-                                                                    onclick="removeClonebtn()"
-                                                                    data-toggle="tooltip"
-                                                                    data-placement="top" title="Delete">
+                                                                    onclick="removeClonebtn()">
                                                                 <i data-feather="x"></i>
                                                             </button>
                                                         </span>
@@ -322,37 +318,54 @@
 
                         </div>
                     </div>
-                    <div id="Questions">
-                        <div  id="ID3" class="bgColor mt-4 bg-transparent content text-left @(Model.TourCatstatus==true?"SLUStatement SLUSection":"") ">
+
+                    @if (Model.TourCatstatus == false)
+                    {
+                        <div class="bgColor mt-4 bg-transparent content text-left">
                             <ul style="list-style:none;">
+                                <li style="font-size: 16px;">
+                                    It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
+                                    <input type="text" disabled id="otherplace" 
+                                           class="form-select" value="-">
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                    <div id="Questions">
+
+                        @if (Model.TourCatstatus == true)
+                        {
+                            <div id="ID3" class="bgColor mt-4 bg-transparent content text-left border-red">
+                                <ul style="list-style:none;">
                                     <li style="font-size: 16px;">
                                         It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
-                                        <select disabled id="otherplace"  style="width: 110px;" class="form-select @(Model.TourCatstatus==true?"is-invalid SLUCtrl":" disabled") " onchange="ValidateControl()" aria-label="Default select example">
+                                        <select id="otherplace" style="width: 110px;" class="form-select is-invalid" onchange="ValidateControl()" aria-label="Default select example">
                                             <option selected="">-</option>
                                             <option value="0">Yes</option>
                                             <option value="1">No</option>
                                         </select>
                                     </li>
-                            </ul>
-                        </div>
-                        <div id="ID1" class="bgColor mt-4 bg-transparent content text-left SLUStatement SLUSection SLUContainer">
+                                </ul>
+                            </div>
+                        }
+                        <div id="ID1" class="bgColor mt-4 bg-transparent border-red content text-left">
                             <ul style="list-style:none;">
                                 <li style="font-size: 16px;">
                                     It Is Ensured That This Person Is Carrying Laptop As Provided To Him. The Same Has Been Confirmed (as per leave rules):
-                                    <select id="carryLaptop" style="width: 110px;" class="form-select is-invalid SLUCtrl" onchange="ValidateControl()" aria-label="Default select example">
+                                    <select id="carryLaptop" style="width: 110px;" class="form-select is-invalid" onchange="ValidateControl()" aria-label="Default select example">
                                         <option selected value="">-</option>
                                         <option value="0">Yes</option>
                                         <option value="1">No</option>
                                     </select>
-                                  
+
                                 </li>
                             </ul>
                         </div>
-                        <div  id="ID2" class="bgColor mt-4 bg-transparent content text-left SLUStatement SLUSection">
+                        <div id="ID2" class="bgColor mt-4 bg-transparent border-red content text-left">
                             <ul style="list-style:none;">
                                 <li style="font-size: 16px;">
                                     The Entry Is Done As Per Policy & As Required:
-                                    <select id="Policy" style="width: 110px;" class="form-select is-invalid SLUCtrl" onchange="ValidateControl()" aria-label="Default select example">
+                                    <select id="Policy" style="width: 110px;" class="form-select is-invalid" onchange="ValidateControl()" aria-label="Default select example">
                                         <option selected="">-</option>
                                         <option value="0">Yes</option>
                                         <option value="1">No</option>
@@ -361,9 +374,6 @@
                             </ul>
                         </div>
                     </div>
-
-
-
                 </div>
             </div>
         </div>
@@ -377,28 +387,29 @@
 
 
 @section scripts{
-    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
+    <script src="~/UIContent/JS/CustomePage/mySLUCtrl.js"></script>
     <script src="~/UIContent/JS/CustomePage/ETS/ETSEntry.js"></script>
     <script>
-       
+
         function btnScanViewClicked() {
             var filename = $('#etsHeader_AttachFile').val();
             var filepath = "/Upload/Forms/" + filename;
             if (filename != '') {
                 OpenWindow(filepath);
             } else {
-                Swal.fire({
-                    title: 'No Files Found.',
-                    text: 'Unable To Find Uploaded File.',
-                    icon: 'error',
-                    customClass: 'swal-wide',
-                    buttons: {
-                        confirm: 'Ok'
-                    },
-                    confirmButtonColor: '#2527a2',
-                });
+                MyAlert(4, 'Unable To Find Uploaded File.');
+                //Swal.fire({
+                //    title: 'No Files Found.',
+                //    text: 'Unable To Find Uploaded File.',
+                //    icon: 'error',
+                //    customClass: 'swal-wide',
+                //    buttons: {
+                //        confirm: 'Ok'
+                //    },
+                //    confirmButtonColor: '#2527a2',
+                //});
             }
 
         };
@@ -408,11 +419,11 @@
                 text: "Are you sure you want to delete this?",
                 icon: 'success',
                 html: `<div style="text-align:left;">
-                                                                                <div class="form-group">
-                                                                                    <label class="swal-label">Attach File (Only Pdf,Png & Jpg Files)</label>
-                                                                                    <input type="file" id="uploadCtrl" name="uploadCtrl" class="form-control" placeholder="">
-                                                                                </div>
-                                                                            </div>`,
+                                                                                    <div class="form-group">
+                                                                                        <label class="swal-label">Attach File (Only Pdf,Png & Jpg Files)</label>
+                                                                                        <input type="file" id="uploadCtrl" name="uploadCtrl" class="form-control" placeholder="">
+                                                                                    </div>
+                                                                                </div>`,
                 cancelButtonClass: 'btn-cancel',
                 cancelButtonText: 'Cancel',
                 confirmButtonText: 'Submit',
@@ -449,16 +460,17 @@
                                         }
                                     }
                                     else {
-                                        Swal.fire({
-                                            title: 'Failed To Upload File.',
-                                            text: item.ResponseMsg,
-                                            icon: 'error',
-                                            customClass: 'swal-wide',
-                                            buttons: {
-                                                confirm: 'Ok'
-                                            },
-                                            confirmButtonColor: '#2527a2',
-                                        });
+                                        MyAlert(4, 'Failed To Upload File.');
+                                        //Swal.fire({
+                                        //    title: 'Failed To Upload File.',
+                                        //    text: item.ResponseMsg,
+                                        //    icon: 'error',
+                                        //    customClass: 'swal-wide my-error',
+                                        //    buttons: {
+                                        //        confirm: 'Ok'
+                                        //    },
+                                        //    confirmButtonColor: '#2527a2',
+                                        //});
                                     }
                                 });
                                 //code after success
@@ -473,16 +485,17 @@
                         });
                     }
                     else {
-                        Swal.fire({
-                            title: 'No Files Selected.',
-                            text: 'Select Only Pdf,Png & Jpg Files.',
-                            icon: 'error',
-                            customClass: 'swal-wide',
-                            buttons: {
-                                confirm: 'Ok'
-                            },
-                            confirmButtonColor: '#2527a2',
-                        });
+                        MyAlert(4, 'Select Only Pdf,Png & Jpg Files.');
+                        //Swal.fire({
+                        //    title: 'No Files Selected.',
+                        //    text: 'Select Only Pdf,Png & Jpg Files.',
+                        //    icon: 'error',
+                        //    customClass: 'swal-wide my-error',
+                        //    buttons: {
+                        //        confirm: 'Ok'
+                        //    },
+                        //    confirmButtonColor: '#2527a2',
+                        //});
                     }
                 }
             }
@@ -518,17 +531,12 @@
                 }
             });
         });
-        $(document).ready(function () {
-            $('#btnTourRule').click(function () {
-                var url = "/Security/TourRule/ViewRedirection?CBUID=1";
-                window.open(url);
-            });
-
-
-
-
-
-        });
+            //$(document).ready(function () {
+            //    $('#btnTourRule').click(function () {
+            //        var url = "/Security/TourRule/ViewRedirection?CBUID=1";
+            //        window.open(url);
+            //    });
+            //});
 
     </script>
 }

@@ -43,14 +43,12 @@ namespace CBBW.DAL.Entities
             catch (Exception ex) { pMsg = ex.Message; }
             return result;
         }
-
         public bool SetAddNavigationModule(int status, int UserId, int ModuleId, int SubModuleId, List<Navigations> dtldata, ref string pMsg)
         {
             bool result = false;
             _DBResponseMapper.Map_DBResponse(_datasync.SetAddNavigationModule(status, UserId, ModuleId, SubModuleId, dtldata, ref pMsg), ref pMsg, ref result);
             return result;
         }
-
         public List<Navigations> GetNavigationDetails(int ID, ref string pMsg)
         {
             List<Navigations> result = new List<Navigations>();
@@ -72,6 +70,12 @@ namespace CBBW.DAL.Entities
                 }
             }
             catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
+        public bool SetNavigationDelete(int ID, ref string pMsg)
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_datasync.SetNavigationDelete(ID, ref pMsg), ref pMsg, ref result);
             return result;
         }
 

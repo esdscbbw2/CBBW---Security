@@ -52,5 +52,10 @@ namespace CBBW.BLL.Repository
         {
             return _ModuleEntities.SetAddSubModule(status, UserId, ModuleId, dtldata, ref pMsg);
         }
+
+        public bool SetSubmoduleDelete( int ID, ref string pMsg)
+        {
+            return _ModuleEntities.SetSubmoduleDelete(ID, ref pMsg);
+        }
     }
 }

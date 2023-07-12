@@ -36,9 +36,6 @@ namespace CBBW.Areas.RBAC.Controllers
             catch (Exception ex) { pMsg = ex.ToString(); }
 
         }
-
-
-
         public ActionResult Index()
         {
             return View();
@@ -58,13 +55,11 @@ namespace CBBW.Areas.RBAC.Controllers
             };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
         [HttpGet]
         public ActionResult Create()
         {
             return View();
         }
-
         [HttpPost]
         public JsonResult Create(int ModuleId,int SubModuleId,List<Navigations> modulelist,string SubmitType)
         {
@@ -97,8 +92,6 @@ namespace CBBW.Areas.RBAC.Controllers
             }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
-
         [HttpGet]
         public ActionResult Details(int ID, int CanDelete, int CBUID = 0)
         {
@@ -111,7 +104,6 @@ namespace CBBW.Areas.RBAC.Controllers
 
             return View(module);
         }
-
         [HttpGet]
         public ActionResult Edit(int ID, int CanDelete, int CBUID = 0)
         {
@@ -171,6 +163,37 @@ namespace CBBW.Areas.RBAC.Controllers
                 result = _iModule.GetNavigationDetails(Id, ref pMsg);
             }
             catch (Exception ex) { ex.ToString(); }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult Delete(int ID)
+        {
+            CustomAjaxResponse result = new CustomAjaxResponse();
+            try
+            {
+                if (ID != 0)
+                {
+                    if (_iModule.SetNavigationDelete(ID, ref pMsg))
+                    {
+                        result.bResponseBool = true;
+                        result.sResponseString = "Navigation Data Deleted successfully.";
+                    }
+                    else
+                    {
+                        result.bResponseBool = false;
+                        result.sResponseString = pMsg;
+                    }
+                }
+                else
+                {
+                    result.bResponseBool = false;
+                    result.sResponseString = "Data Not Available";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.bResponseBool = false;
+                result.sResponseString = ex.Message;
+            }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         #endregion

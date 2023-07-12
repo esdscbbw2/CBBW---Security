@@ -115,8 +115,6 @@ namespace CBBW.Areas.RBAC.Controllers
             result = _iRole.GetNavigationList(Id, ref pMsg);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
-       
         public ActionResult TaskDetails(int NavigationId)
         {
             TaskControl result = new TaskControl();
@@ -191,8 +189,7 @@ namespace CBBW.Areas.RBAC.Controllers
         }
         public JsonResult GetRoleDetails(string RoleId)
         {
-            Header result = new Header();
-            result = _iRole.GetRoleDetails(RoleId, ref pMsg);
+            Header result = _iRole.GetRoleDetails(RoleId, ref pMsg);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetTaskName(int Id)

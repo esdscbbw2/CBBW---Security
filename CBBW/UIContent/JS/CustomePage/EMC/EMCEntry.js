@@ -389,16 +389,7 @@ function TravellingPersonBtnSave() {
                     EnableTravellingBtn();
                 }
                 else {
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'Failed To Update Traveling Person Details.',
-                        icon: 'question',
-                        customClass: 'swal-wide',
-                        buttons: {
-                            confirm: 'Ok'
-                        },
-                        confirmButtonColor: '#2527a2',
-                    });
+                    MyAlert(4, 'Failed To Update Traveling Person Details.');
                 }
             });
         },
@@ -607,9 +598,10 @@ function EPTourChange() {
     } else {// EPTour.makeInVisible(); 
     }
     UnLockSection('TravellingPerson');
-    $('#VADBtn').makeDisable;
+
     EmptyTPTable();
     GetPersonType();
+    EnableTravellingBtn();
 };
 async function GetEPTourNoteNumber(rowid, empCode, mValue) {
     var EPNotenumber = $('#EPNoteNumber');

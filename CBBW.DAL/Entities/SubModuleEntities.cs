@@ -50,7 +50,6 @@ namespace CBBW.DAL.Entities
             _DBResponseMapper.Map_DBResponse(_datasync.SetAddSubModule(status, UserId, ModuleId, dtldata,ref pMsg), ref pMsg, ref result);
             return result;
         }
-
         public List<SubModule> GetSubModuleDetails(int ID, ref string pMsg)
         {
             List<SubModule> result = new List<SubModule>();
@@ -72,6 +71,12 @@ namespace CBBW.DAL.Entities
                 }
             }
             catch (Exception ex) { pMsg = ex.Message; }
+            return result;
+        }
+        public bool SetSubmoduleDelete(int ID, ref string pMsg)
+        {
+            bool result = false;
+            _DBResponseMapper.Map_DBResponse(_datasync.SetSubmoduleDelete(ID, ref pMsg), ref pMsg, ref result);
             return result;
         }
 

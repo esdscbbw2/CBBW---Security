@@ -3,9 +3,9 @@
     (async function () {
         const r2 = await getDropDownDataWithSelectedValue('ModuleId', 'Select Module', '/RBAC/Role/GetModule', 0);
     })();
-    (async function () {
-        const r3 = await getInitialData();
-    })();
+    //(async function () {
+    //    const r3 = await getInitialData();
+    //})();
     //if ($('#CanDelete').val() == 1) {
     //    LockSection('ModuleDive');
     //}
@@ -42,7 +42,7 @@ function removeClonebtn() {
 };
 function SaveData() {
     var target = SaveData.caller.arguments[0].target;
-    var SubmitType = $(target).attr('name');
+    var SubmitType = $(target).attr('data-name');
     var z = GetDataFromTable('ModuleTable');
     var MId = $("#ModuleId option:selected").val();
     var SubId = $("#SubModuleId option:selected").val();
@@ -51,20 +51,36 @@ function SaveData() {
     var url = '/RBAC/Task/Create';
     PostDataInAjax(url, model).done(function (data) {
         if (data.bResponseBool) {
-            if (SubmitType == "Save") {
                 MyAlert(1, data.sResponseString);
                 $('#Savebtn').makeDisable();
                 $('#SubmitBtn').makeEnabled();
-            } else {
-                MyAlertWithRedirection(1, data.sResponseString, "/RBAC/Task/Index");
-            }
-               
         } else {
             MyAlert(3, data.sResponseString);
             $('#SubmitBtn').makeDisable();
         }
     });
 };
+
+
+function SubmitData() {
+    var target = SubmitData.caller.arguments[0].target;
+    var SubmitType = $(target).attr('data-name');
+    var z = GetDataFromTable('ModuleTable');
+    var MId = $("#ModuleId option:selected").val();
+    var SubId = $("#SubModuleId option:selected").val();
+    var NavId = $("#NavigationId option:selected").val();
+    var model = '{"ModuleId":"' + MId + '","SubModuleId":"' + SubId + '","NavigationId":"' + NavId + '","modulelist":' + z + ',"SubmitType":"' + SubmitType + '"}';
+    var url = '/RBAC/Task/Create';
+    PostDataInAjax(url, model).done(function (data) {
+        if (data.bResponseBool) {
+                MyAlertWithRedirection(1, data.sResponseString, "/RBAC/Task/Index");
+        } else {
+            MyAlert(3, data.sResponseString);
+            $('#SubmitBtn').makeDisable();
+        }
+    });
+};
+
 function IsActiveClick() {
     var myCtrl = $(IsActiveClick.caller.arguments[0].target);
     if (myCtrl.prop('checked')) {
@@ -87,19 +103,26 @@ function validatectrl(targetid, value) {
             $('#SubModuleId,#NavigationId').val('').isInvalid();
             $('#NavigationId').empty();
             $('#ModuleDive').addClass('inVisible');
+            $('#Savebtn').makeDisable();
+            $('#SubmitBtn').makeDisable();
             break;
         case "SubModuleId":
             isvalid = validatectrl_ValidatestringLength(value);
             $('#NavigationId').val('').isInvalid();
             $('#ModuleDive').addClass('inVisible');
+            $('#Savebtn').makeDisable();
+            $('#SubmitBtn').makeDisable();
             break;
         case "NavigationId":
             isvalid = validatectrl_ValidatestringLength(value);
             if (isvalid) {
                 $('#ModuleDive').removeClass('inVisible');
+                getInitialData();
             } else {
                 $('#ModuleDive').addClass('inVisible');
             }
+            $('#Savebtn').makeDisable();
+            $('#SubmitBtn').makeDisable();
             break;
         default:
     }
@@ -143,6 +166,8 @@ function EmptyTable() {
     
 }
 async function getInitialData() {
+    $('#tbody2').empty();
+
     var rowid = 0;
     var TaskName = $('#TaskName');
     var TaskId = $('#TaskId');
@@ -157,7 +182,10 @@ async function getInitialData() {
                         rowid = CloneRowReturningID('tbody1', 'tbody2', index - 1, false, false);
                         TaskName = $('#TaskName_' + rowid);
                         TaskId = $('#TaskId_' + rowid);
+                        IsActiveInt = $('#IsActiveInt_' + rowid);
                 }
+                IsActiveInt.prop('checked', false);
+                IsActiveInt.val('0');
                 TaskName.html(items.DisplayText);
                 TaskId.val(items.ID);
             });

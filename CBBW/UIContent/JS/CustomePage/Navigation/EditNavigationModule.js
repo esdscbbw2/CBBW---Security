@@ -32,6 +32,16 @@ function EnableAddBtn(tblRow, addBtnBaseID) {
 };
 function removeClonebtn() {
     var tblRow = removeClonebtn.caller.arguments[0].target.closest('.add-row');
+    var rowid = $(tblRow).attr('id');
+    var Id = 0;
+    if (rowid > 0) {
+        Id = $('#ID_' + rowid).val();
+    } else {
+        Id = $('#ID').val();
+    }
+    var model = '{"ID":"' + Id + '"}';
+    DeleteRowData(model);
+
     removeBtnClickFromCloneRow(tblRow, 'tbody2');
     EnableAddBtn(tblRow, 'AddBtn');
     EnableSubmitBtn();
@@ -53,7 +63,6 @@ function SaveData() {
         }
     });
 };
-
 function IsActiveClick() {
     var myCtrl = $(IsActiveClick.caller.arguments[0].target);
     if (myCtrl.prop('checked')) {
@@ -131,7 +140,6 @@ function EmptyTable() {
     $('#SubModuleId').isInvalid();
     
 }
-
 async function getInitialData() {
     var rowid = 0;
     var MiD = $('#ModuleId').val() * 1;
@@ -170,3 +178,13 @@ async function getInitialData() {
         }
     });
 };
+function DeleteRowData(model) {
+
+    PostDataInAjax('/RBAC/Navigation/Delete', model).done(function (data) {
+        if (data.bResponseBool) {
+            MyAlert(1, data.sResponseString);
+        } else {
+            MyAlert(3, data.sResponseString);
+        }
+    });
+}

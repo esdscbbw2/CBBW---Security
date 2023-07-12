@@ -310,3 +310,12 @@ async function GetStatement(EligibleVT, VtypeProvided) {
     });
    
 };
+function keypressCountWord(e) {
+    var target = keypressCountWord.caller.arguments[0].target;
+    var targetCtrl = $(target).val();
+    if (WordCount(targetCtrl) > 50) {
+        $(target).preventTypying();
+    } else {
+        $(target).off('keypress');
+    }
+}

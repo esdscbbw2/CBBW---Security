@@ -121,10 +121,11 @@
 
                 bServerSide: true,
                 sAjaxSource: '/Security/ETS/GetETSRTFCNforListPage',
-                "pagingType": "input"
+                "pagingType": "input",
+                fixedColumns: { left: 2 },
             });
             $('.tblSearch').on('keyup change', function () {
-                dtinstance.search(this.value).draw();
+                dtinstance.search(GetTblColumnSearchText()).draw();
             });
             $('.tblSearch').on('click', function (e) {
                 e.stopPropagation();
@@ -142,7 +143,17 @@
 
 
         };
-
+        function GetTblColumnSearchText() {
+            var result = '';
+            $('.tblSearch').each(function () {
+                var that = $(this);
+                if (that.val() != '') {
+                    result = result + that.attr('data-index') + ':' + this.value + ',';
+                }
+            });
+            result = result != '' ? result.substring(0, result.length - 1) : '';
+            return result;
+        }
 
         //function GetDetailsPage(ctrl) {
         //    var targetid = $(ctrl).attr("id");

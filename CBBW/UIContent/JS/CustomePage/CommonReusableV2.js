@@ -1387,3 +1387,22 @@ $('.OnlyAlphNumber').keypress(function (e) {
         e.preventDefault();
     }
 });
+$('.OnlyAlphNumberV2').keyup(function () {
+    if (this.value.match(/[^a-zA-Z0-9 ]/g)) {
+        this.value = this.value.replace(/[^a-zA-Z0-9 ]/g, '');
+    }
+});
+
+$('.OnlyAlphNumberV2').focusout(function () {
+    this.value = this.value.trim();
+});
+function GetCurrentTimeWithAMPM(date) {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+}

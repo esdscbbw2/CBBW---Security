@@ -60,16 +60,17 @@ function DDPersonTypeChanged() {
         EnableAddBtn(tblRow, 'AddBtn');
     } else {
         targetCtrl.val('').isInvalid();
-        Swal.fire({
-            title: 'Error',
-            text: 'No Documents Uploaded Yet.So Can Not Proceed Further.',
-            icon: 'question',
-            customClass: 'swal-wide',
-            buttons: {
-                confirm: 'Ok'
-            },
-            confirmButtonColor: '#2527a2',
-        });
+        MyAlert(3, 'No Documents Uploaded Yet.So You Can Not Proceed Further.');
+        //Swal.fire({
+        //    title: 'Error',
+        //    text: 'No Documents Uploaded Yet.So You Can Not Proceed Further.',
+        //    icon: 'question',
+        //    customClass: 'swal-wide',
+        //    buttons: {
+        //        confirm: 'Ok'
+        //    },
+        //    confirmButtonColor: '#2527a2',
+        //});
     }
 
 };
@@ -135,16 +136,17 @@ function DDPickPersonChanged(x) {
     if (dstat > 1) {
         targetCtrl.val('');
         targetCtrl.isInvalid();
-        Swal.fire({
-            title: 'Data Duplicacy Error',
-            text: 'Person You Have Selected Is Already Taken.',
-            icon: 'error',
-            customClass: 'swal-wide',
-            buttons: {
-                confirm: 'Ok'
-            },
-            confirmButtonColor: '#2527a2',
-        });
+        MyAlert(3, 'Person You Have Selected Is Already Taken.');
+        //Swal.fire({
+        //    title: 'Data Duplicacy Error',
+        //    text: 'Person You Have Selected Is Already Taken.',
+        //    icon: 'error',
+        //    customClass: 'swal-wide',
+        //    buttons: {
+        //        confirm: 'Ok'
+        //    },
+        //    confirmButtonColor: '#2527a2',
+        //});
     } else {
         getDesgnCode(mIndex, mValue);
         EnableAddBtn(tblRow, 'AddBtn');
@@ -152,7 +154,7 @@ function DDPickPersonChanged(x) {
    
 };
 $(document).ready(function () {
-    var centercode = -1;
+    var centercode = "-1";
     var status = 1;
     var NoteNumber = $('#emnHeader_NoteNumber').val();
     if ($('#Btnsubmit').val() == 0) {
@@ -160,11 +162,13 @@ $(document).ready(function () {
         LockSection('Questions');
         if ($.isEmptyObject($('#emnHeader_AttachFile').val())) { LockSection('TPDiv'); }
         else { UnLockSection('TPDiv'); }
-
+        getInitialData(centercode, status);
     } else if ($('#Btnsubmit').val() == 1) {
         GetSavedCenterCodeList(NoteNumber, centercode);
         $('#CenterCN').isValid();
         getInitialData(centercode, status);
+        $('#ID2').addClass('SLUSection');
+        $('#ID3').addClass('SLUSection');
        // UnLockSection('Questions');
     }
    
@@ -246,7 +250,7 @@ function validatectrl(targetid, value) {
     switch (targetid) {
         case "TaDaDenied":
             if (value == 1) {
-                MyAlert(6, 'You Will Continue With TADA Denied Yes..!!');
+                MyAlert(6, 'You Will Continue With T.A & D.A Denied Yes..!!');
             }
             isvalid = validatectrl_YesNoCombo(value);
             break;
@@ -409,30 +413,12 @@ function TravellingPersonBtnSave() {
         success: function (data) {
             $(data).each(function (index, item) {
                 if (item.bResponseBool == true) {
-                    Swal.fire({
-                        title: 'Confirmation',
-                        text: 'Travelling Person Details Save Successfully.',
-                        setTimeout: 5000,
-                        icon: 'success',
-                        customClass: 'swal-wide',
-                        buttons: {
-                            confirm: 'Ok'
-                        },
-                        confirmButtonColor: '#2527a2',
-                    });
+                    MyAlert(1, 'Travelling Person Details Save Successfully.');
                     EnableTravellingBtn();
                 }
                 else {
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'Failed To Update Traveling Person Details.',
-                        icon: 'question',
-                        customClass: 'swal-wide',
-                        buttons: {
-                            confirm: 'Ok'
-                        },
-                        confirmButtonColor: '#2527a2',
-                    });
+                    MyAlert(4, 'Failed To Update Traveling Person Details.');
+                   
                 }
             });
         },
@@ -443,9 +429,7 @@ function SaveFinalSubmit() {
     var notenumber = $('#emnHeader_NoteNumber').val();
     var DocName = $('#emnHeader_AttachFile').val();
     var CenterCodeName = $('#emnHeader_CenterCodeName').val();
-  
     var x = '{"NoteNumber":"' + notenumber + '","AttachFile":"' + DocName + '","CenterCodeName":"' + CenterCodeName + '"}';
-   // alert(x);
     $.ajax({
         method: 'POST',
         url: '/EMN/Create',
@@ -626,11 +610,8 @@ function CenterCNChanged() {
     if (mValue=='-1') {
         status = 1;
     }
-   
     getInitialData(mValue, status);
    // EnableTravellingBtn();
-  
-
 };
 function EmptyTPTable() {
       var selectvalue = 0;

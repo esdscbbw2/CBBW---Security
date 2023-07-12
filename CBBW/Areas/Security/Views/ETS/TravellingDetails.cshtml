@@ -3,9 +3,7 @@
 @model ETSTravellingDetailsVM
 @{
     ViewBag.Title = "Employees Travelling Schedule Details – ENTRY (FOR NZB STAFF)";
-
 }
-
 <div class="">
     @using (Html.BeginForm())
     {
@@ -43,7 +41,7 @@
             </div>
             <div class="col-md-12">
                 <div class="heading_text_btn2 d-block mt-4">
-                    <h2 class="text-left"> Travelling Details</h2>
+                    <h2 class="text-left"> Travelling Details:</h2>
                 </div>
                 <div class="heading_text_btn2 d-block mb-2">
                     <h2 class="text-center"> Travelling Details (I) </h2>
@@ -117,7 +115,7 @@
                                                     NA
                                                 </div>
                                                 <div class="forNo">
-                                                    <textarea id="ReasonVehicleReq" onchange="ValidateControl()" data-name="ReasonVehicleReq" class="form-control clear is-invalid OnlyAlphNumber" cols="10" rows="2" maxlength="200"></textarea>
+                                                    <textarea id="ReasonVehicleReq" onchange="ValidateControl()" oncopy="return false" onpaste="return false" data-name="ReasonVehicleReq" class="form-control clear is-invalid OnlyAlphNumberV2" cols="10" rows="2" onkeypress="keypressCountWord(this);"></textarea>
                                                 </div>
                                             </td>
                                             <td class="text-center">
@@ -131,8 +129,8 @@
                                                     <input id="SchFromDate" type="date" min="@Model.FromdateStr" max="@Model.TodateStr"
                                                            data-name="SchFromDate"
                                                            onchange="ValidateControl()"
-                                                           class="form-control pointer is-invalid clear CustomDateFormatCloneRow">
-                                                    <label id="lblSchFromDate" style="width:80px"
+                                                           class="form-control pointer is-invalid clear">
+                                                    <label id="lblSchFromDate" style="width:100px"
                                                            class="datelabel cleardate pointer alterID">Select Date</label>
 
                                                 </div>
@@ -151,13 +149,13 @@
                                                     <input id="SchTourToDate" type="date"
                                                            data-name="SchTourToDate"
                                                            onchange="ValidateControl()"
-                                                           class="form-control pointer clear is-invalid CustomDateFormatCloneRow">
+                                                           class="form-control pointer clear is-invalid">
                                                     <label id="lblSchTourToDate" style="width:100px"
                                                            class="datelabel cleardate pointer alterID">Select Date</label>
                                                 </div>
                                             </td>
                                             <td class="text-center">
-                                                <textarea maxlength="200" data-name="PurposeOfVisit" id="PurposeOfVisit" class="form-control clearNoVal OnlyAlphNumber" cols="10" rows="2" ></textarea>
+                                                <textarea onkeypress="keypressCountWord(this);" data-name="PurposeOfVisit" oncopy="return false" onpaste="return false" id="PurposeOfVisit" class="form-control clearNoVal OnlyAlphNumberV2" cols="10" rows="2"></textarea>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -197,7 +195,6 @@
                                             <th scope="col" style="text-align: center; vertical-align: middle;">Branch Code & Name </th>
                                             <th scope="col" style="text-align: center; vertical-align: middle;background-color: pink;color:#000;">Actions </th>
                                         </tr>
-
                                     </thead>
                                     <tbody id="tbody1">
                                         <tr id="0" class="add-row">
@@ -209,8 +206,8 @@
                                                     <input id="SchToDate" type="date"
                                                            onchange="ValidateCloneRowCtrl()"
                                                            data-name="SchToDate"
-                                                           class="form-control pointer is-invalid alterID inValidTag CustomDateFormatCloneRow todt">
-                                                    <label id="lblSchToDate" style="width:80px"
+                                                           class="form-control pointer is-invalid alterID inValidTag  valid CustomDateFormatCloneRow todt">
+                                                    <label id="lblSchToDate" style="width:100px"
                                                            class="datelabel pointer alterID">Select Date</label>
                                                 </div>
                                             </td>
@@ -218,7 +215,7 @@
 
                                                 <select id="TourCategory" data-name="TourCategory" data-name-text="TourCatText"
                                                         onchange="GetCenterCode();ValidateCloneRowCtrl()"
-                                                        class="form-select is-invalid alterID clonemultiselect CtrlTC"
+                                                        class="form-select is-invalid alterID clonemultiselect CtrlTC dropdown-menu"
                                                         aria-label="Default select example">
                                                 </select>
                                             </td>
@@ -257,14 +254,14 @@
                                                     <button id="AddBtn" type="button" disabled
                                                             class="btn primaryLink alterID cloneBtn addBtn"
                                                             onclick="AddClonebtn()"
-                                                            data-toggle="tooltip"
+                                                           
                                                             data-placement="top" title="Add">
                                                         <i data-feather="plus"></i>
                                                     </button>
                                                     <button id="DeleteBtn" type="button"
                                                             class="btn secondaryLink inVisible alterID cloneBtn removeBtn"
                                                             onclick="removeClonebtn()"
-                                                            data-toggle="tooltip"
+                                                            
                                                             data-placement="top" title="Delete">
                                                         <i data-feather="x"></i>
                                                     </button>
@@ -305,21 +302,20 @@
     <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
     <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
     <script src="~/UIContent/JS/CustomePage/ETS/TravellingDetails.js"></script>
-
-
     <script>
+
         var firstOpen = true;
         var time;
         $('.timePicker').datetimepicker({
-            //minDate: moment($('#SchFromDate').val()),
             useCurrent: false,
-            format: "hh:mm A"
+            format: "hh:mm A",
+            //minDate: moment()
         }).on('dp.show', function () {
             if (firstOpen) {
-                time = moment().startOf('day');
+                time = GetCurrentTimeWithAMPM(new Date);//formatAMPM(new Date);
                 firstOpen = false;
             } else {
-                // time = "01:00 PM"
+                time = "12:00 AM";
             }
             $(this).data('DateTimePicker').date(time);
         });
@@ -329,7 +325,6 @@
     <script>
 
             function BackUrls() {
-                debugger;
                 var url = "@ViewBag.BackUrl";
                 var urlbk = url.replace(/&amp;/g, '&');
 
@@ -337,7 +332,6 @@
             };
 
     </script>
-
     <script>
         $(document).ready(function () {
             $('#btnClear').click(function () {
@@ -349,40 +343,7 @@
             });
         });
     </script>
-    @*<script>
-            $(document).ready(function () {
-                $('#btnBack').click(function () {
-                    var url = "/Security/ETS/Create";
-                    if ($('#PublicTransport').val() != "") {
-                        Swal.fire({
-                            title: 'Confirmation Message',
-                            text: "Are You Sure Want to Go Back?",
-                            icon: 'question',
-                            customClass: 'swal-wide',
-                            //buttons: {
-                            //    cancel: 'No',
-                            //    confirm: 'Yes'
-                            //},
-                            confirmButtonText: "Yes",
-                            cancelButtonText: "No",
-                            cancelButtonClass: 'btn-cancel',
-                            confirmButtonColor: '#2527a2',
-                            showCancelButton: true,
-                        }).then(callback);
-                        function callback(result) {
-                            if (result.value) {
-                                window.location.href = url;
-                            } else {
-                                // second variant
-                            }
-                        }
-                    } else {
-                        window.location.href = url;
-                    };
-                });
-            });
-        </script>*@
-
+   
 
 
 

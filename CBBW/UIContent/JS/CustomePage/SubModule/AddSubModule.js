@@ -127,6 +127,10 @@ function ValidateControl() {
     } else {
         $(target).isInvalidCtrl();
     }
+    $('#SubModuleName').val('').isInvalid();
+    $('#tbody2').empty();
+
+
     $('#SubmitBtn').makeDisable();
     UnLockSection('ModuleDive');
     EnableSubmitBtn();

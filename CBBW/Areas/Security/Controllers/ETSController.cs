@@ -234,6 +234,7 @@ namespace CBBW.Areas.Security.Controllers
             try
             {
                 model = TempData["ETS"] as ETSHeaderEntryVM;
+
                 if (Btnsubmit != 1)
                 {
 
@@ -424,6 +425,8 @@ namespace CBBW.Areas.Security.Controllers
         public JsonResult GetETSNZBDetailsforListPage(int iDisplayLength, int iDisplayStart, int iSortCol_0,
     string sSortDir_0, string sSearch)
         {
+            if (iSortCol_0 == 0) { iSortCol_0 = 1; sSortDir_0 = "des"; }
+
             List<ETSNoteList> noteList = _iETS.GetETSNZBDetailsforListPage(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, user.CentreCode, 1, ref pMsg);
 
             var result = new
@@ -441,6 +444,7 @@ namespace CBBW.Areas.Security.Controllers
         public JsonResult GetETSNZBApprovalforListPage(int iDisplayLength, int iDisplayStart, int iSortCol_0,
    string sSortDir_0, string sSearch)
         {
+            if (iSortCol_0 == 0) { iSortCol_0 = 1; sSortDir_0 = "des"; }
             List<ETSNoteList> noteList = _iETS.GetETSNZBDetailsforListPage(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, user.CentreCode, 2, ref pMsg);
 
             var result = new
@@ -496,7 +500,7 @@ namespace CBBW.Areas.Security.Controllers
                 CustomAjaxResponse result = new CustomAjaxResponse();
                 modelobj.travdetails.NoteNumber = modelobj.NoteNumber;
                 modelobj.travdetails.IsApproved = modelobj.IsApprove == 1 ? true : false;
-                modelobj.travdetails.ApprovedReason = modelobj.ApproveReason != null ? modelobj.ApproveReason : "NA";
+                modelobj.travdetails.ApprovedReason = modelobj.ApproveReason != null ? modelobj.ApproveReason : "-";
                 modelobj.travdetails.ReasonVehicleProvided = "NA";
                 modelobj.travdetails.VehicleTypeProvided = 0;
                 modelobj.travdetails.EmployeeNonName = "NA";
@@ -639,6 +643,10 @@ namespace CBBW.Areas.Security.Controllers
                 modelvmobj.CanDelete = CanDelete;// == 1 ? true : false;
                 modelvmobj.HeaderText = "Approval";
 
+                ETSTravellingDetailsVM modelvm = new ETSTravellingDetailsVM();
+                modelvm.dateTour = _iETS.GetETSDateWiseTour(NoteNumber, ref pMsg);
+                modelvmobj.TourCatstatus = modelvm.dateTour.Where(c => c.NoteNumber == NoteNumber && c.TourCategoryId.Contains("3")).ToList().Count > 0 ? true : false;
+
 
             }
             catch (Exception ex) { ex.ToString(); }
@@ -684,6 +692,7 @@ namespace CBBW.Areas.Security.Controllers
         public JsonResult GetETSRTFCNforListPage(int iDisplayLength, int iDisplayStart, int iSortCol_0,
   string sSortDir_0, string sSearch)
         {
+            if (iSortCol_0 == 0) { iSortCol_0 = 1; sSortDir_0 = "des"; }
             List<ETSNoteList> noteList = _iETS.GetETSNZBDetailsforListPage(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, user.CentreCode, 3, ref pMsg);
 
             var result = new
@@ -901,21 +910,17 @@ namespace CBBW.Areas.Security.Controllers
         }
         public JsonResult GetLocationsFromTypes(string TypeIDs)
         {
-            IEnumerable<LocationMaster> result;
             TypeIDs = TypeIDs.Replace('_', ',');
             //IEnumerable<CustomComboOptions> result = _iCTV.getLocationsFromType(TypeIDs, ref pMsg);
-            IEnumerable<LocationMaster> result2 = _master.GetCentresFromTourCategory(TypeIDs, ref pMsg);
-            result = result2.Where(o => o.CentreCode != user.CentreCode).ToList();
+            IEnumerable<LocationMaster> result = _master.GetCentresFromTourCategory(TypeIDs, ref pMsg).OrderBy(x => x.ID);
             return Json(result, JsonRequestBehavior.AllowGet);
 
 
         }
         public JsonResult GetLocationsFromType(int TypeID)
         {
-            IEnumerable<LocationMaster> result;
             //IEnumerable<CustomComboOptions> result = _iCTV.getLocationsFromType(TypeID, ref pMsg);
-            IEnumerable<LocationMaster> result2 = _master.GetCentresFromTourCategory(TypeID.ToString(), ref pMsg);
-            result = result2.Where(o => o.CentreCode != user.CentreCode).ToList();
+            IEnumerable<LocationMaster> result = _master.GetCentresFromTourCategory(TypeID.ToString(), ref pMsg).OrderBy(x=>x.ID);
             return Json(result, JsonRequestBehavior.AllowGet);
 
 
@@ -923,7 +928,7 @@ namespace CBBW.Areas.Security.Controllers
         public JsonResult getBranchType(int CenterId)
         {
             //IEnumerable<CustomComboOptions> result = _master.getBranchType(CenterId, ref pMsg);
-            IEnumerable<LocationMaster> result = _master.GetBranchOfaCentre(CenterId, ref pMsg);
+            IEnumerable<LocationMaster> result = _master.GetBranchOfaCentre(CenterId, ref pMsg).OrderBy(x => x.ID); ;
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult getVehicleEligibilityStatement(int EligibleVT, int ProvidedVT)

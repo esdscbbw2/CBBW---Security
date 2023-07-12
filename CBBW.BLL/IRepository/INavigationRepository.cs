@@ -12,5 +12,6 @@ namespace CBBW.BLL.IRepository
         List<NavigationList> GetIndexListPage(int DisplayLength, int DisplayStart, int SortColumn, string SortDirection, string SearchText, int CenterCode, int status, ref string pMsg);
         bool SetAddNavigationModule(int status, int UserId, int ModuleId,int SubModuleId, List<Navigations> dtldata, ref string pMsg);
         Header GetNavigationDetails(int ID, ref string pMsg);
+        bool SetNavigationDelete(int ID, ref string pMsg);
     }
 }

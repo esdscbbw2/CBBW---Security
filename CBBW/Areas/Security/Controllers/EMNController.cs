@@ -53,6 +53,7 @@ namespace CBBW.Areas.Security.Controllers
         public JsonResult GetEMNNZBDetailsforListPage(int iDisplayLength, int iDisplayStart, int iSortCol_0,
     string sSortDir_0, string sSearch)
         {
+            if (iSortCol_0 == 0) { iSortCol_0 = 1; sSortDir_0 = "des"; }
             List<EMNNoteList> noteList = _iEMN.GetEMNNZBDetailsforListPage(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, user.CentreCode, 1, ref pMsg);
             var result = new
             {
@@ -410,6 +411,7 @@ namespace CBBW.Areas.Security.Controllers
         public JsonResult GetEMNNZBApprovalforListPage(int iDisplayLength, int iDisplayStart, int iSortCol_0,
    string sSortDir_0, string sSearch)
         {
+            if (iSortCol_0 == 0) { iSortCol_0 = 1; sSortDir_0 = "des"; }
             List<EMNNoteList> noteList = _iEMN.GetEMNNZBDetailsforListPage(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, user.CentreCode, 2, ref pMsg);
 
             var result = new
@@ -465,7 +467,7 @@ namespace CBBW.Areas.Security.Controllers
                 CustomAjaxResponse result = new CustomAjaxResponse();
                 modelobj.travdetails.NoteNumber = modelobj.NoteNumber;
                 modelobj.travdetails.IsApproved = modelobj.IsApprove == 1 ? true : false;
-                modelobj.travdetails.ApprovedReason = modelobj.ApproveReason != null ? modelobj.ApproveReason : "NA";
+                modelobj.travdetails.ApprovedReason = modelobj.ApproveReason != null ? modelobj.ApproveReason : "-";
                 modelobj.travdetails.ReasonVehicleProvided = "NA";
                 modelobj.travdetails.VehicleTypeProvided = 0;
                 modelobj.travdetails.EmployeeNonName = "NA";
@@ -607,10 +609,11 @@ namespace CBBW.Areas.Security.Controllers
             return View(modelvm);
         }
         #endregion
-        #region RIFC
+        #region RTFC
         public JsonResult GetEMNRTFCNforListPage(int iDisplayLength, int iDisplayStart, int iSortCol_0,
  string sSortDir_0, string sSearch)
         {
+            if (iSortCol_0 == 0) { iSortCol_0 = 1; sSortDir_0 = "des"; }
             List<EMNNoteList> noteList = _iEMN.GetEMNNZBDetailsforListPage(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, user.CentreCode, 3, ref pMsg);
 
             var result = new

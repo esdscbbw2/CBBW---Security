@@ -44,7 +44,8 @@ function fireSweetAlert(evt) {
         Swal.fire({
             title: 'Information Message',
             text: "Employee Vehicle Selection Is Beyond The Eligiblity. Are You Sure To Proceed ?",
-            icon: 'success',
+            icon: 'info',
+            customClass: 'swal-wide my-info',
             cancelButtonClass: 'btn-cancel',
             cancelButtonText: 'Cancel',
             confirmButtonText: 'Ok',
@@ -90,7 +91,8 @@ function ValidateControl() {
 
     //$('#SchToDate').val('');
     //$('#SchToDate').isInvalid();
-    if (targetid != "ReasonVehicleReq") {
+
+    if (targetid != "ReasonVehicleReq" && targetid != "PurposeOfVisit") {
         $("#tbody2").empty();
         ClearallDropdownData(0);
     }
@@ -108,7 +110,12 @@ function ValidateCloneRowCtrl() {
         RestRowsDeleted('TourWisetbl', $(tblRow).attr('id'));
         var todate = new Date($('#SchTourToDate').val());
         var preToDate = $(tblRow).find('.todt').val();
-        var calculatedFromdate = new Date(ChangeDateFormat(CustomDateChange(preToDate, 1, '-')));
+     
+        var calculatedFromdate;
+        if (preToDate != "") {
+            calculatedFromdate = new Date(ChangeDateFormat(CustomDateChange(preToDate, 1, '-')));
+        }
+
         if (todate <= calculatedFromdate) {
             $(tblRow).find('.addBtn').makeDisable();
         }
@@ -159,6 +166,7 @@ function validatectrl(targetid, value, rowid) {
             break;
         case "SchFromDate":
             isvalid = validatectrl_ValidateLength(value);
+            $('#SchFromDate').ApplyCustomDateFormat();
             break;
         case "SchFromTime":
             if (CompareDates()) {
@@ -167,7 +175,8 @@ function validatectrl(targetid, value, rowid) {
                     isvalid = true;
                 } else {
                     isvalid = false;
-                    AlertMessage();
+                    MyAlert(5,'Please Select Current Time Or Greater Than..!');
+                   // AlertMessage();
                 }
             } else {
                 isvalid = validatectrl_ValidateLength(value);
@@ -176,6 +185,7 @@ function validatectrl(targetid, value, rowid) {
         case "SchTourToDate":
             ValidateEmployeeForTour($('#EmplyoyeeNoList').val(), $('#SchFromDate').val(), value);
             isvalid = validatectrl_ValidateLength(value);
+            $('#SchTourToDate').ApplyCustomDateFormat();
             break;
         case "dateTour_SchToDate":
             isvalid = validatectrl_ValidateLength(value);
@@ -193,18 +203,13 @@ function validatectrl(targetid, value, rowid) {
             if (rowid > 0) { fromdateCtrl = $('#DDSchFromDate_' + rowid); }
             if (CompareDate(fromdateCtrl.html(), 0, value, 1)) { isvalid = true; }
             else {
-                Swal.fire({
-                    title: 'Invalid Date Range!',
-                    text: 'To Date Must Be Greater Or Equal To From Date.',
-                    icon: 'error',
-                    customClass: 'swal-wide',
-                    buttons: {
-                        confirm: 'Ok'
-                    },
-                    confirmButtonColor: '#2527a2',
-                });
+                if (value != "") {
+                    MyAlert(5, 'To Date Must Be Greater Or Equal To From Date..!');
+                }
+               
                 isvalid = false;
             }
+           // $('#SchToDate').ApplyCustomDateFormat();
             break;
         case "TourCategory":
             isvalid = validatectrl_ValidateLength(value);
@@ -248,6 +253,7 @@ function formatAMPM(date) {
     return strTime;
 }
 function AlertMessage() {
+
     Swal.fire({
         title: 'Error',
         text: 'Please Select Current time Or Greater Than!',
@@ -328,6 +334,9 @@ function ClearallDropdownData(rowid) {
     var BCCtrlDiv = 'BCctrldiv';
     var Cctrldiv = 'CenterDiv';
     var dTourCategory = 'TourCategory';
+    var DDSchFromDate = 'DDSchFromDate';
+    var SchToDate = 'SchToDate';
+    var lblSchToDate = 'lblSchToDate';
 
     if (rowid > 0) {
         ccnamectrls = 'CenterCodeName_' + rowid;
@@ -337,6 +346,10 @@ function ClearallDropdownData(rowid) {
         BCCtrlDiv = 'BCctrldiv_' + rowid;
         Cctrldiv = 'CenterDiv_' + rowid;
         dTourCategory = 'TourCategory_' + rowid;
+        DDSchFromDate = 'DDSchFromDate_' + rowid;
+        SchToDate = 'SchToDate_' + rowid;
+        lblSchToDate = 'lblSchToDate_' + rowid;
+
     }
 
     $('#' + BCCtrlDiv).addClass('inVisible');
@@ -345,8 +358,19 @@ function ClearallDropdownData(rowid) {
     $('#' + BBNADiv).removeClass('inVisible');
     $('#' + CCNADiv).html('NA');
     $('#' + BBNADiv).html('NA');
+
+    //$('#' + DDSchFromDate).html('');
+    $('#' + SchToDate).val('').isInvalid();
+    $('#' + lblSchToDate).html('');
+
     $('#' + dTourCategory).multiselect('clearSelection');
     RemoveAllDataFromDropdown(ccnamectrls, bnamectrls);
+    $('#' + dTourCategory).isInvalid();
+    $('#' + ccnamectrls).isInvalid();
+    $('#' + bnamectrls).isInvalid();
+    
+    
+
 
 };
 function RemoveAllDataFromDropdown(CenterCode, BranchCode) {
@@ -511,41 +535,34 @@ function toggleGroupv(target, multictrlId, value) {
     var rowid = $(target.closest('.add-row')).attr("id");
     var ccnamectrl = 'CenterCodeName';
     var BBnamectrl = 'BranchCodeName';
+    var ccnamectrl1 = $('#CenterCodeName');
+    var BBnamectrl1 = $('#BranchCodeName');
     if (rowid > 0) {
         ccnamectrl = 'CenterCodeName_' + rowid;
         BBnamectrl = 'BranchCodeName_' + rowid;
+        ccnamectrl1 = ('#CenterCodeName_' + rowid);
+        BBnamectrl1 = $('#BranchCodeName_' + rowid);
     }
-    debugger;
+
     if (value == "1,2") {
-        WarringMsg();
+        MyAlert(5, 'This selection not allowed, Please change selected values.');
         $('#' + multictrlId).multiselect('clearSelection');
         RemoveAllDataFromDropdown(ccnamectrl, BBnamectrl);
+        ccnamectrl1.isInvalid();
+        BBnamectrl1.isInvalid();
     } else if (value == "1,5") {
-        WarringMsg();
+        MyAlert(5, 'This selection not allowed, Please change selected values.');
         $('#' + multictrlId).multiselect('clearSelection');
         RemoveAllDataFromDropdown(ccnamectrl, BBnamectrl);
+        ccnamectrl1.isInvalid();
+        BBnamectrl1.isInvalid();
     } else if (value == "2,5") {
-        WarringMsg();
+        MyAlert(5, 'This selection not allowed, Please change selected values.');
         $('#' + multictrlId).multiselect('clearSelection');
         RemoveAllDataFromDropdown(ccnamectrl, BBnamectrl);
+        ccnamectrl1.isInvalid();
+        BBnamectrl1.isInvalid();
     }
-
-
-
-
-
-};
-function WarringMsg() {
-    Swal.fire({
-        title: 'Error',
-        text: 'This selection not allowed, Please change selected values.',
-        icon: 'question',
-        customClass: 'swal-wide',
-        buttons: {
-            confirm: 'Ok'
-        },
-        confirmButtonColor: '#2527a2',
-    });
 };
 function Buttonclear() {
     $('.clear').val('');
@@ -653,7 +670,6 @@ async function getInitialData() {
         }
     });
 };
-
 function GetTourMaxDaysAllow(Fromdate) {
     $.ajax({
         url: '/ETS/GetTourMaxDaysAllow',
@@ -664,4 +680,16 @@ function GetTourMaxDaysAllow(Fromdate) {
             $('#SchTourToDate').attr('max', data);
         }
     });
+}
+function keypressCountWord(e) {
+    var target = keypressCountWord.caller.arguments[0].target;
+    var targetCtrl = $(target).val();
+    var targetid = $(target).attr('id');
+    var count;
+    if (targetid == "PurposeOfVisit") { count = 200; } else { count = 50; }
+    if (WordCount(targetCtrl) > (count * 1)) {
+        $(target).preventTypying();
+    } else {
+        $(target).off('keypress');
+    }
 }

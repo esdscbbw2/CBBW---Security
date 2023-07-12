@@ -18,7 +18,14 @@
 });
 function Notenumberchanged(notenumber) {
     var noteCtrl = $('#NoteNumber');
-    if (notenumber != '') { noteCtrl.isValid(); } else { noteCtrl.isInvalid(); }
+    if (notenumber != '') {
+        noteCtrl.isValid();
+        $('.QueDiv').removeClass('inVisible');
+
+    } else {
+        noteCtrl.isInvalid();
+        $('.QueDiv').addClass('inVisible');
+    }
     TPTableClear();
     if (noteCtrl.val() != "") {
         $.ajax({
@@ -44,6 +51,10 @@ function Notenumberchanged(notenumber) {
 
                 });
                 getTravellingPersonData();
+
+                if ($("#btnDisplay").val() == 0) {
+                    MyAlert(0, 'For Futher Process ,Please check Attachment File First..!!');
+                }
             }
         });
     } else {
@@ -123,7 +134,11 @@ function validatectrl(targetid, value) {
         case "APPRej":
             isvalid = validatectrl_YesNoCombo(value);
             if (isvalid) {
-                UnLockSection(dateDetails.attr('id'));
+                UnLockSection('dateDetails');
+                $('#IsAppDiv').addClass('SLUSection');
+            } else {
+                LockSection('dateDetails');
+                $('#IsAppDiv').removeClass('SLUSection');
             }
             break;
         case "IsApprove":
