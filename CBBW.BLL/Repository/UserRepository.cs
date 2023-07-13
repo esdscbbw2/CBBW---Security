@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Web;
 using CBBW.BLL.IRepository;
 using CBBW.BOL.CTV;
+using CBBW.BOL.RBACUsers;
 using CBBW.DAL.Entities;
 using Newtonsoft.Json;
 
@@ -14,10 +15,12 @@ namespace CBBW.BLL.Repository
     public class UserRepository: IUserRepository
     {
         CTVEntities _CTVEntities;
+        RBACUserEntities _RBACUserEntities;
         Stack<string> cburls;
         public UserRepository()
         {
             _CTVEntities = new CTVEntities();
+            _RBACUserEntities = new RBACUserEntities();
         }
         public bool LogIn(string UserName, ref string pMsg)
         {
@@ -126,8 +129,12 @@ namespace CBBW.BLL.Repository
                 HttpContext.Current.Response.Cookies.Add(cookie);
             }
         }
-
-
+       
+        // RBAC
+        public List<UserMenu> GetUserMenu(int EmployeeNumber, int CentreCode, ref string pMsg)
+        {
+            return _RBACUserEntities.GetUserMenu(EmployeeNumber, CentreCode, ref pMsg);
+        }
 
     }
 }

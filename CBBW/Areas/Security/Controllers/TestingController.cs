@@ -8,6 +8,7 @@ using CBBW.Areas.Security.ViewModel.Testing;
 using CBBW.BLL.IRepository;
 using CBBW.BOL;
 using CBBW.BOL.CustomModels;
+using CBBW.BOL.RBACUsers;
 
 namespace CBBW.Areas.Security.Controllers
 {
@@ -16,12 +17,14 @@ namespace CBBW.Areas.Security.Controllers
         IEMNRepository _iEMN;
         IMasterRepository _iMaster;
         IRoleRepository _iRole;
+        IUserRepository _iUser;
         string pMsg = "";
-        public TestingController(IRoleRepository iRole,IEMNRepository iEMN, IMasterRepository iMaster)
+        public TestingController(IUserRepository iUser,IRoleRepository iRole,IEMNRepository iEMN, IMasterRepository iMaster)
         {
             _iEMN = iEMN;
             _iMaster = iMaster;
             _iRole = iRole;
+            _iUser = iUser;
         }
         // GET: Security/Testing
         public ActionResult Index()
@@ -91,6 +94,16 @@ namespace CBBW.Areas.Security.Controllers
                 @ViewBag.ErrMsg = pMsg;
             }
             return View(model2.OrderBy(o => o.ControllerName).ToList());
+        }
+        public ActionResult ValidationTesting() 
+        {
+            return View();
+        }
+        public ActionResult GetUserMenu() 
+        {
+            List<UserMenu> model = _iUser.GetUserMenu(38684, 7, ref pMsg);
+            ViewData["MyMenu"] = model;
+            return View(model);
         }
     }
 }

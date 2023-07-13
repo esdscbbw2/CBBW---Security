@@ -198,6 +198,23 @@ namespace CBBW.DAL.DataSync
                 pMsg = ex.Message; return null;
             }
         }
+        public DataTable GetUserMenu(int EmployeeNumber,int CentreCode,ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("select * from [RBAC].[GetCentreWiseUserMenu]("+ EmployeeNumber + ","+ CentreCode + ")", CommandType.Text))
+                {
+                    return sql.GetDataTable();
+                }
+            }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message; return null;
+            }
+        }
+
+
 
     }
 }

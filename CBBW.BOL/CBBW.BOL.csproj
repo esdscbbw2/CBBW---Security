@@ -160,6 +160,7 @@
     <Compile Include="RBACUsers\Employee.cs" />
     <Compile Include="RBACUsers\MyRole.cs" />
     <Compile Include="RBACUsers\UserList.cs" />
+    <Compile Include="RBACUsers\UserMenu.cs" />
     <Compile Include="RBACUsers\UserRole.cs" />
     <Compile Include="Role\Actions.cs" />
     <Compile Include="Role\Header.cs" />

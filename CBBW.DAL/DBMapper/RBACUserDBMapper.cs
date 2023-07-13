@@ -124,7 +124,43 @@ namespace CBBW.DAL.DBMapper
             }
             return result;
         }
-
+        public UserMenuRaw Map_UserMenuRaw(DataRow dr) 
+        {
+            UserMenuRaw result = new UserMenuRaw();
+            try
+            {
+                if (dr != null)
+                {
+                    if (!DBNull.Value.Equals(dr["ModuleID"]))
+                        result.ModuleID = int.Parse(dr["ModuleID"].ToString());
+                    if (!DBNull.Value.Equals(dr["ModuleName"]))
+                        result.ModuleName = dr["ModuleName"].ToString();
+                    if (!DBNull.Value.Equals(dr["SubModuleID"]))
+                        result.SubModuleID = int.Parse(dr["SubModuleID"].ToString());
+                    if (!DBNull.Value.Equals(dr["SubModuleName"]))
+                        result.SubModuleName = dr["SubModuleName"].ToString();
+                    if (!DBNull.Value.Equals(dr["NavigationID"]))
+                        result.NavigationID = int.Parse(dr["NavigationID"].ToString());
+                    if (!DBNull.Value.Equals(dr["NavigationName"]))
+                        result.NavigationName = dr["NavigationName"].ToString();
+                    if (!DBNull.Value.Equals(dr["TaskID"]))
+                        result.TaskID = int.Parse(dr["TaskID"].ToString());
+                    if (!DBNull.Value.Equals(dr["TaskName"]))
+                        result.TaskName = dr["TaskName"].ToString();
+                    if (!DBNull.Value.Equals(dr["URL"]))
+                        result.URL = dr["URL"].ToString();
+                    if (!DBNull.Value.Equals(dr["IsSubTask"]))
+                        result.IsSubTask =bool.Parse(dr["IsSubTask"].ToString());
+                    if (!DBNull.Value.Equals(dr["SubTaskName"]))
+                        result.SubTaskName = dr["SubTaskName"].ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+            }
+            return result;
+        }
 
 
     }

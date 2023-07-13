@@ -18,7 +18,7 @@
                 <div class="col-md-12">
                     <div class="heading_text_btn mb-3 mt-4">
                         <div class="leftButton">
-                            <button id="btnBack" onclick="BackUrls()" type="button" class="btn btn-primary me-2">
+                            <button  onclick="BackUrls()" type="button" class="btn btn-primary me-2">
                                 <i data-feather="arrow-left-circle"></i>
                                 Back
                             </button>
@@ -327,7 +327,6 @@
             function BackUrls() {
                 var url = "@ViewBag.BackUrl";
                 var urlbk = url.replace(/&amp;/g, '&');
-
                 window.location.href = urlbk;
             };
 

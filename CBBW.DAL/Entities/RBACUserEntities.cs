@@ -153,7 +153,75 @@ namespace CBBW.DAL.Entities
             _DBResponseMapper.Map_DBResponse(_RBACUserDataSync.UpdatePassword(data, ref pMsg), ref pMsg, ref result);
             return result;
         }
-
+        public List<UserMenu> GetUserMenu(int EmployeeNumber, int CentreCode, ref string pMsg) 
+        {
+            List<UserMenu> result = new List<UserMenu>();
+            List<UserMenuRaw> obj = new List<UserMenuRaw>();
+            try
+            {
+                dt = _RBACUserDataSync.GetUserMenu(EmployeeNumber, CentreCode, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        obj.Add(_RBACUserDBMapper.Map_UserMenuRaw(dt.Rows[i]));
+                    }
+                }
+                if(obj!=null && obj.Count > 0) 
+                {
+                    foreach(var item in obj.Select(o=>new {o.ModuleID,o.ModuleName }).Distinct().ToList()) 
+                    {
+                        UserMenu m1 = new UserMenu(){ModuleID=item.ModuleID,ModuleName=item.ModuleName };
+                        List<UserSubModule> x1 =new List<UserSubModule>();
+                        foreach (var smitem in obj.Where(o=>o.ModuleID==item.ModuleID)
+                            .Select(o=>new { o.SubModuleID,o.SubModuleName })
+                            .Distinct().ToList()) 
+                        {
+                            UserSubModule m2 = new UserSubModule() {SubModuleID= smitem.SubModuleID,SubModuleName= smitem.SubModuleName };
+                            List<UserNavigation> x2 = new List<UserNavigation>();
+                            foreach(var navitem in obj.Where(o =>o.ModuleID == item.ModuleID && o.SubModuleID == smitem.SubModuleID)
+                                .Select(o=>new { o.NavigationID,o.NavigationName})
+                                .Distinct().ToList()) 
+                            {
+                                UserNavigation m3 = new UserNavigation() {NavigationID=navitem.NavigationID,NavigationName=navitem.NavigationName };
+                                List<UserTask> x3 = new List<UserTask>();
+                                foreach (var taskitem in obj.Where(o => o.ModuleID == item.ModuleID && o.SubModuleID == smitem.SubModuleID && o.NavigationID==navitem.NavigationID)
+                                    .Select(o=>new {o.TaskName }).Distinct().ToList())
+                                {
+                                    UserTask m4 = new UserTask() {TaskName=taskitem.TaskName};
+                                    List<UserSubTask> x4 = new List<UserSubTask>();
+                                    foreach(var subtaskitem in obj.Where(o => o.ModuleID == item.ModuleID && o.SubModuleID == smitem.SubModuleID && o.NavigationID == navitem.NavigationID && o.TaskName==taskitem.TaskName)
+                                        .Select(o=>new {o.TaskID,o.URL,o.SubTaskName })
+                                        .Distinct().ToList()) 
+                                    {
+                                        UserSubTask m5 = new UserSubTask() {TaskID=subtaskitem.TaskID,URL=MyCodeHelper.BaseUrl+"/"+subtaskitem.URL,SubTaskName=subtaskitem.SubTaskName };
+                                        x4.Add(m5);
+                                    }
+                                    m4.SubTasks = x4;
+                                    if (x4!=null && string.IsNullOrEmpty(x4.FirstOrDefault().SubTaskName)) 
+                                    {
+                                        m4.URL = x4.FirstOrDefault().URL;
+                                    }
+                                    x3.Add(m4);
+                                }
+                                m3.Tasks = x3;
+                                x2.Add(m3);
+                            }                            
+                            m2.Navigations = x2;
+                            x1.Add(m2);
+                        }
+                        m1.SubModules = x1;
+                        result.Add(m1);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+            }
+            return result;
+        }
 
     }
 }

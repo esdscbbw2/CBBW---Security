@@ -177,7 +177,9 @@ function validatectrl(targetid, value, rowid) {
                 }
             break;
         case "SchTourToDate":
-            ValidateEmployeeForTour($('#EmplyoyeeNoList').val(), $('#SchFromDate').val(), value);
+            if ($('#EmplyoyeeNoList').val() != 0 && $('#EmplyoyeeNoList').val() != null) {
+                ValidateEmployeeForTour($('#EmplyoyeeNoList').val(), $('#SchFromDate').val(), value);
+            }
             isvalid = validatectrl_ValidateLength(value);
             $('#SchTourToDate').ApplyCustomDateFormat();
             break;
@@ -532,7 +534,7 @@ function toggleGroupv(target, multictrlId, value, rowids, x, selectval) {
 
         if (value.indexOf(str3) != -1) {
             if (txtlennospace > 1) {
-                MyAlert(5, 'This Selection Not Allowed, Only Branch Visit Allowed..!!');
+                MyAlert(5, 'This Selection Is Not Allowed, Only Branch Visit Allowed..!!');
                 $('#' + multictrlId).multiselect('clearSelection').isInvalid();
                 RemoveAllDataFromDropdown(ccnamectrl, BBnamectrl);
                 
@@ -543,7 +545,7 @@ function toggleGroupv(target, multictrlId, value, rowids, x, selectval) {
         } else {
             if (value.indexOf(str2) != -1) {
                 if (txtlennospace > 2) {
-                    MyAlert(5, 'This Selection Not Allowed, Please Change Selected Values.');
+                    MyAlert(5, 'This Selection Is Not Allowed, Please Change Selected Values.');
                     $('#' + multictrlId).multiselect('clearSelection').isInvalid();
                     RemoveAllDataFromDropdown(ccnamectrl, BBnamectrl);
                   
@@ -553,7 +555,7 @@ function toggleGroupv(target, multictrlId, value, rowids, x, selectval) {
                 }
             } else {
                 if (txtlennospace > 1) {
-                    MyAlert(5, 'This Selection Not Allowed, Please Change Selected Values.');
+                    MyAlert(5, 'This Selection Is Not Allowed, Please Change Selected Values.');
                     $('#' + multictrlId).multiselect('clearSelection').isInvalid();
                     RemoveAllDataFromDropdown(ccnamectrl, BBnamectrl);
                     
@@ -568,7 +570,7 @@ function toggleGroupv(target, multictrlId, value, rowids, x, selectval) {
     } else{
         if (value.indexOf(str2) != -1) {
             if (txtlennospace > 2) {
-                MyAlert(5, 'This Selection Not Allowed, Please Change Selected Values.');
+                MyAlert(5, 'This Selection Is Not Allowed, Please Change Selected Values.');
                 $('#' + multictrlId).multiselect('clearSelection').isInvalid();
                 RemoveAllDataFromDropdown(ccnamectrl, BBnamectrl);
               
@@ -578,7 +580,7 @@ function toggleGroupv(target, multictrlId, value, rowids, x, selectval) {
             }
         } else {
             if (txtlennospace > 1) {
-                MyAlert(5, 'This Selection Not Allowed, Please Change Selected Values.');
+                MyAlert(5, 'This Selection Is Not Allowed, Please Change Selected Values.');
                 $('#' + multictrlId).multiselect('clearSelection').isInvalid();
                 RemoveAllDataFromDropdown(ccnamectrl, BBnamectrl);
                

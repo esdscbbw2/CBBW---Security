@@ -55,7 +55,7 @@ namespace CBBW.Areas.Security.Controllers
             return View();
         }
         public JsonResult GetEMCNZBDetailsforListPage(int iDisplayLength, int iDisplayStart, int iSortCol_0,
-    string sSortDir_0, string sSearch)
+        string sSortDir_0, string sSearch)
         {
             if (iSortCol_0 == 0) { iSortCol_0 = 1; sSortDir_0 = "des"; }
             List<EMCNoteList> noteList = _iEMC.GetEMCNZBDetailsforListPage(iDisplayLength, iDisplayStart, iSortCol_0, sSortDir_0, sSearch, user.CentreCode, 1, ref pMsg);

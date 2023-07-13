@@ -1,190 +1,143 @@
-﻿<div id="mySidebar" class="sidebar">
+﻿@using CBBW.BOL.RBACUsers;
+@{
+    List<UserMenu> model=(List<UserMenu>)ViewData["MyMenu"];
+}
+<div id="mySidebar" class="sidebar">
     <div class="sidebar-sticky">
         <nav class="card  mb-4">
             <ul class="nav flex-column" id="nav_accordion">
                 <li class="nav-item">
                     <a class="nav-link" href="#"> <i class="fa fa-th-large "></i> <span class="menu-title"> Dashboard </span> </a>
                 </li>
-
                 <li class="nav-item has-submenu">
-                    <a class="nav-link active" href="#"><i class="fa fa-cogs "></i>  <span class="menu-title"> Maintenance</span>  <i class="fa fa-angle-down"></i> </a>
+                    <a onclick="showArrow(this)" class="nav-link activeP" href="#"><i class="fa fa-cogs "></i>  <span class="menu-title"> Maintenance</span>  <i class="fa fa-angle-right"></i> </a>
                     <ul class="submenu collapse ">
+                        <li class="level2-li">
 
-                        <li>
-                            <a class="nav-link" href="#"> <i class="fa fa-circle" aria-hidden="true"></i> Masters</a>
+                            <a onclick="showsubmenuArrow(this)" class="nav-link" href="#"> <i data-feather="circle"></i> Masters <i class="fa fa-angle-right"></i></a>
                             <ul class="submenu collapse">
-                                <li>@Html.ActionLink("User Management", "Index", "UserManagement", new { area = "Security" }, new { @class = "nav-link" })</li>
-                                @*<li>@Html.ActionLink("TA DA – Rules", "Index", "TADARules", new { area = "Security" }, new { @class = "nav-link" })</li>*@
+                                <li><a onclick="addActiveclass(this)" class="nav-link" href="#"><i data-feather="circle"></i> <span class="menu-title">Modules Master</span></a></li>
+                                <li><a onclick="addActiveclass(this)" class="nav-link" href="#"> <i data-feather="circle"></i> <span class="menu-title">Sub Modules Master</span></a></li>
+                                <li><a onclick="addActiveclass(this)" class="nav-link" href="#"> <i data-feather="circle"></i> <span class="menu-title">Navigation Masterr</span></a></li>
+                                <li><a onclick="addActiveclass(this)" class="nav-link" href="#"> <i data-feather="circle"></i> <span class="menu-title">Task Master</span></a></li>
+                                <li><a onclick="addActiveclass(this)" class="nav-link" href="#"> <i data-feather="circle"></i> <span class="menu-title">Role Management</span></a></li>
+                                <li><a onclick="addActiveclass(this)" class="nav-link" href="#"> <i data-feather="circle"></i> <span class="menu-title">User Management</span></a></li>
                             </ul>
                         </li>
-
-                        <li>
-                            <a class="nav-link" href="#"> <i class="fa fa-circle" aria-hidden="true"></i> Rules <i class="fa fa-angle-down"></i></a>
+                        <li class="level2-li">
+                            <a onclick="showsubmenuArrow(this)" class="nav-link" href="#"> <i data-feather="circle"></i> Rules <i class="fa fa-angle-right"></i></a>
                             <ul class="submenu collapse">
-                                <li>@Html.ActionLink("Tour – Rules", "Index", "TourRule", new { area = "Security" }, new { @class="nav-link"})</li>
-                                <li>@Html.ActionLink("TA DA – Rules", "Index", "TADARules", new { area = "Security" }, new { @class = "nav-link" })</li>
+                                <li><a onclick="addActiveclass(this)" class="nav-link" href="#"><i data-feather="circle"></i> <span class="menu-title">Tour – Rules</span></a></li>
+                                <li><a onclick="addActiveclass(this)" class="nav-link" href="#"> <i data-feather="circle"></i> <span class="menu-title">TA DA – Rules</span></a></li>
                             </ul>
                         </li>
-                        <li>
-                            <a class="nav-link" href="#"><i class="fa fa-circle" aria-hidden="true"></i> Transactions <i class="fa fa-angle-down"></i></a>
+                        <li class="level2-li">
+                            <a onclick="showsubmenuArrow(this)" class="nav-link" href="#"><i data-feather="circle"></i> Transactions <i class="fa fa-angle-right"></i></a>
                             <ul class="submenu collapse">
                                 <li>
-                                    <a class="nav-link" href="#"><span class="menu-title"><i class="fa fa-angle-right"></i> Company Transport Vehicle </span> <i class="fa fa-angle-down"></i></a>
+                                    <a onclick="showsubarrow(this)" class="nav-link" href="#"><i data-feather="circle"></i> <span class="menu-title"> Company Transport Vehicle </span> <i class="fa fa-angle-right"></i></a>
                                     <ul class="submenu collapse">
-                                        <li>@Html.ActionLink("Entry", "ScheduleLists", "CTV", new { area = "Security" }, new { @class = "nav-link" })</li>
-                                        <li>@Html.ActionLink("Approval", "ApprovalLists", "CTV", new { area = "Security" }, new { @class = "nav-link" })</li>
-                                        <li>@Html.ActionLink("V2-Entry", "Index", "CTV2", new { area = "Security" }, new { @class = "nav-link" })</li>
-                                        <li>@Html.ActionLink("V2-Approval", "ApprovalIndex", "CTV2", new { area = "Security" }, new { @class = "nav-link" })</li>
-                                        @*<li><a class="nav-link" href="#"><span class="menu-title">Entry</span></a></li>
-        <li><a class="nav-link" href="#"><span class="menu-title">Approval</span></a></li>*@
+                                        <li><a onclick="addActiveclass1(this)" class="nav-link" href="#"><span class="menu-title">Entry</span></a></li>
+                                        <li><a onclick="addActiveclass1(this)" class="nav-link" href="#"><span class="menu-title">Approval</span></a></li>
                                     </ul>
                                 </li>
                                 <li>
-                                    <a class="nav-link" href="#"><span class="menu-title"><i class="fa fa-angle-right"></i>  Material Gate Pass</span> <i class="fa fa-angle-down"></i></a>
+                                    <a onclick="showsubarrow(this)" class="nav-link" href="#"><i data-feather="circle"></i> <span class="menu-title">  Material Gate Pass</span> <i class="fa fa-angle-right"></i></a>
                                     <ul class="submenu collapse">
-                                        <li>@Html.ActionLink("Entry", "Index", "MaterialGatePass", new { area = "Security" }, new { @class = "nav-link" })</li>
-                                        @*<li><a class="nav-link" href="#"><span class="menu-title">Entry</span></a></li>*@
+                                        <li><a onclick="addActiveclass1(this)" class="nav-link" href="#"><span class="menu-title">Entry</span></a></li>
                                     </ul>
                                 </li>
                                 <li>
-                                    <a class="nav-link" href="#"><span class="menu-title"><i class="fa fa-angle-right"></i>Goods Vehicle Movement Recording </span> <i class="fa fa-angle-down"></i></a>
-                                    <ul class="submenu collapse">
-                                        <li>@Html.ActionLink("Entry", "Index", "GVMR", new { area = "Security" }, new { @class = "nav-link" })</li>
-                                        @*<li><a class="nav-link" href="#"><span class="menu-title">Entry</span></a></li>*@
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a class="nav-link" href="#">
-                                        <span class="menu-title">
-                                            <i class="fa fa-angle-right"></i> Employee’s Travelling Details & Vehicle Allotment (By HG)
-                                        </span> <i class="fa fa-angle-down"></i>
+                                    <a onclick="showsubarrow(this)" class="nav-link" href="#">
+                                        <i data-feather="circle"></i> <span class="menu-title">
+                                            Employee’s Travelling Details & Vehicle Allotment (By HG)
+                                        </span> <i class="fa fa-angle-right"></i>
                                     </a>
                                     <ul class="submenu collapse">
-                                        <li>@Html.ActionLink("Entry", "Index", "EHG", new { area = "Security" }, new { @class = "nav-link" })</li>
-                                        <li>@Html.ActionLink("Approval", "NoteApproveList", "EHG", new { area = "Security" }, new { @class = "nav-link" })</li>
-                                        @*<li><a class="nav-link" href="#"><span class="menu-title">Entry</span></a></li>
-                <li><a class="nav-link" href="#"><span class="menu-title">Approval</span></a></li>*@
+                                        <li><a onclick="addActiveclass1(this)" class="nav-link" href="#"><span class="menu-title">Entry</span></a></li>
+                                        <li><a onclick="addActiveclass1(this)" class="nav-link" href="#"><span class="menu-title">Approval</span></a></li>
                                     </ul>
                                 </li>
                                 <li>
-                                    <a class="nav-link" href="#">
-                                        <span class="menu-title">
-                                            <i class="fa fa-angle-right"></i>  Employees Travelling Scheduled Details (FOR NZB STAFF)
-                                        </span> <i class="fa fa-angle-down"></i>
+                                    <a onclick="showsubarrow(this)" class="nav-link" href="#">
+                                        <i data-feather="circle"></i> <span class="menu-title">
+                                            Employees Travelling Scheduled Details (FOR NZB STAFF)
+                                        </span> <i class="fa fa-angle-right"></i>
                                     </a>
                                     <ul class="submenu collapse">
-                                        <li>@Html.ActionLink("Entry", "Index", "ETS", new { area = "Security" }, new { @class = "nav-link" })</li>
-                                        <li>@Html.ActionLink("Approval", "ETSNoteApproveList", "ETS", new { area = "Security" }, new { @class = "nav-link" })</li>
-                                        <li>@Html.ActionLink("Ratification", "RTFNIndex", "ETS", new { area = "Security" }, new { @class = "nav-link" })</li>
-                                        @*<li><a class="nav-link" href="#"><span class="menu-title">Entry</span></a></li>
-                <li><a class="nav-link" href="#"><span class="menu-title">Approval</span></a></li>
-                <li><a class="nav-link" href="#"><span class="menu-title">Ratification</span></a></li>*@
+                                        <li><a onclick="addActiveclass1(this)" class="nav-link" href="#"><span class="menu-title">Entry</span></a></li>
+                                        <li><a onclick="addActiveclass1(this)" class="nav-link" href="#"><span class="menu-title">Approval</span></a></li>
+                                        <li><a onclick="addActiveclass1(this)" class="nav-link" href="#"><span class="menu-title">Ratification</span></a></li>
                                     </ul>
                                 </li>
                                 <li>
-                                    <a class="nav-link" href="#">
-                                        <span class="menu-title">
-                                            <i class="fa fa-angle-right"></i>  Employees Travelling Scheduled Details (FOR MFG.CENTERS RECORDED AT NZB)
-                                        </span> <i class="fa fa-angle-down"></i>
-                                    </a>
-                                    <ul class="submenu collapse">
-                                        <li>@Html.ActionLink("Entry", "Index", "EMN", new { area = "Security" }, new { @class = "nav-link" })</li>
-                                        <li>@Html.ActionLink("Approval", "EMNNoteApproveList", "EMN", new { area = "Security" }, new { @class = "nav-link" })</li>
-                                        <li>@Html.ActionLink("Ratification", "RTFNIndex", "EMN", new { area = "Security" }, new { @class = "nav-link" })</li>
-                                        @*<li><a class="nav-link" href="#"><span class="menu-title">Entry</span></a></li>
-                <li><a class="nav-link" href="#"><span class="menu-title">Approval</span></a></li>
-                <li><a class="nav-link" href="#"><span class="menu-title">Ratification</span></a></li>*@
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a class="nav-link" href="#">
-                                        <span class="menu-title">
-                                            <i class="fa fa-angle-right"></i>  Employees Travelling Scheduled Details (FOR MFG.CENTERS)
-                                        </span> <i class="fa fa-angle-down"></i>
-                                    </a>
-                                    <ul class="submenu collapse">
-                                        <li>@Html.ActionLink("Entry", "Index", "EMC", new { area = "Security" }, new { @class = "nav-link" })</li>
-                                        <li>@Html.ActionLink("Approval", "EMCNoteApproveList", "EMC", new { area = "Security" }, new { @class = "nav-link" })</li>
-                                        @*<li><a class="nav-link" href="#"><span class="menu-title">Entry</span></a></li>
-                <li><a class="nav-link" href="#"><span class="menu-title">Approval</span></a></li>
-                <li><a class="nav-link" href="#"><span class="menu-title">Ratification</span></a></li>*@
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a class="nav-link" href="#">
-                                        <span class="menu-title">
-                                            <i class="fa fa-angle-right"></i>  Employees Travelling Scheduled Details (EDIT NOTE)
-                                        </span> <i class="fa fa-angle-down"></i>
-                                    </a>
-                                    <ul class="submenu collapse">
-                                        <li>@Html.ActionLink("Edit", "Index", "ETSEdit", new { area = "Security" }, new { @class = "nav-link" })</li>
-                                        <li>@Html.ActionLink("Approval", "ApprovalIndex", "ETSEdit", new { area = "Security" }, new { @class = "nav-link" })</li>
-                                        <li>@Html.ActionLink("Ratification", "RatificationIndex", "ETSEdit", new { area = "Security" }, new { @class = "nav-link" })</li>
-                                        @*<li><a class="nav-link" href="#"><span class="menu-title">Entry</span></a></li>
-                <li><a class="nav-link" href="#"><span class="menu-title">Approval</span></a></li>
-                <li><a class="nav-link" href="#"><span class="menu-title">Ratification</span></a></li>*@
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a class="nav-link" href="#">
-                                        <span class="menu-title">
-                                            <i class="fa fa-angle-right"></i>Entry I
-                                        </span> <i class="fa fa-angle-down"></i>
-                                    </a>
-                                    <ul class="submenu collapse">
-                                        <li>@Html.ActionLink("Entry", "Index", "EntryI", new { area = "Security" }, new { @class = "nav-link" })</li>
-                                        @*<li><a class="nav-link" href="#"><span class="menu-title">Entry</span></a></li>
-                <li><a class="nav-link" href="#"><span class="menu-title">Approval</span></a></li>
-                <li><a class="nav-link" href="#"><span class="menu-title">Ratification</span></a></li>*@
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a class="nav-link" href="#">
-                                        <span class="menu-title">
-                                            <i class="fa fa-angle-right"></i>Entry II
-                                        </span> <i class="fa fa-angle-down"></i>
-                                    </a>
-                                    <ul class="submenu collapse">
-                                        <li>@Html.ActionLink("Main Location", "Index", "EntryII", new { area = "Security" }, new { @class = "nav-link" })</li>
-                                        <li>@Html.ActionLink("Location Wise", "LocationWiseIndex", "EntryII", new { area = "Security" }, new { @class = "nav-link" })</li>
+                                    <a onclick="showsubarrow(this)" class="nav-link" href="#">
+                                        <i data-feather="circle"></i> <span class="menu-title">
+                                            Employees Travelling Scheduled Details (FOR MFG.CENTERS RECORDED AT NZB)
 
+                                        </span> <i class="fa fa-angle-right"></i>
+                                    </a>
+                                    <ul class="submenu collapse">
+                                        <li><a onclick="addActiveclass1(this)" class="nav-link" href="#"><span class="menu-title">Entry</span></a></li>
+                                        <li><a onclick="addActiveclass1(this)" class="nav-link" href="#"><span class="menu-title">Approval</span></a></li>
+                                        <li><a onclick="addActiveclass1(this)" class="nav-link" href="#"><span class="menu-title">Ratification</span></a></li>
                                     </ul>
                                 </li>
                                 <li>
-                                    <a class="nav-link" href="#">
-                                        <span class="menu-title">
-                                            <i class="fa fa-angle-right"></i> Tour Feed Back
-                                        </span> <i class="fa fa-angle-down"></i>
+                                    <a onclick="showsubarrow(this)" class="nav-link" href="#">
+                                        <i data-feather="circle"></i> <span class="menu-title">
+                                            Employees Travelling Scheduled Details (FOR NZB STAFF)
+                                        </span> <i class="fa fa-angle-right"></i>
                                     </a>
                                     <ul class="submenu collapse">
-                                        <li>@Html.ActionLink("Entry", "Index", "TFD", new { area = "Security" }, new { @class = "nav-link" })</li>
-                                        <li>@Html.ActionLink("Approval", "ApprovalIndex", "TFD", new { area = "Security" }, new { @class = "nav-link" })</li>
-                                        @*<li><a class="nav-link" href="#"><span class="menu-title">Entry</span></a></li>
-                <li><a class="nav-link" href="#"><span class="menu-title">Approval</span></a></li>
-                <li><a class="nav-link" href="#"><span class="menu-title">Ratification</span></a></li>*@
+                                        <li><a onclick="addActiveclass1(this)" class="nav-link" href="#"><span class="menu-title">Entry</span></a></li>
+                                        <li><a onclick="addActiveclass1(this)" class="nav-link" href="#"><span class="menu-title">Approval</span></a></li>
+                                        <li><a onclick="addActiveclass1(this)" class="nav-link" href="#"><span class="menu-title">Ratification</span></a></li>
                                     </ul>
                                 </li>
                                 <li>
-                                    <a class="nav-link" href="#">
-                                        <span class="menu-title">
-                                            <i class="fa fa-angle-right"></i> TA & DA Bill Statement
-                                        </span> <i class="fa fa-angle-down"></i>
+                                    <a onclick="showsubarrow(this)" class="nav-link" href="#">
+                                        <i data-feather="circle"></i> <span class="menu-title">
+                                            Employees Travelling Scheduled Details (FOR NZB STAFF)
+                                        </span> <i class="fa fa-angle-right"></i>
                                     </a>
                                     <ul class="submenu collapse">
-                                        <li>@Html.ActionLink("Entry", "Index", "BIL", new { area = "Security" }, new { @class = "nav-link" })</li>
-                                        <li>@Html.ActionLink("Approval", "ApprovalIndex", "BIL", new { area = "Security" }, new { @class = "nav-link" })</li>
-                                        <li>@Html.ActionLink("Payment", "PaymentIndex", "BIL", new { area = "Security" }, new { @class = "nav-link" })</li>
+                                        <li><a onclick="addActiveclass1(this)" class="nav-link" href="#"><span class="menu-title">Entry</span></a></li>
+                                        <li><a onclick="addActiveclass1(this)" class="nav-link" href="#"><span class="menu-title">Approval</span></a></li>
+                                        <li><a onclick="addActiveclass1(this)" class="nav-link" href="#"><span class="menu-title">Ratification</span></a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a onclick="showsubarrow(this)" class="nav-link" href="#">
+                                        <i data-feather="circle"></i> <span class="menu-title">
+                                            Employees Travelling Scheduled Details (FOR NZB STAFF)
+                                        </span> <i class="fa fa-angle-right"></i>
+                                    </a>
+                                    <ul class="submenu collapse">
+                                        <li><a onclick="addActiveclass1(this)" class="nav-link" href="#"><span class="menu-title">Entry</span></a></li>
+                                        <li><a onclick="addActiveclass1(this)" class="nav-link" href="#"><span class="menu-title">Approval</span></a></li>
+                                        <li><a onclick="addActiveclass1(this)" class="nav-link" href="#"><span class="menu-title">Ratification</span></a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a onclick="showsubarrow(this)" class="nav-link" href="#">
+                                        <i data-feather="circle"></i> <span class="menu-title">
+                                            Employees Travelling Scheduled Details (FOR NZB STAFF)
+                                        </span> <i class="fa fa-angle-right"></i>
+                                    </a>
+                                    <ul class="submenu collapse">
+                                        <li><a onclick="addActiveclass1(this)" class="nav-link" href="#"><span class="menu-title">Entry</span></a></li>
+                                        <li><a onclick="addActiveclass1(this)" class="nav-link" href="#"><span class="menu-title">Approval</span></a></li>
+                                        <li><a onclick="addActiveclass1(this)" class="nav-link" href="#"><span class="menu-title">Ratification</span></a></li>
                                     </ul>
                                 </li>
                             </ul>
                         </li>
-
-                        <li>
-                            <a class="nav-link" href="#"> <i class="fa fa-circle" aria-hidden="true"></i> Reports <i class="fa fa-angle-down"></i></a>
-                            <ul class="submenu collapse">                                
-                                @*<li><a class="nav-link" href="#">TA & DA Bill Statement</a></li>*@
-                                
-                                <li>@Html.ActionLink("Report", "BillReport", "BIL", new { area = "Security" }, new { @class = "nav-link" })</li>
+                        <li class="level2-li">
+                            <a onclick="showsubmenuArrow(this)" class="nav-link" href="#"> <i data-feather="circle"></i> Reports <i class="fa fa-angle-right"></i></a>
+                            <ul class="submenu collapse">
+                                <li><a onclick="addActiveclass1(this)" class="nav-link" href="#"> <i data-feather="circle"></i> <span class="menu-title">TA & DA Bill Statement</span></a></li>
+                                <li><a onclick="addActiveclass1(this)" class="nav-link" href="#"> <i data-feather="circle"></i><span class="menu-title">Payment</span> </a></li>
                             </ul>
                         </li>
                     </ul>

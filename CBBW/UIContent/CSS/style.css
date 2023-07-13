@@ -2062,3 +2062,55 @@ input[type="password"].valid + span {
 .modal-xl {
     max-width: 700px;
 }
+.breadcrumb-outer {
+    text-align: start;
+}
+
+    .breadcrumb-outer ul {
+        padding-left: 0;
+        display: inline-flex;
+        list-style: none;
+    }
+
+        .breadcrumb-outer ul li a {
+            color: #4e4d4d;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumb-outer ul li:last-child svg {
+            display: none;
+        }
+
+        .breadcrumb-outer ul li:last-child a:hover {
+            text-decoration: none;
+            cursor: unset;
+            font-weight: 600;
+        }
+
+        .breadcrumb-outer ul li.activeLink a {
+            color: #2147ff;
+            font-weight: 400;
+        }
+
+        .breadcrumb-outer ul li a:hover {
+            color: #2147ff;
+            font-weight: 400;
+            text-decoration: underline;
+        }
+
+        .breadcrumb-outer ul li.activeLink a svg {
+            color: #939393;
+        }
+
+        .breadcrumb-outer ul li a svg {
+            margin-left: 5px;
+            margin-right: 5px;
+            width: 16px;
+        }
+.page-item.disabled {
+    color: #6c757d;
+    pointer-events: none;
+    background-color: #fff;
+    border-color: #dee2e6;
+}

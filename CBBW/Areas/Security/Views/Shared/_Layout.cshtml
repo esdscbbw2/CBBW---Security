@@ -1,4 +1,8 @@
-﻿<!doctype html>
+﻿@using CBBW.BOL.RBACUsers;
+@{ 
+
+}
+<!doctype html>
 <html lang="en">
 <head>
     <!-- Required meta tags -->
@@ -24,8 +28,464 @@
         .inVisible {
             display: none !important;
         }
+        /* Toggle Styles */
+        .sidebar {
+            height: 100vh;
+            width: 0px;
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #eaeefd;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 10px;
+        }
+
+            .sidebar a {
+                padding: 8px 8px 8px 32px;
+                text-decoration: none;
+                font-size: 0px;
+                color: #818181;
+                display: block;
+                transition: 0.3s;
+            }
+
+                .sidebar a:hover {
+                    color: #f1f1f1;
+                }
+
+            .sidebar .closebtn {
+                position: absolute;
+                top: 0;
+                right: 0px;
+                font-size: 36px;
+                margin-left: 50px;
+            }
+
+        .openbtn {
+            font-size: 20px;
+            cursor: pointer;
+            background-color: #111;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+        }
+
+            .openbtn:hover {
+                background-color: #444;
+            }
+
+        #mains {
+            transition: margin-left .5s;
+            padding: 16px 0px 16px 40px;
+        }
+        /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+        .heading-bar {
+            background-image: linear-gradient(0deg, #522db8 0%, #1c7ce0 100%);
+        }
+
+        .menu-list {
+            padding-left: 0;
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: start;
+        }
+
+            .menu-list li {
+                margin-left: 15px;
+                margin-bottom: 15px;
+            }
+
+                .menu-list li:first-child {
+                    margin-left: 0;
+                }
+
+                .menu-list li a {
+                    background-color: #eaeefd;
+                    color: #000;
+                    padding: 10px;
+                    width: 180px;
+                    text-transform: uppercase;
+                    border: 1px solid #eaeefd;
+                }
+
+                    .menu-list li a:hover {
+                        color: #100901;
+                        background: transparent;
+                        transition: 0.3s;
+                    }
+        /* sidebar menu css */
+        .sidebar li .submenu {
+            list-style: none;
+            margin: 0;
+            background: #dee4f9;
+            border-radius: 0.375rem;
+            padding: 0.5rem;
+        }
+
+        .sidebar .nav-link {
+            color: var(--bs-dark);
+            position: relative;
+            padding: 10px 15px 10px 10px;
+            display: flex;
+            align-items: center;
+            column-gap: 0.75rem;
+            border-radius: 0.375rem;
+            padding: 0.5rem;
+            font-weight: 400;
+            margin-bottom: 4px;
+        }
+
+            .sidebar .nav-link:hover {
+                color: #ffffff;
+                background: #4158c7
+            }
+
+            .sidebar .nav-link.active {
+                color: #ffffff;
+                background: #4158c7
+            }
+
+        #mySidebar .card {
+            background-color: #eaeefd;
+            border: none;
+        }
+
+            #mySidebar .card .nav {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+        .sidebar .nav-link i {
+            font-size: 15px;
+        }
+
+        .sidebar a {
+            font-size: 14px;
+        }
+
+        .sidebar .closebtn {
+            font-size: 36px;
+        }
+
+        .sidebar .nav-link .fa-angle-right {
+            font-size: 15px;
+            position: absolute;
+            right: 6%;
+            top: 34%;
+            flex-shrink: 0;
+            transform-origin: center;
+            transition: transform .15s ease-in-out;
+            will-change: transform;
+        }
+
+        .sidebar .nav-item.open .nav-link.active .fa-angle-right {
+            transform: rotate(90deg);
+        }
+
+        .menu-title {
+            padding-right: 15px;
+            word-break: normal;
+            width: 229px;
+            word-wrap: break-word;
+        }
+
+        .fa-angle-right {
+            margin-right: 7px;
+        }
+
+        .nav > li > a:focus,
+        .nav > li > a:hover {
+            text-decoration: none;
+            background-color: #edf0f9;
+        }
+
+        .sidebar .nav-link .fa-circle {
+            font-size: 8px;
+            margin-right: 5px;
+        }
+
+        .bgMenu {
+            position: relative;
+            z-index: 9;
+        }
+
+        .bgTop {
+            position: relative;
+            z-index: 9;
+        }
+
+        .menu-list .active a {
+            background-color: #4158c7;
+            color: #fff;
+        }
+
+        .menu-list li a:hover {
+            background-color: #4158c7;
+            color: #fff;
+        }
+
+        .modal-lg,
+        .modal-xl {
+            max-width: 1000px;
+        }
+
+        .promptTable {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .promptDetails {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .promptTable::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .promptDetails::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .promptDetails ul {
+            padding-left: 0;
+            list-style: none;
+        }
+
+            .promptDetails ul li {
+                padding-bottom: 7px;
+            }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ccc;
+        }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: #ccc;
+            }
+
+        .prompt-alert .alert strong {
+            font-size: 15px;
+        }
+
+        #mains {
+            background: #fff;
+        }
+
+        .dashboard-box .card {
+            border-radius: 10px;
+            background: #fff;
+            padding: 2.3rem !important;
+            box-shadow: 0 5px 20px rgba(173, 181, 217, .03);
+            border: none;
+            margin-bottom: 25px;
+        }
+
+        .f-w-600 {
+            font-weight: 600;
+        }
+
+        .dashboard-box .card p {
+            font-size: 15px;
+            color: #5c61f2;
+            width: -webkit-fit-content;
+            width: -moz-fit-content;
+            width: fit-content;
+            position: relative;
+            margin-bottom: 18px;
+        }
+
+            .dashboard-box .card p i {
+                font-size: 3px;
+                margin-top: -2px;
+                margin-left: 8px;
+                vertical-align: middle;
+            }
+
+        .dashboard-box .card .square-after:after {
+            position: absolute;
+            content: "";
+            width: 76px;
+            height: 25px;
+            background-color: rgba(92, 97, 242, 0.1);
+            top: -2px;
+            right: -12px;
+            border-radius: 4px;
+            -webkit-transition: all 0.5s ease-in;
+            transition: all 0.5s ease-in;
+        }
+
+        .dashboard-box .card:hover .square-after:after {
+            width: 115%;
+            -webkit-transition: all 0.5s ease-in;
+            transition: all 0.5s ease-in;
+        }
+
+        .dashboard-box .card canvas {
+            width: 340px;
+        }
+
+        .dash-title {
+            font-size: 2.3rem;
+        }
+
+        .search-bar {
+            width: 400px;
+            position: relative;
+        }
+
+            .search-bar i {
+                position: absolute;
+                top: 10px;
+                left: 17px;
+                color: #ccc;
+            }
+
+            .search-bar input {
+                padding: 7px 20px 7px 38px;
+            }
+
+                .search-bar input::placeholder {
+                    padding: 0 10px;
+                }
+        /*  */
+        .sidebar2 {
+            background: #1A237E;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 20.563rem;
+            left: 0;
+            transition: 0.5s;
+            padding: 0px 0 0;
+        }
+
+        .px-md-4 {
+            padding-left: 3.5rem !important;
+            padding-right: 3.5rem !important;
+        }
+
+        .main-content {
+            background: #fff;
+            height: 100%;
+        }
+
+        .navmenu, .navclosemenu {
+            box-shadow: none;
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border: 0;
+            outline: 0;
+            line-height: 40px;
+            border-radius: 50%;
+            background: #e23047;
+            color: #fff;
+            margin-right: 15px;
+            display: inline-flex;
+            align-items: center;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .p-15 {
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #b2b2b2;
+        }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: #b2b2b2;
+            }
+
+        .sidebar .nav-link svg {
+            width: 0.475rem;
+        }
+
+        .sidebar .submenu .nav-link svg {
+            width: 0.475rem;
+        }
+
+        .level2-li {
+            position: relative;
+        }
+
+            .level2-li .nav-link .fa-angle-right {
+                right: 3%;
+            }
+
+            .level2-li .submenu .fa-angle-right {
+                right: 0%;
+            }
+        /* .sidebar  .level2-li .submenu .nav-link.active{
+         color: #2147ff;
+         background: transparent;
+         }
+         .sidebar  .level2-li .submenu  .nav-link:hover{
+         color: #2147ff;
+         background: transparent;
+         } */
+        .open {
+            transform: rotate(90deg);
+        }
+
+        .open-sub {
+            transform: rotate(90deg);
+        }
+
+        .open-sub2 {
+            transform: rotate(90deg);
+        }
+
+        .sidebar .nav-link.active1 {
+            color: #ffffff;
+            background: #4158c7
+        }
+
+        .sidebar .level2-li .submenu .nav-link.active1 {
+            color: #2147ff;
+            background: transparent;
+        }
+
+        .sidebar .level2-li .submenu .nav-link.active2 {
+            color: #2147ff;
+            background: transparent;
+        }
+
+        .sidebar .level2-li .submenu .submenu .nav-link.active3 {
+            color: #2147ff;
+            background: transparent;
+        }
+
+        .sidebar .level2-li .submenu .nav-link:hover {
+            color: #2147ff;
+            background: transparent;
+        }
+
+        .first, .second, .third {
+            display: none;
+        }
+
+        .show-div {
+            display: block;
+        }
+
+        .sidebar .nav-link.activeP {
+            color: #ffffff;
+            background: #4158c7
+        }
     </style>
-    <style>
+    <!--<style>
         /* Toggle Styles */
 
         .sidebar {
@@ -79,348 +539,8 @@
             transition: margin-left .5s;
             padding: 16px 0px 16px 40px;
         }
-        /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+        /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */-->
 
-        @*@media screen and (max-height: 450px) {
-            .sidebar {
-                padding-top: 15px;
-            }
-            .sidebar a {
-                font-size: 18px;
-            }
-        }*@
-
-        .heading-bar {
-            background-image: linear-gradient(0deg, #522db8 0%, #1c7ce0 100%);
-        }
-
-        .menu-list {
-            padding-left: 0;
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: start;
-        }
-
-        .menu-list li {
-            margin-left: 15px;
-            margin-bottom: 15px;
-        }
-
-        .menu-list li:first-child {
-            margin-left: 0;
-        }
-
-        .menu-list li a {
-            background-color: #e7ecf9;
-            color: #000;
-            padding: 10px;
-            width: 180px;
-            text-transform: uppercase;
-            border: 1px solid #e7ecf9;
-        }
-
-        .menu-list li a:hover {
-            color: #100901;
-            background: transparent;
-            transition: 0.3s;
-        }
-        /* sidebar menu css */
-
-        .sidebar li .submenu {
-            list-style: none;
-            margin: 0;
-            background: #dae1f3;
-            padding: 0;
-            padding-left: 1rem;
-            /* padding-right: 1rem; */
-        }
-
-        .sidebar .nav-link {
-            font-weight: 500;
-            color: var(--bs-dark);
-            position: relative;
-            padding: 10px 15px 10px 10px;
-        }
-
-        .sidebar .nav-link:hover {
-            color: var(--bs-primary);
-        }
-
-        .sidebar .nav-link.active {
-            color: var(--bs-primary);
-        }
-
-        #mySidebar .card {
-            background-color: #e7ecf9;
-            border: none;
-        }
-
-        .sidebar .nav-link .fa-angle-down {
-            position: absolute;
-            right: 6%;
-            top: 34%;
-        }
-
-        .sidebar .nav-link i {
-            font-size: 15px;
-        }
-
-        .sidebar a {
-            font-size: 14px;
-        }
-
-        .sidebar .closebtn {
-            font-size: 36px;
-        }
-
-        .sidebar .nav-link .fa-angle-down {
-            font-size: 15px;
-        }
-
-
-
-        .sidebar.showSidebar {
-            width: 250px;
-        }
-        /* .sidebar {
-            width: 29.563rem;
-        } */
-
-        .menu-title {
-            margin-left: 5px;
-        }
-
-        .fa-angle-right {
-            margin-right: 7px;
-        }
-
-        .nav>li>a:focus,
-        .nav>li>a:hover {
-            text-decoration: none;
-            background-color: #edf0f9;
-        }
-
-        .sidebar .nav-link .fa-circle {
-            font-size: 8px;
-            margin-right: 5px;
-        }
-
-        /* div#mySidebar :after {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 280px;
-            height: 100%;
-            background: #e7ecf9;
-            z-index: -1;
-        } */
-
-        .bgMenu {
-            position: relative;
-            z-index: 9;
-        }
-
-        .bgTop {
-            position: relative;
-            z-index: 9;
-        }
-
-        .menu-list .active a {
-            background-color: #4158c7;
-            color: #fff;
-        }
-
-        .menu-list li a:hover {
-            background-color: #4158c7;
-            color: #fff;
-        }
-
-        .prompt-alert .modal-header {
-            min-height: 16.43px;
-            padding: 15px;
-            background-image: linear-gradient(0deg, #522db8 0%, #1c7ce0 100%);
-            color: #fff;
-            border-bottom: none;
-        }
-
-        .prompt-alert .modal-header span {
-            color: #ffeb3b;
-            font-weight: 600;
-        }
-
-        .modal-lg,
-        .modal-xl {
-            max-width: 1000px;
-        }
-
-        .promptTable {
-            max-height: 500px;
-            overflow-y: auto;
-        }
-
-        .promptDetails {
-            max-height: 500px;
-            overflow-y: auto;
-        }
-
-        .promptTable::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .promptDetails::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .promptDetails ul {
-            padding-left: 0;
-            list-style: none;
-        }
-
-        .promptDetails ul li {
-            padding-bottom: 7px;
-        }
-
-         ::-webkit-scrollbar-thumb {
-            background: #ccc;
-        }
-
-         ::-webkit-scrollbar-thumb:hover {
-            background: #ccc;
-        }
-
-        .prompt-alert .alert strong {
-            font-size: 15px;
-        }
-
-        .prompt-alert .modal-header .btn-close {
-            background-image: url(img/close.png);
-            opacity: 1;
-        }
-
-        #mains {
-            background: #fff;
-        }
-
-        .dashboard-box .card {
-            border-radius: 10px;
-            background: #fff;
-            padding: 2.3rem !important;
-            box-shadow: 0 5px 20px rgba(173, 181, 217, .03);
-            border: none;
-            margin-bottom: 25px;
-        }
-
-        .f-w-600 {
-            font-weight: 600;
-        }
-
-        .dashboard-box .card p {
-            font-size: 15px;
-            color: #5c61f2;
-            width: -webkit-fit-content;
-            width: -moz-fit-content;
-            width: fit-content;
-            position: relative;
-            margin-bottom: 18px;
-        }
-
-        .dashboard-box .card p i {
-            font-size: 3px;
-            margin-top: -2px;
-            margin-left: 8px;
-            vertical-align: middle;
-        }
-
-        .dashboard-box .card .square-after:after {
-            position: absolute;
-            content: "";
-            width: 76px;
-            height: 25px;
-            background-color: rgba(92, 97, 242, 0.1);
-            top: -2px;
-            right: -12px;
-            border-radius: 4px;
-            -webkit-transition: all 0.5s ease-in;
-            transition: all 0.5s ease-in;
-        }
-
-        .dashboard-box .card:hover .square-after:after {
-            width: 115%;
-            -webkit-transition: all 0.5s ease-in;
-            transition: all 0.5s ease-in;
-        }
-        .dashboard-box .card canvas{
-            width: 340px;
-        }
-        .dash-title {
-            font-size: 2.3rem;
-        }
-
-        .search-bar {
-            width: 400px;
-            position: relative;
-        }
-
-        .search-bar i {
-            position: absolute;
-            top: 15px;
-            left: 17px;
-            color: #ccc;
-        }
-
-        .search-bar input {
-            padding: 10px 20px 10px 38px;
-        }
-
-        .search-bar input::placeholder {
-            padding: 0 10px;
-        }
-/*  */
-.sidebar2 {
-    background: #1A237E;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 20.563rem;
-    left: 0;
-    transition: 0.5s;
-    padding: 0px 0 0;
-}
-.px-md-4 {
-    padding-left: 3.5rem!important;
-    padding-right: 3.5rem!important;
-}
-.main-content {
-    /* margin-left: 29.563rem; */
-    background: #fff;
-    height: 100%;
-}
-.navmenu, .navclosemenu {
-
-    box-shadow: none;
-    position: relative;
-    width: 40px;
-    height: 40px;
-    border: 0;
-    outline: 0;
-
-    line-height: 40px;
-    border-radius: 50%;
-    background: #e23047;
-    color: #fff;
-    margin-right: 15px;
-    display: inline-flex;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-}
-.p-15{
-    padding-right: 15px;
-    padding-left: 15px;
-}
-    </style>
     @RenderSection("headers", required: false)
 </head>
 <body>
@@ -445,8 +565,23 @@
     <div class="container-fluid p-0">
         <div class="col-md-12 p-0 position-relative">
             @*SideBar Div here*@
-            @{Html.RenderPartial("_LeftMenu");}            
+            @{Html.RenderPartial("_LeftMenu");}
             <main role="main" class="main-content px-md-4 " id="mains">
+                @*<div class="row newTable">*@
+                <div class="breadcrumb-outer p-15">
+                    <ul>
+                        <li class="activeLink">
+                            <a href="#">Maintenance <i data-feather="chevrons-right"></i> </a>
+                        </li>
+                        <li class="activeLink">
+                            <a href="#">Rules <i data-feather="chevrons-right"></i> </a>
+                        </li>
+                        <li>
+                            <a href="#">Tour Rules <i data-feather="chevrons-right"></i> </a>
+                        </li>
+                    </ul>
+                </div>
+                @*</div>*@
                 <div class="col-md-12"></div>
                 @*Top Menu Here*@
                 @*@{Html.RenderPartial("_TopMenu");}*@
@@ -577,7 +712,7 @@
             // $("#mySidebar").removeClass('showSidebar');
             //$(".navclosemenu").hide();
             //$(".navmenu").show();
-            
+
         }
     </script>
     <script type="text/javascript">
@@ -612,32 +747,170 @@
             })
 
         });
-            // DOMContentLoaded  end
+        // DOMContentLoaded  end
     </script>
     <script>
-        //$(document).ready(function () {
-        //    $(".only-numeric").bind("keypress", function (e) {
-        //        var keyCode = e.which ? e.which : e.keyCode
+        // For Menu
+        function showArrow(e) {
+            if (!(e.children[2].classList.contains('open'))) {
+                let open_sub = document.getElementsByClassName('open-sub');
+                for (let i = 0; i < open_sub.length; i++) {
+                    open_sub[i].classList.remove('open-sub')
+                }
+                let active = document.getElementsByClassName('active');
+                for (let i = 0; i < active.length; i++) {
+                    active[i].classList.remove('active')
+                }
+                let open_sub2 = document.getElementsByClassName('open-sub2');
+                for (let i = 0; i < open_sub2.length; i++) {
+                    open_sub2[i].classList.remove('open-sub2')
+                }
+                let active1 = document.getElementsByClassName('active1');
+                for (let i = 0; i < active1.length; i++) {
+                    active1[i].classList.remove('active1')
+                }
+            }
+            e.children[2].classList.toggle('open')
+            let show_div = document.querySelectorAll(".show-div");
+            for (let i = 0; i < show_div.length; i++) {
+                show_div[i].classList.remove("show-div")
+            }
+            let div_first = document.querySelector(".first");
+            div_first.classList.add('show-div');
+        }
+        function showsubmenuArrow(v) {
+            if (!(v.children[1].classList.contains('open-sub'))) {
+                let open_sub = document.getElementsByClassName('open-sub');
+                for (let i = 0; i < open_sub.length; i++) {
+                    open_sub[i].classList.remove('open-sub')
+                }
+                let open_sub2 = document.getElementsByClassName('open-sub2');
+                for (let i = 0; i < open_sub2.length; i++) {
+                    open_sub2[i].classList.remove('open-sub2')
+                }
+                let active1 = document.getElementsByClassName('active1');
+                for (let i = 0; i < active1.length; i++) {
+                    active1[i].classList.remove('active1')
+                }
+            }
+            if (!(v.classList.contains('active'))) {
+                let active = document.getElementsByClassName('active');
+                for (let i = 0; i < active.length; i++) {
+                    active[i].classList.remove('active')
+                }
+            }
+            v.children[1].classList.toggle('open-sub')
+            v.classList.toggle('active')
+            let show_div = document.querySelectorAll(".show-div");
+            for (let i = 0; i < show_div.length; i++) {
+                show_div[i].classList.remove("show-div")
+            }
+            let div_first = document.querySelector(".first");
+            div_first.classList.add('show-div');
+        }
+        function showsubarrow(c) {
+            if (!(c.children[2].classList.contains('open-sub2'))) {
+                let open_sub2 = document.getElementsByClassName('open-sub2');
+                for (let i = 0; i < open_sub2.length; i++) {
+                    open_sub2[i].classList.remove('open-sub2')
+                }
+            }
+            if (!(c.classList.contains('active1'))) {
+                let active1 = document.getElementsByClassName('active1');
+                for (let i = 0; i < active1.length; i++) {
+                    active1[i].classList.remove('active1')
+                }
+            }
+            c.children[2].classList.toggle('open-sub2')
+            c.classList.toggle('active1')
+            let show_div = document.querySelectorAll(".show-div");
+            for (let i = 0; i < show_div.length; i++) {
+                show_div[i].classList.remove("show-div")
+            }
+            let div_first = document.querySelector(".first");
+            div_first.classList.add('show-div');
+        }
+        function addActiveclass(t) {
+            if (!(t.classList.contains('active2'))) {
+                let active2 = document.getElementsByClassName('active2');
+                for (let i = 0; i < active2.length; i++) {
+                    active2[i].classList.remove('active2')
+                }
+            }
+            let show_div = document.querySelectorAll(".show-div");
+            for (let i = 0; i < show_div.length; i++) {
+                show_div[i].classList.remove("show-div")
+            }
+            let div_second = document.querySelector(".second");
+            div_second.classList.add('show-div');
 
-        //        if (!(keyCode >= 48 && keyCode <= 57)) {
-        //            $(".error").css("display", "inline");
-        //            return false;
-        //        } else {
-        //            $(".error").css("display", "none");
-        //        }
-        //    });
-        //    $(".only-decimal").bind("keypress", function (e) {
-        //        var keyCode = e.which ? e.which : e.keyCode
-        //        //alert(keyCode);
-        //        if (!(keyCode >= 48 && keyCode <= 57)) {
-        //            if (keyCode != 46) { return false; }
-        //            //$(".error").css("display", "inline");
-        //        } else {
-        //            //$(".error").css("display", "none");
-        //        }
-        //    });
+            t.classList.toggle("active2")
 
-        //});
+        }
+        function addActiveclass1(y) {
+            if (!(y.classList.contains('active3'))) {
+                let active3 = document.getElementsByClassName('active3');
+                for (let i = 0; i < active3.length; i++) {
+                    active3[i].classList.remove('active3')
+                }
+            }
+            y.classList.toggle("active3")
+            let show_div = document.querySelectorAll(".show-div");
+            for (let i = 0; i < show_div.length; i++) {
+                show_div[i].classList.remove("show-div")
+            }
+            let div_first = document.querySelector(".first");
+            div_first.classList.add('show-div');
+        }
+        function addclassActive(e) {
+            if (!(e.classList.contains('active'))) {
+                let active = document.getElementsByClassName('active');
+                for (let i = 0; i < active.length; i++) {
+                    active[i].classList.remove('active')
+                }
+            }
+            e.classList.toggle('active')
+            let show_div = document.querySelectorAll(".show-div");
+            for (let i = 0; i < show_div.length; i++) {
+                show_div[i].classList.remove("show-div")
+            }
+            let div_first = document.querySelector(".first");
+            div_first.classList.add('show-div');
+        }
+    </script>
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function () {
+
+            document.querySelectorAll('.sidebar .nav-link').forEach(function (element) {
+
+                element.addEventListener('click', function (e) {
+
+                    let nextEl = element.nextElementSibling;
+                    let parentEl = element.parentElement;
+
+                    if (nextEl) {
+                        e.preventDefault();
+                        let mycollapse = new bootstrap.Collapse(nextEl);
+
+                        if (nextEl.classList.contains('show')) {
+                            mycollapse.hide();
+                        } else {
+                            mycollapse.show();
+                            // find other submenus with class=show
+                            var opened_submenu = parentEl.parentElement.querySelector('.submenu.show');
+                            // if it exists, then close all of them
+                            if (opened_submenu) {
+                                new bootstrap.Collapse(opened_submenu);
+                            }
+
+                        }
+                    }
+
+                });
+            })
+
+        });
+                 // DOMContentLoaded  end
     </script>
 </body>
 </html>

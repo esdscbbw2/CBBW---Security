@@ -240,7 +240,9 @@ namespace CBBW.Areas.Security.Controllers
 
                     if (TempData["ETS"] != null)
                     {
+                        if(model.PersonDtls.Where(x => x.EmployeeNo != 0).Select(x => x.EmployeeNo).ToList().Count > 0) { 
                         modeltravvm.EmplyoyeeNoList = MyCodeHelper.GetCommaSeparatedString(model.PersonDtls.Where(x=>x.EmployeeNo!=0).Select(x=>x.EmployeeNo).ToList());
+                        }
 
                         if (model.PersonDtls.Where(x => x.PersonType == 2 || x.PersonType == 4).FirstOrDefault() != null)
                             modeltravvm.PersonType = model.PersonDtls.Where(x => x.PersonType == 2 || x.PersonType == 4).FirstOrDefault().PersonType > 0 ? 4 : 1;
@@ -258,6 +260,7 @@ namespace CBBW.Areas.Security.Controllers
                     }
 
                 }
+
                 string baseUrl = "/Security/ETS/Create?NoteNumber=" + model.NoteNumber;
                 ViewBag.BackUrl = baseUrl;
 
@@ -913,6 +916,7 @@ namespace CBBW.Areas.Security.Controllers
             TypeIDs = TypeIDs.Replace('_', ',');
             //IEnumerable<CustomComboOptions> result = _iCTV.getLocationsFromType(TypeIDs, ref pMsg);
             IEnumerable<LocationMaster> result = _master.GetCentresFromTourCategory(TypeIDs, ref pMsg).OrderBy(x => x.ID);
+            result = result.Where(x => x.CentreCode != user.CentreCode).ToList();
             return Json(result, JsonRequestBehavior.AllowGet);
 
 

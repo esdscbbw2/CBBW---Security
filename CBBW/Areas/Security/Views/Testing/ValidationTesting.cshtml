@@ -1,0 +1,64 @@
+﻿
+@{
+
+}
+<table>
+    <tr>
+        <td>
+            <input id="Input1" type="text" class="form-control">
+        </td>
+        <td>
+            <input id="Input2" type="text" class="form-control">
+        </td>
+        <td>
+            <select id="TourCategory1"
+                    class="form-select ApplyMultiSelect"
+                    aria-label="Default select example">
+                <option value="1">Category1</option>
+                <option value="2">Category2</option>
+                <option value="3">Category3</option>
+                <option value="4">Category4</option>
+                <option value="5">Category5</option>
+            </select>
+        </td>
+        <td>
+            <select id="TourCategory2"
+                    class="form-select ApplyMultiSelectWithSelectAll"
+                    aria-label="Default select example">
+                <option value="1">Category1</option>
+                <option value="2">Category2</option>
+                <option value="3">Category3</option>
+                <option value="4">Category4</option>
+                <option value="5">Category5</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="position-relative pointer" style="width:200px">
+                <input id="Date1" type="date" class="form-control">
+                <label id="lblDate1" style="width:100px"
+                       class="datelabel pointer">Select A Date</label>
+            </div>                
+        </td>
+        <td>
+            <input id="Date1" type="date" class="form-control indDate">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <button id="btn1" type="button" onclick="btn1Clicked()"
+                    class="btn btn-primary me-2">
+                Button1
+            </button>
+        </td>
+    </tr>
+</table>
+@section headers
+    {
+
+}
+@section scripts{
+    <script src="~/UIContent/JS/MyCustomized.js"></script>
+    <script src="~/UIContent/JS/CustomePage/ValidationTestingJs.js"></script>
+}

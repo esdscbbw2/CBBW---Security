@@ -463,6 +463,7 @@
     <Content Include="UIContent\JS\CustomePage\TFD\TourFBDetailsApp.js" />
     <Content Include="UIContent\JS\CustomePage\TFD\TourFeedBackDetails.js" />
     <Content Include="UIContent\JS\CustomePage\TourRule.js" />
+    <Content Include="UIContent\JS\CustomePage\ValidationTestingJs.js" />
     <Content Include="UIContent\JS\CustomLayout.js" />
     <Content Include="UIContent\JS\DataTablePagingInput.js" />
     <Content Include="UIContent\JS\dataTables.bootstrap5.min.js" />
@@ -482,6 +483,7 @@
     <Content Include="UIContent\JS\moment.min.js" />
     <Content Include="UIContent\JS\multiselect.js" />
     <Content Include="UIContent\JS\multiselect_0711.js" />
+    <Content Include="UIContent\JS\MyCustomized.js" />
     <Content Include="UIContent\JS\popper.min.js" />
     <Content Include="UIContent\JS\sweetalert2.all.min.js" />
     <Content Include="Upload\Forms\0e2c0a2f-554f-475f-9784-fc42d532c44f.png" />
@@ -702,6 +704,8 @@
     <Content Include="Areas\RBAC\Views\UserManagement\ViewUser.cshtml" />
     <Content Include="Areas\RBAC\Views\UserManagement\EditUser.cshtml" />
     <Content Include="Areas\Security\Views\Testing\GetRBAC.cshtml" />
+    <Content Include="Areas\Security\Views\Testing\ValidationTesting.cshtml" />
+    <Content Include="Areas\Security\Views\Testing\GetUserMenu.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />

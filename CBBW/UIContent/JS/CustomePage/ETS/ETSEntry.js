@@ -468,9 +468,7 @@ async function getInitialData() {
         dataType: 'json',
         success: function (data) {
             $(data).each(function (index, item) {
-               
                 if (item.Btnsubmit == 0) {
-                    
                     $(item.PersonDtls).each(function (indexs, Peritem) {
                         if (indexs > 0) {
                             rowid = CloneRowReturningID('tbody1', 'tbody2', indexs - 1, true, false);
@@ -491,7 +489,10 @@ async function getInitialData() {
                         cmbDDPersonType.isValidCtrl();
                         txtDDPersonType.isValidCtrl();
                         //alert(Peritem.EmployeeNonName);
+                        
                         getDesgnCode(rowid, Peritem.EmployeeNo);
+                        
+                        
                         
                         GetVehicleEligibility(rowid, Peritem.EmployeeNo);
                         if (Peritem.TADADenieds == true) { TaDa = 1 } else { TaDa=0};

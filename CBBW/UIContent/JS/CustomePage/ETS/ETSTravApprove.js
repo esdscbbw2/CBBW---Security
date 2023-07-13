@@ -130,6 +130,16 @@ function validatectrl_YesNoCombo(value) {
     } else { return false; }
 };
 function EnableSubmitBtnActive() {
+    var pubTran = $('#travDetails_PublicTransports').val();
+    var z = getDivInvalidCount('Trvtabl');
+    if ((z * 1) > 0) {
+        $('#EmployeeNonName').makeDisable();
+    } else {
+        if (pubTran == 'False') {
+            $('#EmployeeNonName').makeEnabled();
+        }
+    }
+
     var x = getDivInvalidCount('TravDetails');
     var y = getDivInvalidCount('dateDetails');
     var DWTBtn = $('#btnSubmit');
@@ -142,6 +152,8 @@ function EnableSubmitBtnActive() {
         DWTBtn.makeEnabled();
         DWTBtn.removeClass('nodrop');
     }
+
+
 };
 function Buttonclear() {
     $('.clear').val('');

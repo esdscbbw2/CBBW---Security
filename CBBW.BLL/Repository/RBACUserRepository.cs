@@ -91,5 +91,9 @@ namespace CBBW.BLL.Repository
         {
             return _RBACUserEntities.UpdatePassword(data, ref pMsg);
         }
+        public List<UserMenu> GetUserMenu(int EmployeeNumber, int CentreCode, ref string pMsg)
+        {
+            return _RBACUserEntities.GetUserMenu(EmployeeNumber, CentreCode, ref pMsg);
+        }
     }
 }
