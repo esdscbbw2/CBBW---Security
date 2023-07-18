@@ -68,14 +68,7 @@ namespace CBBW.Areas.Security.Controllers
                     model.etsHeader.AttachFile = model.AttachFile;
                     model.etsHeader.CenterCodeName = model.CenterCodeName;
                     model.PersonDtls = _iETS.GetETSTravellingPerson(model.NoteNumber, ref pMsg);
-                    if (TempData["BtnSubmit"] != null)
-                    {
-                        model.Btnsubmit = 1;
-                    }
-                    else
-                    {
-                        model.Btnsubmit = 0;
-                    }
+                    model.Btnsubmit = TempData["BtnSubmit"] != null ? 1 : 0;
                     TempData["ETS"] = model;
                 }
                 else if (TempData["ETS"] != null && TempData["ETSData"] == null)
@@ -85,17 +78,8 @@ namespace CBBW.Areas.Security.Controllers
                     model.etsHeader.AttachFile = model.AttachFile;
                     model.etsHeader.CenterCodeName = model.CenterCodeName;
                     model.PersonDtls = _iETS.GetETSTravellingPerson(model.NoteNumber, ref pMsg);
-                    if (TempData["BtnSubmit"] != null)
-                    {
-                        model.Btnsubmit = 1;
-                    }
-                    else
-                    {
-                        model.Btnsubmit = 0;
-                    }
+                    model.Btnsubmit = TempData["BtnSubmit"] != null ? 1 : 0;
                     TempData["ETS"] = model;
-
-
                 }
                 else
                 {

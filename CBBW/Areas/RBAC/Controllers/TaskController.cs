@@ -56,13 +56,11 @@ namespace CBBW.Areas.RBAC.Controllers
             };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
         [HttpGet]
         public ActionResult Create()
         {
             return View();
         }
-
         [HttpPost]
         public JsonResult Create(int NavigationId, List<TaskMaster> modulelist, string SubmitType)
         {
@@ -135,7 +133,7 @@ namespace CBBW.Areas.RBAC.Controllers
             {
                 if (modulelist != null)
                 {
-                    modulelist = modulelist.Where(x => x.IsActiveInt == 1).ToList();
+                    //modulelist = modulelist.Where(x => x.IsActiveInt == 1).ToList();
                     if (_iModule.SetAddTaskModule(SubmitType == "Final" ? 2 : 3, user.CentreCode, NavigationId, modulelist, ref pMsg))
                     {
                         result.bResponseBool = true;
@@ -161,7 +159,6 @@ namespace CBBW.Areas.RBAC.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
 
         }
-
         #region Json Function
         public JsonResult GetTaskData(int Id)
         {

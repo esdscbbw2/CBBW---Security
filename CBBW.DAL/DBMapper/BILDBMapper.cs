@@ -91,8 +91,6 @@ namespace CBBW.DAL.DBMapper
                         result.MaxLodgingExp = int.Parse(dr["MaxLodgingExp"].ToString());
                     if (!DBNull.Value.Equals(dr["MaxLocalConv"]))
                         result.MaxLocalConv = int.Parse(dr["MaxLocalConv"].ToString());
-                   
-                    
                     if (!DBNull.Value.Equals(dr["ActualTourInDate"]))
                         result.ActualTourInDate = DateTime.Parse(dr["ActualTourInDate"].ToString());
                     if (!DBNull.Value.Equals(dr["ActualTourOutDate"]))
@@ -101,7 +99,6 @@ namespace CBBW.DAL.DBMapper
                         result.ActualTourInTime = dr["ActualTourInTime"].ToString();
                     if (!DBNull.Value.Equals(dr["ActualTourOutTime"]))
                         result.ActualTourOutTime = dr["ActualTourOutTime"].ToString();
-
                     if (!DBNull.Value.Equals(dr["TotalNoOfDays"]))
                         result.TotalNoOfDays = int.Parse(dr["TotalNoOfDays"].ToString());
                     if (!DBNull.Value.Equals(dr["DAAmount"]))
@@ -110,7 +107,6 @@ namespace CBBW.DAL.DBMapper
                         result.DADeducted = int.Parse(dr["DADeducted"].ToString());
                     if (!DBNull.Value.Equals(dr["EAmount"]))
                         result.EAmount = int.Parse(dr["EAmount"].ToString());
-
                     if (!DBNull.Value.Equals(dr["DesginationCodeName"]))
                         result.DesginationCodeName = dr["DesginationCodeName"].ToString();
                     if (!DBNull.Value.Equals(dr["PurposeOfVisit"]))
@@ -216,7 +212,6 @@ namespace CBBW.DAL.DBMapper
                         result.TourFromTime = dr["TourFromTime"].ToString();
                     if (!DBNull.Value.Equals(dr["TourToTime"]))
                         result.TourToTime = dr["TourToTime"].ToString();
-
                     if (!DBNull.Value.Equals(dr["NoOfDays"]))
                         result.NoOfDays = int.Parse(dr["NoOfDays"].ToString());
                     if (!DBNull.Value.Equals(dr["PurposeOfVisit"]))

@@ -201,7 +201,7 @@ function validatectrl(targetid, value, rowid) {
                     isvalid = true;
                 } else {
                     isvalid = false;
-                    MyAlert(5,'Please Select Current Time Or Greater Than..!');
+                    MyAlert(4, 'Selected Time Should Be Greater Than The Current Time');
                     //AlertMessage();
                 }
             } else {
@@ -333,7 +333,7 @@ function EnableSubmitBtn() {
 
     });
     if ((x + y) * 1 <= 0) {
-        if (mEnable) { DWTBtn.makeEnabled(); } else { DWTBtn.makeDisable(); }
+        if (mEnable) { DWTBtn.makeEnabled(); DWTBtn.removeClass('nodrop');} else { DWTBtn.makeDisable(); }
     } else { DWTBtn.makeDisable(); }
     var dateDetails = $('#dateDetails');
     if (x * 1 <= 0) {

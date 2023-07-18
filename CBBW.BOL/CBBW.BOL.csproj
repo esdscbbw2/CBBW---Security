@@ -65,6 +65,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Alerts\AlertDetail.cs" />
+    <Compile Include="Alerts\AlertMaster.cs" />
     <Compile Include="BIL\DADetails.cs" />
     <Compile Include="BIL\IndexList.cs" />
     <Compile Include="BIL\TADABillGeneration.cs" />

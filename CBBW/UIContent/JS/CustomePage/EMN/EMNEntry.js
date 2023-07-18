@@ -61,16 +61,7 @@ function DDPersonTypeChanged() {
     } else {
         targetCtrl.val('').isInvalid();
         MyAlert(3, 'No Documents Uploaded Yet.So You Can Not Proceed Further.');
-        //Swal.fire({
-        //    title: 'Error',
-        //    text: 'No Documents Uploaded Yet.So You Can Not Proceed Further.',
-        //    icon: 'question',
-        //    customClass: 'swal-wide',
-        //    buttons: {
-        //        confirm: 'Ok'
-        //    },
-        //    confirmButtonColor: '#2527a2',
-        //});
+        
     }
 
 };
@@ -83,6 +74,7 @@ function GetDDPersonTypeChanged(targetid, mValue, selectedvalue, Empval,mCentreC
         case 1:
             cmbCtrl.removeClass('inVisible').addClass('pickPersonName').isInvalid();
             txtCtrl.addClass('inVisible').removeClass('pickPersonNametxt').clearValidateClass();
+            $('#cmb' + targetid).empty();
             getDropDownDataWithSelectedValue('cmb' + targetid, 'Select Employee', '/EMN/GetStaffList?CentreCode=' + centreCode, selectedvalue);
             //getDropDownData('cmb' + targetid, 'Select Employee', '/EHG/GetStaffList');
             break;

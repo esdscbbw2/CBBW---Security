@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CBBW.BOL;
 using CBBW.BOL.MGP;
 
 namespace CBBW.DAL.DataSync
@@ -36,7 +37,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         #endregion
         #region In/Out Button Active 
@@ -54,7 +60,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         #endregion
         #region For Out Details
@@ -67,7 +78,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         public DataTable GetNoteNumbersfromMGP(int CenterCode, ref string pMsg)
         {
@@ -78,7 +94,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         public DataTable getRFIDCards(ref string pMsg)
         {
@@ -89,7 +110,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         public DataSet getMGPOutDetails(string NoteNumber, ref string pMsg)
         {
@@ -105,7 +131,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataSet(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
 
         // Getting data for Out details in Item Wise Details using NoteNo(For New Data insert)
@@ -123,7 +154,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataSet(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         // Getting data for Out details in Reference DC Details using NoteNo(For New Data insert)
         public DataSet getReferenceDCDetails(string VehicleNo,DateTime FromDT,DateTime ToDT, ref string pMsg)
@@ -144,7 +180,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataSet(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         public DataSet getSchDtlsForMGP(string NoteNumber, ref string pMsg)
         {
@@ -161,7 +202,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataSet(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         public DataSet getMGPHistoryDCDetails(long ID,int status, ref string pMsg)
         {
@@ -180,7 +226,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataSet(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         public DataTable setMGPOutDetails(MGPOutSave mgpouthdr, List<MGPReferenceDCDetails> mgprefdcdetails,ref string pMsg)
         {
@@ -240,7 +291,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         public DataTable spUpdateOutDetailsflag(string NoteNumber, long ID,int status, ref string pMsg)
         {
@@ -261,7 +317,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         #endregion
         #region For In Details
@@ -279,7 +340,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataSet(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         public DataSet getReferenceInDCDetails(string VehicleNo, DateTime FromDT, DateTime ToDT, ref string pMsg)
         {
@@ -299,7 +365,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataSet(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         public DataSet getItemWiseInDetails(string NoteNumber, ref string pMsg)
         {
@@ -315,7 +386,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataSet(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         public DataTable setMGPInDetails(MGPInSave mgpouthdr, List<MGPReferenceDCDetails> mgprefdcdetails, ref string pMsg)
         {
@@ -361,7 +437,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         #endregion
         #region For Report
@@ -379,7 +460,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataSet(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         public DataSet GetMGPDetailsForPrintV2(string NoteNumber,DateTime SchFromDate, ref string pMsg)
         {
@@ -397,7 +483,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataSet(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         #endregion
 
@@ -413,7 +504,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         #endregion
 

@@ -1,13 +1,19 @@
 ﻿@using System.Globalization;
 @using CBBW.BOL.Modules;
 @model Module
+@{
+    var Isdelete = Convert.ToInt32(Request.QueryString["CanDelete"].ToString());
+}
 
 <div class="container">
     @using (Html.BeginForm())
     {
+      
         @Html.HiddenFor(x => x.ID)
         @Html.HiddenFor(x => x.IsActiveInt)
         @Html.HiddenFor(x => x.CanDelete)
+        @Html.HiddenFor(x => x.ModuleName);
+
         <div class="row newTable">
             <div class="fixedElement">
                 <div class="col-md-12" style="position: relative;">
@@ -17,8 +23,7 @@
                                 <i data-feather="arrow-left-circle"></i>
                                 Back
                             </button>
-
-                            @if (Model.CanDelete == true)
+                            @if (Isdelete == 1)
                             {
                                 <button id="btnDelete" type="submit" name="Submit" value="Delete"
                                         class="btn btn-primary me-2">
@@ -28,7 +33,7 @@
                             }
                             else
                             {
-                                <button type="submit" disabled id="SubmitBtn" name="Submit" value="Save" class="btn btn-secondary me-2">
+                                  <button type="submit" disabled id="SubmitBtn" name="Submit" value="Save" class="btn btn-secondary me-2">
                                     <i data-feather="upload"></i>
                                     Save
                                 </button>
@@ -53,7 +58,7 @@
 
                                             <td class="border-0">
 
-                                                @Html.TextBoxFor(m => m.ModuleName, htmlAttributes: new { @class = "form-control is-valid", @onkeyup = "ValidateCloneRowCtrl()" })
+                                                @Html.TextBoxFor(m => m.ModuleName, htmlAttributes: new { @class = "form-control is-valid", @onkeyup = "ValidateCloneRowCtrl()",@id= "ModuleName1" })
 
                                             </td>
 

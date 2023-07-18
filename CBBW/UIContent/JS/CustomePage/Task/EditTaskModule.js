@@ -7,8 +7,8 @@
     }
 });
 
-function SaveData() {
-    var target = SaveData.caller.arguments[0].target;
+function SaveData(event) {
+    var target = $(SaveData.caller.arguments[0].target);
     var SubmitType = $(target).val();
     var z = GetDataFromTable('ModuleTable');
     var NavId = $("#NavigationId").val();
@@ -49,7 +49,6 @@ async function getInitialData() {
         method: 'GET',
         dataType: 'json',
         success: function (data) {
-
             $(data).each(function (index, item) {
                 //$('#ModuleName').val(item.ModuleName);
                 //$('#SubModuleName').val(item.SubModuleName);
@@ -76,8 +75,6 @@ async function getInitialData() {
                     TaskName.html(items.TaskName);
                     TaskId.val(items.TaskId);
                     Id.val(items.ID);
-
-                   
                 });
             });
         }

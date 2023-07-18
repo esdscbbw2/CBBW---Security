@@ -38,7 +38,6 @@ namespace CBBW.BOL.BIL
         public string EntryTime { get; set; }
         public DateTime RefEntryDate { get; set; }
         public string RefEntryDatestr { get; set; }
-
         public string RefEntryTime { get; set; }
         public int PersonType { get; set; }
         public string PersonTypetxt { get; set; }
@@ -104,6 +103,7 @@ namespace CBBW.BOL.BIL
         public bool IsVehicleProvided { get; set; }
         public bool TADADenied { get; set; }
         public bool IsApprovalSubmit { get; set; }
+
         public bool IsPaymenttSubmit { get; set; }
 
     }

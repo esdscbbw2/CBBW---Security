@@ -56,14 +56,20 @@
                     </div>
                     <div class="text-right pt-2 pb-2">
                         <div class="upper-tab-buttons">
-                            <button type="button" id="btnTourRule"
-                                    onclick="OpenWindowRule('/Security/TourRule/ViewRedirection?CBUID=1&IsBackButton=0');"
-                                    class="btn btn-primary me-2">
+                            <button disabled type="submit" id="TourRule" name="Submit" value="TourRule" class="btn btn-primary me-2">
                                 To Check  “Tour Rules”   Click Here
                             </button>
-                            <button type="button" class="btn btn-primary " onclick="OpenWindowTRule('/Security/TADARules/ViewRedirection?CBUID=1&IsBackButton=0');">
+                            <button disabled type="submit" class="btn btn-primary" id="TADARules" value="TADARules" name="Submit">
                                 To Check “TA & DA Rules”   Click Here
                             </button>
+                            @*<button type="button" id="btnTourRule"
+                onclick="OpenWindowRule('/Security/TourRule/ViewRedirection?CBUID=1&IsBackButton=0');"
+                class="btn btn-primary me-2">
+            To Check  “Tour Rules”   Click Here
+        </button>
+        <button type="button" class="btn btn-primary " onclick="OpenWindowTRule('/Security/TADARules/ViewRedirection?CBUID=1&IsBackButton=0');">
+            To Check “TA & DA Rules”   Click Here
+        </button>*@
                         </div>
                     </div>
                 </div>
@@ -238,7 +244,7 @@
                                                                 id="cmbDDPersonType">
                                                         </select>
                                                         <input type="text" maxlength="20" style="width: 100%;" data-name="EmployeeNonName"
-                                                               class="form-control w-200 inVisible alterID pickPersonNametxt xPerson txtOnly"
+                                                               class="form-control w-100 inVisible alterID pickPersonNametxt xPerson txtOnly"
                                                                onblur="DDPickPersonChanged(1)" onkeypress="return  /^[A-Za-z\s]*$/.test(event.key)"
                                                                id="txtDDPersonType">
                                                     </td>
@@ -373,16 +379,6 @@
                 OpenWindow(filepath);
             } else {
                 MyAlert(4, 'Unable To Find Uploaded File.');
-                //Swal.fire({
-                //    title: 'No Files Found.',
-                //    text: 'Unable To Find Uploaded File.',
-                //    icon: 'error',
-                //    customClass: 'swal-wide',
-                //    buttons: {
-                //        confirm: 'Ok'
-                //    },
-                //    confirmButtonColor: '#2527a2',
-                //});
             }
 
         };
@@ -426,26 +422,14 @@
                                         var filepath = "/Upload/Forms/" + item.FileName;
                                         OpenWindow(filepath);
                                         UnLockSection('TPDiv');
+                                        $('#TourRule,#TADARules').makeEnabled();
                                     }
                                     else {
-                                        MyAlert(4, 'Failed To Upload File.');
-                                        //Swal.fire({
-                                        //    title: 'Failed To Upload File.',
-                                        //    text: item.ResponseMsg,
-                                        //    icon: 'error',
-                                        //    customClass: 'swal-wide my-error',
-                                        //    buttons: {
-                                        //        confirm: 'Ok'
-                                        //    },
-                                        //    confirmButtonColor: '#2527a2',
-                                        //});
+                                        MyAlert(3, item.ResponseMsg);
+                                       
                                     }
                                 });
-                                //code after success
-                                //$('#ehgHeader_DocFileName').val(response);
-                                //var filepath = "/Upload/Forms/" + response;
-                                //VehicleTypeChanged();
-                                //window.open(filepath);
+                                
                             },
                             error: function (er) {
                                 //alert(er);
@@ -454,16 +438,7 @@
                     }
                     else {
                         MyAlert(4, 'Select Only Pdf,Png & Jpg Files.');
-                        //Swal.fire({
-                        //    title: 'No Files Selected.',
-                        //    text: 'Select Only Pdf,Png & Jpg Files.',
-                        //    icon: 'error',
-                        //    customClass: 'swal-wide my-error',
-                        //    buttons: {
-                        //        confirm: 'Ok'
-                        //    },
-                        //    confirmButtonColor: '#2527a2',
-                        //});
+                     
                     }
                 }
             }

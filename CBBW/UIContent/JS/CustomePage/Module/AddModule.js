@@ -55,8 +55,9 @@ function ValidateCloneRowCtrl() {
 function validatectrl(targetid, value) {
     var isvalid = false;
     switch (targetid) {
-        case "ModuleName":
+        case "ModuleName1":
             isvalid = validatectrl_ValidateLength(value);
+            $('#ModuleName').val(value);
             break;
         default: 
     }

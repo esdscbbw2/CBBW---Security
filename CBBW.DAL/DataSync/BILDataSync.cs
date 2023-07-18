@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CBBW.BOL;
 using CBBW.BOL.BIL;
 
 namespace CBBW.DAL.DataSync
@@ -20,7 +21,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable();
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         public DataTable GetBILNoteNumberList(int CentreCode, int status, ref string pMsg)
         {
@@ -31,7 +37,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable();
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         public DataTable GetTAdARuleData(int EmployeeNumber, int CentreCode, string NoteNumber, ref string pMsg)
         {
@@ -51,7 +62,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         public DataTable GetIndexListPage(int DisplayLength, int DisplayStart, int SortColumn, string SortDirection, string SearchText, int CenterCode, int status, ref string pMsg)
         {
@@ -79,7 +95,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         public DataTable GetEmployeeList(string NoteNumber, int CentreCode, ref string pMsg)
         {
@@ -90,7 +111,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable();
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         public DataTable GetNoteHdr(string NoteNumber, ref string pMsg)
         {
@@ -101,7 +127,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable();
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         public DataTable GetDADetails(int EmployeeNumber, int CentreCode, string NoteNumber, ref string pMsg)
         {
@@ -121,7 +152,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
 
         public DataTable SetSetTADABillGeneration (TADABillGeneration hdrmodel, ref string pMsg)
@@ -204,7 +240,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
 
         public DataTable SetBillGenerationFinalSubmit(string NoteNumber, int status, ref string pMsg)
@@ -223,7 +264,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         public DataTable GetTADABillGenerationData(string NoteNumber,string RefNoteNumber ,int EmployeeNo,int status, ref string pMsg)
         {
@@ -245,7 +291,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         public DataTable RemoveBILNoteNumber(string NoteNumber, int RemoveTag, int ActiveTag, ref string pMsg)
         {
@@ -264,7 +315,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
 
         public DataTable SetApprovalTADABillGeneration(TADABillGeneration hdrmodel, ref string pMsg)
@@ -333,8 +389,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) 
-            { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
 
         public DataTable SetTADABillGenerationApprovalData(TADABillGeneration hdrmodel, ref string pMsg)
@@ -371,7 +431,11 @@ namespace CBBW.DAL.DataSync
                 }
             }
             catch (Exception ex)
-            { pMsg = ex.Message; return null; }
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         public DataTable SetAnPFinalSubmit( int status,List<ApprovalNoteNo> dtldata, ref string pMsg)
         {
@@ -389,7 +453,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         public DataTable GetDeptWiseEmployeeList(int DeptId, int CentreCode, ref string pMsg)
         {
@@ -400,7 +469,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable();
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         public DataTable GetTraveelingDetails(int EmployeeNumber, int CentreCode, string NoteNumber, ref string pMsg)
         {
@@ -420,7 +494,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
         public DataTable SetDeductionFormDA(TADABillGeneration hdrmodel, ref string pMsg)
         {
@@ -457,7 +536,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
 
         public DataTable GetTADACalculationDateWiseForReport(int EmployeeNumber, int CentreCode, string NoteNumber, ref string pMsg)
@@ -478,7 +562,12 @@ namespace CBBW.DAL.DataSync
                     return sql.GetDataTable(para, ref pMsg);
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return null; }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+                pMsg = ex.Message;
+                return null;
+            }
         }
 
     }

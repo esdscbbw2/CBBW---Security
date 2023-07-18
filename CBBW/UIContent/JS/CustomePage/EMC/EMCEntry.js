@@ -289,6 +289,7 @@ function EnableSubmitBtn() {
    
     if ((z * 1) <= 0 && btn == 1) {
         SubmitBtn.makeEnabled();
+        SubmitBtn.removeClass('nodrop');
         //alert(btn);
     } else {
         SubmitBtn.makeDisable();

@@ -46,7 +46,7 @@ namespace CBBW.Areas.Security.Controllers
         public ActionResult Index()
         {
             TempData["EMN"] = null;
-            TempData["EMNData"] =null;
+            TempData["EMNData"] = null;
             TempData["BtnSubmit"] = null;
             return View();
         }
@@ -76,20 +76,19 @@ namespace CBBW.Areas.Security.Controllers
                     model.emnHeader.NoteNumber = model.NoteNumber;
                     model.emnHeader.AttachFile = model.AttachFile;
                     model.emnHeader.CenterCodeName = model.CenterCodeName;
-                   //model.PersonDtls = _iEMN.GetEMNTravellingPerson(model.NoteNumber, ref pMsg);
-                    if (TempData["BtnSubmit"] != null)
-                    {
-                        model.Btnsubmit = 1;
-                    }
-                    else
-                    {
-                        model.Btnsubmit = 0;
-                    }
+                    //model.PersonDtls = _iEMN.GetEMNTravellingPerson(model.NoteNumber, ref pMsg);
+                    model.Btnsubmit = TempData["BtnSubmit"] != null ? 1 : 0;
+                    TempData["EMN"] = model;
+                }
+                else if (TempData["EMN"] != null && TempData["EMNData"] == null)
+                {
+                    model = TempData["EMN"] as EMNHeaderEntryVM;
+                    model.Btnsubmit = TempData["BtnSubmit"] != null ? 1 : 0;
                     TempData["EMN"] = model;
                 }
                 else
                 {
-                    if (TempData["EMN"] != null && TempData["EMNData"]!=null)
+                    if (TempData["EMN"] != null && TempData["EMNData"] != null)
                     {
                         model = TempData["EMN"] as EMNHeaderEntryVM;
                         modelTrav = TempData["EMNData"] as EMNTravellingDetailsVM;
@@ -100,7 +99,7 @@ namespace CBBW.Areas.Security.Controllers
                         model.emnHeader.AttachFile = modelTrav.AttachFile;
                         model.Btnsubmit = modelTrav.btnSubmit;
                         model.emnHeader.CenterCodeName = model.CenterCodeName;
-                       //model.PersonDtls = _iEMN.GetEMNTravellingPerson(modelTrav.NoteNumber, ref pMsg);
+                        //model.PersonDtls = _iEMN.GetEMNTravellingPerson(modelTrav.NoteNumber, ref pMsg);
                     }
                     else
                     {
@@ -116,12 +115,24 @@ namespace CBBW.Areas.Security.Controllers
             return View(model);
         }
         [HttpPost]
-        public ActionResult Create(EMNHeaderEntryVM hdrmodel, string Submit=null)
+        public ActionResult Create(EMNHeaderEntryVM hdrmodel, string Submit = null)
         {
             CustomAjaxResponse result = new CustomAjaxResponse();
+            TempData["EMN"] = hdrmodel;
+
             if (Submit == "VAD")
             {
-                return RedirectToAction("TravellingDetails", "EMN", new { NoteNumber = hdrmodel.emnHeader.NoteNumber});
+                return RedirectToAction("TravellingDetails", "EMN", new { NoteNumber = hdrmodel.emnHeader.NoteNumber });
+            }
+            else if (Submit == "TADARules")
+            {
+                _iUser.RecordCallBack("/Security/EMN/Create");
+                return RedirectToAction("ViewRedirection", "TADARules", new { Area = "Security", CBUID = 1 });
+            }
+            else if (Submit == "TourRule")
+            {
+                _iUser.RecordCallBack("/Security/EMN/Create");
+                return RedirectToAction("ViewRedirection", "TourRule", new { Area = "Security", CBUID = 1 });
             }
             else
             {
@@ -163,7 +174,7 @@ namespace CBBW.Areas.Security.Controllers
                 {
                     if (modelvm != null)
                     {
-                        
+
                         var CenterName = modelvm.CenterCodetxt.Split('/').Skip(1).FirstOrDefault();
                         if (_iEMN.SetEMNTravellingPerson(modelvm.NoteNumber, modelvm.CenterCode, CenterName.Trim(), modelvm.PersonDtls, ref pMsg))
                         {
@@ -187,7 +198,7 @@ namespace CBBW.Areas.Security.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
 
         }
-        public ActionResult TravellingDetails(int Btnsubmit = 0,string NoteNumber=null,string ServiceTypeCode="1")
+        public ActionResult TravellingDetails(int Btnsubmit = 0, string NoteNumber = null, string ServiceTypeCode = "1")
         {
             EMNTravellingDetailsVM modeltravvm = new EMNTravellingDetailsVM();
             try
@@ -199,12 +210,12 @@ namespace CBBW.Areas.Security.Controllers
                     {
                         EMNHeaderEntryVM modelhdr = new EMNHeaderEntryVM();
                         modelhdr.PersonDtls = _iEMN.GetEMNTravellingPerson(NoteNumber, user.CentreCode, 1, ref pMsg);
-                        modeltravvm.EmplyoyeeNoList = MyCodeHelper.GetCommaSeparatedString(modelhdr.PersonDtls.Where(x => x.EmployeeNo != 0 && x.NoteNumber== NoteNumber).Select(x => x.EmployeeNo).ToList());
+                        modeltravvm.EmplyoyeeNoList = MyCodeHelper.GetCommaSeparatedString(modelhdr.PersonDtls.Where(x => x.EmployeeNo != 0 && x.NoteNumber == NoteNumber).Select(x => x.EmployeeNo).ToList());
 
                         if (model.PersonDtls.Where(x => x.PersonType == 2 || x.PersonType == 4).FirstOrDefault() != null)
                             modeltravvm.PersonType = model.PersonDtls.Where(x => x.PersonType == 2 || x.PersonType == 4).FirstOrDefault().PersonType > 0 ? 4 : 1;
                         else
-                        modeltravvm.PersonType = 1;
+                            modeltravvm.PersonType = 1;
                         modeltravvm.NoteNumber = model.NoteNumber;
                         modeltravvm.AttachFile = model.AttachFile;
                         modeltravvm.CenterCodenName = model.CenterCodeName;
@@ -280,14 +291,14 @@ namespace CBBW.Areas.Security.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
 
         }
-        public JsonResult GetTraveelingPersonReverseData(string NoteNumber,int CenterCode,int status=0)
+        public JsonResult GetTraveelingPersonReverseData(string NoteNumber, int CenterCode, int status = 0)
         {
             EMNHeaderEntryVM modelhdr = new EMNHeaderEntryVM();
             CustomAjaxResponse result = new CustomAjaxResponse();
             List<EMNTravellingPerson> modelTP = new List<EMNTravellingPerson>();
             try
             {
-                modelhdr.PersonDtls = _iEMN.GetEMNTravellingPerson(NoteNumber, CenterCode, status, ref pMsg);  
+                modelhdr.PersonDtls = _iEMN.GetEMNTravellingPerson(NoteNumber, CenterCode, status, ref pMsg);
             }
             catch (Exception ex)
             {
@@ -314,12 +325,12 @@ namespace CBBW.Areas.Security.Controllers
                         TdModel.travDetails.SchTourToDateStr = TdModel.travDetails.SchTourToDate.ToString("yyyy-MM-dd");
                         //TdModel.travDetails.SchFromDateDisplay
                         TdModel.dateTour = _iEMN.GetEMNDateWiseTour(TdModel.NoteNumber, ref pMsg);
-                        
+
                         TempData["BtnSubmit"] = 1;
                     }
                     TempData["EMNData"] = TdModel;
                 }
-               
+
             }
             catch (Exception ex)
             {
@@ -388,7 +399,7 @@ namespace CBBW.Areas.Security.Controllers
                 return RedirectToAction("TravellingDetailsView", "EMN", new { NoteNumber = modelobj.NoteNumber, CBUID = modelobj.CBUID });
             }
             modelobj.emnHeader = _iEMN.GetEMNHdrEntry(modelobj.NoteNumber, ref pMsg);
-            
+
 
             return View(modelobj);
         }
@@ -502,11 +513,11 @@ namespace CBBW.Areas.Security.Controllers
             return View(modelvms);
 
         }
-        public JsonResult GetEmployeeNoName(string NoteNo,int status=0)
+        public JsonResult GetEmployeeNoName(string NoteNo, int status = 0)
         {
             EMNHeaderEntryVM result = new EMNHeaderEntryVM();
             List<CustomComboOptionsWithString> resulmn = new List<CustomComboOptionsWithString>();
-            result.PersonDtls = _iEMN.GetEMNTravellingPerson(NoteNo,-1, status, ref pMsg);
+            result.PersonDtls = _iEMN.GetEMNTravellingPerson(NoteNo, -1, status, ref pMsg);
 
             if (result.PersonDtls != null)
             {
@@ -692,11 +703,11 @@ namespace CBBW.Areas.Security.Controllers
         {
             EMNTravellingDetailsVM modelvms = new EMNTravellingDetailsVM();
             EMNHeaderEntryVM result = new EMNHeaderEntryVM();
-           
+
             string baseUrl = "";
             try
             {
-               
+
                 modelvms.travDetails = _iEMN.GetEMNTravellingDetails(NoteNumber, ref pMsg);
                 ViewBag.PublicTrans = modelvms.travDetails.PublicTransports;
                 modelvms.dateTour = _iEMN.GetEMNDateWiseTour(NoteNumber, ref pMsg);
@@ -732,7 +743,7 @@ namespace CBBW.Areas.Security.Controllers
             try
             {
                 modelvmobj.emnHeader = _iEMN.GetEMNHdrEntry(NoteNumber, ref pMsg);
-               
+
                 modelvmobj.CanDelete = CanDelete;// == 1 ? true : false;
                 modelvmobj.HeaderText = "Ratification";
 
@@ -759,23 +770,31 @@ namespace CBBW.Areas.Security.Controllers
         #region Common Use
         public JsonResult GetStaffList(int CentreCode)
         {
-            IEnumerable<CustomComboOptions> result;
-            EHGHeaderEntryVM tempobj = new EHGHeaderEntryVM(true);
-            result = tempobj.getStaffList(CentreCode);
+            IEnumerable<CustomComboOptions> result=null;
+            try
+            {
+                 result = _master.GetEmployeeListV2(CentreCode, ref pMsg).OrderBy(x => x.ID).ToList();
+               
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                pMsg = ex.ToString();
+            }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult GetVehicleTypes(int TypeVal = 0, string PT = null,string NoteNumber=null)
+        public JsonResult GetVehicleTypes(int TypeVal = 0, string PT = null, string NoteNumber = null)
         {
             List<CustomComboOptions> result = new List<CustomComboOptions>();
-              EHGMaster master = EHGMaster.GetInstance;
-          
+            EHGMaster master = EHGMaster.GetInstance;
+
             if (PT == null)
             {
                 List<EMNTravellingPerson> PersonDtls = _iEMN.GetEMNTravellingPerson(NoteNumber, 0, 1, ref pMsg);
                 if (PersonDtls.Where(x => x.PersonType == 2).ToList().Count() > 0)
                     result = master.VehicleTypes.Where(x => x.ID != 3).ToList();
                 else
-                    result = master.VehicleTypes.Where(x => x.ID ==2).ToList();   
+                    result = master.VehicleTypes.Where(x => x.ID == 2).ToList();
             }
             else
             {
@@ -806,7 +825,7 @@ namespace CBBW.Areas.Security.Controllers
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult GetTravellingPersonForEMN(string NoteNumber,int CenterCode,int status=0)
+        public JsonResult GetTravellingPersonForEMN(string NoteNumber, int CenterCode, int status = 0)
         {
             EMNHeaderEntryVM modelhdr = new EMNHeaderEntryVM();
             modelhdr.PersonDtls = _iEMN.GetEMNTravellingPerson(NoteNumber, CenterCode, status, ref pMsg);
@@ -817,21 +836,21 @@ namespace CBBW.Areas.Security.Controllers
             List<CustomComboOptions> result = new List<CustomComboOptions>();
 
             EHGMaster master = EHGMaster.GetInstance;
-            result = master.PersonType.Where(x=> x.ID != 4).ToList();
+            result = master.PersonType.Where(x => x.ID != 4).ToList();
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult getCenterCodeListFromTravellingPerson(string NoteNumber)
         {
-         
+
             List<CustomComboOptions> result = new List<CustomComboOptions>();
-            result = _iEMN.getCenterCodeListFromTravellingPerson(NoteNumber,1, ref pMsg).ToList();
+            result = _iEMN.getCenterCodeListFromTravellingPerson(NoteNumber, 1, ref pMsg).ToList();
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult getCenterCodeListFromTravellingPersonNotActive(string NoteNumber)
         {
 
             List<CustomComboOptions> result = new List<CustomComboOptions>();
-            result = _iEMN.getCenterCodeListFromTravellingPerson(NoteNumber,2, ref pMsg).ToList();
+            result = _iEMN.getCenterCodeListFromTravellingPerson(NoteNumber, 2, ref pMsg).ToList();
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public JsonResult GetCenterCodeList(int center = 0)
@@ -840,11 +859,11 @@ namespace CBBW.Areas.Security.Controllers
             result = _iEMN.getCenterCodeList(center, ref pMsg).ToList();
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult GetTourCategories(int PTval=0)
+        public JsonResult GetTourCategories(int PTval = 0)
         {
             List<CustomComboOptions> result = new List<CustomComboOptions>();
             EHGMaster master = EHGMaster.GetInstance;
-            long[] ids = {2,3};
+            long[] ids = { 2, 3 };
             result = master.TourCategoryForNZB.Where(x => ids.Contains(x.ID)).ToList();
             return Json(result, JsonRequestBehavior.AllowGet);
         }

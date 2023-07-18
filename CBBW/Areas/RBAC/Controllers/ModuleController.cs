@@ -113,6 +113,7 @@ namespace CBBW.Areas.RBAC.Controllers
         public ActionResult Edit(int ID, int CanDelete, int CBUID = 0)
         {
             Module module = new Module();
+
             try
             {
                 module = _iModule.GetModuleDetails(ID, ref pMsg);
@@ -135,10 +136,9 @@ namespace CBBW.Areas.RBAC.Controllers
                     obj.Add(module);
                     if (Submit == "Save")
                     {
-                        if (_iModule.SetAddModule(2, obj, user.CentreCode, ref pMsg))
+                        if (_iModule.SetAddModule(2, obj, user.EmployeeNumber, ref pMsg))
                         {
                             ViewBag.Msg = "Module Updated Successfully.";
-
                         }
                         else
                         {
@@ -147,14 +147,15 @@ namespace CBBW.Areas.RBAC.Controllers
                     }
                     else if (Submit == "Delete")
                     {
-                        if (_iModule.SetAddModule(3, obj, user.CentreCode, ref pMsg))
+                        if (_iModule.SetAddModule(3, obj, user.EmployeeNumber, ref pMsg))
                         {
+
                             ViewBag.Msg = "Module Deleted Successfully.";
 
                         }
                         else
                         {
-                            ViewBag.ErrMsg = "Module Deleted Failed.";
+                            ViewBag.ErrMsg = pMsg;
                         }
 
                     }

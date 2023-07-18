@@ -16,7 +16,7 @@ function PublicTransportchange(PublicTransport, PersonType, vehicleType) {
         $('.forNo').show();
         $("#VehicleType").removeClass('is-valid').addClass('is-invalid');
         $("#ReasonVehicleReq").removeClass('is-valid').addClass('is-invalid');
-        getDropDownDataWithSelectedValue(VehicleType.attr('id'), 'Select Type', '/EMN/GetVehicleTypes?TypeVal=' + PersonType + '&NoteNumber=' + NoteNumber, vehicleType);
+        getDropDownDataWithSelectedValue(VehicleType.attr('id'), 'Select Vehicle Type', '/EMN/GetVehicleTypes?TypeVal=' + PersonType + '&NoteNumber=' + NoteNumber, vehicleType);
     } else {
         $('.forYes').show();
         $('.forNo').hide();
@@ -175,7 +175,7 @@ function validatectrl(targetid, value, rowid) {
                     isvalid = true;
                 } else {
                     isvalid = false;
-                    MyAlert(5,'Please Select Current Time Or Greater Than..!');
+                    MyAlert(4, 'Selected Time Should Be Greater Than The Current Time');
                    // AlertMessage();
                 }
             } else {
@@ -288,7 +288,7 @@ function EnableSubmitBtn() {
 
     });
     if ((x + y) * 1 <= 0) {
-        if (mEnable) { DWTBtn.makeEnabled(); } else { DWTBtn.makeDisable(); }
+        if (mEnable) { DWTBtn.makeEnabled(); DWTBtn.removeClass('nodrop'); } else { DWTBtn.makeDisable(); }
     } else { DWTBtn.makeDisable(); }
 
     if (x * 1 <= 0) {

@@ -56,7 +56,7 @@ function Notenumberchanged(notenumber) {
                 getTravellingPersonData('-1');
             });
             if ($("#btnDisplay").val() == 0) {
-                MyAlert(0, 'For Futher Process ,Please check Attachment File First..!!');
+                MyAlert(3, 'Attached Travelling Request Form Must Be Opened Before Proceeding');
             }
            
         }
@@ -180,6 +180,7 @@ function EnableSubmitBtn() {
     }
     else {
         DWTBtn.makeEnabled();
+        DWTBtn.removeClass('nodrop');
     }
 };
 function Buttonclear() {

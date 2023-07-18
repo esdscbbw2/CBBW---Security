@@ -38,6 +38,7 @@ namespace CBBW
             container.RegisterType<ISubModuleRepository, SubModuleRepository>();
             container.RegisterType<INavigationRepository, NavigationRepository>();
             container.RegisterType<ITaskRepository, TaskRepository>();
+            container.RegisterType<IAlertRepository, AlertRepository>();
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }
     }

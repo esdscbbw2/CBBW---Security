@@ -167,7 +167,6 @@ function EmptyTable() {
 }
 async function getInitialData() {
     $('#tbody2').empty();
-
     var rowid = 0;
     var TaskName = $('#TaskName');
     var TaskId = $('#TaskId');
