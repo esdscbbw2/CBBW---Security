@@ -22,15 +22,18 @@ namespace CBBW.Areas.Security.Controllers
         string pMsg;
         UserInfo user;
         // GET: Security/Common
-        public CommonController(IUserRepository iUser)
+        public CommonController(IUserRepository iUser, IAlertRepository iAlert)
         {
             _iUser = iUser;
+            _iAlert = iAlert;
             user = iUser.getLoggedInUser(this);
             ViewBag.LogInUser = user.UserName;
         }
         public ActionResult Index()
         {
-            return View();
+            List<AlertMaster> obj = new List<AlertMaster>();
+            obj = _iAlert.GetAlertMasterDetails(0, ref pMsg);
+            return View(obj);
         }
         public ActionResult Index2()
         {
