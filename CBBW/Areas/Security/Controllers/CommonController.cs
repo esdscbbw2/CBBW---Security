@@ -8,6 +8,7 @@ using System.Web.Helpers;
 using System.Web.Mvc;
 using CBBW.BLL.IRepository;
 using CBBW.BOL;
+using CBBW.BOL.Alerts;
 using CBBW.BOL.CTV;
 using CBBW.BOL.CustomModels;
 using SelectPdf;
@@ -17,6 +18,7 @@ namespace CBBW.Areas.Security.Controllers
     public class CommonController : Controller
     {
         IUserRepository _iUser;
+        IAlertRepository _iAlert;
         string pMsg;
         UserInfo user;
         // GET: Security/Common
@@ -113,6 +115,19 @@ namespace CBBW.Areas.Security.Controllers
 
             return File(pdfPath, "application/pdf", PdfFileName + ".pdf");
         }
-        
+
+        public JsonResult GetAlertMasterDetails()
+        {
+            List<AlertMaster> obj = new List<AlertMaster>();
+            obj = _iAlert.GetAlertMasterDetails(0, ref pMsg);
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetAlertDetails(int ID)
+        {
+            List<AlertDetail> obj = new List<AlertDetail>();
+            obj = _iAlert.GetAlertDetails(ID, ref pMsg);
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

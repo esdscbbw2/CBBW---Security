@@ -1,19 +1,28 @@
-﻿@*<div class="container-fluid p-0 login-bg-img2" style="background-color:white">
-    <div class="content-wrapper justify-content-center align-items-center position-relative bg-transparent overflow-auto">
-        <div class="login-inner" style="margin-top:-100px">
-            <div class="row w-100">
-                <div class="col-md-3 mx-auto">
-                    <div class="login-outer">
-                        <img src="~/img/charbhai-logo-center.jpg"
-                             alt="Charbhai Bidi Works - logo" class="img-fluid">
-                        <h2> Dashboard will be Launching Soon!</h2>
-                        <img src="/img/launch.gif" alt="" class=" launch-img img-fluid">
-                    </div>
-                    </div>
+﻿@using System.Globalization;
+@using CBBW.BOL.Alerts
+@model List<AlertMaster>
+@{
+    var i = 1;
+    var k = 1;
+}
+
+
+@*<div class="container-fluid p-0 login-bg-img2" style="background-color:white">
+        <div class="content-wrapper justify-content-center align-items-center position-relative bg-transparent overflow-auto">
+            <div class="login-inner" style="margin-top:-100px">
+                <div class="row w-100">
+                    <div class="col-md-3 mx-auto">
+                        <div class="login-outer">
+                            <img src="~/img/charbhai-logo-center.jpg"
+                                 alt="Charbhai Bidi Works - logo" class="img-fluid">
+                            <h2> Dashboard will be Launching Soon!</h2>
+                            <img src="/img/launch.gif" alt="" class=" launch-img img-fluid">
+                        </div>
+                        </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>*@
+    </div>*@
 <div class="dash-content p-15">
     <div class="launching-outer">
         <img src="/img/charbhai-logo-center.png" class="logo-img" alt="Charbhai Logo">
@@ -22,3 +31,195 @@
     </div>
 </div>
 
+<div class="modal prompt-alert" id="myModal">
+    <div class="modal-dialog modal-lg  modal-dialog-scrollable">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">All Prompts and Stops of <span>Admin</span></h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="alert alert-success">
+                                    <strong>Prompts</strong>
+                                </div>
+                                <div class="newTable">
+                                    <div class="table-responsive mb-4 promptTable">
+                                        <table class="table table-bordered btnalign">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col" rowspan="2"> SL.No.</th>
+                                                    <th scope="col"> Screen Name </th>
+                                                    <th scope="col" width="12%"> Due Date </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="id">
+                                                @if (Model.Where(x => x.MTag == "P").ToList().Count() > 0)
+                                                {
+                                                    foreach (var item in Model.Where(x => x.MTag == "P"))
+                                                    {
+                                                        <tr id="0" class="add-row">
+
+                                                            <td> @i</td>
+                                                            <td><a href="#" onclick="ClickOnPromtAlert()" data-name="PromtId" id="@item.ID">@item.AlertName</a></td>
+                                                            <td>@item.EffectiveDateStr</td>
+
+                                                        </tr>
+                                                        i++;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <tr id="0" class="add-row">Prompts Not Available</tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body ">
+                                <div class="alert alert-success">
+                                    <strong>Prompt Details</strong>
+                                </div>
+                                <div class="promptDetails">
+                                    <ul id="PromtId">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="alert alert-danger">
+                                    <strong>Stops</strong>
+                                </div>
+                                <div class="newTable">
+                                    <div class="table-responsive mb-4 promptTable">
+                                        <table class="table table-bordered btnalign">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col" rowspan="2"> SL.No.</th>
+                                                    <th scope="col"> Screen Name </th>
+                                                    <th scope="col" width="12%"> Due Date </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (Model.Where(x => x.MTag == "P").ToList().Count() > 0)
+                                                {
+                                                    foreach (var item in Model.Where(x => x.MTag == "S"))
+                                                    {
+                                                        <tr id="0" class="add-row">
+                                                            <td> @k</td>
+                                                            <td><a href="#" onclick="ClickOnPromtAlert()" data-name="StopId" id="@item.ID">@item.AlertName</a></td>
+                                                            <td>@item.EffectiveDateStr</td>
+
+                                                        </tr>
+                                                        k++;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <tr id="0" class="add-row"> Stops Not Available</tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body ">
+                                <div class="alert alert-danger">
+                                    <strong>Stop Details</strong>
+                                </div>
+                                <div class="promptDetails">
+                                    <ul id="StopId">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section headers
+    {
+    <style>
+        .inVisible {
+            display: none;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
+
+}
+
+
+
+@section scripts{
+    <script src="~/UIContent/JS/CustomePage/CommonReusable.js"></script>
+    <script src="~/UIContent/JS/CustomePage/CommonReusableV2.js"></script>
+    <script type="text/javascript">
+        $(window).on('load', function () {
+            $('#myModal').modal('show');
+
+        });
+        function ClickOnPromtAlert() {
+            var target = ClickOnPromtAlert.caller.arguments[0].target;
+            var targetid = $(target).attr('id');
+            var Dataname = $(target).attr('data-name')
+            var url = '/Security/Common/GetAlertDetails?ID=' + targetid;
+            GetDataFromAjax(url).done(function (data) {
+                $('#' + Dataname).empty();
+                var i = 1;
+                $(data).each(function (index, item) {
+                    if (item.AlertDetails != null) {
+                        $('#' + Dataname).append('<li>' + i + '. ' + item.AlertDetails + '</li>');
+                    } else {
+                        $('#' + Dataname).append('<li>Prompt Details Not Available</li>');
+                    }
+                    i++;
+                });
+
+            });
+        }
+
+        //function Onload() {
+        //    var url = '/Security/Common/GetAlertDetails?ID=' + targetid;
+        //    GetDataFromAjax(url).done(function (data) {
+        //        $('#' + Dataname).empty();
+        //        var i = 1;
+        //        $(data).each(function (index, item) {
+        //            if (item.AlertDetails != null) {
+        //                $('#' + Dataname).append('<li>' + i + '. ' + item.AlertDetails + '</li>');
+        //            } else {
+        //                $('#' + Dataname).append('<li>Prompt Details Not Available</li>');
+        //            }
+        //            i++;
+        //        });
+        //    });
+        //}
+    </script>
+}
