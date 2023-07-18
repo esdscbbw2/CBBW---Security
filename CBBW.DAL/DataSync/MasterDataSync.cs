@@ -27,10 +27,10 @@ namespace CBBW.DAL.DataSync
             {
                 using (SQLHelper sql = new SQLHelper("SELECT [MTR].[GetRulesFound]()", CommandType.Text))
                 {
-                    return bool.Parse(sql.ExecuteScaler(ref pMsg).ToString());
+                    return 1;// bool.Parse(sql.ExecuteScaler(ref pMsg).ToString());
                 }
             }
-            catch (Exception ex) { pMsg = ex.Message; return false; }
+            catch (Exception ex) { pMsg = ex.Message; return 0; }
         }
         public bool IsVehicleExist(string VehicleNumber, ref string pMsg)
         {
