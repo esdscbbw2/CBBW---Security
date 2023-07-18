@@ -53,14 +53,20 @@
                 </div>
                 <div class="text-right pt-2 pb-2">
                     <div class="upper-tab-buttons">
-                        <button type="button" id="btnTourRule"
-                                onclick="OpenWindowRule('/Security/TourRule/ViewRedirection?CBUID=1&IsBackButton=0');"
-                                class="btn btn-primary me-2">
+                        <button disabled type="submit" id="TourRule" name="Submit" value="TourRule" class="btn btn-primary me-2">
                             To Check  “Tour Rules”   Click Here
                         </button>
-                        <button type="button" class="btn btn-primary " onclick="OpenWindowTRule('/Security/TADARules/ViewRedirection?CBUID=1&IsBackButton=0');">
+                        <button disabled type="submit" class="btn btn-primary" id="TADARules" value="TADARules" name="Submit">
                             To Check “TA & DA Rules”   Click Here
                         </button>
+                        @*<button type="button" id="btnTourRule"
+                onclick="OpenWindowRule('/Security/TourRule/ViewRedirection?CBUID=1&IsBackButton=0');"
+                class="btn btn-primary me-2">
+            To Check  “Tour Rules”   Click Here
+        </button>
+        <button type="button" class="btn btn-primary " onclick="OpenWindowTRule('/Security/TADARules/ViewRedirection?CBUID=1&IsBackButton=0');">
+            To Check “TA & DA Rules”   Click Here
+        </button>*@
                     </div>
                 </div>
             </div>

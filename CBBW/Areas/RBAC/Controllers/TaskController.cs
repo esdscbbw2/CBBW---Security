@@ -135,7 +135,7 @@ namespace CBBW.Areas.RBAC.Controllers
             {
                 if (modulelist != null)
                 {
-                 
+                    modulelist = modulelist.Where(x => x.IsActiveInt == 1).ToList();
                     if (_iModule.SetAddTaskModule(SubmitType == "Final" ? 2 : 3, user.CentreCode, NavigationId, modulelist, ref pMsg))
                     {
                         result.bResponseBool = true;

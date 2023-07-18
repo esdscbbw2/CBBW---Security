@@ -1,0 +1,20 @@
+﻿@using CBBW.BOL.RBACUsers; 
+@{ 
+    var myData = TempData["UserMenu"] as List<UserMenu>;
+    TempData["UserMenu"] = myData;
+}
+<div class="p-15 first show-div">
+    <div class="col-md-12 ">
+        <ul class="menu-list">
+            @if (myData!=null && myData.Count > 0)
+            {
+                foreach(var item in myData)
+                {
+                    <li>
+                        <a class="btn border-0" id="ModuleBtn_@item.ModuleID">@item.ModuleName</a>
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+</div>

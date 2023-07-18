@@ -20,10 +20,13 @@ namespace CBBW.BOL.RBACUsers
         public string SubTaskName { get; set; }
         public string URL { get; set; }
     }
-    public class UserMenu
+    public class UserModule 
     {
         public int ModuleID { get; set; }
         public string ModuleName { get; set; }
+    }
+    public class UserMenu : UserModule
+    {        
         public List<UserSubModule> SubModules { get; set; }
     }
     public class UserSubModule 

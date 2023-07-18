@@ -5,10 +5,11 @@
 
 }
 
-@using (Html.BeginForm())
-{
-    @Html.HiddenFor(x => x.btnDisplay)
-    <div class="">
+
+<div class="">
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(x => x.btnDisplay)
         <div class="row newTable">
             <div class="fixedElement">
                 <div class="col-md-12">
@@ -44,14 +45,20 @@
                 </div>
                 <div class="text-right pt-2 pb-2">
                     <div class="upper-tab-buttons">
-                        <button type="button" id="btnTourRule"
-                                onclick="OpenWindowRule('/Security/TourRule/ViewRedirection?CBUID=1&IsBackButton=0');"
-                                class="btn btn-primary me-2">
+                        <button disabled type="submit" id="TourRule" name="Submit" value="TourRule" class="btn btn-primary me-2">
                             To Check  “Tour Rules”   Click Here
                         </button>
-                        <button type="button" class="btn btn-primary " onclick="OpenWindowTRule('/Security/TADARules/ViewRedirection?CBUID=1&IsBackButton=0');">
+                        <button disabled type="submit" class="btn btn-primary" id="TADARules" value="TADARules" name="Submit">
                             To Check “TA & DA Rules”   Click Here
                         </button>
+                        @*<button type="button" id="btnTourRule"
+                                    onclick="OpenWindowRule('/Security/TourRule/ViewRedirection?CBUID=1&IsBackButton=0');"
+                                    class="btn btn-primary me-2">
+                                To Check  “Tour Rules”   Click Here
+                            </button>
+                            <button type="button" class="btn btn-primary " onclick="OpenWindowTRule('/Security/TADARules/ViewRedirection?CBUID=1&IsBackButton=0');">
+                                To Check “TA & DA Rules”   Click Here
+                            </button>*@
                     </div>
                 </div>
             </div>
@@ -188,7 +195,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="bgColor border-green mt-4 bg-transparent text-left QueDiv inVisible">
                     <ul style="list-style:none;">
                         <li style="font-size: 16px;">
@@ -261,18 +268,22 @@
 
             </div>
         </div>
+    }
     </div>
-}
+
+
 @section headers
 {
-    .inVisible {
-    display: none;
-    }
+    <style>
 
-    .pointer {
-    cursor: pointer;
-    }
+        .inVisible {
+            display: none;
+        }
 
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
 }
 @section scripts{
     <script src="~/UIContent/JS/jquery-3.6.0.min.js"></script>

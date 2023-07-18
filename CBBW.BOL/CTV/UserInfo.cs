@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CBBW.BOL.RBACUsers;
 
 namespace CBBW.BOL.CTV
 {
@@ -16,6 +17,7 @@ namespace CBBW.BOL.CTV
         public bool IsOffline { get; set; }
         public string IPAddress { get; set; }
         public string ComputerName { get; set; }
+        public List<UserModule> Modules { get; set; }
         public UserInfo()
         {
 

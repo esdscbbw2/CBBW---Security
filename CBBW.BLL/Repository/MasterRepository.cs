@@ -127,5 +127,9 @@ namespace CBBW.BLL.Repository
         {
             return _entities.IsVehicleExist(VehicleNumber, ref pMsg);
         }
+        public bool IsRuleExist(ref string pMsg) 
+        {
+            return _entities.IsRuleExist(ref pMsg);
+        }
     }
 }

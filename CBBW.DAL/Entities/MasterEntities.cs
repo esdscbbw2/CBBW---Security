@@ -337,5 +337,9 @@ namespace CBBW.DAL.Entities
         {
             return _datasync.IsVehicleExist(VehicleNumber,ref pMsg);
         }
+        public bool IsRuleExist(ref string pMsg)
+        {
+            return _datasync.IsRuleExist(ref pMsg);
+        }
     }
 }

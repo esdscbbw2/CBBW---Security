@@ -91,7 +91,7 @@
                                                 <select id="PublicTransport"
                                                         onchange="ValidateControl()"
                                                         data-name="PublicTransport" class="form-select w-200 clear is-invalid" aria-label="Default select example">
-                                                    <option selected="" value="">Select</option>
+                                                    <option selected="" value="">Select Public Transport</option>
                                                     <option value="1">Yes</option>
                                                     <option value="0">No </option>
                                                 </select>
@@ -315,7 +315,7 @@
                 time = GetCurrentTimeWithAMPM(new Date);//formatAMPM(new Date);
                 firstOpen = false;
             } else {
-                time = "12:00 AM";
+                time = moment();
             }
             $(this).data('DateTimePicker').date(time);
         });

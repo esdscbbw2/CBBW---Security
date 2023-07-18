@@ -161,7 +161,10 @@ function EnableSubmitBtn() {
 $(document).ready(function () {
     var vbtoCtrl = $('#VADetails_VehicleBelongsTo');    
     vbtoCtrl.change(function () {
-        VehicleBelongsToChanged(0);        
+        VehicleBelongsToChanged(0);
+        if ($('#VADetails_VehicleBelongsTo').val() == 2) {
+            $('#VADetails_VehicleNumber').val('');
+        }
         $('#VABackBtnActive').val(1);
         EnableSubmitBtn();
     });

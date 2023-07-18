@@ -9,7 +9,7 @@
 
 function SaveData() {
     var target = SaveData.caller.arguments[0].target;
-    var SubmitType = $(target).attr('data-name');
+    var SubmitType = $(target).val();
     var z = GetDataFromTable('ModuleTable');
     var NavId = $("#NavigationId").val();
     var model = '{"NavigationId":"' + NavId + '","SubmitType":"' + SubmitType + '","modulelist":' + z + '}';

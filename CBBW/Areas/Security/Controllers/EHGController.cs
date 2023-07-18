@@ -35,7 +35,7 @@ namespace CBBW.Areas.Security.Controllers
             _master = master;
             _entryII = entryII;
             pMsg = "";
-            user = iUser.getLoggedInUser();
+            user = iUser.getLoggedInUser(this);
             ViewBag.LogInUser = user.UserName;            
         }
         [HttpPost]
@@ -127,7 +127,8 @@ namespace CBBW.Areas.Security.Controllers
                     List<EmpDate> xemp = new List<EmpDate>();
                     xemp.Add(empdate);
                     List<PunchInDetails> punch=_entryII.GetPunchingsV4(user.CentreCode,true, xdtl.FromDate, xdtl.FromTime, xemp, ref pMsg);
-                    if (punch != null) 
+                    
+                    if (punch != null && punch.Count>0) 
                     { 
                         PunchInDetails xpunch = punch.FirstOrDefault();
                         xdtl.ActualTourInDate = xpunch.PunchDate;
@@ -140,7 +141,7 @@ namespace CBBW.Areas.Security.Controllers
                     empdate.EmpNumber = MyCodeHelper.GetEmpNoFromString(xdtl.EmployeeNonName);
                     xemp.Add(empdate);
                     punch = _entryII.GetPunchingsV4(user.CentreCode, true, xdtl.FromDate, xdtl.FromTime, xemp, ref pMsg);
-                    if (punch != null) 
+                    if (punch != null && punch.Count>0) 
                     {
                         PunchInDetails xpunch = punch.FirstOrDefault();
                         xdtl.ActualTourOutDate = xpunch.PunchDate;
@@ -245,7 +246,6 @@ namespace CBBW.Areas.Security.Controllers
                 }
                 model.OkToOpen = _master.GetHGOpenOrNot(user.CentreCode, ref pMsg) ? 1 : 0;
                 TempData["EHG"] = model;
-
             }
             catch (Exception ex)
             {

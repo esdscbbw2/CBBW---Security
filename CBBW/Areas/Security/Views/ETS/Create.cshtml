@@ -7,13 +7,15 @@
 <div class="row newTable">
     @using (Html.BeginForm())
     {
+        @Html.HiddenFor(m => m.NoteNumber)
         @Html.HiddenFor(m => m.etsHeader.NoteNumber)
-
         @Html.HiddenFor(m => m.etsHeader.AttachFile)
+        @Html.HiddenFor(m => m.AttachFile)
         @Html.HiddenFor(m => m.etsHeader.CenterCode)
         @Html.HiddenFor(m => m.etsHeader.CenterName)
         @Html.HiddenFor(m => m.etsHeader.CenterCodeName)
         @Html.HiddenFor(m => m.Btnsubmit)
+        @Html.HiddenFor(m => m.CenterCodeName)
         @*@Html.HiddenFor(m => m.TourCatstatus)*@
         <div class="">
             <div class="row newTable">
@@ -57,14 +59,21 @@
                     </div>
                     <div class="text-right pt-2 pb-2">
                         <div class="upper-tab-buttons">
-                            <button type="button" id="btnTourRule"
-                                    onclick="OpenWindowRule('/Security/TourRule/ViewRedirection?CBUID=1&IsBackButton=0');"
-                                    class="btn btn-primary me-2">
+                            <button type="submit" id="TourRule" name="Submit" value="TourRule" class="btn btn-primary me-2">
                                 To Check  “Tour Rules”   Click Here
                             </button>
-                            <button type="button" class="btn btn-primary " onclick="OpenWindowTRule('/Security/TADARules/ViewRedirection?CBUID=1&IsBackButton=0');">
+                            <button type="submit" class="btn btn-primary" id="TADARules" value="TADARules" name="Submit">
                                 To Check “TA & DA Rules”   Click Here
                             </button>
+
+                            @*<button type="button" id="btnTourRule"
+                                        onclick="OpenWindowRule('/Security/TourRule/ViewRedirection?CBUID=1&IsBackButton=0');"
+                                        class="btn btn-primary me-2">
+                                    To Check  “Tour Rules”   Click Here
+                                </button>
+                                <button type="button" class="btn btn-primary " onclick="OpenWindowTRule('/Security/TADARules/ViewRedirection?CBUID=1&IsBackButton=0');">
+                                    To Check “TA & DA Rules”   Click Here
+                                </button>*@
                         </div>
                     </div>
                 </div>
@@ -82,7 +91,7 @@
       htmlAttributes: new
       {
           @class = "form-control",
-          disabled = "disabled",
+          @readonly = "readonly",
           id = "Noteno2"
       })
 
@@ -325,7 +334,7 @@
                             <ul style="list-style:none;">
                                 <li style="font-size: 16px;">
                                     It Is Ensured That This Tour Is Prepared As Tour Category “Other Place” & In Factual It Is Taking Place The Same Way As Is selected:
-                                    <input type="text" disabled id="otherplace" 
+                                    <input type="text" disabled id="otherplace"
                                            class="form-select" value="-">
                                 </li>
                             </ul>
@@ -419,11 +428,11 @@
                 text: "Are you sure you want to delete this?",
                 icon: 'success',
                 html: `<div style="text-align:left;">
-                                                                                    <div class="form-group">
-                                                                                        <label class="swal-label">Attach File (Only Pdf,Png & Jpg Files)</label>
-                                                                                        <input type="file" id="uploadCtrl" name="uploadCtrl" class="form-control" placeholder="">
-                                                                                    </div>
-                                                                                </div>`,
+                                                                                        <div class="form-group">
+                                                                                            <label class="swal-label">Attach File (Only Pdf,Png & Jpg Files)</label>
+                                                                                            <input type="file" id="uploadCtrl" name="uploadCtrl" class="form-control" placeholder="">
+                                                                                        </div>
+                                                                                    </div>`,
                 cancelButtonClass: 'btn-cancel',
                 cancelButtonText: 'Cancel',
                 confirmButtonText: 'Submit',
@@ -449,6 +458,7 @@
                                 $(response).each(function (index, item) {
                                     if (item.ResponseStat == 1) {
                                         $('#etsHeader_AttachFile').val(item.FileName);
+                                        $('#AttachFile').val(item.FileName)
                                         $('#btnScan').addClass('inVisible');
                                         $('#btnScanView').removeClass('inVisible');
                                         var filepath = "/Upload/Forms/" + item.FileName;
@@ -460,24 +470,12 @@
                                         }
                                     }
                                     else {
-                                        MyAlert(4, 'Failed To Upload File.');
-                                        //Swal.fire({
-                                        //    title: 'Failed To Upload File.',
-                                        //    text: item.ResponseMsg,
-                                        //    icon: 'error',
-                                        //    customClass: 'swal-wide my-error',
-                                        //    buttons: {
-                                        //        confirm: 'Ok'
-                                        //    },
-                                        //    confirmButtonColor: '#2527a2',
-                                        //});
+                                        MyAlert(3, item.ResponseMsg);
+                                       
                                     }
                                 });
-                                //code after success
-                                //$('#ehgHeader_DocFileName').val(response);
-                                //var filepath = "/Upload/Forms/" + response;
-                                //VehicleTypeChanged();
-                                //window.open(filepath);
+                            
+                               
                             },
                             error: function (er) {
                                 //alert(er);
@@ -486,16 +484,7 @@
                     }
                     else {
                         MyAlert(4, 'Select Only Pdf,Png & Jpg Files.');
-                        //Swal.fire({
-                        //    title: 'No Files Selected.',
-                        //    text: 'Select Only Pdf,Png & Jpg Files.',
-                        //    icon: 'error',
-                        //    customClass: 'swal-wide my-error',
-                        //    buttons: {
-                        //        confirm: 'Ok'
-                        //    },
-                        //    confirmButtonColor: '#2527a2',
-                        //});
+                        
                     }
                 }
             }
@@ -531,12 +520,12 @@
                 }
             });
         });
-            //$(document).ready(function () {
-            //    $('#btnTourRule').click(function () {
-            //        var url = "/Security/TourRule/ViewRedirection?CBUID=1";
-            //        window.open(url);
-            //    });
-            //});
+                //$(document).ready(function () {
+                //    $('#btnTourRule').click(function () {
+                //        var url = "/Security/TourRule/ViewRedirection?CBUID=1";
+                //        window.open(url);
+                //    });
+                //});
 
     </script>
 }

@@ -161,7 +161,25 @@ namespace CBBW.DAL.DBMapper
             }
             return result;
         }
-
+        public UserModule Map_UserModule(DataRow dr)
+        {
+            UserModule result = new UserModule();
+            try
+            {
+                if (dr != null)
+                {
+                    if (!DBNull.Value.Equals(dr["ModuleID"]))
+                        result.ModuleID = int.Parse(dr["ModuleID"].ToString());
+                    if (!DBNull.Value.Equals(dr["ModuleName"]))
+                        result.ModuleName = dr["ModuleName"].ToString();                    
+                }
+            }
+            catch (Exception ex)
+            {
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+            }
+            return result;
+        }
 
     }
 }

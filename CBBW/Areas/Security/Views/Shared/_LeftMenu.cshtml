@@ -1,6 +1,7 @@
 ﻿@using CBBW.BOL.RBACUsers;
 @{
-    List<UserMenu> model=(List<UserMenu>)ViewData["MyMenu"];
+    var myData = TempData["UserMenu"] as List<UserMenu>;
+    TempData["UserMenu"] = myData;
 }
 <div id="mySidebar" class="sidebar">
     <div class="sidebar-sticky">
@@ -14,7 +15,7 @@
                     <ul class="submenu collapse ">
                         <li class="level2-li">
 
-                            <a onclick="showsubmenuArrow(this)" class="nav-link" href="#"> <i data-feather="circle"></i> Masters <i class="fa fa-angle-right"></i></a>
+                            <a onclick="addclassActive(this)" class="nav-link" href="#"> <i data-feather="circle"></i> Masters <i class="fa fa-angle-right"></i></a>
                             <ul class="submenu collapse">
                                 <li><a onclick="addActiveclass(this)" class="nav-link" href="#"><i data-feather="circle"></i> <span class="menu-title">Modules Master</span></a></li>
                                 <li><a onclick="addActiveclass(this)" class="nav-link" href="#"> <i data-feather="circle"></i> <span class="menu-title">Sub Modules Master</span></a></li>

@@ -30,5 +30,6 @@ namespace CBBW.BLL.IRepository
         bool GetEmployeeValidationForTour(int CentreCode, string EmployeeNumbers, DateTime FromDate, DateTime ToDate, ref string pMsg);
         IEnumerable<CustomComboOptions> GetEmployeeListV2(int centreCode, ref string pMsg);
         bool VehicleAvailableValidation(string VehicleNumber, int CentreCode, DateTime FromDate, DateTime ToDate, int KMLimit, ref string pMsg);
+        bool IsRuleExist(ref string pMsg);
     }
 }

@@ -153,13 +153,13 @@ namespace CBBW.DAL.Entities
             _DBResponseMapper.Map_DBResponse(_RBACUserDataSync.UpdatePassword(data, ref pMsg), ref pMsg, ref result);
             return result;
         }
-        public List<UserMenu> GetUserMenu(int EmployeeNumber, int CentreCode, ref string pMsg) 
+        public List<UserMenu> GetUserMenu(int EmployeeNumber, int CentreCode,int ModuleID, ref string pMsg) 
         {
             List<UserMenu> result = new List<UserMenu>();
             List<UserMenuRaw> obj = new List<UserMenuRaw>();
             try
             {
-                dt = _RBACUserDataSync.GetUserMenu(EmployeeNumber, CentreCode, ref pMsg);
+                dt = _RBACUserDataSync.GetUserMenu(EmployeeNumber, CentreCode, ModuleID, ref pMsg);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     for (int i = 0; i < dt.Rows.Count; i++)
@@ -222,6 +222,30 @@ namespace CBBW.DAL.Entities
             }
             return result;
         }
+        public List<UserModule> GetUserModule(int EmployeeNumber, int CentreCode, ref string pMsg) 
+        {
+            List<UserModule> result = new List<UserModule>();
+            try
+            {
+                dt = _RBACUserDataSync.GetUserModule(EmployeeNumber, CentreCode, ref pMsg);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        result.Add(_RBACUserDBMapper.Map_UserModule(dt.Rows[i]));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                pMsg = ex.Message;
+                MyCodeHelper.WriteErrorLog(MyCodeHelper.GetMethodInfo().MethodSignature, ex);
+            }
+            return result;
+        }
+
+
+
 
     }
 }

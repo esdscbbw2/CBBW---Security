@@ -21,6 +21,7 @@ namespace CBBW.BLL.IRepository
         List<ViewUserData> GetUserRoles(int EmployeeNumber, ref string pMsg);
         bool DeleteUserRole(int EmployeeNumber, string RoleIDs, ref string pMsg, ref int MStat);
         bool UpdatePassword(UpdatePassword data, ref string pMsg);
-        List<UserMenu> GetUserMenu(int EmployeeNumber, int CentreCode, ref string pMsg);
+        List<UserMenu> GetUserMenu(int EmployeeNumber, int CentreCode,int ModuleID, ref string pMsg);
+        List<UserModule> GetUserModule(int EmployeeNumber, int CentreCode, ref string pMsg);
     }
 }

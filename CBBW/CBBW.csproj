@@ -706,6 +706,8 @@
     <Content Include="Areas\Security\Views\Testing\GetRBAC.cshtml" />
     <Content Include="Areas\Security\Views\Testing\ValidationTesting.cshtml" />
     <Content Include="Areas\Security\Views\Testing\GetUserMenu.cshtml" />
+    <Content Include="Areas\Security\Views\Shared\_TopMenuModuleBtns.cshtml" />
+    <Content Include="Areas\Security\Views\Shared\_TopMenuBreadcrumb.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\cute-alert.js" />
     <Content Include="Scripts\dataTables.bootstrap5.min.js" />

@@ -10,6 +10,28 @@ namespace CBBW.DAL.DataSync
 {
     public class MasterDataSync
     {
+        public bool IsRuleExist(ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("SELECT [MTR].[GetRulesFound]()", CommandType.Text))
+                {
+                    return bool.Parse(sql.ExecuteScaler(ref pMsg).ToString());
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return false; }
+        }
+        public int GetVehicleTypeOfACentre(int CentreCode,ref string pMsg)
+        {
+            try
+            {
+                using (SQLHelper sql = new SQLHelper("SELECT [MTR].[GetRulesFound]()", CommandType.Text))
+                {
+                    return bool.Parse(sql.ExecuteScaler(ref pMsg).ToString());
+                }
+            }
+            catch (Exception ex) { pMsg = ex.Message; return false; }
+        }
         public bool IsVehicleExist(string VehicleNumber, ref string pMsg)
         {
             try

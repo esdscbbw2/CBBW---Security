@@ -101,7 +101,7 @@ namespace CBBW.Areas.Security.Controllers
         }
         public ActionResult GetUserMenu() 
         {
-            List<UserMenu> model = _iUser.GetUserMenu(38684, 7, ref pMsg);
+            List<UserMenu> model = _iUser.GetUserMenu(38682, 13,9, ref pMsg);
             ViewData["MyMenu"] = model;
             return View(model);
         }

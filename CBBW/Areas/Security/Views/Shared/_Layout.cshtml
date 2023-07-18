@@ -566,22 +566,10 @@
         <div class="col-md-12 p-0 position-relative">
             @*SideBar Div here*@
             @{Html.RenderPartial("_LeftMenu");}
-            <main role="main" class="main-content px-md-4 " id="mains">
-                @*<div class="row newTable">*@
-                <div class="breadcrumb-outer p-15">
-                    <ul>
-                        <li class="activeLink">
-                            <a href="#">Maintenance <i data-feather="chevrons-right"></i> </a>
-                        </li>
-                        <li class="activeLink">
-                            <a href="#">Rules <i data-feather="chevrons-right"></i> </a>
-                        </li>
-                        <li>
-                            <a href="#">Tour Rules <i data-feather="chevrons-right"></i> </a>
-                        </li>
-                    </ul>
-                </div>
-                @*</div>*@
+            <main role="main" class="main-content px-md-4" id="mains">
+                @{Html.RenderPartial("_TopMenuModuleBtns");}
+                @{Html.RenderPartial("_TopMenuBreadcrumb");}
+
                 <div class="col-md-12"></div>
                 @*Top Menu Here*@
                 @*@{Html.RenderPartial("_TopMenu");}*@

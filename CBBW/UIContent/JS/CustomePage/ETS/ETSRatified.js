@@ -7,6 +7,10 @@
     var btnDisplays = $("#btnDisplay").val();
     var OtherPdiv = $('#OtherPdiv');
     var DivRati = $('#DivRati');
+
+    if ($('#NoteNumber').val()!="") {
+        $('#btnTravDetails,#TourRule,#TADARules').makeEnabled();
+    }
     if (btnDisplays == 1) {
         $('#NoteNumber').makeDisable();
         UnLockSection(OtherPdiv.attr('id'));
@@ -90,7 +94,7 @@ $(document).ready(function () {
         var filepath = "/Upload/Forms/" + docfilename;
         if (docfilename.length > 2) {
             OpenWindow(filepath);
-            $('#btnTravDetails').makeEnabled();
+            $('#btnTravDetails,#TourRule,#TADARules').makeEnabled();
         }
         else {
             MyAlert(0, 'No Document Found For This Note');

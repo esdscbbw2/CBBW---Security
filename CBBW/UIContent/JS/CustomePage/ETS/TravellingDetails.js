@@ -14,7 +14,7 @@ function PublicTransportchange(PublicTransport, PersonType, vehicleType) {
         $('.forNo').show();
         $("#VehicleType").removeClass('is-valid').addClass('is-invalid');
         $("#ReasonVehicleReq").removeClass('is-valid').addClass('is-invalid');
-        getDropDownDataWithSelectedValue('VehicleType', 'Select Type', '/ETS/GetVehicleTypes?TypeVal=' + PersonType, vehicleType);
+        getDropDownDataWithSelectedValue('VehicleType', 'Select Vehicle Type', '/ETS/GetVehicleTypes?TypeVal=' + PersonType, vehicleType);
     } else {
         $('.forYes').show();
         $('.forNo').hide();

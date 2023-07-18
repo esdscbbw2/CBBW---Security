@@ -64,6 +64,23 @@ namespace CBBW.Areas.Security.Controllers
                 if (NoteNumber != null)
                 {
                     model = TempData["ETS"] as ETSHeaderEntryVM;
+                    model.etsHeader.NoteNumber = NoteNumber;
+                    model.etsHeader.AttachFile = model.AttachFile;
+                    model.etsHeader.CenterCodeName = model.CenterCodeName;
+                    model.PersonDtls = _iETS.GetETSTravellingPerson(model.NoteNumber, ref pMsg);
+                    if (TempData["BtnSubmit"] != null)
+                    {
+                        model.Btnsubmit = 1;
+                    }
+                    else
+                    {
+                        model.Btnsubmit = 0;
+                    }
+                    TempData["ETS"] = model;
+                }
+                else if (TempData["ETS"] != null && TempData["ETSData"] == null)
+                {
+                    model = TempData["ETS"] as ETSHeaderEntryVM;
                     model.etsHeader.NoteNumber = model.NoteNumber;
                     model.etsHeader.AttachFile = model.AttachFile;
                     model.etsHeader.CenterCodeName = model.CenterCodeName;
@@ -77,6 +94,8 @@ namespace CBBW.Areas.Security.Controllers
                         model.Btnsubmit = 0;
                     }
                     TempData["ETS"] = model;
+
+
                 }
                 else
                 {
@@ -97,7 +116,8 @@ namespace CBBW.Areas.Security.Controllers
                     else
                     {
                         model.etsHeader = _iETS.getNewETSHeader(ref pMsg);
-
+                        model.NoteNumber = model.etsHeader.NoteNumber;
+                        model.CenterCodeName = model.etsHeader.CenterCodeName;
                     }
                 }
 
@@ -110,7 +130,7 @@ namespace CBBW.Areas.Security.Controllers
             return View(model);
         }
         [HttpPost]
-        public ActionResult Create(ETSHeaderEntryVM hdrmodel)
+        public ActionResult Create(ETSHeaderEntryVM hdrmodel, string Submit = null)
         {
             CustomAjaxResponse result = new CustomAjaxResponse();
             hdrmodel.etsHeader.Status = 1;
@@ -118,17 +138,36 @@ namespace CBBW.Areas.Security.Controllers
             hdrmodel.etsHeader.AttachFile = hdrmodel.AttachFile;
             hdrmodel.etsHeader.CenterCodeName = hdrmodel.CenterCodeName;
             //hdrmodel.etsHeader.CenterCode = user.CentreCode;
-            if (_iETS.SetETSDetailsFinalSubmit(hdrmodel.etsHeader, ref pMsg))
+            //model = CastETSTempData();
+            TempData["ETS"] = hdrmodel;
+            if (Submit != null)
             {
-                result.bResponseBool = true;
-                result.sResponseString = "Data successfully updated.";
-                // return RedirectToAction("Index", new { Area = "Security" });
+                if (Submit == "TADARules")
+                {
+                    _iUser.RecordCallBack("/Security/ETS/Create");
+                    return RedirectToAction("ViewRedirection", "TADARules", new { Area = "Security", CBUID = 1 });
+                }
+                else if (Submit == "TourRule")
+                {
+                    _iUser.RecordCallBack("/Security/ETS/Create");
+                    return RedirectToAction("ViewRedirection", "TourRule", new { Area = "Security", CBUID = 1 });
+                }
+
             }
             else
             {
-                result.bResponseBool = false;
-                result.sResponseString = pMsg;
+                if (_iETS.SetETSDetailsFinalSubmit(hdrmodel.etsHeader, ref pMsg))
+                {
+                    result.bResponseBool = true;
+                    result.sResponseString = "Data successfully updated.";
+                    // return RedirectToAction("Index", new { Area = "Security" });
+                }
+                else
+                {
+                    result.bResponseBool = false;
+                    result.sResponseString = pMsg;
 
+                }
             }
             return Json(result, JsonRequestBehavior.AllowGet);
 
@@ -240,8 +279,9 @@ namespace CBBW.Areas.Security.Controllers
 
                     if (TempData["ETS"] != null)
                     {
-                        if(model.PersonDtls.Where(x => x.EmployeeNo != 0).Select(x => x.EmployeeNo).ToList().Count > 0) { 
-                        modeltravvm.EmplyoyeeNoList = MyCodeHelper.GetCommaSeparatedString(model.PersonDtls.Where(x=>x.EmployeeNo!=0).Select(x=>x.EmployeeNo).ToList());
+                        if (model.PersonDtls.Where(x => x.EmployeeNo != 0).Select(x => x.EmployeeNo).ToList().Count > 0)
+                        {
+                            modeltravvm.EmplyoyeeNoList = MyCodeHelper.GetCommaSeparatedString(model.PersonDtls.Where(x => x.EmployeeNo != 0).Select(x => x.EmployeeNo).ToList());
                         }
 
                         if (model.PersonDtls.Where(x => x.PersonType == 2 || x.PersonType == 4).FirstOrDefault() != null)
@@ -392,6 +432,9 @@ namespace CBBW.Areas.Security.Controllers
 
             string baseUrl = "/Security/ETS/Details?NoteNumber=" + modelobj.NoteNumber + "&CanDelete=" + modelobj.CanDelete + "&CBUID=" + modelobj.CBUID;
             ViewBag.HeaderText = modelobj.HeaderText;
+
+
+
             if (Submit == "Delete")
             {
                 if (_iETS.RemoveETSNoteNumber(modelobj.NoteNumber, 0, 1, ref pMsg))
@@ -407,6 +450,18 @@ namespace CBBW.Areas.Security.Controllers
                 TempData["BackUrl"] = baseUrl;
                 return RedirectToAction("TravellingDetailsView", "ETS", new { NoteNumber = modelobj.NoteNumber, CBUID = modelobj.CBUID });
             }
+            else if (Submit == "TADARules")
+            {
+                _iUser.RecordCallBack(baseUrl);
+                return RedirectToAction("ViewRedirection", "TADARules", new { Area = "Security", CBUID = 1 });
+            }
+            else if (Submit == "TourRule")
+            {
+                _iUser.RecordCallBack(baseUrl);
+                return RedirectToAction("ViewRedirection", "TourRule", new { Area = "Security", CBUID = 1 });
+            }
+
+
             modelobj.etsHeader = _iETS.GetETSHdrEntry(modelobj.NoteNumber, ref pMsg);
             modelobj.PersonDtls = _iETS.GetETSTravellingPerson(modelobj.NoteNumber, ref pMsg);
 
@@ -494,6 +549,16 @@ namespace CBBW.Areas.Security.Controllers
                 return RedirectToAction("ETSApprovedTravDetails",
                  new { Area = "Security", NoteNumber = modelobj.NoteNumber, CBUID = 1 });
             }
+            else if (Submit == "TADARules")
+            {
+                _iUser.RecordCallBack("/Security/ETS/ETSApproveNote?NoteNumber=" + modelobj.NoteNumber);
+                return RedirectToAction("ViewRedirection", "TADARules", new { Area = "Security", CBUID = 1 });
+            }
+            else if (Submit == "TourRule")
+            {
+                _iUser.RecordCallBack("/Security/ETS/ETSApproveNote?NoteNumber=" + modelobj.NoteNumber);
+                return RedirectToAction("ViewRedirection", "TourRule", new { Area = "Security", CBUID = 1 });
+            }
             else if (Submit == "TravSubmit")
             {
 
@@ -503,7 +568,7 @@ namespace CBBW.Areas.Security.Controllers
                 CustomAjaxResponse result = new CustomAjaxResponse();
                 modelobj.travdetails.NoteNumber = modelobj.NoteNumber;
                 modelobj.travdetails.IsApproved = modelobj.IsApprove == 1 ? true : false;
-                modelobj.travdetails.ApprovedReason = modelobj.ApproveReason != null ? modelobj.ApproveReason : "-";
+                modelobj.travdetails.ApprovedReason = modelobj.ApproveReason != null ? modelobj.ApproveReason :"-";
                 modelobj.travdetails.ReasonVehicleProvided = "NA";
                 modelobj.travdetails.VehicleTypeProvided = 0;
                 modelobj.travdetails.EmployeeNonName = "NA";
@@ -667,6 +732,16 @@ namespace CBBW.Areas.Security.Controllers
                 TempData["ABackUrl"] = baseUrls;
                 return RedirectToAction("ApprovalTravellingDetailsView", "ETS", new { NoteNumber = modelobj.NoteNumber, CBUID = modelobj.CBUID });
             }
+            else if (Submit == "TADARules")
+            {
+                _iUser.RecordCallBack(baseUrls);
+                return RedirectToAction("ViewRedirection", "TADARules", new { Area = "Security", CBUID = 1 });
+            }
+            else if (Submit == "TourRule")
+            {
+                _iUser.RecordCallBack(baseUrls);
+                return RedirectToAction("ViewRedirection", "TourRule", new { Area = "Security", CBUID = 1 });
+            }
 
             return View(modelobj);
         }
@@ -743,17 +818,30 @@ namespace CBBW.Areas.Security.Controllers
         [HttpPost]
         public ActionResult RTFNCreate(ETSNoteApproveVM modelobj, string Submit = null)
         {
+            int btnDisplay = TempData["TravDetails"] == null ? 0:1;
+            string baseUrls = "/Security/ETS/RTFNCreate?NoteNumber=" + modelobj.NoteNumber + "&btnDisplay="+ btnDisplay;
+
             if (Submit == "btnTravDetails")
             {
                 return RedirectToAction("RTFNTravellingDetails",
                  new { Area = "Security", NoteNumber = modelobj.NoteNumber, CBUID = 1 });
+            }
+            else if (Submit == "TADARules")
+            {
+                _iUser.RecordCallBack(baseUrls);
+                return RedirectToAction("ViewRedirection", "TADARules", new { Area = "Security", CBUID = 1 });
+            }
+            else if (Submit == "TourRule")
+            {
+                _iUser.RecordCallBack(baseUrls);
+                return RedirectToAction("ViewRedirection", "TourRule", new { Area = "Security", CBUID = 1 });
             }
             else
             {
                 CustomAjaxResponse result = new CustomAjaxResponse();
                 modelobj.ratified.NoteNumber = modelobj.NoteNumber;
                 modelobj.ratified.IsRatified = modelobj.IsRatified == 1 ? true : false;
-                modelobj.ratified.RatifiedReason = modelobj.RatifiedReason != null ? modelobj.RatifiedReason : "NA";
+                modelobj.ratified.RatifiedReason = modelobj.RatifiedReason != null ? modelobj.RatifiedReason : "-";
                 modelobj.ratified.status = 1;
                 if (_iETS.SetETSRatifiedData(modelobj.ratified, ref pMsg))
                 {
@@ -803,6 +891,7 @@ namespace CBBW.Areas.Security.Controllers
         {
             if (modelobj != null)
             {
+                TempData["TravDetails"] = modelobj;
                 return RedirectToAction("RTFNCreate",
                      new { Area = "Security", NoteNumber = modelobj.NoteNumber, btnDisplay = 1 });
 
@@ -826,13 +915,32 @@ namespace CBBW.Areas.Security.Controllers
             return View(modelvmobj);
         }
         [HttpPost]
-        public ActionResult RTFNDetailsView(ETSHeaderEntryVM model)
+        public ActionResult RTFNDetailsView(ETSHeaderEntryVM model,string Submit=null)
         {
-            if (model.NoteNumber != null)
+            if (Submit!=null && model.NoteNumber != null)
             {
-                return RedirectToAction("RTFNTravellingDetails",
-                         new { Area = "Security", NoteNumber = model.NoteNumber, CBUID = 2 });
+                string baseUrls = "/Security/ETS/RTFNDetailsView?NoteNumber=" + model.NoteNumber + "&CanDelete=" + model.CanDelete + "&CBUID=" +model.CBUID ;
+
+                if (Submit == "TADARules")
+                {
+                    _iUser.RecordCallBack(baseUrls);
+                    return RedirectToAction("ViewRedirection", "TADARules", new { Area = "Security", CBUID = 1 });
+                }
+                else if (Submit == "TourRule")
+                {
+                    _iUser.RecordCallBack(baseUrls);
+                    return RedirectToAction("ViewRedirection", "TourRule", new { Area = "Security", CBUID = 1 });
+                }
+                else if (Submit == "TravD")
+                {
+                   
+                        return RedirectToAction("RTFNTravellingDetails",
+                                 new { Area = "Security", NoteNumber = model.NoteNumber, CBUID = 2 });
+                   
+
+                }
             }
+           
             return View();
         }
         #endregion
@@ -924,7 +1032,7 @@ namespace CBBW.Areas.Security.Controllers
         public JsonResult GetLocationsFromType(int TypeID)
         {
             //IEnumerable<CustomComboOptions> result = _iCTV.getLocationsFromType(TypeID, ref pMsg);
-            IEnumerable<LocationMaster> result = _master.GetCentresFromTourCategory(TypeID.ToString(), ref pMsg).OrderBy(x=>x.ID);
+            IEnumerable<LocationMaster> result = _master.GetCentresFromTourCategory(TypeID.ToString(), ref pMsg).OrderBy(x => x.ID);
             return Json(result, JsonRequestBehavior.AllowGet);
 
 
@@ -965,6 +1073,6 @@ namespace CBBW.Areas.Security.Controllers
         }
         #endregion
 
-        
+
     }
 }

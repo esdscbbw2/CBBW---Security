@@ -23,7 +23,7 @@ namespace CBBW.Areas.Security.Controllers
             _toursRule = toursRule;
             _iUser = iUser;
             pMsg = "";
-            user = iUser.getLoggedInUser();
+            user = iUser.getLoggedInUser(this);
             ViewBag.LogInUser = user.UserName;
         }
         public JsonResult BackButtonClicked()

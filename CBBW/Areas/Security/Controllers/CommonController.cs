@@ -23,7 +23,7 @@ namespace CBBW.Areas.Security.Controllers
         public CommonController(IUserRepository iUser)
         {
             _iUser = iUser;
-            user = iUser.getLoggedInUser();
+            user = iUser.getLoggedInUser(this);
             ViewBag.LogInUser = user.UserName;
         }
         public ActionResult Index()

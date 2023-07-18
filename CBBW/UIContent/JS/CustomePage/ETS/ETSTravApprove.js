@@ -19,7 +19,7 @@ async function GetVechileType(selectedval) {
         $('#VehicleTypeVal').val(3);
     }
     if (pubTran == 'False') {
-        getDropDownDataWithSelectedValue(DropdownCtrl.attr('id'), 'Select', '/Security/ETS/GetVehicleTypes?TypeVal=' + PublicT + '&PT=PT', selectedval)
+        getDropDownDataWithSelectedValue(DropdownCtrl.attr('id'), 'Select Vehicle Type', '/Security/ETS/GetVehicleTypes?TypeVal=' + PublicT + '&PT=PT', selectedval)
     }
 };
 async function GetAuthEmployee(selectedval, Vtype) {
@@ -37,7 +37,7 @@ async function GetAuthEmployee(selectedval, Vtype) {
     
     if (Vtype == "") {
         if (pubTran == 'False') {
-            getDropDownDataWithSelectedValue(DropdownCtrl.attr('id'), 'Select', '/Security/ETS/GetEmployeeNoName?Noteno=' + NoteNo, selectedval)
+            getDropDownDataWithSelectedValue(DropdownCtrl.attr('id'), 'Select Authorized Employee', '/Security/ETS/GetEmployeeNoName?Noteno=' + NoteNo, selectedval)
         } else {
             DropdownCtrl.append($('<option/>', { value: "NA", text: "NA" }));
             DropdownCtrl.clearValidateClass();
@@ -61,7 +61,7 @@ async function GetAuthEmployee(selectedval, Vtype) {
         if (selectedval == "" || selectedval == null) {
             DropdownCtrl.isInvalid();
         }
-        getDropDownDataWithSelectedValue(DropdownCtrl.attr('id'), 'Select', '/Security/ETS/GetEmployeeNoName?Noteno=' + NoteNo, selectedval)
+        getDropDownDataWithSelectedValue(DropdownCtrl.attr('id'), 'Select Authorized Employee', '/Security/ETS/GetEmployeeNoName?Noteno=' + NoteNo, selectedval)
     }
    EnableSubmitBtnActive();
 };
