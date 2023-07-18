@@ -27,7 +27,7 @@ namespace CBBW.DAL.DataSync
             {
                 using (SQLHelper sql = new SQLHelper("SELECT [MTR].[GetRulesFound]()", CommandType.Text))
                 {
-                    return 1;// bool.Parse(sql.ExecuteScaler(ref pMsg).ToString());
+                    return 11;// bool.Parse(sql.ExecuteScaler(ref pMsg).ToString());
                 }
             }
             catch (Exception ex) { pMsg = ex.Message; return 0; }
