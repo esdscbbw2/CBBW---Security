@@ -131,5 +131,14 @@ namespace CBBW.BLL.Repository
         {
             return _entities.IsRuleExist(ref pMsg);
         }
+        public int GetVehicleTypeOfACentre(int CentreCode, ref string pMsg) 
+        {
+            return _entities.GetVehicleTypeOfACentre(CentreCode, ref pMsg);
+        }
+    
+    
+    
+    
+    
     }
 }

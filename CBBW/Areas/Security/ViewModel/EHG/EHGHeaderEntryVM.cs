@@ -124,5 +124,7 @@ namespace CBBW.Areas.Security.ViewModel.EHG
         public int OkToOpen { get; set; }
         public int DriverNumber { get; set; }
         public int IsDriverCtrlEnable { get; set; }
+        public int VehicleTypeOfCentre { get; set; }
+        public bool IsRuleFound { get; set; }
     }
 }

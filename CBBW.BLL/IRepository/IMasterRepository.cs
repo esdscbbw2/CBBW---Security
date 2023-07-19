@@ -31,5 +31,6 @@ namespace CBBW.BLL.IRepository
         IEnumerable<CustomComboOptions> GetEmployeeListV2(int centreCode, ref string pMsg);
         bool VehicleAvailableValidation(string VehicleNumber, int CentreCode, DateTime FromDate, DateTime ToDate, int KMLimit, ref string pMsg);
         bool IsRuleExist(ref string pMsg);
+        int GetVehicleTypeOfACentre(int CentreCode, ref string pMsg);
     }
 }

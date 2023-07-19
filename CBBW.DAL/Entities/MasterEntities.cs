@@ -341,5 +341,10 @@ namespace CBBW.DAL.Entities
         {
             return _datasync.IsRuleExist(ref pMsg);
         }
+        public int GetVehicleTypeOfACentre(int CentreCode, ref string pMsg) 
+        {
+            return _datasync.GetVehicleTypeOfACentre(CentreCode, ref pMsg);
+        }
+    
     }
 }

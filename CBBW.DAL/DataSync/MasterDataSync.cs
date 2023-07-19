@@ -25,9 +25,9 @@ namespace CBBW.DAL.DataSync
         {
             try
             {
-                using (SQLHelper sql = new SQLHelper("SELECT [MTR].[GetRulesFound]()", CommandType.Text))
+                using (SQLHelper sql = new SQLHelper("SELECT [MTR].[GetVehicleTypesOfaCentre]("+CentreCode+")", CommandType.Text))
                 {
-                    return 11;// bool.Parse(sql.ExecuteScaler(ref pMsg).ToString());
+                    return int.Parse(sql.ExecuteScaler(ref pMsg).ToString());
                 }
             }
             catch (Exception ex) { pMsg = ex.Message; return 0; }

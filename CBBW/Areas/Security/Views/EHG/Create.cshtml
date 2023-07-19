@@ -41,6 +41,8 @@
         @Html.HiddenFor(m => m.PurposeOfVisitFoeMang2)
         @Html.HiddenFor(m => m.TADADeniedForManagement2)
         @Html.HiddenFor(m => m.OkToOpen)
+        @Html.HiddenFor(m => m.VehicleTypeOfCentre)
+        @Html.HiddenFor(m => m.IsRuleFound)
         <div class="fixedElement">
             <div class="col-md-12">
                 <div class="heading_text_btn mb-3 mt-4">
@@ -161,7 +163,7 @@
                             <div class="col-md-6">
                                 <input id="POA2Wheeler" type="text"
                                        class="form-control"
-                                       value="For Office Work" disabled>
+                                       value="NA" disabled>
                             </div>
                         </div>
                     </div>
@@ -308,7 +310,7 @@
                                                        @class = "form-control pointer valid SLUCtrl",
                                                        type = "date",
                                                        onchange = "ValidateControl()",
-                                                       onkeyup= "ValidateControl()",
+                                                       onkeyup = "ValidateControl()",
                                                        max = Model.MaxFromDate,
                                                        min = Model.MinFromDate
                                                    })

@@ -245,6 +245,8 @@ namespace CBBW.Areas.Security.Controllers
                     if (model.OtherStaffList == null) { model.OtherStaffList = model.getOtherStaffList(user.CentreCode); }
                 }
                 model.OkToOpen = _master.GetHGOpenOrNot(user.CentreCode, ref pMsg) ? 1 : 0;
+                model.VehicleTypeOfCentre = _master.GetVehicleTypeOfACentre(user.CentreCode, ref pMsg);
+                model.IsRuleFound = _master.IsRuleExist(ref pMsg);
                 TempData["EHG"] = model;
             }
             catch (Exception ex)

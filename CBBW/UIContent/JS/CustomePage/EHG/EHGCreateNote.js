@@ -69,42 +69,63 @@ $.fn.HideObject = function () {
 };
 ///////////////////////////////////// Inspected
 function VehicleTypeChanged(mval) {
-    var POACtrl = $('#for_LV');
-    var POA2WhCtrl = $('#for_2_wheeler');
-    var ForManagementDiv = $('#for_Management');
-    var ForOfficeWorkDiv = $('#for_OfficeWork');
-    var POADropdown = $('#ehgHeader_PurposeOfAllotment');
     var VehicletypeCtrl = $('#ehgHeader_VehicleType');
-    var selectedvt = VehicletypeCtrl.val();
-    $('#VehicleType').val(selectedvt);
-    ForOfficeWorkDiv.HideObject();
-    ForManagementDiv.HideObject();
-    POACtrl.HideObject();
-    POA2WhCtrl.HideObject();
-    POADropdown.val('').isInvalidCtrl();
-    $('#BtnDiv').removeClass('SLUSection');
-    if (selectedvt == 1) {
-        POACtrl.UnHideObject();
-    }
-    else if (selectedvt == 2) {
-        POA2WhCtrl.UnHideObject();
-        ForOfficeWorkDiv.UnHideObject();
-        POADropdown.removeClass('is-invalid').removeClass('is-valid');
-        $('#BtnDiv').addClass('SLUSection');
-    }
+    var vehicleAlloted = $('#VehicleTypeOfCentre').val();
+    var selectedType = VehicletypeCtrl.val();
+    if (selectedType > 0) {
+        if (vehicleAlloted == 0) {
+            VehicletypeCtrl.isInvalidCtrl();
+            MyAlert(4, "No Vehicles Allotted To This Centre.");
+        }
+        else if (vehicleAlloted == 1 && selectedType == 2) {
+            VehicletypeCtrl.isInvalidCtrl();
+            MyAlert(4, "Only LV Is Allotted To This Centre.");
+        }
+        else if (vehicleAlloted == 2 && selectedType == 1) {
+            VehicletypeCtrl.isInvalidCtrl();
+            MyAlert(4, "Only 2 Wheeler Is Allotted To This Centre.");
+        }
+        else {
+            //}
+            //}
+            var POACtrl = $('#for_LV');
+            var POA2WhCtrl = $('#for_2_wheeler');
+            var ForManagementDiv = $('#for_Management');
+            var ForOfficeWorkDiv = $('#for_OfficeWork');
+            var POADropdown = $('#ehgHeader_PurposeOfAllotment');
+            //var VehicletypeCtrl = $('#ehgHeader_VehicleType');
+            var selectedvt = VehicletypeCtrl.val();
+            $('#VehicleType').val(selectedvt);
+            ForOfficeWorkDiv.HideObject();
+            ForManagementDiv.HideObject();
+            POACtrl.HideObject();
+            POA2WhCtrl.HideObject();
+            POADropdown.val('').isInvalidCtrl();
+            $('#BtnDiv').removeClass('SLUSection');
+            if (selectedvt == 1) {
+                POACtrl.UnHideObject();
+            }
+            else if (selectedvt == 2) {
+                POA2WhCtrl.UnHideObject();
+                ForOfficeWorkDiv.UnHideObject();
+                POADropdown.removeClass('is-invalid').removeClass('is-valid');
+                $('#BtnDiv').addClass('SLUSection');
+            }
 
-    if (selectedvt > 0) {
-        VehicletypeCtrl.isValidCtrl();
-    }
-    else { VehicletypeCtrl.isInvalidCtrl(); }
-    // Null Value for rest of the controlls
-    if (mval == 1) {
-        $('#ehgHeader_MaterialStatus').val('').isInvalidCtrl();
-        $('#ehgHeader_Instructor').val('').isInvalidCtrl();
-    }
-    if (selectedvt == 2 && $('#OkToOpen').val() == 0) {
-        VehicletypeCtrl.isInvalidCtrl();
-        MyAlert(5, 'Screen Is Alloted For 2 Wheeler Only On Holidays, Weekly Offs And Off-General Shift Timing On Working Days.')
+            if (selectedvt > 0) {
+                VehicletypeCtrl.isValidCtrl();
+            }
+            else { VehicletypeCtrl.isInvalidCtrl(); }
+            // Null Value for rest of the controlls
+            if (mval == 1) {
+                $('#ehgHeader_MaterialStatus').val('').isInvalidCtrl();
+                $('#ehgHeader_Instructor').val('').isInvalidCtrl();
+            }
+            if (selectedvt == 2 && $('#OkToOpen').val() == 0) {
+                VehicletypeCtrl.isInvalidCtrl();
+                MyAlert(5, 'Screen Is Alloted For 2 Wheeler Only On Holidays, Weekly Offs And Off-General Shift Timing On Working Days.')
+            }
+        }
     }
     EnableDateWiseTourBtn();
 };
@@ -576,7 +597,11 @@ function DDPickPersonChanged(x) {
     //Check for Duplicate Person
     var dstat = 0;
     $('.xPerson').each(function () {        
-        if (mValue != '' && $(this).val() == mValue) { dstat +=1; }
+        if (mValue != '' && mValue != null && $(this).val() != '' && $(this).val() !=null)
+        {
+            if ($(this).val().toUpperCase() == mValue.toUpperCase()) { dstat += 1; }
+        }
+        
         //alert(mValue + ' - ' + $(this).val() + ' - ' + dstat);
     });
     //Check for Duplicate Person - end
@@ -590,7 +615,7 @@ function DDPickPersonChanged(x) {
     else if (mValue > 0) { targetCtrl.isValidCtrl(); }
     else { targetCtrl.isInvalidCtrl(); }
     if (dstat>1) {
-        targetCtrl.val('');
+        //targetCtrl.val('');
         targetCtrl.isInvalidCtrl();
         MyAlert(4, 'Person You Have Selected Is Already Taken.');
         //Swal.fire({
@@ -1085,9 +1110,14 @@ $(document).ready(function () {
     var POADropdown = $('#ehgHeader_PurposeOfAllotment');
     var acCtrl = $('#AcceptCmb');
     VehicletypeCtrl.change(function () {
+        //var vehicleAlloted = $('#VehicleTypeOfCentre').val();
+        //var selectedType = VehicletypeCtrl.val();
+        //alert(vehicleAlloted + ' - ' + selectedType);
+        
         VehicleTypeChanged(1);
         $('#BackBtnActive').val(1);
         EnableSubmitBtn();
+
     });
     POADropdown.change(function () {
         POADropdownChanged(1);
@@ -1261,4 +1291,12 @@ $(document).ready(function () {
     $('.CustomDateFormatCloneRow').each(function () {
         $(this).CustomDateFormatCloneRow();
     });
+    //alert($('#IsRuleFound').val());
+    if ($('#IsRuleFound').val()=='False') {
+        //alert($('#IsRuleFound').val());
+        MyAlert(4, "Create Rules Before Proceeding");
+        $('#btnScan').makeSLUDisable();
+
+        //MyAlertWithRedirection(4, "Create Rules Before Proceeding.", '/Security/EHG/Create');
+    }
 });
