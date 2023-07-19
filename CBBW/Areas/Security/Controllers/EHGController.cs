@@ -704,6 +704,14 @@ namespace CBBW.Areas.Security.Controllers
             }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+        [HttpPost]
+        public JsonResult SetDummyData(MyAjaxResponse x) 
+        {
+            MyAjaxResponse result = new MyAjaxResponse();
+            result.bResponseBool = true;
+            result.sResponseString = "It's Dummy data saved.";
+            return Json(result, JsonRequestBehavior.AllowGet); 
+        }
         public ActionResult GetEmployeeValidationForTour(string Employees,DateTime FromDate,DateTime ToDate )
         {
             CustomAjaxResponse result = new CustomAjaxResponse();

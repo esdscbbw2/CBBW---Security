@@ -14,4 +14,12 @@ namespace CBBW.BOL.CustomModels
         public string sResponseString { get; set; }
         public string sResponseString2 { get; set; }
     }
+    public class MyAjaxResponse
+    {
+        public DateTime dResponseDate { get; set; }
+        public int iResponseInteger { get; set; }
+        public bool bResponseBool { get; set; }
+        public string sResponseString { get; set; }
+        public string sResponseString2 { get; set; }
+    }
 }

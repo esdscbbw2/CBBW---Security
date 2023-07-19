@@ -2,6 +2,17 @@
 @{
 
 }
+<div id="myDiv"  style="width:300px">
+    <input data-name="sResponseString" type="text" class="form-control">
+    <input data-name="sResponseString2" type="text" class="form-control">
+    <div class="position-relative pointer">
+        <input data-name="dResponseDate" type="date" class="form-control">
+    </div>
+    <div>
+        Are You A Human ?
+        <input class="CheckVal" data-name="bResponseBool" type="checkbox" />
+    </div>
+</div>
 <table>
     <tr>
         <td>
@@ -42,7 +53,7 @@
             </div>                
         </td>
         <td>
-            <input id="Date1" type="date" class="form-control indDate">
+            @*<input id="Date1" type="date" class="form-control indDate">*@
         </td>
     </tr>
     <tr>
@@ -50,6 +61,18 @@
             <button id="btn1" type="button" onclick="btn1Clicked()"
                     class="btn btn-primary me-2">
                 Button1
+            </button>
+        </td>
+        <td>
+            <button id="btn2" type="button" onclick="btn2Clicked()"
+                    class="btn btn-primary me-2">
+                Button2
+            </button>
+        </td>
+        <td>
+            <button id="btn3" type="button" onclick="btn3Clicked()"
+                    class="btn btn-primary me-2">
+                Button3
             </button>
         </td>
     </tr>

@@ -1,6 +1,12 @@
 ﻿function btn1Clicked() {
-    alert($('#TourCategory1').val());
-    alert($('#TourCategory2').val());
-    var result = GetCommonValuesFromArray($('#TourCategory1').val(), $('#TourCategory2').val());
-    alert(result);
+    PostDataInAjaxWithResponseHandleing('/Security/EHG/SetDummyData','',true,false);
+};
+function btn2Clicked() {
+    var x = GetDataFromDivHavingNoTables('myDiv');
+    PostDataInAjaxWithResponseHandleing('/Security/EHG/SetDummyData', x, false, '', true, function () {
+        alert('ok');
+    });
+};
+function btn3Clicked() {
+    MyConfirmationAlert("From Btn3?", "");
 };
